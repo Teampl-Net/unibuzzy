@@ -23,7 +23,7 @@
         <th>구독일</th>
       </tr>
       <tr v-for="(value, index) in secvMemberList" :key="index">
-        <td><input type="checkbox" name="" id="" style=""></td>
+        <td><input type="checkbox" name="selectedUser" id="" value="value.userKey" style=""></td>
         <!--<td>{{index + 1}}</td> -->
         <td>{{value.name}}</td>
         <td>{{value.mobile}}</td>
@@ -40,17 +40,18 @@
 export default {
   data () {
     return {
+      selectedUser: [],
       secvMemberList: [
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
-        { key: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' }
+        { userKey: 0, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 1, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 2, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 3, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 4, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 5, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 6, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 7, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 8, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' },
+        { userKey: 9, name: '김철수', mobile: '010-1234-5678', email: 'test@pushmsg.net', groupName: '교직원', recvStatus: '구독', followDate: '2022.02.02' }
       ]
     }
   },
