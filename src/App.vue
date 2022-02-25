@@ -1,5 +1,5 @@
 <template>
-  <div class="minW" style="width: 1390px; height: calc(100vh - 90px); margin: 0 auto;">
+  <div class="minW" style="width: 1390px; height: calc(100vh); margin: 0 auto;">
     <!-- <router-link to="/">Home</router-link> | -->
     <!-- <router-link to="/about">About</router-link> -->
     <router-view />

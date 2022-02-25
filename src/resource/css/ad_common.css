@@ -83,7 +83,7 @@ div{ box-sizing: border-box;}
 .mr-04{margin-right: 0.4rem}
 .ml-04{margin-left: 0.4rem;}
 
-
+.mleft-05{margin-left: 0.5rem;}
 
 .mtop-02{margin-top: 0.2rem;}
 .mtop-03{margin-top: 0.3rem;}
@@ -183,3 +183,8 @@ div{ box-sizing: border-box;}
 .listSearchBtnWrap{margin-left: 1rem;}
 .listSearchBtnWrap p {color:#000000; cursor: pointer; font-size: 14px; float: left;}
 .searchFilterWrap{max-width: 310px; float: right;}
+
+
+.pageWrap{width: 200px; height: 100%}
+.pageWrap span, .pageWrap img {float: left;}
+.pageWrap img{margin-top: 0rem; margin:0 0.5rem;}

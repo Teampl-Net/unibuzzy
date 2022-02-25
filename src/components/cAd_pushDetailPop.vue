@@ -1,7 +1,7 @@
 <template>
     <div class="modalBack" style="z-index: 1000;">
         <div class="commonPopCard" style="width: 550px; height: 600px; left: 50%;">
-            <popHeader headerTitleText="최근알림 저새히 보기" @closePop="closeDetailPop"/>
+            <popHeader headerTitleText="최근알림 자세히 보기" @closePop="closeDetailPop"/>
             <div class="popBody" style="padding: 1rem 1rem; overflow-y: hidden;">
                 <pushDetailTile :chanName="this.pushInfo.chanName" :creDate="this.pushInfo.creDate"/>
                 <div style="width: 100%; height: calc(100% - 6rem); float: left; padding: 0 0.5rem;" v-html="this.pushInfo.contentsString">

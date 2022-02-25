@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-.searchBalloon {top: 70px; right: 515px;  padding: 0 1.5rem; padding-top: 2rem; width: 400px;}
+.searchBalloon {top: 70px; padding: 0 1.5rem; padding-top: 2rem; width: 400px;}
 .searchRow{min-height: 2rem; margin-bottom: 0.5rem; width: 100%;}
 .searchRow p{line-height: 30px; color: #3A3A3A; font-size: 12px; width: 80px; display: flex;}
 .searchRow input{width: calc(100% - 80px); box-sizing: border-box;}

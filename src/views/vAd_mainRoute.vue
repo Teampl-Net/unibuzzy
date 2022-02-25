@@ -2,7 +2,7 @@
   <previewPop v-if="this.previewChanYn"  @closePop="closePreviewPop" />
   <contentsPop v-if="this.contentsPopShowYn"  @closePop="closeContentsPop" />
   <adHeader style=""/>
-  <div style="height: 100%; height:100%; margin-top: 90px;">
+  <div style="height: 100%; height:calc(100% - 90px); margin-top: 90px;">
     <adLeftMenu v-if="leftMenuShowYn" @closeLeft="closeLeft" />
     <div id= "contentsWrap" class= "contentsWrap" >
       <img src="../resource/images/channerList_open.png" v-if="leftMenuShowYn === false" v-on:click= "openLeft"  style="position: absolute; top: 1rem; left: 0;" alt="">

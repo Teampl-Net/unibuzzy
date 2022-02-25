@@ -5,6 +5,7 @@
         <p style="font-size: 18px; font-weight: bold; color: #6768A7; margin-bottom: 0.2rem;">{{this.chanName}}</p>
         <p style="font-size: 15px; color: #A1A1A1;">{{this.creDate}}</p>
     </div>
+    <img src="../resource/images/unselectedStarIcon.svg" class="fr mtop-05" alt="">
     </div>
 </template>
 

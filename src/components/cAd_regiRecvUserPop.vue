@@ -21,8 +21,9 @@
                 <gButton btnName="파일선택" btnType="light" /><div style="border: 1px solid #BFBFDA; width: 350px; height: 30px; border-radius: 5px; float: left; margin-left: 0.5rem;"></div>
               </div>
               <div id="step3" style="width: 100%; min-height: 2rem; margin-bottom: 1rem; position: relative;">
-                <p style="color: #3A3A3A; font-size: 15px; margin-bottom: 0.8rem; line-height: 30px; float: left; margin-right: 3rem;'"><span class="fontBold">STEP3.</span> 정합성 확인 버튼 클릭을 통해 업로드한 데이터 정보를 확인합니다</p>
-                <gButton btnName="정합성 확인" btnType="light" style="position: absolute; right: 0;" />
+                <p style="color: #3A3A3A; font-size: 15px; margin-bottom: 0.8rem; line-height: 30px; float: left; margin-right: 0.5rem;'">
+                  <span class="fontBold">STEP3.</span> 정합성 확인 버튼 클릭을 통해 업로드한 데이터 정보를 확인합니다</p>
+                <gButton btnName="정합성 확인" btnType="light" class="fl" />
               </div>
               <div id="step4" style="width: 100%; height: 500px; margin-bottom: 1rem; position: relative;">
                 <p style="color: #6768A7; font-size: 12px;">*이름+전화번호+이메일은 반드시 입력해야 하는 정보입니다.</p>
@@ -38,7 +39,7 @@
                     </tr>
                   </table>
                 </div>
-                <p class="bodyText"><span class="fontBold">STEP4.</span> 저장하기 버튼을 클릭하면 수신대상관리에 등록됩니다.</p>
+                <p class="bodyText"><span class="fontBold">STEP4.</span> 등록 버튼을 클릭하면 수신대상관리에 등록됩니다.</p>
               </div>
             </div>
           </div>
