@@ -10,9 +10,9 @@
       </div>
         <gPageTitle class="pleft-2" titleText="수신대상관리" style="margin-bottom: 0;" @clickEvnt = "previewChan" :btnYn ="false" />
         <div style="width: 100%; height: 100%;">
-            <subLeftMenu title="그룹관리" />
-            <div class="overFlowYScroll scrollArea" style="">
-                <p style="color: #6768A7; font-size: 16px; float: left; font-weight: bold; margin: 0.5rem 0; margin-top: 0.5rem;">전체 수신대상</p>
+            <subLeftMenu pageType="recvUserList" title="그룹관리" />
+            <div class="overFlowYScroll scrollArea" style="height: calc(100% - 3rem)">
+                <p style="color: #6768A7; font-size: 16px; float: left; font-weight: bold; margin: 0.5rem 0; margin-top: 0.5rem;">대상그룹: {{selectedGroup}}</p>
                 <div style="height: 2rem; float: right;">
                     <gWhiteButton @click="openRegiPop('P')" btnName="수신대상등록" class="mright-05"/>
                     <gWhiteButton @click="openRegiPop('G')" btnName="수신대상 엑셀업로드" class="mright-05"/>
@@ -34,10 +34,7 @@
                   </div>
                 </div>
                 <searchResult v-if="this.searchList.length > 0" :searchList="this.searchList" @changeSearchList = "changeSearchList" />
-                <secvTable style="margin-bottom: 3rem;" />
-                <div style="position: absolute; bottom: 0; height: 3rem; width: 100%; color:#000000; font-size: 14px; font-weight: bold;">
-                    총 등록인원 {{allCnt}}4427명/구독자{{followCnt}}2218명
-                </div>
+                <recvTable style="margin-bottom: 3rem;" />
             </div>
         </div>
     </div>
@@ -48,7 +45,7 @@
 import recvPop from '../components/cAd_regiRecvUserPop.vue'
 import selectGroupPop from '../components/cAd_gSelectGroupPop.vue'
 import subLeftMenu from '../components/cAd_subLeftMenu.vue'
-import secvTable from '../components/cAd_recvTable.vue'
+import recvTable from '../components/cAd_recvTable.vue'
 export default {
   methods: {
     openRegiPop (type) {
@@ -88,6 +85,7 @@ export default {
       movePopShowYn: false,
       moveType: '',
       popType: '',
+      selectedGroupName: '',
       searchKey: [
         { display: '전체', key: '' },
         { display: 'ㄱ', key: 'ㄱ' },
@@ -114,7 +112,7 @@ export default {
     }
   },
   components: {
-    secvTable,
+    recvTable,
     subLeftMenu,
     recvPop,
     selectGroupPop

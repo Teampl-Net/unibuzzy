@@ -25,7 +25,7 @@
             <th>정보</th>
           </tr>
           <tr v-for="(value, index) in requestChanList" :key="index">
-            <td><input type="checkbox" name="" :id="'request'+ value.requestKey"></td>
+            <td><input type="checkbox" name="" v-model="selectedChan" :value="value.requestKey" :id="'request'+ value.requestKey"></td>
             <td><select name="" id="">
               <!-- <option :selected="value.status === '00' ? 'selected': ''">생성대기</option>
               <option :selected="value.status === '99' ? 'selected': ''">생성완료</option> -->
@@ -33,7 +33,7 @@
               <option>생성완료</option>
             </select></td>
             <td>{{value.requestDate}}</td>
-            <td class="font16Im fontBold" >{{value.chanInfo.chanName}}</td>
+            <td class="cursorP font16Im fontBold"  @click="checkRow(value.requestKey)"> {{value.chanInfo.chanName}}</td>
             <td>{{value.managerInfo.name}}</td>
             <td>
               <p>{{value.managerInfo.mobile}}</p>
@@ -63,6 +63,7 @@ export default {
   name: 'Home',
   data () {
     return {
+      selectedChan: [],
       requestChanList: [
         { requestKey: '0', status: '00', chanInfo: { chanName: '삼성생명', masterName: '이재용', businessRegiNum: '111111', call: '00000000000', address: '서울특별시' }, requestDate: '2022.02.21', managerInfo: { name: '이재용', mobile: '010-3434-3434', email: 'jy34@samsung.com' }, file: [{ fileName: '기관증명서', fileUrl: '' }, { fileName: '사용신청서', fileUrl: '' }, { fileName: '이용동의서', fileUrl: '' }] },
         { requestKey: '1', status: '99', chanInfo: { chanName: '삼성생명', masterName: '이재용', businessRegiNum: '111111', call: '00000000000', address: '서울특별시' }, requestDate: '2022.02.21', managerInfo: { name: '이재용', mobile: '010-3434-3434', email: 'jy34@samsung.com' }, file: [{ fileName: '기관증명서', fileUrl: '' }, { fileName: '사용신청서', fileUrl: '' }, { fileName: '이용동의서', fileUrl: '' }] },
@@ -74,6 +75,18 @@ export default {
   components: {
   },
   methods: {
+    checkRow (key) {
+      var dupYn = false
+      for (var i = 0; i < this.selectedChan.length; i++) {
+        if (this.selectedChan[i] === key) {
+          this.selectedChan.splice(i, 1)
+          dupYn = true
+        }
+      }
+      if (dupYn === false) {
+        this.selectedChan.push(key)
+      }
+    }
   }
 }
 </script>

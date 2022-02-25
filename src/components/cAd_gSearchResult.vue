@@ -31,6 +31,6 @@ export default {
 
 <style scoped>
 .searchResultWrap{min-height: 2rem;padding-top: 0.5rem; width: 100%;float: left;margin-bottom: 0.2rem;}
-.searchResultBox{margin-right: 0.5rem; min-width:60px; border: 1px solid #BFBFDA; position: relative; border-radius: 15px; float: left; height: 22px; padding: 0 0.7rem; padding-right: 1.2rem; font-size: 12px; }
+.searchResultBox{margin-right: 0.5rem; min-width:60px; border: 1px solid #BFBFDA;background-color: #BFBFDA; position: relative; border-radius: 15px; float: left; height: 22px; padding: 0 0.7rem; padding-right: 1.2rem; font-size: 12px; }
 .searchResultBox img{position: absolute; right: 0.3rem; top: 0.3rem;}
 </style>

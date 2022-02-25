@@ -1,6 +1,7 @@
 <template>
   <div style="width: 100%; height: 100%;">
-    <gPageTitle class="pleft-2" titleText="채널메인" @clickEvnt = "previewChan" v-on:click="openPreviewPop()"  />
+    <pushDetail v-if="this.detailPopShowYn" @closeDetailPop = "closeDetailPop" />
+    <gPageTitle class="pleft-2" titleText="채널메인" @clickEvnt = "previewChan" />
     <div id="mainChanPage" class="pleft-2 fl" style="">
       <div class="mainPreviewWrap">
         <div class="editBtn">
@@ -53,7 +54,7 @@
           <div class="statisticEle" style="padding-right: 0;"><p class="statisticTitle">누적 발송 알림 수</p><p class="statisticBody">명</p></div>
         </div>
         <p class="mainTitleText mtop-1 mbottom-1">최근알림</p>
-        <pushCard @openPop="openReadPop" style="" v-for="(value,index) in chanInfo.pushList" :sendListPageYn="true" :key="index" :pushTitle="value.pushTitle" :recvDate="value.recvDate" :sendDate="value.recvDate"  :sendGroup="value.sendGroup" />
+        <pushCard @openPop="openReadPop" @openPushDetail="openDetailPop" style="" v-for="(value,index) in chanInfo.pushList" :sendListPageYn="true" :key="index" :pushTitle="value.pushTitle" :recvDate="value.recvDate" :sendDate="value.recvDate"  :sendGroup="value.sendGroup" />
       </div>
     </div>
   </div>
@@ -62,6 +63,7 @@
 <script>
 import pushCard from '../components/cAd_pushCardRow.vue'
 // @ is an alias to /src
+import pushDetail from '../components/cAd_pushDetailPop.vue'
 export default {
   name: 'Home',
   data () {
@@ -71,7 +73,8 @@ export default {
       editChanNameYn: false,
       editCommentYn: false,
       editAddress: false,
-      pushList: ''
+      pushList: '',
+      detailPopShowYn: false
 
     }
   },
@@ -79,7 +82,8 @@ export default {
     this.getChanInfo()
   },
   components: {
-    pushCard
+    pushCard,
+    pushDetail
   },
   methods: {
     getChanInfo () {
@@ -109,6 +113,12 @@ export default {
       } else {
         this.previewBtn = '편집'
       }
+    },
+    closeDetailPop () {
+      this.detailPopShowYn = false
+    },
+    openDetailPop (key) {
+      this.detailPopShowYn = true
     }
   }
 }
