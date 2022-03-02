@@ -1,4 +1,4 @@
-# admin_thealim
+# thealime
 
 ## Project setup
 ```
