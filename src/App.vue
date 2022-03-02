@@ -1,19 +1,62 @@
 <template>
-  <div class="minW" style="width: 1390px; height: calc(100vh); margin: 0 auto;">
-    <!-- <router-link to="/">Home</router-link> | -->
-    <!-- <router-link to="/about">About</router-link> -->
-    <router-view />
-  </div>
+  <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
+  <fullModal id="commonWrap" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+  <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div>
+  <router-view @openPop="openPop" />
 </template>
+<script>
+export default {
+  data () {
+    return {
+      headerTitle: '아이디어스',
+      popShowYn: false,
+      pushPopShowYn: false,
+      parentPopN: 0
+    }
+  },
+  methods: {
+    openPop () {
+      alert('come')
+      this.popShowYn = true
 
+      setTimeout(() => {
+      // eslint-disable-next-line indent
+      // eslint-disable-next-line no-debugger
+        debugger
+        document.getElementById('FullModalWrap').appendChild(document.getElementById('commonWrap'))
+        this.popShowYn = false
+      }, 1000)
+    },
+    closePop () {
+      this.popShowYn = false
+    },
+    closeXPushPop () {
+      this.pushPopShowYn = false
+    }
+  }
+}
+</script>
 <style>
-.minW{
-   width: 1390px;
-        height: 100%;
-        margin: 0 auto;
-        padding: 0;
-        overflow-y:visible;
+@import './resource/css/tal_common_css.css';
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
-@import url(./resource/css/ad_common.css)
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+
 </style>
