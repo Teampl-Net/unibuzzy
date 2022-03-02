@@ -34,7 +34,7 @@
         <div class="searchRow fl"><p class="fl" style="">수신자</p><input type="text" name="" style="" class="commonInput" id=""></div>
         <div class="popFooter">
             <gButton btnName="검색" class="mright-05"/>
-            <gWhiteButton btnName="닫기" />
+            <gWhiteButton @click="closePop" btnName="닫기" />
         </div>
     </div>
 </template>
@@ -49,7 +49,9 @@ export default {
     }
   },
   methods: {
-
+    closePop () {
+      this.$emit('closePop')
+    }
   }
 }
 </script>

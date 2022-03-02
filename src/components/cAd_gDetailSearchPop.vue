@@ -1,4 +1,4 @@
-<template>
++<template>
 <div class="searchBalloon box" style="">
   <div class="searchRow fl"><p class="fl" style="">제목 + 내용</p><input placeholder="제목 또는 내용을 입력해주세요" type="text" name="" style="" class="commonInput" id=""></div>
   <div class="searchRow fl"><p class="fl" style="">보낸사람</p><input type="text" name="" style="" placeholder="보낸사람을 입력해주세요" class="commonInput" id=""></div>
@@ -17,7 +17,7 @@
   <div class="searchRow fl"><p class="fl" style="">수신자</p><input type="text" name="" style="" class="commonInput" id=""></div>
   <div class="popFooter">
       <gButton btnName="검색" class="mright-05"/>
-      <gWhiteButton btnName="닫기" />
+      <gWhiteButton @click="closePop" btnName="닫기" />
   </div>
 </div>
 </template>
@@ -28,6 +28,11 @@ export default {
     return {
       value1: [new Date(2019, 9, 8), new Date(2019, 9, 19)],
       value2: []
+    }
+  },
+  methods: {
+    closePop () {
+      this.$emit('closePop')
     }
   }
 }
