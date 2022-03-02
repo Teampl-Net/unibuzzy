@@ -1,5 +1,17 @@
 
 p{margin: 0;}
+div{ box-sizing: border-box;}
+
+table{border-collapse: collapse;}
+
+html, body {
+    width: 100%;
+         height: 100%;
+         margin: 0;
+         padding: 0;
+         overflow-y: hidden;
+ }
+
 
 ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background-color: #BFBFDA; border-radius: 100px; } ::-webkit-scrollbar-thumb { background-color: #6768A7; border-radius: 100px; }
 .mx-table-date .today{
@@ -14,18 +26,9 @@ p{margin: 0;}
 .mx-datepicker input:hover {
     border: 1px solid #8183d6;
 }
-html, body {
-    width: 100%;
-         height: 100%;
-         margin: 0;
-         padding: 0;
-         overflow-y: hidden;
- }
-
-table{border-collapse: collapse;}
 
 select {cursor: pointer;}
-div{ box-sizing: border-box;}
+
 .commonInput{border: 1px solid #BFBFDA; height: 29px; border-radius: 5px; padding: 0 0.5rem; font-size: 14px; box-sizing: border-box;}
 .commonInputIm{margin-left: 0.5rem; min-width: 100px!important; width: 100px!important; border: 1px solid #BFBFDA!important; height: 29px!important; border-radius: 5px!important; padding: 0 0.5rem!important; font-size: 14px!important; box-sizing: border-box;}
 .overFlowYScroll{overflow-y: auto;}
