@@ -1,0 +1,121 @@
+<template>
+    <div id="commonWrap" ref="commonWrap" style="position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;">
+      <fullModal :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
+      <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
+      <pushDetail v-if="this.targetType === 'pushDetail'" style="box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;"/>
+      <chanDetail v-if="this.targetType === 'chanDetail'" />
+      <pushList v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
+      <pushBox v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
+      <chanList v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
+      <changeInfo :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
+      <askTal v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
+      <talInfo v-if="this.targetType === 'theAlimInfo'" />
+      <question v-if="this.targetType === 'question'" @openPop = "openPop"/>
+      <leaveTal v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
+    </div>
+</template>
+
+<script>
+import pushDetail from './components/Tal_pushDetail.vue'
+import changeInfo from './components/Tal_changeInfo.vue'
+import pushList from '../../pages/routerPages/Tal_pushList.vue'
+import pushBox from './components/Tal_pushBox.vue'
+import chanList from '../../pages/routerPages/Tal_chanList.vue'
+import chanDetail from './components/Tal_chanDetail.vue'
+import askTal from './components/Tal_askTheAlim.vue'
+import talInfo from './components/Tal_theAlimInfo.vue'
+import question from './components/Tal_question.vue'
+import leaveTal from './components/Tal_leaveTheAlim.vue'
+export default {
+  created () {
+    this.settingPop()
+    // alert('현재 팝업 개수는 ' + this.thisPopN)
+  },
+  mounted () {
+    // alert('현재 팝업 개수는 ' + this.thisPopN)
+  },
+  data () {
+    return {
+      makeTitle: 'aaaaa',
+      popShowYn: false,
+      targetType: '',
+      // subPopShowYn: false,
+      thisPopN: {},
+      newHeaderT: '',
+      headerTitle: '',
+      popParams: '',
+      changInfoType: ''
+    }
+  },
+  props: {
+    params: {},
+    // headerTitle: {},
+    parentPopN: {}
+  },
+  components: {
+    pushDetail,
+    chanDetail,
+    pushList,
+    chanList,
+    changeInfo,
+    pushBox,
+    askTal,
+    talInfo,
+    question,
+    leaveTal
+  },
+  methods: {
+    settingPop () {
+      this.targetType = this.params.targetType
+      if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
+        if (this.params.chanName !== 'undefined' && this.params.chanName !== null && this.params.chanName !== '') {
+          this.headerTitle = this.params.chanName
+        } else {
+          this.headerTitle = '상세'
+        }
+      } else if (this.params.targetType === 'pushList') {
+        this.headerTitle = '알림'
+      } else if (this.params.targetType === 'chanList') {
+        this.headerTitle = '구독'
+      } else if (this.params.targetType === 'pushBox') {
+        this.headerTitle = '알림함'
+      } else if (this.params.targetType === 'leaveTheAlim') {
+        this.headerTitle = '탈퇴'
+      } else if (this.params.targetType === 'question') {
+        this.headerTitle = '자주 찾는 질문'
+      } else if (this.params.targetType === 'qna') {
+        this.headerTitle = 'Q&A'
+      } else if (this.params.targetType === 'askTal') {
+        this.headerTitle = '문의하기'
+      } else if (this.params.targetType === 'theAlimInfo') {
+        this.headerTitle = '더알림이란?'
+      } else if (this.params.targetType === 'changePhone') {
+        this.changInfoType = this.params.targetType
+        this.targetType = 'changeInfo'
+        this.headerTitle = '휴대폰 번호 수정'
+      } else if (this.params.targetType === 'changeEmail') {
+        this.targetType = 'changeInfo'
+        this.changInfoType = this.params.targetType
+        this.headerTitle = '이메일 수정'
+      }
+      this.thisPopN = Number(this.parentPopN) + 1
+      this.newHeaderT = '새로운 타이틀' + this.thisPopN
+    },
+    openPop (params) {
+      this.popParams = params
+      this.popShowYn = true
+    },
+    closePop (pThisPopN) { // 자식 팝업닫기
+      this.popShowYn = false
+    },
+    closeXPop (pThisPopN) { // 내 팝업 닫기
+      this.$emit('closePop', pThisPopN)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.dNone{display: none;}
+</style>

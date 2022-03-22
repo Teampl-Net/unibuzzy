@@ -1,0 +1,53 @@
+<template>
+  <div class="pagePaddingWrap" style="">
+      <div class="menuHeader" style="padding:0.5rem 0; height: 50px; border-bottom: 1px solid #fff; ">
+          <img v-on:click="this.$emit('hideMenu')" style="width: 0.8rem" src="../../assets/images/main/icon_back_white.png" class="fl"/>
+          <p style="color: #FFFFFF; font-size: 20px; text-align: center;">메뉴</p>
+      </div>
+      <div class="menuRow" style="" v-for="(value, index) in menuList" :key="index">
+        <img class="mr-04" :src="value.iconUrl" alt="">
+        <span  v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</span>
+        <span v-else v-on:click="openPop(value.link)">{{value.menuText}}</span>
+      </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: '',
+  mounted () {
+  },
+  data () {
+    return {
+      menuList: [
+        { iconUrl: 'http://placehold.it/25', menuText: '홈', link: '', type: 'page' },
+        { iconUrl: 'http://placehold.it/25', menuText: '알림', link: 'pushList', type: 'page' },
+        { iconUrl: 'http://placehold.it/25', menuText: '구독', link: 'chanList', type: 'page' },
+        { iconUrl: 'http://placehold.it/25', menuText: '설정', link: 'setMypage', type: 'page' },
+        { iconUrl: 'http://placehold.it/25', menuText: '더알림이란?', link: 'theAlimInfo', type: 'pop' },
+        { iconUrl: 'http://placehold.it/25', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
+        { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' }
+        // { iconUrl: '', menuText: 'Q&A', link: 'qna' }
+      ]
+    }
+  },
+  components: {
+  },
+  methods: {
+    goPage (link) {
+      this.$emit('goPage', link)
+    },
+    openPop (link) {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      params.targetType = link
+      this.$emit('openPop', params)
+    }
+  }
+
+}
+</script>
+
+<style scoped>
+.menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) }
+</style>

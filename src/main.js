@@ -1,49 +1,53 @@
 import { createApp } from 'vue'
-import App from './TheAlim.vue'
+import moTheAlim from './Tal_moTheAlim.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-import gButton from './components/unit/button/cAd_gButton.vue'
-import gButtonL from './components/unit/button/cAd_gButtonL.vue'
-import popHeader from './components/layout/cAd_gPopHeader.vue'
-import gActiveBar from './components/unit/cAd_gActiveBar.vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
 
-import gWhiteButton from './components/unit/button/cAd_gWhiteButton.vue'
-import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
-import gSearchBox from './components/unit/searchBox/cAd_gSearchBox.vue'
-import contentsPop from './components/popup/cAd_gcontentsPop.vue'
-import gSelect from './components/unit/selectBox/cAd_gSelectBox.vue'
-import searchResult from './components/unit/searchBox/cAd_gSearchResult.vue'
-import pushDetailTile from './components/unit/cAd_gDetailTitle.vue'
-import gPageTitle from './components/unit/cAd_gPageTitle.vue'
-import detailSearchPop from './components/popup/cAd_gDetailSearchPop.vue'
-import gFilterPop from './components/popup/cAd_gFilterPop.vue'
+import { longClickDirective } from 'vue-long-click'
+
+// import { onMessage } from './assets/js/webviewInterface'
+import webViewBridge from './assets/js/webViewBridge'
+
+import gActiveBar from './components/unit/Tal_gActiveBar.vue'
+import gButtonS from './components/button/Tal_gButtonS.vue'
+import gButtonL from './components/button/Tal_gButtonL.vue'
+import fullModal from './components/commonPopup/Tal_gPopupWrap.vue'
+import pushModal from './components/popup/Tal_gPushPopWrap.vue'
+import TalHeader from './components/layout/Tal_gMainHeader.vue'
+import popHeader from './components/layout/Tal_gPopHeader.vue'
+import TalFooter from './components/layout/Tal_gFooter.vue'
+import commonList from './components/list/Tal_commonList.vue'
+import gChannelList from './components/list/Tal_gChannelList.vue'
+import gSearchBox from './components/unit/Tal_searchBox.vue'
+import gColorPicker from './components/unit/Tal_colorPicker.vue'
+
+import { changeDateFormat, numberToKorean } from './assets/js/Tal_common'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
-// import { axiosServer } from './assets/js/ad_common'
+const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
-// import previewPop from './components/test/cAd_gPreviewPush.vue'
-
-const app = createApp(App).use(store).use(router)
-app.component('popHeader', popHeader)
-app.component('gButton', gButton)
+const app = createApp(moTheAlim).use(router)
 app.component('Datepicker', Datepicker)
-app.component('gButtonL', gButtonL)
-app.component('gActiveBar', gActiveBar)
-app.component('gPageTitle', gPageTitle)
-
+app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
-app.component('gWhiteButton', gWhiteButton)
-app.component('gWhiteSelect', gWhiteSelect)
-app.component('gSelect', gSelect)
-// app.component('previewPop', previewPop)
-app.component('contentsPop', contentsPop)
-app.component('searchResult', searchResult)
-app.component('detailSearchPop', detailSearchPop)
-app.component('pushDetailTile', pushDetailTile)
-app.component('gFilterPop', gFilterPop)
-// app.component('selectGroupPop', selectGroupPop)
+app.component('gBtnSmall', gButtonS)
+app.component('gBtnLarge', gButtonL)
+app.component('gActiveBar', gActiveBar)
+app.component('fullModal', fullModal)
+app.component('pushModal', pushModal)
+app.component('TalHeader', TalHeader)
+app.component('TalFooter', TalFooter)
+app.component('popHeader', popHeader)
+app.component('commonList', commonList)
+app.component('gChannelList', gChannelList)
+app.directive('longclick', longClickInstance)
+app.use(webViewBridge)
+app.use(store)
+// app.use(massage)
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
@@ -57,4 +61,6 @@ axios.defaults.headers.get.Pragma = 'no-cache'
 // Vue.prototype.$http = axios
 
 app.config.globalProperties.$axios = axios
+app.config.globalProperties.changeDateFormat = changeDateFormat
+app.config.globalProperties.numberToKorean = numberToKorean
 app.mount('#app')
