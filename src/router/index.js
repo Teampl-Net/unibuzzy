@@ -24,14 +24,14 @@ const routes = [
         path: '/',
         name: 'main',
         props: true,
-        component: main
-        /* beforeEnter: (to, from, next) => {
+        component: main,
+        beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
           if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
             return next()
           }
           next('/policies')
-        } */
+        }
       },
       {
         path: '/setMypage',

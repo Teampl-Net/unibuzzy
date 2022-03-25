@@ -63,12 +63,14 @@ const isJsonString = (str) => {
          */
     window.document.addEventListener('message', function (e) {
       var message
+      alert(true)
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
         } else { message = e.data }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
           if (message.loginYn === true) {
+            alert(message.loginYn)
             console.log(message.loginYn)
             // alert(message.userInfo)
             // settingUserInfo()
