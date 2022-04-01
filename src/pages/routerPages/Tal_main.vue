@@ -5,11 +5,11 @@
     <div class="userProfileWrap">
       <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
       <div class="userProfileTextWrap">
-        <p ref="userName" class="font20 fontBold grayBlack">{{userName}}</p>
+        <p ref="userName" class="font20 fontBold grayBlack">{{this.userName}}</p>
         <div><img src="../../assets/images/main/main_email.png" style= 'width: 1rem' /><span class="profileTitle" ref="userEmail">이메일</span>
-        <p class="grayBlack font15" ref="userEmail">{{getUserEmail}}</p></div>
+        <p class="grayBlack font15" ref="userEmail">{{this.getUserEmail}}</p></div>
         <div><img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' /><span class="profileTitle" ref="userEmail">휴대폰</span>
-        <p class="grayBlack font15" ref="userMobile">{{getUserMobile}}</p></div>
+        <p class="grayBlack font15" ref="userMobile">{{this.getUserMobile}}</p></div>
       </div>
     </div>
     <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
@@ -31,10 +31,17 @@ export default {
   created () {
     this.$emit('changePageHeader', '더알림')
     onMessage('REQ', 'getUserInfo')
+    alert(true)
     this.userName = localStorage.getItem('userName')
     this.userEmail = localStorage.getItem('userEmail')
     this.userMobile = localStorage.getItem('userMobile')
     this.userImg = localStorage.getItem('userImg')
+    // alert(this.userEmail)
+    // alert(this.userName)
+    // alert(this.userMobile)
+    // alert(this.userEmail)
+  },
+  mounted () {
   },
   data () {
     return {

@@ -37,40 +37,40 @@ const routes = [
         path: '/setMypage',
         name: 'setMypage',
         props: true,
-        component: setMypage
-        /* beforeEnter: (to, from, next) => {
+        component: setMypage,
+        beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
           if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
             return next()
           }
           next('/policies')
-        } */
+        }
       },
       {
         path: '/pushList',
         name: 'pushList',
         props: true,
-        component: pushList
-        /* beforeEnter: (to, from, next) => {
+        component: pushList,
+        beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
           if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
             return next()
           }
           next('/policies')
-        } */
+        }
       },
       {
         path: '/chanList',
         name: 'chanList',
         props: true,
-        component: chanList
-        /* beforeEnter: (to, from, next) => {
+        component: chanList,
+        beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
           if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
             return next()
           }
           next('/policies')
-        } */
+        }
       }
     ]
   },

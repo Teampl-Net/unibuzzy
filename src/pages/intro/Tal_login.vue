@@ -19,10 +19,10 @@
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-      <!-- <div class="loginBtn" v-on:click="NaverLoginBtn">
+      <div class="loginBtn" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
-      </div> -->
+      </div>
 
   </div>
 </template>
@@ -52,6 +52,14 @@ export default {
         JSON.stringify({
           type: 'REQ',
           callFunc: 'loginNaver'
+        })
+      )
+    },
+    AppleLoginBtn () {
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: 'REQ',
+          callFunc: 'loginApple'
         })
       )
     },

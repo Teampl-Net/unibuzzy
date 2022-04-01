@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import router from '../../router'
 
 const isJsonString = (str) => {
@@ -61,20 +62,24 @@ const isJsonString = (str) => {
          * react-native => javascript
          * react native에서 화면에 결과를 넘겨준다.
          */
-    window.document.addEventListener('message', function (e) {
+
+    document.addEventListener('message', e => listener(e))
+    window.addEventListener('message', e => listener(e))
+
+    function listener (e) {
+      // alert(e.data)
       var message
-      alert(true)
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
         } else { message = e.data }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
           if (message.loginYn === true) {
-            alert(message.loginYn)
             console.log(message.loginYn)
-            // alert(message.userInfo)
+            alert(message.userInfo)
+            var userProfile = JSON.parse(message.userInfo)
             // settingUserInfo()
-            var userProfile = JSON.parse(JSON.parse(message.userInfo))
+            // var userProfile = JSON.parse(JSON.parse(message.userInfo))
             // alert(JSON.parse(userProfile).email)
             // localStorage.setItem('userProfile', userProfile)
             localStorage.setItem('userMobile', userProfile.mobile)
@@ -111,7 +116,7 @@ const isJsonString = (str) => {
         }
         delete callbacks[message.msgId]
       }
-    })
+    }
   }
   init()
 }())

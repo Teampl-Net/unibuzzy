@@ -26,6 +26,12 @@ export default {
   },
   methods: {
     goLogout () {
+      localStorage.setItem('userName', '')
+      localStorage.setItem('userMobile', '')
+      localStorage.setItem('userEmail', '')
+      localStorage.setItem('userImg', '')
+      localStorage.setItem('userRtoken', '')
+      localStorage.setItem('userAtoken', '')
       this.$emit('closePop', 'goMain')
     },
     closePop () {
