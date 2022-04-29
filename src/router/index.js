@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 
 import routerMain from '../pages/Tal_router_main.vue'
 
+import testLoginPage from '../pages/intro/testLoginPage.vue'
 import main from '../pages/routerPages/Tal_main.vue'
 import login from '../pages/intro/Tal_login.vue'
 import permissions from '../pages/intro/Tal_permissions.vue'
@@ -10,7 +11,9 @@ import policies from '../pages/intro/Tal_policies.vue'
 import setMypage from '../pages/routerPages/Tal_setMypage.vue'
 import pushList from '../pages/routerPages/Tal_pushList.vue'
 import chanList from '../pages/routerPages/Tal_chanList.vue'
-
+// import { loginCheck } from '../assets/js/Tal_common'
+import savePhone from '../pages/routerPages/Tal_savePhone.vue'
+import saveName from '../pages/routerPages/Tal_saveName.vue'
 import test from '../pages/test.vue'
 // import store from '../store/index'
 
@@ -24,27 +27,28 @@ const routes = [
         path: '/',
         name: 'main',
         props: true,
-        component: main,
+        component: main
+        /* ,
         beforeEnter: (to, from, next) => {
-        // 만약 로그인 상태라면
-          if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
+          // 만약 로그인 상태라면
+          var loginYn = localStorage.getItem('loginYn')
+          if (loginYn !== false) {
+            alert(loginYn)
             return next()
+          } else if (loginYn === false) {
+            next('/policies')
           }
-          next('/policies')
-        }
+        } */
       },
       {
         path: '/setMypage',
         name: 'setMypage',
         props: true,
-        component: setMypage,
-        beforeEnter: (to, from, next) => {
+        component: setMypage
+        /* beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
-          if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
-            return next()
-          }
-          next('/policies')
-        }
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+        } */
       },
       {
         path: '/pushList',
@@ -53,10 +57,8 @@ const routes = [
         component: pushList,
         beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
-          if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
-            return next()
-          }
-          next('/policies')
+
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
         }
       },
       {
@@ -66,13 +68,16 @@ const routes = [
         component: chanList,
         beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
-          if (localStorage.getItem('userName') !== null && localStorage.getItem('userName') !== '') {
-            return next()
-          }
-          next('/policies')
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
         }
       }
     ]
+  },
+  {
+    path: '/testLoginPage',
+    name: 'testLoginPage',
+    props: true,
+    component: testLoginPage
   },
   {
     path: '/login',
@@ -93,6 +98,18 @@ const routes = [
     component: policies
   },
   {
+    path: '/savePhone',
+    name: 'savePhone',
+    props: true,
+    component: savePhone
+  },
+  {
+    path: '/saveName',
+    name: 'saveName',
+    props: true,
+    component: saveName
+  },
+  {
     path: '/test',
     name: 'test',
     props: true,
@@ -109,7 +126,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
 

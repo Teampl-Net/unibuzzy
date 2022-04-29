@@ -1,18 +1,20 @@
 <template>
-    <div id="commonWrap" ref="commonWrap" style="position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;">
-      <fullModal :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+    <div class="commonPopWrap" ref="commonWrap" >
+      <transition name="showModal">
+        <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
-      <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
-      <pushDetail v-if="this.targetType === 'pushDetail'" style="box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;"/>
-      <chanDetail v-if="this.targetType === 'chanDetail'" />
-      <pushList v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
-      <pushBox v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <chanList v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
-      <changeInfo :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
-      <askTal v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
-      <talInfo v-if="this.targetType === 'theAlimInfo'" />
-      <question v-if="this.targetType === 'question'" @openPop = "openPop"/>
-      <leaveTal v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
+      </transition>
+      <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail"/>
+      <chanDetail @closeLoading="this.$emit('closeLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail'" />
+      <pushList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
+      <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
+      <chanList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
+      <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
+      <askTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
+      <talInfo @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'theAlimInfo'" />
+      <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
+      <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
     </div>
 </template>
 
@@ -28,12 +30,19 @@ import talInfo from './components/Tal_theAlimInfo.vue'
 import question from './components/Tal_question.vue'
 import leaveTal from './components/Tal_leaveTheAlim.vue'
 export default {
-  created () {
-    this.settingPop()
+  async created () {
+    await this.settingPop()
     // alert('현재 팝업 개수는 ' + this.thisPopN)
   },
   mounted () {
     // alert('현재 팝업 개수는 ' + this.thisPopN)
+  },
+  computed: {
+    getWindowSize () {
+      return {
+        '--widndowWidth': window.innerWidth + 'px'
+      }
+    }
   },
   data () {
     return {
@@ -45,7 +54,9 @@ export default {
       newHeaderT: '',
       headerTitle: '',
       popParams: '',
-      changInfoType: ''
+      changInfoType: '',
+
+      detailVal: {}
     }
   },
   props: {
@@ -66,11 +77,12 @@ export default {
     leaveTal
   },
   methods: {
-    settingPop () {
+    async settingPop () {
       this.targetType = this.params.targetType
       if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
-        if (this.params.chanName !== 'undefined' && this.params.chanName !== null && this.params.chanName !== '') {
-          this.headerTitle = this.params.chanName
+        this.detailVal = this.params
+        if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
+          this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
         } else {
           this.headerTitle = '상세'
         }
@@ -90,7 +102,7 @@ export default {
         this.headerTitle = '문의하기'
       } else if (this.params.targetType === 'theAlimInfo') {
         this.headerTitle = '더알림이란?'
-      } else if (this.params.targetType === 'changePhone') {
+      } else if (this.params.targetType === 'changeMobile') {
         this.changInfoType = this.params.targetType
         this.targetType = 'changeInfo'
         this.headerTitle = '휴대폰 번호 수정'
@@ -111,11 +123,23 @@ export default {
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
       this.$emit('closePop', pThisPopN)
+    },
+    changeText (text) {
+      var changeTxt = ''
+      // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
+      changeTxt = this.$makeMtextMap(text, 'KO')
+      return changeTxt
+      // if (changeTxt !== undefined) { return changeTxt }
     }
   }
 }
 </script>
 
 <style scoped>
+
+.commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.commonPopHeader{box-shadow: 0px 7px 9px -9px #00000036;}
+.commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;}
 .dNone{display: none;}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div class="pagePaddingWrap" style="">
+<div class="pagePaddingWrap" >
   <div class="pushBoxWrap">
     <!-- <img src="../../../assets/images/push/noticebox_all.png" alt=""><p class="pushBoxTitle">전체</p> -->
     <img class="fl pushBoxTitleImg" src="../../../assets/images/push/noticebox_all.png" alt="">
@@ -12,8 +12,8 @@
       <p class="pushBoxTitle  fl font15 fontBold textLeft">보관함</p>
     </div>
     <div class="boxElement" v-for="(value,index) in boxList" :key="index">
-      <div :style="tagColor" style="" :class="value.tagColor ? 'color'+value.tagColor : ''" class="fl colorBox"></div>
-      <span style="" class="fl textLeft">{{value.boxName}}</span>
+      <div :style="tagColor"  :class="value.tagColor ? 'color'+value.tagColor : ''" class="fl colorBox"></div>
+      <span  class="fl textLeft">{{value.boxName}}</span>
       <img src="../../../assets/images/push/noticebox_edit.png" class="fr" alt="">
     </div>
   </div>

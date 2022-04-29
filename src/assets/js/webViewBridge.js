@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import router from '../../router'
+import { saveUser } from '../js/Tal_axiosFunction'
 
 const isJsonString = (str) => {
   try {
@@ -66,42 +67,55 @@ const isJsonString = (str) => {
     document.addEventListener('message', e => listener(e))
     window.addEventListener('message', e => listener(e))
 
-    function listener (e) {
+    async function listener (e) {
       // alert(e.data)
       var message
+
+      // alert('type is ' + e.dat)
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
-        } else { message = e.data }
+        } else {
+          message = e.data
+        }
+        // alert(true)
         if (message.type === 'userInfo' || message.type === 'successLogin') {
           if (message.loginYn === true) {
-            console.log(message.loginYn)
-            alert(message.userInfo)
+            // alert(message.userInfo)
             var userProfile = JSON.parse(message.userInfo)
-            // settingUserInfo()
-            // var userProfile = JSON.parse(JSON.parse(message.userInfo))
-            // alert(JSON.parse(userProfile).email)
-            // localStorage.setItem('userProfile', userProfile)
-            localStorage.setItem('userMobile', userProfile.mobile)
+            localStorage.setItem('loginYn', true)
+            // alert(userProfile.mobile)
+            if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
+              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
+              router.replace({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
+            } else if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
+              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
+              router.replace({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
+            } else {
+              await saveUser(userProfile) // 서버에 save요청
+              router.replace({ path: '/' })
+            }
+            /* localStorage.setItem('userMobile', userProfile.mobile)
+            localStorage.setItem('fcmKey', userProfile.deviceInfo.fcmKey)
             localStorage.setItem('userName', userProfile.name)
             localStorage.setItem('userImg', userProfile.userImg)
-            localStorage.setItem('userRtoken', userProfile.rToken)
             localStorage.setItem('userEmail', userProfile.email)
-            localStorage.setItem('userAtoken', userProfile.aToken)
-            router.push({ path: '/' })
+            localStorage.setItem('userAtoken', userProfile.aToken) */
             // alert(this.userProfile)
           } else {
-            router.push({ path: 'policy' })
+            router.replace({ path: 'policies' })
           }
         } else if (message.type === 'CheckUserPermission') {
-          router.push({ name: 'permission' })
+          router.replace({ name: 'permissions' })
         } else if (message.type === 'requestUserPermission') {
-          // router.push({ name: 'policy' })
+          router.replace({ path: '/' })
         } else if (message.type === 'pushMsg') {
           alert('제목:' + message.pushMessage.title + '\n내용:' + message.pushMessage.body)
-          // router.push({ name: 'policy' })
+          // router.replace({ name: 'policy' })
+        } else if (message.type === 'deviceSystemName') {
+          // alert(message.systemNameData)
+          localStorage.setItem('systemName', message.systemNameData)
         }
-        // alert(message.userToken)
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
         return

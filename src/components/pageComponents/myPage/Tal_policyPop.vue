@@ -1,7 +1,7 @@
 <template>
-    <div id="commonWrap" ref="commonWrap" style="position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;">
-        <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
-        <div id="Uarea" style="margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)">
+    <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
+        <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" class="policyHeader"/>
+        <div id="Uarea" class="policy-01">
             <p class="titleText mbottom-05">제 1 조 (목적)</p>
             <p class="mbottom-1 mleft-1">
                 이 이용약관(이하 '약관'이라 합니다)은 팀플㈜(이하 '회사'라 합니다)와 이용 고객(이하 '회원'이라 합니다)간에 회사가 제공하는 더알림 서비스(http://www.pushmsg.net 이하 '더알림' 또는 '서비스'라 합니다)의 가입조건 및 이용에 관한 제반 사항과 기타 필요한 사항을 구체적으로 규정함을 목적으로 합니다.
@@ -265,7 +265,7 @@
                 ① 본 약관은 2022년 2월 10일부터 적용됩니다.
             </p>
       </div>
-      <div id="Parea" v-if="this.policyType === 'personalInfo'" style="margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)">
+      <div id="Parea" v-if="this.policyType === 'personalInfo'" class="policy-02">
             <p class="mbottom-1">개인정보보호법에 따라 더알림에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.</p>
             <p class="titleText mbottom-05">1.수집하는 개인정보</p>
             <p class="ml-04">이용자는 회원가입을 하지 않아도 정보 검색, 뉴스 보기 등 대부분의 더알림 서비스를 회원과 동일하게 이용할 수 있습니다. 이용자가 구독, 알림 등 회원 기반의 서비스를 사용하기 위해 회원가입을 할 경우, 더알림은 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.</p>
@@ -350,7 +350,10 @@ export default {
 <style scoped>
 @import url(../../../assets/css/Tal_common.css);
 p{color: #2c3e50;}
-
+.policyPageWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.policyHeader{box-shadow: 0px 7px 9px -9px #00000036;}
+.policy-01{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
+.policy-02{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
 .dNone{display: none;}
 .titleText{font-size: 14px; font-weight: bold;}
 .subTitle{font-weight: bold;}

@@ -1,20 +1,20 @@
 <template>
-<div class="pagePaddingWrap leavePageWrap" style="">
+<div class="pagePaddingWrap leavePageWrap" >
   <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop"/>
   <div class="leaveContentsWrap">
     <p class="pointTitle">더알림을 탈퇴하시겠습니까?</p>
     <p class="title">아래 내용을 읽고 동의해주세요.</p>
     <div class="guideBox">
-      <p class= "mtop-1" style="">더알림 회원 탈퇴 안내</p>
+      <p class= "mtop-1" >더알림 회원 탈퇴 안내</p>
       <div class="guideTextWrap guideText ptop-1"></div>
     </div>
     <div class="guideBox">
-      <p class= "mtop-1" style="">더알림 개인정보 삭제 방침 안내</p>
+      <p class= "mtop-1" >더알림 개인정보 삭제 방침 안내</p>
       <div class="guideTextWrap guideText ptop-1"></div>
     </div>
-    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" id="agreeOut"><label style="" for="agreeOut">동의합니다</label></div>
+    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" id="agreeOut"><label  for="agreeOut">동의합니다</label></div>
   </div>
-  <gBtnLarge v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" style=""/>
+  <gBtnLarge v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" />
 </div>
 </template>
 

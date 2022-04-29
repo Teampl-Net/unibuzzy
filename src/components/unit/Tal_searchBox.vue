@@ -1,25 +1,45 @@
 <template>
-    <div class="searchBoxWrap">
-        <img src="../../assets/images/common/iocn_search.png" style="" alt="" class="cursorP" v-on:click="requestSearch">
-        <input type="text" v-model="searchKeyWord" name="" style="" id="" v-on:keyup.enter="requestSearch">
+    <div class="pushListSearchArea">
+      <div style="position: relative; margin-top: 1rem; height: 40px;">
+        <img class="searchIcon mtop-03" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <div class="searchInput" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
+      </div>
+      <div style="width: 100%;">
+        <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
+      </div>
     </div>
 </template>
 <script>
+import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   data () {
     return {
       searchKeyWord: ''
     }
   },
+  components: {
+    searchResult
+  },
   methods: {
     requestSearch () {
       // eslint-disable-next-line no-new-object
+    },
+    changeSearchList (idx) {
+      this.$emit('changeSearchList', idx)
     }
+  },
+  props: {
+    resultSearchKeyList: {}
+  },
+  computed: {
   }
 }
 </script>
 <style scoped>
-.searchBoxWrap{height: 32px; border-radius: 10px; border: 1px solid #BFBFDA;position: relative;}
-img{float: let; position: absolute; top: 0.3rem; right: 0.5rem; width: 1.3rem;}
-input{width: calc(100% - 2.5rem); margin-top: 0.2rem; border: none; float: left; background-color: transparent;}
+.pushListSearchArea{position: relative; margin-bottom: 1.5rem; min-height: 2.5rem; width: 100%; float: left;}
+.searchIcon{width: 1.5rem; float: right;}
+.searchInput{border: 2px solid #E4E4E4; float: left; width: calc(100% - 2rem); float: left; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
+
+.searchIcon{width: 1.5rem; position: absolute; top:0.3rem; right: 0.9rem}
+.searchInput{border: none; background: #e4e4e463; height: 100%; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 </style>

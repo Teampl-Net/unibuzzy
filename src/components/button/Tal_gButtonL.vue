@@ -1,6 +1,6 @@
 
 <template >
-  <div class="commonBtnL" style="">
+  <div class="commonBtnL" >
       {{btnTitle}}
   </div>
 </template>

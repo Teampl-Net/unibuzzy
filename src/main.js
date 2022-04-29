@@ -5,8 +5,8 @@ import store from './store'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
-
 import { longClickDirective } from 'vue-long-click'
+import dayjs from 'dayjs'
 
 // import { onMessage } from './assets/js/webviewInterface'
 import webViewBridge from './assets/js/webViewBridge'
@@ -24,7 +24,10 @@ import gChannelList from './components/list/Tal_gChannelList.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
 import gColorPicker from './components/unit/Tal_colorPicker.vue'
 
-import { changeDateFormat, numberToKorean } from './assets/js/Tal_common'
+import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
+
+import { numberToKorean, getUserInform, makeMtextMap } from './assets/js/Tal_common'
+import axiosFunction from './assets/js/Tal_axiosFunction'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
@@ -45,13 +48,19 @@ app.component('popHeader', popHeader)
 app.component('commonList', commonList)
 app.component('gChannelList', gChannelList)
 app.directive('longclick', longClickInstance)
+app.component('gConfirmPop', gConfirmPop)
 app.use(webViewBridge)
+app.use(axiosFunction)
 app.use(store)
 // app.use(massage)
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
+axios.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true'
+axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
-axios.defaults.baseURL = 'http://192.168.1.111:9090'
+axios.defaults.baseURL = 'http://192.168.0.22:9091'
+/* axios.defaults.baseURL = 'http://14.51.96.245:9091' */
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
 // 캐싱 방지
@@ -61,6 +70,11 @@ axios.defaults.headers.get.Pragma = 'no-cache'
 // Vue.prototype.$http = axios
 
 app.config.globalProperties.$axios = axios
-app.config.globalProperties.changeDateFormat = changeDateFormat
+app.config.globalProperties.$dayjs = dayjs
+app.config.globalProperties.$makeMtextMap = makeMtextMap
 app.config.globalProperties.numberToKorean = numberToKorean
+
+app.config.globalProperties.$getUserInform = getUserInform
+
+localStorage.setItem('loginYn', false)
 app.mount('#app')

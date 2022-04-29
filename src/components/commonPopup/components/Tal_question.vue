@@ -1,18 +1,18 @@
 <template>
-<div class="pagePaddingWrap" style="">
-  <div style="width: 100%; margin-bottom: 2rem; min-height: 70px; border-radius: 5px;background-color: #F5F5F9; padding: 0.7rem 1rem;">
-    <div style="text-align: left; width: 70%; float: left;">
-      <p style="color: #303030; font-weight: bold; font-size: 15px;">도움이 필요하신가요?</p>
-      <p style="text-decoration: none; color: #303030; font-size: 14px;" >필요한 정보에 대해 문의해보세요</p>
+<div class="pagePaddingWrap" >
+  <div class="qPageWrap">
+    <div class="qPageHeaderTextWrap">
+      <p class="p-1">도움이 필요하신가요?</p>
+      <p class="p-2" >필요한 정보에 대해 문의해보세요</p>
     </div>
-    <gBtnSmall v-on:click="openAskPop" style="float: right; margin-top: 0.6rem" :btnTitle="this.btnTitle" />
+    <gBtnSmall v-on:click="openAskPop" class="askBtn" :btnTitle="this.btnTitle" />
   </div>
   <div class="qnaSet" v-for="(value,index) in questionList" :key="index">
-    <div style="">
+    <div >
       <span class="Icon">Q</span>
       <span class="text fontBold" v-html="value.question"></span>
     </div>
-    <div style="width: 100%; min-height: 40px; text-align: left;">
+    <div class="qWrap">
       <span class="Icon">A</span>
       <span class="text" v-html="value.answer"></span>
     </div>
@@ -56,6 +56,12 @@ export default {
 }
 </script>
 <style scoped>
+.qPageWrap{width: 100%; margin-bottom: 2rem; min-height: 70px; border-radius: 5px;background-color: #F5F5F9; padding: 0.7rem 1rem;}
+.qPageHeaderTextWrap{text-align: left; width: 70%; float: left;}
+.qPageHeaderTextWrap p-1{color: #303030; font-weight: bold; font-size: 15px;}
+.qPageHeaderTextWrap p-2{text-decoration: none; color: #303030; font-size: 14px;}
+.askBtn{float: right; margin-top: 0.6rem}
+.aWrap{width: 100%; min-height: 40px; text-align: left;}
 .qnaSet{width: 100%; min-height: 140px; padding: 1rem 0; border-bottom: 1px solid #E4E4E4;}
 .qnaSet > div {width: 100%; min-height: 35px; text-align: left;}
 .qnaSet .Icon {color: #6768A7; font-size: 17px; font-weight: bold; float: left; width: 25px; height: 100%;}

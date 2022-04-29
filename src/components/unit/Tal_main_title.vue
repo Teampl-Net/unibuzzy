@@ -1,11 +1,10 @@
 
 <template>
   <div class="top5TitleWrap textLeft">
-    <img style="width: 1.4rem; " v-if="listTitle === '알림'" class="mr-04 fl" src=""/>
-    <img style="width: 1.4rem; " v-else-if="listTitle === '채널'" class="mr-04 fl" src=""/>
-    <img style="width: 1.4rem; " class="mr-04" src="../../assets/images/main/icon_notice.png"/>
-    <span class="commonColor fontBold font20">{{listTitle}} TOP5</span>
-    <gBtnSmall :btnThema="'deep'" :btnTitle="this.moreBtnTitle" v-on:click="openPop(moreLink)" />
+    <img style="width: 1.2rem; " v-if="listTitle === '알림'" class="mright-03 mtop-03 fl" src="../../assets/images/main/icon_notice.png"/>
+    <img style="width: 1.2rem; " v-else-if="listTitle === '채널'" class="mright-03 mtop-02 fl" src="../../assets/images/main/icon_channel.png"/>
+    <p class="commonColor mtop-03 fl fontBold font16">{{listTitle}} TOP5</p>
+    <gBtnSmall :btnThema="'deep'" class="mtop-03" :btnTitle="this.moreBtnTitle" v-on:click="openPop(moreLink)" />
   </div>
 </template>
 <script>
@@ -21,6 +20,7 @@ export default {
     listTitle: String,
     moreLink: {}
   },
+  emits: ['openPop'],
   methods: {
     openPop (moreLink) {
       // alert(true)
@@ -32,7 +32,7 @@ export default {
         params.targetType = 'chanList'
       }
       this.$emit('openPop', params)
-      // this.$router.push({ name: 'pushDetail', params: { pushKey: idx } })
+      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     }
   }
 }

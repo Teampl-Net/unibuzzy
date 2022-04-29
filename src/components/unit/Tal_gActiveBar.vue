@@ -1,12 +1,11 @@
 <template>
     <div class="" ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%;">
         <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab">
-            <p class="tabItem font15 fontBold commonColor" style="margin: 0 0.4rem;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
+            <p :style="activebarWidth" class="tabItem font15 fontBold commonColor" style="margin: 0 auto;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
         </div>
         <div class="activeBar"  ref="activeBar" :style="activebarWidth"   style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
       </div>
 </template>
-// 'transform:translateX(' + (activetab * activebarWidth * 1.08) + 'rem)'
 <script>
 export default {
   props: {
@@ -16,12 +15,11 @@ export default {
     return {
       transition: 'slide-next',
       activetab: 0,
-      tabwidth: 5.5,
+      tabwidth: 4.8,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null }
     }
   },
   mounted () {
-    alert(true)
     // this.$refs.activeBar.style.setProperty('--tabwidth', 5.5 + 'rem')
   },
   computed: {
@@ -32,7 +30,7 @@ export default {
     activebarWidth () {
       return {
         '--tabwidth': this.tabwidth + 'rem',
-        '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1.08) + 'rem' + ')'
+        '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
       }
     }
   },
@@ -78,7 +76,7 @@ export default {
   /* justify-content: flex-start; */
   cursor: pointer;
   text-transform: uppercase;
-  width: 5rem;
+  width: var(--tabwidth);
 }
 
 .slider {

@@ -14,7 +14,8 @@
             </div>
             <p class="font15 w-100P textLeft fontBold">전체 스티커</p>
             <div style="width: 100%; min-height: 100px; padding: 10px 0; overflow-x: auto; overflow-y: hidden">
-                <div @click="this.createStickerPopShowYn = true" style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" >
+                <div style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" >
+                <!-- <div @click="this.createStickerPopShowYn = true" style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" > -->
                     +
                 </div>
                 <div :style="myStickerWidth" style="width: var(--myStickerWidth); height: 100%;" class="mbottom-1">
@@ -75,14 +76,7 @@ export default {
       selectedStickerList: [],
       iconSize: 0,
       selectedTempSticker: 0,
-      selectedColor: {
-        hex: '#194d33',
-        hex8: '#194D33A8',
-        hsl: { h: 150, s: 0.5, l: 0.2, a: 1 },
-        hsv: { h: 150, s: 0.66, v: 0.30, a: 1 },
-        rgba: { r: 25, g: 77, b: 51, a: 1 },
-        a: 1
-      },
+      selectedColor: '#E57373',
       colorPickerShowYn: false, // colorPicker  팝업
       createStickerPopShowYn: false // 스티커 생성 팝업
     }
@@ -95,7 +89,7 @@ export default {
     },
     changeColor () {
       return {
-        '--selectedColor': this.selectedColor.hex
+        '--selectedColor': this.selectedColor
       }
     },
     myStickerWidth () {
@@ -126,8 +120,6 @@ export default {
       this.$emit('closePop')
     },
     setMyStickerList (sList) {
-      // eslint-disable-next-line no-debugger
-      debugger
       for (var k = 0; k < this.myStickerList.length; k++) {
         this.myStickerList[k].showYn = true
         for (var i = 0; i < sList.length; i++) {

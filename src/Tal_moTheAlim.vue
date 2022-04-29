@@ -1,8 +1,10 @@
 <template>
-  <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
-  <fullModal id="commonWrap" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
-  <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div>
-  <router-view @openPop="openPop" />
+  <div id="moTheAlimWrap">
+    <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
+    <fullModal id="commonWrap" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+    <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div>
+    <router-view @openPop="openPop" />
+  </div>
 </template>
 <script>
 export default {
@@ -11,18 +13,17 @@ export default {
       headerTitle: '아이디어스',
       popShowYn: false,
       pushPopShowYn: false,
-      parentPopN: 0
+      parentPopN: 0,
+      userInfo: [],
+      alimList: [],
+      chanList: []
     }
   },
   methods: {
     openPop () {
-      alert('come')
       this.popShowYn = true
 
       setTimeout(() => {
-      // eslint-disable-next-line indent
-      // eslint-disable-next-line no-debugger
-        debugger
         document.getElementById('FullModalWrap').appendChild(document.getElementById('commonWrap'))
         this.popShowYn = false
       }, 1000)
@@ -35,7 +36,6 @@ export default {
     }
   },
   mounted () {
-    this.changeDateFormat()
   }
 }
 </script>

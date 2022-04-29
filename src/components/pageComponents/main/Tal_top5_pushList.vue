@@ -1,11 +1,8 @@
 <template>
   <listTitle style="margin-bottom: 1rem" listTitle= "알림" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar :tabList="this.activeTabList" @changeTab= "changeTab" />
-    <div style="width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem;">
-      <commonList :commonListData="this.pushList" :key="this.viewTab"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
-        <!-- <commonList v-if="viewTab === 'newest'" :commonListData="this.nAlimList"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
-        <commonList v-else-if="viewTab === 'notRead'" :commonListData="this.rAlimList"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
-        <commonList v-else-if="viewTab === 'like'" :commonListData="this.lAlimList"  @goDetail="openPop" :mainYnProp="this.mainYn"/> -->
+    <div class="pushListWrap">
+      <commonList :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
     </div>
 </template>
 
@@ -17,34 +14,15 @@ export default {
   name: 'top5Title',
   created () {
     this.pushList = this.alimList
+    // alert(this.pushList)
   },
   data () {
     return {
       mainYn: true,
       moreLink: 'push',
-      nAlimList: [
-        { readYn: false, title: '(주)삼천리 도시가스 2022년 01월 ', chanName: '삼천리', recvDate: '1620010841', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '(주)삼천리 도시가스 2022년 01월 ', chanName: '삼천리', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '(주)삼천리 도시가스 2022년 01월 ', chanName: '삼천리', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '(주)삼천리 도시가스 2022년 01월 ', chanName: '삼천리', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '(주)삼천리 도시가스 2022년 01월 ', chanName: '삼천리', recvDate: '1620010849', chanImg: 'http://placehold.it/100' }
-      ],
-      rAlimList: [
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' }
-      ],
-      lAlimList: [
-        { readYn: false, title: '주문이 완료되었습니다. 음료 완료까지 20...', chanName: '이디야 커피', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '주문이 완료되었습니다. 음료 완료까지 20... ', chanName: '이디야 커피', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '주문이 완료되었습니다. 음료 완료까지 20...', chanName: '이디야 커피', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '주문이 완료되었습니다. 음료 완료까지 20...', chanName: '이디야 커피', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '주문이 완료되었습니다. 음료 완료까지 20...', chanName: '이디야 커피', recvDate: '1620010849', chanImg: 'http://placehold.it/100' }
-      ],
-      activeTabList: [{ display: '최신 알림', name: 'newest' }, { display: '안읽은 알림', name: 'notRead' }, { display: '좋아요 알림', name: 'like' }],
-      viewTab: 'newest'
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      viewTab: 'newest',
+      listLeloadYn: true
     }
   },
   props: {
@@ -62,40 +40,64 @@ export default {
       } else {
         params.targetType = 'pushDetail'
       }
-      if (value.pushKey !== undefined && value.pushKey !== null && value.pushKey !== '') { params.targetKey = value.pushKey }
+      if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
       this.$emit('openPop', params)
     },
-    changeTab (tabName) {
+    async changeTab (tabName) {
       this.viewTab = tabName
-      this.getTop5PushList(this.viewTab)
+      var resultList = await this.getContentsList(this.viewTab)
+      this.listLeloadYn = false
+      this.pushList = resultList.contentsList
+      // this.userDoList = resultList.userDo
+      this.listLeloadYn = true
     },
-    getTop5PushList (viewTab) {
+    async getContentsList (viewTab) {
       // eslint-disable-next-line no-new-object
-      /* var param = new Object()
-      this.$axios.post('/send', { param }
-      // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
+      var param = new Object()
+      var resultData = null
+      param.offset = 0
+      param.pageSize = 5
+      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (viewTab === 'L') {
+        param.findActYn = true
+        param.findActLikeYn = true
+      }
+      if (viewTab === 'S') {
+        param.findActYn = true
+        param.findActStarYn = true
+      }
+      if (viewTab === 'R') {
+        param.findLogReadYn = false
+      }
+      resultData = await this.$getContentsList(param)
+
+      return resultData
+    },
+    getContentsList2 (viewTab) {
+      // var response = false
+      var paramMap = new Map(
+        [
+          ['userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey]
+          /* ['soAccessToken', 'a1234'] */
+        ]
+      )
+      this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
       ).then(response => {
-        alert(response)
-        this.pushList = response.pushList
-      }).catch((ex) => {
-        // alert(ex)
-        console.warn('ERROR!!!!! : ', ex)
-      }) */
-      this.pushList = [
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' },
-        { readYn: false, title: '우체국 배달 예정 "서로 존중, 함께 배려" ', chanName: '우체국', recvDate: '1620010849', chanImg: 'http://placehold.it/100' }
-      ]
+        this.pushList = response.data
+        // alert(Object.fromEntries(response.data))
+      }).catch((error) => {
+        console.warn('ERROR!!!!! : ', error)
+      })
     }
   }
-
 }
+
 </script>
 
 <style scoped>
 .alimeListTr{border-bottom: 0.5px solid #6768A73D}
 .alimeListTr :last-child{border-bottom: none}
+
+.pushListWrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem;}
 </style>

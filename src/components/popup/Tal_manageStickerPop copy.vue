@@ -1,6 +1,6 @@
 <template>
-    <div style="position: fixed; width: 100%; height: 100%; top:0; left: 0; background: #FFFFFF; z-index: 99 ">
-        <popHeader headerTitle="스티커 수정" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <div class="manageStickerWrap">
+        <popHeader headerTitle="스티커 수정" @closeXPop="closeXPop" class="manageStickerHeader"/>
         <div class="popBody" style="margin-top: 70px; padding: 0 1.5rem">
             <div style="width: 100%; float: left;  height: 150px; margin-bottom: 20px;">
                 <p class="font15 textLeft fontBold mbottom-05">선택된 스티커</p>
@@ -98,5 +98,6 @@ export default {
 </script>
 
 <style scoped>
-
+.manageStickerWrap{position: fixed; width: 100%; height: 100%; top:0; left: 0; background: #FFFFFF; z-index: 99}
+.manageStickerHeader{box-shadow: 0px 7px 9px -9px #00000036;}
 </style>

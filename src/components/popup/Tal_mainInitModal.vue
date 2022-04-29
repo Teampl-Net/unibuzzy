@@ -11,7 +11,7 @@
             <userItem :uItem="this.userEmail" />
             <userItem :uItem="this.userPhone" />
           </div>
-          <gBtnLarge class="mtop-1" style="" :btnTitle="this.joinTheAlimBtn" />
+          <gBtnLarge class="mtop-1"  :btnTitle="this.joinTheAlimBtn" />
         </div>
     </div>
 </template>
@@ -19,6 +19,7 @@
 <script>
 import userItem from '../unit/Tal_userItem.vue'
 export default {
+  emits: ['close-modal'],
   components: {
     userItem
   },

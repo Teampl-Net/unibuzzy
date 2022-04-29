@@ -7,6 +7,9 @@
         <p class="font15 whiteColor headerFont" style="line-height: 32px">가장 편리한 구독-알림</p>
       </div>
     </div>
+      <div class="loginBtn" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+        더알림계정으로 로그인
+      </div>
       <div class="loginBtn" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
@@ -19,7 +22,7 @@
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-      <div class="loginBtn" v-on:click="AppleLoginBtn">
+      <div v-if="this.systemName === 'ios'" class="loginBtn" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
       </div>
@@ -29,8 +32,20 @@
 
 <script>
 export default {
-  name: 'test',
+  name: '',
+  data () {
+    return {
+      systemName: 'ios'
+    }
+  },
+  created () {
+    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+    // alert('기종은요: ' + localStorage.getItem('systemName'))
+  },
   methods: {
+    openTestLoginPage () {
+      this.$router.replace('/testLoginPage')
+    },
     GoogleLoginBtn () {
       window.ReactNativeWebView.postMessage(
         JSON.stringify({

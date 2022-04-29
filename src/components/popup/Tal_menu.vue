@@ -1,13 +1,15 @@
 <template>
-  <div class="pagePaddingWrap" style="">
-      <div class="menuHeader" style="padding:0.5rem 0; height: 50px; border-bottom: 1px solid #fff; ">
-          <img v-on:click="this.$emit('hideMenu')" style="width: 0.8rem" src="../../assets/images/main/icon_back_white.png" class="fl"/>
-          <p style="color: #FFFFFF; font-size: 20px; text-align: center;">메뉴</p>
+  <div class="pagePaddingWrap" >
+      <div class="menuHeader" >
+          <img v-on:click="this.$emit('hideMenu')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
+          <p >메뉴</p>
       </div>
-      <div class="menuRow" style="" v-for="(value, index) in menuList" :key="index">
-        <img class="mr-04" :src="value.iconUrl" alt="">
-        <span  v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</span>
-        <span v-else v-on:click="openPop(value.link)">{{value.menuText}}</span>
+      <div style="margin-top: 50px;">
+        <div class="menuRow"  v-for="(value, index) in menuList" :key="index">
+          <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
+          <div v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</div>
+          <div v-else v-on:click="openPop(value.link)">{{value.menuText}}</div>
+        </div>
       </div>
   </div>
 </template>
@@ -25,14 +27,15 @@ export default {
         { iconUrl: 'http://placehold.it/25', menuText: '구독', link: 'chanList', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '설정', link: 'setMypage', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '더알림이란?', link: 'theAlimInfo', type: 'pop' },
-        { iconUrl: 'http://placehold.it/25', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
-        { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' }
+        { iconUrl: 'http://placehold.it/25', menuText: '자주 찾는 질문', link: 'question', type: 'pop' }
+        /* { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' } */
         // { iconUrl: '', menuText: 'Q&A', link: 'qna' }
       ]
     }
   },
   components: {
   },
+  emits: ['openPop', 'goPage'],
   methods: {
     goPage (link) {
       this.$emit('goPage', link)
@@ -49,5 +52,7 @@ export default {
 </script>
 
 <style scoped>
+.menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
+.menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) }
 </style>

@@ -11,7 +11,7 @@
       <p style="color: #FFFFFF; font-size: 15px; margin-top: 0.5rem">첨부하기</p>
     </div>
   </div>
-  <gBtnLarge v-on:click="closeXPop()" :btnTitle="this.completeBtnTitle" style=""/>
+  <gBtnLarge v-on:click="closeXPop()" :btnTitle="this.completeBtnTitle" />
 </div>
 </template>
 
@@ -34,18 +34,12 @@ export default {
       var message = new Object()
       message.title = this.askTitle
       message.body = this.askBody
-      // alert(channel.masterTel)
-      // eslint-disable-next-line no-new-object
-      // eslint-disable-next-line no-debugger
-      debugger
       this.$axios.post('/send', { message }
       // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
       ).then(response => {
-        // alert(response)
         console.warn(response)
         this.$emit('closeXPop')
       }).catch((ex) => {
-        // alert(ex)
         console.warn('ERROR!!!!! : ', ex)
       })
     }

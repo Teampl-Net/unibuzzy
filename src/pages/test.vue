@@ -10,7 +10,7 @@
         <p style="color: #3E3F6A; font-size: 18px; font-weight: bold;">로그아웃 하시겠습니까?</p>
         <div style="display: flex; margin: 2rem auto; height: 20px; justify-content:center;">
           <gBtnSmall style="margin-right: 0.5rem;" v-on:click="goLogout" :btnTitle="this.okBtn"/>
-          <gBtnSmall style="" :btnThema="'light'" v-on:click="closePop" :btnTitle="this.cancelBtn"/>
+          <gBtnSmall  :btnThema="'light'" v-on:click="closePop" :btnTitle="this.cancelBtn"/>
         </div>
       </div>
     </div>

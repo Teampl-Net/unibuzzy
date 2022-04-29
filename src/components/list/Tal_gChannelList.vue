@@ -1,14 +1,14 @@
 <template>
     <table>
         <colgroup>
-            <col width="20%">
-            <col width="80%">
+            <col width="90px">
+            <col width="85%" >
         </colgroup>
         <tr class="commonListTr" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)">
-            <td><img src="http://placehold.it/50" alt=""></td>
+            <td class="textCenter"><img src="../../assets/images/channel/tempChanImg.png" style="width: 50px;" alt=""></td>
             <td class="chanItem">
-                <p class="font18 fontBold commonBlack" v-html="value.chanName"></p>
-                <p class="font15 commonBlack chanMsg" v-html="value.chanMsg"></p>
+                <p class="font18 fontBold commonBlack" v-html="this.$makeMtextMap(value.nameMtext, 'KO')"></p>
+                <p class="font15 commonBlack chanMsg" v-html="this.$makeMtextMap(value.memoMtext, 'KO')"></p>
             </td>
         </tr>
     </table>
@@ -16,8 +16,15 @@
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
   props: {
     chanList: {}
+  },
+  created () {
+    // alert(JSON.stringify(this.chanList))
   },
   methods: {
     goDetail (chanName) {
