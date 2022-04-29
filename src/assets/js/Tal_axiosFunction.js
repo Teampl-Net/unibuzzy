@@ -9,7 +9,7 @@ axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-type, A
 
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
-axios.defaults.baseURL = 'http://192.168.0.22:9091'
+axios.defaults.baseURL = 'http://localhost:9091'
 /* axios.defaults.baseURL = 'http://14.51.96.245:9091' */
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
