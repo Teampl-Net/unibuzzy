@@ -54,7 +54,7 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       // alert(JSON.stringify(resultList))
-      this.chanList = resultList
+      this.chanList = resultList.content
       this.$emit('closeLoading')
     },
     async requestSearchList (paramMap) {

@@ -5,9 +5,9 @@
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
       <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
-      <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail"/>
-      <chanDetail @closeLoading="this.$emit('closeLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail'" />
-      <pushList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
+      <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
+      <chanDetail @closeLoading="this.$emit('closeLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail'" @openPop = "openPop"/>
+      <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <chanList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
       <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
@@ -56,7 +56,8 @@ export default {
       popParams: '',
       changInfoType: '',
 
-      detailVal: {}
+      detailVal: {},
+      readySearchList: {} // chanDetail -> pushList 열때 필요
     }
   },
   props: {
@@ -79,6 +80,8 @@ export default {
   methods: {
     async settingPop () {
       this.targetType = this.params.targetType
+      // eslint-disable-next-line no-unused-vars
+      var tt = this.params
       if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
         this.detailVal = this.params
         if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
@@ -88,6 +91,9 @@ export default {
         }
       } else if (this.params.targetType === 'pushList') {
         this.headerTitle = '알림'
+        if (this.params.readySearchList !== undefined && this.params.readySearchList !== null && this.params.readySearchList !== '') {
+          this.readySearchList = this.params.readySearchList
+        }
       } else if (this.params.targetType === 'chanList') {
         this.headerTitle = '구독'
       } else if (this.params.targetType === 'pushBox') {

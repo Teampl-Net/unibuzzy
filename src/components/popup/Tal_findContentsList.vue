@@ -81,6 +81,23 @@ export default {
       })
     },
     requestSearchPushList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (this.searchKey !== '') {
+        param.searchKey = this.searchKey
+      }
+      if (this.creTeam !== '') {
+        param.creTeamNameMtext = this.creTeam
+      }
+      if (this.creDate !== '') {
+        if (this.creDate.length > 1) {
+          param.fromCreDateStr = this.$dayjs(this.creDate[0]).format('YYYY-MM-DD')
+          param.toCreDateStr = this.$dayjs(this.creDate[1]).format('YYYY-MM-DD')
+        }
+      }
+      this.$emit('searchList', param)
+    },
+    requestSearchPushList2 () {
       var param = new Map()
       if (this.searchKey !== '') {
         param.set('searchKey', this.searchKey)
@@ -90,10 +107,9 @@ export default {
       }
       if (this.creDate !== '') {
         if (this.creDate.length > 1) {
-          this.creDate[0] = this.$dayjs(this.creDate[0]).format('YYYY-MM-DD')
-          this.creDate[1] = this.$dayjs(this.creDate[1]).format('YYYY-MM-DD')
+          param.set('fromCreDateStr', this.$dayjs(this.creDate[0]).format('YYYY-MM-DD'))
+          param.set('toCreDateStr', this.$dayjs(this.creDate[1]).format('YYYY-MM-DD'))
         }
-        param.set('creDate', this.creDate)
       }
       this.$emit('searchList', param)
     }

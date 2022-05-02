@@ -144,6 +144,44 @@ const methods = {
     })
     // alert(result)
     return result
+  },
+  async saveSticker (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    var result = null
+    await this.$axios.post('/tp.saveSticker', param
+    ).then(response => {
+      // eslint-disable-next-line no-debugger
+      debugger
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    // alert(result)
+    return result
+  },
+  async getStickerList (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    var result = null
+    await this.$axios.post('/tp.getStickerList', param
+    ).then(response => {
+      // eslint-disable-next-line no-debugger
+      debugger
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    // alert(result)
+    return result
   }
 }
 
@@ -154,5 +192,7 @@ export default {
     Vue.config.globalProperties.$getContentsList = methods.getContentsList
     Vue.config.globalProperties.$getTeamList = methods.getTeamList
     Vue.config.globalProperties.$userLoginCheck = methods.userLoginCheck
+    Vue.config.globalProperties.$saveSticker = methods.saveSticker
+    Vue.config.globalProperties.$getStickerList = methods.getStickerList
   }
 }

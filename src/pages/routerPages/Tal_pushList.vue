@@ -2,7 +2,7 @@
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="pagePaddingWrap">
     <div class= "pageHeader pushListCover" >
-      <gSearchBox @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+      <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
       </transition>
@@ -33,11 +33,15 @@ export default {
     // searchResult
   },
   props: {
-    routerReloadKey: {}
+    routerReloadKey: {},
+    readySearhList: {}
   },
   created () {
     this.$emit('changePageHeader', '알림')
     this.getPushContentsList()
+    if (this.readySearhList) {
+      this.requestSearchList(this.readySearhList)
+    }
   },
   watch: {
     routerReloadKey () {
@@ -61,7 +65,7 @@ export default {
   },
   methods: {
     reload () {
-      this.getPushContentsList(this.viewTab)
+      this.getPushContentsList()
     },
     openPushBoxPop () {
       // eslint-disable-next-line no-new-object
@@ -79,91 +83,107 @@ export default {
       }
       params.value = value
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      if (value.teamName !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
+      // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
       this.$emit('openPop', params)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     subHeaderEvent (request) {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
-    /* goPushBox () {
-      this.$router.replace({ name: 'pushBox' })
-    }, */
-    goSearch () {
-      // this.$router.replace({ name: 'pushBox' })
-    },
     changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      this.getPushContentsList(tabName)
+      this.getPushContentsList()
     },
-    async getPushContentsList (viewTab) {
+    async getPushContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.offset = 0
-      param.pageSize = 5
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.searchKey = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        }
+      }
+      param.findLogReadYn = true
+      param.findActYn = false
+      param.findActLikeYn = false
+      param.findActStarYn = false
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (viewTab === 'L') {
+      if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
-      }
-      if (viewTab === 'S') {
+      } else if (this.viewTab === 'S') {
         param.findActYn = true
         param.findActStarYn = true
-      }
-      if (viewTab === 'R') {
+      } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
       var resultList = await this.$getContentsList(param)
-      this.commonListData = resultList.contentsList
+      this.commonListData = resultList.content
+      this.findPopShowYn = false
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
     },
-    async getPushContentsList2 (type) {
-      var paramMap = new Map()
-      if (type !== null && type !== '' && type !== 'N' && type !== 'I') {
-        paramMap.set('targetType', type)
+    async requestSearchList (param) {
+      // alert(JSON.stringify(param))
+      if (param) {
+        if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+          this.findKeyList.searchKey = param.searchKey
+        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+          this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
+        } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+          this.findKeyList.toCreDateStr = param.toCreDateStr
+        } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
+          this.findKeyList.fromCreDateStr = param.fromCreDateStr
+        }
       }
-      // var response = false
-      var resultList = await this.$getContentsList(paramMap)
-      this.commonListData = resultList
-      /* setTimeout(() => {
-        this.$emit('closeLoading')
-      }, 500) */
-      this.$emit('closeLoading')
+      // alert(JSON.stringify(param))
+      this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
+      // alert(JSON.stringify(param))
+      await this.getPushContentsList()
     },
-    async requestSearchList (paramMap) {
-      this.resultSearchKeyList = await this.castingSearchMap(paramMap)
-      // alert(JSON.stringify(this.resultSearchKeyList))
-      var resultList = await this.$getContentsList(paramMap)
-      this.commonListData = resultList
-      this.findPopShowYn = false
-    },
-    async castingSearchMap (sMap) {
+    async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
       var searchObj = new Object()
       var resultArray = []
-      if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
-      if (sMap.get('searchKey') !== undefined && sMap.get('searchKey') !== null && sMap.get('searchKey') !== '') {
-        searchObj.type = '내용'
-        searchObj.keyword = sMap.get('searchKey')
+      // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
+      if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+        searchObj.typeName = '내용'
+        searchObj.type = 'searchKey'
+        searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (sMap.get('creTeam') !== undefined && sMap.get('creTeam') !== null && sMap.get('creTeam') !== '') {
-        searchObj.type = '보낸'
-        searchObj.keyword = sMap.get('creTeam')
+      if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+        searchObj.typeName = '보낸'
+        searchObj.type = 'creTeamNameMtext'
+        searchObj.keyword = param.creTeamNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (sMap.get('creDate') !== undefined && sMap.get('creDate') !== null && sMap.get('creDate') !== '') {
-        searchObj.type = '날짜'
-        var tempCreDate = sMap.get('creDate')
-        if (sMap.get('creDate').length > 1) { tempCreDate = sMap.get('creDate')[0] + ' ~ ' + sMap.get('creDate')[1] }
-        searchObj.keyword = tempCreDate
+      if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
+        param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+        searchObj.typeName = '날짜'
+        searchObj.type = 'creDate'
+        searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
       return resultArray
+    },
+    async changeSearchList (type) {
+      if (type === 'searchKey') {
+        delete this.findKeyList.searchKey
+      } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
+        delete this.findKeyList.toCreDateStr
+        delete this.findKeyList.fromCreDateStr
+      }
+      this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
+      await this.getPushContentsList()
     }
   },
   data () {
@@ -186,6 +206,7 @@ export default {
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
+      findKeyList: {},
       resultSearchKeyList: []
     }
   }

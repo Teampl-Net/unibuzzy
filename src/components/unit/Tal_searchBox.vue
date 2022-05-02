@@ -24,8 +24,8 @@ export default {
     requestSearch () {
       // eslint-disable-next-line no-new-object
     },
-    changeSearchList (idx) {
-      this.$emit('changeSearchList', idx)
+    changeSearchList (type) {
+      this.$emit('changeSearchList', type)
     }
   },
   props: {

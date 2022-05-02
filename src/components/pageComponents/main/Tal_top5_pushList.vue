@@ -40,15 +40,16 @@ export default {
       } else {
         params.targetType = 'pushDetail'
       }
+      params.value = value
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
+      // if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {
       this.viewTab = tabName
       var resultList = await this.getContentsList(this.viewTab)
       this.listLeloadYn = false
-      this.pushList = resultList.contentsList
+      this.pushList = resultList.content
       // this.userDoList = resultList.userDo
       this.listLeloadYn = true
     },

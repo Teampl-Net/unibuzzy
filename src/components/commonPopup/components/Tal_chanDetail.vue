@@ -7,6 +7,7 @@
         <img src="../../../assets/images/channel/chanImg.png" style="width: 185px; height: 185px; border-radius: 185px; margin-bottom: 1rem" alt="채널사진">
         <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
         <div class="mtop-05"><gBtnSmall class="fl" btnTitle="알림취소" /><gBtnSmall class="fl mright-03" btnTitle="구독하기" /></div>
+        <gBtnSmall @click="openPop" btnThema="light" class="fl mtop-05" style="border: 1px solid #A9AACD;" btnTitle="알림목록 바로가기" />
         <table class="mtop-3" >
           <colgroup><col width="10%"><col width="90%"></colgroup>
           <tr>
@@ -59,7 +60,8 @@ export default {
       var teamKey = this.chanDetail.targetKey
       paramMap.set('teamKey', teamKey)
       var resultList = await this.$getTeamList(paramMap)
-      this.chanItem = resultList[0]
+
+      this.chanItem = resultList.content[0]
       this.$emit('closeLoading')
     },
     changeText (text) {
@@ -68,6 +70,18 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       if (changeTxt) { return changeTxt }
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    openPop () {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      // eslint-disable-next-line no-new-object
+      var readySearchList = new Object()
+      readySearchList.creTeamNameMtext = this.changeText(this.chanItem.nameMtext)
+      params.readySearchList = readySearchList
+      params.targetType = 'pushList'
+
+      this.$emit('openPop', params)
+      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
     <div class="searchResultWrap">
         <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox ">
-          <span>{{value.type}}: </span>
-          {{changeSearchBox(value.type, value.keyword)}}
-            <img v-on:click="delSearchKey(index)" class="cursorP" style="margin-top: 0.3rem; margin-right: 0.3rem;" src="../../assets/images/common/searchXIcon.svg"  alt="">
+          <span>{{value.typeName}}: </span>
+          {{changeSearchBox(value.typeName, value.keyword)}}
+            <img v-on:click="delSearchKey(value.type)" class="cursorP" style="margin-top: 0.3rem; margin-right: 0.3rem;" src="../../assets/images/common/searchXIcon.svg"  alt="">
         </div>
     </div>
 </template>
@@ -13,6 +13,7 @@ export default {
     searchList: {}
   },
   created () {
+    // alert('검색:' + JSON.stringify(this.setSearchList))
   },
   data () {
     return {
@@ -20,9 +21,9 @@ export default {
     }
   },
   methods: {
-    delSearchKey (index) {
+    delSearchKey (type) {
       // this.tempSearchList.splice(delKey, 1)
-      this.$emit('changeSearchList', index)
+      this.$emit('changeSearchList', type)
     },
     castingSearchKey (searchMap) {
       // alert(searchMap)

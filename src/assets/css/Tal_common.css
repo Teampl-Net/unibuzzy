@@ -254,3 +254,5 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 
 .cursorP {cursor: pointer;}
+
+.overflowYScroll{ overflow-y: scroll; overflow-x: hidden;}

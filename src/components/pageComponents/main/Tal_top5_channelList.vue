@@ -49,6 +49,7 @@ export default {
       } else {
         params.targetType = 'chanDetail'
       }
+      params.value = value
       if (value.teamKey !== undefined && value.teamKey !== null && value.teamKey !== '') { params.targetKey = value.teamKey }
       if (value.nameMtext !== undefined && value.nameMtext !== null && value.nameMtext !== '') { params.chanName = this.$makeMtextMap(value.nameMtext, 'KO') }
       this.$emit('openPop', params)

@@ -3,14 +3,14 @@
 <div v-if="loadYn" class="pushDetailWrap">
   <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
   <!-- <div>{{pushKey}}</div> -->
-  <div class="pagePaddingWrap root mtop-1">
-    <div class="content pushMbox">
+  <div class="pagePaddingWrap root mtop-1 overflowYScroll">
+    <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
       <div class="pushDetailTopArea">
-        <img @click="goChanDetail" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+        <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
           <div class="pushDetailHeaderTextArea">
-            <p  @click="goChanDetail" class=" font18 fontBold commonColor">{{alimDetail.title}}</p>
+            <p class=" font18 fontBold commonColor">{{alim.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 lightGray">{{this.$dayjs(alimDetail.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="font12 lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
           </div>
       </div>
       <div id="alimCheckArea">
@@ -22,17 +22,19 @@
               <img :src="value.stickerIcon" alt="">
             </div>
           </div>
-          <div @click="changeAct('ST')" class="cursorP">
-            <img class="fr" v-if="importantYn" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-            <img class="fr" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-          </div>
-          <div @click="changeAct('LI')" class="cursorP">
-            <img class="mright-05 fr" style="margin-top: 4px;" v-if="likeYn" src="../../../assets/images/common/likeIcon.svg" alt="">
-            <img class="mright-05 fr" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+          <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+            <template v-if="userDo.doType === 'ST'">
+              <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+              <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+            </template>
+            <template v-else-if="userDo.doType === 'LI'">
+              <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+              <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+            </template>
           </div>
         </div>
       </div>
-      <div  class="font15" v-html="alimDetail.bodyMinStr"></div>
+      <div  class="font15" v-html="alim.bodyMinStr"></div>
       <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
       <!-- <div> -->
         <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
@@ -53,8 +55,6 @@ export default {
       alimDetail: {},
       manageStickerPopShowYn: false,
       tempAlimList: {
-        importantYn: false,
-        likeYn: false,
         readYn: false,
         stickerList: [
           { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
@@ -86,59 +86,51 @@ export default {
     async getContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.contentsKey = this.detailVal.targetKey
+      param.baseContentsKey = this.detailVal.targetKey
       var resultList = await this.$getContentsList(param)
-      this.alimDetail = resultList.contentsList[0]
-      this.userDoList = resultList.userDoList
-      await this.settingUserDo(this.userDoList)
-      // eslint-disable-next-line no-debugger
+      this.alimDetail = resultList.content
+      // this.userDoList = resultList.content[0].userDoList
+      // await this.settingUserDo(this.userDoList)
       // alert(JSON.stringify(this.alimDetail))
       this.$emit('closeLoading')
     },
-    async settingUserDo (userDo) {
-      this.likeYn = false
-      this.importantYn = false
+    settingUserDo (userDo) {
+      // alert(JSON.stringify(userDo))
+      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
+      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
-      if (userDo !== undefined && userDo !== null) {
-        if (userDo.length > 0) {
-          for (var i = 0; i < userDo.length; i++) {
-            if (userDo[i].doType === 'LI') {
-              this.likeYn = true
-            }
-            if (userDo[i].doType === 'ST') {
-              this.importantYn = true
-            }
-            if (userDo[i].doType === 'RE') {
-              this.readYn = true
-            }
+      if (userDo !== undefined && userDo !== null && userDo !== '') {
+        for (var i = 0; i < userDo.length; i++) {
+          if (userDo[i].doType === 'LI') {
+            userDoList[1].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'ST') {
+            userDoList[0].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'RE') {
+            this.readYn = true
           }
         }
-      } else {
-
       }
+      return userDoList
     },
-    async changeAct (act) {
+    async changeAct (act, contentsKey) {
       var result = null
       var saveYn = true
-      if (act === 'LI') {
-        if (this.likeYn === true) {
-          saveYn = false
-        }
-      } else if (act === 'ST') {
-        if (this.importantYn === true) {
-          saveYn = false
-        }
+      if (act.doKey > 0) {
+        saveYn = false
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetKey = this.alimDetail.contentsKey
-
+      param.targetKey = contentsKey
+      // alert(param.targetKey)
+      if (param.targetKey === null) { return }
+      param.doType = act.doType
       if (saveYn === false) {
-        param.doType = act
+        param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
       } else {
         param.actYn = true
-        param.doType = act
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
       }
@@ -149,22 +141,20 @@ export default {
         this.loadYn = true
       }
     },
-    /* async getContentsList () {
-      var paramMap = new Map()
-      // alert(this.detailVal.targetKey)
-      paramMap.set('contentsKey', this.detailVal.targetKey)
-      // eslint-disable-next-line no-new-object
-      var resultList = await this.$getContentsList(paramMap)
-      this.alimDetail = resultList[0]
-      this.$emit('closeLoading')
-    }, */
-    goChanDetail (value) {
+    goChanDetail (alim) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
+      // eslint-disable-next-line no-new-object
+      var value = new Object()
       params.targetType = 'chanDetail'
-      // params.targetKey = value.chanKey
-      // params.chanName = value.chanName
+      // eslint-disable-next-line no-debugger
+      // debugger
+      params.targetKey = alim.creTeamKey
+      // alert(alim.nameMtext)
+      value.nameMtext = alim.nameMtext
       params.value = value
+      // params.chanName = value.chanName
+      // params.value = value
       this.$emit('openPop', params)
 
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
@@ -199,4 +189,6 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
+
+.pushMbox{margin-bottom: 20px;}
 </style>
