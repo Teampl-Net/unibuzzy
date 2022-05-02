@@ -1,49 +1,48 @@
 
 <template>
-<div v-if="loadYn" class="pushDetailWrap">
-  <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
-  <!-- <div>{{pushKey}}</div> -->
-  <div class="pagePaddingWrap root mtop-1 overflowYScroll">
-    <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
-      <div class="pushDetailTopArea">
-        <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
-          <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
-          </div>
-      </div>
-      <div id="alimCheckArea">
-        <div class="alimCheckContents">
-          <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
-          <div class="pushDetailStickerWrap">
-            <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
-              <!-- <span class="font15">{{value.stickerName}}</span> -->
-              <img :src="value.stickerIcon" alt="">
+  <div v-if="loadYn" class="pushDetailWrap">
+    <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
+    <!-- <div>{{pushKey}}</div> -->
+    <div class="pagePaddingWrap root mtop-1 overflowYScroll">
+      <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+        <div class="pushDetailTopArea">
+          <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+            <div class="pushDetailHeaderTextArea">
+              <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+            <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+              <p class="font12 lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            </div>
+        </div>
+        <div id="alimCheckArea">
+          <div class="alimCheckContents">
+            <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
+            <div class="pushDetailStickerWrap">
+              <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
+                <!-- <span class="font15">{{value.stickerName}}</span> -->
+                <img :src="value.stickerIcon" alt="">
+              </div>
+            </div>
+            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+              <template v-if="userDo.doType === 'ST'">
+                <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+              </template>
+              <template v-else-if="userDo.doType === 'LI'">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+              </template>
             </div>
           </div>
-          <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
-            <template v-if="userDo.doType === 'ST'">
-              <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-              <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-            </template>
-            <template v-else-if="userDo.doType === 'LI'">
-              <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-              <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
-            </template>
-          </div>
         </div>
+        <div  class="font15" v-html="alim.bodyMinStr"></div>
+        <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
+        <!-- <div> -->
+          <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
+          <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
+        <!-- </div> -->
       </div>
-      <div  class="font15" v-html="alim.bodyMinStr"></div>
-      <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
-      <!-- <div> -->
-        <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
-        <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
-      <!-- </div> -->
     </div>
   </div>
-</div>
-
 </template>
 <script>
 
