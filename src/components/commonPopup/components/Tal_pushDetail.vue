@@ -1,4 +1,3 @@
-
 <template>
   <div v-if="loadYn" class="pushDetailWrap">
     <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
