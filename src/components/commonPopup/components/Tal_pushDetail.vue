@@ -9,9 +9,11 @@
             <div class="pushDetailHeaderTextArea">
               <p class=" font18 fontBold commonColor">{{alim.title}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-              <p class="font12 lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
+              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
             </div>
         </div>
+        <div  class="font15 mbottom-2" v-html="alim.bodyMinStr"></div>
         <div id="alimCheckArea">
           <div class="alimCheckContents">
             <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
@@ -33,7 +35,6 @@
             </div>
           </div>
         </div>
-        <div  class="font15" v-html="alim.bodyMinStr"></div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
         <!-- <div> -->
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
@@ -84,7 +85,8 @@ export default {
     async getContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.baseContentsKey = this.detailVal.targetKey
+      // param.baseContentsKey = this.detailVal.targetKey
+      param.contentsKey = this.detailVal.targetKey
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
       // this.userDoList = resultList.content[0].userDoList
@@ -180,7 +182,7 @@ export default {
 .pushDetailChanLogo{width: 50px;height: 50px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
 
-#alimCheckArea{min-height: 35px; margin-bottom: 1rem;}
+#alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 

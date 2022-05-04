@@ -1,32 +1,42 @@
 
 <template>
-  <div>
-    <table class="w-100P">
-        <colgroup>
-            <col class="listHeader" width="90px">
-            <col width="85%" >
-        </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
-            <td v-if="mainYn === false">
-                <img src="../../assets/images/channel/tempChanImg.png" style="width: 50px;"/>
-            </td>
-            <td class="textCenter" v-if="mainYn === true">
-                <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem">
-                <!-- <img v-if="value.readYn === true" src="../../assets/images/main/icon_notice1.png" style="width:1.5rem">
-                <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
-            </td>
-            <td>
-                <p v-html="value.title" class="commonBlack mtop-03 font15 fontBold" />
-                <div>
-                    <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="mtop-05 fl commonBlack font12"/>
-                    <span class="commonBlack mtop-01 font12 fr">{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</span>
-                    <!-- <div :style="'background-color:' + value2.stickerColor" v-for="(value2, index2) in value.stickerList" :key="index2" style="width: 15px; margin-top: 8px; margin-right: 5px; height: 15px;float: right;border-radius: 10px; font-size: 12px; text-align: center;">{{cutStickerName(value2.stickerName)}}</div> -->
-                </div>
-            </td>
-            <td>
-            </td>
-        </tr>
-    </table>
+  <div style="overflow-y: scroll; overflow-x: hidden; height: calc(100% - 150px);">
+    <div class="commonListContentBox pushMbox" v-for="(alim, index) in commonListData" :key="index">
+        <div class="pushDetailTopArea">
+          <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
+            <div class="pushDetailHeaderTextArea">
+              <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+            <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
+              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            </div>
+        </div>
+        <div  class="font15 mbottom-2" v-html="alim.bodyMinStr"></div>
+        <div id="alimCheckArea">
+          <div class="alimCheckContents">
+            <!-- <div class="pushDetailStickerWrap">
+              <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
+                <img :src="value.stickerIcon" alt="">
+              </div>
+            </div> -->
+            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+              <template v-if="userDo.doType === 'ST'">
+                <img class="fl" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="fl" v-else src="../../assets/images/common/starIcon.svg" alt="">
+              </template>
+              <template v-else-if="userDo.doType === 'LI'">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
+        <!-- <div> -->
+          <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
+          <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
+        <!-- </div> -->
+      </div>
   </div>
 </template>
 <script>
@@ -57,6 +67,26 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    settingUserDo (userDo) {
+      // alert(JSON.stringify(userDo))
+      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
+      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      this.readYn = false
+      if (userDo !== undefined && userDo !== null && userDo !== '') {
+        for (var i = 0; i < userDo.length; i++) {
+          if (userDo[i].doType === 'LI') {
+            userDoList[1].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'ST') {
+            userDoList[0].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'RE') {
+            this.readYn = true
+          }
+        }
+      }
+      return userDoList
     }
   },
   data: function () {
@@ -67,7 +97,15 @@ export default {
   props: {
     clickEvnt: {},
     mainYnProp: Boolean,
-    commonListData: []
+    commonListData: [],
+    tempAlimList: {
+      readYn: false,
+      stickerList: [
+        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '1', stickerColor: '#0dcaf05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
+        { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
+      ]
+    }
   },
   computed: {
   }
@@ -77,4 +115,33 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
+
+.pushDetailWrap{height: fit-content;}
+.pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.pushDetailChanLogo{width: 50px;height: 50px;}
+.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
+
+.alimCheckContents{width: 100%;float: right; height: 30px;}
+.alimCheckContents > img {margin-top: 3px;}
+
+.pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
+.pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
+.stickerDiv img{width: 20px; margin-right: 5px; float: left;}
+
+.pushMbox{margin-bottom: 20px;}
+
+.commonListContentBox{
+    position: relative;
+    width: calc(100% - 3rem);
+    margin: 0.5rem 1.5rem;
+    float: left;
+    border-radius: 0.8rem;
+    background-color: #ffffff;
+    color: #363c5f;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 7px 3px #b7b4b440;;
+    }
 </style>

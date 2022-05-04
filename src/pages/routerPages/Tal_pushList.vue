@@ -1,15 +1,15 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="pagePaddingWrap">
-    <div class= "pageHeader pushListCover" >
+  <div class="pagePaddingWrap" style="padding: 0; padding-top: 60px;">
+    <div class= "pageHeader pushListCover" style="padding: 0px 1.5rem;"  >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
-  <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
-  <div class="stickerWrap">
+  <gActiveBar :tabList="this.activeTabList" style="padding: 0px 1.5rem;" class="fl mbottom-1" @changeTab= "changeTab" />
+  <div class="stickerWrap" style="padding: 0px 1.5rem;">
     <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
       <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
         <p class="font12">{{value.stickerName}}</p>
@@ -126,6 +126,8 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.commonListData = resultList.content
       this.findPopShowYn = false
+      // eslint-disable-next-line no-debugger
+      debugger
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
     },

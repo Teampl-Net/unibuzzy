@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { userLoginCheck } from '../../assets/js/Tal_axiosFunction'
+// import { userLoginCheck } from '../../assets/js/Tal_axiosFunction'
 export default {
   data () {
     return {
@@ -55,7 +55,7 @@ export default {
       }
       if (uId === 'teampl' && uPw === 'teampl123') {
         localStorage.setItem('testYn', true)
-        await userLoginCheck()
+        await this.$userLoginCheck()
       } else {
         alert('사용자 정보를 찾을 수 없습니다!')
       }
