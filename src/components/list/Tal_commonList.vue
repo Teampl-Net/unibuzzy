@@ -1,9 +1,9 @@
 
 <template>
   <div style="overflow-y: scroll; overflow-x: hidden; height: calc(100% - 150px);">
-    <div class="commonListContentBox pushMbox" v-for="(alim, index) in commonListData" :key="index">
+    <div @click="goDetail(alim)" class="commonListContentBox pushMbox" v-for="(alim, index) in commonListData" :key="index">
         <div class="pushDetailTopArea">
-          <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
+          <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
             <div class="pushDetailHeaderTextArea">
               <p class=" font18 fontBold commonColor">{{alim.title}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->

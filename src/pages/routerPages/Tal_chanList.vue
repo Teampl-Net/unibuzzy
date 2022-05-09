@@ -54,6 +54,8 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       // alert(JSON.stringify(resultList))
+      // eslint-disable-next-line no-debugger
+      debugger
       this.chanList = resultList.content
       this.$emit('closeLoading')
     },
