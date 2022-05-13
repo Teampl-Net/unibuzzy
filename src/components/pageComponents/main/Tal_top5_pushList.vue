@@ -2,16 +2,17 @@
   <listTitle style="margin-bottom: 1rem" listTitle= "알림" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar :tabList="this.activeTabList" @changeTab= "changeTab" />
     <div class="pushListWrap">
-      <commonList :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
+      <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
     </div>
 </template>
 
 <script>
 
 import listTitle from '../../unit/Tal_main_title.vue'
+import commonListTable from '../../list/Tal_commonListTable.vue'
 // import router from '../../../router'
 export default {
-  name: 'top5Title',
+  name: 'top5PushList',
   created () {
     this.pushList = this.alimList
     // alert(this.pushList)
@@ -29,7 +30,8 @@ export default {
     alimList: {}
   },
   components: {
-    listTitle
+    listTitle,
+    commonListTable
   },
   methods: {
     openPop (value) {

@@ -1,25 +1,23 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="pagePaddingWrap" style="padding: 0; padding-top: 60px;">
-    <div class= "pageHeader pushListCover" style="padding: 0px 1.5rem;"  >
+  <div style="padding-right: 0; padding-left: 0; height: 100%;">
+    <!-- {{scrollPosition}} -->
+    <div class= "pageHeader pushListCover" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
-  <gActiveBar :tabList="this.activeTabList" style="padding: 0px 1.5rem;" class="fl mbottom-1" @changeTab= "changeTab" />
-  <div class="stickerWrap" style="padding: 0px 1.5rem;">
+  <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
+  <div class="stickerWrap">
     <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
       <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
         <p class="font12">{{value.stickerName}}</p>
       </div>
     </div>
   </div>
-
-  <div >
-      <commonList :commonListData="commonListData" @goDetail="openPop" />
-  </div>
+  <commonList :commonListData="commonListData" @goDetail="openPop" />
 </div>
 </template>
 
@@ -34,7 +32,8 @@ export default {
   },
   props: {
     routerReloadKey: {},
-    readySearhList: {}
+    readySearhList: {},
+    chanDetailKey: {}
   },
   created () {
     this.$emit('changePageHeader', '알림')
@@ -67,12 +66,6 @@ export default {
     reload () {
       this.getPushContentsList()
     },
-    openPushBoxPop () {
-      // eslint-disable-next-line no-new-object
-      var value = new Object()
-      value.targetType = 'pushBox'
-      this.openPop(value)
-    },
     openPop (value) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -98,9 +91,12 @@ export default {
     async getPushContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
+        param.creTeamKey = this.chanDetailKey
+      }
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.searchKey = this.findKeyList.searchKey
+          param.title = this.findKeyList.searchKey
         } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
           param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
         } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
@@ -109,7 +105,7 @@ export default {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
         }
       }
-      param.findLogReadYn = true
+      param.findLogReadYn = null
       param.findActYn = false
       param.findActLikeYn = false
       param.findActStarYn = false
@@ -126,8 +122,6 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.commonListData = resultList.content
       this.findPopShowYn = false
-      // eslint-disable-next-line no-debugger
-      debugger
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
     },
@@ -155,7 +149,7 @@ export default {
       var resultArray = []
       // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-        searchObj.typeName = '내용'
+        searchObj.typeName = '제목'
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
@@ -186,12 +180,15 @@ export default {
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       await this.getPushContentsList()
+    },
+    updateScroll () {
+      this.scrollPosition = window.scrollY
     }
   },
   data () {
     return {
+      scrollPosition: null,
       loadVal: true,
-      headerTitle: '알림',
       findPopShowYn: false,
       stickerList: [
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
@@ -201,16 +198,15 @@ export default {
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
       ],
-      subTitlebtnList: [
-        { btnName: 'pushBox', icon: 'http://placehold.it/30', function: 'goPushBox' },
-        { btnName: 'search', icon: 'http://placehold.it/30', function: 'goSearchPush' }
-      ],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: []
     }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.updateScroll)
   }
 }
 </script>

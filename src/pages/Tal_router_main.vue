@@ -9,7 +9,9 @@
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu= "hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
     <TalHeader @openLoading="this.loadingYn = true"  @showMenu= "showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top:0; z-index: 99" />
-    <router-view :reloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style=" margin-bottom: 60px" @openPop = "openPop" @changePageHeader="changePageHeader"/>
+    <div class="pagePaddingWrap">
+      <router-view :reloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style=" margin-bottom: 60px" @openPop = "openPop" @changePageHeader="changePageHeader"/>
+    </div>
     <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: fixed; bottom:0; z-index: 99"/>
 </template>
 

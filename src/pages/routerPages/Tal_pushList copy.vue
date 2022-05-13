@@ -112,7 +112,7 @@ export default {
       var resultArray = []
       if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (sMap.get('searchKey') !== undefined && sMap.get('searchKey') !== null && sMap.get('searchKey') !== '') {
-        searchObj.type = '내용'
+        searchObj.type = '제목'
         searchObj.keyword = sMap.get('searchKey')
         resultArray.push(searchObj)
       }
@@ -135,7 +135,6 @@ export default {
   },
   data () {
     return {
-      headerTitle: '알림',
       findPopShowYn: false,
       stickerList: [
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
@@ -144,10 +143,6 @@ export default {
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
-      ],
-      subTitlebtnList: [
-        { btnName: 'pushBox', icon: 'http://placehold.it/30', function: 'goPushBox' },
-        { btnName: 'search', icon: 'http://placehold.it/30', function: 'goSearchPush' }
       ],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'I' }],
       viewTab: 'N',

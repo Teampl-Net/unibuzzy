@@ -33,7 +33,7 @@ export default {
     return {
       moreLink: 'subs',
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
-      viewTab: 'newest',
+      viewTab: 'user',
       chanList: {}
     }
   },
@@ -49,6 +49,9 @@ export default {
       } else {
         params.targetType = 'chanDetail'
       }
+      if (params.targetType === 'chanDetail' && this.viewTab === 'user') {
+        value.followYn = true
+      }
       params.value = value
       if (value.teamKey !== undefined && value.teamKey !== null && value.teamKey !== '') { params.targetKey = value.teamKey }
       if (value.nameMtext !== undefined && value.nameMtext !== null && value.nameMtext !== '') { params.chanName = this.$makeMtextMap(value.nameMtext, 'KO') }
@@ -59,15 +62,18 @@ export default {
     },
     async getContentsList (type) {
       var paramMap = new Map()
-      if (type === 'user') {
+      if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
       }
       var resultList = await this.$getTeamList(paramMap)
-      this.chanList = resultList
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.chanList = resultList.content
     },
     async changeTab (data) {
-      await this.getContentsList(data)
+      this.viewTab = data
+      await this.getContentsList()
       // alert(true + data)
     }
   }

@@ -36,4 +36,5 @@ export default {
 .commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
 .popHeaderTitleSpan{position: absolute; color: #6768A7}
 .commonPopBackBtn{width: 0.8rem;}
+
 </style>

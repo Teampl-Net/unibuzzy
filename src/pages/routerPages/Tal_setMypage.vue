@@ -1,8 +1,9 @@
 <template>
     <div style="padding-bottom: 60px">
+      <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" />
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
-      <div class="pagePaddingWrap" >
+      <div class="" >
         <div class="profileWrap ">
           <div class="roundDiv imgSize">
             <img src="../../assets/images/main/main_profile.png" style="width: 100px;"/>
@@ -26,6 +27,13 @@
               <p class="font10">최신버전: 1.0</p>
             </th>
             <td class="textRight">{{appVersion}}</td></tr>
+            <tr @click="this.myChanListPopYn = true">
+              <th>
+                내 채널
+                <!-- <a href="http://adm.pushmsg.net/">내 채널</a> -->
+              </th>
+              <td class="textRight"></td>
+            </tr>
         </table>
       </div>
       <div class="subPaddingWrap">
@@ -42,16 +50,19 @@
 import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop'
+import myChanList from '../../components/popup/Tal_managerChanList.vue'
 export default {
   name: 'myPage',
   components: {
     userItem,
     logoutPop,
-    policyPop
+    policyPop,
+    myChanList
   },
   data () {
     return {
       headerTitle: '마이페이지',
+      myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
       appVersion: '1.0.1',
@@ -102,6 +113,9 @@ export default {
       }
       // alert(JSON.stringify(userInfo))
       return userInfo
+    },
+    openManagerChanDetail (param) {
+      this.$emit('openPop', param)
     }
   }
 }
@@ -120,7 +134,7 @@ tr, td, th {
 tr{border-bottom: 1px solid #F3F3F3}
 th {color: #6768A7}
 
-.subPaddingWrap{padding: 0.7rem 1.5rem; box-sizing: border-box; width: 100%; height: 100%;}
+.subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; height: 100%;}
 .leaveText{text-align: left; color: #A1A1A1;}
 .leaveText span {text-decoration: underline;}
 </style>

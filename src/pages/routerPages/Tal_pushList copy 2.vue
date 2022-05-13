@@ -112,7 +112,7 @@ export default {
       var resultArray = []
       if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (sMap.get('searchKey') !== undefined && sMap.get('searchKey') !== null && sMap.get('searchKey') !== '') {
-        searchObj.type = '내용'
+        searchObj.type = '제목'
         searchObj.keyword = sMap.get('searchKey')
         resultArray.push(searchObj)
       }

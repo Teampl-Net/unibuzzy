@@ -1,29 +1,29 @@
 <template>
 <div :key="componentKey" v-if="renderOk">
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
-  <div class="pagePaddingWrap">
-    <div class="userProfileWrap">
-      <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
-      <!-- <img v-if="userInfo.picMfilekey !== undefined && userInfo.userImg !== null && userInfo.userImg !== ''" src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
-      <img :src="userInfo.picMfilekey" style="width: 5em; margin-right: 1rem"/> -->
-      <div class="userProfileTextWrap">
-        <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
-        <div>
-          <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
-          <span class="profileTitle" ref="userEmail">이메일</span>
-          <span class="grayBlack font14" ref="userEmail">{{userInfo.userEmail}}</span>
-        </div>
-        <div>
-          <img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-          <span class="profileTitle" ref="userEmail">휴대폰</span>
-          <span class="grayBlack font14" ref="userMobile">010-****-{{userInfo.phoneLast}}</span>
-        </div>
+
+  <div class="userProfileWrap">
+    <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
+    <!-- <img v-if="userInfo.picMfilekey !== undefined && userInfo.userImg !== null && userInfo.userImg !== ''" src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
+    <img :src="userInfo.picMfilekey" style="width: 5em; margin-right: 1rem"/> -->
+    <div class="userProfileTextWrap">
+      <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
+      <div>
+        <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
+        <span class="profileTitle" ref="userEmail">이메일</span>
+        <span class="grayBlack font14" ref="userEmail">{{userInfo.userEmail}}</span>
+      </div>
+      <div>
+        <img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
+        <span class="profileTitle" ref="userEmail">휴대폰</span>
+        <span class="grayBlack font14" ref="userMobile">010-****-{{userInfo.phoneLast}}</span>
       </div>
     </div>
-    <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-    <top5Alim :alimList="this.alimList"  @openPop="openPop" />
-    <top5Channel :top5ChanList="chanList" @openPop="openPop" />
   </div>
+  <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
+  <top5Alim :alimList="this.alimList"  @openPop="openPop" />
+  <top5Channel :top5ChanList="chanList" @openPop="openPop" />
+
 </div>
 
 </template>

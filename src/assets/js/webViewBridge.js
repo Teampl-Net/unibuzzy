@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import router from '../../router'
-import { saveUser } from '../js/Tal_axiosFunction'
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 
 const isJsonString = (str) => {
   try {

@@ -4,9 +4,9 @@
         <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <popHeader :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
-      <chanDetail @closeLoading="this.$emit('closeLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail'" @openPop = "openPop"/>
+      <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <chanList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
@@ -24,7 +24,7 @@ import changeInfo from './components/Tal_changeInfo.vue'
 import pushList from '../../pages/routerPages/Tal_pushList.vue'
 import pushBox from './components/Tal_pushBox.vue'
 import chanList from '../../pages/routerPages/Tal_chanList.vue'
-import chanDetail from './components/Tal_chanDetail.vue'
+import chanAlimList from './components/Tal_chanAlimList.vue'
 import askTal from './components/Tal_askTheAlim.vue'
 import talInfo from './components/Tal_theAlimInfo.vue'
 import question from './components/Tal_question.vue'
@@ -57,6 +57,8 @@ export default {
       changInfoType: '',
 
       detailVal: {},
+
+      chanFollowYn: false,
       readySearchList: {} // chanDetail -> pushList 열때 필요
     }
   },
@@ -67,7 +69,7 @@ export default {
   },
   components: {
     pushDetail,
-    chanDetail,
+    chanAlimList,
     pushList,
     chanList,
     changeInfo,
@@ -79,9 +81,10 @@ export default {
   },
   methods: {
     async settingPop () {
+      this.chanFollowYn = false
       this.targetType = this.params.targetType
       // eslint-disable-next-line no-unused-vars
-      var tt = this.params
+      // var tt = this.params
       if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
         this.detailVal = this.params
         if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
@@ -144,8 +147,8 @@ export default {
 <style scoped>
 
 .commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
-.commonPopHeader{box-shadow: 0px 7px 9px -9px #00000036;}
 .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;}
 .dNone{display: none;}
 
+.chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}
 </style>

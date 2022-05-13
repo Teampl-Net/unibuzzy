@@ -15,8 +15,14 @@ import chanList from '../pages/routerPages/Tal_chanList.vue'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
 import test from '../pages/test.vue'
+import myChanList from '../components/popup/Tal_managerChanList.vue'
 // import store from '../store/index'
-
+import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
+import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
+import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.vue'
+import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
+import admWritePush from '../pages/routerPages/admPages/TalAAdm_writePush.vue'
+import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 const routes = [
   {
     path: '/',
@@ -74,6 +80,44 @@ const routes = [
     ]
   },
   {
+    path: '/admRouterMain',
+    name: 'admRouterMain',
+    props: true,
+    component: admRouterMain,
+    children: [
+      {
+        path: '/admChanMain',
+        name: 'admChanMain',
+        props: true,
+        component: admChanMain
+      },
+      {
+        path: '/admSendPushList',
+        name: 'admSendPushList',
+        props: true,
+        component: admSendPushList
+      },
+      {
+        path: '/admManageRecvList',
+        name: 'admManageRecvList',
+        props: true,
+        component: admManageRecvList
+      },
+      {
+        path: '/admWritePush',
+        name: 'admWritePush',
+        props: true,
+        component: admWritePush
+      },
+      {
+        path: '/admManageChannel',
+        name: 'admManageChannel',
+        props: true,
+        component: admManageChannel
+      }
+    ]
+  },
+  {
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
@@ -114,6 +158,12 @@ const routes = [
     name: 'test',
     props: true,
     component: test
+  },
+  {
+    path: '/myChanList',
+    name: 'myChanList',
+    props: true,
+    component: myChanList
   }
   // {
   //  path: '/about',

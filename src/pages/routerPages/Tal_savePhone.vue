@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { saveUser } from '../../assets/js/Tal_axiosFunction'
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction'
 export default {
   data () {
     return {

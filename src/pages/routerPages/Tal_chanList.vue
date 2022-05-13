@@ -1,15 +1,13 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="pagePaddingWrap">
-    <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-    <findChannelList @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
-    <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
-    <div style="padding: 0.2rem 0">
-      <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail"/>
-      <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
-    </div>
+
+  <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+  <findChannelList @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
+  <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
+  <div style="padding: 0.2rem 0">
+    <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail"/>
+    <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
   </div>
-  <TalFooter class="header_footer" style="position: fixed; bottom:0; z-index: 9999"/>
 </template>
 
 <script>
@@ -36,8 +34,11 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'chanDetail'
-      params.targetKey = value.chanKey
-      params.chanName = value.chanName
+      params.targetKey = value.teamKey
+      params.chanName = value.teamNameMtext
+      if (this.viewTab === 'user') {
+        value.followYn = true
+      }
       params.value = value
       this.$emit('openPop', params)
 
@@ -53,9 +54,7 @@ export default {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
       }
       var resultList = await this.$getTeamList(paramMap)
-      // alert(JSON.stringify(resultList))
-      // eslint-disable-next-line no-debugger
-      debugger
+
       this.chanList = resultList.content
       this.$emit('closeLoading')
     },
