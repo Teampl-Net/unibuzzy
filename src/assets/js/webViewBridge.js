@@ -109,7 +109,8 @@ const isJsonString = (str) => {
           router.replace({ name: 'permissions' })
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
-        } else if (message.type === 'pushMsg') {
+        } else if (message.type === 'pushmsg') {
+          alert(JSON.stringify(message.pushMessage))
           alert('제목:' + message.pushMessage.title + '\n내용:' + message.pushMessage.body)
           // router.replace({ name: 'policy' })
         } else if (message.type === 'deviceSystemName') {

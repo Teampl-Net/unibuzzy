@@ -258,3 +258,10 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .cursorP {cursor: pointer;}
 
 .overflowYScroll{ overflow-y: scroll; overflow-x: hidden;}
+
+.pcNone{display: none;}
+.mobileNone {display: block;}
+@media screen and (max-width:730px) {
+    .mobileNone{display: none;}
+    .pcNone {display: block;}
+}

@@ -1,4 +1,4 @@
-<template>
+<template ref="ttttt">
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
       <fullModal transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="commonWrap1" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" :params="this.popParams" />

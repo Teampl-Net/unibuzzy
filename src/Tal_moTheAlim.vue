@@ -1,8 +1,11 @@
 <template>
   <div id="moTheAlimWrap">
+   <!--  <div id="pushBox" style="max-width: 500px; width: 80%; height: 300px; position: fixed; z-index: 99999; top: 40%; left:25%;">
+      test
+    </div> -->
     <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
-    <fullModal id="commonWrap" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
-    <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div>
+    <fullModal id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+    <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
   </div>
 </template>
@@ -16,17 +19,19 @@ export default {
       parentPopN: 0,
       userInfo: [],
       alimList: [],
-      chanList: []
+      chanList: [],
+      modalParam: {}
     }
   },
   methods: {
-    openPop () {
+    openPop (params) {
       this.popShowYn = true
-
-      setTimeout(() => {
+      this.modalParam = params
+      // this.$refs.ttttt.openPop(params)
+      /* setTimeout(() => {
         document.getElementById('FullModalWrap').appendChild(document.getElementById('commonWrap'))
         this.popShowYn = false
-      }, 1000)
+      }, 1000) */
     },
     closePop () {
       this.popShowYn = false

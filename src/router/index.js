@@ -21,7 +21,7 @@ import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
 import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
 import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.vue'
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
-import admWritePush from '../pages/routerPages/admPages/TalAAdm_writePush.vue'
+import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 const routes = [
   {

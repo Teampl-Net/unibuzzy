@@ -4,7 +4,7 @@
         <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <popHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
@@ -79,10 +79,18 @@ export default {
     question,
     leaveTal
   },
+  updated () {
+    // eslint-disable-next-line no-debugger
+    debugger
+    if (this.detailVal.targetType === 'pushDetail' || this.detailVal.targetType === 'chanDetail') {
+      this.$refs.gPopupHeader.classList.add('transBack')
+    }
+  },
   methods: {
     async settingPop () {
       this.chanFollowYn = false
-      this.targetType = this.params.targetType
+      var target = this.params
+      this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
       // var tt = this.params
       if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
@@ -151,4 +159,5 @@ export default {
 .dNone{display: none;}
 
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}
+.transBack {background: transparent;}
 </style>

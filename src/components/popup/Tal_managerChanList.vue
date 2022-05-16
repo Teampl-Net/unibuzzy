@@ -2,19 +2,21 @@
     <div style="width: 100vw; height: 100vh; position: fixed; z-index: 9999; top: 0; left: 0; background: #fff; ">
         <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
         <div style="width: 100%; height: calc(100vh - 60px); margin-top: 60px;">
-            <div v-if="creChanResultYn === 'tt'"  style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
-                <div v-if="test" id="noneChanPage">
+            <!-- <div v-if="creChanResultYn === 'tt'"  style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
+             -->
+             <div style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
+                <div id="noneChanPage">
                   <img class="mbottom-2" src="../../assets/images/main/message_logo.png" alt="">
                   <p class="mbottom-1 font15" >현재 생성된 채널이 없습니다!</p>
                   <div class="creChanBigBtn" @click="this.creChanPopYn = true">채널 생성하기</div>
                 </div>
             </div>
-            <div  style="width: 100%; height: 100%; padding: 0 1.5rem;">
-              <div  v-for="(value, index) in chanList" :key="index" style="width: 150px; float: left; display: flex; height: 150px; ">
-                <div @click="goAdmPage(value)" style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc;">{{changeText(value.nameMtext)}}</div>
-                <!-- <span v-html="changeText(value.nameMtext)"></span> -->
+            <!-- <div  style="width: 100%; height: 100%; padding: 0 1.5rem;">
+              <div  v-for="(value, index) in chanList" :key="index" style="width: 150px; float: left; display: flex; flex-direction: column; height: 150px; ">
+                <div style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc;" @click="this.goAdmPage(value)"></div>
+                <span v-html="changeText(value.nameMtext)"></span>
               </div>
-            </div>
+            </div> -->
 
             <div v-if="creChanPopYn" style="width: 100vw; height: 100vh; position: fixed; z-index: 99999; top: 0; left: 0; background: #fff; ">
                 <creChanPop @successCreChan="successCreChan"  @closePop="this.creChanPopYn = false"/>
@@ -38,27 +40,16 @@ export default {
       creChanPopYn: false,
       creChanResultYn: false,
       headerTitle: '내 채널',
-      businessTypeList: [
-        { teamNameMtext: '기업', teamType: 'C' },
-        { teamNameMtext: '정부', teamType: 'G' },
-        { teamNameMtext: '학교', teamType: 'S' },
-        { teamNameMtext: '종교 단체', teamType: 'H' },
-        { teamNameMtext: '동호회', teamType: 'D' }
-      ]
+      chanList: []
     }
   },
   components: {
     creChanPop
   },
   computed: {
-    getChanBoxSize () {
-      return {
-        '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
-      }
-    }
   },
-  created () {
-    this.getManagerChanList()
+  async created () {
+    await this.getManagerChanList()
   },
   methods: {
     closeXPop () {
@@ -75,7 +66,8 @@ export default {
       paramMap.set('followerType', 'M')
       var resultList = await this.$getTeamList(paramMap)
       this.chanList = resultList.content
-      this.$emit('closeLoading')
+      // alert(JSON.stringify(this.chanList))
+      // this.$emit('closeLoading')
     },
     changeText (text) {
       var changeTxt = ''
@@ -83,20 +75,6 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       if (changeTxt) { return changeTxt }
       // if (changeTxt !== undefined) { return changeTxt }
-    },
-    goDetail (value) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetType = 'chanDetail'
-      params.targetKey = value.teamKey
-      params.chanName = value.teamNameMtext
-      if (this.viewTab === 'user') {
-        value.followYn = true
-      }
-      params.value = value
-      // this.$emit('openManagerChanDetail', params)
-
-      // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
     },
     goAdmPage (value) {
       localStorage.setItem('sessionTeam', JSON.stringify(value))
