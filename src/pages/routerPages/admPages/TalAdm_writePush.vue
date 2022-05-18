@@ -1,18 +1,11 @@
 <template>
     <div class="w-100P" style="height: 100%">
         <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
-        <gPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
-        <!-- <div><p> 알림작성</p> <button>발송하기</button></div> -->
-        <!-- <gPageTitle class="pleft-2" pageType="writePush" /> -->
+        <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
         <div :style="toolBoxWidth" class="writeArea">
           <div  :style="setColor" class="paperBackground">
             <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
             <div class="whitePaper">
-              <!--  헤더 추가 -->
-              <!-- <div data-v-3fc1e9e6="" style="border-bottom: 1px solid rgb(191, 191, 218); padding-bottom: 1rem; min-height: 5rem; margin-bottom: 1.5rem;">
-                <img src="logo.logo" alt="" style="width: 4rem; margin-right: 1rem; float: left;"><div style="float: left; margin-top: 0.5rem;"><p style="font-size: 18px; font-weight: bold; color: rgb(103, 104, 167); margin-bottom: 0.2rem;">더알림대학교</p>
-              <p style="font-size: 15px; color: rgb(161, 161, 161);">2021년 2월 22일</p>
-              </div></div> -->
               <div class="overFlowYScroll pushInputArea">
                 <div class="pageTopArea">
                   <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
@@ -41,7 +34,7 @@
 </template>
 <script>
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
-import gPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
+import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 
 export default {
@@ -289,7 +282,7 @@ export default {
 
   components: {
     // msgPop,
-    gPageTitle
+    writePushPageTitle
   }
 }
 </script>
