@@ -4,12 +4,16 @@
         <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
-      <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushList'" @openPop = "openPop"/>
+      <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
+        <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+      </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <chanList @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'chanList'" @openPop = "openPop"/>
+      <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
+        <chanList @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+      </div>
       <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
       <askTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
       <talInfo @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'theAlimInfo'" />
@@ -80,11 +84,6 @@ export default {
     leaveTal
   },
   updated () {
-    // eslint-disable-next-line no-debugger
-    debugger
-    if (this.detailVal.targetType === 'pushDetail' || this.detailVal.targetType === 'chanDetail') {
-      this.$refs.gPopupHeader.classList.add('transBack')
-    }
   },
   methods: {
     async settingPop () {
@@ -99,6 +98,9 @@ export default {
           this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
         } else {
           this.headerTitle = '상세'
+        }
+        if (this.params.targetType === 'chanDetail') {
+          this.headerTitle = ''
         }
       } else if (this.params.targetType === 'pushList') {
         this.headerTitle = '알림'

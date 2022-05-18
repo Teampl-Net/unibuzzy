@@ -1,35 +1,37 @@
 <template>
-    <div class="w-100P" style="height: 100%">
-        <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
-        <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
-        <div :style="toolBoxWidth" class="writeArea">
-          <div  :style="setColor" class="paperBackground">
-            <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
-            <div class="whitePaper">
-              <div class="overFlowYScroll pushInputArea">
-                <div class="pageTopArea">
-                  <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
-                  <div class="">
-                    <p style="">수신대상</p>
-                    <div class="inputArea recvUserArea">
-                      {{organizationText}}
-                      <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
+    <div class="pagePaddingWrap">
+      <div class="w-100P" style="height: 100%">
+          <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
+          <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
+          <div :style="toolBoxWidth" class="writeArea">
+            <div  :style="setColor" class="paperBackground">
+              <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
+              <div class="whitePaper">
+                <div class="overFlowYScroll pushInputArea">
+                  <div class="pageTopArea">
+                    <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                    <div class="">
+                      <p style="">수신대상</p>
+                      <div class="inputArea recvUserArea">
+                        {{organizationText}}
+                        <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="pageMsgArea" style="">
-                  <p  class="">내용</p>
-                  <textarea class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
-                  <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
-                    {{msgData}}
-                  </div> -->
+                  <div class="pageMsgArea" style="">
+                    <p  class="">내용</p>
+                    <textarea class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
+                    <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
+                      {{msgData}}
+                    </div> -->
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
-        <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
+          <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
+          <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
+      </div>
     </div>
 </template>
 <script>
@@ -38,15 +40,11 @@ import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 
 export default {
-
   data () {
     return {
-      // msgPopYn:false,
-      msgData:'',
-      organizationText:'구독자 전원',
-      writePushTitle:'팀플 앱 사용 안내',
-
-      myProgress: 55.5,
+      msgData: '',
+      organizationText: '구독자 전원',
+      writePushTitle: '팀플 앱 사용 안내',
       closeAutoPopCnt: 5,
       selectFile: null, // 파일 객체
       previewImgUrl: null, // 미리보기 이미지 URL
@@ -83,30 +81,31 @@ export default {
     }
   },
   methods: {
-    messageAreaClick(){
+    messageAreaClick () {
       this.msgPopYn = true
     },
-    popNo(){
+    popNo () {
       this.msgPopYn = false
     },
-    popSave(obj){
+    popSave (obj) {
       this.msgData = obj.admMsg
       this.msgPopYn = false
     },
-
 
     /* allBlur () {
       this.$refs.formEditor.focus()
       // this.$ref.formEditor.allBlur()
     }, */
-    setParamInnerHtml (innerHtml) {
+    setParamInnerHtml () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.bodyMinStr = innerHtml
-      param.creTeamKey = 10
-      param.creUserKey = 1
-      var title = document.getElementById('pushTitleInput').value
-      if(title){
-        param.title = document.getElementById('pushTitleInput').value
+      param.bodyMinStr = this.msgData
+      param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+      param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      var title = this.writePushTitle
+      if (title) {
+        param.title = title
       } else {
         alert('제목을 입력해주세요')
         return
@@ -114,18 +113,16 @@ export default {
       this.$saveContents(param)
     },
     clickPageTopBtn (btn) {
-      if(btn === 'sendPushMsg') {
-        if(this.writePushTitle && this.msgData){
-          alert('제목 : ' + this.writePushTitle
-          +'\n수신대상 : '+this.organizationText
-          +'\n내용 : '+this.msgData)
-
-        }else{
+      if (btn === 'sendPushMsg') {
+        if (this.writePushTitle && this.msgData) {
+          /* alert('제목 : ' + this.writePushTitle +
+          '\n수신대상 : ' + this.organizationText +
+          '\n내용 : ' + this.msgData) */
+        } else {
           alert('제목과 내용 모두 입력해주세요')
         }
 
-
-        // this.setParamInnerHtml()
+        this.setParamInnerHtml()
       }
     },
     onReady (editor) {
@@ -159,120 +156,12 @@ export default {
     changeOption (tab) {
       this.selectedTab = tab
     },
-    previewFile () {
-      var tselectFile = null
-      this.previewImgUrl = null
-      // 선택된 파일이 있는가?
-      if (this.$refs.selectFile.files.length > 0) {
-        // 0 번째 파일을 가져 온다.
-        // eslint-disable-next-line no-debugger
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-          tselectFile = this.$refs.selectFile.files[k]
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-          let fileExt = tselectFile.name.substring(
-            tselectFile.name.lastIndexOf('.') + 1
-          )
-          let fileSize = niceBytes(tselectFile.size)
-          // 소문자로 변환
-          fileExt = fileExt.toLowerCase()
-          if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
-          ) {
-            this.previewImgUrl = window.URL.createObjectURL(tselectFile)
-            this.selectFileList.push({ previewImgUrl: this.previewImgUrl, file: tselectFile , percentage: 0, size: fileSize })
-          // FileReader 를 활용하여 파일을 읽는다
-            /* var reader = new FileReader()
-            reader.onload = e => {
-              // base64
-              this.previewImgUrl = e.target.result
-              this.selectFileList.push({ previewImgUrl: this.previewImgUrl, file: tselectFile })
-            // eslint-disable-next-line no-debugger
-            }
-            reader.readAsDataURL(tselectFile) */
-          } else {
-            this.selectFileList.push({ previewImgUrl: null, file: tselectFile, percentage: 0, size: fileSize })
-          }
-          //   else if (this.selectFile.size > 1048576) {
-          //   // 이미지외 파일
-          //     this.previewImgUrl = null
-          //   }
-          // else {
-          //   alert('파일을 다시 선택해 주세요.')
-          //   this.selectFile = null
-          //   this.previewImgUrl = null
-          // }
-          // this.selectFileList.push({ previewImgUrl: this.previewImgUrl, file: this.selectFile })
-          // this.selectFile = null
-          // this.previewImgUrl = null
-          // this.uploadPreviewArea += 1
-        }
-      } else {
-        // 파일을 선택하지 않았을때
-        this.selectFile = null
-        this.previewImgUrl = null
-      }
-      console.log(this.selectFileList)
-    },
     deleteFile (idx) {
       this.selectFileList.splice(idx, 1)
     },
     openSelectFilePop () {
       this.$refs.selectFile.click()
-    },
-    async formSubmit () {
-      this.progressShowYn = true
-      if (this.selectFileList.length > 0) {
-
-        for (var i = 0; i < this.selectFileList.length; i++) {
-          // var selFile = this.selectFileList[i].file
-          // Here we create unique key 'files[i]' in our response dict
-          var form = new FormData()
-          form.append('file', this.selectFileList[i].file)
-
-          await this.$axios
-          .post('/uploadFile', form, {
-              onUploadProgress: (ProgressEvent) => {
-              const percentage = (ProgressEvent.loaded * 100) / ProgressEvent.total
-              const percentCompleted = Math.round(percentage)
-              this.selectFileList[i].percentage = percentCompleted
-              // alert(this.activePer[i])
-              // eslint-disable-next-line no-undef
-            }
-          },
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(res => {
-            this.response = res
-            this.isUploading = false
-            // eslint-disable-next-line no-debugger
-            /* if(this.selectFileList.length - 1 === i) {
-              let play = setInterval(this.countDown(),1000)
-            } */
-          })
-          .catch(error => {
-            this.response = error
-            this.isUploading = false
-            /* if(this.selectFileList.length - 1 === i) {
-              let play = setInterval(this.countDown(),1000)
-
-            } */
-          })
-        }
-        this.isUploading = true
-        setTimeout(() => {
-
-          this.selectFileList = []
-          this.progressShowYn =false
-        }, 3000);
-      } else {
-        alert('파일을 선택해 주세요.')
-      }
-
-      return true
-    },
+    }
     /* countDown () {
       this.closeAutoPopCnt --
       if(this.closeAutoPopCnt === 0)
@@ -331,7 +220,6 @@ export default {
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; min-height: 200px;height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
-
 
 .pageTopArea{
   width: 100%; height: 5rem;

@@ -40,7 +40,6 @@ export default {
 }
 </script>
 
-
 <style >
 .gTitleWrap{width: 100%; height: 2.7rem; float: left; border-bottom: 1px solid #E1E1E1; background: #FFF; padding: 9px 0; padding-bottom: 1rem;}
 .gTitleWrap >span{color: #6768A7; font-size: 17px; font-weight: bold; float: left; margin-right: 1rem;}

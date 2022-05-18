@@ -4,19 +4,22 @@
         <div style="width: 100%; height: calc(100vh - 60px); margin-top: 60px;">
             <!-- <div v-if="creChanResultYn === 'tt'"  style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
              -->
-             <div style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
+             <div v-if="chanList.length === 0" style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
                 <div id="noneChanPage">
                   <img class="mbottom-2" src="../../assets/images/main/message_logo.png" alt="">
                   <p class="mbottom-1 font15" >현재 생성된 채널이 없습니다!</p>
                   <div class="creChanBigBtn" @click="this.creChanPopYn = true">채널 생성하기</div>
                 </div>
             </div>
-            <!-- <div  style="width: 100%; height: 100%; padding: 0 1.5rem;">
+            <div  style="width: 100%; height: 100%; padding: 0 1.5rem;">
+<!--               <div style="background: #ccc; width: 150px; height: 150px; border-radius: 15px;" v-for="(value) in chanList" :key="value.teamKey">
+
+              </div> -->
               <div  v-for="(value, index) in chanList" :key="index" style="width: 150px; float: left; display: flex; flex-direction: column; height: 150px; ">
                 <div style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc;" @click="this.goAdmPage(value)"></div>
                 <span v-html="changeText(value.nameMtext)"></span>
               </div>
-            </div> -->
+            </div>
 
             <div v-if="creChanPopYn" style="width: 100vw; height: 100vh; position: fixed; z-index: 99999; top: 0; left: 0; background: #fff; ">
                 <creChanPop @successCreChan="successCreChan"  @closePop="this.creChanPopYn = false"/>
@@ -63,7 +66,7 @@ export default {
       var paramMap = new Map()
       var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       paramMap.set('userKey', userKey)
-      paramMap.set('followerType', 'M')
+      paramMap.set('followerType', 'A')
       var resultList = await this.$getTeamList(paramMap)
       this.chanList = resultList.content
       // alert(JSON.stringify(this.chanList))

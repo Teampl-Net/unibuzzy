@@ -6,8 +6,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:9091'
-// axios.defaults.baseURL = 'http://14.51.96.245:9091'
+axios.defaults.baseURL = 'http://localhost:19090'
+
+// axios.defaults.baseURL = 'http://localhost:19090'
+// axios.defaults.baseURL = 'http://14.51.96.245:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
 // 캐싱 방지
@@ -250,6 +252,25 @@ const methods = {
     })
     // alert(result)
     return result
+  },
+  async saveContents (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    var result = null
+    await this.$axios.post('/tp.saveContents', param
+    ).then(response => {
+      // eslint-disable-next-line no-debugger
+      debugger
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    // alert(result)
+    return result
   }
 }
 
@@ -265,5 +286,6 @@ export default {
     Vue.config.globalProperties.$requestCreChan = methods.requestCreChan
     Vue.config.globalProperties.$getTeamReqList = methods.getTeamReqList
     Vue.config.globalProperties.$createTeamForReq = methods.createTeamForReq
+    Vue.config.globalProperties.$saveContents = methods.saveContents
   }
 }
