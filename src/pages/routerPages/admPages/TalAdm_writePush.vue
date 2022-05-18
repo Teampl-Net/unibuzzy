@@ -327,9 +327,10 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; }
-.pageMsgArea p{ width: 100px; font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; border:1px solid #ccc; height:450px; border-radius: 0.8rem; background-color: white;}
+.pageMsgArea{ min-height: 200px; height: calc(100% - 10rem); width: 100%; }
+/* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
+.pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
+.pageMsgArea .msgArea{ width:100%; min-height: 200px;height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 
 .pageTopArea{
@@ -338,8 +339,9 @@ export default {
 .pageTopArea >div{
   width: 100%; min-height: 2.5rem;
 }
-.pageTopArea p{width: 100px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;}
-.pageTopArea .inputArea{width: calc(100% - 100px); box-sizing: border-box; }
+.pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;}
+.pageTopArea input{font-size: 15px;}
+.pageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
 
 #toolBox{margin-top: -1rem; float: left; height: 100%; background: #FFFFFF; display: flex;  width: var(--width); height: 100%;  border-left: none;}
 #toolBox >.toolContentsArea {height: calc(100% - 6rem); width: calc(100% - 100px)}
@@ -356,12 +358,12 @@ export default {
 
 .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 700px; height: calc(100% - 1rem); position: relative; margin: 0 auto; margin-top: 2rem; padding: 4rem 4rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 1rem); position: relative; margin: 0 auto; margin-top: 2rem; padding: 4rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
-.pushInputArea{padding-right: 1rem; height: 100%; width: 100%;}
+.pushInputArea{height: 100%; width: 100%;}
 
-.pushInputArea .recvUserArea{border: 1px solid #BFBFDA; border-radius: 5px; height: 30px; float: left; position: relative; padding-right: 3rem;}
+.pushInputArea .recvUserArea{border: 1px solid #BFBFDA; border-radius: 5px; height: 30px; float: left; position: relative; }
 .orgaIcon{position: absolute; top: 0.3rem; right: 0.5rem; cursor: pointer;}
 
 .pushBodyInput{resize: none; border-radius: 5px; border: 1px solid #BFBFDA; width: 100%; height: calc(100% - 7rem); padding: 1rem; box-sizing: border-box; color: #010101; font-size: 15px;}
