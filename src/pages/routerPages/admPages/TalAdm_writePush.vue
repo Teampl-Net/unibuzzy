@@ -1,50 +1,61 @@
 <template>
-    <div class="pagePaddingWrap">
-      <div class="w-100P" style="height: 100%">
-          <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
-          <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
-          <div :style="toolBoxWidth" class="writeArea">
-            <div  :style="setColor" class="paperBackground">
-              <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
-              <div class="whitePaper">
-                <div class="overFlowYScroll pushInputArea">
-                  <div class="pageTopArea">
-                    <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
-                    <div class="">
-                      <p style="">수신대상</p>
-                      <div class="inputArea recvUserArea">
-                        {{organizationText}}
-                        <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="pageMsgArea" style="">
-                    <p  class="">내용</p>
-                    <textarea class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
-                    <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
-                      {{msgData}}
-                    </div> -->
+
+  <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' />
+  <div class="w-100P" style="height: 100%">
+      <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
+      <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
+      <div :style="toolBoxWidth" class="writeArea">
+        <div  :style="setColor" class="paperBackground">
+          <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
+          <div class="whitePaper">
+            <div class="overFlowYScroll pushInputArea">
+              <div class="pageTopArea">
+                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                <div class="">
+                  <p style="">수신대상</p>
+                  <div class="inputArea recvUserArea">
+                    {{organizationText}}
+                    <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
                   </div>
                 </div>
               </div>
+              <div class="pageMsgArea" style="">
+                <p  class="">내용</p>
+                <textarea class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
+                <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
+                  {{msgData}}
+                </div> -->
+              </div>
             </div>
           </div>
-          <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
-          <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
+
+        </div>
       </div>
-    </div>
+      <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
+      <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
+  </div>
+
 </template>
 <script>
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
 import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
+import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
+
+
+
 
 export default {
   data () {
     return {
-      msgData: '',
-      organizationText: '구독자 전원',
-      writePushTitle: '팀플 앱 사용 안내',
+
+      // msgPopYn:false,
+      testpopYn:true,
+      msgData:'',
+      organizationText:'구독자 전원',
+      writePushTitle:'팀플 앱 사용 안내',
+
+      myProgress: 55.5,
       closeAutoPopCnt: 5,
       selectFile: null, // 파일 객체
       previewImgUrl: null, // 미리보기 이미지 URL
@@ -123,6 +134,8 @@ export default {
         }
 
         this.setParamInnerHtml()
+      }else{
+       //ssss
       }
     },
     onReady (editor) {
@@ -133,15 +146,15 @@ export default {
         editor.ui.getEditableElement()
       )
     },
-    openToolBox (tool) {
-      this.selectedTool = tool
-      this.toolShowYn = true
-      // this.toolWidth = 400
-    },
-    closeToolBox () {
-      // this.toolShowYn = false
-      // this.toolWidth = 0
-    },
+    // openToolBox (tool) {
+    //   this.selectedTool = tool
+    //   this.toolShowYn = true
+    //   // this.toolWidth = 400
+    // },
+    // closeToolBox () {
+    //   // this.toolShowYn = false
+    //   // this.toolWidth = 0
+    // },
     selectedColor (index) {
       this.selectedC = index
     },
@@ -171,7 +184,8 @@ export default {
 
   components: {
     // msgPop,
-    writePushPageTitle
+    writePushPageTitle,
+    pushPop
   }
 }
 </script>
