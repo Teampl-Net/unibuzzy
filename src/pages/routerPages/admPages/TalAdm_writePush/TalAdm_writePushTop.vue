@@ -1,8 +1,8 @@
 <template>
     <div class="gTitleWrap" >
       <!-- <img src="" style="float: left; margin-top: 0.3rem;width: 1rem; margin-right: 0.5rem" alt=""> -->
-      <span style="line-height: 30px; margin-left:10px;">{{titleText}}</span>
-      <span style="background: #6768A7; width: 2px; margin-top: 0.45rem; height: 15px; margin-right: 0.3rem"></span>
+      <span style=" margin-left:10px;">{{titleText}}</span>
+      <span style="background: #6768A7; width: 2px; margin-top: 0.3rem; height: 15px; margin-right: 0.3rem"></span>
       <span style="line-height: 30px;"> {{this.selectedChan}}</span>
       <div v-if="this.pageType === 'writePush'" style="width: 100%; height: 4rem; float: none;">
           <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickE('sendPushMsg')" />

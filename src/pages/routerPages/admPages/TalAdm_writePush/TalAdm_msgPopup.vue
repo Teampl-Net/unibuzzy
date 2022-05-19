@@ -7,13 +7,10 @@
 
         <div class="admMsgPopBody" >
             <textarea v-model="admMsgText" class="admMsgTextarea" ></textarea>
-
-
             <div class="admMsgBtnArea" >
                 <gBtnSmall class="mright-05" v-on:click="goSave" btnTitle="저장"/>
                 <gBtnSmall class="mright-05" v-on:click="goNo" btnTitle="닫기"/>
             </div>
-
 
         </div>
 
