@@ -1,30 +1,43 @@
 <template>
-<div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; ">
-</div>
-    <div :style="popLeft" class="confirmPopWrap">
-      <div class="confirmPopHeader">
-        <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
-        <p class="font20 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
-        <p class="font12 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
-      </div>
-      <div class="confirmPopBody">
-        <p class="confirmText">{{confirmText}}</p>
-        <div class="confirmBtnArea">
-          <gBtnSmall class="mright-05" v-on:click="goOk" btnTitle="확인"/>
-          <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소"/>
-        </div>
-      </div>
+<div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+<div :style="popLeft" class="confirmPopWrap">
+  <div class="confirmPopHeader">
+    <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
+    <p class="font20 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
+    <p class="font12 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
+  </div>
+
+  <div class="confirmPopBody" >
+    <p class="confirmText">{{confirmText}}</p>
+
+    <div class="confirmBtnArea" v-if="confirmType==='timeout'">
+      <gBtnSmall class="mright-05" v-on:click="goNo" btnTitle="닫기"/>
     </div>
+
+    <div class="confirmBtnArea" v-if="confirmType==='one'">
+      <gBtnSmall class="mright-05" v-on:click="goNo" btnTitle="확인"/>
+    </div>
+
+    <div class="confirmBtnArea" v-if="confirmType==='two'||confirmType== null">
+      <gBtnSmall class="mright-05" v-on:click="goOk" btnTitle="확인"/>
+      <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소"/>
+    </div>
+
+  </div>
+
+</div>
 
 </template>
 <script>
 export default {
   data () {
     return {
+
     }
   },
   props: {
-    confirmText: {}
+    confirmText: {},
+    confirmType: {},// two: 2btn  one: 1btn(alert)  timeout: 2sec exit
   },
   methods: {
     goOk () {
@@ -32,12 +45,23 @@ export default {
     },
     goNo () {
       this.$emit('no')
-    }
+    },
+    timeOut () {
+      if(this.confirmType === 'timeout'){
+        setTimeout(() => {
+          this.$emit('no')
+        }, 2000);
+      }
+    },
+
   },
   computed: {
     popLeft () {
       return { left: (window.innerWidth - 350) / 2 + 'px' }
     }
+  },
+  created (){
+    this.timeOut()
   }
 }
 </script>
