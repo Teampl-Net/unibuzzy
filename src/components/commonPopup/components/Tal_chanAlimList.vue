@@ -4,7 +4,7 @@
   <!-- <div>{{pushKey}}</div> -->
     <div id="summaryWrap" class="summaryWrap" >
       <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
-        <span id="chanCnt" class="font16">구독자 100명| 알림발송 100건</span>
+        <span id="chanCnt" class="font16">구독자 101명| 알림발송 100건</span>
         <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
         <img id="chanImg" src="../../../assets/images/channel/chanImg.png" style="width: 110px; height: 110px; border-radius: 110px; margin-bottom: 5px;" alt="채널사진">
         <span class="font13 mbottom-05 fl">#라이프스타일</span> <span class="font14 fontBold mbottom-05 " @click="openPop" style="float: right; right: 20px; bottom: 0;">채널정보 ></span>
@@ -21,15 +21,20 @@
           </div>
         </div>
       </div> -->
+
     </div>
+
     <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 320px;">
       <pushList @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
   </div>
+  <div class="btnPlus" @click="btnWritePush" >+</div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
     <chanDetailComp  @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
+
+
 </div>
 </template>
 
@@ -74,8 +79,14 @@ export default {
     })
   },
   methods: {
+    btnWritePush () {
+      var params = new Object();
+      params.targetType = 'writePush'
+      // alert(params.targetType)
+      this.$emit('openPop',params)
+    },
     async getChanDetail () {
-      this.detailShowYn = true
+      this.detailShowYn = false
       var paramMap = new Map()
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail
@@ -87,6 +98,7 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
 
       this.chanItem = resultList.content[0]
+      alert(this.chanItem)
       if (this.chanItem.userTeamInfo) {
         this.followYn = true
         this.detailShowYn = false
@@ -180,4 +192,10 @@ export default {
 #chanInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
 .blockBox{width: 100%; height: 320px;float: left; height: var(--height); min-height: 50px;}
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
+
+.btnPlus{
+  width:4rem; height:4rem; line-height:4rem;
+  color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
+
+  font-size:40px; border-radius:50%; position:absolute; bottom: 5%; right: 10% }
 </style>
