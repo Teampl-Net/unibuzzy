@@ -1,24 +1,30 @@
 <template>
   <div style="width: 100%; height: 100%; padding: 0 20px;">
-      <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
-          <p class="mbottom-1 fontBold">{{selectedBType}} 채널 생성</p>
+      <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;display: flex; justify-content: space-between;">
+        <p class="fl" @click='clickPrevBtn' >뒤로</p>
+        <p class="fontBold">{{selectedBType}} 채널 생성</p>
+        <p class="fr" @click="clickExit">X</p>
       </div>
-      <div  style="margin-top: 10px; float: left; width: 100%; height: calc(100% - 200px); margin-top: 50px;">
+      <!-- <div  style=" float: left; width: 100%; height: calc(100% - 180px); margin-top: 50px; overflow:auto;"> -->
+      <!-- <div  style=" float: left; width: 100%; height: calc(100% - 180px);  overflow:auto;"> -->
+        <div  style=" float: left; width: 100%; height: calc(100% - 110px);  overflow:auto;">
+
         <selectChanType @makeParam="setParam" ref="step0" v-if="creStep === 0" />
-        <creStep01 ref="step1" @makeParam="setParam" v-else-if="creStep === 1" />
+        <!-- <creStep01 ref="step1" @makeParam="setParam" v-else-if="creStep === 1" />
         <creStep02 ref="step2" @makeParam="setParam" v-else-if="creStep === 2" />
-        <creStep03 ref="step3" @makeParam="setParam" v-else-if="creStep === 3" />
+        <creStep03 ref="step3" @makeParam="setParam" v-else-if="creStep === 3" /> -->
         <!-- <creStep04 ref="step4" @makeParam="setParam" v-else-if="creStep === 4" /> -->
       </div>
-      <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; ">
-        <gBtnSmall @click="clickPrevBtn" btnThema="light" class="fl" style="float: left!important; margin-right: 10px;" btnTitle="이전" />
-        <gBtnSmall btnThema="" @click="changePage" class="fl" style="float: left!important;" btnTitle="다음" />
+      <!-- <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; "> -->
+      <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; width: 90%; position: fixed; bottom: 10px; left: 5%;">
+        <gBtnSmall @click="clickPrevBtn" btnThema="light" class="fl" style="float: left!important; margin-right: 10px; width:100px; height:50px; line-height:50px;font-size:18px" btnTitle="이전" />
+        <gBtnSmall btnThema="" @click="changePage" class="fl" style="float: left!important; width:100px; height:50px; line-height:50px; font-size:18px " btnTitle="다음" />
       </div>
   </div>
 </template>
 
 <script>
-import selectChanType from '../Tal_selectChanType.vue'
+import selectChanType from './Tal_creChannelStep00.vue'
 import creStep01 from './Tal_creChannelStep01'
 import creStep02 from './Tal_creChannelStep02'
 import creStep03 from './Tal_creChannelStep03'
@@ -49,7 +55,25 @@ export default {
         this.creStep -= 1
       }
     },
+    clickExit(){
+      this.$emit('closePop')
+    },
     async setParam (inputParam) {
+      // alert(inputParam.teamType+'\n' + inputParam.teamIcon+'\n'+inputParam.teamBack+'\n'+inputParam.teamkeyword)
+
+
+
+      this.g_param.teamType = inputParam.teamType
+      this.g_param.nameMtext = inputParam.teamNmae
+      this.g_param.teamMemo = inputParam.teamMemo
+      this.g_param.teamIcon = inputParam.teamIcon
+      this.g_param.teamBack = inputParam.teamBack
+      this.g_param.teamkeyword = inputParam.teamkeyword
+
+      // alert(this.g_param.teamType+'\n'+ this.g_param.nameMtext +'\n'+ this.g_param.teamMemo)
+
+
+
       // eslint-disable-next-line no-new-object
       // var param = new Object()
       /* // eslint-disable-next-line no-new-object
@@ -76,6 +100,9 @@ export default {
         await this.$requestCreChan(this.g_param)
         this.$emit('successCreChan')
       }
+
+
+
 
       // this.$emit('createChannel', param)
     }

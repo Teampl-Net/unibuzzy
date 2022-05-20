@@ -51,11 +51,10 @@
       </div>
     </div>
   </div>
-<gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='okPop=false' v-if="okPop"  />
+  <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' checkPopYn/>
+  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" />
 
-
-
-  <div @click="setParam" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
+  <div @click="checkPopYn= true" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
 </template>
 
 <script>
@@ -79,8 +78,8 @@ export default {
       keyWord0:'',
       keyWord1:'',
       keyWord2:'',
-
-      okPop:false,
+      checkPopYn:false,
+      okPopYn:false,
 
     }
   },
@@ -145,14 +144,8 @@ export default {
           g_param.teamBack = this.selectBg
           g_param.teamkeyword = this.keyWord0+','+this.keyWord1+','+this.keyWord2
         // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
-        try{
-
-          this.$requestCreChan(g_param)
+          alert(this.$requestCreChan(g_param))
           this.$emit('successCreChan')
-
-        }catch(e){
-          alert('채널 생성 오류입니다.')
-        }
         // this.$emit('makeParam', param)
       } else {
         alert('채널 종류를 선택해주세요!')

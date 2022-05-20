@@ -1,6 +1,6 @@
 <template>
     <div style="padding-bottom: 60px">
-      <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" />
+      <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <div class="" >
@@ -27,13 +27,13 @@
               <p class="font10">최신버전: 1.0</p>
             </th>
             <td class="textRight">{{appVersion}}</td></tr>
-            <tr @click="this.myChanListPopYn = true">
+            <!-- <tr @click="this.myChanListPopYn = true">
               <th>
-                내 채널
+                내 채널 -->
                 <!-- <a href="http://adm.pushmsg.net/">내 채널</a> -->
-              </th>
+              <!-- </th>
               <td class="textRight"></td>
-            </tr>
+            </tr> -->
         </table>
       </div>
       <div class="subPaddingWrap">

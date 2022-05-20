@@ -1,12 +1,11 @@
 <template>
-
-  <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' />
-  <div class="w-100P" style="height: 100%">
+  <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
+  <div class="w-100P" style=" height: 100%;top: 50px; position: absolute;">
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
-      <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/>
+      <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <div :style="toolBoxWidth" class="writeArea">
         <div  :style="setColor" class="paperBackground">
-          <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;">편지지 변경</div>
+          <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
@@ -26,9 +25,14 @@
                   {{msgData}}
                 </div> -->
               </div>
-            </div>
-          </div>
 
+            </div>
+
+          </div>
+          <!-- <div style="width: 100%;" >
+                  <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
+                  <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
+          </div> -->
         </div>
       </div>
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
@@ -126,14 +130,14 @@ export default {
     clickPageTopBtn (btn) {
       if (btn === 'sendPushMsg') {
         if (this.writePushTitle && this.msgData) {
-          /* alert('제목 : ' + this.writePushTitle +
+          alert('제목 : ' + this.writePushTitle +
           '\n수신대상 : ' + this.organizationText +
-          '\n내용 : ' + this.msgData) */
+          '\n내용 : ' + this.msgData)
         } else {
           alert('제목과 내용 모두 입력해주세요')
         }
 
-        this.setParamInnerHtml()
+        // this.setParamInnerHtml()
       }else{
        //ssss
       }
@@ -196,7 +200,7 @@ export default {
       margin: 0 auto;
       margin-top: 1rem;
       border-radius: 0.8rem;
-      height: 100%;
+      height: calc(100% - 60px);
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;

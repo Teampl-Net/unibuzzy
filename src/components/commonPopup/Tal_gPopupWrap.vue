@@ -1,10 +1,12 @@
 <template>
     <div class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
-        <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+      <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
       <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+       -->
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
@@ -19,6 +21,11 @@
       <talInfo @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'theAlimInfo'" />
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
+
+
+      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
+      <writePush v-if="this.targetType === 'writePush'" @closeXPop="closeXPop" />
+
     </div>
 </template>
 
@@ -33,6 +40,12 @@ import askTal from './components/Tal_askTheAlim.vue'
 import talInfo from './components/Tal_theAlimInfo.vue'
 import question from './components/Tal_question.vue'
 import leaveTal from './components/Tal_leaveTheAlim.vue'
+
+// import selectChanType from './Tal_creChannelStep00.vue'
+import createChannel from '../popup/creChannel/Tal_creChannelStep00.vue'
+import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
+
+
 export default {
   async created () {
     await this.settingPop()
@@ -81,7 +94,10 @@ export default {
     askTal,
     talInfo,
     question,
-    leaveTal
+    leaveTal,
+
+    createChannel,
+    writePush
   },
   updated () {
   },
@@ -92,6 +108,7 @@ export default {
       this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
       // var tt = this.params
+
       if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
         this.detailVal = this.params
         if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
@@ -129,6 +146,10 @@ export default {
         this.targetType = 'changeInfo'
         this.changInfoType = this.params.targetType
         this.headerTitle = '이메일 수정'
+      }else if (this.params.targetType === 'createChannel'){
+        this.headerTitle = '채널만들기'
+      }else if (this.params.targetType ===  'writePush'){
+        this.headerTitle = '알림쓰기'
       }
       this.thisPopN = Number(this.parentPopN) + 1
       this.newHeaderT = '새로운 타이틀' + this.thisPopN

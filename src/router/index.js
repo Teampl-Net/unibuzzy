@@ -23,6 +23,10 @@ import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.v
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
 import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
+
+//add by_jeong
+import writePushTest from '../pages/routerPages/admPages/TalAdm_writePush.vue'
+
 const routes = [
   {
     path: '/',
@@ -62,7 +66,7 @@ const routes = [
         props: true,
         component: pushList,
         beforeEnter: (to, from, next) => {
-        // 만약 로그인 상태라면
+          // 만약 로그인 상태라면
 
           if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
         }
@@ -73,7 +77,7 @@ const routes = [
         props: true,
         component: chanList,
         beforeEnter: (to, from, next) => {
-        // 만약 로그인 상태라면
+          // 만약 로그인 상태라면
           if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
         }
       }
@@ -164,7 +168,7 @@ const routes = [
     name: 'myChanList',
     props: true,
     component: myChanList
-  }
+  },
   // {
   //  path: '/about',
   // name: 'About',
@@ -173,6 +177,12 @@ const routes = [
   // which is lazy-loaded when the route is visited.
   //  component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue')
   // }
+  {
+    path: '/writePushTest',
+    name: 'writePushTest',
+    props: true,
+    component:writePushTest
+  }
 ]
 
 const router = createRouter({

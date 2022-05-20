@@ -1,7 +1,7 @@
 <template>
 <div :key="componentKey" v-if="renderOk">
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
-
+  <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
     <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
     <!-- <img v-if="userInfo.picMfilekey !== undefined && userInfo.userImg !== null && userInfo.userImg !== ''" src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
@@ -60,13 +60,12 @@ export default {
     return {
       componentKey: 0,
       initYn: false,
-      alimList: [
-      ],
-      chanList: [
-      ],
+      alimList: [],
+      chanList: [],
       userInfo: [],
-      renderOk: false
+      renderOk: false,
 
+      popYn:true
     }
   },
   components: {
@@ -78,6 +77,7 @@ export default {
     // top5Title
   },
   methods: {
+
     forceRerender () {
       this.componentKey += 1
     },

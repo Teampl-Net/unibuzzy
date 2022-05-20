@@ -14,7 +14,7 @@
   font-style: normal;
 }
 #moTheAlimWrap {
-font-family: KoPubDotumMedium; 
+font-family: KoPubDotumMedium;
 }
 
 .headerFont{
@@ -168,7 +168,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
       align-items: center;
       filter: drop-shadow(0 0 6px #0000002E);
   }
-  
+
   .content {
       position: relative;
       width: 100%;
@@ -183,7 +183,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
       justify-content: space-between;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
   }
-  
+
   .content ::after {
       content: '';
       position: absolute;
@@ -216,7 +216,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .mx-datepicker-popup {position: absolute; top: 300px; right: 2rem; z-index: 999999!important;}
 .mx-datepicker-range {width: calc(100%)!important; float: left;}
-.mx-input {   
+.mx-input {
   /* border: 2px solid #E4E4E4!important; */
   border: none!important;
   background: #e4e4e463!important;

@@ -1,5 +1,6 @@
 <template>
-  <p class="textLeft font16">기본정보 입력</p>
+<div style="    overflow: auto;">
+  <!-- <p class="textLeft font16">기본정보 입력</p> -->
   <div style="width: 100%; position: relative; min-height: 300px; height: 50%; border: 1px solid #ccc;">
     <div style="position: absolute; width: 100%; min-height: 100px; background: #FFF; bottom: 0; height: 40%;  box-shadow: rgb(189 189 189) 0px -1px 12px -4px; ">
       <form @submit.prevent="formSubmit" style="width: calc(100% - 120px); margin-bottom: 5px; float: left; overflow: hidden; cursor: pointer; min-height: 50px;position: relative;" method="post">
@@ -33,6 +34,7 @@
   </div>
   <p class="textLeft font14 mtop-1 fl">채널에 대한 간단한 소개글을 작성해주세요</p>
   <textarea value="팀플은 협업을 위한 파워풀한 도구를 제안합니다." name=""  id="channelMemo"  style="width: 100%; height: 100px; border: 1px solid #ccc; resize: none; margin-top: 5px;" cols="30" rows="10"></textarea>
+</div>
 </template>
 
 <script>
