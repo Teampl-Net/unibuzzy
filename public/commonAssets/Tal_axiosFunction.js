@@ -6,8 +6,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:19090'
+// axios.defaults.baseURL = 'http://localhost:19090'
 
+axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://localhost:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
@@ -65,10 +66,12 @@ const methods = {
   async userLoginCheck () {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
+    // testYn = false
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
       paramMap.set('fcmKey', '123456789')
       paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
+      localStorage.setItem('testYn', false)
       if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === null || localStorage.getItem('user') === '') {
         this.$router.replace('/policies')
         return
@@ -115,7 +118,7 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    param.actUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     await this.$axios.post('/tp.getContentsList', param
     ).then(response => {
@@ -259,6 +262,13 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
+    param.jobkindId = 'ALIM'
+    param.allRecvYn = true
+    /* alert(JSON.stringify(param))
+    var tt = true
+    if (tt === true) {
+      return
+    } */
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     await this.$axios.post('/tp.saveContents', param

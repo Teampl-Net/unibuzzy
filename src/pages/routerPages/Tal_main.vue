@@ -8,6 +8,7 @@
     <img :src="userInfo.picMfilekey" style="width: 5em; margin-right: 1rem"/> -->
     <div class="userProfileTextWrap">
       <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
+      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: fixed; right: 20px; width: 25px;" alt="">
       <div>
         <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
         <span class="profileTitle" ref="userEmail">이메일</span>
@@ -15,7 +16,7 @@
       </div>
       <div>
         <img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-        <span class="profileTitle" ref="userEmail">휴대폰</span>
+        <span @click="test" class="profileTitle" ref="userEmail">휴대폰</span>
         <span class="grayBlack font14" ref="userMobile">010-****-{{userInfo.phoneLast}}</span>
       </div>
     </div>
@@ -31,6 +32,8 @@
 <script>
 import top5Channel from '../../components/pageComponents/main/Tal_top5_channelList.vue'
 import top5Alim from '../../components/pageComponents/main/Tal_top5_pushList.vue'
+import { onMessage } from '../../assets/js/webviewInterface'
+
 // import { onMessage } from '../../assets/js/webviewInterface'
 // import initModal from '../../components/popup/Tal_mainInitModal'
 export default {
@@ -39,7 +42,10 @@ export default {
     testYn: {}
   },
   async created () {
+    localStorage.setItem('popHistoryStack', '')
     this.$emit('changePageHeader', '더알림')
+    document.addEventListener('message', e => this.BackPopClose(e))
+    window.addEventListener('message', e => this.BackPopClose(e))
     // onMessage('REQ', 'getUserInfo')
     // await this.saveUserPhone()
     localStorage.setItem('loginYn', false)
@@ -65,7 +71,7 @@ export default {
       userInfo: [],
       renderOk: false,
 
-      popYn:true
+      popYn: true
     }
   },
   components: {
@@ -77,7 +83,24 @@ export default {
     // top5Title
   },
   methods: {
-
+    reloadPage () {
+      this.$emit('openLoading')
+      this.$router.go(0)
+    },
+    BackPopClose (e) {
+      if (JSON.parse(e.data).type === 'goback') {
+        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+          if (localStorage.getItem('popHistoryStack') === '') {
+            alert('닫습니다')
+            onMessage('closeApp', 'requestUserPermission')
+          }
+        }
+      }
+    },
+    test () {
+      alert('닫습니다')
+      onMessage('closeApp', 'requestUserPermission')
+    },
     forceRerender () {
       this.componentKey += 1
     },

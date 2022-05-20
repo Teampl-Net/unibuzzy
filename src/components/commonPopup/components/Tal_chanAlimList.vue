@@ -34,7 +34,6 @@
     <chanDetailComp  @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
 
-
 </div>
 </template>
 
@@ -80,10 +79,12 @@ export default {
   },
   methods: {
     btnWritePush () {
-      var params = new Object();
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      params.targetKey = this.chanItem.teamKey
       params.targetType = 'writePush'
       // alert(params.targetType)
-      this.$emit('openPop',params)
+      this.$emit('openPop', params)
     },
     async getChanDetail () {
       this.detailShowYn = false
@@ -96,13 +97,14 @@ export default {
         paramMap.set('teamKey', this.chanDetail.teamKey)
       }
       var resultList = await this.$getTeamList(paramMap)
-
+      // alert(JSON.stringify(resultList))
       this.chanItem = resultList.content[0]
-      alert(this.chanItem)
       if (this.chanItem.userTeamInfo) {
         this.followYn = true
         this.detailShowYn = false
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {

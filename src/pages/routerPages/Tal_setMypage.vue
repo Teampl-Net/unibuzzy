@@ -50,17 +50,16 @@
 import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop'
-import myChanList from '../../components/popup/Tal_managerChanList.vue'
 export default {
   name: 'myPage',
   components: {
     userItem,
     logoutPop,
-    policyPop,
-    myChanList
+    policyPop
   },
   data () {
     return {
+      pageHistoryName: '',
       headerTitle: '마이페이지',
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
@@ -72,6 +71,10 @@ export default {
     }
   },
   created () {
+    document.addEventListener('message', e => this.BackPopClose(e))
+    window.addEventListener('message', e => this.BackPopClose(e))
+    var history = localStorage.getItem('popHistoryStack').split('$#$')
+    this.pageHistoryName = 'page' + (history.length - 1)
     this.$emit('changePageHeader', '설정')
   },
   computed: {
@@ -80,6 +83,16 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    BackPopClose (e) {
+      if (JSON.parse(e.data).type === 'goback') {
+        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+          alert(localStorage.getItem('curentPage') + this.pageHistoryName)
+          if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+            this.$removeHistoryStackForPage(this.pageHistoryName)
+          }
+        }
+      }
+    },
     openPop (target) {
       // eslint-disable-next-line no-new-object
       var params = new Object()

@@ -37,7 +37,7 @@ export default {
   },
   props: {
     confirmText: {},
-    confirmType: {},// two: 2btn  one: 1btn(alert)  timeout: 2sec exit
+    confirmType: {} // two: 2btn  one: 1btn(alert)  timeout: 2sec exit
   },
   methods: {
     goOk () {
@@ -47,12 +47,12 @@ export default {
       this.$emit('no')
     },
     timeOut () {
-      if(this.confirmType === 'timeout'){
+      if (this.confirmType === 'timeout') {
         setTimeout(() => {
           this.$emit('no')
-        }, 2000);
+        }, 2000)
       }
-    },
+    }
 
   },
   computed: {
@@ -60,7 +60,7 @@ export default {
       return { left: (window.innerWidth - 350) / 2 + 'px' }
     }
   },
-  created (){
+  created () {
     this.timeOut()
   }
 }

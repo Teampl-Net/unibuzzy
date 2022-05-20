@@ -5,7 +5,7 @@
     <div class= "pageHeader pushListCover" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
-        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
+        <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
@@ -31,11 +31,18 @@ export default {
     // searchResult
   },
   props: {
+    popYn: Boolean,
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {}
   },
   created () {
+    if (this.popYn === false) {
+      document.addEventListener('message', e => this.BackPopClose(e))
+      window.addEventListener('message', e => this.BackPopClose(e))
+      var history = localStorage.getItem('popHistoryStack').split('$#$')
+      this.pageHistoryName = 'page' + (history.length - 1)
+    }
     this.$emit('changePageHeader', '알림')
     this.getPushContentsList()
     if (this.readySearhList) {
@@ -63,6 +70,32 @@ export default {
     }
   },
   methods: {
+    addSubHistory (pageName) {
+      // eslint-disable-next-line no-array-constructor
+      var sHistory = new Array()
+      if (this.subHistoryList) {
+        sHistory = this.subHistoryList
+      }
+      sHistory.push(pageName)
+      this.subHistoryList = sHistory
+    },
+    closeSearchPop () {
+      this.findPopShowYn = false
+      this.subHistoryList.splice(-1, 1)
+    },
+    BackPopClose (e) {
+      if (this.subHistoryList.length === 0) {
+        if (this.popYn === false) {
+          if (JSON.parse(e.data).type === 'goback') {
+            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+                this.$removeHistoryStackForPage(this.pageHistoryName)
+              }
+            }
+          }
+        }
+      }
+    },
     reload () {
       this.getPushContentsList()
     },
@@ -189,7 +222,9 @@ export default {
     return {
       scrollPosition: null,
       loadVal: true,
+      pageHistoryName: '',
       findPopShowYn: false,
+      subHistoryList: [],
       stickerList: [
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },

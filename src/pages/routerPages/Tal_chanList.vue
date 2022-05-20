@@ -8,7 +8,6 @@
     <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
 
-
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" >+</div>
@@ -19,25 +18,43 @@
 // import searchChannel from '../../components/pageComponents/channel/Tal_searchChan.vue'
 import findChannelList from '../../components/popup/Tal_findChannelList.vue'
 
-import myChanList from '../../components/popup/Tal_managerChanList.vue'
+// import myChanList from '../../components/popup/Tal_managerChanList.vue'
 
 export default {
   name: 'user',
   components: {
-    findChannelList,
+    findChannelList
     // searchChannel
+    // myChanList
   },
   async created () {
+    if (this.popYn === false) {
+      document.addEventListener('message', e => this.BackPopClose(e))
+      window.addEventListener('message', e => this.BackPopClose(e))
+      var history = localStorage.getItem('popHistoryStack').split('$#$')
+      this.pageHistoryName = 'page' + (history.length - 1)
+    }
     this.$emit('changePageHeader', '채널')
     await this.getChannelList('user')
   },
   methods: {
-    clickCreateChannel(){
-      var params = new Object();
+    BackPopClose (e) {
+      if (this.popYn === false) {
+        if (JSON.parse(e.data).type === 'goback') {
+          if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+            if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+              this.$removeHistoryStackForPage(this.pageHistoryName)
+            }
+          }
+        }
+      }
+    },
+    clickCreateChannel () {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
       params.targetType = 'createChannel'
       // alert(params.targetType)
-      this.$emit('openPop',params)
-
+      this.$emit('openPop', params)
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
@@ -49,9 +66,9 @@ export default {
       this.viewTab = tab
       await this.getChannelList()
 
-      if(this.viewTab === 'mychannel'){
+      if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true
-      }else{
+      } else {
         this.myChanListPopYn = false
       }
     },
@@ -75,6 +92,9 @@ export default {
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
+      } else if (this.viewTab === 'myChannel') {
+        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        paramMap.set('followerType', 'A')
       }
       if (this.resultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
@@ -111,9 +131,10 @@ export default {
   },
   data () {
     return {
+      pageHistoryName: '',
       viewTab: 'user',
       // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
-      activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' },{ display: '내 채널', name: 'mychannel' }],
+      activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       subTitlebtnList: [],
       chanList: [
         { chanName: '우체국', chanImg: 'http://placehold.it/30', chanMsg: '우체국 앱(포스트톡)을 설치하시면 배송조회, 착불결제 등 다양한 서비스를 이용하실 수 있습니다.' },
@@ -124,11 +145,12 @@ export default {
       findPopShowYn: false,
       resultSearchKeyList: '',
 
-      myChanListPopYn:false
+      myChanListPopYn: false
     }
   },
   props: {
-    params: {}
+    params: {},
+    popYn: Boolean
   }
 }
 </script>

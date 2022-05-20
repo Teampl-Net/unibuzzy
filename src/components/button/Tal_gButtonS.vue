@@ -14,7 +14,7 @@ export default {
   },
   props: {
     btnTitle: String,
-    btnThema: {},
+    btnThema: {}
   }
 }
 </script>

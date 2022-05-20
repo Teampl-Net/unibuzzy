@@ -60,7 +60,6 @@
 <script>
 import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
-import checkPop from '../confirmPop/Tal_createCheckConfirmPop.vue'
 export default {
 
   mounted () {
@@ -70,106 +69,106 @@ export default {
     return {
       typePopYn: false,
       iconBgPopupYn: '',
-      inputChannelName:'팀플',
-      inputChannelMemo:'안녕하세요. 팀플입니다.',
-      selectTypeText:'클릭해서 산업군을 선택해주세요.',
-      selectType:'',
-      selectIcon:'/resource/channeliconbg/CHAR01.png',
-      selectBg:'/resource/channeliconbg/BG01.jpg',
-      keyWord0:'',
-      keyWord1:'',
-      keyWord2:'',
-      checkPopYn:false,
-      okPopYn:false,
+      inputChannelName: '팀플',
+      inputChannelMemo: '안녕하세요. 팀플입니다.',
+      selectTypeText: '클릭해서 산업군을 선택해주세요.',
+      selectType: '',
+      selectIcon: '/resource/channeliconbg/CHAR01.png',
+      selectBg: '/resource/channeliconbg/BG01.jpg',
+      keyWord0: '',
+      keyWord1: '',
+      keyWord2: '',
+      checkPopYn: false,
+      okPopYn: false
 
     }
   },
   methods: {
-    channelTypeClick(){
-      if (this.typePopYn == false){
+    channelTypeClick () {
+      if (this.typePopYn === false) {
         this.typePopYn = true
       }
     },
-    setTypeData(param){
+    setTypeData (param) {
       // alert(param.teamType)
       this.selectType = param.teamType
-      switch (param.teamType){
+      switch (param.teamType) {
         case 'C':
           this.selectTypeText = '기업'
-          break;
+          break
         case 'G':
           this.selectTypeText = '정부'
-          break;
+          break
         case 'S':
           this.selectTypeText = '학교'
-          break;
+          break
         case 'H':
           this.selectTypeText = '종교'
-          break;
+          break
         case 'D':
           this.selectTypeText = '동호회'
-          break;
+          break
         case 'Q':
           this.selectTypeText = '병원'
-          break;
+          break
         case 'V':
           this.selectTypeText = '약국'
-          break;
+          break
         case 'A':
           this.selectTypeText = '매장'
-          break;
+          break
         case 'P':
           this.selectTypeText = '식당'
-          break;
-
+          break
       }
 
       this.typePopYn = false
     },
-    setIconOrBGData(param){
-      if(this.iconBgPopupYn === 'iconPop'){
+    setIconOrBGData (param) {
+      if (this.iconBgPopupYn === 'iconPop') {
         this.selectIcon = param.selectedId
-      }else if(this.iconBgPopupYn === 'bgPop'){
+      } else if (this.iconBgPopupYn === 'bgPop') {
         this.selectBg = param.selectedId
       }
       this.iconBgPopupYn = false
     },
 
-    setParam(){
-        this.okPopYn = true
-        var g_param = new Object()
-        if (this.selectedType !== '') {
-            g_param.nameMtext = 'KO$^$'+this.inputChannelName
-            g_param.memoMtext = 'KO$^$'+this.inputChannelMemo
-            g_param.teamType = this.selectType
-            // g_param.teamIcon = this.selectIcon
-            // g_param.teamBack = this.selectBg
-            g_param.picPath = this.selectIcon
-            g_param.picBgPath = this.selectBg
-            g_param.teamKeyWord = this.keyWord0+','+this.keyWord1+','+this.keyWord2
-          // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
-            this.$requestCreChan(g_param)
-            setTimeout(() => {
-              this.$emit('successCreChan')
-            }, 300);
-          // this.$emit('makeParam', param)
-        } else {
-          alert('채널 종류를 선택해주세요!')
-        }
+    setParam () {
+      this.okPopYn = true
+      // eslint-disable-next-line no-new-object
+      var gParam = new Object()
+      if (this.selectedType !== '') {
+        gParam.nameMtext = 'KO$^$' + this.inputChannelName
+        gParam.memoMtext = 'KO$^$' + this.inputChannelMemo
+        gParam.teamType = this.selectType
+        // gParam.teamIcon = this.selectIcon
+        // gParam.teamBack = this.selectBg
+        gParam.picPath = this.selectIcon
+        gParam.picBgPath = this.selectBg
+        gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
+        // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
+        this.$requestCreChan(gParam)
+        setTimeout(() => {
+          this.$emit('successCreChan')
+        }, 300)
+        // this.$emit('makeParam', param)
+      } else {
+        alert('채널 종류를 선택해주세요!')
+      }
     },
 
     loadingClose () {
 
       // this.$emit('closeLoading')
-    },
+    }
 
   },
   computed: {
   },
 
-  components:{
-    selecTypePopup,seleciconBgPopup,checkPop
-  },
+  components: {
+    selecTypePopup, seleciconBgPopup
+  }
 
 }
 </script>
@@ -189,7 +188,6 @@ export default {
 }
 .activeTypeBox{background: #6768a7; color: #fff;}
 .activeTypeBox p {color: #fff;}
-
 
 .categoryBox{min-width: 70px; margin-right: 5px; height: 25px;float: left; border-radius: 5px;}
 </style>

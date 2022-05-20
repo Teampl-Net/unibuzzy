@@ -41,6 +41,7 @@ export default {
   name: 'test',
   data () {
     return {
+      pageHistoryName: '',
       credate: [],
       searchKey: '',
       creTeam: '',
@@ -55,11 +56,27 @@ export default {
       autoSaveLog: '끄기'
     }
   },
-  computed: {
+  created () {
+    document.addEventListener('message', e => this.BackPopClose(e))
+    window.addEventListener('message', e => this.BackPopClose(e))
+    var history = localStorage.getItem('popHistoryStack').split('$#$')
+    this.pageHistoryName = 'subPop' + (history.length)
+    this.$addHistoryStack(this.pageHistoryName)
+    this.$emit('addSubHistory', this.pageHistoryName)
   },
   methods: {
+    BackPopClose (e) {
+      if (JSON.parse(e.data).type === 'goback') {
+        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+          if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+            this.closeXPop()
+          }
+        }
+      }
+    },
     closeXPop () {
       this.$emit('closePop')
+      this.$removeHistoryStack()
     },
     settingDateFormat (date) {
       return this.$dayjs(date).format('YYYY-MM-DD')

@@ -122,6 +122,46 @@ const methods = {
     changeTxt = this.$makeMtextMap(text, 'KO')
     if (changeTxt) { return changeTxt }
     // if (changeTxt !== undefined) { return changeTxt }
+  },
+
+  addHistoryStack (n) {
+    // eslint-disable-next-line no-array-constructor
+    var historyS = ''
+    var history = localStorage.getItem('popHistoryStack')
+    if (history) {
+      historyS = history
+    }
+    historyS += '$#$' + n
+    localStorage.setItem('popHistoryStack', historyS)
+    localStorage.setItem('curentPage', n)
+    // alert(localStorage.getItem('historyStack'))
+    return localStorage.getItem('popHistoryStack').split('$#$').length
+  },
+
+  removeHistoryStack () {
+    // eslint-disable-next-line no-debugger
+    debugger
+    var history = localStorage.getItem('popHistoryStack').split('$#$')
+    history.splice(-1, 1)
+    // eslint-disable-next-line no-array-constructor
+    var historyS = ''
+
+    for (var i = 0; i < history.length; i++) {
+      if (history[i].length > 0) { historyS += '$#$' + history[i] }
+    }
+    localStorage.setItem('popHistoryStack', historyS)
+    localStorage.setItem('curentPage', history[history.length - 1])
+    localStorage.setItem('pageDeleteYn', false)
+    // alert(localStorage.getItem('historyStack'))
+  },
+  removeHistoryStackForPage (pageHistoryName) {
+    if (localStorage.getItem('popHistoryStack')) {
+      var history = localStorage.getItem('popHistoryStack').split('$#$')
+      if (history[history.length - 1] === pageHistoryName) {
+        this.$removeHistoryStack()
+        this.$router.go(-1)
+      }
+    }
   }
 }
 export default {
@@ -133,5 +173,8 @@ export default {
     Vue.config.globalProperties.$getUserInform = methods.getUserInform
     Vue.config.globalProperties.$makeMtextMap = methods.makeMtextMap
     Vue.config.globalProperties.$changeText = methods.changeText
+    Vue.config.globalProperties.$addHistoryStack = methods.addHistoryStack
+    Vue.config.globalProperties.$removeHistoryStack = methods.removeHistoryStack
+    Vue.config.globalProperties.$removeHistoryStackForPage = methods.removeHistoryStackForPage
   }
 }

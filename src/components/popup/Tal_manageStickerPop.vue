@@ -2,57 +2,60 @@
     <div @click="closeXPop" class="backModal">
     </div>
     <div ref="popBody" class="stickerPopWrap">
-            <p class="font15 textLeft w-100P fontBold mbottom-05 fl">선택 스티커</p>
-            <!-- <img style="width: 15px; float: right" src="../../assets/images/common/popup_close.png" @closeXPop="closeXPop" alt=""> -->
-            <div class="selectedStickerWrap">
-                <div :style="selectedStickerWidth" style="width: var(--selectedStickerWidth); height: 100%;" class="">
-                    <div :style="'background-color:' + value.picBackground +'; width:' + this.iconSize + 'px'" style="<!-- box-shadow: inset rgb(0 0 0 / 30%) 0 0 0 9999px; --> ;display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in selectedStickerList " :key="index" >
-                        <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
-                        <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
-                        <img  @click="removeStickerList(index)" src="../../assets/images/push/minusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
-                    </div>
-                </div>
-            </div>
-            <p class="font15 w-100P textLeft fontBold">전체 스티커</p>
-            <div class="totalStickerWrap">
-                <div @click="this.createStickerPopShowYn = true" class="createStickerBtn" >
-                <!-- <div @click="this.createStickerPopShowYn = true" style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" > -->
-                    +
-                </div>
-                <div :style="myStickerWidth" style="width: var(--myStickerWidth); height: 100%;" class="mbottom-1">
-                    <!-- eslint-disable-next-line vue/no-use-v-if-with-v-for -->
-                    <div :class="value.showYn === false ? 'dispN' : '' " :style="'background-color:' + value.picBackground +'; width:' + this.iconSize + 'px'" style="display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in setMyStickerList(this.selectedStickerList) " :key="index" >
-                        <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
-                        <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
-                        <img  @click="addStickerList(index)" src="../../assets/images/push/plusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
-                    </div>
-                </div>
-            </div>
-            <gBtnSmall btnTitle="닫기" @click="closeXPop" />
-        </div> <!--@closeXPop="closeXPop" -->
-        <div v-if="this.createStickerPopShowYn" class="createStickerPopWrap ">
-            <div class="createStickerPop">
-                <p class="font15 w-100p textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
-                <div style="width: 100%; height: 25px; display: flex; justify-content: center; align-items: center;">
-                    <gBtnSmall @click="this.colorPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF;" btnTitle="색상"/>
-                    <gBtnSmall @click="this.stickerPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF; margin-left: 10px" btnTitle="아이콘"/>
-                </div>
-                <div :style="changeColor" style="margin: 0 auto; margin-top: 5px; background-color: var(--selectedColor);width: 130px; height: 130px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 30px;">
-                    <img style="width: 90px;" :src="selectCreateStickerImg" alt="">
-                </div>
-                    <input v-model="stickerNameMtext" type="text" class="stickerNameInput">
-                <div :class="this.colorPickerShowYn === false ? 'dispN':''" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 0; left: 0; z-index: 99999; width: 100%; height: 300px; ">
-                    <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
-                </div>
-                <div :class="this.stickerPickerShowYn === false ? 'dispN':''" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 0; left: 0; z-index: 99999; width: 100%; height: 300px; ">
-                    <iconPicker :stickerPick="this.selectedSticker" @closePop="closeStickerPickerPop" />
-                </div>
-                <div style="width: 100%; height: 30px; margin-top: 20px; display: flex; justify-content: center; align-items: center;">
-                    <gBtnSmall @click="createSticker " btnTitle="생성"/>
-                    <gBtnSmall @click="this.createStickerPopShowYn = false" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; background: #FFFFFF; margin-left: 10px" btnTitle="취소"/>
-                </div>
-            </div>
-        </div>
+      <p class="font15 textLeft w-100P fontBold mbottom-05 fl">선택 스티커</p>
+      <!-- <img style="width: 15px; float: right" src="../../assets/images/common/popup_close.png" @closeXPop="closeXPop" alt=""> -->
+      <div class="selectedStickerWrap">
+          <div :style="selectedStickerWidth" style="width: var(--selectedStickerWidth); height: 100%;" class="">
+              <div :style="'background-color:' + value.picBgPath +'; width:' + this.iconSize + 'px'" style="<!-- box-shadow: inset rgb(0 0 0 / 30%) 0 0 0 9999px; --> ;display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in selectedStickerList " :key="index" >
+                  <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
+                  <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
+                  <img  @click="removeStickerList(index)" src="../../assets/images/push/minusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
+              </div>
+          </div>
+      </div>
+      <p class="font15 w-100P textLeft fontBold">전체 스티커</p>
+      <div class="totalStickerWrap">
+          <div @click="this.createStickerPopShowYn = true" class="createStickerBtn" >
+          <!-- <div @click="this.createStickerPopShowYn = true" style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" > -->
+              +
+          </div>
+          <div :style="myStickerWidth" style="width: var(--myStickerWidth); height: 100%;" class="mbottom-1">
+              <!-- eslint-disable-next-line vue/no-use-v-if-with-v-for -->
+              <div :class="value.showYn === false ? 'dispN' : '' " :style="'background-color:' + value.picBgPath +'; width:' + this.iconSize + 'px'" style="display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in setMyStickerList " :key="index" >
+                  <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
+                  <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
+                  <img  @click="addStickerList(index)" src="../../assets/images/push/plusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
+              </div>
+          </div>
+      </div>
+      <div style="width: 100%; bottom: 0; min-height: 30px">
+        <gBtnSmall btnTitle="닫기" class="fl" @click="closeXPop" />
+        <gBtnSmall btnTitle="적용" class="fl mright-05" @click="updateStickerList" />
+      </div>
+  </div> <!--@closeXPop="closeXPop" -->
+  <div v-if="this.createStickerPopShowYn" class="createStickerPopWrap ">
+      <div class="createStickerPop">
+          <p class="font15 w-100p textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
+          <div style="width: 100%; height: 25px; display: flex; justify-content: center; align-items: center;">
+              <gBtnSmall @click="this.colorPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF;" btnTitle="색상"/>
+              <gBtnSmall @click="this.stickerPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF; margin-left: 10px" btnTitle="아이콘"/>
+          </div>
+          <div :style="changeColor" style="margin: 0 auto; margin-top: 5px; background-color: var(--selectedColor);width: 130px; height: 130px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 30px;">
+              <img style="width: 90px;" :src="selectCreateStickerImg" alt="">
+          </div>
+              <input v-model="stickerNameMtext" type="text" class="stickerNameInput">
+          <div :class="this.colorPickerShowYn === false ? 'dispN':''" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 0; left: 0; z-index: 99999; width: 100%; height: 300px; ">
+              <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
+          </div>
+          <div :class="this.stickerPickerShowYn === false ? 'dispN':''" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 0; left: 0; z-index: 99999; width: 100%; height: 300px; ">
+              <iconPicker :stickerPick="this.selectedSticker" @closePop="closeStickerPickerPop" />
+          </div>
+          <div style="width: 100%; height: 30px; margin-top: 20px; display: flex; justify-content: center; align-items: center;">
+              <gBtnSmall @click="createSticker " btnTitle="생성"/>
+              <gBtnSmall @click="this.createStickerPopShowYn = false" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; background: #FFFFFF; margin-left: 10px" btnTitle="취소"/>
+          </div>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -96,37 +99,45 @@ export default {
     },
     selectCreateStickerImg () {
       return './resource/stickerIcon/sticker' + this.selectedSticker + '.svg'
-    }
-  },
-  created () {
-    // this.setMyStickerList(this.stickerList)
-    var maxWidth = window.innerWidth * 0.8
-    if (maxWidth > 500) { maxWidth = 500 }
-    this.iconSize = (maxWidth - 60) / 3 - 10
-    // this.selectedStickerList = this.stickerList
-    this.getStickerList()
-  },
-  props: {
-    // stickerList: {}
-  },
-  methods: {
-    async getStickerList () {
-      this.myStickerList = await this.$getStickerList()
     },
-    closeXPop () {
-      this.$emit('closePop')
-    },
-    setMyStickerList (sList) {
-      for (var k = 0; k < this.myStickerList.length; k++) {
+    setMyStickerList () {
+      var test = this.myStickerList
+      for (var k = 0; k < test.length; k++) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.myStickerList[k].showYn = true
-        for (var i = 0; i < sList.length; i++) {
-          if (this.myStickerList[k].stickerKey === sList[i].stickerKey) {
+        for (var i = 0; i < this.selectedStickerList.length; i++) {
+          if (this.myStickerList[k].stickerKey === this.selectedStickerList[i].stickerKey) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             this.myStickerList[k].showYn = false
             break
           }
         }
       }
       return this.myStickerList
+    }
+  },
+  created () {
+    var maxWidth = window.innerWidth * 0.8
+    if (maxWidth > 500) { maxWidth = 500 }
+    this.iconSize = (maxWidth - 60) / 3 - 10
+    this.selectedStickerList = this.stickerList
+    // alert(this.stickerList)getStickerList
+    this.getStickerList()
+    // await this.setMyStickerList(this.stickerList)
+  },
+  props: {
+    stickerList: {}
+  },
+  methods: {
+    async getStickerList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      var resultData = await this.$getStickerList(param)
+      this.myStickerList = resultData
+    },
+    closeXPop () {
+      this.$emit('closePop')
     },
     removeStickerList (idx) {
       var removeKey = this.selectedStickerList[idx].stickerKey
@@ -156,6 +167,8 @@ export default {
       }
       this.stickerPickerShowYn = false
     },
+    updateStickerList () {
+    },
     async createSticker () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -172,7 +185,7 @@ export default {
         return
       }
       if (this.selectedColor !== undefined && this.selectedColor !== null && this.selectedColor !== '') {
-        param.picBackground = this.selectedColor
+        param.picBgPath = this.selectedColor
       } else {
         alert('스티커 배경색을 지정해주세요')
       }

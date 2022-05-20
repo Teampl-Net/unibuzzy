@@ -42,22 +42,22 @@
 </template>
 <script>
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
-import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
+// import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
-import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
-
-
-
+// import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
 
 export default {
+  props: {
+    params: {}
+  },
   data () {
     return {
 
       // msgPopYn:false,
-      testpopYn:true,
-      msgData:'',
-      organizationText:'구독자 전원',
-      writePushTitle:'팀플 앱 사용 안내',
+      testpopYn: true,
+      msgData: '',
+      organizationText: '구독자 전원',
+      writePushTitle: '팀플 앱 사용 안내',
 
       myProgress: 55.5,
       closeAutoPopCnt: 5,
@@ -95,6 +95,8 @@ export default {
       }
     }
   },
+  created () {
+  },
   methods: {
     messageAreaClick () {
       this.msgPopYn = true
@@ -115,8 +117,9 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.bodyMinStr = this.msgData
-      param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-      param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+      param.creTeamKey = this.params.targetKey
+      // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+      // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       var title = this.writePushTitle
       if (title) {
@@ -125,21 +128,19 @@ export default {
         alert('제목을 입력해주세요')
         return
       }
+      alert(true)
       this.$saveContents(param)
     },
     clickPageTopBtn (btn) {
       if (btn === 'sendPushMsg') {
         if (this.writePushTitle && this.msgData) {
-          alert('제목 : ' + this.writePushTitle +
-          '\n수신대상 : ' + this.organizationText +
-          '\n내용 : ' + this.msgData)
         } else {
           alert('제목과 내용 모두 입력해주세요')
         }
 
-        // this.setParamInnerHtml()
-      }else{
-       //ssss
+        this.setParamInnerHtml()
+      } else {
+        // ssss
       }
     },
     onReady (editor) {
@@ -188,8 +189,8 @@ export default {
 
   components: {
     // msgPop,
-    writePushPageTitle,
-    pushPop
+    // writePushPageTitle,
+    // pushPop
   }
 }
 </script>

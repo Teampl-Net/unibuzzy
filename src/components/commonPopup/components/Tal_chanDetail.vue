@@ -48,11 +48,11 @@ export default {
   },
   data () {
     return {
-      editInputMsg:'',
-      editInputUrl:'',
-      editYn:false,
-      editBtnTitle:'채널수정',
-      defalutUrl:'pushmsg.net',
+      editInputMsg: '',
+      editInputUrl: '',
+      editYn: false,
+      editBtnTitle: '채널수정',
+      defalutUrl: 'pushmsg.net',
 
       followYn: false,
       chanItem: { chanName: '아이디어스', chanImg: 'http://placehold.it/30', chanMsg: '일상에 특별함을 잇다!<br>핸드메이드 라이프 스타일 플랫폼, 아이디어스', subsCnt: '35600', chanUrl: 'https://www.idus.com' }
@@ -99,20 +99,19 @@ export default {
       if (changeTxt) { return changeTxt }
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    editChannelClick(){
+    editChannelClick () {
       this.setEditValue()
-      if(this.editYn == true){
-        alert(this.editInputMsg + '\n' +this.editInputUrl)
+      if (this.editYn === true) {
+        alert(this.editInputMsg + '\n' + this.editInputUrl)
         this.editYn = false
-        this.editBtnTitle='채널수정'
-      }else{
-
+        this.editBtnTitle = '채널수정'
+      } else {
         this.editYn = true
-        this.editBtnTitle='수정완료'
+        this.editBtnTitle = '수정완료'
       }
       // alert("수정클릭 \n"+this.chanDetail.memoMtext)
     },
-    setEditValue(){
+    setEditValue () {
       this.editInputMsg = this.changeText(this.chanDetail.memoMtext)
       this.editInputUrl = this.defalutUrl
     }

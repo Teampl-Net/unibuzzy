@@ -1,20 +1,20 @@
 <template>
     <div class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
-      <fullModal :style="getWindowSize" transition="showModal" :id="'commonWrap'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader"/>
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+        <pushList :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
-        <chanList @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+        <chanList :popYn="true" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
       <askTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
@@ -22,9 +22,8 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
 
-
       <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
-      <writePush v-if="this.targetType === 'writePush'" @closeXPop="closeXPop" />
+      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" />
 
     </div>
 </template>
@@ -45,11 +44,13 @@ import leaveTal from './components/Tal_leaveTheAlim.vue'
 import createChannel from '../popup/creChannel/Tal_creChannelStep00.vue'
 import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
-
 export default {
   async created () {
     await this.settingPop()
+    this.$addHistoryStack('pop' + this.thisPopN)
     // alert('현재 팝업 개수는 ' + this.thisPopN)
+    document.addEventListener('message', e => this.BackPopClose(e))
+    window.addEventListener('message', e => this.BackPopClose(e))
   },
   mounted () {
     // alert('현재 팝업 개수는 ' + this.thisPopN)
@@ -102,19 +103,36 @@ export default {
   updated () {
   },
   methods: {
+    BackPopClose (e) {
+      if (e === 'headerClick') {
+        this.closeXPop()
+      } else if (JSON.parse(e.data).type === 'goback') {
+        if (localStorage.getItem('popHistoryStack')) {
+          if (localStorage.getItem('pageDeleteYn')) {
+            if ((localStorage.getItem('curentPage') === 'pop' + this.thisPopN)) {
+              // alert(localStorage.getItem('curentPage') + localStorage.getItem('pageDeleteYn') + this.thisPopN)
+              this.closeXPop()
+            }
+          }
+        }
+        // alert(message.systemNameData)
+        /* alert('뒤로가래!!!') */
+      }
+    },
     async settingPop () {
       this.chanFollowYn = false
       var target = this.params
       this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
       // var tt = this.params
-
-      if (this.params.targetType === 'pushDetail' || this.params.targetType === 'chanDetail') {
+      if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
         this.detailVal = this.params
-        if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
-          this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
-        } else {
-          this.headerTitle = '상세'
+        if (this.detailVal.value) {
+          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
+            this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+          } else {
+            this.headerTitle = '상세'
+          }
         }
         if (this.params.targetType === 'chanDetail') {
           this.headerTitle = ''
@@ -146,12 +164,16 @@ export default {
         this.targetType = 'changeInfo'
         this.changInfoType = this.params.targetType
         this.headerTitle = '이메일 수정'
-      }else if (this.params.targetType === 'createChannel'){
-        this.headerTitle = '채널만들기'
-      }else if (this.params.targetType ===  'writePush'){
-        this.headerTitle = '알림쓰기'
+      } else if (this.params.targetType === 'createChannel') {
+        this.headerTitle = '채널 생성'
+      } else if (this.params.targetType === 'writePush') {
+        this.headerTitle = '알림 작성'
       }
-      this.thisPopN = Number(this.parentPopN) + 1
+      if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
+        this.thisPopN = Number(this.parentPopN) + 1
+      } else {
+        this.thisPopN = 100
+      }
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
     openPop (params) {
@@ -162,7 +184,10 @@ export default {
       this.popShowYn = false
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
-      this.$emit('closePop', pThisPopN)
+      if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
+        this.$emit('closePop', pThisPopN)
+        this.$removeHistoryStack(this.thisPopN)
+      }
     },
     changeText (text) {
       var changeTxt = ''

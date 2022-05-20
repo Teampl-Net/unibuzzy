@@ -1,18 +1,9 @@
 <template ref="ttttt">
   <div>
+    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
-      <fullModal
-        transition="showModal"
-        :style="getWindowSize"
-        @openLoading="this.loadingYn = true"
-        @closeLoading="this.loadingYn = false"
-        id="commonWrap1"
-        @closePop="closePop"
-        v-if="this.popShowYn"
-        :parentPopN="this.parentPopN"
-        :params="this.popParams"
-      />
+      <fullModal transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
     <pushModal
       @openLoading="this.loadingYn = true"
@@ -76,77 +67,99 @@
 <script>
 // import index from '../../router/index'
 // import { onMessage } from '../assets/js/webviewInterface.js'
-import TalMenu from "../components/popup/Tal_menu.vue";
-import loadingCompo from "../components/Tal_loading.vue";
+import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
+import TalMenu from '../components/popup/Tal_menu.vue'
+import loadingCompo from '../components/Tal_loading.vue'
 export default {
-  data() {
+  data () {
     return {
       popShowYn: false,
       parentPopN: 0,
       showMenuYn: false,
       pushPopShowYn: false,
-      pushPopParams: "",
-      popParams: "",
-      headerTitle: "",
+      pushPopParams: '',
+      popParams: '',
+      headerTitle: '',
       loadingYn: true,
       routerReloadKey: 0,
-    };
+      notiDetail: '',
+      notiDetailShowYn: false
+    }
   },
   props: {},
-  name: "mainRouter",
+  name: 'mainRouter',
   components: {
     TalMenu,
     loadingCompo,
+    pushPop
   },
-  mounted() {
+  mounted () {
     // onMessage('REQ', 'getUserInfo')
   },
   computed: {
-    getWindowSize() {
+    getWindowSize () {
       return {
-        "--widndowWidth": window.innerWidth + "px",
-      };
-    },
+        '--widndowWidth': window.innerWidth + 'px'
+      }
+    }
   },
   methods: {
-    showMenu() {
-      this.showMenuYn = true;
+    openDetailPop (params) {
+      this.closePushPop()
+      this.openPop(params)
     },
-    hideMenu() {
-      this.showMenuYn = false;
+    closePushPop () {
+      this.notiDetailShowYn = false
     },
-    openPop(params) {
-      this.popParams = params;
-      this.popShowYn = true;
-      this.showMenuYn = false;
+    recvNoti (e) {
+      // alert(JSON.parse(e.data).type)
+      if (JSON.parse(e.data).type === 'pushmsg') {
+        // alert(JSON.stringify(JSON.parse(e.data).pushMessage))
+        this.notiDetail = JSON.parse(e.data).pushMessage
+        this.notiDetailShowYn = true
+      }
     },
-    openPushPop(params) {
-      this.pushPopParams = params;
-      this.pushPopShowYn = true;
+    showMenu () {
+      this.showMenuYn = true
     },
-    closePop() {
+    hideMenu () {
+      this.showMenuYn = false
+    },
+    openPop (params) {
+      this.popParams = params
+      this.popShowYn = true
+      this.showMenuYn = false
+    },
+    openPushPop (params) {
+      this.pushPopParams = params
+      this.pushPopShowYn = true
+    },
+    closePop () {
       // this.$refs.routerViewRef.reload()
       //  alert(true)
-      this.routerReloadKey += 1;
-      this.popShowYn = false;
+      this.routerReloadKey += 1
+      this.popShowYn = false
     },
-    closeXPushPop() {
-      this.pushPopShowYn = false;
+    closeXPushPop () {
+      this.pushPopShowYn = false
     },
-    changePageHeader(title) {
-      this.headerTitle = title;
+    changePageHeader (title) {
+      this.headerTitle = title
     },
-    goPage(page) {
+    goPage (page) {
       // alert(page)
-      this.showMenuYn = false;
-      this.$router.replace({ path: "/" + page });
-    },
+      this.showMenuYn = false
+      this.$router.push({ path: '/' + page })
+    }
   },
-  async created() {},
+  created () {
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
+  }
   // onMessage (data) {
   //   window.nsWebViewBridge.emit('onMessage', data)
   // }
-};
+}
 </script>
 
 <style scoped>

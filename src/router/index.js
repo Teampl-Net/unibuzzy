@@ -14,7 +14,7 @@ import chanList from '../pages/routerPages/Tal_chanList.vue'
 // import { loginCheck } from '../assets/js/Tal_common'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
-import test from '../pages/test.vue'
+import test from '../pages/test copy.vue'
 import myChanList from '../components/popup/Tal_managerChanList.vue'
 // import store from '../store/index'
 import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
@@ -23,9 +23,6 @@ import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.v
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
 import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
-
-//add by_jeong
-import writePushTest from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 
 const routes = [
   {
@@ -168,7 +165,7 @@ const routes = [
     name: 'myChanList',
     props: true,
     component: myChanList
-  },
+  }
   // {
   //  path: '/about',
   // name: 'About',
@@ -177,12 +174,7 @@ const routes = [
   // which is lazy-loaded when the route is visited.
   //  component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue')
   // }
-  {
-    path: '/writePushTest',
-    name: 'writePushTest',
-    props: true,
-    component:writePushTest
-  }
+
 ]
 
 const router = createRouter({

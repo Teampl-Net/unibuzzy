@@ -1,6 +1,6 @@
 <template>
   <div v-if="loadYn" class="pushDetailWrap">
-    <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
+    <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
 
@@ -20,9 +20,9 @@
           <div class="alimCheckContents">
             <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
             <div class="pushDetailStickerWrap">
-              <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
+              <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
                 <!-- <span class="font15">{{value.stickerName}}</span> -->
-                <img :src="value.stickerIcon" alt="">
+                <img :src="value.picPath" alt="">
               </div>
             </div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
@@ -62,7 +62,8 @@ export default {
           { stickerName: '온라인 쇼핑몰', stickerKey: '1', stickerColor: '#0dcaf05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
           { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
         ]
-      }
+      },
+      userDoStickerList: []
 
     }
   },
@@ -91,8 +92,8 @@ export default {
       param.contentsKey = this.detailVal.targetKey
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
-      // this.userDoList = resultList.content[0].userDoList
-      // await this.settingUserDo(this.userDoList)
+      var userDoList = resultList.content[0].userDoList
+      await this.settingUserDo(userDoList)
       // alert(JSON.stringify(this.alimDetail))
       this.$emit('closeLoading')
     },
@@ -102,6 +103,8 @@ export default {
       var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
       if (userDo !== undefined && userDo !== null && userDo !== '') {
+        // eslint-disable-next-line no-array-constructor
+        this.userDoStickerList = new Array()
         for (var i = 0; i < userDo.length; i++) {
           if (userDo[i].doType === 'LI') {
             userDoList[1].doKey = userDo[i].doKey
@@ -111,6 +114,9 @@ export default {
           }
           if (userDo[i].doType === 'RE') {
             this.readYn = true
+          }
+          if (userDo[i].doType === 'SK') {
+            this.userDoStickerList.push(userDo[i].sticker)
           }
         }
       }

@@ -18,7 +18,6 @@
             <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: 100%;" >
             <!-- <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: calc(var(--chanBoxSize) + 10px);" > -->
 
-
           </div>
       </div>
 
@@ -30,60 +29,60 @@
 <script>
 // import a from ' resource/channeliconbg/CHAR01.png'\
 export default {
-  props:{opentype:{}},
-  created(){
+  props: { opentype: {} },
+  created () {
     this.setDefaultData()
   },
   data () {
     return {
       selectedId: '',
-      selectedBack:'',
+      selectedBack: '',
       teamImgList: [],
-      msgTitle:'',
-      msgError:''
+      msgTitle: '',
+      msgError: ''
     }
   },
   methods: {
-    setDefaultData(){
-      if(this.opentype == 'iconPop'){
+    setDefaultData () {
+      if (this.opentype === 'iconPop') {
         this.msgTitle = '채널를 대표할 아이콘을 선택해주세요.'
         this.msgError = '대표 아이콘을 선택해주세요!'
         this.teamImgList = [
-          {teamChartext:'황구', teamCharImg:'/resource/channeliconbg/CHAR01.png', charId: '01'},
-          {teamChartext:'양', teamCharImg:'/resource/channeliconbg/CHAR02.png', charId: '02'},
-          {teamChartext:'숫사슴', teamCharImg:'/resource/channeliconbg/CHAR03.png', charId: '03'},
-          {teamChartext:'병아리', teamCharImg:'/resource/channeliconbg/CHAR04.png',charId:'04'},
-          {teamChartext:'쥐', teamCharImg:'/resource/channeliconbg/CHAR05.png',charId:'05'},
-          {teamChartext:'늑대', teamCharImg:'/resource/channeliconbg/CHAR06.png',charId:'06'},
-          {teamChartext:'암사슴', teamCharImg:'/resource/channeliconbg/CHAR07.png',charId:'07'},
-          {teamChartext:'강아지', teamCharImg:'/resource/channeliconbg/CHAR08.png',charId:'08'},
-          {teamChartext:'너구리', teamCharImg:'/resource/channeliconbg/CHAR09.png',charId:'09'}
+          { teamChartext: '황구', teamCharImg: '/resource/channeliconbg/CHAR01.png', charId: '01' },
+          { teamChartext: '양', teamCharImg: '/resource/channeliconbg/CHAR02.png', charId: '02' },
+          { teamChartext: '숫사슴', teamCharImg: '/resource/channeliconbg/CHAR03.png', charId: '03' },
+          { teamChartext: '병아리', teamCharImg: '/resource/channeliconbg/CHAR04.png', charId: '04' },
+          { teamChartext: '쥐', teamCharImg: '/resource/channeliconbg/CHAR05.png', charId: '05' },
+          { teamChartext: '늑대', teamCharImg: '/resource/channeliconbg/CHAR06.png', charId: '06' },
+          { teamChartext: '암사슴', teamCharImg: '/resource/channeliconbg/CHAR07.png', charId: '07' },
+          { teamChartext: '강아지', teamCharImg: '/resource/channeliconbg/CHAR08.png', charId: '08' },
+          { teamChartext: '너구리', teamCharImg: '/resource/channeliconbg/CHAR09.png', charId: '09' }
         ]
-      }else if(this.opentype == 'bgPop'){
+      } else if (this.opentype === 'bgPop') {
         this.msgTitle = '채널의 배경 사진을 선택해주세요.'
         this.msgError = '배경 사진을 선택해주세요!'
         this.teamImgList = [
-          {teamChartext:'젖은 나뭇잎', teamCharImg:'/resource/channeliconbg/BG01.jpg', charId: '01'},
-          {teamChartext:'파도', teamCharImg:'/resource/channeliconbg/BG02.jpg', charId: '02'},
-          {teamChartext:'돌', teamCharImg:'/resource/channeliconbg/BG03.jpg', charId: '03'},
-          {teamChartext:'나이테', teamCharImg:'/resource/channeliconbg/BG04.jpg',charId:'04'},
-          {teamChartext:'키위', teamCharImg:'/resource/channeliconbg/BG05.jpg',charId:'05'},
-          {teamChartext:'검정', teamCharImg:'/resource/channeliconbg/BG06.jpg',charId:'06'},
-          {teamChartext:'유리구술', teamCharImg:'/resource/channeliconbg/BG07.jpg',charId:'07'},
-          {teamChartext:'벽돌', teamCharImg:'/resource/channeliconbg/BG08.jpg',charId:'08'},
-          {teamChartext:'나뭇잎', teamCharImg:'/resource/channeliconbg/BG09.jpg',charId:'09'}
+          { teamChartext: '젖은 나뭇잎', teamCharImg: '/resource/channeliconbg/BG01.jpg', charId: '01' },
+          { teamChartext: '파도', teamCharImg: '/resource/channeliconbg/BG02.jpg', charId: '02' },
+          { teamChartext: '돌', teamCharImg: '/resource/channeliconbg/BG03.jpg', charId: '03' },
+          { teamChartext: '나이테', teamCharImg: '/resource/channeliconbg/BG04.jpg', charId: '04' },
+          { teamChartext: '키위', teamCharImg: '/resource/channeliconbg/BG05.jpg', charId: '05' },
+          { teamChartext: '검정', teamCharImg: '/resource/channeliconbg/BG06.jpg', charId: '06' },
+          { teamChartext: '유리구술', teamCharImg: '/resource/channeliconbg/BG07.jpg', charId: '07' },
+          { teamChartext: '벽돌', teamCharImg: '/resource/channeliconbg/BG08.jpg', charId: '08' },
+          { teamChartext: '나뭇잎', teamCharImg: '/resource/channeliconbg/BG09.jpg', charId: '09' }
         ]
-
       }
     },
     setParam () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
-        if (this.selectedId !== '') {
-          param.selectedId = this.selectedId
-          this.$emit('makeParam', param)
-        } else {
-          alert(this.msgError)
-        }
+      if (this.selectedId !== '') {
+        param.selectedId = this.selectedId
+        this.$emit('makeParam', param)
+      } else {
+        alert(this.msgError)
+      }
     },
     selectChanInfo (id) {
       this.selectedId = id
@@ -136,4 +135,3 @@ export default {
   justify-content: space-around;
 }
 </style>
-

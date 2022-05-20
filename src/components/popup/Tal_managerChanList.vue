@@ -13,23 +13,15 @@
 
             <div  style="width: 100%;  ">
 
-
               <!-- <div  v-for="(value, index) in chanList" :key="index" style="width: 150px; float: left; display: flex; flex-direction: column; height: 150px; "> -->
               <div  v-for="(value, index) in chanList" :key="index" style="float: left; display: flex; flex-direction: column; margin-right:10px;">
                 <div style="width: 6rem; height: 6rem; border-radius: 10px; border: 1px solid #ccc; " @click="this.goAdmPage(value)"></div>
                 <span v-html="changeText(value.nameMtext)"></span>
               </div>
-              <div  style="float: left; display: flex; flex-direction: column;">
-                <div style="width: 6rem; height: 6rem; border-radius: 10px; border: 1px solid #ccc;display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;" @click="this.creChanPopYn = true">
-
-                  <p style="font-size:70px;" >+</p>
-                </div>
-                <span> 채널 만들기</span>
-
+              <div  style="width: 150px; float: left; display: flex; flex-direction: column; height: 150px; ">
+                <div style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 25px;" @click="this.creChanPopYn = true" >+</div>
               </div>
-
             </div>
-
 
             <div v-if="creChanPopYn" style="width: 100vw;  position: fixed; z-index: 99999; top: 0; left: 0; background: #fff; ">
                 <creChanPop @successCreChan="successCreChan"  @closePop="this.creChanPopYn = false"/>
@@ -48,30 +40,30 @@
 </template>
 
 <script>
-import creChanPop from "./creChannel/Tal_creChannelPop.vue";
+import creChanPop from './creChannel/Tal_creChannelPop.vue'
 export default {
-  data() {
+  data () {
     return {
       creChanPopYn: false,
       creChanResultYn: false,
-      headerTitle: "내 채널",
-      chanList: [],
-    };
+      headerTitle: '내 채널',
+      chanList: []
+    }
   },
   components: {
-    creChanPop,
+    creChanPop
   },
   computed: {},
-  async created() {
-    await this.getManagerChanList();
+  async created () {
+    await this.getManagerChanList()
   },
   methods: {
-    closeXPop() {
-      this.$emit("closePop");
+    closeXPop () {
+      this.$emit('closePop')
     },
-    successCreChan() {
-      this.creChanPopYn = false;
-      this.creChanResultYn = true;
+    successCreChan () {
+      this.creChanPopYn = false
+      this.creChanResultYn = true
     },
     async getManagerChanList () {
       var paramMap = new Map()
@@ -83,21 +75,21 @@ export default {
       // alert(JSON.stringify(this.chanList))
       // this.$emit('closeLoading')
     },
-    changeText(text) {
-      var changeTxt = "";
+    changeText (text) {
+      var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
-      changeTxt = this.$makeMtextMap(text, "KO");
+      changeTxt = this.$makeMtextMap(text, 'KO')
       if (changeTxt) {
-        return changeTxt;
+        return changeTxt
       }
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    goAdmPage(value) {
-      localStorage.setItem("sessionTeam", JSON.stringify(value));
-      this.$router.replace({ name: "admChanMain" });
-    },
-  },
-};
+    goAdmPage (value) {
+      localStorage.setItem('sessionTeam', JSON.stringify(value))
+      this.$router.replace({ name: 'admChanMain' })
+    }
+  }
+}
 </script>
 <style scoped>
 .commonPopHeader {

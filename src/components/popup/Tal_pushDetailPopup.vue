@@ -1,32 +1,31 @@
 <template>
-  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:1;" @click="goNo"></div>
+  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:9999999999999;" @click="goNo"></div>
   <div class="pushPopUpWrap" >
-    <div class="pushPopContent pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+    <div class="pushPopContent pushMbox">
       <div class="pushDetailTopArea">
-        <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
+        <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+          <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-          <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
-          <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+          <p class="font12 fl lightGray">{{this.changeText(pushDetail.title)}}</p>
+          <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="alim.bodyMinStr" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
+      <div class="font15 mbottom-1" v-html="pushDetail.body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
       <div class="detailPopUpBtnArea">
-        <gBtnSmall btnTitle="닫기" class="mright-05" @click="goNo"/>
-        <gBtnSmall btnTitle="바로가기" class="mleft-05" @click="goOk"/>
-
+        <gBtnSmall btnTitle="닫기" class="mright-05" style="height: 30px;" @click="goNo"/>
+        <gBtnSmall btnTitle="바로가기" class="mleft-05" style="height: 30px;" @click="goOk"/>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 export default {
   data () {
     return {
       loadYn: true,
-      alimDetail: {}
+      pushDetail: {},
+      targetKey: ''
       // testTargetKey:1000002,
     }
   },
@@ -35,30 +34,19 @@ export default {
   },
   methods: {
     goOk () {
-      alert(this.detailVal)
-      this.$emit('ok', this.detailVal)
+      this.openPushDetailPop()
     },
     goNo () {
-      this.$emit('no')
+      this.$emit('closePushPop')
       // this.timeOut()
     },
-
-    async getContentsList () {
+    openPushDetailPop () {
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // param.baseContentsKey = this.detailVal.targetKey
-
-      param.contentsKey = this.detailVal
-      // param.contentsKey = this.testTargetKey
-
-      var resultList = await this.$getContentsList(param)
-      this.alimDetail = resultList.content
-
-      // this.userDoList = resultList.content[0].userDoList
-      // await this.settingUserDo(this.userDoList)
-      // alert(JSON.stringify(this.alimDetail))
-
-      // this.$emit('closeLoading')
+      var params = new Object()
+      params.targetType = 'pushDetail'
+      params.targetKey = this.targetKey
+      this.$emit('openDetailPop', params)
+      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     changeText (text) {
       var changeTxt = ''
@@ -73,14 +61,21 @@ export default {
 
   },
   created () {
-    this.getContentsList()
+    // alert(localStorage.getItem('systemName'))
+    if (localStorage.getItem('systemName') === 'iOS') {
+      this.pushDetail = JSON.parse(this.detailVal).data
+      this.targetKey = this.pushDetail.contentsKey
+    } else {
+      this.pushDetail = JSON.parse(this.detailVal).data
+      this.targetKey = this.pushDetail.contentsKey
+    }
   }
 }
 </script>
 
 <style scoped>
 
-.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed;  z-index: 99; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
+.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed;  z-index: 99999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 

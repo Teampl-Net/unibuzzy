@@ -109,13 +109,18 @@ const isJsonString = (str) => {
           router.replace({ name: 'permissions' })
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
-        } else if (message.type === 'pushmsg') {
-          alert(JSON.stringify(message.pushMessage))
-          alert('제목:' + message.pushMessage.title + '\n내용:' + message.pushMessage.body)
-          // router.replace({ name: 'policy' })
         } else if (message.type === 'deviceSystemName') {
           // alert(message.systemNameData)
           localStorage.setItem('systemName', message.systemNameData)
+        } else if (message.type === 'goback') {
+          localStorage.setItem('pageDeleteYn', true)
+          /* if (localStorage.getItem('popHistoryStack')) {
+            ;
+          } else {
+            router.go(-1)
+          } */
+          // alert(message.systemNameData)
+          /* alert('뒤로가래!!!') */
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

@@ -25,9 +25,6 @@
 
 <script>
 import selectChanType from './Tal_creChannelStep00.vue'
-import creStep01 from './Tal_creChannelStep01'
-import creStep02 from './Tal_creChannelStep02'
-import creStep03 from './Tal_creChannelStep03'
 // import creStep04 from './Tal_creChannelStep04'
 export default {
   data () {
@@ -55,13 +52,11 @@ export default {
         this.creStep -= 1
       }
     },
-    clickExit(){
+    clickExit () {
       this.$emit('closePop')
     },
     async setParam (inputParam) {
       // alert(inputParam.teamType+'\n' + inputParam.teamIcon+'\n'+inputParam.teamBack+'\n'+inputParam.teamkeyword)
-
-
 
       this.g_param.teamType = inputParam.teamType
       this.g_param.nameMtext = inputParam.teamNmae
@@ -71,8 +66,6 @@ export default {
       this.g_param.teamkeyword = inputParam.teamkeyword
 
       // alert(this.g_param.teamType+'\n'+ this.g_param.nameMtext +'\n'+ this.g_param.teamMemo)
-
-
 
       // eslint-disable-next-line no-new-object
       // var param = new Object()
@@ -101,19 +94,13 @@ export default {
         this.$emit('successCreChan')
       }
 
-
-
-
       // this.$emit('createChannel', param)
     }
   },
   computed: {
   },
   components: {
-    selectChanType,
-    creStep01,
-    creStep02,
-    creStep03
+    selectChanType
     // creStep04
   }
 }

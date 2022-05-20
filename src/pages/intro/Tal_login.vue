@@ -22,7 +22,7 @@
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-      <div v-if="this.systemName === 'ios'" class="loginBtn" v-on:click="AppleLoginBtn">
+      <div v-if="this.systemName === 'iOS'" class="loginBtn" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
       </div>
@@ -35,7 +35,7 @@ export default {
   name: '',
   data () {
     return {
-      systemName: 'ios'
+      systemName: 'iOS'
     }
   },
   created () {
