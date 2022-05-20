@@ -6,6 +6,9 @@
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <span class="font16">구독자 100명| 알림발송 100건</span>
         <span class="font22 fontBold">{{changeText(chanDetail.nameMtext)}}</span>
+
+        <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div>
+
         <img src="../../../assets/images/channel/chanImg.png" style="width: 185px; height: 185px; border-radius: 185px; margin-bottom: 1rem" alt="채널사진">
         <div v-if="followYn" class="mtop-05"><gBtnSmall class="fl" btnTitle="알림취소" /><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" /></div>
         <div v-else class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
@@ -22,11 +25,13 @@
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"></td>
-            <td v-html="changeText(chanDetail.memoMtext)"></td>
+            <td v-html="changeText(chanDetail.memoMtext)" v-show="!editYn"></td>
+            <td v-if="editYn"> <input class="w-100P" v-model="editInputMsg"/> </td>
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_4.png" alt="채널 링크 아이콘"></td>
-            <td><span class="fl mr-04">pushmsg.net</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="링크열기" /></td>
+            <td v-show="!editYn"><span class="fl mr-04" >pushmsg.net</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="링크열기" /> </td>
+            <td v-if="editYn"> <input class="w-100P" v-model="editInputUrl"/> </td>
           </tr>
         </table>
       </div>
@@ -43,6 +48,12 @@ export default {
   },
   data () {
     return {
+      editInputMsg:'',
+      editInputUrl:'',
+      editYn:false,
+      editBtnTitle:'채널수정',
+      defalutUrl:'pushmsg.net',
+
       followYn: false,
       chanItem: { chanName: '아이디어스', chanImg: 'http://placehold.it/30', chanMsg: '일상에 특별함을 잇다!<br>핸드메이드 라이프 스타일 플랫폼, 아이디어스', subsCnt: '35600', chanUrl: 'https://www.idus.com' }
 
@@ -87,6 +98,23 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       if (changeTxt) { return changeTxt }
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    editChannelClick(){
+      this.setEditValue()
+      if(this.editYn == true){
+        alert(this.editInputMsg + '\n' +this.editInputUrl)
+        this.editYn = false
+        this.editBtnTitle='채널수정'
+      }else{
+
+        this.editYn = true
+        this.editBtnTitle='수정완료'
+      }
+      // alert("수정클릭 \n"+this.chanDetail.memoMtext)
+    },
+    setEditValue(){
+      this.editInputMsg = this.changeText(this.chanDetail.memoMtext)
+      this.editInputUrl = this.defalutUrl
     }
   }
 }

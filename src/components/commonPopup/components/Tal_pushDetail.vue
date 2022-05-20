@@ -3,6 +3,7 @@
     <manageStickerPop :stickerList="tempAlimList.stickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
+
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
@@ -14,6 +15,7 @@
             </div>
         </div>
         <div  class="font15 mbottom-2" v-html="alim.bodyMinStr"></div>
+
         <div id="alimCheckArea">
           <div class="alimCheckContents">
             <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
