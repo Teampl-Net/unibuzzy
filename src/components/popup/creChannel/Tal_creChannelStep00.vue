@@ -51,15 +51,16 @@
       </div>
     </div>
   </div>
-  <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' checkPopYn/>
-  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" />
-
+  <!-- <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
+  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" /> -->
+  <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' />
   <div @click="checkPopYn= true" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
 </template>
 
 <script>
 import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
+import checkPop from '../confirmPop/Tal_createCheckConfirmPop.vue'
 export default {
 
   mounted () {
@@ -135,22 +136,26 @@ export default {
     },
 
     setParam(){
-      var g_param = new Object()
-      if (this.selectedType !== '') {
-          g_param.nameMtext = this.inputChannelName
-          g_param.teamMemo = this.inputChannelMemo
-          g_param.teamType = this.selectType
-          g_param.teamIcon = this.selectIcon
-          g_param.teamBack = this.selectBg
-          g_param.teamkeyword = this.keyWord0+','+this.keyWord1+','+this.keyWord2
-        // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
-          alert(this.$requestCreChan(g_param))
-          this.$emit('successCreChan')
-        // this.$emit('makeParam', param)
-      } else {
-        alert('채널 종류를 선택해주세요!')
-      }
-
+        this.okPopYn = true
+        var g_param = new Object()
+        if (this.selectedType !== '') {
+            g_param.nameMtext = 'KO$^$'+this.inputChannelName
+            g_param.memoMtext = 'KO$^$'+this.inputChannelMemo
+            g_param.teamType = this.selectType
+            // g_param.teamIcon = this.selectIcon
+            // g_param.teamBack = this.selectBg
+            g_param.picPath = this.selectIcon
+            g_param.picBgPath = this.selectBg
+            g_param.teamKeyWord = this.keyWord0+','+this.keyWord1+','+this.keyWord2
+          // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
+            this.$requestCreChan(g_param)
+            setTimeout(() => {
+              this.$emit('successCreChan')
+            }, 300);
+          // this.$emit('makeParam', param)
+        } else {
+          alert('채널 종류를 선택해주세요!')
+        }
     },
 
     loadingClose () {
@@ -163,7 +168,7 @@ export default {
   },
 
   components:{
-    selecTypePopup,seleciconBgPopup
+    selecTypePopup,seleciconBgPopup,checkPop
   },
 
 }

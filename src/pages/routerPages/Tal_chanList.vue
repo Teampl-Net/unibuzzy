@@ -13,7 +13,6 @@
   </div>
   <div class="btnPlus" @click="clickCreateChannel" >+</div>
 
-<!-- <a @click="this.myChanListPopYn = true">sssssss </a> -->
 </template>
 
 <script>
@@ -27,7 +26,6 @@ export default {
   components: {
     findChannelList,
     // searchChannel
-    myChanList
   },
   async created () {
     this.$emit('changePageHeader', '채널')
