@@ -1,5 +1,5 @@
 <template>
-    <div class="commonPopWrap" ref="commonWrap" >
+    <div v-if="reloadYn===false" class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
         <fullModal :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
@@ -8,9 +8,9 @@
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
-      <chanAlimList @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
+      <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+        <pushList :ref="'gPopPush'" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
@@ -64,6 +64,7 @@ export default {
   },
   data () {
     return {
+      reloadYn: false,
       makeTitle: 'aaaaa',
       popShowYn: false,
       targetType: '',
@@ -180,12 +181,22 @@ export default {
       this.popParams = params
       this.popShowYn = true
     },
-    closePop (pThisPopN) { // 자식 팝업닫기
+    closePop (reloadYn) { // 자식 팝업닫기
       this.popShowYn = false
+      if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
+        // eslint-disable-next-line no-unused-vars
+        if (this.targetType === 'pushList' || this.targetType === 'chanList' || this.targetType === 'chanDetail') {
+          this.reloadYn = true
+          setTimeout(() => {
+            this.reloadYn = false
+          }, 100)
+          // this.reloadYn = false
+        }
+      }
     },
-    closeXPop (pThisPopN) { // 내 팝업 닫기
+    async closeXPop (reloadYn) { // 내 팝업 닫기
       if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
-        this.$emit('closePop', pThisPopN)
+        this.$emit('closePop', reloadYn)
         this.$removeHistoryStack(this.thisPopN)
       }
     },

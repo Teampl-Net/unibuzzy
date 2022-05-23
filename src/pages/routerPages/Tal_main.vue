@@ -78,7 +78,6 @@ export default {
     // initModal,
     top5Channel,
     top5Alim
-
     // top5
     // top5Title
   },
@@ -86,6 +85,10 @@ export default {
     reloadPage () {
       this.$emit('openLoading')
       this.$router.go(0)
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 2000)
+      // this.$emit('closeLoading')
     },
     BackPopClose (e) {
       if (JSON.parse(e.data).type === 'goback') {

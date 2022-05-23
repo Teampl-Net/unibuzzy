@@ -51,9 +51,9 @@
       </div>
     </div>
   </div>
-  <!-- <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
-  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" /> -->
-  <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' />
+  <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
+  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" />
+  <!--  <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' /> -->
   <div @click="checkPopYn= true" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
 </template>
 

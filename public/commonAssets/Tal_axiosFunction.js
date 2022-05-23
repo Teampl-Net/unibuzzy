@@ -118,7 +118,7 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.actUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     await this.$axios.post('/tp.getContentsList', param
     ).then(response => {
@@ -275,7 +275,7 @@ const methods = {
     ).then(response => {
       // eslint-disable-next-line no-debugger
       debugger
-      result = response.data
+      result = true
     }).catch((error) => {
       result = error
     })

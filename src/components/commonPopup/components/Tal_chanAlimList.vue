@@ -28,7 +28,7 @@
       <pushList @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
   </div>
-  <div class="btnPlus" @click="btnWritePush" >+</div>
+  <div class="btnPlus" v-if="adminYn" @click="btnWritePush" >+</div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
     <chanDetailComp  @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
@@ -50,7 +50,8 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       detailShowYn: true,
-      chanItem: {}
+      chanItem: {},
+      adminYn: false
 
     }
   },
@@ -87,7 +88,6 @@ export default {
       this.$emit('openPop', params)
     },
     async getChanDetail () {
-      this.detailShowYn = false
       var paramMap = new Map()
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail
@@ -99,12 +99,15 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       // alert(JSON.stringify(resultList))
       this.chanItem = resultList.content[0]
-      if (this.chanItem.userTeamInfo) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
         this.followYn = true
         this.detailShowYn = false
       }
-      // eslint-disable-next-line no-debugger
-      debugger
+      if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+        this.adminYn = true
+      }
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {

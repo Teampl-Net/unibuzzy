@@ -28,6 +28,13 @@ export default {
       newestSearchYn: false,
       nameMtext: ''
     }
+  },
+  methods: {
+    findChannel () {
+      var paramMap = new Map()
+      paramMap.set('requestSearchList', this.nameMtext)
+      this.$emit('requestSearchList', paramMap)
+    }
   }
 }
 </script>

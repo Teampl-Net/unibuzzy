@@ -134,10 +134,13 @@ export default {
       this.pushPopParams = params
       this.pushPopShowYn = true
     },
-    closePop () {
+    closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
       //  alert(true)
       this.routerReloadKey += 1
+      if (reloadYn === true) {
+        this.$router.go(0)
+      }
       this.popShowYn = false
     },
     closeXPushPop () {

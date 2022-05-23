@@ -1,5 +1,5 @@
 <template>
-  <div class="policyWrap">
+  <div class="policiesWrap">
     <div class="policyHeaderWrap py-3 px-4" >
       <img src="../../assets/images/intro/tal_permission_header_logo.png" class="fl" >
       <div class=" policyHeader fl ms-2 text-start " >
@@ -8,19 +8,19 @@
       </div>
     </div>
     <div class="policyContentsWrap" >
-      <p class="font25 fontBold deepColor">아래 약관에 동의하시면 <br>구독 알림이 시작됩니다</p>
+      <p class="font18 fontBold deepColor">아래 약관에 동의하시면 <br>구독 알림이 시작됩니다</p>
       <div class="policyWrap" v-for="(value, index) in policyList"  :key="index">
-          <p class="font20 mt-2 commonBlack" v-html="value.title"></p>
-          <div class="policyBodyBox font15 textBold mt-2 commonBlack" v-html="value.body" ></div>
+          <p class="font16 mt-1 commonBlack" v-html="value.title"></p>
+          <div class="policyBodyBox font13 textBold mt-1 commonBlack" v-html="value.body" ></div>
           <div class="checkboxDiv">
             <input type="checkbox"  @click="checkedOne($event.target.checked, index)" style="flex-direction:row" :value="index" v-model="agree[index]" >
-            <label for="checkbox" style="margin-left: 5px;">상기 내용에 동의합니다.</label>
+            <label for="checkbox" class="font15" style="margin-left: 5px;">상기 내용에 동의합니다.</label>
           </div>
       </div>
       <div class="policyBtnArea">
-        <div class="checkboxDiv">
-          <input type="checkbox" style="flex-direction:row" @click="checkedAll($event.target.checked)" v-model="agreeAll" >
-          <label for="checkbox" style="margin-left: 5px;">전체동의</label>
+        <div class="checkboxDiv" @click="checkedAll($event.target.checked)">
+          <input type="checkbox" style="flex-direction:row" v-model="agreeAll" >
+          <label for="checkbox" class="font15" style="margin-left: 5px;">전체동의</label>
         </div>
         <div class="startBigBtn">
           <p @click="goLoginPage" class="font20" >시작하기</p>
@@ -106,5 +106,5 @@ export default {
 
   .policyBtnArea { width: 100%; height: 80px; float: left;}
 
-  .policyWrap{width: 100%; padding-bottom: 1.5rem; height: calc((100% - 190px)/3)}
+  .policyWrap{width: 100%; padding-bottom: 1rem; height: calc((100% - 190px)/3); min-height: 100px;}
 </style>

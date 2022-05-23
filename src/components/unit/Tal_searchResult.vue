@@ -12,8 +12,8 @@ export default {
   props: {
     searchList: {}
   },
-  created () {
-    // alert('검색:' + JSON.stringify(this.setSearchList))
+  updated () {
+    alert('검색:' + JSON.stringify(this.searchList))
   },
   data () {
     return {
@@ -38,6 +38,8 @@ export default {
   },
   computed: {
     setSearchList () {
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.tempSearchList = this.searchList
       return this.tempSearchList

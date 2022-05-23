@@ -3,6 +3,8 @@
   <div class="w-100P" style=" height: 100%;top: 50px; position: absolute;">
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
+      <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParamInnerHtml' />
+      <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div  :style="setColor" class="paperBackground">
           <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div>
@@ -55,10 +57,11 @@ export default {
 
       // msgPopYn:false,
       testpopYn: true,
+      checkPopYn: false,
       msgData: '',
       organizationText: '구독자 전원',
       writePushTitle: '팀플 앱 사용 안내',
-
+      okPopYn: false,
       myProgress: 55.5,
       closeAutoPopCnt: 5,
       selectFile: null, // 파일 객체
@@ -128,10 +131,19 @@ export default {
         alert('제목을 입력해주세요')
         return
       }
-      alert(true)
-      this.$saveContents(param)
+      var result = this.$saveContents(param)
+      this.okPopYn = true
+      setTimeout(() => {
+        this.$emit('closeXPop', true)
+      }, 2000)
+      if (result === true) {
+        this.okPopYn = true
+      }
     },
-    clickPageTopBtn (btn) {
+    clickPageTopBtn () {
+      this.checkPopYn = true
+    },
+    saveContents (btn) {
       if (btn === 'sendPushMsg') {
         if (this.writePushTitle && this.msgData) {
         } else {
@@ -265,7 +277,7 @@ export default {
 
 .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 100%; height: calc(100% - 1rem); position: relative; margin: 0 auto; margin-top: 2rem; padding: 4rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 1rem); position: relative; margin: 0 auto; padding: 4rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}

@@ -149,6 +149,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 
   .commonListTr{
+    height: 70px;
     border-bottom: 1px solid #E4E4E4;
   }
   .commonListTr :last-child{
