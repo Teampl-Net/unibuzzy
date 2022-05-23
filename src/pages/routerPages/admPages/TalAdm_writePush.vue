@@ -1,6 +1,7 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
   <div class="w-100P" style=" height: 100%;top: 50px; position: absolute;">
+    <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParamInnerHtml' />
@@ -11,18 +12,18 @@
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
-                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
-                  <div class="inputArea recvUserArea">
-                    {{organizationText}}
+                  <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);">
+                    [{{this.$changeText(this.params.targetNameMtext)}}] 구독자
                     <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
                   </div>
                 </div>
               </div>
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
-                <textarea class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
+                <textarea placeholder="알림 내용을 입력해주세요" class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -47,7 +48,7 @@
 // import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 // import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
-
+import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 export default {
   props: {
     params: {}
@@ -57,10 +58,11 @@ export default {
 
       // msgPopYn:false,
       testpopYn: true,
+      failPopYn: false,
+      errorText: '',
       checkPopYn: false,
       msgData: '',
-      organizationText: '구독자 전원',
-      writePushTitle: '팀플 앱 사용 안내',
+      writePushTitle: '',
       okPopYn: false,
       myProgress: 55.5,
       closeAutoPopCnt: 5,
@@ -124,13 +126,7 @@ export default {
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      var title = this.writePushTitle
-      if (title) {
-        param.title = title
-      } else {
-        alert('제목을 입력해주세요')
-        return
-      }
+      param.title = this.writePushTitle
       var result = this.$saveContents(param)
       this.okPopYn = true
       setTimeout(() => {
@@ -141,37 +137,29 @@ export default {
       }
     },
     clickPageTopBtn () {
+      var title = this.writePushTitle
+      if (title !== undefined && title !== null && title !== '') {
+      } else {
+        this.errorText = '제목을 입력해주세요'
+        this.failPopYn = true
+        return
+      }
+      var msgData = this.msgData
+      if (msgData !== undefined && msgData !== null && msgData !== '') {
+      } else {
+        this.errorText = '알림 내용을 입력해주세요'
+        this.failPopYn = true
+        return
+      }
       this.checkPopYn = true
     },
-    saveContents (btn) {
-      if (btn === 'sendPushMsg') {
-        if (this.writePushTitle && this.msgData) {
-        } else {
-          alert('제목과 내용 모두 입력해주세요')
-        }
-
-        this.setParamInnerHtml()
-      } else {
-        // ssss
-      }
-    },
     onReady (editor) {
-      // alert(true)
       // Insert the toolbar before the editable area.
       editor.ui.getEditableElement().parentElement.insertBefore(
         editor.ui.view.toolbar.element,
         editor.ui.getEditableElement()
       )
     },
-    // openToolBox (tool) {
-    //   this.selectedTool = tool
-    //   this.toolShowYn = true
-    //   // this.toolWidth = 400
-    // },
-    // closeToolBox () {
-    //   // this.toolShowYn = false
-    //   // this.toolWidth = 0
-    // },
     selectedColor (index) {
       this.selectedC = index
     },
@@ -200,6 +188,7 @@ export default {
   },
 
   components: {
+    commonConfirmPop
     // msgPop,
     // writePushPageTitle,
     // pushPop

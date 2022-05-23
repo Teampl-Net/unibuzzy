@@ -1,5 +1,6 @@
 <template>
 <div :key="componentKey" v-if="renderOk">
+  <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
@@ -8,7 +9,7 @@
     <img :src="userInfo.picMfilekey" style="width: 5em; margin-right: 1rem"/> -->
     <div class="userProfileTextWrap">
       <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
-      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: fixed; right: 20px; width: 25px;" alt="">
+      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: absolute; right: 0; width: 25px;" alt="">
       <div>
         <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
         <span class="profileTitle" ref="userEmail">이메일</span>
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import top5Channel from '../../components/pageComponents/main/Tal_top5_channelList.vue'
 import top5Alim from '../../components/pageComponents/main/Tal_top5_pushList.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
@@ -54,16 +56,15 @@ export default {
     } else {
       await this.$userLoginCheck()
     }
-    // alert(this.testYn)
     await this.getUserInform()
     // <%= ${sessionName} != null %>
-    // alert(${sessionName}
   },
   mounted () {
     this.$emit('closeLoading')
   },
   data () {
     return {
+      appCloseYn: false,
       componentKey: 0,
       initYn: false,
       alimList: [],
@@ -76,6 +77,7 @@ export default {
   },
   components: {
     // initModal,
+    commonConfirmPop,
     top5Channel,
     top5Alim
     // top5
@@ -90,19 +92,18 @@ export default {
       }, 2000)
       // this.$emit('closeLoading')
     },
+    closeApp () {
+      onMessage('closeApp', 'requestUserPermission')
+      this.appCloseYn = false
+    },
     BackPopClose (e) {
       if (JSON.parse(e.data).type === 'goback') {
         if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
           if (localStorage.getItem('popHistoryStack') === '') {
-            alert('닫습니다')
-            onMessage('closeApp', 'requestUserPermission')
+            this.appCloseYn = true
           }
         }
       }
-    },
-    test () {
-      alert('닫습니다')
-      onMessage('closeApp', 'requestUserPermission')
     },
     forceRerender () {
       this.componentKey += 1
@@ -183,5 +184,12 @@ export default {
 </script>
 
 <style scoped>
+
+/* main */
+.userProfileWrap{ display:flex; align-items: flex-start; margin-top: 1rem;}
+  .userProfileTextWrap{width: 100%; text-align: left; position: relative;}
+  .userProfileTextWrap >p{margin-bottom: 0.2rem;}
+  .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
+  .userProfileTextWrap .profileTitle{font-size: 14px; font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
 
 </style>

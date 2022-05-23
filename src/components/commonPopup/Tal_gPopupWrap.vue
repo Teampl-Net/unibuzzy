@@ -48,12 +48,10 @@ export default {
   async created () {
     await this.settingPop()
     this.$addHistoryStack('pop' + this.thisPopN)
-    // alert('현재 팝업 개수는 ' + this.thisPopN)
     document.addEventListener('message', e => this.BackPopClose(e))
     window.addEventListener('message', e => this.BackPopClose(e))
   },
   mounted () {
-    // alert('현재 팝업 개수는 ' + this.thisPopN)
   },
   computed: {
     getWindowSize () {
@@ -111,13 +109,10 @@ export default {
         if (localStorage.getItem('popHistoryStack')) {
           if (localStorage.getItem('pageDeleteYn')) {
             if ((localStorage.getItem('curentPage') === 'pop' + this.thisPopN)) {
-              // alert(localStorage.getItem('curentPage') + localStorage.getItem('pageDeleteYn') + this.thisPopN)
               this.closeXPop()
             }
           }
         }
-        // alert(message.systemNameData)
-        /* alert('뒤로가래!!!') */
       }
     },
     async settingPop () {

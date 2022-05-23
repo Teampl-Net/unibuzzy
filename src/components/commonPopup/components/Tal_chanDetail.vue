@@ -1,6 +1,7 @@
 <template>
 <div class="chanDetailWrap" >
   <!-- <div>{{pushKey}}</div> -->
+  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" confirmText="실패했습니다.<br>잠시후 다시시도해주세요" />
   <div class="channelItemBox">
     <div style="width: 100%; height: 100%; position: relative;">
       <div ref="chanImg"  class="mt-header chanWhiteBox">
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import commonConfirmPop from '../../popup/confirmPop/Tal_commonConfirmPop.vue'
 export default {
   mounted () {
     // this.$refs.chanImg.style.setProperty('--halfWidth', (window.innerWidth - 185) / 2 + 'px')
@@ -50,6 +52,7 @@ export default {
     return {
       editInputMsg: '',
       editInputUrl: '',
+      failPopYn: false,
       editYn: false,
       editBtnTitle: '채널수정',
       defalutUrl: 'pushmsg.net',
@@ -62,7 +65,8 @@ export default {
   props: {
     chanDetail: {}
   },
-  computed: {
+  components: {
+    commonConfirmPop
   },
   async created () {
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
@@ -89,7 +93,7 @@ export default {
         this.$emit('changeFollowYn', this.followYn)
         //         this.getChanDetail()
       } else {
-        alert('처리 실패')
+        this.failPopYn = true
       }
     },
     changeText (text) {
@@ -102,14 +106,13 @@ export default {
     editChannelClick () {
       this.setEditValue()
       if (this.editYn === true) {
-        alert(this.editInputMsg + '\n' + this.editInputUrl)
+        // alert(this.editInputMsg + '\n' + this.editInputUrl)
         this.editYn = false
         this.editBtnTitle = '채널수정'
       } else {
         this.editYn = true
         this.editBtnTitle = '수정완료'
       }
-      // alert("수정클릭 \n"+this.chanDetail.memoMtext)
     },
     setEditValue () {
       this.editInputMsg = this.changeText(this.chanDetail.memoMtext)

@@ -1,5 +1,6 @@
 <template>
 <div class="introBackground">
+  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
     <div class="introWhiteCard" style=" min-height: 450px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="mbottom-3 mtop-1">
@@ -30,34 +31,41 @@
 </template>
 
 <script>
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 // import { userLoginCheck } from '../../assets/js/Tal_axiosFunction'
 export default {
   data () {
     return {
       userId: '',
-      userPw: ''
+      userPw: '',
+      errorText: '',
+      failPopYn: false
     }
   },
   created () {
   },
-  props: {
+  components: {
+    commonConfirmPop
   },
   methods: {
     async saveUser () {
       var uId = this.userId
       var uPw = this.userPw
       if (uId === undefined || uId === null || uId === '') {
-        alert('아이디를 입력해주세요')
+        this.errorText = '아이디를 입력해주세요'
+        this.failPopYn = true
         return
       } else if (uPw === undefined || uPw === null || uPw === '') {
-        alert('비밀번호를 입력해주세요')
+        this.errorText = '비밀번호를 입력해주세요'
+        this.failPopYn = true
         return
       }
       if (uId === 'teampl' && uPw === 'teampl123') {
         localStorage.setItem('testYn', true)
         await this.$userLoginCheck()
       } else {
-        alert('사용자 정보를 찾을 수 없습니다!')
+        this.errorText = '사용자 정보를 찾을 수 없습니다!'
+        this.failPopYn = true
       }
     }
   }

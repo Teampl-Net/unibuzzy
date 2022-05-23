@@ -73,11 +73,9 @@ export default {
         bodyMinStr: '오류입니다.'
       }
     } */
-    // alert('detailval:' + JSON.stringify(this.alimDetail))
   },
   async mounted () {
     await this.getContentsList()
-    // alert(JSON.stringify(this.alimDetail))
   },
   methods: {
     async getContentsList () {
@@ -86,7 +84,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var resultList = await this.$getContentsList(paramMap)
       this.alimDetail = resultList
-      // alert (JSON.stringify(this.alimDetail))
     },
     goChanDetail (value) {
       // eslint-disable-next-line no-new-object

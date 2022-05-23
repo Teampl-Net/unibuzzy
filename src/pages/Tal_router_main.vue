@@ -112,9 +112,7 @@ export default {
       this.notiDetailShowYn = false
     },
     recvNoti (e) {
-      // alert(JSON.parse(e.data).type)
       if (JSON.parse(e.data).type === 'pushmsg') {
-        // alert(JSON.stringify(JSON.parse(e.data).pushMessage))
         this.notiDetail = JSON.parse(e.data).pushMessage
         this.notiDetailShowYn = true
       }
@@ -150,7 +148,6 @@ export default {
       this.headerTitle = title
     },
     goPage (page) {
-      // alert(page)
       this.showMenuYn = false
       this.$router.push({ path: '/' + page })
     }

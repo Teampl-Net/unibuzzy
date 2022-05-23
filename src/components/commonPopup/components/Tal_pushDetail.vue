@@ -25,7 +25,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div>
-            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                 <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
@@ -63,6 +63,7 @@ export default {
           { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
         ]
       },
+      userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: []
 
     }
@@ -82,7 +83,6 @@ export default {
         bodyMinStr: '오류입니다.'
       }
     } */
-    // alert('detailval:' + JSON.stringify(this.alimDetail))
   },
   methods: {
     async getContentsList () {
@@ -94,23 +94,20 @@ export default {
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
-      // alert(JSON.stringify(this.alimDetail))
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
-      // alert(JSON.stringify(userDo))
       // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
         this.userDoStickerList = new Array()
         for (var i = 0; i < userDo.length; i++) {
           if (userDo[i].doType === 'LI') {
-            userDoList[1].doKey = userDo[i].doKey
+            this.userDoList[1].doKey = userDo[i].doKey
           }
           if (userDo[i].doType === 'ST') {
-            userDoList[0].doKey = userDo[i].doKey
+            this.userDoList[0].doKey = userDo[i].doKey
           }
           if (userDo[i].doType === 'RE') {
             this.readYn = true
@@ -120,7 +117,6 @@ export default {
           }
         }
       }
-      return userDoList
     },
     async changeAct (act, contentsKey) {
       var result = null
@@ -131,7 +127,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = contentsKey
-      // alert(param.targetKey)
       if (param.targetKey === null) { return }
       param.doType = act.doType
       if (saveYn === false) {
@@ -143,7 +138,6 @@ export default {
         result = await this.$saveUserDo(param, 'save')
       }
       if (result === true) {
-        // alert(result)
         await this.getContentsList()
         this.loadYn = false
         this.loadYn = true
@@ -155,10 +149,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var value = new Object()
       params.targetType = 'chanDetail'
-      // eslint-disable-next-line no-debugger
-      // debugger
       params.targetKey = alim.creTeamKey
-      // alert(alim.nameMtext)
       value.nameMtext = alim.nameMtext
       params.value = value
       // params.chanName = value.chanName

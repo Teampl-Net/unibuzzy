@@ -51,7 +51,6 @@ export default {
   },
   watch: {
     routerReloadKey () {
-      // alert(this.routerReloadKey)
       this.reload()
     }
   },
@@ -159,7 +158,6 @@ export default {
       this.$emit('closeLoading')
     },
     async requestSearchList (param) {
-      // alert(JSON.stringify(param))
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -171,9 +169,7 @@ export default {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
         }
       }
-      // alert(JSON.stringify(param))
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      // alert(JSON.stringify(param))
       await this.getPushContentsList()
     },
     async castingSearchMap (param) {

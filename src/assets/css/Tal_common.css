@@ -137,15 +137,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .footerShadow{box-shadow: 0px -7px 9px -9px #00000036;}
 .pagePaddingWrap{padding: 0px 1.5rem; box-sizing: border-box; width: 100%; height: 100%; padding-top: 60px;}
 .mt-header{margin-top: 50px;}
-
-/* main */
-.userProfileWrap{ display:flex; align-items: flex-start; margin-top: 1rem;}
-  .userProfileTextWrap{ text-align: left;}
-  .userProfileTextWrap >p{margin-bottom: 0.2rem;}
-  .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
-  .userProfileTextWrap .profileTitle{font-size: 14px; font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
-  /* .profileTitle{font-size: 15px; font-weight: bold; color: #6768A7;} */
-  .top5TitleWrap{margin-top: 1.5rem; border-bottom: 1px solid #6768A7; height: 35px; margin-bottom: 0.4rem}
+ /* .profileTitle{font-size: 15px; font-weight: bold; color: #6768A7;} */
+ .top5TitleWrap{margin-top: 1.5rem; border-bottom: 1px solid #6768A7; height: 35px; margin-bottom: 0.4rem}
 
 
   .commonListTr{
@@ -265,4 +258,38 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 @media screen and (max-width:730px) {
     .mobileNone{display: none;}
     .pcNone {display: block;}
+}
+
+/* 팝업 효과 */
+@keyframes fadein {
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
+}
+@-moz-keyframes fadein { /* Firefox */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity:1;
+  }
+}
+@-o-keyframes fadein { /* Opera */
+  from {
+      opacity:0;
+  }
+  to {
+      opacity: 1;
+  }
 }

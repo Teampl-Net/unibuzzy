@@ -1,5 +1,6 @@
 <template>
 <div class="introBackground">
+  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
     <div class="introWhiteCard" >
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="mbottom-3 mtop-1">
@@ -22,12 +23,15 @@
 </template>
 
 <script>
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 export default {
   data () {
     return {
       userName: '',
-      tempUser: []
+      tempUser: [],
+      failPopYn: false,
+      errorText: ''
     }
   },
   created () {
@@ -36,23 +40,23 @@ export default {
   props: {
     user: {}
   },
+  components: {
+    commonConfirmPop
+  },
   methods: {
     async savePhone () {
       var name = this.userName
       if (name !== undefined && name !== null && name !== '') {
         if (this.tempUser) {
           this.tempUser.name = name
-          // this.tempUser.phoneLast = mobileN.slice(-4, mobileN.length)
-          // alert(this.tempUser.phoneLast)
         }
-        // alert(JSON.stringify(this.tempUser))
-        // alert('success!' + this.tempUser.phoneEnc)
         if (this.tempUser.phoneEnc !== undefined && this.tempUser.phoneEnc !== null && this.tempUser.phoneEnc !== '') {
           await saveUser(this.tempUser) // 서버에 save요청
           this.$router.replace({ path: '/' })
         } else { this.$router.replace({ name: 'savePhone', params: { user: JSON.stringify(this.tempUser) } }) }
       } else {
-        alert('이름을 입력해주세요.')
+        this.errorText = '이름을 입력해주세요'
+        this.failPopYn = true
       }
     }
   }

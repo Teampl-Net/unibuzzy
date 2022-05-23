@@ -24,7 +24,6 @@ export default {
     chanList: {}
   },
   created () {
-    // alert(JSON.stringify(this.chanList))
   },
   methods: {
     goDetail (chanName) {

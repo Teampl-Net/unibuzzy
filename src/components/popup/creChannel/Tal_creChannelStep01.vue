@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     setParam () {
-      // alert(true)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       /* // eslint-disable-next-line no-new-object

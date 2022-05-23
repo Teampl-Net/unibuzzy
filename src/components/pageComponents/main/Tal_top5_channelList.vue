@@ -66,15 +66,14 @@ export default {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
       }
+      paramMap.set('pageSize', 5)
+      paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
-      // eslint-disable-next-line no-debugger
-      debugger
       this.chanList = resultList.content
     },
     async changeTab (data) {
       this.viewTab = data
       await this.getContentsList()
-      // alert(true + data)
     }
   }
 

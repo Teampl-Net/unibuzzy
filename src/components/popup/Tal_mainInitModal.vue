@@ -26,7 +26,6 @@ export default {
   mounted () {
     if (this.userPhone.value === undefined || this.userPhone.value === 'undefined') { this.userPhone.value = '등록된 번호가 없습니다.' }
     if (this.userEmail.value === undefined || this.userEmail.value === 'undefined') { this.userEmail.value = '등록된 이메일 주소가 없습니다.' }
-    // alert()
     // this.userEmail = localStorage.getItem('userEmail')
     // this.mobile = localStorage.getItem('userMobile')
   },

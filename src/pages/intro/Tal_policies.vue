@@ -13,14 +13,14 @@
           <p class="font16 mt-1 commonBlack" v-html="value.title"></p>
           <div class="policyBodyBox font13 textBold mt-1 commonBlack" v-html="value.body" ></div>
           <div class="checkboxDiv">
-            <input type="checkbox"  @click="checkedOne($event.target.checked, index)" style="flex-direction:row" :value="index" v-model="agree[index]" >
-            <label for="checkbox" class="font15" style="margin-left: 5px;">상기 내용에 동의합니다.</label>
+            <input type="checkbox" :name="'checkbox' + index" :id="'checkbox' + index"  @click="checkedOne($event.target.checked, index)" style="flex-direction:row" :value="index" v-model="agree[index]" >
+            <label :for="'checkbox' + index" class="font15" style="margin-left: 5px;">상기 내용에 동의합니다.</label>
           </div>
       </div>
       <div class="policyBtnArea">
-        <div class="checkboxDiv" @click="checkedAll($event.target.checked)">
-          <input type="checkbox" style="flex-direction:row" v-model="agreeAll" >
-          <label for="checkbox" class="font15" style="margin-left: 5px;">전체동의</label>
+        <div class="checkboxDiv">
+          <input type="checkbox" name="checkboxAll" id="checkboxAll" @click="checkedAll($event.target.checked)" style="flex-direction:row" v-model="agreeAll" >
+          <label for="checkboxAll" class="font15" style="margin-left: 5px;">전체동의</label>
         </div>
         <div class="startBigBtn">
           <p @click="goLoginPage" class="font20" >시작하기</p>
@@ -84,7 +84,6 @@ export default {
     },
     goLoginPage () {
       if (this.agreeAll !== true) {
-        // alert('전체 내용에 동의 해주세요.')
         return
       }
       this.$router.replace({ path: 'login' })

@@ -22,5 +22,5 @@ export default {
 
 .lightColor{background-color: #F5F5F9; color: #000000;}
 .deepColor{background-color: #A9AACD; color: #FFFFFF;}
-.commonBtn {width: fit-content; font-size: 13px;line-height: 1.5rem; border-radius: 5px; min-width: 3rem; float: right; height: 1.4rem; padding: 0 7px; text-align: center;}
+.commonBtn {width: fit-content; font-size: 14px;line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;}
 </style>

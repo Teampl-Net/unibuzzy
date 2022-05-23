@@ -332,7 +332,6 @@ export default {
   },
   mounted () {
     this.settingPop()
-    // alert('현재 팝업 개수는 ' + this.thisPopN)
   },
   components: {
   },

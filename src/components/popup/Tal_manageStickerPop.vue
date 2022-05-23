@@ -121,7 +121,6 @@ export default {
     if (maxWidth > 500) { maxWidth = 500 }
     this.iconSize = (maxWidth - 60) / 3 - 10
     this.selectedStickerList = this.stickerList
-    // alert(this.stickerList)getStickerList
     this.getStickerList()
     // await this.setMyStickerList(this.stickerList)
   },

@@ -33,7 +33,7 @@ export async function userLoginCheck () {
   }
   // paramMap.set('fcmKey', '123456789')
   // paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-  await axios.post('/tp.loginCheck', Object.fromEntries(paramMap)
+  await axios.post('/officeon/smartPassTrack/spt.getStoreList', Object.fromEntries(paramMap)
   ).then(response => {
     if (response.data.resultCode === 'OK') {
       localStorage.setItem('sessionUser', JSON.stringify(response.data.userMap))
@@ -110,7 +110,6 @@ export async function saveUser (userProfile) {
     user.soPicUrl = userProfile.userImg
     user.picMfilekey = userProfile.userImg
   }
-  // alert('휴대폰 번호는: ' + userProfile.mobile)
   if (userProfile.mobile !== undefined && userProfile.mobile !== null && userProfile.mobile !== 'null' && userProfile.mobile !== '') {
     user.phoneLast = userProfile.mobile.slice(-4, userProfile.mobile.length)
     user.phoneEnc = userProfile.mobile
@@ -138,7 +137,6 @@ export async function saveUser (userProfile) {
     }
   }).catch((error) => {
     console.warn('ERROR!!!!! : ', error)
-    alert('실패' + error)
   })
 }
 

@@ -13,7 +13,6 @@ export default {
     searchList: {}
   },
   updated () {
-    alert('검색:' + JSON.stringify(this.searchList))
   },
   data () {
     return {
@@ -26,7 +25,6 @@ export default {
       this.$emit('changeSearchList', type)
     },
     castingSearchKey (searchMap) {
-      // alert(searchMap)
     },
     changeSearchBox (type, keword) {
       if (7 - type.length) {
@@ -38,8 +36,6 @@ export default {
   },
   computed: {
     setSearchList () {
-      // eslint-disable-next-line no-debugger
-      debugger
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.tempSearchList = this.searchList
       return this.tempSearchList

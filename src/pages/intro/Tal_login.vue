@@ -1,11 +1,8 @@
 <template>
-  <div class="pagePaddingWrap" style="height: 100vh; background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%">
-    <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 200px; margin-bottom: 50px;">
-      <img src="../../assets/images/intro/tal_permission_header_logo.png" class="fl" >
-      <div class=" fl ms-2 text-start " style=" margin-top: 14px; line-height: 27px">
-        <p class="font30 headerFont whiteColor">더알림</p>
-        <p class="font15 whiteColor headerFont" style="line-height: 32px">가장 편리한 구독-알림</p>
-      </div>
+  <div class="pagePaddingWrap loginContentsWrap">
+    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
+      <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
       <div class="loginBtn" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
@@ -22,7 +19,7 @@
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-      <div v-if="this.systemName === 'iOS'" class="loginBtn" v-on:click="AppleLoginBtn">
+      <div v-if="this.systemName === 'iOS' || this.systemName === 'ios'" class="loginBtn" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
       </div>
@@ -31,18 +28,36 @@
 </template>
 
 <script>
+
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
+
+import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   name: '',
   data () {
     return {
-      systemName: 'iOS'
+      systemName: 'iOS',
+      appCloseYn: false
     }
   },
+  components: {
+    commonConfirmPop
+  },
   created () {
+    document.addEventListener('message', e => this.BackPopClose(e))
+    window.addEventListener('message', e => this.BackPopClose(e))
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
-    // alert('기종은요: ' + localStorage.getItem('systemName'))
   },
   methods: {
+    closeApp () {
+      onMessage('closeApp', 'requestUserPermission')
+      this.appCloseYn = false
+    },
+    BackPopClose (e) {
+      if (JSON.parse(e.data).type === 'goback') {
+        this.appCloseYn = true
+      }
+    },
     openTestLoginPage () {
       this.$router.replace('/testLoginPage')
     },
@@ -98,4 +113,5 @@ export default {
 p{margin-bottom: 0;}
 .loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; font-size: 20px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 .loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
+.loginContentsWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
 </style>

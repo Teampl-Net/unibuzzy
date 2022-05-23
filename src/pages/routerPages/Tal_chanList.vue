@@ -53,7 +53,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'createChannel'
-      // alert(params.targetType)
       this.$emit('openPop', params)
     },
     openManagerChanDetail (param) {
@@ -102,17 +101,13 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
 
       this.chanList = resultList.content
-      // eslint-disable-next-line no-debugger
-      debugger
       this.$emit('closeLoading')
     },
 
     async requestSearchList (paramMap) {
       this.chanFindPopShowYn = false
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
-      // alert(JSON.stringify(this.resultSearchKeyList))
       await this.getChannelList()
-      // alert(this.chanFindPopShowYn)
     },
     async castingSearchMap (sMap) {
       // eslint-disable-next-line no-new-object

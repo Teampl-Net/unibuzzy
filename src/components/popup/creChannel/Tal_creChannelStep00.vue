@@ -90,7 +90,6 @@ export default {
       }
     },
     setTypeData (param) {
-      // alert(param.teamType)
       this.selectType = param.teamType
       switch (param.teamType) {
         case 'C':
@@ -146,7 +145,6 @@ export default {
         gParam.picPath = this.selectIcon
         gParam.picBgPath = this.selectBg
         gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
-        // alert(param.teamType+'\n' + param.teamIcon+'\n'+param.teamBack+'\n'+param.teamkeyword)
         this.$requestCreChan(gParam)
         setTimeout(() => {
           this.$emit('successCreChan')

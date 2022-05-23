@@ -15,7 +15,6 @@ export default {
   name: 'top5PushList',
   created () {
     this.pushList = this.alimList
-    // alert(this.pushList)
   },
   data () {
     return {
@@ -59,7 +58,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var resultData = null
-      param.offset = 0
+      param.offsetInt = 0
       param.pageSize = 5
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (viewTab === 'L') {
@@ -88,7 +87,6 @@ export default {
       this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
       ).then(response => {
         this.pushList = response.data
-        // alert(Object.fromEntries(response.data))
       }).catch((error) => {
         console.warn('ERROR!!!!! : ', error)
       })

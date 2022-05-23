@@ -85,7 +85,6 @@ const methods = {
 
   getUserInform () {
     var resultMap = '등록된 이름이 없습니다.'
-    // alert(localStorage.getItem('user'))
     if (localStorage.getItem('sessionUser') !== 'undefined' && localStorage.getItem('sessionUser') !== undefined && localStorage.getItem('sessionUser') !== null && localStorage.getItem('sessionUser') !== '') {
       var userInfo = (JSON.parse(localStorage.getItem('sessionUser')))
 
@@ -94,7 +93,6 @@ const methods = {
     } else {
       this.$router.replace('policies')
     }
-    // alert(JSON.stringify(resultMap))
   },
 
   // 방어루틴
@@ -111,8 +109,6 @@ const methods = {
       }
     } else {
     }
-    // alert(returnMap.get(leng))
-    // alert(leng)
     return returnMap.get(leng)
   },
 
@@ -134,13 +130,10 @@ const methods = {
     historyS += '$#$' + n
     localStorage.setItem('popHistoryStack', historyS)
     localStorage.setItem('curentPage', n)
-    // alert(localStorage.getItem('historyStack'))
     return localStorage.getItem('popHistoryStack').split('$#$').length
   },
 
   removeHistoryStack () {
-    // eslint-disable-next-line no-debugger
-    debugger
     var history = localStorage.getItem('popHistoryStack').split('$#$')
     history.splice(-1, 1)
     // eslint-disable-next-line no-array-constructor
@@ -152,7 +145,6 @@ const methods = {
     localStorage.setItem('popHistoryStack', historyS)
     localStorage.setItem('curentPage', history[history.length - 1])
     localStorage.setItem('pageDeleteYn', false)
-    // alert(localStorage.getItem('historyStack'))
   },
   removeHistoryStackForPage (pageHistoryName) {
     if (localStorage.getItem('popHistoryStack')) {

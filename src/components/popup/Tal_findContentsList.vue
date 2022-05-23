@@ -93,7 +93,6 @@ export default {
         this.searchLogList.splice(index, 1)
         // }
       }).catch((ex) => {
-        // alert(ex)
         console.warn('ERROR!!!!! : ', ex)
       })
     },

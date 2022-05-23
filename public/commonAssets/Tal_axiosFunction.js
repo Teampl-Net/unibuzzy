@@ -1,4 +1,5 @@
 import axios from 'axios'
+// eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
@@ -7,8 +8,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://localhost:19090'
-
-axios.defaults.baseURL = 'http://61.97.186.14:19090'
+axios.defaults.baseURL = 'https://admin.passtory.net'
 // axios.defaults.baseURL = 'http://localhost:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
@@ -31,7 +31,6 @@ export async function saveUser (userProfile) {
     user.soPicUrl = userProfile.userImg
     user.picMfilekey = userProfile.userImg
   }
-  // alert('휴대폰 번호는: ' + userProfile.mobile)
   if (userProfile.mobile !== undefined && userProfile.mobile !== null && userProfile.mobile !== 'null' && userProfile.mobile !== '') {
     user.phoneLast = userProfile.mobile.slice(-4, userProfile.mobile.length)
     user.phoneEnc = userProfile.mobile
@@ -59,7 +58,6 @@ export async function saveUser (userProfile) {
     }
   }).catch((error) => {
     console.warn('ERROR!!!!! : ', error)
-    alert('실패' + error)
   })
 }
 const methods = {
@@ -82,8 +80,25 @@ const methods = {
     }
     // paramMap.set('fcmKey', '123456789')
     // paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-    await axios.post('/tp.loginCheck', Object.fromEntries(paramMap)
+
+    /* const response = await fetch('http://192.168.0.22:19090/tp.loginCheck', {
+      method: 'POST', // *GET, POST, PUT, DELETE 등
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: true, // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(paramMap) // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
+    })
+    return response.json() // JSON 응답을 네이티브 JavaScript 객체로 파싱 */
+
+    await axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true }
     ).then(response => {
+      console.log('cookie', response.headers)
       if (response.data.resultCode === 'OK') {
         localStorage.setItem('sessionUser', JSON.stringify(response.data.userMap))
         localStorage.setItem('loginYn', true)
@@ -95,7 +110,7 @@ const methods = {
         localStorage.setItem('loginYn', false)
       }
     }).catch((error) => {
-      alert(error)
+      // alert(error)
       localStorage.setItem('user', '')
       localStorage.setItem('loginYn', false)
       router.replace('/policies')
@@ -104,7 +119,7 @@ const methods = {
   },
   async getTeamList (paramMap) {
     var resultList = null
-    await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap)
+    await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap), { withCreadentials: true }
     ).then(response => {
       resultList = response.data
     }).catch((error) => {
@@ -120,7 +135,7 @@ const methods = {
     }
     param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
-    await this.$axios.post('/tp.getContentsList', param
+    await this.$axios.post('/tp.getContentsList', param, { withCredentials: true }
     ).then(response => {
       result = response.data
     }).catch((error) => {
@@ -144,7 +159,6 @@ const methods = {
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async saveSticker (inputParam) {
@@ -157,13 +171,10 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.saveSticker', param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = response.data
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async getStickerList (inputParam) {
@@ -176,13 +187,10 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.getStickerList', param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = response.data
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async changeFollower (inputParam, type) {
@@ -199,13 +207,10 @@ const methods = {
     var result = null
     await this.$axios.post(url, param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = response.data
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async requestCreChan (paramVal) {
@@ -215,7 +220,6 @@ const methods = {
     ).then(response => {
       console.log(response)
     }).catch((ex) => {
-      // alert(ex)
       console.warn('ERROR!!!!! : ', ex)
     })
   },
@@ -229,13 +233,10 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.createTeamForReq', param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = response.data
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async getTeamReqList (inputParam) {
@@ -247,13 +248,10 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.getTeamReqList', param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = response.data
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   },
   async saveContents (inputParam) {
@@ -273,13 +271,10 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.saveContents', param
     ).then(response => {
-      // eslint-disable-next-line no-debugger
-      debugger
       result = true
     }).catch((error) => {
       result = error
     })
-    // alert(result)
     return result
   }
 }

@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     changePage () {
-      // alert(true)
       if (this.creStep === 1) {
         this.$refs.step1.setParam()
       } else if (this.creStep === 2) {
@@ -56,8 +55,6 @@ export default {
       this.$emit('closePop')
     },
     async setParam (inputParam) {
-      // alert(inputParam.teamType+'\n' + inputParam.teamIcon+'\n'+inputParam.teamBack+'\n'+inputParam.teamkeyword)
-
       this.g_param.teamType = inputParam.teamType
       this.g_param.nameMtext = inputParam.teamNmae
       this.g_param.teamMemo = inputParam.teamMemo
@@ -65,14 +62,11 @@ export default {
       this.g_param.teamBack = inputParam.teamBack
       this.g_param.teamkeyword = inputParam.teamkeyword
 
-      // alert(this.g_param.teamType+'\n'+ this.g_param.nameMtext +'\n'+ this.g_param.teamMemo)
-
       // eslint-disable-next-line no-new-object
       // var param = new Object()
       /* // eslint-disable-next-line no-new-object
       var channel = new Object()
        */
-      // alert(JSON.stringify(inputParam))
       if (inputParam.pageType === 0) {
         this.g_param.teamType = inputParam.teamType
         this.creStep += 1

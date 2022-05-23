@@ -63,9 +63,6 @@ export default {
     chanDetailComp
   },
   async created () {
-    // alert(JSON.stringify(this.chanDetail))
-    // document.body.addEventListener('scroll', this.updateScroll)
-    // alert(this.scrollPosition)
     await this.getChanDetail()
   },
   updated () {
@@ -84,7 +81,7 @@ export default {
       var params = new Object()
       params.targetKey = this.chanItem.teamKey
       params.targetType = 'writePush'
-      // alert(params.targetType)
+      params.targetNameMtext = this.chanItem.nameMtext
       this.$emit('openPop', params)
     },
     async getChanDetail () {
@@ -97,10 +94,7 @@ export default {
         paramMap.set('teamKey', this.chanDetail.teamKey)
       }
       var resultList = await this.$getTeamList(paramMap)
-      // alert(JSON.stringify(resultList))
       this.chanItem = resultList.content[0]
-      // eslint-disable-next-line no-debugger
-      debugger
       if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
         this.followYn = true
         this.detailShowYn = false
@@ -134,24 +128,17 @@ export default {
     },
     updateScroll () {
       this.scrollPosition = this.box.scrollTop
-      // alert(this.scrollPosition)
-      // var topArea = document.getElementById('chanInfoSummary')
       var blockBox = document.getElementById('summaryWrap')
-      // alert(window.innerHeight)
       if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
-        // alert(true)
-        // alert(topArea.classList)
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         document.getElementById('chanInfoSummary2').classList.add('displayBIm')
-        // alert(true)
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         blockBox.style.height = '-webkit-fill-available'
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
       }
-      // alert(tt)
     }
   },
   computed: {

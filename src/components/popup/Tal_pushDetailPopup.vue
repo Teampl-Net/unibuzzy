@@ -13,8 +13,8 @@
       </div>
       <div class="font15 mbottom-1" v-html="pushDetail.body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
       <div class="detailPopUpBtnArea">
-        <gBtnSmall btnTitle="닫기" class="mright-05" style="height: 30px;" @click="goNo"/>
-        <gBtnSmall btnTitle="바로가기" class="mleft-05" style="height: 30px;" @click="goOk"/>
+        <gBtnSmall btnTitle="바로가기" class="mright-05" style="height: 30px;" @click="goOk"/>
+        <gBtnSmall btnTitle="닫기" class="mleft-05" style="height: 30px;" @click="goNo"/>
       </div>
     </div>
   </div>
@@ -61,7 +61,6 @@ export default {
 
   },
   created () {
-    // alert(localStorage.getItem('systemName'))
     if (localStorage.getItem('systemName') === 'iOS') {
       this.pushDetail = JSON.parse(this.detailVal).data
       this.targetKey = this.pushDetail.contentsKey
@@ -75,7 +74,7 @@ export default {
 
 <style scoped>
 
-.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed;  z-index: 99999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
+.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 99999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 
@@ -107,5 +106,10 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-
+.pushPopUpWrap {
+  animation: fadein 0.3s;
+  -moz-animation: fadein 0.3s; /* Firefox */
+  -webkit-animation: fadein 0.3s; /* Safari and Chrome */
+  -o-animation: fadein 0.3s; /* Opera */
+}
 </style>

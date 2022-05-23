@@ -72,7 +72,6 @@ export default {
       paramMap.set('followerType', 'A')
       var resultList = await this.$getTeamList(paramMap)
       this.chanList = resultList.content
-      // alert(JSON.stringify(this.chanList))
       // this.$emit('closeLoading')
     },
     changeText (text) {

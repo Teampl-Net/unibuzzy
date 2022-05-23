@@ -45,13 +45,11 @@ export default {
     // this.getContentsList()
   },
   mounted () {
-    // alert(this.commonListData)
     if (this.mainYnProp === true) { this.mainYn = true }
   },
   emits: ['goDetail'],
   methods: {
     goDetail (value) {
-      // alert(JSON.stringify(value))
       this.$emit('goDetail', value)
     },
     settingDateFormat (date) {
@@ -69,7 +67,6 @@ export default {
       // if (changeTxt !== undefined) { return changeTxt }
     },
     settingUserDo (userDo) {
-      // alert(JSON.stringify(userDo))
       // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
       var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false

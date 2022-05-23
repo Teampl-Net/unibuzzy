@@ -124,7 +124,6 @@ export default {
       if (userInfo.userDispMtext); else {
         if (userInfo.userNameMtext) { userInfo.userDispMtext = userInfo.userNameMtext } else { userInfo.phoneLast = '등록된 이름이 없습니다.' }
       }
-      // alert(JSON.stringify(userInfo))
       return userInfo
     },
     openManagerChanDetail (param) {

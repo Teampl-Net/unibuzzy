@@ -68,29 +68,24 @@ const isJsonString = (str) => {
     window.addEventListener('message', e => listener(e))
 
     async function listener (e) {
-      // alert(e.data)
       var message
 
-      // alert('type is ' + e.dat)
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
         } else {
           message = e.data
         }
-        // alert(true)
         if (message.type === 'userInfo' || message.type === 'successLogin') {
           if (message.loginYn === true) {
-            // alert(message.userInfo)
             var userProfile = JSON.parse(message.userInfo)
             localStorage.setItem('loginYn', true)
-            // alert(userProfile.mobile)
             if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.replace({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
+              router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
             } else if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.replace({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
+              router.push({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
             } else {
               await saveUser(userProfile) // 서버에 save요청
               router.replace({ path: '/' })
@@ -101,7 +96,6 @@ const isJsonString = (str) => {
             localStorage.setItem('userImg', userProfile.userImg)
             localStorage.setItem('userEmail', userProfile.email)
             localStorage.setItem('userAtoken', userProfile.aToken) */
-            // alert(this.userProfile)
           } else {
             router.replace({ path: 'policies' })
           }
@@ -110,7 +104,6 @@ const isJsonString = (str) => {
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
-          // alert(message.systemNameData)
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'goback') {
           localStorage.setItem('pageDeleteYn', true)
@@ -119,7 +112,6 @@ const isJsonString = (str) => {
           } else {
             router.go(-1)
           } */
-          // alert(message.systemNameData)
           /* alert('뒤로가래!!!') */
         }
       } catch (err) {

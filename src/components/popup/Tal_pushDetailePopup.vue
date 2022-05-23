@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     goOk () {
-      alert(this.detailVal)
+      // alert(this.detailVal)
       this.$emit('ok', this.detailVal)
     },
     goNo () {
@@ -53,10 +53,6 @@ export default {
 
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
-
-      // this.userDoList = resultList.content[0].userDoList
-      // await this.settingUserDo(this.userDoList)
-      // alert(JSON.stringify(this.alimDetail))
 
       // this.$emit('closeLoading')
     },
