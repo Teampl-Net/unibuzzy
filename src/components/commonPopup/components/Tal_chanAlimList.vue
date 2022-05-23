@@ -28,7 +28,7 @@
       <pushList @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
   </div>
-  <div class="btnPlus" v-if="adminYn" @click="btnWritePush" >+</div>
+  <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
     <chanDetailComp  @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
@@ -186,8 +186,10 @@ export default {
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
 
 .btnPlus{
-  width:4rem; height:4rem; line-height:4rem;
+  width:4rem; height:4rem;
   color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
 
-  font-size:40px; border-radius:50%; position:absolute; bottom: 5%; right: 10% }
+  border-radius:50%; position:absolute; bottom: 5%; right: 10%;
+  box-shadow: 2px 2px 7px 3px #ccc;
+  }
 </style>

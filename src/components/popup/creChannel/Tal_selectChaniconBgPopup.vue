@@ -15,7 +15,7 @@
             <img v-if="opentype =='iconPop'" :src="value.teamCharImg"  style="width: calc(var(--chanBoxSize) - 20px)"/>
             <p v-if="opentype =='iconPop'" >{{value.teamChartext}}</p>
 
-            <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: 100%;" >
+            <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: 100%; height: 100%;" >
             <!-- <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: calc(var(--chanBoxSize) + 10px);" > -->
 
           </div>
@@ -106,6 +106,7 @@ export default {
   left: 5%;
   /* height: 70%; */
   max-height:700px ;
+  box-shadow: 2px 3px 6px 3px #ccc;
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
 .creChanIntroTextWrap p{font-size: 18px; }

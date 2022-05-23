@@ -6,17 +6,20 @@
   <div class="confirmPopWrap" >
   <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
       <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
-          <p class="mbottom-1 fontBold">어떤 종류의 채널을 만들고 싶으신가요?</p>
-          <p style="font-size:14px">채널 종류를 선택해주세요</p>
+          <!-- <p class="mbottom-1 fontBold">어떤 종류의 채널을 만들고 싶으신가요?</p> -->
+          <p class="fontBold">채널 종류를 선택해주세요</p>
+          <!-- <p style="font-size:14px">채널 종류를 선택해주세요</p> -->
           <!-- <p>채널 종류를 선택해주시면<br>필요한 서류를 알려드릴게요!</p> -->
       </div>
       <!-- <div style="width: 100%; height: calc(100% - 350px); margin-top: 20px; float: left;">  /* change Jeong */ -->
-      <div style="width: 100%; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
-          <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value.teamType)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style=" float: left; width: var(--chanBoxSize);margin-right: 10px; height: calc(var(--chanBoxSize)); margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-              <p>{{value.teamNameMtext}}</p>
+      <div style="width: 100%; margin: 1rem 0px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
+          <!-- <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value.teamType)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style=" float: left; width: var(--chanBoxSize);margin-right: 10px; height: calc(var(--chanBoxSize)); margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"> -->
+          <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value.teamType)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:3rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; ">
+              <p style="font-size: 1rem">{{value.teamNameMtext}}</p>
           </div>
       </div>
-      <div style="width: 100%; height: 80px; background: rgb(103 104 167 / 22%); float: left;"> </div>
+      <!-- <div style="width: 100%; height: 80px; background: rgb(103 104 167 / 22%); float: left;"> </div> -->
+
       <div @click="setParam" class="creChanBigBtn fl mtop-2 mbottom-05">선택완료</div>
 
   </div>
@@ -74,8 +77,9 @@ left: 5%;
 overflow: auto;
 /* height: 70%; */
 max-height: 600px;
+box-shadow: 2px 3px 6px 3px #ccc;
 }
-.creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
+.creChanIntroTextWrap{padding: 10px 0; float: left; }
 .creChanIntroTextWrap p{font-size: 18px; }
 
 .creChanBigBtn{

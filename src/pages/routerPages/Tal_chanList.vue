@@ -1,24 +1,25 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
 
-  <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :searchList="this.resultSearchKeyList" />
-  <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn"/>
+  <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
+
+  <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
-  <div style="height: calc(100% - 60px); padding: 0.2rem 0;">
+
+  <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
+  <div style="height: calc(100% - 60px); padding: 0.2rem 0; padding-bottom:50px">
+
     <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
 
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
-  <div class="btnPlus" @click="clickCreateChannel" >+</div>
+  <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
 
 </template>
 
 <script>
-// import searchChannel from '../../components/pageComponents/channel/Tal_searchChan.vue'
 import findChannelList from '../../components/popup/Tal_findChannelList.vue'
-
-// import myChanList from '../../components/popup/Tal_managerChanList.vue'
 
 export default {
   name: 'user',
@@ -160,6 +161,8 @@ export default {
   width:4rem; height:4rem; line-height:4rem;
   color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
 
-  font-size:40px; border-radius:50%; position:absolute; bottom: 80px; right: 10%
+   border-radius:50%; position:fixed; bottom: 80px; right: 10%;
+  box-shadow: 2px 2px 7px 3px #ccc;
+
 }
 </style>

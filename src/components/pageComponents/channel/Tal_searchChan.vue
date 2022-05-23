@@ -6,7 +6,7 @@
         </div>
         <div class="newestSearchWrap">
             <div lass="w-100P" style="height: 2rem">
-                <span class="font18 fontBold commonColor fl">최근 검색</span>
+                <span class="font18 fontBold commonColor fl">최근ss 검색</span>
                 <span class="font15 commonColor fr">| 자동저장 켜기</span>
                 <span class="font15 commonColor fr" style="color: #6768A782">전체삭제</span>
             </div>

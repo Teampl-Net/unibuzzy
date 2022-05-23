@@ -22,7 +22,7 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
 
-      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
+      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" />
 
     </div>

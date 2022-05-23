@@ -8,7 +8,7 @@
         <span class="font16">구독자 100명| 알림발송 100건</span>
         <span class="font22 fontBold">{{changeText(chanDetail.nameMtext)}}</span>
 
-        <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div>
+        <!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
 
         <img src="../../../assets/images/channel/chanImg.png" style="width: 185px; height: 185px; border-radius: 185px; margin-bottom: 1rem" alt="채널사진">
         <div v-if="followYn" class="mtop-05"><gBtnSmall class="fl" btnTitle="알림취소" /><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" /></div>

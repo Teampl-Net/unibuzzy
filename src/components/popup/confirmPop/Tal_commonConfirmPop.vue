@@ -11,16 +11,17 @@
     <p class="confirmText" v-html="confirmText"></p>
 
     <div class="confirmBtnArea" v-if="confirmType==='timeout'">
-      <gBtnSmall class="mright-05" v-on:click="goNo" btnTitle="닫기"/>
+      <gBtnSmall class="btnBig" v-on:click="goNo" btnTitle="닫기"/>
     </div>
 
     <div class="confirmBtnArea" v-if="confirmType==='one'">
-      <gBtnSmall class="mright-05" v-on:click="goNo" btnTitle="확인"/>
+      <gBtnSmall class=" btnBig" v-on:click="goNo" btnTitle="확인"/>
     </div>
 
     <div class="confirmBtnArea" v-if="confirmType==='two'||confirmType== null">
-      <gBtnSmall class="mright-05" v-on:click="goOk" btnTitle="확인"/>
-      <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소"/>
+
+      <gBtnSmall class="mright-05 btnBig" v-on:click="goOk" btnTitle="확인"/>
+      <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소" class="mleft-05 btnBig"/>
     </div>
 
   </div>

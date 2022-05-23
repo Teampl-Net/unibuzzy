@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100%;top: 50px; position: absolute;">
+  <div class="w-100P" style=" height: 100%;top: 50px; position: absolute; overflow:auto">
     <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->

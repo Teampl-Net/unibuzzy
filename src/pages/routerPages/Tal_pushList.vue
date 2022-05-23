@@ -1,6 +1,7 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div style="padding-right: 0; padding-left: 0; height: 100%;">
+
     <!-- {{scrollPosition}} -->
     <div class= "pageHeader pushListCover" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
