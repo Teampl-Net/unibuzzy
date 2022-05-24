@@ -96,7 +96,7 @@ const methods = {
     })
     return response.json() // JSON 응답을 네이티브 JavaScript 객체로 파싱 */
 
-    await axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true }
+    await axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { Authorization: 'YmMwMzFiMTItOTBjOS00MDAzLWI3MWItMjY2NWQxYjZhMzcy', withCredentials: true }
     ).then(response => {
       console.log('cookie', response.headers)
       if (response.data.resultCode === 'OK') {
@@ -119,7 +119,7 @@ const methods = {
   },
   async getTeamList (paramMap) {
     var resultList = null
-    await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap), { withCreadentials: true }
+    await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap), { withCredentials: true }
     ).then(response => {
       resultList = response.data
     }).catch((error) => {
@@ -215,13 +215,16 @@ const methods = {
   },
   async requestCreChan (paramVal) {
     var teamRequest = paramVal
+    var result = false
     await this.$axios.post('/tp.saveTeamRequest', { teamRequest: teamRequest }
     // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
     ).then(response => {
       console.log(response)
+      result = response.data
     }).catch((ex) => {
       console.warn('ERROR!!!!! : ', ex)
     })
+    return result
   },
   async createTeamForReq (inputParam) {
     // eslint-disable-next-line no-new-object
