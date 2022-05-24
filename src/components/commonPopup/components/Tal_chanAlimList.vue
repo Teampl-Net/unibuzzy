@@ -50,11 +50,11 @@ export default {
       wrapKey: 0,
       followYn: false,
       detailHeaderShowYn: false,
-      // detailShowYn: true,
-      detailShowYn: false,
+      detailShowYn: true,
+      // detailShowYn: false,
       chanItem: {},
-      // adminYn: false
-      adminYn: true
+      adminYn: false
+      // adminYn: true
 
 
     }
