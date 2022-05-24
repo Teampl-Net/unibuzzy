@@ -56,6 +56,7 @@ export default {
       // adminYn: false
       adminYn: true
 
+
     }
   },
   props: {
@@ -102,11 +103,22 @@ export default {
       if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
         this.followYn = true
         this.detailShowYn = false
+
+
+        // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
+        // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
+        if(resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  ){
+          this.adminYn = true
+        }
+        // if (resultList.content[0].userTeamInfo.followerType === JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType) {
+        //   this.adminYn = true
+        // }
+
       }
 
-      if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
-        this.adminYn = true
-      }
+      // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+      //   this.adminYn = true
+      // }
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
@@ -134,7 +146,7 @@ export default {
     updateScroll () {
 
       this.scrollPosition = this.box.scrollTop
-      console.log(this.scrollPosition)
+      // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
       if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
         blockBox.style.height = 50 + 'px'
