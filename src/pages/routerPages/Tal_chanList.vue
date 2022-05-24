@@ -123,12 +123,7 @@ export default {
     changeSearchList (idx) {
       this.resultSearchKeyList.splice(idx, 1)
       this.getChannelList()
-    },
-
-
-
-
-
+    }
 
   },
   data () {

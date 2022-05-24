@@ -9,8 +9,7 @@
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div  :style="setColor" class="paperBackground">
-
-          <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
+          <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
@@ -26,8 +25,6 @@
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
                 <textarea placeholder="알림 내용을 입력해주세요" class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
-
-                <!-- <button @click="testYn = !testYn" >클릭</button> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -56,19 +53,12 @@
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 export default {
   props: {
-    params: {},
-    sendOk: {},
-  },
-  watch:{
-    'sendOk':function(){
-      // alert(this.sendOk)
-      this.clickPageTopBtn()
-    }
+    params: {}
   },
   data () {
     return {
-      testYn:true,
-      msgPopYn:false,
+
+      // msgPopYn:false,
       testpopYn: true,
       failPopYn: false,
       errorText: '',
@@ -110,11 +100,9 @@ export default {
       return {
         'background-color': this.colorList[this.selectedC]
       }
-    },
-
+    }
   },
   created () {
-
   },
   methods: {
     messageAreaClick () {
@@ -127,13 +115,13 @@ export default {
       this.msgData = obj.admMsg
       this.msgPopYn = false
     },
+
     /* allBlur () {
       this.$refs.formEditor.focus()
       // this.$ref.formEditor.allBlur()
     }, */
     setParamInnerHtml () {
       // eslint-disable-next-line no-new-object
-
       var param = new Object()
       param.bodyMinStr = this.msgData
       param.creTeamKey = this.params.targetKey
@@ -151,24 +139,21 @@ export default {
       }
     },
     clickPageTopBtn () {
-      if(this.sendOk !== '' && this.sendOk !== null && this.sendOk !==undefined){
-        var title = this.writePushTitle
-        if (title !== undefined && title !== null && title !== '') {
-        } else {
-          this.errorText = '제목을 입력해주세요'
-          this.failPopYn = true
-          return
-        }
-        var msgData = this.msgData
-        if (msgData !== undefined && msgData !== null && msgData !== '') {
-        } else {
-          this.errorText = '알림 내용을 입력해주세요'
-          this.failPopYn = true
-          return
-        }
-        this.checkPopYn = true
-
+      var title = this.writePushTitle
+      if (title !== undefined && title !== null && title !== '') {
+      } else {
+        this.errorText = '제목을 입력해주세요'
+        this.failPopYn = true
+        return
       }
+      var msgData = this.msgData
+      if (msgData !== undefined && msgData !== null && msgData !== '') {
+      } else {
+        this.errorText = '알림 내용을 입력해주세요'
+        this.failPopYn = true
+        return
+      }
+      this.checkPopYn = true
     },
     onReady (editor) {
       // Insert the toolbar before the editable area.
@@ -217,9 +202,10 @@ export default {
       position: relative;
       width: 100%;
       margin: 0 auto;
-      /* margin-top: 1rem; */
+      margin-top: 1rem;
       border-radius: 0.8rem;
       height: calc(100% - 60px);
+      min-height: 600px;
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -256,7 +242,7 @@ export default {
 .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; min-height: 200px;height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea .msgArea{ width:100%; min-height: 400px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
   width: 100%; height: 5rem;
@@ -281,9 +267,9 @@ export default {
 .activeColor p{color: #6768A7!important;}
 .editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
-.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;}
+.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 800px; margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 100%; height: calc(100% - 1rem); position: relative; margin: 0 auto; padding: 2rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 1rem);min-height: 800px; position: relative; margin: 0 auto; padding: 4rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}

@@ -37,7 +37,7 @@ export default {
       phoneNum: '',
       tempUser: [],
       failPopYn: false,
-      errorText: '',
+      errorText: ''
 
       // regPhoneText:'휴대전화 형식이 아닙니다.'
     }
@@ -53,18 +53,18 @@ export default {
     commonConfirmPop
   },
   methods: {
-    regPhoneNumber(text){
-      var regPhone = /^(?:(010-\d{4})|(01[0|1|6|7|8|9]-\d{3,4}))-(\d{4})$/;
-      var regPhone1 = /^(?:(010\d{4})|(01[0|1|6|7|8|9]\d{3,4}))(\d{4})$/;
-      if (regPhone.test(text) == true || regPhone1.test(text) == true){
+    regPhoneNumber (text) {
+      var regPhone = /^(?:(010-\d{4})|(01[0|1|6|7|8|9]-\d{3,4}))-(\d{4})$/
+      var regPhone1 = /^(?:(010\d{4})|(01[0|1|6|7|8|9]\d{3,4}))(\d{4})$/
+      if (regPhone.test(text) === true || regPhone1.test(text) === true) {
         return true
-      }else{
+      } else {
         return false
       }
     },
     async savePhone () {
       var mobileN = this.phoneNum
-      if ((mobileN !== undefined && mobileN !== null && mobileN !== '') && this.regPhoneNumber(this.phoneNum) == true) {
+      if ((mobileN !== undefined && mobileN !== null && mobileN !== '') && this.regPhoneNumber(this.phoneNum) === true) {
         if (this.tempUser) {
           this.tempUser.phoneEnc = mobileN
         }
@@ -93,7 +93,6 @@ select{height: 40px; width: 160px; border: none;}
   .savePhoneHeader {margin-top: 14px; line-height: 27px}
   .savePhoneHeader p{ color: #6768A7; font-weight: bold;}
   .savePhoneHeader .headerFont{line-height: 32px}
-
 
 .noSavePhone{color: #b60707;}
 

@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     async getContentsList () {
-
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey

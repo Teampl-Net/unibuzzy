@@ -56,7 +56,6 @@ export default {
       adminYn: false
       // adminYn: true
 
-
     }
   },
   props: {
@@ -67,6 +66,8 @@ export default {
     chanDetailComp
   },
   async created () {
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail()
   },
   updated () {
@@ -77,8 +78,11 @@ export default {
     this.box.addEventListener('scroll', this.updateScroll)
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
-
     })
+    localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
+  },
+  mounted () {
+    localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
     btnWritePush () {
@@ -104,16 +108,14 @@ export default {
         this.followYn = true
         this.detailShowYn = false
 
-
         // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
         // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
-        if(resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  ){
+        if (resultList.content[0].userTeamInfo.followerType === 'A' || resultList.content[0].userTeamInfo.followerType === 'M') {
           this.adminYn = true
         }
         // if (resultList.content[0].userTeamInfo.followerType === JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType) {
         //   this.adminYn = true
         // }
-
       }
 
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
@@ -144,7 +146,6 @@ export default {
       this.detailHeaderShowYn = true
     },
     updateScroll () {
-
       this.scrollPosition = this.box.scrollTop
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
@@ -158,6 +159,21 @@ export default {
         blockBox.style.height = '-webkit-fill-available'
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
       }
+    },
+    recvNoti (e) {
+      /* if (JSON.parse(e.data).type === 'pushmsg') {
+        var target = JSON.parse(e.data).pushMessage
+        alert(JSON.stringify(target.data))
+        if (target.data.creTeamKey === this.chanItem.teamKey) {
+          var tempData = this.chanItem
+          alert(JSON.stringify(this.chanItem))
+          this.chanItem = null
+          alert(JSON.stringify(this.chanItem))
+          setTimeout(() => {
+            this.chanItem = tempData
+          }, 300)
+        }
+      } */
     }
   },
   computed: {

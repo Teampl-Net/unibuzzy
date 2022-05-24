@@ -7,7 +7,6 @@
         </div>
         <span class="popHeaderTitleSpan">{{headerTitle}}</span>
 
-
         <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
     </div>
 </template>
@@ -25,8 +24,8 @@ export default {
     closeXPop () {
       this.$emit('closeXPop', this.thisPopN)
     },
-    sendBtnClick(){
-      if(this.headerTitle === '알림 작성'){
+    sendBtnClick () {
+      if (this.headerTitle === '알림 작성') {
         this.$emit('sendOk')
       }
     }

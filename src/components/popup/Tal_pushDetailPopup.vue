@@ -57,9 +57,9 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
-    },
+    }
 
-    testData(){
+    /* testData () {
       var obj = new Object()
       obj.nameMtext = '채널명테스트'
       obj.title = 'KO$^$메시지 제목'
@@ -68,7 +68,7 @@ export default {
 
       this.pushDetail = obj
       this.targetKey = '1000002'
-    }
+    } */
 
   },
   computed: {
@@ -82,9 +82,10 @@ export default {
       this.pushDetail = JSON.parse(this.detailVal).data
       this.targetKey = this.pushDetail.contentsKey
     }
-
-    // this.testData()
-
+    /* var notiReloadPageKey = localStorage.getItem('notiReloadPage')
+    if (notiReloadPageKey === this.pushDetail.creTeamKey) {
+      this.$emit('closePushPop')
+    } */
   }
 }
 </script>

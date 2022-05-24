@@ -3,8 +3,6 @@
 
 <div class="introBackground">
   <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-
-
     <div class="introWhiteCard" style=" min-height: 450px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="mbottom-3 mtop-1">
@@ -46,14 +44,14 @@ export default {
       userPw: '',
       errorText: '',
       failPopYn: false,
-      pushdata:{},
+      pushdata: {}
 
       // testYn:true
     }
   },
 
   components: {
-    commonConfirmPop,
+    commonConfirmPop
     // pushDetail
   },
   methods: {

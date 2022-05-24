@@ -1,10 +1,10 @@
 <template>
     <div v-if="reloadYn===false" class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
-        <fullModal :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal :style="getWindowSize" transition="showModal" :id="this.targetType + this.params.targetKey" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" />
+      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader"/>
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -22,8 +22,8 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
 
-      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop(true)'/>
-      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
+      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
+      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" />
 
     </div>
 </template>
@@ -47,10 +47,8 @@ import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 export default {
   async created () {
     await this.settingPop()
-    this.$addHistoryStack('pop' + this.thisPopN)
     document.addEventListener('message', e => this.BackPopClose(e))
     window.addEventListener('message', e => this.BackPopClose(e))
-    localStorage.setItem('notiReloadPage', 'none')
   },
   mounted () {
   },
@@ -78,9 +76,7 @@ export default {
       detailVal: {},
 
       chanFollowYn: false,
-      readySearchList: {}, // chanDetail -> pushList 열때 필요
-
-      sendOkYn: 0
+      readySearchList: {} // chanDetail -> pushList 열때 필요
     }
   },
   props: {
@@ -106,16 +102,13 @@ export default {
   updated () {
   },
   methods: {
-    // sendOk(){
-
-    // },
     BackPopClose (e) {
       if (e === 'headerClick') {
         this.closeXPop()
       } else if (JSON.parse(e.data).type === 'goback') {
         if (localStorage.getItem('popHistoryStack')) {
           if (localStorage.getItem('pageDeleteYn')) {
-            if ((localStorage.getItem('curentPage') === 'pop' + this.thisPopN)) {
+            if ((localStorage.getItem('curentPage') === this.targetType + this.thisPopN)) {
               this.closeXPop()
             }
           }
@@ -182,6 +175,11 @@ export default {
         this.thisPopN = 100
       }
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
+      if (this.params.targetKey) {
+        this.$addHistoryStack(this.targetType + this.params.targetKey)
+      } else {
+        this.$addHistoryStack(this.targetType + this.thisPopN)
+      }
     },
     openPop (params) {
       this.popParams = params
@@ -206,11 +204,6 @@ export default {
         this.$removeHistoryStack(this.thisPopN)
       }
     },
-    // sucssesCreChan(){
-    //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
-    //     this.$emit('closePop', reloadYn)
-    //   }
-    // }
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
