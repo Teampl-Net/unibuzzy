@@ -71,6 +71,7 @@ export default {
     }
   },
   created () {
+    localStorage.setItem('notiReloadPage', 'none')
     document.addEventListener('message', e => this.BackPopClose(e))
     window.addEventListener('message', e => this.BackPopClose(e))
     var history = localStorage.getItem('popHistoryStack').split('$#$')
