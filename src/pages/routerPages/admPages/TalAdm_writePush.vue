@@ -53,7 +53,14 @@
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 export default {
   props: {
-    params: {}
+    params: {},
+    sendOk: {},
+  },
+  watch:{
+    'sendOk':function(){
+      // alert(this.sendOk)
+      this.clickPageTopBtn()
+    }
   },
   data () {
     return {
