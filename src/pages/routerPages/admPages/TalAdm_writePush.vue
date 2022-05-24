@@ -54,10 +54,10 @@ import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonCon
 export default {
   props: {
     params: {},
-    sendOk: {},
+    sendOk: {}
   },
-  watch:{
-    'sendOk':function(){
+  watch: {
+    sendOk: function () {
       // alert(this.sendOk)
       this.clickPageTopBtn()
     }
