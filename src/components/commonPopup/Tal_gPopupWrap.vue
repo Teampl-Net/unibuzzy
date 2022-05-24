@@ -4,7 +4,7 @@
         <fullModal :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader"/>
+      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -22,8 +22,8 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
 
-      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop'/>
-      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" />
+      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop(true)'/>
+      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
 
     </div>
 </template>
@@ -77,7 +77,10 @@ export default {
       detailVal: {},
 
       chanFollowYn: false,
-      readySearchList: {} // chanDetail -> pushList 열때 필요
+      readySearchList: {}, // chanDetail -> pushList 열때 필요
+
+
+      sendOkYn:0
     }
   },
   props: {
@@ -103,6 +106,9 @@ export default {
   updated () {
   },
   methods: {
+    // sendOk(){
+
+    // },
     BackPopClose (e) {
       if (e === 'headerClick') {
         this.closeXPop()
@@ -200,6 +206,11 @@ export default {
         this.$removeHistoryStack(this.thisPopN)
       }
     },
+    // sucssesCreChan(){
+    //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
+    //     this.$emit('closePop', reloadYn)
+    //   }
+    // }
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))

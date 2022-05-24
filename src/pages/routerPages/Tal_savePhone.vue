@@ -16,8 +16,9 @@
           </select>
         </div> -->
         <div class="inputWrap mtop-1">
-          <input type="number" v-model="phoneNum" placeholder="휴대전화 번호입력" name="" id="" >
+          <input type="tel" v-model="phoneNum" placeholder="휴대전화 번호입력" name="" id="" >
           <gBtnSmall @click="savePhone" btnTitle="등록" class="inputBtn" />
+          <!-- <p :class="{noSavePhone: regPhoneNumber(phoneNum) == false}"  class="fr mright-05">{{regPhoneText}}</p> -->
         </div>
       <!--   <div class="inputWrap">
           <input type="number" placeholder="인증번호 입력" name="" id="" >
@@ -36,9 +37,12 @@ export default {
       phoneNum: '',
       tempUser: [],
       failPopYn: false,
-      errorText: ''
+      errorText: '',
+
+      // regPhoneText:'휴대전화 형식이 아닙니다.'
     }
   },
+
   created () {
     this.tempUser = JSON.parse(this.user)
   },
@@ -49,9 +53,18 @@ export default {
     commonConfirmPop
   },
   methods: {
+    regPhoneNumber(text){
+      var regPhone = /^(?:(010-\d{4})|(01[0|1|6|7|8|9]-\d{3,4}))-(\d{4})$/;
+      var regPhone1 = /^(?:(010\d{4})|(01[0|1|6|7|8|9]\d{3,4}))(\d{4})$/;
+      if (regPhone.test(text) == true || regPhone1.test(text) == true){
+        return true
+      }else{
+        return false
+      }
+    },
     async savePhone () {
       var mobileN = this.phoneNum
-      if (mobileN !== undefined && mobileN !== null && mobileN !== '') {
+      if ((mobileN !== undefined && mobileN !== null && mobileN !== '') && this.regPhoneNumber(this.phoneNum) == true) {
         if (this.tempUser) {
           this.tempUser.phoneEnc = mobileN
         }
@@ -62,7 +75,7 @@ export default {
         // this.$router.replace({ path: '/' })
       } else {
         this.failPopYn = true
-        this.errorText = '휴대폰 번호를 입력해주세요'
+        this.errorText = '휴대폰 번호를 확인해주세요.'
       }
     }
   }
@@ -80,5 +93,8 @@ select{height: 40px; width: 160px; border: none;}
   .savePhoneHeader {margin-top: 14px; line-height: 27px}
   .savePhoneHeader p{ color: #6768A7; font-weight: bold;}
   .savePhoneHeader .headerFont{line-height: 32px}
+
+
+.noSavePhone{color: #b60707;}
 
 </style>

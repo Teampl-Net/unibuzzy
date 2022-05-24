@@ -5,10 +5,12 @@
       <div class="pushDetailTopArea">
         <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
+          <p class=" font18 fontBold commonColor">[ {{pushDetail.nameMtext}} ] 알림 도착</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.title)}}</p>
-          <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
+
+          <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+
         </div>
       </div>
       <div class="font15 mbottom-1" v-html="pushDetail.body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
@@ -55,6 +57,17 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+
+    testData(){
+      var obj = new Object()
+      obj.nameMtext = '채널명테스트'
+      obj.title = 'KO$^$메시지 제목'
+      obj.creDate = '2022-05-24 10:22'
+      obj.body = '내용 테스트입니다!'
+
+      this.pushDetail = obj
+      this.targetKey = '1000002'
     }
 
   },
@@ -69,6 +82,9 @@ export default {
       this.pushDetail = JSON.parse(this.detailVal).data
       this.targetKey = this.pushDetail.contentsKey
     }
+
+    // this.testData()
+
   }
 }
 </script>

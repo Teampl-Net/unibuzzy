@@ -1,6 +1,10 @@
 <template>
+<!-- <pushDetail v-if='testYn' @closePushPop='testYn = false' /> -->
+
 <div class="introBackground">
   <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+
+
     <div class="introWhiteCard" style=" min-height: 450px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="mbottom-3 mtop-1">
@@ -32,6 +36,8 @@
 
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
+// import pushDetail from '../../components/popup/Tal_pushDetailPopup.vue'
+// import pushDetail from '../../components/Tal_pushDetail.vue'
 // import { userLoginCheck } from '../../assets/js/Tal_axiosFunction'
 export default {
   data () {
@@ -39,13 +45,16 @@ export default {
       userId: '',
       userPw: '',
       errorText: '',
-      failPopYn: false
+      failPopYn: false,
+      pushdata:{},
+
+      // testYn:true
     }
   },
-  created () {
-  },
+
   components: {
-    commonConfirmPop
+    commonConfirmPop,
+    // pushDetail
   },
   methods: {
     async saveUser () {

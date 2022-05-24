@@ -25,6 +25,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div>
+
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
@@ -86,6 +87,7 @@ export default {
   },
   methods: {
     async getContentsList () {
+
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
@@ -94,6 +96,7 @@ export default {
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
+      // console.log(this.alimDetail)
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {

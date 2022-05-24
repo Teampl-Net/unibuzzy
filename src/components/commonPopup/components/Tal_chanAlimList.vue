@@ -3,6 +3,7 @@
   <div :key="wrapKey" v-if="this.detailShowYn === false" >
   <!-- <div>{{pushKey}}</div> -->
     <div id="summaryWrap" class="summaryWrap" >
+
       <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
         <span id="chanCnt" class="font16">구독자 101명| 알림발송 100건</span>
         <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
@@ -24,7 +25,7 @@
 
     </div>
 
-    <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 320px;">
+    <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 320px; ">
       <pushList @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
   </div>
@@ -49,9 +50,11 @@ export default {
       wrapKey: 0,
       followYn: false,
       detailHeaderShowYn: false,
-      detailShowYn: true,
+      // detailShowYn: true,
+      detailShowYn: false,
       chanItem: {},
-      adminYn: false
+      // adminYn: false
+      adminYn: true
 
     }
   },
@@ -73,6 +76,7 @@ export default {
     this.box.addEventListener('scroll', this.updateScroll)
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+
     })
   },
   methods: {
@@ -99,6 +103,7 @@ export default {
         this.followYn = true
         this.detailShowYn = false
       }
+
       if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.adminYn = true
       }
@@ -127,7 +132,9 @@ export default {
       this.detailHeaderShowYn = true
     },
     updateScroll () {
+
       this.scrollPosition = this.box.scrollTop
+      console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
       if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
         blockBox.style.height = 50 + 'px'

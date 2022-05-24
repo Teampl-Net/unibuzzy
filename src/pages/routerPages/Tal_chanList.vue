@@ -1,6 +1,6 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-
+<div style="overflow:scroll">
   <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
   <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
@@ -11,6 +11,7 @@
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
+</div>
 </template>
 
 <script>
@@ -121,7 +122,13 @@ export default {
     changeSearchList (idx) {
       this.resultSearchKeyList.splice(idx, 1)
       this.getChannelList()
-    }
+    },
+
+
+
+
+
+
   },
   data () {
     return {
