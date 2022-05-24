@@ -27,20 +27,20 @@
         <!-- <div style="display: flex; align-items: center; justify-content: space-around;"> -->
         <div style="width:100%; height: 30px" class="mtop-1">
           <p class="textLeft font14 fl" style="line-height: 30px;">채널명</p>
-          <input v-model="inputChannelName" type="text" placeholder="채널명을 입력해주세요" class="creChanInput"  id="channelName" style="padding-left: 5px; width: 80%; height: 25px; float: right; border: none;border-bottom: 1px solid #ccc; ">
+          <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" style="padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px; ">
         </div>
-        <div style="width:100%; height: 50px" class="mtop-1">
+        <div style="width:100%; min-height: 100px" class="mtop-1">
           <p class="textLeft font14 fl" style="line-height: 30px;">설명</p>
           <!-- <input type="text" placeholder="간단한 소개글을 입력해주세요." name="" value="" class="creChanInput"  id="channelName" style="width: 80%; height: 50px; float: right; padding-right: 10px; border: none;border-bottom: 1px solid #ccc;"> -->
-          <textarea v-model="inputChannelMemo" style="width: 80%; height: 50px; float: right;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px; " placeholder="간단한 설명을 입력해주세요."/>
+          <textarea v-model="inputChannelMemo" style="width: 80%; min-height: 100px; float: right; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px; " placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
         </div>
         <div style="width:100%; height: 30px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">산업군</p>
-          <div style="width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc;" @click="channelTypeClick">
+          <div style="width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;" @click="channelTypeClick">
             <p class="textLeft font14 fl mleft-05" style="line-height:30px;" >{{selectTypeText}}</p>
           </div>
         </div>
-        <div style="width:100%; height: 30px" class="mtop-1">
+        <div style="width:100%; height: 40px" class="mtop-1">
           <p class="textLeft font14 fl" style="line-height: 30px;">키워드</p>
           <div style="width: 80%; height: 100%; float: right; border: none; display:flex; overflow: auto; ">
             <!-- <input v-for="(input, index) in 3" :key="index" class="categoryBox" style="border: 1px solid #ccc; flex:1" @change="setKeyword(index,text)" /> -->
@@ -55,7 +55,7 @@
 
   </div>
   <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='checkValue' />
-  <gConfirmPop confirmText='채널이 생성되었습니다.' confirmType='timeout' v-if="okPopYn" />
+  <gConfirmPop confirmText='채널이 생성되었습니다.' @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" />
   <!-- <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' /> -->
 <div @click="checkPopYn= true" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
 
@@ -86,8 +86,8 @@ export default {
       checkPopYn: false,
       okPopYn: false,
 
-      errorMsg:'',
-      errorPopYn:false
+      errorMsg: '',
+      errorPopYn: false
     }
   },
   methods: {
@@ -98,36 +98,27 @@ export default {
     },
     setTypeData (param) {
       this.selectType = param.teamType
-      switch (param.teamType) {
-        case 'C':
-          this.selectTypeText = '기업'
-          break
-        case 'G':
-          this.selectTypeText = '정부'
-          break
-        case 'S':
-          this.selectTypeText = '학교'
-          break
-        case 'H':
-          this.selectTypeText = '종교'
-          break
-        case 'D':
-          this.selectTypeText = '동호회'
-          break
-        case 'Q':
-          this.selectTypeText = '병원'
-          break
-        case 'V':
-          this.selectTypeText = '약국'
-          break
-        case 'A':
-          this.selectTypeText = '매장'
-          break
-        case 'P':
-          this.selectTypeText = '식당'
-          break
+      if (param.teamType === 'C') {
+        this.selectTypeText = '기업'
+      } else if (param.teamType === 'G') {
+        this.selectTypeText = '정부'
+      } else if (param.teamType === 'S') {
+        this.selectTypeText = '학교'
+      } else if (param.teamType === 'H') {
+        this.selectTypeText = '종교'
+      } else if (param.teamType === 'D') {
+        this.selectTypeText = '동호회'
+      } else if (param.teamType === 'Q') {
+        this.selectTypeText = '병원'
+      } else if (param.teamType === 'V') {
+        this.selectTypeText = '약국'
+      } else if (param.teamType === 'P') {
+        this.selectTypeText = '식당'
+      } else if (param.teamType === 'A') {
+        this.selectTypeText = '매장'
+      } else if (param.teamType === 'E') {
+        this.selectTypeText = '기타'
       }
-
       this.typePopYn = false
     },
     setIconOrBGData (param) {
@@ -139,29 +130,29 @@ export default {
       this.iconBgPopupYn = false
     },
 
-    checkValue(){
+    checkValue () {
       var result = false
-      if(this.selectedType !== '' && this.inputChannelName !== '' && this.inputChannelMemo !== ''){
-        if(this.inputChannelName.length > 20 ){
+      if (this.selectedType !== '' && this.inputChannelName !== '' && this.inputChannelMemo !== '') {
+        if (this.inputChannelName.length > 20) {
           this.errorMsg = '채널명은 20글자 이내로 입력해주세요.'
           this.errorPopYn = true
           result = false
-        }else if(this.inputChannelMemo.length > 40){
-
+        } else if (this.inputChannelMemo.length > 40) {
           this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요.'
           this.errorPopYn = true
           result = false
-        }else {
+        } else {
           result = true
-          this.setParam ()
+          this.setParam()
         }
-      }else{
+      } else {
         this.errorMsg = '입력값을 모두 입력해주세요.'
         this.errorPopYn = true
       }
       return result
     },
-    setParam () {
+    async setParam () {
+      // eslint-disable-next-line no-new-object
       var gParam = new Object()
       gParam.nameMtext = 'KO$^$' + this.inputChannelName
       gParam.memoMtext = 'KO$^$' + this.inputChannelMemo
@@ -170,11 +161,10 @@ export default {
       gParam.picBgPath = this.selectBg
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
 
-      this.$requestCreChan(gParam)
-      setTimeout(() => {
-        this.$emit('successCreChan')
-      }, 300)
-
+      var result = await this.$requestCreChan(gParam)
+      if (result === true || result === 'true') {
+        this.okPopYn = true
+      }
     },
 
     loadingClose () {
@@ -208,5 +198,5 @@ export default {
 }
 .activeTypeBox{background: #6768a7; color: #fff;}
 .activeTypeBox p {color: #fff;}
-.categoryBox{min-width: 50px; margin-right: 5px; height: 25px;float: left; border-radius: 5px;padding-left: 5px;}
+.categoryBox{min-width: 50px; margin-right: 5px; height: 30px;float: left; border-radius: 5px;padding-left: 5px;}
 </style>

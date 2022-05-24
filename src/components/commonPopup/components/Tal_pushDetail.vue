@@ -121,6 +121,7 @@ export default {
     async changeAct (act, contentsKey) {
       var result = null
       var saveYn = true
+      this.pushDetail = JSON.parse(this.detailVal).data
       if (act.doKey > 0) {
         saveYn = false
       }

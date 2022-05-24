@@ -1,7 +1,8 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100%;top: 50px; position: absolute; overflow:auto">
-    <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+  <div class="w-100P" style=" height: 100vh;top: 50px; position: absolute; overflow:auto">
+    <div style="min-height: 800px;">
+      <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParamInnerHtml' />
@@ -38,6 +39,7 @@
           </div> -->
         </div>
       </div>
+    </div>
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
@@ -236,7 +238,7 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ min-height: 200px; height: calc(100% - 10rem); width: 100%; }
+.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; min-height: 200px;height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}

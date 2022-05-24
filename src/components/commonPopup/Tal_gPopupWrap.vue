@@ -10,7 +10,7 @@
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :ref="'gPopPush'" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+        <pushList :ref="'gPopPush'" :notiTargetKey="notiTargetKey" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
@@ -70,6 +70,7 @@ export default {
       thisPopN: {},
       newHeaderT: '',
       headerTitle: '',
+      notiTargetKey: '',
       popParams: '',
       changInfoType: '',
 
@@ -133,6 +134,10 @@ export default {
         if (this.params.targetType === 'chanDetail') {
           this.headerTitle = ''
         }
+      } else if (this.params.targetType === 'pushListAndDetail') {
+        this.notiTargetKey = this.params.targetKey
+        this.targetType = 'pushList'
+        this.headerTitle = '알림'
       } else if (this.params.targetType === 'pushList') {
         this.headerTitle = '알림'
         if (this.params.readySearchList !== undefined && this.params.readySearchList !== null && this.params.readySearchList !== '') {

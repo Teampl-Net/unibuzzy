@@ -5,7 +5,7 @@
     <transition name="showModal">
       <fullModal transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
-    <pushModal
+    <!-- <pushModal
       @openLoading="this.loadingYn = true"
       @closeLoading="this.loadingYn = false"
       id="pushPopWrap"
@@ -13,7 +13,7 @@
       @closeXPushPop="closeXPushPop"
       :params="this.pushPopShowYn"
       v-if="this.pushPopShowYn"
-    />
+    /> -->
     <div
       @click="showMenuYn = false"
       v-show="showMenuYn"
@@ -76,7 +76,7 @@ export default {
       popShowYn: false,
       parentPopN: 0,
       showMenuYn: false,
-      pushPopShowYn: false,
+      /* pushPopShowYn: false, */
       pushPopParams: '',
       popParams: '',
       headerTitle: '',
@@ -128,10 +128,10 @@ export default {
       this.popShowYn = true
       this.showMenuYn = false
     },
-    openPushPop (params) {
+    /* openPushPop (params) {
       this.pushPopParams = params
       this.pushPopShowYn = true
-    },
+    }, */
     closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
       //  alert(true)
@@ -141,9 +141,9 @@ export default {
       }
       this.popShowYn = false
     },
-    closeXPushPop () {
+    /* closeXPushPop () {
       this.pushPopShowYn = false
-    },
+    }, */
     changePageHeader (title) {
       this.headerTitle = title
     },

@@ -35,7 +35,8 @@ export default {
     popYn: Boolean,
     routerReloadKey: {},
     readySearhList: {},
-    chanDetailKey: {}
+    chanDetailKey: {},
+    notiTargetKey: {}
   },
   created () {
     if (this.popYn === false) {
@@ -48,6 +49,12 @@ export default {
     this.getPushContentsList()
     if (this.readySearhList) {
       this.requestSearchList(this.readySearhList)
+    }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.updateScroll)
+    if (this.notiTargetKey) {
+      this.openPop({ contentsKey: this.notiTargetKey })
     }
   },
   watch: {
@@ -236,9 +243,6 @@ export default {
       findKeyList: {},
       resultSearchKeyList: []
     }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.updateScroll)
   }
 }
 </script>

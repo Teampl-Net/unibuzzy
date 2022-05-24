@@ -43,7 +43,8 @@ export default {
     openPushDetailPop () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = 'pushDetail'
+      params.targetType = 'pushListAndDetail'
+      params.notiBridgeYn = true
       params.targetKey = this.targetKey
       this.$emit('openDetailPop', params)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
