@@ -123,8 +123,8 @@ export default {
     async changeAct (act, contentsKey) {
       var result = null
       var saveYn = true
-      this.pushDetail = JSON.parse(this.detailVal).data
-      if (act.doKey > 0) {
+      // this.pushDetail = JSON.parse(this.detailVal).data
+      if (Number(act.doKey) > 0) {
         saveYn = false
       }
       // eslint-disable-next-line no-new-object

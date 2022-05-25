@@ -65,7 +65,7 @@ axios.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.common['Access-Control-Allow-exposedHeaders'] = 'set-cookies'
 axios.defaults.headers.common.Authorization = 'SESSION=ZWY3ZTYyZGMtODk0Ny00YTM3LWIwMGEtYjkxZGZmOTFjYzEy'
-axios.defaults.headers.common['Content-Type'] = 'application/json'
+axios.defaults.headers.common['Content-Type'] = 'ap0000000000000000000000000000000000000000000000000000000000000plication/json'
 axios.defaults.timeout = 100000
 
 axios.defaults.withCredentials = true

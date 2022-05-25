@@ -163,8 +163,11 @@ export default {
 
       var result = await this.$requestCreChan(gParam)
       if (result === true || result === 'true') {
+        this.checkPopYn = false
         this.okPopYn = true
       }
+      this.checkPopYn = false
+      this.okPopYn = true
     },
 
     loadingClose () {
