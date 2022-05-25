@@ -37,10 +37,16 @@
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
       </div>
+
+
   </div>
 </template>
 <script>
+
 export default {
+  components: {
+
+  },
   created () {
     // this.getContentsList()
   },

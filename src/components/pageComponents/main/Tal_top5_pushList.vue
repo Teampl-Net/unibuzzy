@@ -58,7 +58,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var resultData = null
-      param.offsetInt = 0
+      param.offsetInt = 1
       param.pageSize = 5
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (viewTab === 'L') {

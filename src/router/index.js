@@ -165,6 +165,12 @@ const routes = [
     name: 'myChanList',
     props: true,
     component: myChanList
+  },
+
+  {
+    path: '/writePushTest',
+    name: 'admWritePush',
+    component: admWritePush
   }
   // {
   //  path: '/about',

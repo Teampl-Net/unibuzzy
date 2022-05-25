@@ -16,20 +16,27 @@
       <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
         <p class="font12">{{value.stickerName}}</p>
       </div>
+
     </div>
   </div>
   <commonList :commonListData="commonListData" @goDetail="openPop" />
+  <myObserver @triggerIntersected="loadMore" />
+  <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
+
+
 </div>
 </template>
 
 <script>
+// import myObserver from '../../components/Tal_ScrollObserver.vue'
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   name: 'test',
   components: {
-    findContentsList
+    findContentsList,
     // searchResult
+
   },
   props: {
     popYn: Boolean,
@@ -78,6 +85,72 @@ export default {
     }
   },
   methods: {
+    async loadMore(){
+      // console.log('옵저버 실행'+(this.offsetInt++))
+      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
+      var param = new Object()
+      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
+        param.creTeamKey = this.chanDetailKey
+      }
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.title = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        }
+      }
+      param.findLogReadYn = null
+      param.findActYn = false
+      param.findActLikeYn = false
+      param.findActStarYn = false
+      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (this.viewTab === 'L') {
+        param.findActYn = true
+        param.findActLikeYn = true
+      } else if (this.viewTab === 'S') {
+        param.findActYn = true
+        param.findActStarYn = true
+      } else if (this.viewTab === 'R') {
+        param.findLogReadYn = false
+      }
+
+      param.offsetInt = this.offsetInt++
+      param.pageSize = 10
+
+      var resultList = await this.$getContentsList(param)
+
+      const newArr = [
+        ...this.commonListData,
+        ...resultList.content
+      ]
+      this.commonListData = newArr
+      this.findPopShowYn = false
+    },
+    // infiniteHandler($state) {
+
+    //   var param = new Object()
+    //   var resultData = null
+    //   param.offsetInt = this.limit
+    //   param.pageSize = 10
+
+    //   this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
+    //   ).then(response => {
+    //     if(response.hits.length){
+    //       this.commonListData.push(response.data)
+    //       $state.loaded();
+    //       this.limit += 1
+    //     }else{
+    //       $state.complete();
+    //     }
+    //   }).catch((error) => {
+    //     console.warn('ERROR!!!!! : ', error)
+    //   })
+
+    // },
     addSubHistory (pageName) {
       // eslint-disable-next-line no-array-constructor
       var sHistory = new Array()
@@ -225,6 +298,8 @@ export default {
   },
   data () {
     return {
+      offsetInt:1,
+
       scrollPosition: null,
       loadVal: true,
       pageHistoryName: '',

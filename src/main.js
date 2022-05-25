@@ -29,6 +29,8 @@ import gColorPicker from './components/unit/Tal_colorPicker.vue'
 
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 
+import myObserver from './components/Tal_ScrollObserver.vue'
+
 import commonjs from './assets/js/Tal_common'
 import axiosFunction from '../public/commonAssets/Tal_axiosFunction'
 import Datepicker from 'vue-datepicker-next'
@@ -53,6 +55,8 @@ app.component('commonList', commonList)
 app.component('gChannelList', gChannelList)
 app.directive('longclick', longClickInstance)
 app.component('gConfirmPop', gConfirmPop)
+app.component('myObserver',myObserver)
+
 
 app.component('gWhiteSelect', gWhiteSelect)
 app.use(webViewBridge)
@@ -70,9 +74,8 @@ axios.defaults.timeout = 100000
 
 axios.defaults.withCredentials = true
 
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
-// axios.defaults.baseURL = 'http://192.168.219.100:19090'
-// axios.defaults.baseURL = 'http://61.97.186.14:19090'
+// axios.defaults.baseURL = 'http://192.168.0.22:19090'
+axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 

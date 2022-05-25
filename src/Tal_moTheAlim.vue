@@ -1,5 +1,6 @@
 <template>
   <div id="moTheAlimWrap">
+
    <!--  <div id="pushBox" style="max-width: 500px; width: 80%; height: 300px; position: fixed; z-index: 99999; top: 40%; left:25%;">
       test
     </div> -->
@@ -10,6 +11,7 @@
   </div>
 </template>
 <script>
+import PullToRefresh from 'pulltorefreshjs'
 export default {
   data () {
     return {
@@ -40,8 +42,25 @@ export default {
       this.pushPopShowYn = false
     }
   },
-  mounted () {
-  }
+    beforeDestroy(){
+    PullToRefresh.destroyAll();
+  },
+  mounted(){
+    PullToRefresh.init({
+      mainElement: 'body',
+      distThreshold:'80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
+      distMax:'100',//최대 거리 (영역이 길어질 수 있는 최대 거리)
+      distReload:'80', // 새로고침 후 갖고있는 영역의 크기
+      instructionsReleaseToRefresh:' ', // 최소 새로고침에 도달 했을 때 문구
+      instructionsPullToRefresh:' ', // 끌고 있을 때 문구
+      instructionsRefreshing:' ', // 새로고침 중 문구
+      onRefresh(){
+        window.location.reload();
+      }
+    })
+  },
+
+
 }
 </script>
 <style>

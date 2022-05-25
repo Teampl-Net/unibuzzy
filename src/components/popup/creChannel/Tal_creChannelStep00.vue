@@ -11,28 +11,27 @@
     <div style="width: 100%; left:0; min-height: 300px; ">
 
       <form @submit.prevent="formSubmit" method="post" style="position: absolute; right: 1.5rem; top: 12.5rem;" >
-          <label @click="iconBgPopupYn='bgPop'" for="input-Backimgfile" style=" color: white; padding: 0.25rem 0.5rem;background-color: black; opacity: 0.5; font-size:14px">배경편집</label>
+          <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
       </form>
 
       <!-- <div id='chboxtest' style="font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top: 10rem ; box-shadow: rgb(189 189 189) 0px -1px 12px -4px; padding: 0 2rem; height: calc(100% - 50px);"> -->
-      <div id='chboxtest' style="font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top:0; margin-top:15rem; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem); opacity:0.9 ">
-
-        <div style="border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto; margin-top: -80px; background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div id='chboxtest' >
+        <div class="channelLogoArea" style="">
           <img :src="selectIcon" style="width:90%"/>
           <form @submit.prevent="formSubmit" method="post" style="position: absolute; left:40%; bottom:0; transform: translate(-30%)" >
-              <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" style=" color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.5; font-size:14px">로고편집</label>
+              <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>
         </div>
 
         <!-- <div style="display: flex; align-items: center; justify-content: space-around;"> -->
         <div style="width:100%; height: 30px" class="mtop-1">
           <p class="textLeft font14 fl" style="line-height: 30px;">채널명</p>
-          <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" style="padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px; ">
+          <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
         </div>
-        <div style="width:100%; min-height: 100px" class="mtop-1">
+        <div style="width:100%; min-height: 100px " class="mtop-1 ">
           <p class="textLeft font14 fl" style="line-height: 30px;">설명</p>
           <!-- <input type="text" placeholder="간단한 소개글을 입력해주세요." name="" value="" class="creChanInput"  id="channelName" style="width: 80%; height: 50px; float: right; padding-right: 10px; border: none;border-bottom: 1px solid #ccc;"> -->
-          <textarea v-model="inputChannelMemo" style="width: 80%; min-height: 100px; float: right; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px; " placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
+          <textarea v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
         </div>
         <div style="width:100%; height: 30px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">산업군</p>
@@ -124,8 +123,10 @@ export default {
     setIconOrBGData (param) {
       if (this.iconBgPopupYn === 'iconPop') {
         this.selectIcon = param.selectedId
+        console.log(this.selectIcon)
       } else if (this.iconBgPopupYn === 'bgPop') {
         this.selectBg = param.selectedId
+        console.log(this.selectBg)
       }
       this.iconBgPopupYn = false
     },
@@ -186,6 +187,30 @@ export default {
 }
 </script>
 <style scoped>
+.backgroundLabel{
+color: white; padding: 0.25rem 0.5rem;background-color: black; opacity: 0.5; font-size:14px;white-space: nowrap;
+}
+
+.channelLogoArea{
+border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto; margin-top: -80px; background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.channelLogoLabel{
+  color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.5; font-size:14px;white-space: nowrap;
+}
+#chboxtest p{
+  color: black;
+}
+#chboxtest{
+  font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top:0; margin-top:15rem; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem); opacity:0.9
+}
+
+#channelName{
+  padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px;
+}
+.channelMemo{
+  width: 80%; min-height: 100px; float: right; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px;
+}
+
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
 .creChanIntroTextWrap p{font-size: 18px; }
 

@@ -70,6 +70,9 @@
 import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/Tal_menu.vue'
 import loadingCompo from '../components/Tal_loading.vue'
+
+import PullToRefresh from 'pulltorefreshjs'
+
 export default {
   data () {
     return {
@@ -93,9 +96,29 @@ export default {
     loadingCompo,
     pushPop
   },
+
+
+  beforeDestroy(){
+    PullToRefresh.destroyAll();
+  },
+  mounted(){
+    PullToRefresh.init({
+      mainElement: 'body',
+      instructionsReleaseToRefresh:' ',
+      instructionsPullToRefresh:' ',
+      instructionsRefreshing:' ',
+      onRefresh(){
+        window.location.reload();
+      }
+    })
+  },
+
+
   mounted () {
     // onMessage('REQ', 'getUserInfo')
   },
+
+
   computed: {
     getWindowSize () {
       return {
