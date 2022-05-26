@@ -1,25 +1,24 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
 
-<div style="overflow:scroll">
+
 
   <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
   <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
   <div style="height: calc(100% - 60px); padding: 0.2rem 0; padding-bottom:50px" @mousedown="testTwo" @mouseup="testTr">
-    <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
+    <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @listMore='loadMore'/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
-  <myObserver @triggerIntersected="loadMore" />
-</div>
+
+
 </template>
 
 <script>
 import findChannelList from '../../components/popup/Tal_findChannelList.vue'
-
 
 export default {
   name: 'user',
@@ -28,22 +27,7 @@ export default {
     // searchChannel
     // myChanList
   },
-
   mounted () {
-    // window.addEventListener('scroll', e=>{
-
-    //   var scrolltop = window.scrollTop();
-    //   console.log(scrolltop);
-      // var height = window.height();
-      // console.log(height);
-      // var height_win = $(window).height();
-      // console.log(height_win);
-      // if (Math.round( $(window).scrollTop()) == $(document).height() - $(window).height()) {
-      //   moreList();
-
-      // }
-    // })
-
 
   },
 
@@ -61,8 +45,11 @@ export default {
   },
   methods: {
 
-    async loadMoar(){
-      console.log('실행')
+    async loadMore(){
+       if(this.offsetInt == 0){
+         console.log('ss')
+       return
+      }
       var paramMap = new Map()
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -75,7 +62,8 @@ export default {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
       }
 
-      paramMap.set('offsetInt', this.offsetInt++)
+
+      paramMap.set('offsetInt', this.offsetInt += 1)
       paramMap.set('pageSize', 10)
 
       var resultList = await this.$getTeamList(paramMap)
@@ -87,15 +75,7 @@ export default {
       ]
       this.chanList = newArr
     },
-    testRefresh(){
-      var top = document.getElementById('refresh').getBoundingClientRect().top
-      console.log(top)
-      // if(top>80){
-        // location.href = location.href
-        // console.log(location.href)
-      // }
-    }
-    ,
+
     BackPopClose (e) {
       if (this.popYn === false) {
         if (JSON.parse(e.data).type === 'goback') {

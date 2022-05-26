@@ -1,6 +1,8 @@
 <template>
+
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div style="padding-right: 0; padding-left: 0; height: 100%;">
+  <!-- <div  style="padding-right: 0; padding-left: 0; height: 100vh; background-color:#aaa "> -->
+  <div :class="{popHeight :popYn == true}" style="padding-right: 0; padding-left: 0; height: calc(100vh - 120px); ">
 
     <!-- {{scrollPosition}} -->
     <div class= "pageHeader pushListCover" >
@@ -19,8 +21,8 @@
 
     </div>
   </div>
-  <commonList :commonListData="commonListData" @goDetail="openPop" />
-  <myObserver @triggerIntersected="loadMore" />
+  <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' />
+
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
 
 
@@ -46,6 +48,7 @@ export default {
     notiTargetKey: {}
   },
   created () {
+
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
       document.addEventListener('message', e => this.BackPopClose(e))
@@ -59,11 +62,13 @@ export default {
       this.requestSearchList(this.readySearhList)
     }
   },
+
   mounted () {
     window.addEventListener('scroll', this.updateScroll)
     if (this.notiTargetKey) {
       this.openPop({ contentsKey: this.notiTargetKey })
     }
+
   },
   watch: {
     routerReloadKey () {
@@ -118,7 +123,8 @@ export default {
         param.findLogReadYn = false
       }
 
-      param.offsetInt = this.offsetInt++
+      // param.offsetInt = this.offsetInt++
+      param.offsetInt = (this.offsetInt +1)
       param.pageSize = 10
 
       var resultList = await this.$getContentsList(param)
@@ -330,4 +336,9 @@ export default {
 .stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
+
+.popHeight{
+  padding-right: 0; padding-left: 0;
+  height: calc(100vh - 35px) !important;
+}
 </style>

@@ -7,11 +7,11 @@
     </div>
 </template>
 <script>
-
 export default {
   name: 'TalFooter',
   methods: {
     routePage (page) {
+
       this.activeFooter = page
       if (page === this.$router.currentRoute._rawValue.path) {
         return

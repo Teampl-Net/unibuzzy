@@ -321,6 +321,7 @@
 </template>
 
 <script>
+import PullToRefresh from 'pulltorefreshjs'
 export default {
   data () {
     return {
@@ -332,6 +333,7 @@ export default {
   },
   mounted () {
     this.settingPop()
+    PullToRefresh.destroyAll();
   },
   components: {
   },
@@ -340,7 +342,18 @@ export default {
       if (this.policyType === 'useTheAlim') { this.headerTitle = '이용약관' } else if (this.policyType === 'personalInfo') { this.headerTitle = '개인정보 이용동의 약관' }
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
-      this.$emit('closePolicyPop')
+        this.$emit('closePolicyPop')
+
+        PullToRefresh.init({
+            mainElement: 'body',
+            instructionsReleaseToRefresh:' ',
+            instructionsPullToRefresh:' ',
+            instructionsRefreshing:' ',
+            onRefresh(){
+                window.location.reload();
+            }
+        })
+
     }
   }
 }
@@ -349,10 +362,12 @@ export default {
 <style scoped>
 @import url(../../../assets/css/Tal_common.css);
 p{color: #2c3e50;}
-.policyPageWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.policyPageWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF; left: 0;}
 .policyHeader{box-shadow: 0px 7px 9px -9px #00000036;}
-.policy-01{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
-.policy-02{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
+.policy-01{margin-top: 70px; text-align: left; overflow-y: auto; height: calc(100% - 60px); padding: 0.5rem 1rem;}
+.policy-02{margin-top: 70px; text-align: left; overflow-y: auto; height: calc(100% - 60px); padding: 0.5rem 1rem;}
+/* .policy-01{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
+.policy-02{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px) } */
 .dNone{display: none;}
 .titleText{font-size: 14px; font-weight: bold;}
 .subTitle{font-weight: bold;}

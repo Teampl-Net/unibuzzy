@@ -10,7 +10,7 @@
       <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :ref="'gPopPush'" :notiTargetKey="notiTargetKey" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
+        <pushList :ref="'gPopPush'" :notiTargetKey="notiTargetKey" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
@@ -44,6 +44,8 @@ import leaveTal from './components/Tal_leaveTheAlim.vue'
 import createChannel from '../popup/creChannel/Tal_creChannelStep00.vue'
 import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
+import PullToRefresh from 'pulltorefreshjs'
+
 export default {
   async created () {
     await this.settingPop()
@@ -53,6 +55,7 @@ export default {
     localStorage.setItem('notiReloadPage', 'none')
   },
   mounted () {
+    PullToRefresh.destroyAll();
   },
   computed: {
     getWindowSize () {

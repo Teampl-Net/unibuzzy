@@ -56,6 +56,7 @@
         @changePageHeader="changePageHeader"
       />
     </div>
+
     <TalFooter
       @openLoading="this.loadingYn = true"
       class="header_footer footerShadow"
@@ -98,20 +99,20 @@ export default {
   },
 
 
-  beforeDestroy(){
-    PullToRefresh.destroyAll();
-  },
-  mounted(){
-    PullToRefresh.init({
-      mainElement: 'body',
-      instructionsReleaseToRefresh:' ',
-      instructionsPullToRefresh:' ',
-      instructionsRefreshing:' ',
-      onRefresh(){
-        window.location.reload();
-      }
-    })
-  },
+  // beforeDestroy(){
+  //   PullToRefresh.destroyAll();
+  // },
+  // mounted(){
+  //   PullToRefresh.init({
+  //     mainElement: 'body',
+  //     instructionsReleaseToRefresh:' ',
+  //     instructionsPullToRefresh:' ',
+  //     instructionsRefreshing:' ',
+  //     onRefresh(){
+  //       window.location.reload();
+  //     }
+  //   })
+  // },
 
 
   mounted () {

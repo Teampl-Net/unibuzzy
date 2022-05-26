@@ -50,6 +50,7 @@
 import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop'
+
 export default {
   name: 'myPage',
   components: {
@@ -80,6 +81,7 @@ export default {
   },
   computed: {
   },
+
   mounted () {
     this.$emit('closeLoading')
   },

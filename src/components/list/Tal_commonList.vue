@@ -36,7 +36,11 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
+
       </div>
+
+      <myObserver @triggerIntersected="this.$emit('listMore')"  style="float: left;"/>
+
 
 
   </div>
@@ -55,6 +59,7 @@ export default {
   },
   emits: ['goDetail'],
   methods: {
+
     goDetail (value) {
       this.$emit('goDetail', value)
     },

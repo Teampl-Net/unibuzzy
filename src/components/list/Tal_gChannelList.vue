@@ -11,6 +11,9 @@
                 <p class="font15 commonBlack chanMsg" v-html="this.$makeMtextMap(value.memoMtext, 'KO')"></p>
             </td>
         </tr>
+        안녕
+        <myObserver @triggerIntersected="this.$emit('listMore')"  style="float: left;"/>
+        안녕
     </table>
 </template>
 
