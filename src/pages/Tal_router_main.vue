@@ -1,9 +1,9 @@
-<template ref="ttttt">
-  <div>
+<template>
+  <div style="width: 100%; height: 100%">
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
-      <fullModal transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
+      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
     <!-- <pushModal
       @openLoading="this.loadingYn = true"
@@ -45,9 +45,8 @@
       :headerTitle="this.headerTitle"
       style="position: fixed; top: 0; z-index: 99"
     />
-    <div class="pagePaddingWrap">
-      <router-view
-        :reloadKey="this.routerReloadKey"
+    <div v-if="reloadYn === false" class="pagePaddingWrap" style="height: calc(100vh);">
+      <router-view :routerReloadKey="this.routerReloadKey"
         @openLoading="this.loadingYn = true"
         @closeLoading="this.loadingYn = false"
         class=""
@@ -87,7 +86,8 @@ export default {
       loadingYn: true,
       routerReloadKey: 0,
       notiDetail: '',
-      notiDetailShowYn: false
+      notiDetailShowYn: false,
+      reloadYn: false
     }
   },
   props: {},
@@ -98,27 +98,11 @@ export default {
     pushPop
   },
 
-
-  // beforeDestroy(){
-  //   PullToRefresh.destroyAll();
-  // },
-  // mounted(){
-  //   PullToRefresh.init({
-  //     mainElement: 'body',
-  //     instructionsReleaseToRefresh:' ',
-  //     instructionsPullToRefresh:' ',
-  //     instructionsRefreshing:' ',
-  //     onRefresh(){
-  //       window.location.reload();
-  //     }
-  //   })
-  // },
-
-
-  mounted () {
-    // onMessage('REQ', 'getUserInfo')
+  beforeUnmount () {
+    PullToRefresh.destroyAll()
   },
-
+  mounted () {
+  },
 
   computed: {
     getWindowSize () {
@@ -128,6 +112,9 @@ export default {
     }
   },
   methods: {
+    reloadPop () {
+      this.routerReloadKey += 1
+    },
     openDetailPop (params) {
       this.closePushPop()
       this.openPop(params)
@@ -138,7 +125,12 @@ export default {
     recvNoti (e) {
       if (JSON.parse(e.data).type === 'pushmsg') {
         this.notiDetail = JSON.parse(e.data).pushMessage
-        this.notiDetailShowYn = true
+        if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
+          if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+            return
+          }
+          this.notiDetailShowYn = true
+        }
       }
     },
     showMenu () {
@@ -158,8 +150,6 @@ export default {
     }, */
     closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
-      //  alert(true)
-      this.routerReloadKey += 1
       if (reloadYn === true) {
         this.$router.go(0)
       }

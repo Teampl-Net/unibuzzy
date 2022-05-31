@@ -1,9 +1,5 @@
 <template>
   <div id="moTheAlimWrap">
-
-   <!--  <div id="pushBox" style="max-width: 500px; width: 80%; height: 300px; position: fixed; z-index: 99999; top: 40%; left:25%;">
-      test
-    </div> -->
     <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
     <fullModal id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
@@ -11,7 +7,7 @@
   </div>
 </template>
 <script>
-import PullToRefresh from 'pulltorefreshjs'
+// import PullToRefresh from 'pulltorefreshjs'
 export default {
   data () {
     return {
@@ -42,30 +38,23 @@ export default {
       this.pushPopShowYn = false
     }
   },
-    beforeDestroy(){
-    PullToRefresh.destroyAll();
+  beforeUnmount () {
+    // PullToRefresh.destroyAll()
   },
-  mounted(){
-    PullToRefresh.init({
+  mounted () {
+    /* PullToRefresh.init({
       mainElement: 'body',
-      // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-      distThreshold:'80',
-      //최대 거리 (영역이 길어질 수 있는 최대 거리)
-      distMax:'100',
-      // 새로고침 후 갖고있는 영역의 크기
-      distReload:'80',
-      // 최소 새로고침에 도달 했을 때 문구
-      instructionsReleaseToRefresh:' ',
-      // 끌고 있을 때 문구
-      instructionsPullToRefresh:' ',
-      // 새로고침 중 문구
-      instructionsRefreshing:' ',
-      onRefresh(){
-        window.location.reload();
+      distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
+      distMax: '100', // 최대 거리 (영역이 길어질 수 있는 최대 거리)
+      distReload: '80', // 새로고침 후 갖고있는 영역의 크기
+      instructionsReleaseToRefresh: ' ', // 최소 새로고침에 도달 했을 때 문구
+      instructionsPullToRefresh: ' ', // 끌고 있을 때 문구
+      instructionsRefreshing: ' ', // 새로고침 중 문구
+      onRefresh () {
+        window.location.reload()
       }
-    })
-  },
-
+    }) */
+  }
 
 }
 </script>

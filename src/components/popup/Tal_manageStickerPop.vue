@@ -125,7 +125,8 @@ export default {
     // await this.setMyStickerList(this.stickerList)
   },
   props: {
-    stickerList: {}
+    stickerList: {},
+    targetKey: {}
   },
   methods: {
     async getStickerList () {
@@ -167,6 +168,17 @@ export default {
       this.stickerPickerShowYn = false
     },
     updateStickerList () {
+      // eslint-disable-next-line no-array-constructor
+      var stickerList = new Array()
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      for (var i = 0; i < this.selectedStickerList.length; i++) {
+        stickerList.push(this.selectedStickerList[i].stickerKey)
+      }
+      param.stickerKeyList = stickerList
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.targetKey = this.targetKey
+      this.$updateStickerList(param)
     },
     async createSticker () {
       // eslint-disable-next-line no-new-object

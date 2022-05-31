@@ -31,14 +31,14 @@ export async function saveUser (userProfile) {
     user.soPicUrl = userProfile.userImg
     user.picMfilekey = userProfile.userImg
   }
-  if (userProfile.mobile !== undefined && userProfile.mobile !== null && userProfile.mobile !== 'null' && userProfile.mobile !== '') {
+  /* if (userProfile.mobile !== undefined && userProfile.mobile !== null && userProfile.mobile !== 'null' && userProfile.mobile !== '') {
     user.phoneLast = userProfile.mobile.slice(-4, userProfile.mobile.length)
     user.phoneEnc = userProfile.mobile
     user.soMobileEnc = userProfile.mobile
   } else {
     user.phoneEnc = userProfile.phoneEnc
     user.phoneLast = ('' + userProfile.phoneEnc).slice(-4, userProfile.phoneEnc.length)
-  }
+  } */
   var deviceInfo = userProfile.deviceInfo
   user.fcmKey = deviceInfo.fcmKey
   user.osName = deviceInfo.systemName
@@ -55,6 +55,7 @@ export async function saveUser (userProfile) {
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('testYn', false)
     }
   }).catch((error) => {
     console.warn('ERROR!!!!! : ', error)
@@ -274,7 +275,53 @@ const methods = {
     var result = null
     await this.$axios.post('/tp.saveContents', param
     ).then(response => {
-      result = true
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    return result
+  },
+  async getCodeList (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    var result = null
+    await this.$axios.post('/tp.getCodeList', param, { withCredentials: true }
+    ).then(response => {
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    return result
+  },
+  async updateStickerList (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    var result = null
+    await this.$axios.post('/tp.updateUserDoList', param, { withCredentials: true }
+    ).then(response => {
+      result = response.data
+    }).catch((error) => {
+      result = error
+    })
+    return result
+  },
+
+  async changeRecvAlimYn (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    var result = null
+    await this.$axios.post('/tp.updateFollower', param, { withCredentials: true }
+    ).then(response => {
+      result = response.data
     }).catch((error) => {
       result = error
     })
@@ -295,5 +342,8 @@ export default {
     Vue.config.globalProperties.$getTeamReqList = methods.getTeamReqList
     Vue.config.globalProperties.$createTeamForReq = methods.createTeamForReq
     Vue.config.globalProperties.$saveContents = methods.saveContents
+    Vue.config.globalProperties.$getCodeList = methods.getCodeList
+    Vue.config.globalProperties.$updateStickerList = methods.updateStickerList
+    Vue.config.globalProperties.$changeRecvAlimYn = methods.changeRecvAlimYn
   }
 }

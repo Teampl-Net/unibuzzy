@@ -8,7 +8,7 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
             <td v-if="mainYn === false">
-                <img src="../../assets/images/channel/tempChanImg.png" style="width: 50px;"/>
+                <img :src="value.logoPathMtext" style="width: 50px;"/>
             </td>
             <td class="textCenter" v-if="mainYn === true">
                 <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem">
@@ -31,6 +31,11 @@
 </template>
 <script>
 export default {
+  watch: {
+    commonListData () {
+      // alert(false)
+    }
+  },
   created () {
     // this.getContentsList()
   },

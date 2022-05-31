@@ -333,7 +333,7 @@ export default {
   },
   mounted () {
     this.settingPop()
-    PullToRefresh.destroyAll();
+    PullToRefresh.destroyAll()
   },
   components: {
   },
@@ -342,18 +342,17 @@ export default {
       if (this.policyType === 'useTheAlim') { this.headerTitle = '이용약관' } else if (this.policyType === 'personalInfo') { this.headerTitle = '개인정보 이용동의 약관' }
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
-        this.$emit('closePolicyPop')
+      this.$emit('closePolicyPop')
 
-        PullToRefresh.init({
-            mainElement: 'body',
-            instructionsReleaseToRefresh:' ',
-            instructionsPullToRefresh:' ',
-            instructionsRefreshing:' ',
-            onRefresh(){
-                window.location.reload();
-            }
-        })
-
+      PullToRefresh.init({
+        mainElement: 'body',
+        instructionsReleaseToRefresh: ' ',
+        instructionsPullToRefresh: ' ',
+        instructionsRefreshing: ' ',
+        onRefresh () {
+          window.location.reload()
+        }
+      })
     }
   }
 }

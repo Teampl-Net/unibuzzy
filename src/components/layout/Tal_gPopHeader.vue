@@ -31,23 +31,23 @@ export default {
       }
     },
 
-    pullToRefresh(){
+    pullToRefresh () {
       PullToRefresh.init({
         mainElement: 'body',
         // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-        distThreshold:'80',
-        //최대 거리 (영역이 길어질 수 있는 최대 거리)
-        distMax:'100',
+        distThreshold: '80',
+        // 최대 거리 (영역이 길어질 수 있는 최대 거리)
+        distMax: '100',
         // 새로고침 후 갖고있는 영역의 크기
-        distReload:'80',
+        distReload: '80',
         // 최소 새로고침에 도달 했을 때 문구
-        instructionsReleaseToRefresh:' ',
+        instructionsReleaseToRefresh: ' ',
         // 끌고 있을 때 문구
-        instructionsPullToRefresh:' ',
+        instructionsPullToRefresh: ' ',
         // 새로고침 중 문구
-        instructionsRefreshing:' ',
-        onRefresh(){
-          window.location.reload();
+        instructionsRefreshing: ' ',
+        onRefresh () {
+          window.location.reload()
         }
       })
     }
@@ -65,5 +65,7 @@ export default {
 .commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
 .popHeaderTitleSpan{position: absolute; color: #6768A7}
 .commonPopBackBtn{width: 0.8rem;}
+
+.chanDetailPopHeader .popHeaderTitleSpan {color: white;}
 
 </style>

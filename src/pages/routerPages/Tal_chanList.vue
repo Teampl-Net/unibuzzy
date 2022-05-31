@@ -1,20 +1,19 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
 
-
+<div style="width: 100%; height: calc(100% - 60px);">
 
   <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
   <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
-  <gActiveBar :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
+  <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div style="height: calc(100% - 60px); padding: 0.2rem 0; padding-bottom:50px" @mousedown="testTwo" @mouseup="testTr">
-    <gChannelList  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @listMore='loadMore'/>
+  <div style="height: calc(100% - 60px); width: 100%; padding: 0.2rem 0; padding-bottom:70px; overflow:scroll;" @mousedown="testTwo" @mouseup="testTr">
+    <gChannelList @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
-
-
+</div>
 </template>
 
 <script>
@@ -27,7 +26,26 @@ export default {
     // searchChannel
     // myChanList
   },
+  watch: {
+    routerReloadKey () {
+      this.refreshList()
+    }
+  },
+  computed: {
+  },
   mounted () {
+
+    //   var scrolltop = window.scrollTop();
+    //   console.log(scrolltop);
+    // var height = window.height();
+    // console.log(height);
+    // var height_win = $(window).height();
+    // console.log(height_win);
+    // if (Math.round( $(window).scrollTop()) == $(document).height() - $(window).height()) {
+    //   moreList();
+
+    // }
+    // })
 
   },
 
@@ -40,42 +58,43 @@ export default {
       this.pageHistoryName = 'page' + (history.length - 1)
     }
     this.$emit('changePageHeader', '채널')
-    await this.getChannelList('user')
-
+    var resultList = await this.getChannelList('user')
+    this.chanList = resultList.content
+    this.$emit('closeLoading')
   },
   methods: {
-
-    async loadMore(){
-       if(this.offsetInt == 0){
-         console.log('ss')
-       return
+    async refreshList () {
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
+        pSize = Number(this.offsetInt) * 10
       }
-      var paramMap = new Map()
-      if (this.viewTab === 'user') {
-        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        paramMap.set('userKey', userKey)
-      } else if (this.viewTab === 'mychannel') {
-        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-        paramMap.set('followerType', 'A')
-      }
-      if (this.resultSearchKeyList.length > 0) {
-        paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
-      }
-
-
-      paramMap.set('offsetInt', this.offsetInt += 1)
-      paramMap.set('pageSize', 10)
-
-      var resultList = await this.$getTeamList(paramMap)
+      this.endList = true
+      var resultList = await this.getChannelList(pSize, 0)
       this.chanList = resultList.content
-
-      const newArr = [
-        ...this.chanList,
-        ...resultList.content
-      ]
-      this.chanList = newArr
+      this.endList = false
     },
 
+    async loadMore (pageSize) {
+      if (this.endListYn === false || this.chanList.length > pageSize) {
+        this.offsetInt += 1
+        var resultList = await this.getChannelList(pageSize)
+        const newArr = [
+          ...this.chanList,
+          ...resultList.content
+        ]
+        if (resultList.content.length < pageSize) { this.endListYn = true }
+        this.chanList = newArr
+      }
+    },
+
+    testRefresh () {
+      var top = document.getElementById('refresh').getBoundingClientRect().top
+      console.log(top)
+      // if(top>80){
+      // location.href = location.href
+      // console.log(location.href)
+      // }
+    },
     BackPopClose (e) {
       if (this.popYn === false) {
         if (JSON.parse(e.data).type === 'goback') {
@@ -101,7 +120,10 @@ export default {
       // this.$emit('openLoading')
 
       this.viewTab = tab
-      await this.getChannelList()
+      this.offsetInt = 0
+      var resultList = await this.getChannelList()
+      this.chanList = resultList.content
+      this.$emit('closeLoading')
 
       if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true
@@ -124,7 +146,7 @@ export default {
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
     },
 
-    async getChannelList () {
+    async getChannelList (moreYn) {
       var paramMap = new Map()
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -136,16 +158,24 @@ export default {
       if (this.resultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
       }
+      if (moreYn === true) {
+        this.offsetInt += 1
+        paramMap.set('offsetInt', this.offsetInt)
+        paramMap.set('pageSize', 10)
+      }
       var resultList = await this.$getTeamList(paramMap)
 
-      this.chanList = resultList.content
-      this.$emit('closeLoading')
+      return resultList
     },
 
     async requestSearchList (paramMap) {
-      this.chanFindPopShowYn = false
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
-      await this.getChannelList()
+      var resultList = await this.getChannelList()
+      this.chanList = resultList.content
+      this.viewTab = 'all'
+      this.$refs.activeBar.switchtab(1)// 전체
+      this.$refs.activeBar.selectTab('all')// 전체
+      this.chanFindPopShowYn = false
     },
     async castingSearchMap (sMap) {
       // eslint-disable-next-line no-new-object
@@ -160,26 +190,23 @@ export default {
       }
       return resultArray
     },
-    changeSearchList (idx) {
+    async changeSearchList (idx) {
       this.resultSearchKeyList.splice(idx, 1)
-      this.getChannelList()
+      var resultList = await this.getChannelList()
+      this.chanList = resultList.content
     }
 
   },
   data () {
     return {
-      offsetInt:0,
+      offsetInt: 0,
       pageHistoryName: '',
+      endListYn: false,
       viewTab: 'user',
       // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       subTitlebtnList: [],
-      chanList: [
-        { chanName: '우체국', chanImg: 'http://placehold.it/30', chanMsg: '우체국 앱(포스트톡)을 설치하시면 배송조회, 착불결제 등 다양한 서비스를 이용하실 수 있습니다.' },
-        { chanName: '삼천리', chanImg: 'http://placehold.it/30', chanMsg: '사랑받는 기업, 삼천리' },
-        { chanName: '이디야 커피', chanImg: 'http://placehold.it/30', chanMsg: 'ALWAYS BESIDE YOU, EDIYA COFFEE. <br>늘 당신 곁에, 이디야 커피의 다양한 메뉴를 맛보세요.' },
-        { chanName: '아이디어스', chanImg: 'http://placehold.it/30', chanMsg: '일상에 특별함을 잇다!<br>핸드메이드 라이프 스타일 플랫폼, 아이디어스' }
-      ],
+      chanList: [],
       chanFindPopShowYn: false,
       resultSearchKeyList: '',
 
@@ -187,6 +214,7 @@ export default {
     }
   },
   props: {
+    routerReloadKey: {},
     params: {},
     popYn: Boolean
   }
@@ -197,10 +225,12 @@ export default {
 
 .moveBox{transition: 0.5s ease;}
 .btnPlus{
-  width:4rem; height:4rem; line-height:4rem;
-  color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
+  width:4rem; height:4rem; display: flex;
+  padding-top: 5px;
+  justify-content: center; align-items: center;
+  color:#6768a7; border:3px solid #6768a7; background-color:white ;
 
-   border-radius:50%; position:fixed; bottom: 80px; right: 10%;
+  border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
   box-shadow: 2px 2px 7px 3px #ccc;
 
 }

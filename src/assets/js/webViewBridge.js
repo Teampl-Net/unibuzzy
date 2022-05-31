@@ -80,10 +80,11 @@ const isJsonString = (str) => {
           if (message.loginYn === true) {
             var userProfile = JSON.parse(message.userInfo)
             localStorage.setItem('loginYn', true)
-            if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
+            /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
-            } else if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
+            } else */
+            if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
             } else {

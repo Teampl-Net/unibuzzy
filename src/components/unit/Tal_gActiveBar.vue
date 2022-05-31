@@ -9,7 +9,8 @@
 <script>
 export default {
   props: {
-    tabList: {}
+    tabList: {},
+    activetabProp: {}
   },
   data () {
     return {

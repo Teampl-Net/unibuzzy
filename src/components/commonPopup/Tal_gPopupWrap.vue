@@ -1,14 +1,14 @@
 <template>
-    <div v-if="reloadYn===false" class="commonPopWrap" ref="commonWrap" >
+    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
-        <fullModal :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="{chanDetailPopHeader: detailVal}" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} ? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
-      <pushDetail @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
-      <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.params" v-if="this.targetType === 'chanDetail' " @openPop = "openPop"/>
+      <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')" :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
+      <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
         <pushList :ref="'gPopPush'" :notiTargetKey="notiTargetKey" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
@@ -21,10 +21,8 @@
       <talInfo @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'theAlimInfo'" />
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
-
-      <createChannel  v-if="this.targetType === 'createChannel'"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='closeXPop(true)'/>
+      <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
-
     </div>
 </template>
 
@@ -55,7 +53,25 @@ export default {
     localStorage.setItem('notiReloadPage', 'none')
   },
   mounted () {
-    PullToRefresh.destroyAll();
+    PullToRefresh.destroyAll()
+    PullToRefresh.init({
+      mainElement: '#gPopup',
+      // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
+      distThreshold: '80',
+      // 최대 거리 (영역이 길어질 수 있는 최대 거리)
+      distMax: '100',
+      // 새로고침 후 갖고있는 영역의 크기
+      distReload: '80',
+      // 최소 새로고침에 도달 했을 때 문구
+      instructionsReleaseToRefresh: ' ',
+      // 끌고 있을 때 문구
+      instructionsPullToRefresh: ' ',
+      // 새로고침 중 문구
+      instructionsRefreshing: ' ',
+      onRefresh () {
+        window.location.reload()
+      }
+    })
   },
   computed: {
     getWindowSize () {
@@ -82,7 +98,7 @@ export default {
 
       chanFollowYn: false,
       readySearchList: {}, // chanDetail -> pushList 열때 필요
-
+      successChanParam: {},
       sendOkYn: 0
     }
   },
@@ -109,6 +125,18 @@ export default {
   updated () {
   },
   methods: {
+    reloadParent () {
+      this.$emit('reloadPop')
+    },
+    reloadPop (parentReloadYn) {
+      if (parentReloadYn === true) {
+        this.reloadParent()
+      }
+      this.reloadYn = true
+      setTimeout(() => {
+        this.reloadYn = false
+      }, 100)
+    },
     // sendOk(){
 
     // },
@@ -125,58 +153,65 @@ export default {
         }
       }
     },
-    async settingPop () {
+    async settingPop (successChanYn) {
       this.chanFollowYn = false
       var target = this.params
+      if (successChanYn === true) {
+        target = this.successChanParam
+      }
       this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
       // var tt = this.params
       if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
-        this.detailVal = this.params
+        this.detailVal = target
         if (this.detailVal.value) {
-          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.params.value.nameMtext !== '') {
+          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
             this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
           } else {
             this.headerTitle = '상세'
           }
         }
-        if (this.params.targetType === 'chanDetail') {
+        if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
         }
-      } else if (this.params.targetType === 'pushListAndDetail') {
-        this.notiTargetKey = this.params.targetKey
+      } else if (this.targetType === 'pushListAndDetail') {
+        this.notiTargetKey = target.targetKey
         this.targetType = 'pushList'
         this.headerTitle = '알림'
-      } else if (this.params.targetType === 'pushList') {
+      } else if (this.targetType === 'pushList') {
         this.headerTitle = '알림'
-        if (this.params.readySearchList !== undefined && this.params.readySearchList !== null && this.params.readySearchList !== '') {
-          this.readySearchList = this.params.readySearchList
+        if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {
+          this.readySearchList = target.readySearchList
         }
-      } else if (this.params.targetType === 'chanList') {
+      } else if (this.targetType === 'chanList') {
         this.headerTitle = '구독'
-      } else if (this.params.targetType === 'pushBox') {
+      } else if (this.targetType === 'pushBox') {
         this.headerTitle = '알림함'
-      } else if (this.params.targetType === 'leaveTheAlim') {
+      } else if (this.targetType === 'leaveTheAlim') {
         this.headerTitle = '탈퇴'
-      } else if (this.params.targetType === 'question') {
+      } else if (this.targetType === 'question') {
         this.headerTitle = '자주 찾는 질문'
-      } else if (this.params.targetType === 'qna') {
+      } else if (this.targetType === 'qna') {
         this.headerTitle = 'Q&A'
-      } else if (this.params.targetType === 'askTal') {
+      } else if (this.targetType === 'askTal') {
         this.headerTitle = '문의하기'
-      } else if (this.params.targetType === 'theAlimInfo') {
+      } else if (this.targetType === 'theAlimInfo') {
         this.headerTitle = '더알림이란?'
-      } else if (this.params.targetType === 'changeMobile') {
-        this.changInfoType = this.params.targetType
+      } else if (this.targetType === 'changeMobile') {
+        this.changInfoType = this.targetType
         this.targetType = 'changeInfo'
         this.headerTitle = '휴대폰 번호 수정'
-      } else if (this.params.targetType === 'changeEmail') {
+      } else if (this.targetType === 'changeEmail') {
         this.targetType = 'changeInfo'
-        this.changInfoType = this.params.targetType
+        this.changInfoType = this.targetType
         this.headerTitle = '이메일 수정'
-      } else if (this.params.targetType === 'createChannel') {
-        this.headerTitle = '채널 생성'
-      } else if (this.params.targetType === 'writePush') {
+      } else if (this.targetType === 'createChannel') {
+        if (target.modiYn === true) {
+          this.headerTitle = '채널 수정'
+        } else {
+          this.headerTitle = '채널 생성'
+        }
+      } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -201,6 +236,17 @@ export default {
           }, 100)
           // this.reloadYn = false
         }
+      }
+    },
+    successCreChan (params) {
+      // alert(JSON.stringify(params))
+      if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
+        this.$emit('reloadPop', true) // 부모페이지까지 리로드?
+        this.closeXPop(true)
+      } else {
+        this.$emit('reloadPop')
+        this.successChanParam = params
+        this.settingPop(true)
       }
     },
     async closeXPop (reloadYn) { // 내 팝업 닫기

@@ -1,17 +1,21 @@
 
 <template>
-  <div style="overflow-y: scroll; overflow-x: hidden; height: calc(100% - 200px);">
-    <div @click="goDetail(alim)" class="commonListContentBox pushMbox" v-for="(alim, index) in commonListData" :key="index">
-        <div class="pushDetailTopArea">
-          <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
+  <div id="chanWrap" style="overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 200px);">
+    <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
+    <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
+        <div @click="goDetail(alim)" class="pushDetailTopArea">
+          <div class="chanLogoImgWrap">
+            <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
+            <img v-else class="flcursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
+          </div>
             <div class="pushDetailHeaderTextArea">
-              <p class=" font15 fontBold commonBlack">{{alim.title}}</p>
+              <p class=" font15 fontBold commonBlack">{{resizeText(alim.title)}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
               <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
             </div>
         </div>
-        <div  class="font14 mbottom-05" v-html="alim.bodyMinStr"></div>
+        <div @click="goDetail(alim)" class="font14 mbottom-05" v-html="setBodyLength(alim.bodyMinStr)"></div>
         <div id="alimCheckArea">
           <div class="alimCheckContents">
             <!-- <div class="pushDetailStickerWrap">
@@ -21,12 +25,12 @@
             </div> -->
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="fl" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" v-else src="../../assets/images/common/starIcon.svg" alt="">
+                <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 2px;" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 3px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
           </div>
@@ -38,10 +42,7 @@
         <!-- </div> -->
 
       </div>
-
-      <myObserver @triggerIntersected="this.$emit('listMore')"  style="float: left;"/>
-
-
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
 
   </div>
 </template>
@@ -52,16 +53,54 @@ export default {
 
   },
   created () {
-    // this.getContentsList()
+    this.contentsList = this.commonListData
+  },
+  watch: {
+    commonListData () {
+      this.contentsList = this.commonListData
+    }
+  },
+  updated () {
+    this.chanWrap.scrollTop = this.currentScroll
   },
   mounted () {
+    this.chanWrap = document.getElementById('chanWrap')
+    this.chanWrap.addEventListener('scroll', this.saveScroll)
     if (this.mainYnProp === true) { this.mainYn = true }
   },
-  emits: ['goDetail'],
+  unmounted () {
+    this.chanWrap.removeEventListener('scroll', this.saveScroll)
+  },
+  /* emits: ['goDetail'], */
   methods: {
+    resizeText (text) {
+      if (text.length > 20) {
+        text = text.substr(0, 20)
+      }
+      return text
+    },
+    saveScroll () {
+      this.currentScroll = this.chanWrap.scrollTop
+      this.$emit('currentScroll', this.currentScroll)
+    },
+    goChanDetail (teamKey, nameMtext) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'chanDetail'
+      param.teamKey = teamKey
+      param.targetKey = teamKey
+      param.nameMtext = nameMtext
+      this.$emit('goDetail', param)
+    },
 
     goDetail (value) {
-      this.$emit('goDetail', value)
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'pushDetail'
+      param.contentsKey = value.contentsKey
+      param.value = value
+
+      this.$emit('goDetail', param)
     },
     settingDateFormat (date) {
       return this.$dayjs(date).format('YYYY-MM-DD')
@@ -95,17 +134,60 @@ export default {
         }
       }
       return userDoList
+    },
+    async changeAct (act, contentsKey) {
+      var result = null
+      var saveYn = true
+      // this.pushDetail = JSON.parse(this.detailVal).data
+      if (Number(act.doKey) > 0) {
+        saveYn = false
+      }
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = contentsKey
+      if (param.targetKey === null) { return }
+      param.doType = act.doType
+      if (saveYn === false) {
+        param.doKey = act.doKey
+        result = await this.$saveUserDo(param, 'delete')
+      } else {
+        param.actYn = true
+        param.targetKind = 'C'
+        result = await this.$saveUserDo(param, 'save')
+      }
+      if (result === true) {
+        await this.$emit('refresh')
+      }
+    },
+    async loadMore () {
+      this.$emit('moreList', 10)
+      /* const newArr = [
+        ...this.commonListData,
+        ...resultList.content
+      ]
+      this.commonListData = newArr */
+    },
+    setBodyLength (str) {
+      if (str.length > 130) {
+        str.substring(0, 130)
+        str = str + '...'
+      }
+      return str
     }
   },
   data: function () {
     return { // 데이터 정의
-      mainYn: false
+      mainYn: false,
+      chanWrap: null,
+      contentsList: {},
+      currentScroll: 0
     }
   },
   props: {
     clickEvnt: {},
+    alimListYn: Boolean,
     mainYnProp: Boolean,
-    commonListData: [],
+    commonListData: {},
     tempAlimList: {
       readYn: false,
       stickerList: [
@@ -126,7 +208,7 @@ export default {
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
-.pushDetailChanLogo{width: 40px;height: 40px;}
+.pushDetailChanLogo{width: 30px;height: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
 .alimCheckContents{width: 100%;float: right; height: 20px;}
@@ -135,7 +217,7 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-
+.chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;}
 .pushMbox{margin-bottom: 20px;}
 .userDoWrap img {width: 1rem;}
 

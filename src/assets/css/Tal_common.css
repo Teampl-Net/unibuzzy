@@ -91,6 +91,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mtop-03{margin-top: 0.3rem;}
 .mtop-05{margin-top: 0.5rem;}
 .mtop-1{margin-top: 1rem;}
+.mtop-15{margin-top: 1.5rem;}
+.mtop-2{margin-top: 2rem;}
 .mtop-3{margin-top: 3rem;}
 
 .mbottom-01{margin-bottom: 0.1rem;}
@@ -144,9 +146,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   .commonListTr{
     height: 70px;
     border-bottom: 1px solid #E4E4E4;
-  }
-  .commonListTr :last-child{
-    border-bottom: none!important;
   }
 
 
@@ -293,3 +292,10 @@ p{margin-bottom: 0; font-size: 1.5rem;}
       opacity: 1;
   }
 }
+
+/*채널상세/채널메인*/
+.blackTextBox p {color: #fff;}
+.blackTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgb(0 0 0 / 50%); }
+
+.whiteTextBox p {color: #000;}
+.whiteTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.5); }

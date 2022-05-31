@@ -1,7 +1,6 @@
 <template>
-  <div v-if="loadYn" class="pushDetailWrap">
-    <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
-    <!-- <div>{{pushKey}}</div> -->
+  <div class="pushDetailWrap">
+    <!-- <manageStickerPop :targetKey="this.alimDetail.contentsKey" :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
 
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
@@ -18,13 +17,13 @@
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
-            <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
+            <!-- <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
             <div class="pushDetailStickerWrap">
               <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
-                <!-- <span class="font15">{{value.stickerName}}</span> -->
+                <span class="font15">{{value.stickerName}}</span>
                 <img :src="value.picPath" alt="">
               </div>
-            </div>
+            </div> -->
 
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
@@ -49,21 +48,12 @@
 </template>
 <script>
 
-import manageStickerPop from '../../popup/Tal_manageStickerPop.vue'
+/* import manageStickerPop from '../../popup/Tal_manageStickerPop.vue' */
 export default {
   data () {
     return {
-      loadYn: true,
       alimDetail: {},
-      manageStickerPopShowYn: false,
-      tempAlimList: {
-        readYn: false,
-        stickerList: [
-          { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-          { stickerName: '온라인 쇼핑몰', stickerKey: '1', stickerColor: '#0dcaf05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-          { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
-        ]
-      },
+      /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: []
 
@@ -73,7 +63,7 @@ export default {
     detailVal: {}
   },
   components: {
-    manageStickerPop
+    /* manageStickerPop */
   },
   async created () {
     await this.getContentsList()
@@ -90,7 +80,11 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
-      param.contentsKey = this.detailVal.targetKey
+      if (this.detailVal.targetKey !== undefined && this.detailVal.targetKey !== null && this.detailVal.targetKey !== '') {
+        param.contentsKey = this.detailVal.targetKey
+      } else if (this.detailVal.contentsKey !== undefined && this.detailVal.contentsKey !== null && this.detailVal.contentsKey !== '') {
+        param.contentsKey = this.detailVal.contentsKey
+      }
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
@@ -99,6 +93,7 @@ export default {
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
+      this.userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
       this.readYn = false
       if (userDo !== undefined && userDo !== null && userDo !== '') {
@@ -120,7 +115,7 @@ export default {
         }
       }
     },
-    async changeAct (act, contentsKey) {
+    async changeAct (act, inputContentsKey) {
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -129,7 +124,7 @@ export default {
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetKey = contentsKey
+      param.targetKey = inputContentsKey
       if (param.targetKey === null) { return }
       param.doType = act.doType
       if (saveYn === false) {
@@ -141,9 +136,10 @@ export default {
         result = await this.$saveUserDo(param, 'save')
       }
       if (result === true) {
-        await this.getContentsList()
-        this.loadYn = false
-        this.loadYn = true
+        this.$emit('reloadParent')
+        var resultList = await this.$getContentsList({ contentsKey: inputContentsKey })
+        var userDoList = resultList.content[0].userDoList
+        await this.settingUserDo(userDoList)
       }
     },
     goChanDetail (alim) {

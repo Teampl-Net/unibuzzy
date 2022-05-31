@@ -1,6 +1,6 @@
 <template>
   <listTitle style="margin-bottom: 1rem" listTitle= "알림" :moreLink="this.moreLink" @openPop= "openPop"/>
-    <gActiveBar :tabList="this.activeTabList" @changeTab= "changeTab" />
+    <gActiveBar ref="activeBar" :tabList="this.activeTabList" @changeTab= "changeTab" />
     <div class="pushListWrap">
       <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
     </div>
@@ -28,11 +28,30 @@ export default {
   props: {
     alimList: {}
   },
+  mounted () {
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
+  },
+  unmounted () {
+    document.removeEventListener('message', e => this.recvNoti(e))
+    window.removeEventListener('message', e => this.recvNoti(e))
+  },
   components: {
     listTitle,
     commonListTable
   },
   methods: {
+    async recvNoti (e) {
+      if (JSON.parse(e.data).type === 'pushmsg') {
+        // this.listLeloadYn = false
+        this.$refs.activeBar.switchtab(0)
+        this.$refs.activeBar.selectTab('N')
+        // var resultList = await this.getContentsList()
+        // this.pushList = resultList.content
+        // this.listLeloadYn = true
+      // this.userDoList = resultList.userDo
+      }
+    },
     openPop (value) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -48,32 +67,31 @@ export default {
     },
     async changeTab (tabName) {
       this.viewTab = tabName
-      var resultList = await this.getContentsList(this.viewTab)
+      var resultList = await this.getContentsList()
       this.listLeloadYn = false
       this.pushList = resultList.content
       // this.userDoList = resultList.userDo
       this.listLeloadYn = true
     },
-    async getContentsList (viewTab) {
+    async getContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var resultData = null
-      param.offsetInt = 1
+      param.offsetInt = 0
       param.pageSize = 5
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (viewTab === 'L') {
+      if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
       }
-      if (viewTab === 'S') {
+      if (this.viewTab === 'S') {
         param.findActYn = true
         param.findActStarYn = true
       }
-      if (viewTab === 'R') {
+      if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
       resultData = await this.$getContentsList(param)
-
       return resultData
     },
     getContentsList2 (viewTab) {

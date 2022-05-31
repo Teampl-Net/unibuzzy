@@ -154,6 +154,5 @@ export async function saveUserDo (inputParam) {
   }).catch((error) => {
     result = error
   })
-  alert(result)
   return result
 }

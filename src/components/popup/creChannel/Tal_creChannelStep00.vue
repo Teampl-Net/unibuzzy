@@ -1,23 +1,21 @@
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
 
-<img :src="selectBg" style="height:100%; position: absolute; top:50px; left:0;"/>
 <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
 <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'"  @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
-  <div style="width: 100%; height: 100%; position:absolute; top:50px;"  >
+  <div :style="'background: url(' + selectBg.selectPath + ');'" style="width: 100%;display: flex; flex-direction: column; overflow: hidden scroll; height: 100%; top:50px;"  >
 <!-- <div style="width: 100%; height: calc(100% - 110px);  overflow: auto; position:absolute; top:50px;"  > -->
     <!-- <input type="file" id="input-Logoimgfile" style="display:none" />
     <input type="file" id="input-Backimgfile" style="display:none" /> -->
-    <div style="width: 100%; left:0; min-height: 300px; ">
-
-      <form @submit.prevent="formSubmit" method="post" style="position: absolute; right: 1.5rem; top: 12.5rem;" >
-          <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
-      </form>
+    <div style="width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;">
 
       <!-- <div id='chboxtest' style="font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top: 10rem ; box-shadow: rgb(189 189 189) 0px -1px 12px -4px; padding: 0 2rem; height: calc(100% - 50px);"> -->
       <div id='chboxtest' >
+        <form @submit.prevent="formSubmit" method="post" style="position: absolute; right: 1.5rem; top: -3rem;" >
+            <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
+        </form>
         <div class="channelLogoArea" style="">
-          <img :src="selectIcon" style="width:90%"/>
+          <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:90%"/>
           <form @submit.prevent="formSubmit" method="post" style="position: absolute; left:40%; bottom:0; transform: translate(-30%)" >
               <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>
@@ -39,7 +37,7 @@
             <p class="textLeft font14 fl mleft-05" style="line-height:30px;" >{{selectTypeText}}</p>
           </div>
         </div>
-        <div style="width:100%; height: 40px" class="mtop-1">
+        <div style="width:100%; height: 40px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">키워드</p>
           <div style="width: 80%; height: 100%; float: right; border: none; display:flex; overflow: auto; ">
             <!-- <input v-for="(input, index) in 3" :key="index" class="categoryBox" style="border: 1px solid #ccc; flex:1" @change="setKeyword(index,text)" /> -->
@@ -48,15 +46,13 @@
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord2" />
           </div>
         </div>
-
+        <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
-
   </div>
-  <gConfirmPop confirmText='정말로 생성 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='checkValue' />
-  <gConfirmPop confirmText='채널이 생성되었습니다.' @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" />
+  <gConfirmPop :confirmText="'[' + inputChannelName + '] 채널을 ' + pageType + '하겠습니다'" @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
+  <gConfirmPop :confirmText="'채널이' + pageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" />
   <!-- <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' /> -->
-<div @click="checkPopYn= true" class="creChanBigBtn fl mtop-1;">채널 만들기</div>
 
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false,checkPopYn=false' />
 </template>
@@ -65,20 +61,32 @@
 import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {
-
+  created () {
+    if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
+      if (this.chanDetail.modiYn === true) {
+        this.pageType = '수정'
+        this.getTeamList()
+      }
+    }
+  },
   mounted () {
     this.loadingClose()
+  },
+  props: {
+    chanDetail: {}
   },
   data () {
     return {
       typePopYn: false,
       iconBgPopupYn: '',
+      modiTeamData: {},
+      pageType: '생성',
       inputChannelName: '',
       inputChannelMemo: '',
       selectTypeText: '클릭해서 산업군을 선택해주세요.',
       selectType: '',
-      selectIcon: '/resource/channeliconbg/CHAR01.png',
-      selectBg: '/resource/channeliconbg/BG01.jpg',
+      selectIcon: { selectedId: '1', selectPath: '/resource/channeliconbg/CHAR01.png' },
+      selectBg: { selectedId: '11', selectPath: '/resource/channeliconbg/BG01.jpg' },
       keyWord0: '',
       keyWord1: '',
       keyWord2: '',
@@ -90,6 +98,17 @@ export default {
     }
   },
   methods: {
+    async getTeamList () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.chanDetail.targetKey)
+      this.modiTeamData = await this.$getTeamList(paramMap)
+      this.inputChannelName = this.$changeText(this.modiTeamData.content[0].nameMtext)
+      this.inputChannelMemo = this.$changeText(this.modiTeamData.content[0].memoMtext)
+      this.selectBg.selectedId = this.modiTeamData.content[0].picMfilekey
+      this.selectBg.selectPath = this.modiTeamData.content[0].bgPathMtext
+      this.selectIcon.selectedId = this.modiTeamData.content[0].logoFilekey
+      this.selectIcon.selectPath = this.modiTeamData.content[0].logoPathMtext
+    },
     channelTypeClick () {
       if (this.typePopYn === false) {
         this.typePopYn = true
@@ -122,53 +141,71 @@ export default {
     },
     setIconOrBGData (param) {
       if (this.iconBgPopupYn === 'iconPop') {
-        this.selectIcon = param.selectedId
+        this.selectIcon = param
         console.log(this.selectIcon)
       } else if (this.iconBgPopupYn === 'bgPop') {
-        this.selectBg = param.selectedId
+        this.selectBg = param
         console.log(this.selectBg)
       }
       this.iconBgPopupYn = false
     },
 
     checkValue () {
-      var result = false
-      if (this.selectedType !== '' && this.inputChannelName !== '' && this.inputChannelMemo !== '') {
-        if (this.inputChannelName.length > 20) {
-          this.errorMsg = '채널명은 20글자 이내로 입력해주세요.'
-          this.errorPopYn = true
-          result = false
-        } else if (this.inputChannelMemo.length > 40) {
-          this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요.'
-          this.errorPopYn = true
-          result = false
-        } else {
-          result = true
-          this.setParam()
-        }
-      } else {
-        this.errorMsg = '입력값을 모두 입력해주세요.'
+      if (this.inputChannelName.length > 20 || this.inputChannelName.length === 1) {
+        this.errorMsg = '채널명은 2~20글자 이내로 입력해주세요'
         this.errorPopYn = true
+        return
+      } else if (this.inputChannelName === '') {
+        this.errorMsg = '채널명을 입력해주세요'
+        this.errorPopYn = true
+        return
       }
-      return result
+      if (this.inputChannelMemo.length > 40) {
+        this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요'
+        this.errorPopYn = true
+        return
+      } else if (this.inputChannelMemo === '') {
+        this.errorMsg = '채널 소개를 입력해주세요'
+        this.errorPopYn = true
+        return
+      }
+      if (this.selectTypeText === '') {
+        this.errorMsg = '채널의 산업군을 선택해주세요'
+        this.errorPopYn = true
+        return
+      }
+      this.checkPopYn = true
     },
     async setParam () {
       // eslint-disable-next-line no-new-object
       var gParam = new Object()
+      if (this.chanDetail !== {}) {
+        gParam.teamKey = this.chanDetail.targetKey
+      }
       gParam.nameMtext = 'KO$^$' + this.inputChannelName
       gParam.memoMtext = 'KO$^$' + this.inputChannelMemo
       gParam.teamType = this.selectType
-      gParam.picPath = this.selectIcon
-      gParam.picBgPath = this.selectBg
+      gParam.logoFilekey = this.selectIcon.selectedId
+      gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
 
       var result = await this.$requestCreChan(gParam)
-      if (result === true || result === 'true') {
+      if (result.result === true || result.result === 'true') {
         this.checkPopYn = false
         this.okPopYn = true
+        // eslint-disable-next-line no-new-object
+        var params = new Object()
+        params.targetType = 'chanDetail'
+        if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
+          params.targetKey = this.chanDetail.targetKey
+          params.modiYn = true
+          params.teamKey = this.chanDetail.targetKey
+        } else {
+          params.targetKey = result.teamKey
+          params.teamKey = result.teamKey
+        }
+        this.$emit('successCreChan', params)
       }
-      this.checkPopYn = false
-      this.okPopYn = true
     },
 
     loadingClose () {
@@ -201,7 +238,7 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
   color: black;
 }
 #chboxtest{
-  font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top:0; margin-top:15rem; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem); opacity:0.9
+  font-size:14px; width: 100%; position:relative; min-height: 400px; background: #FFF; top:0; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem); opacity:0.9
 }
 
 #channelName{
@@ -219,10 +256,7 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
   /* width: 100%;  */
 
   /* add Jeong */
-  width: 90%;
-  position: fixed;
-  bottom: 10px;
-  left: 5%;
+  width: calc(100% - 70px);
 }
 .activeTypeBox{background: #6768a7; color: #fff;}
 .activeTypeBox p {color: #fff;}

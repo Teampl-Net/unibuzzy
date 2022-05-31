@@ -5,7 +5,7 @@
     <div class="findPopBody  mtop-05">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
           <img @click="findChannel" class="searchIcon" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
-          <input class="searchInput" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
+          <input class="searchInput" id="chanSearchInput" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
       </div>
 
       <!-- change By Jeong -->
@@ -44,6 +44,9 @@ export default {
     tab: {}
   },
   computed: {
+  },
+  mounted () {
+    document.getElementById('chanSearchInput').focus()
   },
   methods: {
     closeXPop () {

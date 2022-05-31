@@ -1,19 +1,31 @@
 <template>
-<div  id="alimWrap" ref="testBox" style="overflow: scroll; height: 100vh;" class="chanDetailWrap">
-  <div :key="wrapKey" v-if="this.detailShowYn === false" >
+<div  id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
+  <div :key="wrapKey" style="height: 100%;" v-if="this.detailShowYn === false" >
   <!-- <div>{{pushKey}}</div> -->
     <div id="summaryWrap" class="summaryWrap" >
 
       <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
-        <span id="chanCnt" class="font16">구독자 101명| 알림발송 100건</span>
-        <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-        <img id="chanImg" src="../../../assets/images/channel/chanImg.png" style="width: 110px; height: 110px; border-radius: 110px; margin-bottom: 5px;" alt="채널사진">
-        <span class="font13 mbottom-05 fl">#라이프스타일</span> <span class="font14 fontBold mbottom-05 " @click="openPop" style="float: right; right: 20px; bottom: 0;">채널정보 ></span>
+        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
+          <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건</p>
+          <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
+        </div>
+        <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
+          <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
+          <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div>
+        </div>
+        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
+          <p class="font13 ">#라이프스타일</p>
+        </div>
+        <div style="width: 100%; padding: 0 20px; margin-top: 0.8rem; ">
+          <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+          <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
+        </div>
       </div>
-      <div id="chanInfoSummary2" ref="chanImg2" style="">
-        <span class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-        <span class="font13 mbottom-05 fl">#라이프스타일</span>
-      </div>
+    </div>
+    <div id="chanInfoSummary2" ref="chanImg2" style="">
+      <span class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
+      <span class="font13 mbottom-05 fl">#라이프스타일</span>
+    </div>
       <!-- <div style="width: 100%; height: 320px;float: left;">
         <div id="summaryWrap2" class="summaryWrap2">
           <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
@@ -25,14 +37,14 @@
 
     </div>
 
-    <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 320px; ">
-      <pushList @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
+    <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
+      <pushList :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
-    <chanDetailComp  @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp  @openPop="openPushDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
 
 </div>
@@ -48,6 +60,7 @@ export default {
       scrollDirection: null,
       scrollPosition: null,
       wrapKey: 0,
+      followTypeText: '',
       followYn: false,
       detailHeaderShowYn: false,
       detailShowYn: true,
@@ -93,7 +106,7 @@ export default {
       params.targetNameMtext = this.chanItem.nameMtext
       this.$emit('openPop', params)
     },
-    async getChanDetail () {
+    async getChanDetail (addContentsListYn) {
       var paramMap = new Map()
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail
@@ -102,20 +115,30 @@ export default {
       } else if (this.chanDetail.teamKey !== undefined && this.chanDetail.teamKey !== null && this.chanDetail.teamKey !== '') {
         paramMap.set('teamKey', this.chanDetail.teamKey)
       }
+      if (addContentsListYn === true) {
+        paramMap.set('addContentsListYn', true)
+      }
       var resultList = await this.$getTeamList(paramMap)
       this.chanItem = resultList.content[0]
-      if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
-        this.followYn = true
-        this.detailShowYn = false
-
-        // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
-        // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
-        if (resultList.content[0].userTeamInfo.followerType === 'A' || resultList.content[0].userTeamInfo.followerType === 'M') {
-          this.adminYn = true
-        }
+      if (addContentsListYn !== true) {
+        if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
+          this.followYn = true
+          this.detailShowYn = false
+          this.followTypeText = '구독자'
+          // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
+          // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
+          if (resultList.content[0].userTeamInfo.followerType === 'A' || resultList.content[0].userTeamInfo.followerType === 'M') {
+            this.adminYn = true
+            if (resultList.content[0].userTeamInfo.followerType === 'A') {
+              this.followTypeText = '소유자'
+            } else if (resultList.content[0].userTeamInfo.followerType === 'A') {
+              this.followTypeText = '관리자'
+            }
+          }
         // if (resultList.content[0].userTeamInfo.followerType === JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType) {
         //   this.adminYn = true
         // }
+        }
       }
 
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
@@ -146,34 +169,41 @@ export default {
       this.detailHeaderShowYn = true
     },
     updateScroll () {
-      this.scrollPosition = this.box.scrollTop
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
+
+      this.scrollPosition = this.box.scrollTop
+
       if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         document.getElementById('chanInfoSummary2').classList.add('displayBIm')
+        document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         blockBox.style.height = '-webkit-fill-available'
+        this.box.style.height = ''
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
+        document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
       }
     },
     recvNoti (e) {
-      /* if (JSON.parse(e.data).type === 'pushmsg') {
+      if (JSON.parse(e.data).type === 'pushmsg') {
         var target = JSON.parse(e.data).pushMessage
-        alert(JSON.stringify(target.data))
-        if (target.data.creTeamKey === this.chanItem.teamKey) {
-          var tempData = this.chanItem
-          alert(JSON.stringify(this.chanItem))
-          this.chanItem = null
-          alert(JSON.stringify(this.chanItem))
-          setTimeout(() => {
-            this.chanItem = tempData
-          }, 300)
+        if (JSON.parse(target).data.targetKind === 'TEAM') {
+          // alert('바로바로' + this.chanItem.teamKey)
+          if (Number(JSON.parse(target).data.targetKey) === this.chanItem.teamKey) {
+            //  alert(true)
+            this.getChanDetail(true)
+          }
         }
-      } */
+      }
     }
   },
   computed: {
@@ -187,6 +217,7 @@ export default {
 </script>
 
 <style scoped>
+
 .gBtnSmall{
   float: left!important; margin-top: 0.7rem
 }
@@ -195,7 +226,6 @@ export default {
 }
 
 .chanDetailWrap{
-  background-image: url('../../../assets/images/push/push_bg.png');
   height: 100vh;
   background-size: cover;
 }
@@ -205,8 +235,9 @@ export default {
   min-height: 3rem;
   text-align: left;
 }
-.chanWhiteBox{ display: flex; flex-direction: column;align-items: center;width: 100%;}
-.channelItemBox{background-color: #fff; position: relative; width: 100%; height: calc(100vh - 50px); float: left; box-sizing: border-box;}
+.chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
+.channelItemBoxHeight{height: calc(100% - 50px)!important;}
+.channelItemBox{background-color: #fff; min-height: 600px; position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
@@ -227,4 +258,6 @@ export default {
   border-radius:50%; position:absolute; bottom: 5%; right: 10%;
   box-shadow: 2px 2px 7px 3px #ccc;
   }
+
+  span {color: white;}
 </style>

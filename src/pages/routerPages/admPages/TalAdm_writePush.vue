@@ -1,15 +1,17 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
   <div class="w-100P" style=" height: 100vh;top: 50px; position: absolute; overflow:auto">
-    <div style="min-height: 800px;">
+    <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParamInnerHtml' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
-        <div  :style="setColor" class="paperBackground">
+        <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
+        <!-- <div  :style="setColor" class="paperBackground"> -->
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
+        <div class="paperBackground">
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
@@ -73,6 +75,7 @@ export default {
       msgData: '',
       writePushTitle: '',
       okPopYn: false,
+      sendLoadingYn: false,
       myProgress: 55.5,
       closeAutoPopCnt: 5,
       selectFile: null, // 파일 객체
@@ -84,16 +87,9 @@ export default {
       toolWidth: 500,
       // toolShowYn: false,
       selectedTab: 0,
-      chanInfo: { chanName: '더알림대학교', group: [{ groupName: '입학처입학처입학처입학처입학처입학처입학처입학처입학처입학처입학처입학처', groupKey: '0' }, { groupName: '시설관리처', groupKey: '1' }, { groupName: '시설관리처', groupKey: '1' }, { groupName: '시설관리처', groupKey: '1' }, { groupName: '시설관리처', groupKey: '1' }, { groupName: '학생복지처', groupKey: '2' }, { groupName: '학생', groupKey: '3' }] },
       colorList: ['#6768A7', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', '#6768A7', '#A9AACD', '#A1A1A1', '#0000002E'],
       selectedC: 0,
       pushDetailPopShowYn: true,
-      pushList: [
-        { pushKey: '0', pushTitle: '기숙사 신청일은 각 학년별로 다릅니다', pushBody: '기숙사 신청일은 각 학년별로 다릅니다기숙사 신청일은 각 학년별로 다릅니다기숙사 신청일은 각 학년별로 다릅니다기숙사 신청일은 각 학년별로 다릅니다기숙사 신청일은 각 학년별로 다릅니다기숙사 신청일은 각 학년별로 다릅니다', recvDate: '22.1.7.15:32:37', sendDate: '22.1.7.15:32:37', sendGroup: '전체대상' },
-        { pushKey: '0', pushTitle: '기숙사 신청일은 각 학년별로 다릅니다', pushBody: '기숙사 신청일은 각 학년별로 다릅니다', recvDate: '22.1.7.15:32:37', sendDate: '22.1.7.15:32:37', sendGroup: '전체대상' },
-        { pushKey: '0', pushTitle: '기숙사 신청일은 각 학년별로 다릅니다', pushBody: '기숙사 신청일은 각 학년별로 다릅니다', recvDate: '22.1.7.15:32:37', sendDate: '22.1.7.15:32:37', sendGroup: '전체대상' },
-        { pushKey: '0', pushTitle: '기숙사 신청일은 각 학년별로 다릅니다', pushBody: '기숙사 신청일은 각 학년별로 다릅니다', recvDate: '22.1.7.15:32:37', sendDate: '22.1.7.15:32:37', sendGroup: '전체대상' }
-      ],
       progressShowYn: false
     }
   },
@@ -127,7 +123,8 @@ export default {
       this.$refs.formEditor.focus()
       // this.$ref.formEditor.allBlur()
     }, */
-    setParamInnerHtml () {
+    async setParamInnerHtml () {
+      this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.bodyMinStr = this.msgData
@@ -136,13 +133,10 @@ export default {
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
-      var result = this.$saveContents(param)
-      this.okPopYn = true
-      setTimeout(() => {
-        this.$emit('closeXPop', true)
-      }, 2000)
+      var result = await this.$saveContents(param)
       if (result === true) {
-        this.okPopYn = true
+        this.sendLoadingYn = false
+        this.$emit('closeXPop')
       }
     },
     clickPageTopBtn () {
@@ -212,7 +206,7 @@ export default {
       margin-top: 1rem;
       border-radius: 0.8rem;
       height: calc(100% - 60px);
-      min-height: 600px;
+      min-height: 500px;
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -249,7 +243,7 @@ export default {
 .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; min-height: 400px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
   width: 100%; height: 5rem;
@@ -274,9 +268,9 @@ export default {
 .activeColor p{color: #6768A7!important;}
 .editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
-.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 800px; margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;}
+.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 100%; height: calc(100% - 1rem);min-height: 800px; position: relative; margin: 0 auto; padding: 4rem 2rem; box-shadow: 0 0 9px 0px #00000029; border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 15rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}
@@ -294,4 +288,35 @@ export default {
 .toolSearchBox{border: 1px solid #BFBFDA!important; border-radius: 5px!important;}
 .toolPushCard{box-shadow: none !important; border: 1px solid #E1E1E1 !important;}
 .selectPaperWrap{width: 100%; height: 100%; float: left; margin-top: 1rem;}
+
+#loading {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 999999;
+  background: #0101014b;
+}
+
+@keyframes spinner {
+  from {transform: rotate(0deg); }
+  to {transform: rotate(360deg);}
+}
+
+#loading .spinner {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin-top: -32px;
+  margin-left: -32px;
+  border-radius: 50%;
+  border: 8px solid transparent;
+  border-top-color: #6768A7;
+  border-bottom-color: #6768A7;
+  animation: spinner .8s ease infinite;
+}
 </style>

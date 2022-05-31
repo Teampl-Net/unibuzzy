@@ -1,8 +1,5 @@
 <template>
-
-<!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <!-- <div  style="padding-right: 0; padding-left: 0; height: 100vh; background-color:#aaa "> -->
-  <div :class="{popHeight :popYn == true}" style="padding-right: 0; padding-left: 0; height: calc(100vh - 120px); ">
+  <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
 
     <!-- {{scrollPosition}} -->
     <div class= "pageHeader pushListCover" >
@@ -12,20 +9,17 @@
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
-  <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
-  <div class="stickerWrap">
-    <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
-      <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
-        <p class="font12">{{value.stickerName}}</p>
+    <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
+    <!-- <div class="stickerWrap">
+      <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
+        <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
+          <p class="font12">{{value.stickerName}}</p>
+        </div>
+
       </div>
-
-    </div>
-  </div>
-  <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' />
-
+    </div> -->
+    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" />
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-
-
 </div>
 </template>
 
@@ -34,45 +28,66 @@
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
-  name: 'test',
+  name: 'pushList',
   components: {
-    findContentsList,
+    findContentsList
     // searchResult
 
   },
   props: {
     popYn: Boolean,
+    alimListYn: Boolean,
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {},
     notiTargetKey: {}
   },
-  created () {
-
+  async created () {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
-      document.addEventListener('message', e => this.BackPopClose(e))
-      window.addEventListener('message', e => this.BackPopClose(e))
       var history = localStorage.getItem('popHistoryStack').split('$#$')
       this.pageHistoryName = 'page' + (history.length - 1)
     }
     this.$emit('changePageHeader', '알림')
-    this.getPushContentsList()
+    var resultList = await this.getPushContentsList()
+    this.commonListData = resultList.content
+    this.$emit('closeLoading')
+    this.findPopShowYn = false
     if (this.readySearhList) {
       this.requestSearchList(this.readySearhList)
     }
   },
 
   mounted () {
-    window.addEventListener('scroll', this.updateScroll)
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     if (this.notiTargetKey) {
-      this.openPop({ contentsKey: this.notiTargetKey })
+      this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
     }
-
+    /* PullToRefresh.init({
+      mainElement: '.testt',
+      instructionsReleaseToRefresh: ' ',
+      instructionsPullToRefresh: ' ',
+      instructionsRefreshing: ' ',
+      onRefresh () {
+        alert(this.scrollPosition)
+        if (this.scrollPosition < 1) {
+          this.$router.go(0)
+        }
+      }
+    }) */
+  },
+  unmounted () {
+    document.removeEventListener('message', e => this.recvNoti(e))
+    window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    commonListData () {
+      this.refreshYn = false
+      this.refreshYn = true
+    },
     routerReloadKey () {
-      this.reload()
+      this.refreshList()
     }
   },
   computed: {
@@ -90,73 +105,61 @@ export default {
     }
   },
   methods: {
-    async loadMore(){
-      // console.log('옵저버 실행'+(this.offsetInt++))
-      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
-      var param = new Object()
-      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
+    onRefresh () {
+      if (this.scrollPosition < 1) {
+        this.$router.go(0)
       }
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+    },
+    currentScroll (value) {
+      this.scrollPosition = value
+    },
+    async refreshList () {
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
+        pSize = Number(this.offsetInt) * 10
+      }
+      this.endList = true
+      var resultList = await this.getPushContentsList(pSize, 0)
+      this.commonListData = resultList.content
+      this.endList = false
+    },
+    async refreshPage () {
+      this.endList = true
+      var resultList = await this.getPushContentsList(10, 0)
+      this.commonListData = resultList.content
+      this.endList = false
+    },
+    async recvNoti (e) {
+      if (JSON.parse(e.data).type === 'pushmsg') {
+        var target = JSON.parse(e.data).pushMessage
+        if (JSON.parse(target).data.targetKind === 'CONT') {
+          this.refreshList()
         }
       }
-      param.findLogReadYn = null
-      param.findActYn = false
-      param.findActLikeYn = false
-      param.findActStarYn = false
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (this.viewTab === 'L') {
-        param.findActYn = true
-        param.findActLikeYn = true
-      } else if (this.viewTab === 'S') {
-        param.findActYn = true
-        param.findActStarYn = true
-      } else if (this.viewTab === 'R') {
-        param.findLogReadYn = false
+      if (this.subHistoryList.length === 0) {
+        if (this.popYn === false) {
+          if (JSON.parse(e.data).type === 'goback') {
+            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+                this.$removeHistoryStackForPage(this.pageHistoryName)
+              }
+            }
+          }
+        }
       }
-
-      // param.offsetInt = this.offsetInt++
-      param.offsetInt = (this.offsetInt +1)
-      param.pageSize = 10
-
-      var resultList = await this.$getContentsList(param)
-
-      const newArr = [
-        ...this.commonListData,
-        ...resultList.content
-      ]
-      this.commonListData = newArr
-      this.findPopShowYn = false
     },
-    // infiniteHandler($state) {
-
-    //   var param = new Object()
-    //   var resultData = null
-    //   param.offsetInt = this.limit
-    //   param.pageSize = 10
-
-    //   this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
-    //   ).then(response => {
-    //     if(response.hits.length){
-    //       this.commonListData.push(response.data)
-    //       $state.loaded();
-    //       this.limit += 1
-    //     }else{
-    //       $state.complete();
-    //     }
-    //   }).catch((error) => {
-    //     console.warn('ERROR!!!!! : ', error)
-    //   })
-
-    // },
+    async loadMore (pageSize) {
+      if (this.endListYn === false || this.commonListData.length > pageSize) {
+        this.offsetInt += 1
+        var resultList = await this.getPushContentsList(pageSize)
+        const newArr = [
+          ...this.commonListData,
+          ...resultList.content
+        ]
+        if (resultList.content.length < pageSize) { this.endListYn = true }
+        this.commonListData = newArr
+      }
+    },
     addSubHistory (pageName) {
       // eslint-disable-next-line no-array-constructor
       var sHistory = new Array()
@@ -170,49 +173,40 @@ export default {
       this.findPopShowYn = false
       this.subHistoryList.splice(-1, 1)
     },
-    BackPopClose (e) {
-      if (this.subHistoryList.length === 0) {
-        if (this.popYn === false) {
-          if (JSON.parse(e.data).type === 'goback') {
-            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-                this.$removeHistoryStackForPage(this.pageHistoryName)
-              }
-            }
-          }
-        }
-      }
-    },
     reload () {
       this.getPushContentsList()
     },
     openPop (value) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-        params.targetType = value.targetType
-      } else {
-        params.targetType = 'pushDetail'
-      }
-      params.value = value
-      if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
-      this.$emit('openPop', params)
+      this.$emit('openPop', value)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     subHeaderEvent (request) {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
-    changeTab (tabName) {
+    async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      this.getPushContentsList()
+      this.offsetInt = 0
+      var resultList = await this.getPushContentsList()
+      this.commonListData = resultList.content
+      this.findPopShowYn = false
     },
-    async getPushContentsList () {
+    async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
+      }
+      // alert(offsetInt)
+      if (offsetInput !== undefined) {
+        param.offsetInt = offsetInput
+      } else {
+        param.offsetInt = this.offsetInt
+      }
+      if (pageSize) {
+        param.pageSize = pageSize
+      } else {
+        pageSize = 10
       }
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
@@ -239,11 +233,9 @@ export default {
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
+      // alert(JSON.stringify(param))
       var resultList = await this.$getContentsList(param)
-      this.commonListData = resultList.content
-      this.findPopShowYn = false
-      // this.userDoList = resultList.userDo
-      this.$emit('closeLoading')
+      return resultList
     },
     async requestSearchList (param) {
       if (param) {
@@ -258,7 +250,10 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getPushContentsList()
+      this.offsetInt = 0
+      var resultList = await this.getPushContentsList(10, 0)
+      this.commonListData = resultList.content
+      this.findPopShowYn = false
     },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
@@ -296,17 +291,16 @@ export default {
         delete this.findKeyList.fromCreDateStr
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getPushContentsList()
-    },
-    updateScroll () {
-      this.scrollPosition = window.scrollY
+      var resultList = await this.getPushContentsList()
+      this.commonListData = resultList.content
+      this.findPopShowYn = false
     }
   },
   data () {
     return {
-      offsetInt:1,
-
-      scrollPosition: null,
+      offsetInt: 0,
+      endListYn: false,
+      scrollPosition: 0,
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
@@ -323,7 +317,8 @@ export default {
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
-      resultSearchKeyList: []
+      resultSearchKeyList: [],
+      refreshYn: true
     }
   }
 }

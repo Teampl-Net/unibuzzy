@@ -10,13 +10,13 @@
       </div>
       <!-- <div style="width: 100%; height: calc(100% - 350px); margin-top: 20px; float: left;">  /* change Jeong */ -->
       <div style="width: 100%; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
-          <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.teamCharImg}" @click="selectChanInfo(value.teamCharImg)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
+          <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
             <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
-            <img v-if="opentype =='iconPop'" :src="value.teamCharImg"  style="width: calc(var(--chanBoxSize) - 20px)"/>
-            <p v-if="opentype =='iconPop'" >{{value.teamChartext}}</p>
+            <img v-if="opentype =='iconPop'" :src="value.pathMtext"  style="width: calc(var(--chanBoxSize) - 20px)"/>
+            <p v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
 
-            <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: 100%; height: 100%;" >
-            <!-- <img v-if="opentype =='bgPop'" :src='value.teamCharImg' style="width: calc(var(--chanBoxSize) + 10px);" > -->
+            <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: 100%; height: 100%;" >
+            <!-- <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: calc(var(--chanBoxSize) + 10px);" > -->
 
           </div>
       </div>
@@ -31,6 +31,7 @@
 export default {
   props: { opentype: {} },
   created () {
+    this.getCodeList()
     this.setDefaultData()
   },
   data () {
@@ -38,40 +39,31 @@ export default {
       selectedId: '',
       selectedBack: '',
       teamImgList: [],
+      selectPath: '',
       msgTitle: '',
       msgError: ''
     }
   },
   methods: {
+    async getCodeList () {
+      var resultList = null
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (this.opentype === 'bgPop') {
+        param.groupCode = 'T_BG__'
+      } else if (this.opentype === 'iconPop') {
+        param.groupCode = 'T_LOGO'
+      }
+      resultList = await this.$getCodeList(param)
+      this.teamImgList = resultList
+    },
     setDefaultData () {
       if (this.opentype === 'iconPop') {
         this.msgTitle = '채널를 대표할 아이콘을 선택해주세요.'
         this.msgError = '대표 아이콘을 선택해주세요!'
-        this.teamImgList = [
-          { teamChartext: '황구', teamCharImg: '/resource/channeliconbg/CHAR01.png', charId: '01' },
-          { teamChartext: '양', teamCharImg: '/resource/channeliconbg/CHAR02.png', charId: '02' },
-          { teamChartext: '숫사슴', teamCharImg: '/resource/channeliconbg/CHAR03.png', charId: '03' },
-          { teamChartext: '병아리', teamCharImg: '/resource/channeliconbg/CHAR04.png', charId: '04' },
-          { teamChartext: '쥐', teamCharImg: '/resource/channeliconbg/CHAR05.png', charId: '05' },
-          { teamChartext: '늑대', teamCharImg: '/resource/channeliconbg/CHAR06.png', charId: '06' },
-          { teamChartext: '암사슴', teamCharImg: '/resource/channeliconbg/CHAR07.png', charId: '07' },
-          { teamChartext: '강아지', teamCharImg: '/resource/channeliconbg/CHAR08.png', charId: '08' },
-          { teamChartext: '너구리', teamCharImg: '/resource/channeliconbg/CHAR09.png', charId: '09' }
-        ]
       } else if (this.opentype === 'bgPop') {
         this.msgTitle = '채널의 배경 사진을 선택해주세요.'
         this.msgError = '배경 사진을 선택해주세요!'
-        this.teamImgList = [
-          { teamChartext: '젖은 나뭇잎', teamCharImg: '/resource/channeliconbg/BG01.jpg', charId: '01' },
-          { teamChartext: '파도', teamCharImg: '/resource/channeliconbg/BG02.jpg', charId: '02' },
-          { teamChartext: '돌', teamCharImg: '/resource/channeliconbg/BG03.jpg', charId: '03' },
-          { teamChartext: '나이테', teamCharImg: '/resource/channeliconbg/BG04.jpg', charId: '04' },
-          { teamChartext: '키위', teamCharImg: '/resource/channeliconbg/BG05.jpg', charId: '05' },
-          { teamChartext: '검정', teamCharImg: '/resource/channeliconbg/BG06.jpg', charId: '06' },
-          { teamChartext: '유리구술', teamCharImg: '/resource/channeliconbg/BG07.jpg', charId: '07' },
-          { teamChartext: '벽돌', teamCharImg: '/resource/channeliconbg/BG08.jpg', charId: '08' },
-          { teamChartext: '나뭇잎', teamCharImg: '/resource/channeliconbg/BG09.jpg', charId: '09' }
-        ]
       }
     },
     setParam () {
@@ -79,13 +71,15 @@ export default {
       var param = new Object()
       if (this.selectedId !== '') {
         param.selectedId = this.selectedId
+        param.selectPath = this.selectPath
         this.$emit('makeParam', param)
       } else {
         alert(this.msgError)
       }
     },
-    selectChanInfo (id) {
-      this.selectedId = id
+    selectChanInfo (value) {
+      this.selectedId = value.imageFilekey
+      this.selectPath = value.pathMtext
     }
   },
   computed: {

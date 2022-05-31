@@ -1,15 +1,17 @@
 <template>
-<div :key="componentKey" v-if="renderOk">
+<div :key="componentKey" v-if="renderOk" style="padding-bottom: 60px;">
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
-    <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
-    <!-- <img v-if="userInfo.picMfilekey !== undefined && userInfo.userImg !== null && userInfo.userImg !== ''" src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/>
-    <img :src="userInfo.picMfilekey" style="width: 5em; margin-right: 1rem"/> -->
+    <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
+    <div style="width: 80px; height: 80px; border-radius: 80px; overflow: hidden; display: flex; margin-right: 1rem">
+      <img v-if="userInfo.soPicUrl !== undefined && userInfo.soPicUrl !== null && userInfo.soPicUrl !== ''" :src="userInfo.soPicUrl"  style="width: 85px; height: 85px;"/>
+      <img v-else src="../../assets/images/main/main_profile.png"  style="width: 85px; height: 85px;"/>
+    </div>
     <div class="userProfileTextWrap">
       <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
-      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: absolute; right: 0; width: 25px;" alt="">
+      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
         <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
         <span class="profileTitle" ref="userEmail">이메일</span>
@@ -44,6 +46,7 @@ export default {
     testYn: {}
   },
   async created () {
+    this.$emit('openLoading')
     localStorage.setItem('popHistoryStack', '')
     this.$emit('changePageHeader', '더알림')
     document.addEventListener('message', e => this.BackPopClose(e))
@@ -54,13 +57,13 @@ export default {
     if (this.testYn !== undefined && this.testYn !== null && this.testYn !== '' && (this.testYn === true || this.testYn === 'true')) {
       ;
     } else {
+      localStorage.setItem('loginYn', false)
       await this.$userLoginCheck()
     }
     await this.getUserInform()
     // <%= ${sessionName} != null %>
   },
   mounted () {
-    this.$emit('closeLoading')
   },
   data () {
     return {
@@ -102,6 +105,10 @@ export default {
           if (localStorage.getItem('popHistoryStack') === '') {
             this.appCloseYn = true
           }
+        }
+      } else if (JSON.parse(e.data) === 'refresh') {
+        if (localStorage.getItem('popHistoryStack') === '') {
+          this.$router.go(0)
         }
       }
     },
@@ -159,6 +166,7 @@ export default {
           this.chanList = response.data.teamList
           // return response.data
           this.renderOk = true
+          this.$emit('closeLoading')
         }
         // response.data.userMap
       }).catch((error) => {
@@ -187,7 +195,7 @@ export default {
 
 /* main */
 .userProfileWrap{ display:flex; align-items: flex-start; margin-top: 1rem;}
-  .userProfileTextWrap{width: 100%; text-align: left; position: relative;}
+  .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-size: 14px; font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
