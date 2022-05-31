@@ -81,7 +81,7 @@ export default {
   async created () {
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    await this.getChanDetail()
+    await this.getChanDetail(false)
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -119,19 +119,19 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
       var resultList = await this.$getTeamList(paramMap)
-      this.chanItem = resultList.content[0]
-      if (addContentsListYn !== true) {
-        if (resultList.content[0].userTeamInfo !== undefined && resultList.content[0].userTeamInfo !== null && resultList.content[0].userTeamInfo !== '') {
+      this.chanItem = resultList.data.content[0]
+      if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
+        if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
           this.followYn = true
           this.detailShowYn = false
           this.followTypeText = '구독자'
           // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
           // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
-          if (resultList.content[0].userTeamInfo.followerType === 'A' || resultList.content[0].userTeamInfo.followerType === 'M') {
+          if (this.chanItem.userTeamInfo.followerType === 'A' || this.chanItem.userTeamInfo.followerType === 'M') {
             this.adminYn = true
-            if (resultList.content[0].userTeamInfo.followerType === 'A') {
+            if (this.chanItem.userTeamInfo.followerType === 'A') {
               this.followTypeText = '소유자'
-            } else if (resultList.content[0].userTeamInfo.followerType === 'A') {
+            } else if (this.chanItem.userTeamInfo.followerType === 'A') {
               this.followTypeText = '관리자'
             }
           }
@@ -153,7 +153,7 @@ export default {
       this.$emit('openLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false
-      await this.getChanDetail()
+      await this.getChanDetail(false)
       this.$emit('closeLoading')
       // this.detailShowYn = false
     },
@@ -197,9 +197,7 @@ export default {
       if (JSON.parse(e.data).type === 'pushmsg') {
         var target = JSON.parse(e.data).pushMessage
         if (JSON.parse(target).data.targetKind === 'TEAM') {
-          // alert('바로바로' + this.chanItem.teamKey)
           if (Number(JSON.parse(target).data.targetKey) === this.chanItem.teamKey) {
-            //  alert(true)
             this.getChanDetail(true)
           }
         }

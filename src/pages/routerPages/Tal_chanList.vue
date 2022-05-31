@@ -58,14 +58,14 @@ export default {
       this.pageHistoryName = 'page' + (history.length - 1)
     }
     this.$emit('changePageHeader', '채널')
-    var resultList = await this.getChannelList('user')
+    var resultList = await this.getChannelList()
     this.chanList = resultList.content
     this.$emit('closeLoading')
   },
   methods: {
     async refreshList () {
       var pSize = 10
-      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
+      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
         pSize = Number(this.offsetInt) * 10
       }
       this.endList = true
@@ -75,14 +75,14 @@ export default {
     },
 
     async loadMore (pageSize) {
-      if (this.endListYn === false || this.chanList.length > pageSize) {
+      if (this.endListYn === false || this.totalElements > this.chanList.length) {
         this.offsetInt += 1
         var resultList = await this.getChannelList(pageSize)
         const newArr = [
           ...this.chanList,
           ...resultList.content
         ]
-        if (resultList.content.length < pageSize) { this.endListYn = true }
+        if (this.totalElements === this.chanList.length) { this.endListYn = true }
         this.chanList = newArr
       }
     },
@@ -146,7 +146,7 @@ export default {
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
     },
 
-    async getChannelList (moreYn) {
+    async getChannelList (pageSize, offsetInput) {
       var paramMap = new Map()
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -158,14 +158,21 @@ export default {
       if (this.resultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
       }
-      if (moreYn === true) {
-        this.offsetInt += 1
+      if (offsetInput !== undefined) {
+        paramMap.set('offsetInt', offsetInput)
+      } else {
         paramMap.set('offsetInt', this.offsetInt)
+      }
+      if (pageSize) {
+        paramMap.set('pageSize', pageSize)
+      } else {
         paramMap.set('pageSize', 10)
       }
       var resultList = await this.$getTeamList(paramMap)
-
-      return resultList
+      // var pageable = resultList.pageable
+      this.totalPages = resultList.totalPages
+      this.totalElements = resultList.totalElements
+      return resultList.data
     },
 
     async requestSearchList (paramMap) {
@@ -210,7 +217,9 @@ export default {
       chanFindPopShowYn: false,
       resultSearchKeyList: '',
 
-      myChanListPopYn: false
+      myChanListPopYn: false,
+      totalElements: 0,
+      totalPages: 0
     }
   },
   props: {

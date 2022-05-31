@@ -122,7 +122,7 @@ const methods = {
     var resultList = null
     await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap), { withCredentials: true }
     ).then(response => {
-      resultList = response.data
+      resultList = response
     }).catch((error) => {
       console.warn('ERROR!!!!! : ', error)
     })

@@ -239,7 +239,6 @@ export default {
       }
     },
     successCreChan (params) {
-      // alert(JSON.stringify(params))
       if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)

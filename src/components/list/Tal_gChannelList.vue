@@ -3,7 +3,7 @@
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
         <div class=" text-start mr-04 w-100P" >
-          <p class="font15 commonBlack fl fontBold mNone" v-html="this.$makeMtextMap(value.nameMtext, 'KO')"></p>
+          <p class="font15 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
           <div style="line-height: 0.05rem; float: left; margin-top: 6px; margin-left: 8px;">
               <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
               <span class="commonColor font12" >{{value.followerCount}}</span>
@@ -31,11 +31,17 @@ export default {
   updated () {
   },
   methods: {
+    resizeText (text) {
+      if (text.length > 20) {
+        text = text.substr(0, 20) + '...'
+      }
+      return text
+    },
     goDetail (chanName) {
       this.$emit('goDetail', chanName)
     },
     async loadMore () {
-      this.$emit('moreList', true)
+      this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,
         ...resultList.content
@@ -62,7 +68,6 @@ export default {
           }
         }
       }
-      // alert(JSON.stringify(userTeamInfo))
 
       return followerTypeText
     }

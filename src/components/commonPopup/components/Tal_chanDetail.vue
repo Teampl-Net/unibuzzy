@@ -16,8 +16,8 @@
         </div>
         <!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
 
-        <div style="width: 185px; height: 185px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
-          <img :src="chanDetail.logoPathMtext" style="width: 155px; margin-bottom: 1rem; margin-right: 5px; margin-top: 5px;" alt="채널사진">
+        <div style="width: 185px; height: 185px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
+          <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05"><gBtnSmall @click="changeRecvAlimYn" class="fl" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" /><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" /></div>
@@ -97,8 +97,6 @@ export default {
       }
     }
     this.settingTeamType(this.chanDetail.teamType)
-    // alert(JSON.stringify(this.chanDetail.userTeamInfo))
-    // await this.getChanDetail()
   },
   methods: {
     editChan () {

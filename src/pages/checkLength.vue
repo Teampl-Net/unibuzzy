@@ -9,7 +9,6 @@ export default {
     }
   },
   created () {
-    alert(true)
     window.location.replace('/checkLength/index.html')
   }
 }
