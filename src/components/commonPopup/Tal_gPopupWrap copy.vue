@@ -41,7 +41,7 @@ import question from './components/Tal_question.vue'
 import leaveTal from './components/Tal_leaveTheAlim.vue'
 
 // import selectChanType from './Tal_creChannelStep00.vue'
-import createChannel from '../popup/creChannel/Tal_creChannelStep00.vue'
+import createChannel from '../popup/creChannel/Tal_creChannel.vue'
 import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
 export default {

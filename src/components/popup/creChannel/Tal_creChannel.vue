@@ -3,20 +3,20 @@
 
 <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
 <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'"  @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
-  <div :style="'background: url(' + selectBg.selectPath + ');'" style="width: 100%;display: flex; flex-direction: column; overflow: hidden scroll; height: 100%; top:50px;"  >
+  <div :style="'background: url(' + selectBg.selectPath + ');'" class="createChanWrap"  >
 <!-- <div style="width: 100%; height: calc(100% - 110px);  overflow: auto; position:absolute; top:50px;"  > -->
     <!-- <input type="file" id="input-Logoimgfile" style="display:none" />
     <input type="file" id="input-Backimgfile" style="display:none" /> -->
-    <div style="width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;">
+    <div class="createChanContentsWrap">
 
       <!-- <div id='chboxtest' style="font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top: 10rem ; box-shadow: rgb(189 189 189) 0px -1px 12px -4px; padding: 0 2rem; height: calc(100% - 50px);"> -->
       <div id='chboxtest' >
-        <form @submit.prevent="formSubmit" method="post" style="position: absolute; right: 1.5rem; top: -3rem;" >
+        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap" >
             <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
         </form>
         <div class="channelLogoArea" style="">
           <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:90%"/>
-          <form @submit.prevent="formSubmit" method="post" style="position: absolute; left:40%; bottom:0; transform: translate(-30%)" >
+          <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap" >
               <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>
         </div>
@@ -33,13 +33,13 @@
         </div>
         <div style="width:100%; height: 30px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">산업군</p>
-          <div style="width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;" @click="channelTypeClick">
+          <div class="changeChanTypeBtnWrap" @click="channelTypeClick">
             <p class="textLeft font14 fl mleft-05" style="line-height:30px;" >{{selectTypeText}}</p>
           </div>
         </div>
         <div style="width:100%; height: 40px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">키워드</p>
-          <div style="width: 80%; height: 100%; float: right; border: none; display:flex; overflow: auto; ">
+          <div class="keywordWrap ">
             <!-- <input v-for="(input, index) in 3" :key="index" class="categoryBox" style="border: 1px solid #ccc; flex:1" @change="setKeyword(index,text)" /> -->
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord0" />
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord1" />
@@ -261,4 +261,12 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
 .activeTypeBox{background: #6768a7; color: #fff;}
 .activeTypeBox p {color: #fff;}
 .categoryBox{min-width: 50px; margin-right: 5px; height: 30px;float: left; border-radius: 5px;padding-left: 5px;}
+
+.keywordWrap{width: 80%; height: 100%; float: right; border: none; display:flex; overflow: auto;}
+.changeChanTypeBtnWrap{width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;}
+.changeLogoBtnWrap{position: absolute; left:40%; bottom:0; transform: translate(-30%);}
+.changeBgBtnWrap{position: absolute; right: 1.5rem; top: -3rem;}
+.createChanWrap{width: 100%;display: flex; flex-direction: column; overflow: hidden scroll; height: 100%; top:50px;}
+.createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
+
 </style>

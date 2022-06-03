@@ -13,7 +13,7 @@
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
             </div>
         </div>
-        <div  class="font15 mbottom-2" v-html="alim.bodyMinStr"></div>
+        <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyMinStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -66,6 +66,7 @@ export default {
     /* manageStickerPop */
   },
   async created () {
+    this.$emit('openLoading')
     await this.getContentsList()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
@@ -76,6 +77,10 @@ export default {
     } */
   },
   methods: {
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      return Base64.decode(data)
+    },
     async getContentsList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -189,4 +194,31 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 .pushMbox{margin-bottom: 20px;}
+
+  .content {
+      position: relative;
+      width: 100%;
+      margin: auto;
+      border-radius: 0.8rem;
+      background-color: #ffffff;
+      color: #363c5f;
+      padding: 1.5rem;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+  }
+
+  .content ::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: #e1e1f2;
+      bottom: 0;
+      right: 0;
+  }
+
 </style>

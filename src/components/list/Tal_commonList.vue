@@ -1,6 +1,6 @@
 
 <template>
-  <div id="chanWrap" style="overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 200px);">
+  <div id="chanWrap" class="commonListWrap">
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
         <div @click="goDetail(alim)" class="pushDetailTopArea">
@@ -15,7 +15,7 @@
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
             </div>
         </div>
-        <div @click="goDetail(alim)" class="font14 mbottom-05" v-html="setBodyLength(alim.bodyMinStr)"></div>
+        <div @click="goDetail(alim)" class="font14 mbottom-05 bodyMinStr" v-html="setBodyLength(alim.bodyMinStr)"></div>
         <div id="alimCheckArea">
           <div class="alimCheckContents">
             <!-- <div class="pushDetailStickerWrap">
@@ -67,6 +67,10 @@ export default {
     this.chanWrap = document.getElementById('chanWrap')
     this.chanWrap.addEventListener('scroll', this.saveScroll)
     if (this.mainYnProp === true) { this.mainYn = true }
+    var imgList = document.querySelectorAll('.bodyMinStr img')
+    for (var i = 0; i < imgList.length; i++) {
+      imgList[i].setAttribute('style', 'display: none')
+    }
   },
   unmounted () {
     this.chanWrap.removeEventListener('scroll', this.saveScroll)
@@ -168,6 +172,9 @@ export default {
       this.commonListData = newArr */
     },
     setBodyLength (str) {
+      // eslint-disable-next-line no-undef
+      str = Base64.decode(str)
+      // str = atob(str)
       if (str.length > 130) {
         str.substring(0, 130)
         str = str + '...'
@@ -205,6 +212,7 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
+.commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 200px);}
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}

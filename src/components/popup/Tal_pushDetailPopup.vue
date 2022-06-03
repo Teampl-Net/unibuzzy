@@ -9,6 +9,7 @@
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.title)}}</p>
           <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+          <!-- <p class="font12 fr lightGray">{{this.$dayjs(JSON.parse(this.detailVal).sendTime).format('YYYY-MM-DD HH:mm')}}</p> -->
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
@@ -34,6 +35,10 @@ export default {
     detailVal: {}
   },
   methods: {
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      return Base64.decode(data)
+    },
     goOk () {
       this.openPushDetailPop()
     },

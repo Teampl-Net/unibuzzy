@@ -1,66 +1,19 @@
 <template>
-  <div style="width: 100%; height: 100%">
+  <div class="w-100P h-100P">
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
       <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
-    <!-- <pushModal
-      @openLoading="this.loadingYn = true"
-      @closeLoading="this.loadingYn = false"
-      id="pushPopWrap"
-      ref="pushPopWrap"
-      @closeXPushPop="closeXPushPop"
-      :params="this.pushPopShowYn"
-      v-if="this.pushPopShowYn"
-    /> -->
-    <div
-      @click="showMenuYn = false"
-      v-show="showMenuYn"
-      style="
-        width: 100vw;
-        height: 100vh;
-        background: rgb(0 0 0 / 8%);
-        z-index: 999;
-        top: 0;
-        left: 0;
-        position: fixed;
-      "
-    ></div>
+    <div @click="showMenuYn = false" v-show="showMenuYn" class="menuBtn"></div>
     <transition name="show_view">
-      <TalMenu
-        @openLoading="this.loadingYn = true"
-        transition="show_view"
-        @hideMenu="hideMenu"
-        @openPop="openPop"
-        @goPage="goPage"
-        class="TalmenuStyle"
-        v-if="showMenuYn"
-      />
+      <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
-    <TalHeader
-      @openLoading="this.loadingYn = true"
-      @showMenu="showMenu"
-      class="header_footer headerShadow"
-      :headerTitle="this.headerTitle"
-      style="position: fixed; top: 0; z-index: 99"
-    />
+    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 99"/>
     <div v-if="reloadYn === false" class="pagePaddingWrap" style="height: calc(100vh);">
-      <router-view :routerReloadKey="this.routerReloadKey"
-        @openLoading="this.loadingYn = true"
-        @closeLoading="this.loadingYn = false"
-        class=""
-        style="margin-bottom: 60px"
-        @openPop="openPop"
-        @changePageHeader="changePageHeader"
-      />
+      <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
     </div>
-
-    <TalFooter
-      @openLoading="this.loadingYn = true"
-      class="header_footer footerShadow"
-      style="position: fixed; bottom: 0; z-index: 99"
-    />
+    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: fixed; bottom: 0; z-index: 99"/>
   </div>
 </template>
 
@@ -182,6 +135,15 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+.menuBtn{
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0 0 0 / 8%);
+  z-index: 999;
+  top: 0;
+  left: 0;
+  position: fixed;
 }
 .TalmenuStyle {
   height: 100vh;

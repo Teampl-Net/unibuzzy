@@ -5,7 +5,7 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
-      <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='setParamInnerHtml' />
+      <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -26,7 +26,7 @@
               </div>
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
-                <textarea placeholder="알림 내용을 입력해주세요" class="msgArea" style="padding:7px;" v-model="msgData"></textarea>
+                <div @click="formEditorShowYn = true" placeholder="알림 내용을 입력해주세요" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox"></div>
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -45,6 +45,10 @@
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
+  <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
+    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
+    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
+  </div>
 
 </template>
 <script>
@@ -53,6 +57,7 @@
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 // import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
+import formEditor from '../../../components/unit/formEditor/Tal_formEditor.vue'
 export default {
   props: {
     params: {},
@@ -66,7 +71,8 @@ export default {
   },
   data () {
     return {
-
+      propFormData: [],
+      formEditorShowYn: false,
       // msgPopYn:false,
       testpopYn: true,
       failPopYn: false,
@@ -108,26 +114,23 @@ export default {
   created () {
   },
   methods: {
-    messageAreaClick () {
-      this.msgPopYn = true
+    setParamInnerHtml (formCard) {
+      var innerHtml = ''
+      // eslint-disable-next-line no-debugger
+      debugger
+      for (var i = 0; i < formCard.length; i++) {
+        innerHtml += formCard[i].outerHtml
+      }
+      this.propFormData = formCard
+      document.getElementById('msgBox').innerHTML = ''
+      document.getElementById('msgBox').innerHTML = innerHtml
+      this.formEditorShowYn = false
     },
-    popNo () {
-      this.msgPopYn = false
-    },
-    popSave (obj) {
-      this.msgData = obj.admMsg
-      this.msgPopYn = false
-    },
-
-    /* allBlur () {
-      this.$refs.formEditor.focus()
-      // this.$ref.formEditor.allBlur()
-    }, */
-    async setParamInnerHtml () {
+    async sendMsg () {
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.bodyMinStr = this.msgData
+      param.bodyMinStr = document.getElementById('msgBox').innerHTML
       param.creTeamKey = this.params.targetKey
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
@@ -139,6 +142,16 @@ export default {
         this.$emit('closeXPop')
       }
     },
+    messageAreaClick () {
+      this.msgPopYn = true
+    },
+    popNo () {
+      this.msgPopYn = false
+    },
+    popSave (obj) {
+      this.msgData = obj.admMsg
+      this.msgPopYn = false
+    },
     clickPageTopBtn () {
       var title = this.writePushTitle
       if (title !== undefined && title !== null && title !== '') {
@@ -147,13 +160,15 @@ export default {
         this.failPopYn = true
         return
       }
-      var msgData = this.msgData
+      var msgData = document.getElementById('msgBox').innerHTML
       if (msgData !== undefined && msgData !== null && msgData !== '') {
       } else {
         this.errorText = '알림 내용을 입력해주세요'
         this.failPopYn = true
         return
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       this.checkPopYn = true
     },
     onReady (editor) {
@@ -191,7 +206,8 @@ export default {
   },
 
   components: {
-    commonConfirmPop
+    commonConfirmPop,
+    formEditor
     // msgPop,
     // writePushPageTitle,
     // pushPop
@@ -289,6 +305,9 @@ export default {
 .toolPushCard{box-shadow: none !important; border: 1px solid #E1E1E1 !important;}
 .selectPaperWrap{width: 100%; height: 100%; float: left; margin-top: 1rem;}
 
+.formText {padding: 0;}
+
+.msgArea span {padding: 0;}
 #loading {
   width: 100%;
   height: 100%;

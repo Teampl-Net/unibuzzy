@@ -9,7 +9,7 @@
       <!-- <div  style=" float: left; width: 100%; height: calc(100% - 180px);  overflow:auto;"> -->
         <div  style=" float: left; width: 100%; height: calc(100% - 110px);  overflow:auto;">
 
-        <selectChanType @makeParam="setParam" ref="step0" v-if="creStep === 0" />
+        <createChan @makeParam="setParam" ref="step0" v-if="creStep === 0" />
         <!-- <creStep01 ref="step1" @makeParam="setParam" v-else-if="creStep === 1" />
         <creStep02 ref="step2" @makeParam="setParam" v-else-if="creStep === 2" />
         <creStep03 ref="step3" @makeParam="setParam" v-else-if="creStep === 3" /> -->
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import selectChanType from './Tal_creChannelStep00.vue'
+import createChan from './Tal_creChannel.vue'
 // import creStep04 from './Tal_creChannelStep04'
 export default {
   data () {
@@ -94,7 +94,7 @@ export default {
   computed: {
   },
   components: {
-    selectChanType
+    createChan
     // creStep04
   }
 }
