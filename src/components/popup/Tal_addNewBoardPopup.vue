@@ -7,17 +7,17 @@
       <p style="color:white">{{menuHeaderTitle}}</p>
     </div>
 
-    <div class="body" style="width: 100%; height: 25%; margin-top: 60px; padding: 0 24px; border-bottom: 1px solid #ccc;">
+    <div class="body" style="width: 100%; height: 25%; min-height:170px; margin-top: 60px; padding: 0 24px; border-bottom: 1px solid #ccc;">
       <div class="nameType">
         <p class="font20 fontBold" style="margin-top: 60px; margin-bottom: 25px; text-align: left;">게시판의 이름과 유형을 선택하세요.</p>
         <div class="itemWrite" style="height: 60px !important;">
           <p class="textLeft font16 fl " style="width: 40%; line-height: 60px;">게시판 명</p>
-          <input v-model="inputChannelName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16"  id="channelName" style="width: 100%; font-size: 14px; border: 1px solid #ccc">
+          <input v-model="inputChannelName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16"  id="channelName" style="height:26px; width: 100%; font-size: 14px; border: 1px solid #ccc;padding:0 10px; min-width:220px;">
         </div>
         <div class="itemWrite" style="height: 60px !important;">
           <p class="textLeft font16 fl fontBlack" style="width: 40%; line-height: 60px;">게시판 유형</p>
           <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-          <div class="fr font16" :class="{fontBlack : selectId !== ''}"  style="color:#ccc; text-align:left; border:1px solid #ccc; width:100%; padding:0 10px;" @click="boardTypeClick">{{selectBoardTypeText}}<l class='fr'>{{rightBtn}}</l></div>
+          <div class="fr font16" :class="{fontBlack : selectId !== ''}"  style="color:#ccc; text-align:left; border:1px solid #ccc; width:100%; padding:0 10px;min-width:220px;" @click="boardTypeClick">{{selectBoardTypeText}}<l class='fr'>{{rightBtn}}</l></div>
         </div>
       </div>
     </div>
@@ -31,7 +31,8 @@
           <span class="toggleButton" ></span>
         </label>
         <div v-if="openPopYn" style="position:absolute; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#111; opacity:0" @click="closePop"></div>
-        <div v-if="show" class="dropdown">
+        <!-- <div v-if="show" class="dropdown"> -->
+        <div style="visibility: hidden" class="dropdown" id="statusBox">
           <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="openPop">진행 중</button>
           <div class="dropdown-content" v-if="openPopYn">
             <div style="line-height: 30px;" v-if="showNewYn">
@@ -139,6 +140,13 @@ export default {
     click () {
       var toggle0 = document.getElementById('toggle0')
       this.show = !toggle0.checked
+      if(!toggle0.checked){
+        document.getElementById('statusBox').style.visibility = 'visible'
+      }else{
+        document.getElementById('statusBox').style.visibility = 'hidden'
+      }
+
+
     },
     changed () {
       this.multiStatus += this.inputvalue
@@ -178,7 +186,7 @@ export default {
 </script>
 
 <style scoped>
-.menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff; background-color:#6768a7 ;}
+.menuHeader { padding:0.5rem 0;position: fixed; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff; background-color:#6768a7 ;}
 .menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
 
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
@@ -197,10 +205,9 @@ export default {
   right: 0;
 
   box-shadow: 0 0 9px 2px #b8b8b8;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
   padding: 0 1rem;
   background-color: white;
+  overflow: auto;
   }
 .addNewBoardWrap p {
   color:black;
@@ -237,8 +244,10 @@ border-bottom: 1.5px solid #999;
 }
 /* 드롭다운 박스 */
 .dropdown {
+
   position: relative;
   display: inline-block;
+  min-width: 140px;
 }
 
 .dropdown-content {
@@ -332,15 +341,22 @@ border-bottom: 1.5px solid #999;
 .toggleSwitch, .toggleButton {
   transition: all 0.2s ease-in;
 }
-  .toggleLine{width: 30%; line-height: 80px; float: left;}
-  .itemWrite{
-    height: 80px; display: flex; align-items: center;
+.toggleLine{width: 30%; line-height: 80px; float: left;}
+.itemWrite{
+  height: 15%; display: flex; align-items: center;
+  min-height: 60px;
+}
+.creChanIntroTextWrap{padding: 10px 0; float: left; }
+.creChanIntroTextWrap p{font-size: 20px; }
+.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
+.activeTypeBox{background: #6768a7; color: #fff;}
+.activeTypeBox p {color: #fff;}
+.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
+.selecWriterShow{background: #6768a7 !important; color: #fff;}
+
+@media(height:700px){
+  .addNewBoardWrap{
+    background-color:#ccc;
   }
-  .creChanIntroTextWrap{padding: 10px 0; float: left; }
-  .creChanIntroTextWrap p{font-size: 20px; }
-  .creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
-  .activeTypeBox{background: #6768a7; color: #fff;}
-  .activeTypeBox p {color: #fff;}
-  .creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
-  .selecWriterShow{background: #6768a7 !important; color: #fff;}
+}
 </style>

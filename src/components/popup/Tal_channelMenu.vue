@@ -9,7 +9,7 @@
           <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
       </div>
       <div v-show="!editYn" style="margin-top: 70px;border:1px solid #ccc; height:3rem; line-height:3rem" @click="receiverClick">
-        <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">구성원 관리</p>
+        <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">수신자 그룹 관리</p>
       </div>
 
 
@@ -90,10 +90,7 @@ export default {
       this.$emit('closePop')
     },
     editChanMenu (){
-
       this.editPopYn = true;
-      alert("true")
-
       // if(this.editYn){
       //   this.menuHeaderTitle = '게시판'
       //   this.editYn = false

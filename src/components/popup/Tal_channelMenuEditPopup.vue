@@ -42,7 +42,7 @@
     </div>
 
   </div>
-  <addNewBoard v-if="addNewBoardYn" @closePop='' />
+  <addNewBoard v-if="addNewBoardYn" @closePop='addNewBoardYn =false' />
 
 </template>
 
@@ -137,7 +137,6 @@ export default {
 <style scoped>
 .menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff; background-color:#6768a7 ;}
 .menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
-
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 
 .channelMenuEditWrap{
