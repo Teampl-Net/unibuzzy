@@ -5,15 +5,18 @@
       <div class="pushDetailTopArea">
         <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">[ {{this.$changeText(this.pushVal.nameMtext)}} ] 알림 도착</p>
-          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-          <p class="font12 fl lightGray">{{this.changeText(this.pushVal.title)}}</p>
 
-          <p class="font12 fr lightGray">{{this.$dayjs(this.pushVal.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+          <!-- <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p> -->
+          <p class=" font18 fontBold commonColor">안녕하세요</p>
+          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+          <!-- <p class="font12 fl lightGray">{{this.changeText(pushDetail.title)}}</p> -->
+          <p class="font12 fl lightGray">안녕</p>
+          <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
 
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="this.pushVal.bodyMinStr" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
+      <!-- <div class="font15 mbottom-1" v-html="pushDetail.body" style="color: #60657F;max-height: 200px; overflow: auto;"></div> -->
+      <div class="font15 mbottom-1" style="color: #60657F;max-height: 200px; overflow: auto;">내용</div>
       <div class="detailPopUpBtnArea">
         <gBtnSmall btnTitle="바로가기" class="mright-05" style="height: 30px;" @click="goOk"/>
         <gBtnSmall btnTitle="닫기" class="mleft-05" style="height: 30px;" @click="goNo"/>
@@ -27,7 +30,6 @@ export default {
     return {
       loadYn: true,
       pushDetail: {},
-      pushVal: {},
       targetKey: ''
       // testTargetKey:1000002,
     }
@@ -46,8 +48,7 @@ export default {
     openPushDetailPop () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = 'pushListAndDetail'
-      params.notiBridgeYn = true
+      params.targetType = 'pushDetail'
       params.targetKey = this.targetKey
       this.$emit('openDetailPop', params)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
@@ -58,26 +59,7 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
-    },
-    async getContentsList () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // param.baseContentsKey = this.detailVal.targetKey
-      param.contentsKey = this.targetKey
-      var resultList = await this.$getContentsList(param)
-      this.pushVal = resultList.content[0]
     }
-
-    /* testData () {
-      var obj = new Object()
-      obj.nameMtext = '채널명테스트'
-      obj.title = 'KO$^$메시지 제목'
-      obj.creDate = '2022-05-24 10:22'
-      obj.body = '내용 테스트입니다!'
-
-      this.pushDetail = obj
-      this.targetKey = '1000002'
-    } */
 
   },
   computed: {
@@ -91,11 +73,12 @@ export default {
       this.pushDetail = JSON.parse(this.detailVal).data
       this.targetKey = this.pushDetail.contentsKey
     }
-    this.getContentsList()
-    /* var notiReloadPageKey = localStorage.getItem('notiReloadPage')
-    if (notiReloadPageKey === this.pushDetail.creTeamKey) {
-      this.$emit('closePushPop')
-    } */
+    // var obj = new Object();
+    // obj.title = '안녕'
+    // obj.body = '안녕하세요'
+
+    // this.pushDetail = JSON.parse(obj).data
+    // this.targetKey = 100002
   }
 }
 </script>

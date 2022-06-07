@@ -1,5 +1,5 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw;">
+<div style="height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0">
 
     <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>

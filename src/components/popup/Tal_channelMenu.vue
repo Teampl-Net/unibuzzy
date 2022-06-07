@@ -8,6 +8,11 @@
 
           <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
       </div>
+      <div v-show="!editYn" style="margin-top: 70px;border:1px solid #ccc; height:3rem; line-height:3rem" @click="receiverClick">
+        <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">구성원 관리</p>
+      </div>
+
+
       <div style="margin-top: 50px;">
         <div class="menuRow" v-for="(value, index) in myChanMenuList" :key="index" :class="{editColor: editYn === true, editRow: editYn === true }" @click="chanMenuClick(value.chanMenuTitle)">
           <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
@@ -36,10 +41,12 @@
 
   </div>
 <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' />
+<editChanMenu v-if='editPopYn' @closePop='editPopYn = false' />
 </template>
 
 <script>
 import addChanMenu from '../popup/Tal_addChannelMenu.vue'
+import editChanMenu from './Tal_channelMenuEditPopup.vue'
 export default {
   props:{
     addChanList:{}
@@ -58,11 +65,13 @@ export default {
 
       editYn:false,
       menuHeaderTitle:'게시판',
-      addChanMenuList:{}
+      addChanMenuList:{},
+
+      editPopYn : false,
 
     }
   },
-  components: {addChanMenu
+  components: {addChanMenu,editChanMenu
   },
   emits: ['openPop', 'goPage'],
   methods: {
@@ -79,13 +88,17 @@ export default {
       this.$emit('closePop')
     },
     editChanMenu (){
-      if(this.editYn){
-        this.menuHeaderTitle = '게시판'
-        this.editYn = false
-      }else{
-        this.menuHeaderTitle = '게시판 편집'
-        this.editYn = true
-      }
+
+      this.editPopYn = true;
+      alert("true")
+
+      // if(this.editYn){
+      //   this.menuHeaderTitle = '게시판'
+      //   this.editYn = false
+      // }else{
+      //   this.menuHeaderTitle = '게시판 편집'
+      //   this.editYn = true
+      // }
     },
     addChanClick(){
 
@@ -100,11 +113,11 @@ export default {
     },
     chanMenuClick(chanMenuTitle){
       // alert(chanMenuTitle)
-
-
       this.$emit('openItem',chanMenuTitle)
-
-
+    },
+    receiverClick(){
+      this.$emit('receiverManagerClick');
+      // alert('s')
     }
 
 

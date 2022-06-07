@@ -23,13 +23,15 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
-      <chanMenu v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' />
+      <chanMenu v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @receiverManagerClick='receiverManagerYn = true' />
 
       <chanMenuItem v-if='openChanItemYn' @closePop='openChanItemYn = false' :itemTitle="itemTitle"  @openPop='itemDetail' />
 
       <chanMenuItemDetail v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='chanMenuItemDetailData'/>
 
       <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish'/> -->
+
+      <receiverManager v-if="receiverManagerYn" @closePop="receiverManagerYn = false" />
 
     </div>
 </template>
@@ -57,6 +59,8 @@ import chanMenu from '../popup/Tal_channelMenu.vue'
 
 import chanMenuItem from '../popup/Tal_ChannelMenuItem.vue'
 import chanMenuItemDetail from '../popup/Tal_ChannelMenuItemDetail.vue'
+
+import receiverManager from '../popup/receiver/Tal_managerReceiver.vue'
 
 
 export default {
@@ -122,6 +126,8 @@ export default {
       itemTitle:'',
       openChanItemDetailYn:false,
       chanMenuItemDetailData:'',
+
+      receiverManagerYn:false,
     }
   },
   props: {
@@ -147,6 +153,7 @@ export default {
     chanMenu,
     chanMenuItem,
     chanMenuItemDetail,
+    receiverManager,
   },
   updated () {
   },
