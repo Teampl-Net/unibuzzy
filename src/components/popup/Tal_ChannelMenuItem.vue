@@ -30,15 +30,14 @@
     <!-- </div> -->
 
     <commonList  :commonListData="testList" @goDetail="openPop"  @listMore='loadMore' id='test' style="margin:1rem; width:calc(100% - 2rem);"/>
-
-
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-
 
 </div>
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
 import findContentsList from './Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'

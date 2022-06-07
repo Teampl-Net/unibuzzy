@@ -6,8 +6,6 @@
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div>
 
-
-
     <div class="memberLogoArea" style="">
         <img :src="selectIcon" style="width:90%"/>
         <form @submit.prevent="formSubmit" method="post" style="position: absolute; left:40%; bottom:0; transform: translate(-30%)" >
@@ -39,6 +37,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default {
     props:{
         setEditMember:{},

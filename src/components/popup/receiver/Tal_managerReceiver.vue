@@ -1,14 +1,11 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0">
+<div style="height: 100vh; background-color:white; width:100vw; z-index:99999; position:absolute; top:0; left:0">
 
     <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
         <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn" />
     </div>
-
-
-
     <div style="margin:0 2rem;">
         <div style=" border-bottom:1px solid #ccc; height:2.5rem; margin-top:20px" v-if="!detailOpenYn" >
             <p class="fl mright-05" style="color:black; font-weight:bold; font-size:17px">팀플</p> <img class="fl mright-05" src="../../../assets/images/main/main_subscriber.png" /> <p class="fl mright-05" style="font-size:17px">{{100}}</p>
@@ -24,18 +21,15 @@
 
         <teamList :listData="dummyList" @openDetail='openTeamDetailPop' v-if="!detailOpenYn" :editYn='teamEditYn' />
         <memberList :listData="clickList" v-if="detailOpenYn" style="margin-top:30px;" :editYn='memberEditYn' />
-
-
     </div>
-
-
-
 
  </div>
 
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import findContentsList from '../Tal_findContentsList.vue'
 import teamList from './Tal_receiverTeamList.vue'
 import memberList from './Tal_receiverTeamMemberList.vue'

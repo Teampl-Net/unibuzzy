@@ -33,6 +33,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import addTeamMember from './Tal_addReceiverTeamMember.vue'
 export default {
     components:{addTeamMember},

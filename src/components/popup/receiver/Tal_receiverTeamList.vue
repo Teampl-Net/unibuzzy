@@ -14,7 +14,6 @@
             <input v-show='editNameYn === index && editYn == true' :id="index" style="border:none; border-bottom: 0.5px solid #ccc;"/>
         </div>
 
-
         <div class="fr mright-1 mtop-05" v-if="!editYn">
             <p class="fr font15 cBlack" style="margin-right:10px">{{data.team.length}}</p>
             <img src="../../../assets/images/main/main_subscriber.png"  class="fr receiverTeamSubscImg"  >
@@ -35,6 +34,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default {
     props:{
         listData:{},

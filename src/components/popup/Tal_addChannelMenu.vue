@@ -20,7 +20,6 @@
 
     </div>
 
-
     <div style="width: 100vw; height:calc(50% - 50px); background-color:white; position: absolute; left:0; box-shadow: 0px -7px 9px -9px #00000036;">
         <!-- 설명 -->
         <p class="channelMenuTitle" style="margin-top:1.6rem; margin-left: calc(1rem + 20px)">설명</p>
@@ -35,6 +34,8 @@
 
 </template>
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default{
     data(){
         return{

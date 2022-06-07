@@ -27,7 +27,7 @@
       <div style="display: flex; margin-top: 30px; flex-direction: column; align-items: center;" v-if="editYn">
 
         <div style="">
-          <gBtnSmall class="" v-on:click="" btnTitle="삭제" style="margin-left:10px"/>
+          <gBtnSmall class="" v-on:click="s" btnTitle="삭제" style="margin-left:10px"/>
           <gBtnSmall class="" v-on:click="addChanClick" btnTitle="추가" style="margin-right:10px"/>
         </div>
 
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 import editChanMenu from './Tal_channelMenuEditPopup.vue'
 export default {

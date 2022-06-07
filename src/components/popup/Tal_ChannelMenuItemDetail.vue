@@ -8,7 +8,6 @@
       <p >{{itemTitle}}</p>
     </div>
 
-
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -59,7 +58,8 @@
   </div>
 </template>
 <script>
-
+/* eslint-disable */
+// eslint-disable-next-line
 import manageStickerPop from './Tal_manageStickerPop.vue'
 export default {
   data () {

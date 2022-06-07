@@ -71,12 +71,13 @@
         </label>
       </div>
       <div style="padding: 0 8px; margin-top: 30px;">
-        <div class="creChanBigBtn">다음</div>
+        <div @click="nextStep" class="creChanBigBtn">다음</div>
       </div>
     </div>
   </div>
 
   <selectType v-if="selectTypeYn" @closePop='selectTypeYn = false' @addFinish='addResult' />
+  <shareSelect v-if="shareSelectYn" @closePop='shareSelectYn= false' />
 
 </template>
 
@@ -84,6 +85,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import selectType from './Tal_addChannelMenu.vue'
+import shareSelect from './Tal_shareSelect.vue'
 export default {
   props:{
   },
@@ -97,7 +99,7 @@ export default {
       selectBoardTypeText:'게시판의 유형을 선택하세요.',
       selectId:'',
       selectTypeYn:false,
-
+      shareSelectYn: false,
       selectItem: '실명',
       show: false,
       multiStatus: [
@@ -111,10 +113,13 @@ export default {
       count: null,
     }
   },
-  components: {selectType
+  components: {selectType, shareSelect
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    nextStep () {
+      this.shareSelectYn = true
+    },
     goNo (){
       this.$emit('closePop')
     },
