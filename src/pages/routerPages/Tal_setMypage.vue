@@ -3,6 +3,8 @@
       <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
+      <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
+
       <div class="" >
         <div class="profileWrap ">
           <div class="roundDiv imgSize">
@@ -18,7 +20,8 @@
       </div>
       <div class="subPaddingWrap">
         <table>
-          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(this.userInfo.creDate).format('YYYY-MM-DD')}}</td></tr>
+          <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr>
+          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(getUserInform.creDate).format('YYYY-MM-DD')}}</td></tr>
           <tr @click="openPolicyPop('personalInfo')"><th colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th colspan="2">이용약관</th></tr>
           <tr>
@@ -34,6 +37,7 @@
               <!-- </th>
               <td class="textRight"></td>
             </tr> -->
+
         </table>
       </div>
       <div class="subPaddingWrap">
@@ -49,14 +53,16 @@
 <script>
 import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
-import policyPop from '../../components/pageComponents/myPage/Tal_policyPop'
+import policyPop from '../../components/pageComponents/myPage/Tal_policyPop.vue'
+import settingAlim from '../../components/pageComponents/myPage/Tal_SettingAlimDetail.vue'
 
 export default {
   name: 'myPage',
   components: {
     userItem,
     logoutPop,
-    policyPop
+    policyPop,
+    settingAlim,
   },
   data () {
     return {
@@ -69,7 +75,8 @@ export default {
       appVersion: '1.0.1',
       logOutShowYn: false,
       showPolicyPopYn: false,
-      policyType: 'useTheAlim'
+      policyType: 'useTheAlim',
+      settingAlimPopYn:false,
     }
   },
   created () {

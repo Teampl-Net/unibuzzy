@@ -4,7 +4,7 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} ? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} ? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -23,6 +23,14 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
+      <chanMenu v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' />
+
+      <chanMenuItem v-if='openChanItemYn' @closePop='openChanItemYn = false' :itemTitle="itemTitle"  @openPop='itemDetail' />
+
+      <chanMenuItemDetail v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='chanMenuItemDetailData'/>
+
+      <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish'/> -->
+
     </div>
 </template>
 
@@ -43,6 +51,13 @@ import createChannel from '../popup/creChannel/Tal_creChannel.vue'
 import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
 import PullToRefresh from 'pulltorefreshjs'
+
+import chanMenu from '../popup/Tal_channelMenu.vue'
+// import addChanMenu from '../popup/Tal_addChannelMenu.vue'
+
+import chanMenuItem from '../popup/Tal_ChannelMenuItem.vue'
+import chanMenuItemDetail from '../popup/Tal_ChannelMenuItemDetail.vue'
+
 
 export default {
   async created () {
@@ -82,6 +97,9 @@ export default {
   },
   data () {
     return {
+      openChanItemYn :false,
+      openAddChanMenuYn:false,
+      openChanMenuYn:false,
       reloadYn: false,
       makeTitle: 'aaaaa',
       popShowYn: false,
@@ -99,7 +117,11 @@ export default {
       chanFollowYn: false,
       readySearchList: {}, // chanDetail -> pushList 열때 필요
       successChanParam: {},
-      sendOkYn: 0
+      sendOkYn: 0,
+
+      itemTitle:'',
+      openChanItemDetailYn:false,
+      chanMenuItemDetailData:'',
     }
   },
   props: {
@@ -120,11 +142,29 @@ export default {
     leaveTal,
 
     createChannel,
-    writePush
+    writePush,
+
+    chanMenu,
+    chanMenuItem,
+    chanMenuItemDetail,
   },
   updated () {
   },
   methods: {
+    itemDetail(parm){
+
+      this.openChanItemDetailYn = true
+      this.chanMenuItemDetailData = parm.data
+
+      // alert(parm)
+
+    },
+
+    openChannelItem(item){
+      this.itemTitle = item
+      this.openChanMenuYn = false
+      this.openChanItemYn = true
+    },
     reloadParent () {
       this.$emit('reloadPop')
     },
@@ -213,6 +253,8 @@ export default {
         }
       } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
+      } else if (this.params.targetType === 'chanMenuItemDetail'){
+        this.headerTitle = 'aaaaaaaaaaaa'
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1
@@ -273,7 +315,9 @@ export default {
 <style scoped>
 
 .commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
-.commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;}
+.commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;}
+/* .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;} */
+
 .dNone{display: none;}
 
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}

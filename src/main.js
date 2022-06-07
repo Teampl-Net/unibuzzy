@@ -36,6 +36,9 @@ import axiosFunction from '../public/commonAssets/Tal_axiosFunction'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
+
+
+
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
@@ -59,6 +62,7 @@ app.component('myObserver', myObserver)
 app.component('gWhiteSelect', gWhiteSelect)
 app.use(webViewBridge)
 app.use(axiosFunction)
+
 app.use(store)
 // app.use(massage)
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://192.168.0.22:8080, http://localhost:8080, http://61.97.186.14:18080'

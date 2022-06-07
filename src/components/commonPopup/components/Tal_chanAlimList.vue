@@ -63,11 +63,13 @@ export default {
       followTypeText: '',
       followYn: false,
       detailHeaderShowYn: false,
-      detailShowYn: true,
-      // detailShowYn: false,
+
       chanItem: {},
-      adminYn: false
-      // adminYn: true
+      // detailShowYn: true,
+      // adminYn: false
+      adminYn: true,
+      detailShowYn: false,
+
 
     }
   },

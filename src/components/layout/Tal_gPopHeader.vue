@@ -8,6 +8,10 @@
         <span class="popHeaderTitleSpan">{{headerTitle}}</span>
 
         <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
+
+        <div v-if="headerTitle === '' " class="chanMenubar" @click="this.$emit('openMenu')">
+          <img src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
+        </div>
     </div>
 </template>
 
@@ -63,8 +67,14 @@ export default {
 <style>
 .commonPopHeaerWrap > img {position: absolute; left: 1rem;}
 .commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
+
 .popHeaderTitleSpan{position: absolute; color: #6768A7}
 .commonPopBackBtn{width: 0.8rem;}
+
+.chanMenubar{
+  position: absolute;
+  right: 1rem;
+}
 
 .chanDetailPopHeader .popHeaderTitleSpan {color: white;}
 

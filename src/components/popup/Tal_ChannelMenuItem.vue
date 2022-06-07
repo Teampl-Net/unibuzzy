@@ -1,242 +1,80 @@
 <template>
-  <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
 
-    <div class= "pageHeader pushListCover" style="" >
+<!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
+  <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
+  <div style="position: absolute; top:0; left:0; z-index:9999; height: 100vh; position: absolute; background-color:white; width:100vw">
+
+    <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036;" >
+      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" src="../../assets/images/main/icon_back_white.png"/>
+      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" src="../../assets/images/common/icon_back.png"/>
+
+      <p >{{itemTitle}}</p>
+    </div>
+
+    <!-- {{scrollPosition}} -->
+
+    <div class= "pageHeader pushListCover" style="margin:0 1rem" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
-    <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
-    <!-- <div class="stickerWrap">
-      <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
+    <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
+    <!-- <div class="stickerWrap" style="width:calc(100% - 2rem); margin-left:1rem"> -->
+      <!-- <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
         <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
           <p class="font12">{{value.stickerName}}</p>
         </div>
+      </div> -->
+    <!-- </div> -->
 
-      </div>
-    </div> -->
-    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" />
-    <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/>
+    <commonList  :commonListData="testList" @goDetail="openPop"  @listMore='loadMore' id='test' style="margin:1rem; width:calc(100% - 2rem);"/>
+
 
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
+
+
 </div>
 </template>
 
 <script>
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
-import findContentsList from '../../components/popup/Tal_findContentsList.vue'
+import findContentsList from './Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 import PullToRefresh from 'pulltorefreshjs'
 export default {
-  name: 'pushList',
   components: {
-    findContentsList
+    findContentsList,
     // searchResult
-
   },
   props: {
-    popYn: Boolean,
-    alimListYn: Boolean,
-    routerReloadKey: {},
-    readySearhList: {},
-    chanDetailKey: {},
-    notiTargetKey: {}
+    itemTitle:{},
   },
-  async created () {
-    if (this.popYn === false) {
-      localStorage.setItem('notiReloadPage', 'none')
-      var history = localStorage.getItem('popHistoryStack').split('$#$')
-      this.pageHistoryName = 'page' + (history.length - 1)
-    }
-    this.$emit('changePageHeader', '알림')
-    var resultList = await this.getPushContentsList()
-    this.commonListData = resultList.content
-    this.$emit('closeLoading')
-    this.findPopShowYn = false
-    if (this.readySearhList) {
-      this.requestSearchList(this.readySearhList)
-    }
-  },
+
 
   mounted () {
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    this.a = document.getElementById('test')
+    this.a.addEventListener('scroll', this.updateScroll)
     if (this.notiTargetKey) {
-      this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
+      this.openPop({ contentsKey: this.notiTargetKey })
     }
-    /* PullToRefresh.init({
-      mainElement: '.testt',
-      instructionsReleaseToRefresh: ' ',
-      instructionsPullToRefresh: ' ',
-      instructionsRefreshing: ' ',
-      onRefresh () {
-        alert(this.scrollPosition)
-        if (this.scrollPosition < 1) {
-          this.$router.go(0)
-        }
-      }
-    }) */
-  },
-  unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
+
   },
   watch: {
-    commonListData () {
-      this.refreshYn = false
-      this.refreshYn = true
-    },
     routerReloadKey () {
-      this.refreshList()
+      this.reload()
     },
-    ay (){
-      if(!this.ay){
-        try{
-          PullToRefresh.init({
-            mainElement: 'body',
-            distThreshold:'90',
-            distMax:'100',
-            distReload:'80',
-            instructionsReleaseToRefresh:' ',
-            instructionsPullToRefresh:' ',
-            instructionsRefreshing: ' ',
-            onRefresh(){
-              window.location.reload();
-            }
-          })
-        }catch(e){
-          console.log(e)
-        }
-      }else{
-        try{
-          PullToRefresh.destroyAll();
-        }catch(e){
-          console.log(e)
-        }
-
-      }
-
-    }
   },
-  computed: {
-    setStickerWidth () {
-      var stickerCnt = this.stickerList.length
-      var textWidth = 16
-      var stickerDivWidth = 0
-      for (var i = 0; i < stickerCnt; i++) {
-        stickerDivWidth += this.stickerList[i].stickerName.length * textWidth + 10
-      }
-      // var stickerDivList = document.getElementsByClassName('stickerDiv')
-      return {
-        '--stickerDivWidth': stickerDivWidth + 'px'
-      }
-    }
-  },
+
   methods: {
-    onRefresh () {
-      if (this.scrollPosition < 1) {
-        this.$router.go(0)
-      }
-    },
-    currentScroll (value) {
-      this.scrollPosition = value
-    },
-    async refreshList () {
-      var pSize = 10
-      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
-        pSize = Number(this.offsetInt) * 10
-      }
-      this.endList = true
-      var resultList = await this.getPushContentsList(pSize, 0)
-      this.commonListData = resultList.content
-      this.endList = false
-    },
-    async refreshPage () {
-      this.endList = true
-      var resultList = await this.getPushContentsList(10, 0)
-      this.commonListData = resultList.content
-      this.endList = false
-    },
-    async recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        var target = JSON.parse(e.data).pushMessage
-        if (JSON.parse(target).data.targetKind === 'CONT') {
-          this.refreshList()
-        }
-      }
-      if (this.subHistoryList.length === 0) {
-        if (this.popYn === false) {
-          if (JSON.parse(e.data).type === 'goback') {
-            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-                this.$removeHistoryStackForPage(this.pageHistoryName)
-              }
-            }
-          }
-        }
-      }
-    },
-    async loadMore (pageSize) {
-      if (this.endListYn === false || this.commonListData.length > pageSize) {
-        this.offsetInt += 1
-        var resultList = await this.getPushContentsList(pageSize)
-        const newArr = [
-          ...this.commonListData,
-          ...resultList.content
-        ]
-        if (resultList.content.length < pageSize) { this.endListYn = true }
-        this.commonListData = newArr
-      }
-    },
-    addSubHistory (pageName) {
-      // eslint-disable-next-line no-array-constructor
-      var sHistory = new Array()
-      if (this.subHistoryList) {
-        sHistory = this.subHistoryList
-      }
-      sHistory.push(pageName)
-      this.subHistoryList = sHistory
-    },
-    closeSearchPop () {
-      this.findPopShowYn = false
-      this.subHistoryList.splice(-1, 1)
-    },
-    reload () {
-      this.getPushContentsList()
-    },
-    openPop (value) {
-      this.$emit('openPop', value)
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
-    },
-    subHeaderEvent (request) {
-      if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
-    },
-    async changeTab (tabName) {
-      // this.$emit('openLoading')
-      this.viewTab = tabName
-      this.offsetInt = 0
-      var resultList = await this.getPushContentsList()
-      this.commonListData = resultList.content
-      this.findPopShowYn = false
-    },
-    async getPushContentsList (pageSize, offsetInput) {
-      // eslint-disable-next-line no-new-object
+    async loadMore(){
+
+      // console.log('옵저버 실행'+(this.offsetInt++))
+      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
       var param = new Object()
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
-      }
-      // alert(offsetInt)
-      if (offsetInput !== undefined) {
-        param.offsetInt = offsetInput
-      } else {
-        param.offsetInt = this.offsetInt
-      }
-      if (pageSize) {
-        param.pageSize = pageSize
-      } else {
-        pageSize = 10
       }
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
@@ -263,9 +101,110 @@ export default {
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
-      // alert(JSON.stringify(param))
+
+      // param.offsetInt = this.offsetInt++
+      param.offsetInt = (this.offsetInt +1)
+      param.pageSize = 10
+
       var resultList = await this.$getContentsList(param)
-      return resultList
+
+      const newArr = [
+        ...this.commonListData,
+        ...resultList.content
+      ]
+      this.commonListData = newArr
+      this.findPopShowYn = false
+    },
+
+    addSubHistory (pageName) {
+      // eslint-disable-next-line no-array-constructor
+      var sHistory = new Array()
+      if (this.subHistoryList) {
+        sHistory = this.subHistoryList
+      }
+      sHistory.push(pageName)
+      this.subHistoryList = sHistory
+    },
+    closeSearchPop () {
+      this.findPopShowYn = false
+      this.subHistoryList.splice(-1, 1)
+    },
+    BackPopClose (e) {
+      if (this.subHistoryList.length === 0) {
+        if (this.popYn === false) {
+          if (JSON.parse(e.data).type === 'goback') {
+            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
+                this.$removeHistoryStackForPage(this.pageHistoryName)
+              }
+            }
+          }
+        }
+      }
+    },
+    reload () {
+      this.getPushContentsList()
+    },
+    openPop (value) {
+      // eslint-disable-next-line no-new-object
+      // alert(value)
+      var params = new Object()
+      // if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
+      //   params.targetType = value.targetType
+      // } else {
+      //   params.targetType = 'pushDetail'
+      // }
+
+      params = value
+      // if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
+      // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
+      this.$emit('openPop', params)
+      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
+    },
+    subHeaderEvent (request) {
+      if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
+    },
+    changeTab (tabName) {
+      // this.$emit('openLoading')
+      this.viewTab = tabName
+      this.getPushContentsList()
+    },
+    async getPushContentsList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
+        param.creTeamKey = this.chanDetailKey
+      }
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.title = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        }
+      }
+      param.findLogReadYn = null
+      param.findActYn = false
+      param.findActLikeYn = false
+      param.findActStarYn = false
+      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (this.viewTab === 'L') {
+        param.findActYn = true
+        param.findActLikeYn = true
+      } else if (this.viewTab === 'S') {
+        param.findActYn = true
+        param.findActStarYn = true
+      } else if (this.viewTab === 'R') {
+        param.findLogReadYn = false
+      }
+      var resultList = await this.$getContentsList(param)
+      this.commonListData = resultList.content
+      this.findPopShowYn = false
+      // this.userDoList = resultList.userDo
+      this.$emit('closeLoading')
     },
     async requestSearchList (param) {
       if (param) {
@@ -280,10 +219,7 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      this.offsetInt = 0
-      var resultList = await this.getPushContentsList(10, 0)
-      this.commonListData = resultList.content
-      this.findPopShowYn = false
+      await this.getPushContentsList()
     },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
@@ -321,34 +257,36 @@ export default {
         delete this.findKeyList.fromCreDateStr
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      var resultList = await this.getPushContentsList()
-      this.commonListData = resultList.content
-      this.findPopShowYn = false
+      await this.getPushContentsList()
+    },
+    async updateScroll () {
+      this.ay = this.a.scrollTop
     }
   },
   data () {
     return {
-      offsetInt: 0,
-      endListYn: false,
-      scrollPosition: 0,
+      offsetInt:1,
+      a:'',
+      ay:'',
+
+      scrollPosition: null,
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
       subHistoryList: [],
-      stickerList: [
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
-      ],
+
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
-      resultSearchKeyList: [],
-      refreshYn: true
+      resultSearchKeyList: [] ,
+
+      testList:[
+        {title :'안녕하세요.', nameMtext : 'KO$^$팀플', bodyMinStr :' 저는 정재준입니다. ', creDate:'2022-06-02 10:30'},
+
+      ]
+
+
     }
   }
 }
@@ -358,7 +296,7 @@ export default {
 
 .pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
 
-.stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
+/* .stickerWrap{width: 100%; overflow-x: scroll; overflow-y: hidden;} */
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
 
@@ -366,4 +304,12 @@ export default {
   padding-right: 0; padding-left: 0;
   height: calc(100vh - 35px) !important;
 }
+
+
+
+.menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
+.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
+.menuHeader img{ width: 0.8rem; line-height: 50px;}
+
+
 </style>

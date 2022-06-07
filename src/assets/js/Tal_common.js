@@ -1,3 +1,5 @@
+import PullToRefresh from 'pulltorefreshjs'
+
 // 당일: 시,분
 // 당월: 일, 시, 분
 // 당해: 월, 일, 시, 분
@@ -154,7 +156,42 @@ const methods = {
         this.$router.go(-1)
       }
     }
+  },
+
+
+  PullToRefreshInit() {
+    PullToRefresh.init({
+      mainElement: 'body',
+
+      // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
+      distThreshold:'90',
+
+      //최대 거리 (영역이 길어질 수 있는 최대 거리)
+      distMax:'100',
+
+      // 새로고침 후 갖고있는 영역의 크기
+      distReload:'80',
+
+      // 최소 새로고침에 도달 했을 때 문구
+      instructionsReleaseToRefresh:' ',
+
+      // 끌고 있을 때 문구
+      instructionsPullToRefresh:' ',
+
+      // 새로고침 중 문구
+      instructionsRefreshing: ' ',
+
+      onRefresh(){
+        window.location.reload();
+      }
+    })
+  },
+
+  PullToRefreshDestroy() {
+    PullToRefresh.destroyAll();
   }
+
+
 }
 export default {
   install (Vue) {
@@ -168,5 +205,8 @@ export default {
     Vue.config.globalProperties.$addHistoryStack = methods.addHistoryStack
     Vue.config.globalProperties.$removeHistoryStack = methods.removeHistoryStack
     Vue.config.globalProperties.$removeHistoryStackForPage = methods.removeHistoryStackForPage
+
+    Vue.config.globalProperties.$fullToInit = methods.PullToRefreshInit
+    Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
   }
 }
