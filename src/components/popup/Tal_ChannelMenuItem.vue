@@ -30,6 +30,7 @@
     <!-- </div> -->
 
     <commonList  :commonListData="testList" @goDetail="openPop"  @listMore='loadMore' id='test' style="margin:1rem; width:calc(100% - 2rem);"/>
+
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
 
 </div>
@@ -41,16 +42,16 @@
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
 import findContentsList from './Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
+// eslint-disable-next-line no-unused-vars
 import PullToRefresh from 'pulltorefreshjs'
 export default {
   components: {
-    findContentsList,
+    findContentsList
     // searchResult
   },
   props: {
-    itemTitle:{},
+    itemTitle: {}
   },
-
 
   mounted () {
     this.a = document.getElementById('test')
@@ -58,19 +59,18 @@ export default {
     if (this.notiTargetKey) {
       this.openPop({ contentsKey: this.notiTargetKey })
     }
-
   },
   watch: {
     routerReloadKey () {
       this.reload()
-    },
+    }
   },
 
   methods: {
-    async loadMore(){
-
+    async loadMore () {
       // console.log('옵저버 실행'+(this.offsetInt++))
       // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
@@ -102,7 +102,7 @@ export default {
       }
 
       // param.offsetInt = this.offsetInt++
-      param.offsetInt = (this.offsetInt +1)
+      param.offsetInt = (this.offsetInt + 1)
       param.pageSize = 10
 
       var resultList = await this.$getContentsList(param)
@@ -147,6 +147,7 @@ export default {
     openPop (value) {
       // eslint-disable-next-line no-new-object
       // alert(value)
+      // eslint-disable-next-line no-new-object
       var params = new Object()
       // if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
       //   params.targetType = value.targetType
@@ -264,9 +265,9 @@ export default {
   },
   data () {
     return {
-      offsetInt:1,
-      a:'',
-      ay:'',
+      offsetInt: 1,
+      a: '',
+      ay: '',
 
       scrollPosition: null,
       loadVal: true,
@@ -278,13 +279,12 @@ export default {
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
-      resultSearchKeyList: [] ,
+      resultSearchKeyList: [],
 
-      testList:[
-        {title :'안녕하세요.', nameMtext : 'KO$^$팀플', bodyMinStr :' 저는 정재준입니다. ', creDate:'2022-06-02 10:30'},
+      testList: [
+        { title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyMinStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }
 
       ]
-
 
     }
   }
@@ -304,11 +304,8 @@ export default {
   height: calc(100vh - 35px) !important;
 }
 
-
-
 .menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
 .menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
 .menuHeader img{ width: 0.8rem; line-height: 50px;}
-
 
 </style>

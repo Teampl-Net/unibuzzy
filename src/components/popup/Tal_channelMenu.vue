@@ -12,7 +12,6 @@
         <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">수신자 그룹 관리</p>
       </div>
 
-
       <div style="margin-top: 50px;">
         <div class="menuRow" v-for="(value, index) in myChanMenuList" :key="index" :class="{editColor: editYn === true, editRow: editYn === true }" @click="chanMenuClick(value.chanMenuTitle)">
           <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
@@ -27,7 +26,7 @@
       <div style="display: flex; margin-top: 30px; flex-direction: column; align-items: center;" v-if="editYn">
 
         <div style="">
-          <gBtnSmall class="" v-on:click="s" btnTitle="삭제" style="margin-left:10px"/>
+          <gBtnSmall class=""  btnTitle="삭제" style="margin-left:10px"/>
           <gBtnSmall class="" v-on:click="addChanClick" btnTitle="추가" style="margin-right:10px"/>
         </div>
 
@@ -50,30 +49,32 @@
 import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 import editChanMenu from './Tal_channelMenuEditPopup.vue'
 export default {
-  props:{
-    addChanList:{}
+  props: {
+    addChanList: {}
   },
   mounted () {
   },
   data () {
     return {
-      openAddChanMenuYn:false,
+      openAddChanMenuYn: false,
 
-      myChanMenuList:[
-                { chanMenuTitle: '포토게시판', idNum: 5 },
-                { chanMenuTitle: '새소식', idNum: 6 },
-                { chanMenuTitle: '문의사항', idNum: 7 },
+      myChanMenuList: [
+        { chanMenuTitle: '포토게시판', idNum: 5 },
+        { chanMenuTitle: '새소식', idNum: 6 },
+        { chanMenuTitle: '문의사항', idNum: 7 }
       ],
 
-      editYn:false,
-      menuHeaderTitle:'게시판',
-      addChanMenuList:{},
+      editYn: false,
+      menuHeaderTitle: '게시판',
+      addChanMenuList: {},
 
-      editPopYn : false,
+      editPopYn : false
 
     }
   },
-  components: {addChanMenu,editChanMenu
+  components: {
+    addChanMenu,
+    editChanMenu
   },
   emits: ['openPop', 'goPage'],
   methods: {
@@ -86,31 +87,29 @@ export default {
       params.targetType = link
       this.$emit('openPop', params)
     },
-    goNo (){
+    goNo () {
       this.$emit('closePop')
     },
-    editChanMenu (){
-      this.editPopYn = true;
-      // if(this.editYn){
-      //   this.menuHeaderTitle = '게시판'
-      //   this.editYn = false
-      // }else{
-      //   this.menuHeaderTitle = '게시판 편집'
-      //   this.editYn = true
-      // }
+    editChanMenu () {
+      if (this.editYn) {
+        this.menuHeaderTitle = '게시판'
+        this.editYn = false
+      } else {
+        this.menuHeaderTitle = '게시판 편집'
+        this.editYn = true
+      }
     },
-    addChanClick(){
-
+    addChanClick () {
       this.openAddChanMenuYn = true
     },
-    addChanMenuFinish(obj){
+    addChanMenuFinish (obj) {
       this.myChanMenuList.push(obj)
 
       this.openAddChanMenuYn = false
 
       //   this.addChanMenuList = data
     },
-    chanMenuClick(chanMenuTitle){
+    chanMenuClick (chanMenuTitle) {
       // alert(chanMenuTitle)
       this.$emit('openItem',chanMenuTitle)
     },
@@ -118,8 +117,6 @@ export default {
       this.$emit('receiverManagerClick');
       // alert('s')
     }
-
-
 
   }
 
