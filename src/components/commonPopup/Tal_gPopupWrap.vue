@@ -62,7 +62,6 @@ import chanMenuItemDetail from '../popup/Tal_ChannelMenuItemDetail.vue'
 
 import receiverManager from '../popup/receiver/Tal_managerReceiver.vue'
 
-
 export default {
   async created () {
     await this.settingPop()
@@ -101,9 +100,9 @@ export default {
   },
   data () {
     return {
-      openChanItemYn :false,
-      openAddChanMenuYn:false,
-      openChanMenuYn:false,
+      openChanItemYn: false,
+      openAddChanMenuYn: false,
+      openChanMenuYn: false,
       reloadYn: false,
       makeTitle: 'aaaaa',
       popShowYn: false,
@@ -123,11 +122,10 @@ export default {
       successChanParam: {},
       sendOkYn: 0,
 
-      itemTitle:'',
-      openChanItemDetailYn:false,
-      chanMenuItemDetailData:'',
-
-      receiverManagerYn:false,
+      itemTitle: '',
+      openChanItemDetailYn: false,
+      chanMenuItemDetailData: '',
+      receiverManagerYn: false
     }
   },
   props: {
@@ -153,21 +151,19 @@ export default {
     chanMenu,
     chanMenuItem,
     chanMenuItemDetail,
-    receiverManager,
+    receiverManager
   },
   updated () {
   },
   methods: {
-    itemDetail(parm){
-
+    itemDetail (parm) {
       this.openChanItemDetailYn = true
       this.chanMenuItemDetailData = parm.data
 
       // alert(parm)
-
     },
 
-    openChannelItem(item){
+    openChannelItem (item) {
       this.itemTitle = item
       this.openChanMenuYn = false
       this.openChanItemYn = true
@@ -260,7 +256,7 @@ export default {
         }
       } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
-      } else if (this.params.targetType === 'chanMenuItemDetail'){
+      } else if (this.params.targetType === 'chanMenuItemDetail') {
         this.headerTitle = 'aaaaaaaaaaaa'
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
