@@ -26,7 +26,6 @@ import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel
 
 import manaReceiver from '../components/popup/receiver/Tal_managerReceiver.vue'
 
-
 const routes = [
   {
     path: '/',
@@ -186,7 +185,7 @@ const routes = [
 
   {
     path: '/testReceiver',
-    component:manaReceiver
+    component: manaReceiver
   }
 
 ]

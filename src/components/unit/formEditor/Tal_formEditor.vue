@@ -3,25 +3,32 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <div style="position: fixed; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
-        <div  v-if="toolBoxShowYn">
+    <div v-if="this.viewTab  === 'complex'" style="position: fixed; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
+        <div v-if="toolBoxShowYn">
           <span style=" color: #6768A7; float: left; margin-right: 5px; font-size: 18px;">폰트 |</span>
-          <select name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
+          <div v-if="fontSelectBoxShowYn" style="width: 110px; position: absolute; background: #fff; min-height: 80px; left: 45px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
+            <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
+            <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
+            <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
+          </div>
+          <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div>
+          <!-- <select @mousedown="clickSelectBox" name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
               <option style="font-size: 20px; color: #6768A7;" value="20">큰사이즈</option>
               <option style="font-size: 16px; color: #6768A7;" value="16">중간사이즈</option>
               <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
-          </select>
+          </select> -->
           <div @click="changeTextStyle('bold')" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px;text-align: center;cursor: pointer;"><img class="w-60P" src="../../../assets/images/formEditor/boldFormatIcon.svg" alt=""></div>
           <div @click="changeTextStyle('italic')" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 30px; padding-top: 2px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italic.svg" alt=""></div>
           <div @click="changeTextStyle('underLine')" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 28px;text-align: center; padding-top: 2px; cursor: pointer;"><img class="w-90P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
-          <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px;" class="fr" alt="">
+          <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fr" alt="">
         </div>
         <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt="">
     </div>
     <gBtnSmall @click="setParamInnerHtml" style="position: fixed; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" />
-    <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); overflow: scroll; overflow-x: hidden; background: #f1f1f1; position: relative;">
-        <div style="">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding: 10px; padding-top: 10px;" :dragging="dragging">
+    <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 0 10px; overflow: scroll; overflow-x: hidden; background: #f1f1f1; position: relative;">
+        <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" />
+        <div v-show="this.viewTab  === 'complex'" style="">
+            <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                          --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->
@@ -35,13 +42,16 @@
                     <!-- </div> -->
                 </transition-group>
             </draggable>
-            <div style="width: 100%; min-height: 50px; padding: 0 10px; margin-bottom: 100px;">
+            <div style="width: 100%; min-height: 50px; margin-bottom: 100px;">
               <div @click="this.plusBtnShowYn =false" v-if="plusBtnShowYn" class="plusCardBtn fl" style="width: 100%; display: flex; background: #FFF; align-items: center; justify-content: center; margin: 0 auto;height: 30px; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">+</div>
                 <div v-else class="plusCardBtn fl" style="width: 100%; display: flex; align-items: center; justify-content: center; margin: 0 auto;height: 30px; ">
                     <div @click="addFormCard('text')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 30px; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7;"><img class="fl" src="../../../assets/images/formEditor/addText.svg" alt=""></div>
                     <div @click="addFormCard('image')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 30px; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/gallery.svg" style="width: 20px;" alt=""></div>
                 </div>
             </div>
+        </div>
+        <div id="innerText" v-show="this.viewTab === 'text'" style="min-height: 500px; margin: 0 auto; border: 1px solid #6768a745; text-align: left; padding: 10px; background: #fff; width: calc(100%);" contenteditable="true">
+
         </div>
         <!-- <p>{{formCardList}}</p> -->
         <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
@@ -56,19 +66,31 @@ import formImage from './Tal_formImage.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
-    this.formCardList = [{ type: 'text', targetKey: 0 }]
-    if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
-      // eslint-disable-next-line no-debugger
-      debugger
-      this.formCardList = this.propFormData
+    // alert(this.editorType)
+    // this.$refs.activeBar.switchtab(1)
+    this.viewTab = this.editorType
+    if (this.editorType === 'complex') {
+      this.formCardList = [{ type: 'text', targetKey: 0 }]
+      if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
+        this.formCardList = this.propFormData
+      }
+    }
+  },
+  mounted () {
+    if (this.editorType === 'text') {
+      document.getElementById('innerText').innerHTML = ''
+      document.getElementById('innerText').innerHTML = this.propFormData
     }
   },
   props: {
-    propFormData: {}
+    propFormData: {},
+    editorType: {}
   },
   data () {
     return {
+      lastFocus: null,
       editableAreaHeight: 500,
+      fontSelectBoxShowYn: false,
       enabled: true,
       myArray: [{ type: 'text', targetKey: 0, model0: '' }],
       plusBtnShowYn: true,
@@ -78,11 +100,13 @@ export default {
       tools: { boldYn: false, italicYn: false, underLineYn: false, ftSize: 16 },
       selectedCardKey: '',
       selectFile: '',
+      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
       selectFromScrollH: 50,
       selectFromOffsetTop: 0,
       previewImgUrl: '',
       selectFileList: [],
-      selectRow: 0
+      selectRow: 0,
+      viewTab: 'text'
     }
   },
   components: {
@@ -99,19 +123,49 @@ export default {
     } */
   },
   methods: {
-    setParamInnerHtml () {
-      // eslint-disable-next-line no-unused-vars
-      var formCard = document.querySelectorAll('.formDiv .formCard')
-      for (var i = 0; i < formCard.length; i++) {
-        this.formCardList[i].outerHtml = formCard[i].outerHTML
-        this.formCardList[i].innerHtml = formCard[i].innerHTML
-        if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
-          this.formCardList[i].type = 'image'
-        } else {
-          this.formCardList[i].type = 'text'
-        }
+    clickSelectBox () {
+      if (this.fontSelectBoxShowYn) {
+        this.fontSelectBoxShowYn = false
+      } else {
+        this.fontSelectBoxShowYn = true
       }
-      this.$emit('setParamInnerHtml', this.formCardList)
+      const selection = document.getSelection && document.getSelection()
+      var range1 = selection.getRangeAt(selection.rangeCount - 1)
+      this.lastFocus = range1
+      var thisWindow = this
+
+      setTimeout(() => {
+        window.getSelection().removeAllRanges()
+        window.getSelection().addRange(thisWindow.lastFocus)
+        document.getSelection().addRange(thisWindow.lastFocus)
+      }, 100)
+    },
+    changeFontSize (fontSize) {
+      this.tools.ftSize = fontSize
+      this.changeTextStyle('font')
+    },
+    changeTab (data) {
+      this.viewTab = data
+      // await this.getContentsList()
+    },
+    setParamInnerHtml () {
+      if (this.viewTab === 'complex') {
+        // eslint-disable-next-line no-unused-vars
+        var formCard = document.querySelectorAll('.formDiv .formCard')
+        for (var i = 0; i < formCard.length; i++) {
+          this.formCardList[i].outerHtml = formCard[i].outerHTML
+          this.formCardList[i].innerHtml = formCard[i].innerHTML
+          if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
+            this.formCardList[i].type = 'image'
+          } else {
+            this.formCardList[i].type = 'text'
+          }
+        }
+        this.$emit('setParamInnerHtml', this.formCardList)
+      } else if (this.viewTab === 'text') {
+        var innerText = document.getElementById('innerText').innerHTML
+        this.$emit('setParamInnerText', innerText)
+      }
       // this.$saveContents(param)
     },
     addFormCard (type, src) {
@@ -138,7 +192,7 @@ export default {
       } */
     },
     async successImgPreview (target) {
-      await this.addFormCard('text')
+      // await this.addFormCard('text')
       this.toolBoxShowYn = false
       this.formCardList[target.targetKey].selectFileList = target.selectFileList
     },
@@ -161,7 +215,7 @@ export default {
         this.selectFromScrollH = 100
       }
       var formList = document.getElementsByClassName('formDiv')
-      // eslint-disable-next-line no-debugger
+
       debugger
       this.selectFromScrollH = formList[Number(formElement.targetKey) - 1].offsetTop + formList[Number(formElement.targetKey) - 1].scrollHeight
     }, */
@@ -191,6 +245,7 @@ export default {
       this.tools.italicYn = false
       this.toolBoxShowYn = true
       const selection = document.getSelection && document.getSelection()
+      this.lastFocus = selection.getRangeAt(selection.rangeCount - 1)
       const range = selection.getRangeAt(0)
       // eslint-disable-next-line no-unused-vars
       const startOffset = range.startOffset // 텍스트 선택 시작 위치
@@ -200,6 +255,7 @@ export default {
       // alert(formList[idx].offsetTop)
       this.selectFromOffsetTop = formList[idx].offsetTop
       this.selectFromScrollH = formList[idx].scrollHeight
+      if (selection.baseNode.parentElement.style.fontSize === '16px') { this.tools.ftSize = '16' } else if (selection.baseNode.parentElement.style.fontSize === '12px') { this.tools.ftSize = '12' } else if (selection.baseNode.parentElement.style.fontSize === '20px') { this.tools.ftSize = '20' } else { this.tools.ftSize = '16' }
       if (selection.baseNode.parentElement.style.fontWeight === 'bold') { this.tools.boldYn = true }
       if (selection.baseNode.parentElement.style.textDecoration === 'underline') { this.tools.underLineYn = true }
       if (selection.baseNode.parentElement.style.fontStyle === 'italic') { this.tools.italicYn = true }
@@ -208,12 +264,17 @@ export default {
       const selection = document.getSelection && document.getSelection()
       const range1 = selection.getRangeAt(selection.rangeCount - 1)
       // window.getSelection().removeAllRanges()
-
       var spanWrap = document.createElement('span')
+      /* if (this.lastFocus === range1) {
+        // eslint-disable-next-line no-debugger
+        debugger
+      } */
       spanWrap.appendChild(range1.extractContents())
-      spanWrap.setAttribute('style', 'float: left;')
+      // spanWrap.setAttribute('style', 'float: left;')
       if (type === 'bold') {
-        if (selection.baseNode.parentElement.style.fontWeight === 'bold') {
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-weight: bold;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-weight: normal;', '')
+        if (this.tools.boldYn === true) {
           spanWrap.setAttribute('style', 'font-weight: normal;')
           this.tools.boldYn = false
         } else {
@@ -221,7 +282,9 @@ export default {
           this.tools.boldYn = true
         }
       } else if (type === 'italic') {
-        if (selection.baseNode.parentElement.style.fontStyle === 'italic') {
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-style: italic;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-style: normal;', '')
+        if (this.tools.italicYn === true) {
           spanWrap.setAttribute('style', 'font-style: normal;')
           this.tools.italicYn = false
         } else {
@@ -229,19 +292,30 @@ export default {
           this.tools.italicYn = true
         }
       } else if (type === 'underLine') {
-        if (selection.baseNode.parentElement.style.textDecoration === 'underline') {
+        spanWrap.innerHTML = spanWrap.innerHTML.replace('text-decoration: underline;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replace('text-decoration: normal;', '')
+        if (this.tools.underLineYn === true) {
           spanWrap.setAttribute('style', 'text-decoration: none;')
           this.tools.underLineYn = false
         } else {
           spanWrap.setAttribute('style', 'text-decoration: underline;')
           this.tools.underLineYn = true
         }
+      } else if (type === 'font') {
+        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 16px;', '')
+        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 12px;', '')
+        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 20px;', '')
+
+        spanWrap.setAttribute('style', 'font-size: ' + this.tools.ftSize + 'px')
+
+        this.fontSelectBoxShowYn = false
       }
       // this.$refs.textForm.inputResize()
       /* } */
 
       range1.insertNode(spanWrap)
       window.getSelection().addRange(range1)
+      document.getElementById('formTextArea' + this.selectedCardKey).focus()
     },
 
     async convertName () {
@@ -282,7 +356,7 @@ export default {
       if (this.selectFileList.length > 0) {
         // Form 필드 생성
         var form = new FormData()
-        // eslint-disable-next-line no-debugger
+
         // if (!this.selectFileList.length) return
 
         for (var i = 0; i < this.selectFileList.length; i++) {
@@ -301,7 +375,6 @@ export default {
           .then(res => {
             this.response = res
             this.isUploading = false
-            // eslint-disable-next-line no-debugger
           })
           .catch(error => {
             this.response = error
@@ -321,7 +394,7 @@ export default {
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-        // eslint-disable-next-line no-debugger
+
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -336,15 +409,13 @@ export default {
           // FileReader 를 활용하여 파일을 읽는다
             var reader = new FileReader()
             reader.onload = e => {
-              // eslint-disable-next-line no-debugger
-              debugger
               var sel = window.getSelection()
               // eslint-disable-next-line no-unused-vars
               var range = sel.getRangeAt(0)
               this.addFormCard('image', e.target.result)
               // this.previewImgUrl = e.target.result
               /* this.addFormCard('image', e.target.result)
-              // eslint-disable-next-line no-debugger
+
               debugger
               var sel = window.getSelection()
               var range = sel.getRangeAt(0)

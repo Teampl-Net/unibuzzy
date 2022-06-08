@@ -46,6 +46,7 @@ export default {
     testYn: {}
   },
   async created () {
+    this.$userLoginCheck()
     this.$emit('openLoading')
     localStorage.setItem('popHistoryStack', '')
     this.$emit('changePageHeader', '더알림')
@@ -100,16 +101,26 @@ export default {
       this.appCloseYn = false
     },
     BackPopClose (e) {
-      if (JSON.parse(e.data).type === 'goback') {
-        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'goback') {
+          if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
+            if (localStorage.getItem('popHistoryStack') === '') {
+              this.appCloseYn = true
+            }
+          }
+        } else if (message.type === 'refresh') {
           if (localStorage.getItem('popHistoryStack') === '') {
-            this.appCloseYn = true
+            this.$router.go(0)
           }
         }
-      } else if (JSON.parse(e.data) === 'refresh') {
-        if (localStorage.getItem('popHistoryStack') === '') {
-          this.$router.go(0)
-        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     forceRerender () {

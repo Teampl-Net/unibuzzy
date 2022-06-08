@@ -62,7 +62,7 @@ export default {
     userItem,
     logoutPop,
     policyPop,
-    settingAlim,
+    settingAlim
   },
   data () {
     return {
@@ -76,7 +76,7 @@ export default {
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
-      settingAlimPopYn:false,
+      settingAlimPopYn: false
     }
   },
   created () {

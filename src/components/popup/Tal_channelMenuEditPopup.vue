@@ -4,7 +4,7 @@
   <div class="channelMenuEditWrap" >
       <div class="menuHeader">
         <img v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
-        <p >{{menuHeaderTitle}}<p class="fr" style="font-size:3rem; margin-right:1rem" @click="addBoardClick"> + </p></p>
+        <p>{{menuHeaderTitle}}<l class="fr" style="font-size:3rem; margin-right:1rem" @click="addBoardClick"> + </l></p>
       </div>
     <div style="margin-top:6rem; overflow: auto; height:calc(100vh - 55%);">
       <div v-for="(data, index) in teamList" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:60px; margin-bottom:1rem;"  >
@@ -26,7 +26,7 @@
             <div v-if="clickIndex !== index" @click="deleteTeamClick(data)" class="fl " style="background-color:#a9aacd;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 0; ">
                 <p class="cBlack tB">삭제</p>
             </div>
-            <div v-if="clickIndex === index" @click="" class="fl " style="background-color:white;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 0; ">
+            <div v-if="clickIndex === index" class="fl " style="background-color:white;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 0; ">
               <img src="../../assets/images/common/people.svg" alt="">
 
             </div>

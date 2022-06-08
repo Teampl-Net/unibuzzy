@@ -26,7 +26,7 @@
               </div>
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
-                <div @click="formEditorShowYn = true" placeholder="알림 내용을 입력해주세요" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox"></div>
+                <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 알림 내용을 작성해주세요</div>
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -47,7 +47,7 @@
   </div>
   <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
-    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
+    <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
 
 </template>
@@ -96,7 +96,8 @@ export default {
       colorList: ['#6768A7', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', '#6768A7', '#A9AACD', '#A1A1A1', '#0000002E'],
       selectedC: 0,
       pushDetailPopShowYn: true,
-      progressShowYn: false
+      progressShowYn: false,
+      editorType: 'text'
     }
   },
   computed: {
@@ -116,21 +117,31 @@ export default {
   methods: {
     setParamInnerHtml (formCard) {
       var innerHtml = ''
-      // eslint-disable-next-line no-debugger
-      debugger
       for (var i = 0; i < formCard.length; i++) {
         innerHtml += formCard[i].outerHtml
       }
       this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
+      this.editorType = 'complex'
       this.formEditorShowYn = false
+    },
+    setParamInnerText (innerText) {
+      if (innerText !== undefined && innerText !== null && innerText !== '') {
+        document.getElementById('msgBox').innerHTML = ''
+        document.getElementById('msgBox').innerHTML = innerText
+        this.editorType = 'text'
+        this.formEditorShowYn = false
+        this.propFormData = innerText
+      }
     },
     async sendMsg () {
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.bodyMinStr = document.getElementById('msgBox').innerHTML
+      var innerHtml = document.getElementById('msgBox').innerHTML
+      param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+
       param.creTeamKey = this.params.targetKey
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
@@ -152,7 +163,7 @@ export default {
       this.msgData = obj.admMsg
       this.msgPopYn = false
     },
-    clickPageTopBtn () {
+    async clickPageTopBtn () {
       var title = this.writePushTitle
       if (title !== undefined && title !== null && title !== '') {
       } else {
@@ -167,8 +178,6 @@ export default {
         this.failPopYn = true
         return
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       this.checkPopYn = true
     },
     onReady (editor) {

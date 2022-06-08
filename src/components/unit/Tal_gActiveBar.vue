@@ -44,6 +44,17 @@ export default {
     selectTab (tab) {
       this.$emit('changeTab', tab)
     }
+  },
+  created () {
+    // alert(this.activetabProp)
+    if (this.activetabProp) {
+      for (var i = 0; i < this.tabList.length; i++) {
+        if (this.tabList[i].name === this.activetabProp) {
+          this.activetab = i
+          break
+        }
+      }
+    }
   }
 }
 </script>

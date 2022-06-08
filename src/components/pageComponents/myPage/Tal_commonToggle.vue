@@ -9,40 +9,30 @@
 
 <script>
 export default ({
-    data() {
-        return{
-        }
-    },
-    props:{
-        toggleId:{},
-        isChecked:{}
-    },
-
-    mounted(){
-        if(this.isChecked){
-            var a = document.getElementById(this.toggleId)
-            a.checked = true
-        }
-
-    },
-    methods:{
-        test1(){
-            var a = document.getElementById(this.toggleId)
-
-        }
-
+  data () {
+    return {
     }
+  },
+  props: {
+    toggleId: {},
+    isChecked: {}
+  },
+
+  mounted () {
+    if (this.isChecked) {
+      var a = document.getElementById(this.toggleId)
+      a.checked = true
+    }
+  },
+  methods: {
+  }
 
 })
 </script>
 
-
 <style >
 .toggle-switch input[type=checkbox]{
   display: none;
-}
-.toggle-switch .label{
-/* max-height: 40px !important; */
 }
 
 .toggle-track{
@@ -87,9 +77,5 @@ export default ({
   content:'On';
   left: -6px;
   background: #babbd7;
-}
-.toggle-switch input[type=checkbox]:checked + label .toggle-track:after{
-
-  /* left: 5px; */
 }
 </style>

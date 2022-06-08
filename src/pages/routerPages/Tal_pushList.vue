@@ -91,33 +91,31 @@ export default {
     routerReloadKey () {
       this.refreshList()
     },
-    ay (){
-      if(!this.ay){
-        try{
+    ay () {
+      if (!this.ay) {
+        try {
           PullToRefresh.init({
             mainElement: 'body',
-            distThreshold:'90',
-            distMax:'100',
-            distReload:'80',
-            instructionsReleaseToRefresh:' ',
-            instructionsPullToRefresh:' ',
+            distThreshold: '90',
+            distMax: '100',
+            distReload: '80',
+            instructionsReleaseToRefresh: ' ',
+            instructionsPullToRefresh: ' ',
             instructionsRefreshing: ' ',
-            onRefresh(){
-              window.location.reload();
+            onRefresh () {
+              window.location.reload()
             }
           })
-        }catch(e){
+        } catch (e) {
           console.log(e)
         }
-      }else{
-        try{
-          PullToRefresh.destroyAll();
-        }catch(e){
+      } else {
+        try {
+          PullToRefresh.destroyAll()
+        } catch (e) {
           console.log(e)
         }
-
       }
-
     }
   },
   computed: {

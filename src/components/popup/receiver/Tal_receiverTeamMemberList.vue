@@ -37,41 +37,39 @@
 // eslint-disable-next-line
 import addTeamMember from './Tal_addReceiverTeamMember.vue'
 export default {
-    components:{addTeamMember},
-    props:{
-        listData:{},
-        editYn:{},
-    },
-    data(){
-        return{
-            teamColor : '',
-            upTxt:'>',
-            downTxt:'<',
-            addMemberPopYn:false,
-            editMember:{},
-        }
-    },
-    created(){
-        // this.memberList = listData.team
-        this.teamColor = this.listData.receiverTeamColor;
-        // alert(this.listData.team)
-    },
-    methods:{
-        clickList(data){
-            this.$emit('openDetail',data) // alert(data.reveiverTeamName)
-        },
-        editClick(data,index){
-            // alert(data)
-            this.editMember = data
-            this.addMemberPopYn = true
-
-        },
-        newAddMember(){
-            this.editMember=''
-            this.addMemberPopYn = true
-
-        }
+  components: { addTeamMember },
+  props: {
+    listData: {},
+    editYn: {}
+  },
+  data () {
+    return {
+      teamColor: '',
+      upTxt: '>',
+      downTxt: '<',
+      addMemberPopYn: false,
+      editMember: {}
     }
+  },
+  created () {
+    // this.memberList = listData.team
+    this.teamColor = this.listData.receiverTeamColor
+    // alert(this.listData.team)
+  },
+  methods: {
+    clickList (data) {
+      this.$emit('openDetail', data) // alert(data.reveiverTeamName)
+    },
+    editClick (data, index) {
+      // alert(data)
+      this.editMember = data
+      this.addMemberPopYn = true
+    },
+    newAddMember () {
+      this.editMember = ''
+      this.addMemberPopYn = true
+    }
+  }
 }
 </script>
 

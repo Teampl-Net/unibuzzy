@@ -75,9 +75,11 @@ export default {
 
       console.log(this.chanList)
     },
-    async changeTab (data) {
+    changeTab (data) {
+      alert(data)
       this.viewTab = data
-      await this.getContentsList()
+      alert(data)
+      // await this.getContentsList()
     }
   }
 

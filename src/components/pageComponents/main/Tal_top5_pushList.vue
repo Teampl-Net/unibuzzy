@@ -42,14 +42,19 @@ export default {
   },
   methods: {
     async recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        // this.listLeloadYn = false
-        this.$refs.activeBar.switchtab(0)
-        this.$refs.activeBar.selectTab('N')
-        // var resultList = await this.getContentsList()
-        // this.pushList = resultList.content
-        // this.listLeloadYn = true
-      // this.userDoList = resultList.userDo
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          this.$refs.activeBar.switchtab(0)
+          this.$refs.activeBar.selectTab('N')
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     openPop (value) {

@@ -68,8 +68,7 @@ export default {
       // detailShowYn: true,
       // adminYn: false
       adminYn: true,
-      detailShowYn: false,
-
+      detailShowYn: false
 
     }
   },

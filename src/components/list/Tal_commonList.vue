@@ -12,7 +12,7 @@
               <p class=" font15 fontBold commonBlack">{{resizeText(alim.title)}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
               <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
-              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
             </div>
         </div>
         <div @click="goDetail(alim)" class="font14 mbottom-05 bodyMinStr" v-html="setBodyLength(alim.bodyMinStr)"></div>
@@ -23,6 +23,7 @@
                 <img :src="value.stickerIcon" alt="">
               </div>
             </div> -->
+            <p v-show="alim.bodyMinStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
@@ -177,7 +178,6 @@ export default {
       // str = atob(str)
       if (str.length > 130) {
         str.substring(0, 130)
-        str = str + '...'
       }
       return str
     }
@@ -209,6 +209,10 @@ export default {
 }
 </script>
 <style scoped>
+.bodyMinStr {
+  max-height: 400px;
+  overflow: hidden;
+}
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
@@ -219,7 +223,7 @@ export default {
 .pushDetailChanLogo{width: 30px;height: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
-.alimCheckContents{width: 100%;float: right; height: 20px;}
+.alimCheckContents{width: 100%;float: right; min-height: 20px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
@@ -241,6 +245,6 @@ export default {
     text-align: left;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 7px 3px #b7b4b440;;
+    box-shadow: 0 0 7px 3px #b7b4b440;
     }
 </style>

@@ -37,57 +37,53 @@
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
-    props:{
-        listData:{},
-        editYn:{},
-    },
-    data(){
-        return{
-            upTxt:'>',
-            downTxt:'<',
-            editTeamName:'',
-            editNameYn:null,
+  props: {
+    listData: {},
+    editYn: {}
+  },
+  data () {
+    return {
+      upTxt: '>',
+      downTxt: '<',
+      editTeamName: '',
+      editNameYn: null,
 
-            teamList:{}
-        }
-    },
-    mounted(){
-        this.teamList = this.listData;
-
-    },
-    methods:{
-        clickList(data){
-            this.$emit('openDetail',data) // alert(data.reveiverTeamName)
-        },
-        deleteTeamClick(data){
-
-        },
-        editClick(data, index){
-            var editTeamName = document.getElementById(index)
-            if(this.editNameYn === index){
-                this.editNameYn = null
-                data.reveiverTeamName = editTeamName.value
-            }else{
-                this.editNameYn = index
-                editTeamName.value = data.reveiverTeamName
-
-            }
-        },
-        newAddTeam(){
-            this.editNameYn = null
-            var addlistData = [{receiverTeamColor:'#ff9999', reveiverTeamName: '',team:[]}]
-
-            const newList = [
-                ...addlistData,
-                ...this.teamList
-            ]
-            this.teamList = newList
-            this.editNameYn = 0
-            document.getElementById(0).focus()
-
-
-        }
+      teamList: {}
     }
+  },
+  mounted () {
+    this.teamList = this.listData
+  },
+  methods: {
+    clickList (data) {
+      this.$emit('openDetail', data) // alert(data.reveiverTeamName)
+    },
+    deleteTeamClick (data) {
+
+    },
+    editClick (data, index) {
+      var editTeamName = document.getElementById(index)
+      if (this.editNameYn === index) {
+        this.editNameYn = null
+        data.reveiverTeamName = editTeamName.value
+      } else {
+        this.editNameYn = index
+        editTeamName.value = data.reveiverTeamName
+      }
+    },
+    newAddTeam () {
+      this.editNameYn = null
+      var addlistData = [{ receiverTeamColor: '#ff9999', reveiverTeamName: '', team: [] }]
+
+      const newList = [
+        ...addlistData,
+        ...this.teamList
+      ]
+      this.teamList = newList
+      this.editNameYn = 0
+      document.getElementById(0).focus()
+    }
+  }
 }
 </script>
 

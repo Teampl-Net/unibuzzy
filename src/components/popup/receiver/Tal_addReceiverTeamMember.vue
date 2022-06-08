@@ -40,32 +40,32 @@
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
-    props:{
-        setEditMember:{},
+  props: {
+    setEditMember: {}
 
-    },
-    data(){
-        return{
-            receiverTitle:'구성원 추가하기',
-            memName:'',
-            memEmail:'',
-            memPhone:'',
-
-        }
-    },
-    created(){
-        if(this.setEditMember != '' || this.setEditMember != null){
-            this.memName  = this.setEditMember.name
-            this.memEmail = this.setEditMember.email
-            this.memPhone = this.setEditMember.phone
-        }
-    },
-    methods:{
-        backClick(){
-            this.$emit('closePop')
-        }
+  },
+  data () {
+    return {
+      receiverTitle: '구성원 추가하기',
+      memName: '',
+      memEmail: '',
+      memPhone: ''
 
     }
+  },
+  created () {
+    if (this.setEditMember !== '' || this.setEditMember !== null) {
+      this.memName = this.setEditMember.name
+      this.memEmail = this.setEditMember.email
+      this.memPhone = this.setEditMember.phone
+    }
+  },
+  methods: {
+    backClick () {
+      this.$emit('closePop')
+    }
+
+  }
 }
 </script>
 

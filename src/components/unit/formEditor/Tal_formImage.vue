@@ -6,7 +6,7 @@
             <input type="file" title ="선택" accept="image/*" style="cursor: pointer; position: absolute;width: 100%;top: -10px;left: 0;font-size: 0;min-height: 60px;" multiple  ref="selectFile" id="input-file" @change="previewFile"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
                 <div v-for="(value, index) in selectFileList"  :key="index" class="fl mright-05" :style="settingImgSize" style="width:var(--imgWidth);">
-                    <img  style="width:100%;" :src="value.previewImgUrl" />
+                    <img  class="editorImg" style="width:100%;" :src="value.previewImgUrl" />
                     <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
                 </div>
             </div>
@@ -60,13 +60,13 @@ export default {
     }
   },
   methods: {
-    previewFile () {
+    async previewFile () {
       this.selectFile = null
       this.previewImgUrl = null
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-        // eslint-disable-next-line no-debugger
+
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -80,16 +80,47 @@ export default {
           ) {
           // FileReader 를 활용하여 파일을 읽는다
             var reader = new FileReader()
+            var thisthis = this
             reader.onload = e => {
+              var image = new Image()
+              image.onload = function () {
+                // Resize image
+                var canvas = document.createElement('canvas')
+                var width = image.width
+                var height = image.height
+                if (width > height) { // 가로모드
+                  if (width > 600) {
+                    height *= 600 / width
+                    width = 600
+                  }
+                } else { // 세로모드
+                  if (height > 600) {
+                    width *= 600 / height
+                    height = 600
+                  }
+                }
+                canvas.width = width
+                canvas.height = height
+
+                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+                this.previewImgUrl = canvas.toDataURL('image/png', 0.8)
+                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), file: thisthis.selectFile })
+                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: thisthis.selectFileList, originalType: 'image' })
+                // this.$emit('updateImgForm', this.previewImgUrl)
+                setTimeout(() => {
+                  thisthis.cardHeight = thisthis.$refs.imageBox.scrollHeight
+                }, 10)
+                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+              }
+              image.onerror = function () {
+
+              }
+              image.src = e.target.result
               this.previewImgUrl = e.target.result
-              this.selectFileList.push({ previewImgUrl: this.previewImgUrl, file: this.selectFile })
-              this.$emit('success', { targetKey: this.targetKey, selectFileList: this.selectFileList, originalType: 'image' })
-              // this.$emit('updateImgForm', this.previewImgUrl)
-              setTimeout(() => {
-                this.cardHeight = this.$refs.imageBox.scrollHeight
-              }, 10)
             }
             reader.readAsDataURL(this.selectFile)
+            // await this.$editorImgResize(this.selectFile)
           }
         }
       } else {
@@ -107,7 +138,7 @@ export default {
       if (this.selectFileList.length > 0) {
         // Form 필드 생성
         var form = new FormData()
-        // eslint-disable-next-line no-debugger
+
         // if (!this.selectFileList.length) return
 
         for (var i = 0; i < this.selectFileList.length; i++) {
@@ -126,7 +157,6 @@ export default {
           .then(res => {
             this.response = res
             this.isUploading = false
-            // eslint-disable-next-line no-debugger
           })
           .catch(error => {
             this.response = error

@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       loadYn: true,
-      alimDetail: [{  title :'안녕하세요.', nameMtext : 'KO$^$팀플', bodyMinStr :' 저는 정재준입니다. ', creDate:'2022-06-02 10:30'}],
+      alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyMinStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
       tempAlimList: {
         readYn: false,
@@ -87,7 +87,6 @@ export default {
     manageStickerPop
   },
   async created () {
-
     // this.alimDetail = this.detailVal
     // alert(this.alimDetail.title)
     await this.getContentsList()
@@ -207,7 +206,6 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 .pushMbox{margin-bottom: 20px;}
-
 
 .menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
 .menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}

@@ -72,8 +72,6 @@
 
               <!-- <td style="color:#ccc;font-size:12px;box">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</td> -->
 
-
-
           </table>
           <!-- <p style="color:#ccc; font-size:12px">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p> -->
 
@@ -94,17 +92,16 @@ export default {
 
   },
   mounted () {
-    PullToRefresh.destroyAll();
+    PullToRefresh.destroyAll()
   },
-  components: {gtoggle
-  },
+  components: { gtoggle },
   methods: {
     closeXPop (pThisPopN) { // 내 팝업 닫기
-        this.$emit('closePolicyPop')
+      this.$emit('closePolicyPop')
     },
-    toggleChange(){
+    toggleChange () {
 
-    },
+    }
 
   }
 }
@@ -123,7 +120,6 @@ p{color: #2c3e50;}
 .titleText{font-size: 14px; font-weight: bold;}
 .subTitle{font-weight: bold;}
 
-
 table tr{
   display: flex;
   justify-content: space-between;
@@ -141,8 +137,5 @@ th, td {
 .toggle-line{
   margin-top: 0.3rem;
 }
-
-
-
 
 </style>

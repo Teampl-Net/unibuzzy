@@ -76,14 +76,24 @@ export default {
       this.notiDetailShowYn = false
     },
     recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        this.notiDetail = JSON.parse(e.data).pushMessage
-        if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
-          if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-            return
-          }
-          this.notiDetailShowYn = true
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
         }
+        if (message.type === 'pushmsg') {
+          this.notiDetail = message.pushMessage
+          if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
+            if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+              return
+            }
+            this.notiDetailShowYn = true
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     showMenu () {
