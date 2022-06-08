@@ -51,7 +51,7 @@ export async function saveUser (userProfile) {
   user.countryCode = deviceInfo.contry
   user.areaName = deviceInfo.timeZome
   param.user = user
-  await axios.post('/tp.saveUser', param
+  await this.$axios.post('/tp.saveUser', param
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
@@ -97,7 +97,7 @@ const methods = {
     })
     return response.json() // JSON 응답을 네이티브 JavaScript 객체로 파싱 */
 
-    await axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { Authorization: 'YmMwMzFiMTItOTBjOS00MDAzLWI3MWItMjY2NWQxYjZhMzcy', withCredentials: true }
+    await this.$axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { Authorization: 'YmMwMzFiMTItOTBjOS00MDAzLWI3MWItMjY2NWQxYjZhMzcy', withCredentials: true }
     ).then(response => {
       console.log('cookie', response.headers)
       if (response.data.resultCode === 'OK') {
