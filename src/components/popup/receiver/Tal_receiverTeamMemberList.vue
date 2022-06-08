@@ -5,14 +5,24 @@
     </div>
 
     <div v-for="(data, index) in listData.team" :key='index' class="receiverTeamMemberCard fl" @click="clickList(data)" style="width:100%; height:60px; margin-bottom:10px;" >
+
         <div class="fl" >
             <div class="fl movePointerArea" style="width:30px; background-color:#ddd" v-if="editYn"><p class="tB trans90 cBlack " >{{upTxt}}</p><p class="tB trans90 cBlack">{{downTxt}}</p> </div>
-            <div class="fl receiverTeamColor" :style="{background:teamColor}"></div>
+            <!-- <div class="fl receiverTeamColor" :style="{background:teamColor}"></div> -->
             <p class="fl font15 cBlack mleft-1 receiverTeamText">{{data.name}}</p>
         </div >
 
+
+        <div v-if="selectPopYn" class="fr" style="position: relative;">
+            <div @click="memberPlusClick(data, index)" style="background-color:#ccc; width:40px; height: 40px; line-height:40px; position:absolute; top:40px; right: 15px; transform: translateY(-40px)">
+                <p style="font-size:35px; color:black">+</p>
+            </div>
+        </div>
+
+
+
         <!-- <div class="fr"> -->
-        <div class="fr mright-1" v-if="!editYn" style="">
+        <div class="fr mright-1" v-if="!editYn" style="" :class="{selPopFr: selectPopYn === true}" >
             <p class="fr font14 cBlack" style="margin-right:10px; padding:0 5px; background-color:#BABBD780; border-radius:10px;">{{data.grade}}</p><br>
             <p class="fr font12 cBlack " style="margin-right:10px">등록일 : {{this.$dayjs(data.creDate).format('YYYY-MM-DD')}}</p>
         </div>
@@ -25,6 +35,11 @@
                 <p class="cBlack tB">삭제</p>
             </div>
         </div>
+
+
+
+
+
     </div>
 
 <addTeamMember v-if="addMemberPopYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' />
@@ -37,39 +52,52 @@
 // eslint-disable-next-line
 import addTeamMember from './Tal_addReceiverTeamMember.vue'
 export default {
-  components: { addTeamMember },
-  props: {
-    listData: {},
-    editYn: {}
-  },
-  data () {
-    return {
-      teamColor: '',
-      upTxt: '>',
-      downTxt: '<',
-      addMemberPopYn: false,
-      editMember: {}
-    }
-  },
-  created () {
-    // this.memberList = listData.team
-    this.teamColor = this.listData.receiverTeamColor
-    // alert(this.listData.team)
-  },
-  methods: {
-    clickList (data) {
-      this.$emit('openDetail', data) // alert(data.reveiverTeamName)
+    components: {addTeamMember},
+    props: {
+        listData: {},
+        editYn: {},
+        selectPopYn: {}
     },
-    editClick (data, index) {
-      // alert(data)
-      this.editMember = data
-      this.addMemberPopYn = true
+    data () {
+        return {
+            teamColor : '',
+            upTxt: '>',
+            downTxt: '<',
+            addMemberPopYn: false,
+            editMember: {},
+        }
     },
-    newAddMember () {
-      this.editMember = ''
-      this.addMemberPopYn = true
+    created(){
+        // alert(this.selectPopYn)
+        // this.memberList = listData.team
+        // this.teamColor = this.listData.receiverTeamColor;
+        // alert(this.listData.team)
+    },
+    methods:{
+        clickList(data){
+            this.$emit('openDetail',data) // alert(data.reveiverTeamName)
+        },
+        editClick(data,index){
+            // alert(data)
+            this.editMember = data
+            this.addMemberPopYn = true
+
+        },
+        newAddMember(){
+            this.editMember=''
+            this.addMemberPopYn = true
+
+        },
+        memberPlusClick(data, index){
+            const obj = new Object();
+            obj.group = this.listData.reveiverTeamName
+            obj.data = data;
+            obj.index = index
+            this.listData.team.splice(index, 1)
+            // alert(obj.data.reveiverTeamName)
+            this.$emit('selectMember', obj);
+        },
     }
-  }
 }
 </script>
 
@@ -85,6 +113,12 @@ export default {
 
 .cBlack{
     color: black;
+}
+
+.selPopFr{
+    float:right;
+    margin-right: 4rem;
+
 }
 
 </style>

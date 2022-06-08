@@ -7,10 +7,10 @@
 
         <div style="width: 100%; height: 20%; margin-top: 60px; padding: 0 24px; border-bottom: 1px solid #ccc;">
             <div class="nameType">
-                <p class="font20 fontBold" style="margin-top: 60px; margin-bottom: 25px; text-align: left;">공유할 사람/그룹을 선택하세요.</p>
+                <p class="font20 fontBold" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p>
                 <div class="itemWrite" style="height: 60px !important;">
                     <p class="textLeft font16 fl" style="font-weight: bold; color: black; width: 40%; line-height: 60px;">공유자</p>
-                    <div @click="showChanMenu" style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">공유할 사람/그룹을 선택하세요.</div>
+                    <div @click="showChanMenu" style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;" >{{selectedReceiver}}</div>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' />
+    <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 <script>
 /* eslint-disable */
@@ -40,14 +40,31 @@ export default {
     data () {
         return{
             managerReceiverYn: false,
-            menuHeaderTitle:'공유할 그룹에서 선택',
-
+            menuHeaderTitle: '공유할 그룹에서 선택',
+            selectedReceiver : '공유할 사람/그룹을 선택하세요'
         }
     },
     components: { managerReceiver },
     methods: {
         showChanMenu () {
             this.managerReceiverYn = true
+        },
+        setSelectedList (data) {
+            this.managerReceiverYn = false
+
+            if(data[0].data.reveiverTeamName){
+                this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
+            }else{
+                this.selectedReceiver = data[0].data.name
+            }
+            if(data.length === 1){
+                this.selectedReceiver
+            }else{
+                this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개'
+            }
+
+
+
         }
     }
 }

@@ -153,8 +153,7 @@ export default {
   right: 5%;
 
   box-shadow: 0 0 9px 2px #b8b8b8;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+
   padding: 0 1rem;
   background-color: white;
   }
