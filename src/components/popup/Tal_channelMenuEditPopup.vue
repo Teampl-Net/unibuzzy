@@ -7,7 +7,7 @@
         <p>{{menuHeaderTitle}}<l class="fr" style="font-size:3rem; margin-right:1rem" @click="addBoardClick"> + </l></p>
       </div>
     <div style="margin-top:6rem; overflow: auto; height:calc(100vh - 55%);">
-      <div v-for="(data, index) in teamList" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:60px; margin-bottom:1rem;"  >
+      <div v-for="(data, index) in editList" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:60px; margin-bottom:1rem;"  >
     <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
         <div class="fl">
             <div class="fl movePointerArea" style="width:30px; background-color:#ddd" ><p class="tB trans90 cBlack " >{{upTxt}}</p><p class="tB trans90 cBlack">{{downTxt}}</p> </div>
@@ -53,14 +53,15 @@ import addChanMenu from './Tal_addChannelMenu.vue'
 import addNewBoard from './Tal_addNewBoardPopup.vue'
 export default {
   props:{
-    addChanList:{}
+    editList: {},
+    addChanList: {}
   },
   mounted () {
   },
   data () {
     return {
       menuHeaderTitle:'게시판 편집',
-      teamList:[{boardName:'자료실'},{boardName:'새소식'},{boardName:'문의사항'},],
+
       upTxt: '>',
       downTxt: '<',
       editNameYn: null,

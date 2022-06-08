@@ -60,7 +60,7 @@ export default {
             if(data.length === 1){
                 this.selectedReceiver
             }else{
-                this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개'
+                this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
             }
 
 
