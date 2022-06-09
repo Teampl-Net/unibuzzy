@@ -8,7 +8,9 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://localhost:19090'
-axios.defaults.baseURL = 'https://admin.passtory.net'
+axios.defaults.baseURL = 'http://192.168.0.22:19090'
+// axios.defaults.baseURL = 'http://61.97.186.14:19090'
+
 // axios.defaults.baseURL = 'http://localhost:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
@@ -51,7 +53,8 @@ export async function saveUser (userProfile) {
   user.countryCode = deviceInfo.contry
   user.areaName = deviceInfo.timeZome
   param.user = user
-  await this.$axios.post('/tp.saveUser', param
+  // alert(JSON.stringify(param))
+  await axios.post('/tp.saveUser', param
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
