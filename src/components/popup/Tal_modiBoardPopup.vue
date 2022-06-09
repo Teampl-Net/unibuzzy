@@ -87,7 +87,7 @@
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
     <div style="width: 100%; min-height: 100px;" v-show="sharePermissionShowYn">
       <div class="subItemWrite">
-        <p class="textLeft mleft-1 font16 fl " style="width: 150px; ">작성</p>
+        <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
         <div @click="showChanMenu" class="inputBoxThema textLeft" >{{writePermission}}</div>
       </div>
       <div class="subItemWrite">
@@ -163,9 +163,6 @@ export default {
     goNo (){
       this.$emit('closePop')
     },
-    testalert (text) {
-      alert(this.newBoardName)
-    },
     boardTypeClick () {
       this.selectTypeYn = true
     },
@@ -184,7 +181,6 @@ export default {
       }else{
         this.statusSelectShowYn = false
       }
-
 
     },
     setSelectedList (data) {
@@ -342,7 +338,7 @@ input:-internal-autofill-selected {
 }
 
 .toggleInputWrap {
-  width: calc(100% - 150px); float: left; display: flex; justify-content: end;
+  width: calc(100% - 150px); float: left; display: flex; justify-content: flex-end;
 }
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
