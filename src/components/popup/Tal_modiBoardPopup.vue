@@ -85,7 +85,7 @@
       <div @click="showChanMenu" class="inputBoxThema textLeft" >{{selectedReceiver}}</div>
     </div>
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
-    <div style="width: 100%; min-height: 300px;" v-show="sharePermissionShowYn">
+    <div style="width: 100%; min-height: 100px;" v-show="sharePermissionShowYn">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px; ">작성</p>
         <div @click="showChanMenu" class="inputBoxThema textLeft" >{{writePermission}}</div>
@@ -99,7 +99,9 @@
         <div @click="showChanMenu" class="inputBoxThema textLeft" >{{commentPermission}}</div>
       </div>
     </div>
-  <div style="background: #ccc; width: 100%; height: 0.5px; margin-top: 10px;"></div>
+  <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
+  <gBtnSmall btnThema="light" btnTitle="취소" />
+  <gBtnSmall class="mright-05" btnTitle="적용" />
   </div>
   <selectType v-if="selectTypeYn" @closePop='selectTypeYn = false' @addFinish='addResult' />
   <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
