@@ -1,38 +1,28 @@
 <template>
-<div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
-
-  <div class="channelMenuEditWrap" >
-      <div class="menuHeader">
-        <img v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
-        <p>{{menuHeaderTitle}}<l class="fr" style="font-size:3rem; margin-right:1rem" @click="addBoardClick"> + </l></p>
+<div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+  <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
+    <popHeader @closeXPop="goNo" style="" class="menuHeader" :headerTitle="menuHeaderTitle" />
+    <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
+      <div style="width: 100%; min-height: 30px; margin-bottom: 10px;">
+        <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
+        <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" />
       </div>
-    <div style="margin-top:6rem; overflow: auto; height:calc(100vh - 55%);">
-      <div v-for="(data, index) in editList" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:60px; margin-bottom:1rem;"  >
-    <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-        <div class="fl">
-            <div class="fl movePointerArea" style="width:30px; background-color:#ddd" ><p class="tB trans90 cBlack " >{{upTxt}}</p><p class="tB trans90 cBlack">{{downTxt}}</p> </div>
-            <p v-if='editNameYn !== index' @click="editClick(data,index)" class="fl font15 cBlack boardNameText">{{data.boardName}}</p>
-            <input v-show='editNameYn === index' :id="index" style="border:none; border-bottom: 0.5px solid #ccc;" class="boardNameText"/>
-        </div>
-        <div class="fr mtop-05" style="position: relative; ">
-            <div @click="editClick(data,index)" class="fl" style="background-color:#ddd;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 55px;">
-                <img v-if="clickIndex !== index" src="../../assets/images/common/editbtn.svg" >
-                <div v-if="clickIndex === index" style="diplay:block">
-                  <img src="../../assets/images/common/icon_setting.png" >
-                  <!-- <a style='font-size:10px'>게시판 설정</a> -->
-                </div>
-
+      <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+        <transition-group>
+          <div @click="openModiBoardPop"  v-for="(data, index) in boardList" :id="'board' + data.key" :key='index' class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
+        <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
+            <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
+              <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
             </div>
-            <div v-if="clickIndex !== index" @click="deleteTeamClick(data)" class="fl " style="background-color:#a9aacd;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 0; ">
-                <p class="cBlack tB">삭제</p>
+            <div class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
+                <div v-html="data.boardName" :id="'boardName' + data.key" style="" class="boardNameText"/>
             </div>
-            <div v-if="clickIndex === index" class="fl " style="background-color:white;  width:55px; height: 60px; line-height:60px; position:absolute; top:-1.2rem; right: 0; ">
-              <img src="../../assets/images/common/people.svg" alt="">
-
+            <div  @click="delFormCard()" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
+              <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer; z-index: 999" alt="">
             </div>
-        </div>
-
-      </div>
+          </div>
+        </transition-group>
+      </draggable>
     </div>
 
     <!-- <div style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%)"> -->
@@ -42,37 +32,48 @@
     </div>
 
   </div>
-  <addNewBoard v-if="addNewBoardYn" @closePop='addNewBoardYn =false' />
+  <modiBoardPop :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
 
 </template>
 
 <script>
 /* eslint-disable */
+import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 import addChanMenu from './Tal_addChannelMenu.vue'
-import addNewBoard from './Tal_addNewBoardPopup.vue'
+import modiBoardPop from './Tal_modiBoardPopup.vue'
 export default {
   props:{
     editList: {},
     addChanList: {}
   },
-  mounted () {
+  created () {
+    if (this.editList) {
+      // alert(JSON.stringify(this.editList))
+      this.boardList = this.editList
+      for (var i = 0; i < this.boardList.length; i ++) {
+        this.boardList[i].key = i
+        this.lastBoardKey = i
+      }
+    }
   },
   data () {
     return {
+      boardList: [],
       menuHeaderTitle:'게시판 편집',
-
-      upTxt: '>',
-      downTxt: '<',
-      editNameYn: null,
+      modiBoardDetailProps: null,
       editTeamName:'',
       editBtnYn: false,
       clickIndex: null,
-
-      addNewBoardYn: false,
+      lastBoardKey: null,
+      dragging: false,
+      modiBoardPopShowYn: false,
     }
   },
-  components: {addChanMenu,addNewBoard
+  components: {
+    addChanMenu, 
+    modiBoardPop,
+    draggable: VueDraggableNext
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -88,55 +89,41 @@ export default {
     goNo (){
       this.$emit('closePop')
     },
-    addChanClick(){
+    /* addChanClick(){
       this.openAddChanMenuYn = true
-    },
-    addChanMenuFinish(obj){
+    }, */
+    /* addChanMenuFinish(obj){
       this.myChanMenuList.push(obj)
 
       this.openAddChanMenuYn = false
       //   this.addChanMenuList = data
-    },
-    chanMenuClick (chanMenuTitle) {
+    }, */
+    /* chanMenuClick (chanMenuTitle) {
       // alert(chanMenuTitle)
       this.$emit('openItem',chanMenuTitle)
-    },
-    receiverClick () {
+    }, */
+   /*  receiverClick () {
       this.$emit('receiverManagerClick');
       // alert('s')
-    },
+    }, */
 
-    addBoardClick () {
+    openModiBoardPop (data) {
       // alert('s')
-      this.addNewBoardYn = true
+      this.modiBoardDetailProps = data
+      this.modiBoardPopShowYn = true
     },
-
-    editClick(data, index){
-      var editTeamName = document.getElementById(index)
-      this.clickIndex = index
-      // alert(this.editNameYn)
-      // alert(data.boardName + '\n' + editTeamName.innerText)
-
-      // data.boardName = '바보'
-
-      if(this.editNameYn === index){
-          this.editNameYn = null
-          data.boardName = editTeamName.value
-          this.clickIndex = null
-      }else{
-        this.editBtnYn = true
-          this.editNameYn = index
-          editTeamName.value = data.boardName
-      }
+    addBoardRow () {
+      var addBoard = {'boardName':'게시판' + (Number(this.lastBoardKey) + 1),'idNum':2, 'key': this.lastBoardKey + 1}
+      this.boardList.unshift(addBoard)
+      // this.boardList.push()
     }
-
   }
 
 }
 </script>
 
 <style scoped>
-.menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff; background-color:#6768a7 ;}
+.menuHeader {position: absolute; top: 0rem; left: 0;}
 .menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 
@@ -148,14 +135,14 @@ export default {
   right: 0; */
 
   width:90% ;
-  position: fixed; z-index: 999;
+  position: fixed; 
+  z-index: 999;
   height: calc(100vh - 20%);
   top: 10%;
   right: 5%;
 
   box-shadow: 0 0 9px 2px #b8b8b8;
 
-  padding: 0 1rem;
   background-color: white;
   }
 
@@ -177,12 +164,8 @@ border-bottom: 1.5px solid #999;
 }
 
 .editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
-.boardNameText{
-  /* font-size: ; */
-  font-weight: bold;
-  line-height: 2.5rem;
-  margin-left: 2rem;
-}
+/* .boardNameText{
+} */
 .boardPlusBtn{
   color:white;
   font-size:20px;
