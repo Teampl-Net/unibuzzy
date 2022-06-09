@@ -33,9 +33,6 @@
       <chanListNew  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
     </div>
   </div>
-
-
-  <!-- <gBtnSmall v-if="editYn" class="btnBig" v-on:click="editChanMenu" btnTitle="편집" style="position: absolute; right: 2rem;bottom:2rem; "/> -->
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
@@ -71,7 +68,7 @@ export default {
       addChanMenuList:{},
       editPopYn : false,
       dummyList:[],
-      testHeight: null,
+      menuHeight: null,
       boardDropDownYn:true,
       groupDropDownYn:null
     }
@@ -81,12 +78,12 @@ export default {
   emits: ['openPop', 'goPage'],
   methods: {
      groupListlength () {
-       this.$refs.groupRef.style.setProperty('--testHeight', this.dummyList.length * 70 + 20 + 'px')
-       this.testHeight = this.dummyList.length * 70 + 20 + 'px'
+       this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
+       this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
     },
     boardListLength () {
-      this.$refs.boardRef.style.setProperty('--testHeight', this.myBoardList.length * 50 + 20 + 'px')
-       this.testHeight = this.dummyList.length * 70 + 20 + 'px'
+      this.$refs.boardRef.style.setProperty('--menuHeight', this.myBoardList.length * 50 + 20 + 'px')
+       this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
       return{
         '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
       }
@@ -191,8 +188,8 @@ export default {
   animation: dropup 300ms ease;
   animation-fill-mode: both;
 }
-@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--testHeight) } }
-@-webkit-keyframes dropup { 0% {height: var(--testHeight);} 100% {height: 0px;} }
+@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
+@-webkit-keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }
 .dropdownBtn{
   width:10px;
   transform: rotate( 270deg );
