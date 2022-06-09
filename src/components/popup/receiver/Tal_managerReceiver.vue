@@ -7,14 +7,18 @@
         <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " />
     </div>
 
-    <div style="margin:3rem 2rem; height:calc(50% - 50px); overflow: auto;" :class="{longHeight : selectPopYn !== true}" >
+    <div class="pagePaddingWrap" style="height:calc(50% - 50px); padding-top: 0; overflow: auto;" :class="{longHeight : selectPopYn !== true}" >
     <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-        <div style=" border-bottom:1px solid #ccc; height:2.5rem; margin-top:20px; " v-if="!detailOpenYn" >
-            <p class="fl mright-05" style="color:black; font-weight:bold; font-size:17px">팀플</p> <img class="fl mright-05" src="../../../assets/images/main/main_subscriber.png" /> <p class="fl mright-05" style="font-size:17px">{{100}}</p>
+        <div style=" border-bottom:1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; " v-if="!detailOpenYn" >
+            <p class="fl mright-05 font18 h-100P colorBlack fontBold">팀플</p>
+            <div class="mleft-05 fl" style="min-width: 100px; height: 100%; ">
+                <img class="fl" style="margin-top: 4px;" src="../../../assets/images/main/main_subscriber.png" />
+                <p class="fl font16" style="margin-top: 2px;">{{100}}</p>
+            </div>
             <gBtnSmall :btnTitle="teamBtnText"  @click="teamEditClick" v-if='selectPopYn !== true' />
         </div>
 
-        <div style="margin: 1rem 0rem;">
+        <div style="">
             <gSearchBox @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
             <transition name="showModal">
                 <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>

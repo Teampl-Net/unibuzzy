@@ -1,8 +1,7 @@
 <template>
 <div  id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <div :key="wrapKey" style="height: 100%;" v-if="this.detailShowYn === false" >
   <!-- <div>{{pushKey}}</div> -->
-    <div id="summaryWrap" class="summaryWrap" >
+    <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
 
       <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
@@ -37,10 +36,9 @@
 
     </div>
 
-    <div class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
+    <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
       <pushList :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
     </div>
-  </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
@@ -125,6 +123,7 @@ export default {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
           this.followYn = true
           this.detailShowYn = false
+          this.adminYn = false
           this.followTypeText = '구독자'
           // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
           // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
@@ -188,7 +187,7 @@ export default {
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
-        blockBox.style.height = '-webkit-fill-available'
+        blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')

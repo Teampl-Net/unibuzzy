@@ -18,7 +18,7 @@
       </div>
     </div> -->
     <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" />
-    <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/>
+    <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
 </div>

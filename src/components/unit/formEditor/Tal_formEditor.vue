@@ -28,7 +28,7 @@
     <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 0 10px; overflow: scroll; overflow-x: hidden; background: #f1f1f1; position: relative;">
         <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" />
         <div v-show="this.viewTab  === 'complex'" style="">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+            <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                          --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->

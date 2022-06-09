@@ -7,10 +7,10 @@
       <div class="loginBtn" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
       </div>
-      <div class="loginBtn" v-on:click="KakaoLoginBtn">
+      <!-- <div class="loginBtn" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
-      </div>
+      </div> -->
       <div class="loginBtn" v-on:click="NaverLoginBtn">
         <img src="../../assets/images/intro/login/login_naver.png">
         네이버 로그인

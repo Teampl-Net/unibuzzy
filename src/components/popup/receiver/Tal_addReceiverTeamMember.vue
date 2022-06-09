@@ -103,13 +103,9 @@ margin-bottom: 2rem;
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee;  padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
 
-.receiverTeamColor{width:40px; height:40px; border-radius:100%; border:4px solid #ddd;}
 .receiverTeamText{font-weight: bold; height:40px; line-height:40px;}
-.receiverTeamSubscImg{border:2px solid #a9aacd; border-radius:100%; width: 20px;height: 20px; margin-right:10px;}
 
-.cBlack{
-    color: black;
-}
+
 .tB{
     font-weight: bold;
 }

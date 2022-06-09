@@ -12,7 +12,6 @@
         <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">수신자 그룹 관리</p>
       </div>
 
-
       <div style="margin-top: 50px;">
         <div class="menuRow" v-for="(value, index) in myChanMenuList" :key="index" :class="{editColor: editYn === true, editRow: editYn === true }" @click="chanMenuClick(value.chanMenuTitle)">
           <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
@@ -60,9 +59,9 @@ export default {
       openAddChanMenuYn:false,
 
       myChanMenuList:[
-                { boardName: '포토게시판', idNum: 5 },
-                { boardName: '새소식', idNum: 6 },
-                { boardName: '문의사항', idNum: 7 },
+                { boardName: '포토게시판', idNum: 0 },
+                { boardName: '새소식', idNum: 1 },
+                { boardName: '문의사항', idNum: 4 },
       ],
 
       editYn:false,
