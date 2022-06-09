@@ -1,86 +1,103 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
 
-  <div class="channelMenuWrap" :class="{editWrap: editYn === true }">
-      <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
-          <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
-          <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
-
-          <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
-      </div>
-      <div v-show="!editYn" style="margin-top: 70px;border:1px solid #ccc; height:3rem; line-height:3rem" @click="receiverClick">
-        <p style="color:white; font-size:18px;" :class="{editColor: editYn === true }">수신자 그룹 관리</p>
-      </div>
-
-      <div style="margin-top: 50px;">
-        <div class="menuRow" v-for="(value, index) in myChanMenuList" :key="index" :class="{editColor: editYn === true, editRow: editYn === true }" @click="chanMenuClick(value.chanMenuTitle)">
-          <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
-          <div style="display: flex; flex-direction: row; align-items: center;" v-on:click="goPage(value.link)" >
-          <input type="checkbox" style="width: 20px; height: 20px; border:3px solid #707070; margin-right:1rem" v-if="editYn" />
-          <img scr='' />
-          {{value.boardName}}</div>
-
-        </div>
-      </div>
-
-      <div style="display: flex; margin-top: 30px; flex-direction: column; align-items: center;" v-if="editYn">
-
-        <div style="">
-          <gBtnSmall class="" v-on:click="s" btnTitle="삭제" style="margin-left:10px"/>
-          <gBtnSmall class="" v-on:click="addChanClick" btnTitle="추가" style="margin-right:10px"/>
-        </div>
-
-        <div style="position:absolute; bottom:2rem">
-
-          <gBtnSmall class="btnBig" v-on:click="editChanMenu" btnTitle="닫기" style="margin-left:10px"/>
-          <gBtnSmall class="btnBig" v-on:click="editYn = false" btnTitle="적용" style="margin-right:10px"/>
-        </div>
-      </div>
-        <gBtnSmall v-if="!editYn" class="btnBig" v-on:click="editChanMenu" btnTitle="편집" style="position: absolute; right: 2rem;bottom:2rem; "/>
-
+<div class="channelMenuWrap" :class="{editWrap: editYn === true }">
+  <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
+      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
+      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
+      <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
   </div>
-<addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' />
-<editChanMenu v-if='editPopYn' @closePop='editPopYn = false' :editList='myChanMenuList' />
+  <!-- <div v-show="editYn" @click="receiverClick" style="margin-top:50px; width:100%;" class="fl" > -->
+  <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;" class="fl" >
+    <div class="fl" style="width:100%">
+      <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
+      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
+      <gBtnSmall class="fr"   @click="receiverClick" btnTitle="편집" style=""/>
+    </div>
+    <div class="boardBox" style="overflow: hidden;" :style="groupListlength" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}">
+      <teamList class="" :listData="dummyList" @openDetail='openTeamDetailPop'  :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+    </div>
+  </div>
+  <div style="width:100%; margin-top:calc(20px);" :class="{editmTop:editYn !== true}" class="fl">
+    <div class="fl" style="width:100%">
+      <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
+      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="boardDropDown" >게시판</p>
+      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style=""/>
+    </div>
+    <div class="boardBox" style="overflow: hidden; padding-top:1rem;" :style="boardListLength" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+      <chanListNew  :listData="myBoardList"/>
+    </div>
+  </div>
+  <gBtnSmall v-if="editYn" class="btnBig" v-on:click="editChanMenu" btnTitle="편집" style="position: absolute; right: 2rem;bottom:2rem; "/>
+</div>
+<!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
+<editChanMenu v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
 </template>
-
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import addChanMenu from '../popup/Tal_addChannelMenu.vue'
+// eslint-disable-next-line no-new-object
 import editChanMenu from './Tal_channelMenuEditPopup.vue'
+import teamList from './receiver/Tal_receiverTeamList.vue'
+import chanListNew from './receiver/Tal_channelMenuListNew.vue'
 export default {
   props:{
     addChanList:{}
   },
-  mounted () {
+  created () {
+    this.dummyList = this.$groupDummyList()
+  },
+  computed:{
+    groupListlength () {
+      return{
+        '--groupListlength' : this.dummyList.length * 70 + 20 + 'px'
+      }
+    },
+    boardListLength () {
+      return{
+        '--groupListlength' : this.myBoardList.length * 70 + 20 + 'px'
+      }
+    }
+
   },
   data () {
     return {
-      openAddChanMenuYn:false,
-
-      myChanMenuList:[
-                { boardName: '포토게시판', idNum: 0 },
-                { boardName: '새소식', idNum: 1 },
-                { boardName: '문의사항', idNum: 4 },
+      myBoardList:[
+        { boardName: '포토게시판', idNum: 5 },
+        { boardName: '새소식', idNum: 6 },
+        { boardName: '문의사항', idNum: 7 },
       ],
-
-      editYn:false,
-      menuHeaderTitle:'게시판',
+      editYn:true,
+      menuHeaderTitle:'채널 메뉴',
       addChanMenuList:{},
-
       editPopYn : false,
-
+      dummyList:[],
+      groupDropDownYn:false,
+      boardDropDownYn:false
     }
   },
-  components: {addChanMenu,editChanMenu
+  components: {editChanMenu,teamList,chanListNew,
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    boardDropDown () {
+      if(this.boardDropDownYn){
+        this.boardDropDownYn = false
+      }else{
+        this.boardDropDownYn = true
+      }
+    },
+    groupDropDown () {
+      if(this.groupDropDownYn){
+        this.groupDropDownYn = false
+      }else{
+        this.groupDropDownYn = true
+      }
+    },
     goPage (link) {
       this.$emit('goPage', link)
     },
     openPop (link) {
-      // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = link
       this.$emit('openPop', params)
@@ -90,38 +107,14 @@ export default {
     },
     editChanMenu (){
       this.editPopYn = true;
-      // if(this.editYn){
-      //   this.menuHeaderTitle = '게시판'
-      //   this.editYn = false
-      // }else{
-      //   this.menuHeaderTitle = '게시판 편집'
-      //   this.editYn = true
-      // }
     },
-    addChanClick(){
-
-      this.openAddChanMenuYn = true
-    },
-    addChanMenuFinish(obj){
-      this.myChanMenuList.push(obj)
-
-      this.openAddChanMenuYn = false
-
-      //   this.addChanMenuList = data
-    },
-    chanMenuClick(chanMenuTitle){
-      // alert(chanMenuTitle)
-      this.$emit('openItem',chanMenuTitle)
+    chanMenuClick(boardName){
+      this.$emit('openItem',boardName)
     },
     receiverClick(){
       this.$emit('receiverManagerClick');
-      // alert('s')
     }
-
-
-
   }
-
 }
 </script>
 
@@ -150,17 +143,45 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-
 .editWrap{
-  background-color: #F9F9F9;
+  background-color: #F9F9F9 !important;
 
 }
 .editmenuHeader{
-border-bottom: 1.5px solid #999;
+  border-bottom: 1.5px solid #999;
 }
 .editColor{
   color: #6768a7 !important;
 }
-
+.editmTop{
+  margin-top: 55px !important;
+}
 .editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
+.boardBox{
+  /* background-color:#aaa; */
+  width:100%;
+  display: block;
+  position: relative;
+}
+.boardBoxDown{
+  animation: dropdown 300ms ease ;
+  animation-fill-mode: both;
+}
+
+.boardBoxUp{
+  animation: dropup 300ms ease;
+  animation-fill-mode: both;
+}
+@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--groupListlength);} }
+@-webkit-keyframes dropup { 0% {height: var(--groupListlength);} 100% {height: 0px;} }
+.dropdownBtn{
+  width:10px;
+  transform: rotate( 270deg );
+  margin-right:10px;
+  /* transition : .3s */
+}
+.dropupBtn{
+  transform: rotate( 90deg );
+
+}
 </style>
