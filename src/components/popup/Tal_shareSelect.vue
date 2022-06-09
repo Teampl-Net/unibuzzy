@@ -9,22 +9,22 @@
             <div class="nameType">
                 <p class="font20 fontBold" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p>
                 <div class="itemWrite" style="height: 60px !important;">
-                    <p class="textLeft font16 fl" style="font-weight: bold; color: black; width: 40%; line-height: 60px;">공유자</p>
+                    <p class="textLeft font16 fl" style="font-weight: bold;  width: 40%; line-height: 60px;">공유자</p>
                     <div @click="showChanMenu" style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;" >{{selectedReceiver}}</div>
                 </div>
             </div>
         </div>
         <div  style="width: 100%; height: 70%; margin-top: 30px; padding: 0 24px;">
             <div class="itemWrite" style="height: 60px !important;">
-                <p class="textLeft font16 fl" style="font-weight: bold; color: black; width: 40%; line-height: 60px;">작성</p>
+                <p class="textLeft font16 fl" style="font-weight: bold;  width: 40%; line-height: 60px;">작성</p>
                 <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">공유할 그룹/사람 선택</div>
             </div>
             <div class="itemWrite" style="height: 60px !important;">
-                <p class="textLeft font16 fl" style="font-weight: bold; color: black; width: 40%; line-height: 60px;">열람</p>
+                <p class="textLeft font16 fl" style="font-weight: bold;  width: 40%; line-height: 60px;">열람</p>
                 <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">공유할 그룹/사람 선택</div>
             </div>
             <div class="itemWrite" style="height: 60px !important;">
-                <p class="textLeft font16 fl" style="font-weight: bold; color: black; width: 40%; line-height: 60px;">댓글</p>
+                <p class="textLeft font16 fl" style="font-weight: bold;  width: 40%; line-height: 60px;">댓글</p>
                 <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">공유할 그룹/사람 선택</div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
-    <popHeader @closeXPop="goNo" style="" class="menuHeader" :headerTitle="menuHeaderTitle" />
+    <popHeader @closeXPop="goNo" style="" class="menuHeader headerShadow" :headerTitle="menuHeaderTitle" />
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <div style="width: 100%; min-height: 30px; margin-bottom: 10px;">
         <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
@@ -26,10 +26,10 @@
     </div>
 
     <!-- <div style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%)"> -->
-    <div style="position:absolute; bottom:1.5rem; right:2rem; ">
+    <!-- <div style="position:absolute; bottom:1.5rem; right:2rem; ">
       <gBtnSmall class="btnBig" v-on:click="this.$emit('closePop')" btnTitle="닫기" style="margin-left:10px"/>
       <gBtnSmall class="btnBig" v-on:click="editYn = false" btnTitle="적용" style="margin-right:10px"/>
-    </div>
+    </div> -->
 
   </div>
   <modiBoardPop :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
@@ -115,6 +115,7 @@ export default {
     addBoardRow () {
       var addBoard = {'boardName':'게시판' + (Number(this.lastBoardKey) + 1),'idNum':2, 'key': this.lastBoardKey + 1}
       this.boardList.unshift(addBoard)
+      this.lastBoardKey += 1
       // this.boardList.push()
     }
   }
@@ -134,14 +135,15 @@ export default {
   top: 0;
   right: 0; */
 
-  width:90% ;
+  width:100% ;
+  height:100vh !important;
   position: fixed; 
   z-index: 999;
   height: calc(100vh - 20%);
-  top: 10%;
-  right: 5%;
+  top: 0;
+  right: 0;
 
-  box-shadow: 0 0 9px 2px #b8b8b8;
+  /* // box-shadow: 0 0 9px 2px #b8b8b8; */
 
   background-color: white;
   }

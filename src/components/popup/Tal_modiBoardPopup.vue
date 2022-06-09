@@ -2,7 +2,7 @@
   <div class="addNewBoardWrap pagePaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" />
     <div class="itemWrite" style="">
-      <p class="textLeft font16 fl" style="width: 150px;">게시판 명</p>
+      <p class="textLeft font16 fl" style="width: 150px;">게시판 이름</p>
       <input v-model="inputChannelName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
@@ -143,9 +143,9 @@ export default {
       statusSelectShowYn: false,
       selectShareYn: false,
       selectedReceiver : '게시판을 공유할 대상을 선택해주세요',
-      writePermission: '작성권한을 부여할 공유대상을 선택해주세요',
-      readPermission: '열람권한을 부여할 공유대상을 선택해주세요',
-      commentPermission: '댓글권한을 부여할 공유대상을 선택해주세요'
+      writePermission: '작성권한',
+      readPermission: '열람권한',
+      commentPermission: '댓글권한'
     }
   },
   components: {selectType, shareSelect, managerReceiver

@@ -92,7 +92,7 @@ margin-bottom: 2rem;
 }
 
 .addTeamMemberArea{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
@@ -102,8 +102,6 @@ margin-bottom: 2rem;
 }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee;  padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
-
-.receiverTeamText{font-weight: bold; height:40px; line-height:40px;}
 
 
 .tB{
