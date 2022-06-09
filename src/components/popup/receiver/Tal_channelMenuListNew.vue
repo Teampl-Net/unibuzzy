@@ -1,5 +1,5 @@
 <template>
-<div v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; "  >
+<div v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; " @click="listClick(data)" >
     <div style="width:100%; height:30px; " class="fl">
         <!-- <img src="" /> -->
         <div class="fl" style="width:30px;height:30px; border-radius:100%; background-color:#ccc; margin-left:1rem;">
@@ -22,6 +22,10 @@ export default {
         }
     },
     methods: {
+        listClick (data) {
+
+            this.$emit('chanMenuClick', data.boardName)
+        }
     }
 }
 </script>

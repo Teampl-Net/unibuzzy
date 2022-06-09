@@ -1,5 +1,5 @@
 <template>
-<div :style="setTotalHeight" style="height: var(--scrollHeight)" class="receiverTeamListArea boardBoxDown">
+<div :style="setTotalHeight" style="height: var(--scrollHeight)" class="receiverTeamListArea">
     <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div>

@@ -7,28 +7,35 @@
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
   </div>
-  <!-- <div v-show="editYn" @click="receiverClick" style="margin-top:50px; width:100%;" class="fl" > -->
-  <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;" class="fl" >
+
+  <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
+  <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
+
     <div class="fl" style="width:100%">
       <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
       <gBtnSmall class="fr"   @click="receiverClick" btnTitle="편집" style=""/>
     </div>
-    <div class="boardBox" style="overflow: hidden;" :style="groupListlength" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}">
-      <teamList class="" :listData="dummyList" @openDetail='openTeamDetailPop'  :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+    <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
+      <teamList  :listData="dummyList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
+
+  <div v-show="editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div>
+
   <div style="width:100%; margin-top:calc(20px);" :class="{editmTop:editYn !== true}" class="fl">
     <div class="fl" style="width:100%">
       <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
-      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="boardDropDown" >게시판</p>
-      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style=""/>
+      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
+      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-show="editYn" />
     </div>
-    <div class="boardBox" style="overflow: hidden; padding-top:1rem;" :style="boardListLength" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-      <chanListNew  :listData="myBoardList"/>
+    <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+      <chanListNew  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
     </div>
   </div>
-  <gBtnSmall v-if="editYn" class="btnBig" v-on:click="editChanMenu" btnTitle="편집" style="position: absolute; right: 2rem;bottom:2rem; "/>
+
+
+  <!-- <gBtnSmall v-if="editYn" class="btnBig" v-on:click="editChanMenu" btnTitle="편집" style="position: absolute; right: 2rem;bottom:2rem; "/> -->
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
@@ -40,6 +47,7 @@
 import editChanMenu from './Tal_channelMenuEditPopup.vue'
 import teamList from './receiver/Tal_receiverTeamList.vue'
 import chanListNew from './receiver/Tal_channelMenuListNew.vue'
+
 export default {
   props:{
     addChanList:{}
@@ -47,18 +55,9 @@ export default {
   created () {
     this.dummyList = this.$groupDummyList()
   },
-  computed:{
-    groupListlength () {
-      return{
-        '--groupListlength' : this.dummyList.length * 70 + 20 + 'px'
-      }
-    },
-    boardListLength () {
-      return{
-        '--groupListlength' : this.myBoardList.length * 70 + 20 + 'px'
-      }
-    }
-
+  mounted () {
+    this.groupListlength()
+    this.boardListLength()
   },
   data () {
     return {
@@ -72,15 +71,29 @@ export default {
       addChanMenuList:{},
       editPopYn : false,
       dummyList:[],
-      groupDropDownYn:false,
-      boardDropDownYn:false
+      testHeight: null,
+      boardDropDownYn:true,
+      groupDropDownYn:null
     }
   },
   components: {editChanMenu,teamList,chanListNew,
   },
   emits: ['openPop', 'goPage'],
   methods: {
+     groupListlength () {
+       this.$refs.groupRef.style.setProperty('--testHeight', this.dummyList.length * 70 + 20 + 'px')
+       this.testHeight = this.dummyList.length * 70 + 20 + 'px'
+    },
+    boardListLength () {
+      this.$refs.boardRef.style.setProperty('--testHeight', this.myBoardList.length * 50 + 20 + 'px')
+       this.testHeight = this.dummyList.length * 70 + 20 + 'px'
+      return{
+        '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
+      }
+    },
+
     boardDropDown () {
+
       if(this.boardDropDownYn){
         this.boardDropDownYn = false
       }else{
@@ -88,6 +101,7 @@ export default {
       }
     },
     groupDropDown () {
+
       if(this.groupDropDownYn){
         this.groupDropDownYn = false
       }else{
@@ -126,6 +140,7 @@ export default {
 
 .channelMenuWrap{
   background-color:#6768a7 ;
+  /* background-color: white; */
   width:80% ;
   max-width: 500px;
   position: fixed; z-index: 999;
@@ -153,13 +168,17 @@ export default {
 .editColor{
   color: #6768a7 !important;
 }
+.editWhiteColor{
+  color: #fff;
+}
 .editmTop{
-  margin-top: 55px !important;
+  margin-top: 70px !important;
 }
 .editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
 .boardBox{
   /* background-color:#aaa; */
   width:100%;
+  height: 0px;
   display: block;
   position: relative;
 }
@@ -172,8 +191,8 @@ export default {
   animation: dropup 300ms ease;
   animation-fill-mode: both;
 }
-@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--groupListlength);} }
-@-webkit-keyframes dropup { 0% {height: var(--groupListlength);} 100% {height: 0px;} }
+@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--testHeight) } }
+@-webkit-keyframes dropup { 0% {height: var(--testHeight);} 100% {height: 0px;} }
 .dropdownBtn{
   width:10px;
   transform: rotate( 270deg );
