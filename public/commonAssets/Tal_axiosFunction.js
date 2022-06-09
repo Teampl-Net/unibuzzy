@@ -19,7 +19,7 @@ axios.defaults.baseURL = 'http://192.168.0.22:19090'
 axios.defaults.headers.get['Cache-Control'] = 'no-cache'
 axios.defaults.headers.get.Pragma = 'no-cache'
 
-export async function saveUser (userProfile) {
+export async function saveUser(userProfile) {
   // eslint-disable-next-line no-new-object
   var user = new Object()//
   // eslint-disable-next-line no-new-object
@@ -65,7 +65,7 @@ export async function saveUser (userProfile) {
   })
 }
 const methods = {
-  async userLoginCheck () {
+  async userLoginCheck() {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     // testYn = false
@@ -121,17 +121,18 @@ const methods = {
       console.warn('ERROR!!!!! : ', error)
     })
   },
-  async getTeamList (paramMap) {
+  async getTeamList(paramMap) {
     var resultList = null
     await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap), { withCredentials: true }
     ).then(response => {
       resultList = response
+      // console.log(resultList)
     }).catch((error) => {
       console.warn('ERROR!!!!! : ', error)
     })
     return resultList
   },
-  async getContentsList (inputParam) {
+  async getContentsList(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -142,12 +143,13 @@ const methods = {
     await this.$axios.post('/tp.getContentsList', param, { withCredentials: true }
     ).then(response => {
       result = response.data
+      // console.log(result)
     }).catch((error) => {
       result = error
     })
     return result
   },
-  async saveUserDo (inputParam, type) {
+  async saveUserDo(inputParam, type) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -165,7 +167,7 @@ const methods = {
     })
     return result
   },
-  async saveSticker (inputParam) {
+  async saveSticker(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -181,7 +183,7 @@ const methods = {
     })
     return result
   },
-  async getStickerList (inputParam) {
+  async getStickerList(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -197,7 +199,7 @@ const methods = {
     })
     return result
   },
-  async changeFollower (inputParam, type) {
+  async changeFollower(inputParam, type) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -217,11 +219,11 @@ const methods = {
     })
     return result
   },
-  async requestCreChan (paramVal) {
+  async requestCreChan(paramVal) {
     var teamRequest = paramVal
     var result = false
     await this.$axios.post('/tp.saveTeamRequest', { teamRequest: teamRequest }
-    // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
+      // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
     ).then(response => {
       console.log(response)
       result = response.data
@@ -230,7 +232,7 @@ const methods = {
     })
     return result
   },
-  async createTeamForReq (inputParam) {
+  async createTeamForReq(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -246,7 +248,7 @@ const methods = {
     })
     return result
   },
-  async getTeamReqList (inputParam) {
+  async getTeamReqList(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -329,11 +331,34 @@ const methods = {
       result = error
     })
     return result
+  },
+  groupDummyList() {
+    return [
+      {receiverTeamColor:'#ccc', reveiverTeamName: '관리자', subscrib:'4',team:[
+          {name: '최병진', grade : '매니저',creDate:'2021.12.01 09:55:32', email:'choi123@susoft.co.kr', phone :'010-0000-1111'},
+          {name: '황수민', grade : '구성원',creDate:'2021.12.11 09:55:32', email:'sumango@susoft.co.kr', phone :'010-1111-1111'},
+          {name: '정재준', grade : '구성원',creDate:'2022.01.04 09:55:32', email:'jeong@susoft.co.kr', phone :'010-2222-1111'},
+          {name: '최유민', grade : '구성원',creDate:'2022.02.20 09:55:32', email:'umin@susoft.co.kr', phone :'010-3333-1111'}]
+      },
+      {receiverTeamColor:'#ccc', reveiverTeamName: '더알림 프로젝트', subscrib:'4',team:[
+          {name: '최병진', grade : '매니저',creDate:'2021.12.01 09:55:32', email:'choi123@susoft.co.kr', phone :'010-1234-5551'},
+          {name: '황수민', grade : '구성원',creDate:'2021.12.11 09:55:32', email:'sumango@susoft.co.kr', phone :'010-5555-1235'},
+          {name: '정재준', grade : '구성원',creDate:'2022.01.04 09:55:32', email:'jeong@susoft.co.kr', phone :'010-4567-1111'},
+          {name: '최유민', grade : '구성원',creDate:'2022.02.20 09:55:32', email:'umin@susoft.co.kr', phone :'010-8764-1235'}]
+      },
+      {receiverTeamColor:'#ccc', reveiverTeamName: '런하이 프로젝트', subscrib:'4',team:[
+          {name: '이충원', grade : '매니저',creDate:'2021.12.01 09:55:32', email:'lee@susoft.co.kr', phone :'010-6764-1357'},
+          {name: '최영환', grade : '매니저',creDate:'2021.12.11 09:55:32', email:'hanw@susoft.co.kr', phone :'010-3782-5786'},
+          {name: '김정호', grade : '매니저',creDate:'2022.01.04 09:55:32', email:'Kim123@susoft.co.kr', phone :'010-1365-5683'},
+          {name: '안영준', grade : '구성원',creDate:'2022.02.20 09:55:32', email:'an0@susoft.co.kr', phone :'010-1257-3225'},
+          {name: '박지현', grade : '구성원',creDate:'2022.03.13 09:55:32', email:'jihyun@susoft.co.kr', phone :'010-8742-4567'},
+          {name: '공유택', grade : '구성원',creDate:'2022.04.22 09:55:32', email:'share@susoft.co.kr', phone :'010-1578-8854'}]
+      }]
   }
 }
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.config.globalProperties.$saveUserDo = methods.saveUserDo
     Vue.config.globalProperties.$getContentsList = methods.getContentsList
     Vue.config.globalProperties.$getTeamList = methods.getTeamList
@@ -348,5 +373,6 @@ export default {
     Vue.config.globalProperties.$getCodeList = methods.getCodeList
     Vue.config.globalProperties.$updateStickerList = methods.updateStickerList
     Vue.config.globalProperties.$changeRecvAlimYn = methods.changeRecvAlimYn
+    Vue.config.globalProperties.$groupDummyList = methods.groupDummyList
   }
 }
