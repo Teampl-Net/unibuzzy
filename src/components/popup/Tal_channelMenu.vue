@@ -35,7 +35,7 @@
   </div>
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
-<editChanMenu v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
+<editChanMenu v-if='editPopYn' @closePop='close' :editList='myBoardList' />
 </template>
 <script>
 /* eslint-disable */
@@ -77,7 +77,11 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
-     groupListlength () {
+    close(){
+      this.editPopYn = false
+      this.boardListLength()
+    },
+    groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
        this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
     },
@@ -88,9 +92,8 @@ export default {
         '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
       }
     },
-
     boardDropDown () {
-
+      this.boardListLength()
       if(this.boardDropDownYn){
         this.boardDropDownYn = false
       }else{
@@ -98,7 +101,7 @@ export default {
       }
     },
     groupDropDown () {
-
+      this.groupListlength()
       if(this.groupDropDownYn){
         this.groupDropDownYn = false
       }else{

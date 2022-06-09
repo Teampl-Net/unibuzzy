@@ -10,7 +10,7 @@
                 <div @click="clickList(data)" class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
                 </div>
-                <div :style="{background:data.receiverTeamColor}" class="fl receiverTeamColor"></div>
+                <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
                 <div @click="clickList(data)" class="fl h-100P">
                     <input v-if="editYn" :id="index" v-model="data.reveiverTeamName" style="border:none; height: 100%; border-bottom: 0.5px solid #ccc;"/>
                     <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.reveiverTeamName + ' (' + data.team.length + ')'}}</p>
@@ -130,7 +130,9 @@ export default {
 /* .widthPop{
     width:80% !important;
 } */
-
+.editmLeft{
+    margin-left: 30px;
+}
 .selPopFl{
     float:left;
     margin-left: 1rem;

@@ -1,9 +1,8 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
+    <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
-    </div>
-
+    </div> -->
     <div v-for="(data, index) in memberList.team" :key='index' class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px;" >
 
         <div class="fl" @click="editClick(data)" >
@@ -102,7 +101,7 @@ export default {
 
 <style >
 
-.receiverTeamMemberArea{float: left; margin-top: 10px;}
+.receiverTeamMemberArea{float: left; margin-top: 10px; width: 100%;}
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee; background: #6768a712; border-radius: 8px; padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
 
