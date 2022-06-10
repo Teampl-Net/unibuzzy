@@ -202,7 +202,7 @@ export default {
   min-height: 3rem;
   text-align: left;
 }
-.chanWhiteBox{position: absolute; top: -170px; bottom: 50vh; height: 100%; display: flex; flex-direction: column;align-items: center;width: 100%;z-index: 9999;}
+.chanWhiteBox{position: absolute; top: -170px; bottom: 50vh; height: 100%; display: flex; flex-direction: column;align-items: center;width: 100%;z-index: 999;}
 .channelItemBox{background-color: #fff; width: 100%; height: 65%; position: absolute; bottom: 0; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}

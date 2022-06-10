@@ -63,10 +63,10 @@ export default {
       detailHeaderShowYn: false,
 
       chanItem: {},
-      // detailShowYn: true,
-      // adminYn: false
-      adminYn: true,
-      detailShowYn: false
+      detailShowYn: true,
+      adminYn: false
+      // adminYn: true,
+      // detailShowYn: false
 
     }
   },

@@ -1,10 +1,10 @@
 <template>
-<div class="addTeamMemberArea">
+<div class="addTeamMemberArea" style="margin-top:50px">
 
-    <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
+    <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
-    </div>
+    </div> -->
 
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl">
@@ -65,18 +65,25 @@ export default {
     },
     props:{
         setEditMember:{}
-  },
-  data () {
-    return {
-      receiverTitle: '구성원 추가하기',
-      memName: '',
-      memEmail: '',
-      memPhone: '',
-            memberList:[],
-            addMemYn: false,
-            popYn: false,
-            tempIndex: null,
-            confirmText: ''
+    },
+    mounted(){
+        if(this.setEditMember !== null && this.setEditMember !== undefined && this.setEditMember !== ''){
+            this.memName = this.setEditMember.name
+            this.memEmail= this.setEditMember.email
+            this.memPhone = this.setEditMember.phone
+        }
+    },
+    data () {
+        return {
+        receiverTitle: '구성원 추가하기',
+        memName: '',
+        memEmail: '',
+        memPhone: '',
+        memberList:[],
+        addMemYn: false,
+        popYn: false,
+        tempIndex: null,
+        confirmText: ''
         }
     },
     methods:{
@@ -154,6 +161,7 @@ td {
 }
 .addMemberTextArea{
     /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
+
     font-size:14px; width: 100%; height: 35%; background: #FFF; padding: 0 3rem; opacity:0.9;
     position: relative;
 }

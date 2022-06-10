@@ -157,6 +157,7 @@ export default {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 0 1rem;
+  z-index: 999;
   }
 
 .btnBig{

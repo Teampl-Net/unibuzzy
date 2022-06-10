@@ -11,8 +11,8 @@
                 <img class="fl" style="margin-top: 4px; width: 15px;" src="../../../assets/images/main/main_subscriber.png" />
                 <p class="fl font14" style="margin-top: 2px;">{{teamLength}}</p>
             </div>
-            <gBtnSmall :btnTitle="teamBtnText"  @click="teamEditClick" v-if='selectPopYn !== true' />
-            <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn' />
+            <gBtnSmall :btnTitle="teamBtnText"  @click="!detailOpenYn? teamEditClick() : memberEditClick()" v-if='selectPopYn !== true' />
+            <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' />
         </div>
 
         <!-- <div style="display: none">
@@ -24,7 +24,7 @@
         <div style="width: 100%; height: calc(100% - 100px); position: relative;">
                 <teamList style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="!detailOpenYn" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
             <transition name="showGroup">
-                <memberList style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" :listData="clickList" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList'/>
+                <memberList style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" :listData="clickList" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
             </transition>
         </div>
     </div>
@@ -37,8 +37,7 @@
         <div class="selectedReceiverBox" style="" >
             <div v-for="(data, index) in selectReceivers " :key="index" class="fl" style="margin-right:10px; height: 25px; padding: 0 10px; border-radius: 5px; position: relative; margin-bottom:10px;  border: 1px solid #6768A7; " >
 
-                <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>
-
+                <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>\
                 <p class="fl" style="font-size:16px; color:black;" v-if='data.data.name' >{{data.data.name}} </p>
                 <!-- <p class="fl" style="margin-left:10px; padding:0 5px; background-color:#BABBD780; border-radius:3px; height" v-if='data.data.name' >{{data.data.grade}} </p>
  -->
@@ -65,6 +64,7 @@ import teamList from './Tal_receiverTeamList.vue'
 import memberList from './Tal_receiverTeamMemberList.vue'
 export default {
     props: {selectPopYn: {} },
+
     created (){
         this.dummyList = this.$groupDummyList()
         if(this.selectPopYn) {
@@ -90,7 +90,9 @@ export default {
             titleText: '팀플',
             receiverTitle: '그룹 관리',
             selectReceivers : [],
-            teamLength: 100
+            teamLength: 100,
+            addPopOpenYn:null,
+            addPopOpen:''
         }
     },
     methods : {
@@ -135,7 +137,15 @@ export default {
                 this.memberEditYn = true
             }
         },
+        checkAddPopOpend(isOpend){
+            // MemberList에 구성원추가 팝업 on/off 체크
+            this.addPopOpenYn = isOpend
+        },
         backClick(){
+            if(this.addPopOpenYn){
+                // MemberList에 구성원추가 팝업 끄기
+                this.addPopOpenYn = false
+            }else
             if(this.detailOpenYn){
                 this.detailOpenYn = false
                 this.receiverTitle = '그룹 관리'

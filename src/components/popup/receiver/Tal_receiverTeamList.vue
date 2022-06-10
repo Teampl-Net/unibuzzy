@@ -23,7 +23,7 @@
                     </div>
                 </div> -->
 
-                <div v-if="editYn" @click="deleteTeamClick(data)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                <div v-if="editYn" @click="deleteTeamClick(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                     <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                 </div>
                 <div  @click="teamPlusClick(data, index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
@@ -58,7 +58,7 @@ export default {
             dragging: false
         }
     },
-    mounted () {
+    created () {
     this.teamList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
@@ -84,8 +84,9 @@ export default {
             // if(this.selectPopYn !== true)
             this.$emit('openDetail',data) // alert(data.reveiverTeamName)
         },
-        deleteTeamClick(data){
+        deleteTeamClick(data,index){
 
+            this.teamList.splice(index, 1)
         },
         editClick(data, index){
             var editTeamName = document.getElementById(index)
@@ -99,15 +100,16 @@ export default {
         },
         newAddTeam(){
             this.editNameYn = null
-            var addlistData = [{receiverTeamColor:'#ff9999', reveiverTeamName: '',team:[]}]
+            // var addlistData = []
 
-            const newList = [
-                ...addlistData,
-                ...this.teamList
-            ]
-            this.teamList = newList
-            this.editNameYn = 0
-            document.getElementById(0).focus()
+            // const newList = [
+            //     ...addlistData,
+            //     ...this.teamList
+            // ]
+            // this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
+            this.teamList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
+            // this.editNameYn = 0
+            // document.getElementById(0).focus()
         }
     }
 

@@ -414,7 +414,8 @@ input:-internal-autofill-selected {
   border-bottom: 1px solid #ccc;
 }
 .subItemWrite{
-  display: flex; align-items: center;
+  display: flex; align-items: flex-start;
+
   min-height: 35px;
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }
