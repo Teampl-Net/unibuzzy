@@ -6,7 +6,7 @@
     {{editYn}}
     <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="editYn? dragging: 'none'" >
         <transition-group>
-            <div v-for="(data, index) in teamList" :key='index' :class="{widthPop:selectPopYn===true}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
+            <div v-for="(data, index) in teamList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                 <div @click="clickList(data)" class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
@@ -110,6 +110,12 @@ export default {
             // this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
             this.teamList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
             // this.editNameYn = 0
+            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            // debugger
+            setTimeout(() => {
+                document.getElementsByClassName('foo')[0].style.backgroundColor = ''
+                // document.getElementsByClassName('foo')[0].classList.remove('foo')
+            }, 800);
             // document.getElementById(0).focus()
         }
     }
@@ -139,5 +145,16 @@ export default {
 .selPopFl{
     float:left;
     margin-left: 1rem;
+}
+
+/* .foo {
+   transition : background-color 0.5s ease-in;
+} */
+
+.receiverTeamListCard {
+   transition : background-color 0.5s ease-in !important;
+}
+input {
+    background: none;
 }
 </style>

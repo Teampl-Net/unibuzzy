@@ -58,7 +58,7 @@ import chanMenu from '../popup/Tal_channelMenu.vue'
 import chanMenuItem from '../popup/Tal_ChannelMenuItem.vue'
 import chanMenuItemDetail from '../popup/Tal_ChannelMenuItemDetail.vue'
 
-import receiverManager from '../popup/receiver/Tal_managerReceiver.vue'
+import receiverManager from '../popup/receiver/Tal_manageBookList.vue'
 
 export default {
   async created () {

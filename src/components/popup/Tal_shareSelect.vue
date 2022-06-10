@@ -35,7 +35,7 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import managerReceiver from './receiver/Tal_managerReceiver.vue'
+import managerReceiver from './receiver/Tal_manageBookList.vue'
 export default {
     data () {
         return{

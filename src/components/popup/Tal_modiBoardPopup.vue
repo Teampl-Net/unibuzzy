@@ -113,7 +113,7 @@
 import selectType from './Tal_addChannelMenu.vue'
 import shareSelect from './Tal_shareSelect.vue'
 
-import managerReceiver from './receiver/Tal_managerReceiver.vue'
+import managerReceiver from './receiver/Tal_manageBookList.vue'
 export default {
   props:{
     modiBoardDetailProps: {}

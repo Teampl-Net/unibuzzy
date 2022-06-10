@@ -52,8 +52,10 @@ export default {
     chanAlimListTeamKey: {}
   },
   created () {
-    this.getTeamMenuList()
+    
     this.dummyList = this.$groupDummyList()
+    alert(JSON.stringify(this.dummyList))
+    this.getTeamMenuList()
   },
   mounted () {
     this.groupListlength()
@@ -85,7 +87,8 @@ export default {
       paramMap.set('teamKey', this.currentTeamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
-      // debugger
+      // alert(true)
+      this.myBoardList = result
     },
      groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
@@ -157,7 +160,6 @@ export default {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 0 1rem;
-  z-index: 999;
   }
 
 .btnBig{

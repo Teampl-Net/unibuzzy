@@ -7,6 +7,7 @@
         </div>
         <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{data.boardName}}</div>
     </div>
+    <!-- <p>생성된 게시판이 없습니다.</p> -->
 </div>
 </template>
 
