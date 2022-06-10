@@ -72,7 +72,7 @@ export default {
     }
   },
   components: {
-    addChanMenu, 
+    addChanMenu,
     modiBoardPop,
     draggable: VueDraggableNext
   },
@@ -86,7 +86,7 @@ export default {
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
       for (var i = 0; i < this.boardList.length; i ++) {
-        var changeText = this.boardList[i].cabinetNameMtext 
+        var changeText = this.boardList[i].cabinetNameMtext
         this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
       }
     },
@@ -133,7 +133,7 @@ export default {
       cabinet.currentTeamKey = this.currentTeamKey
       param.cabinet = cabinet
       var result = await this.$saveCabinet(param)
-      debugger
+
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         var addBoard = {'boardName':'게시판' + (Number(this.lastBoardKey) + 1),'idNum':2, 'cabinetKey': result.cabinetKey, 'num': this.lastBoardKey + 1 }
         this.boardList.unshift(addBoard)
@@ -160,7 +160,7 @@ export default {
 
   width:100% ;
   height:100vh !important;
-  position: fixed; 
+  position: fixed;
   z-index: 999;
   height: calc(100vh - 20%);
   top: 0;
