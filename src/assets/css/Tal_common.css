@@ -299,3 +299,11 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .receiverTeamListCard input{
     width: 130px;
 }
+
+/* 게시판 편집 - 유민*/
+.sortable-chosen {
+  border: 3px solid #ccc;
+  background-color: rgba(186, 187, 215, 0.5);
+  font-weight: bold;
+  transform: rotate(5deg)
+}
