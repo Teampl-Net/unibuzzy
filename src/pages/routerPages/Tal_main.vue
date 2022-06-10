@@ -40,6 +40,7 @@ import { onMessage } from '../../assets/js/webviewInterface'
 
 // import { onMessage } from '../../assets/js/webviewInterface'
 // import initModal from '../../components/popup/Tal_mainInitModal'
+
 export default {
   name: '',
   props: {
@@ -155,7 +156,8 @@ export default {
     async getUserInform () {
       var userInfo = await this.$getUserInform()
       var userKey = userInfo.userKey
-      await this.getMainBoard(userKey)
+      debugger
+      this.getMainBoard(userKey)
       if (userInfo !== undefined && userInfo !== null) {
         if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null); else userInfo.phoneLast = '등록된 번호가 없습니다.'
@@ -171,7 +173,9 @@ export default {
       return userInfo
     },
     async getMainBoard (userKey) {
-      await this.$axios.post('/tp.getMainBoard', userKey
+      var paramMap = new Map()
+      paramMap.set('userKey', userKey)
+      await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         if (response.status === 200 || response.status === '200') {
           this.alimList = response.data.alimList
