@@ -4,7 +4,7 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} ? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} ? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -23,15 +23,13 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
-      <chanMenu v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @receiverManagerClick='receiverManagerYn = true' />
+      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @receiverManagerClick='receiverManagerYn = true' />
 
-      <chanMenuItem v-if='openChanItemYn' @closePop='openChanItemYn = false' :itemTitle="itemTitle"  @openPop='itemDetail' />
+      <chanMenuItem :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanItemYn' @closePop='openChanItemYn = false' :itemTitle="itemTitle"  @openPop='itemDetail' />
 
-      <chanMenuItemDetail v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='chanMenuItemDetailData'/>
+      <chanMenuItemDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='chanMenuItemDetailData'/>
 
-      <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish'/> -->
-
-      <receiverManager v-if="receiverManagerYn" @closePop="receiverManagerYn = false" />
+      <receiverManager :propData="this.params" v-if="receiverManagerYn" @closePop="receiverManagerYn = false" />
 
     </div>
 </template>
@@ -125,7 +123,8 @@ export default {
       itemTitle: '',
       openChanItemDetailYn: false,
       chanMenuItemDetailData: '',
-      receiverManagerYn: false
+      receiverManagerYn: false,
+      chanAlimListTeamKey: null // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
     }
   },
   props: {
@@ -216,6 +215,7 @@ export default {
         }
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
+          this.chanAlimListTeamKey = target.targetKey || target.teamKey
         }
       } else if (this.targetType === 'pushListAndDetail') {
         this.notiTargetKey = target.targetKey

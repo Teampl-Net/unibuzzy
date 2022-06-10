@@ -3,12 +3,12 @@
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" />
     <div class="itemWrite" style="">
       <p class="textLeft font16 fl" style="width: 150px;">게시판 이름</p>
-      <input v-model="inputChannelName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
+      <input v-model="boardDetail.cabinetNameMtext" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 150px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="" @click="boardTypeClick">{{selectBoardTypeText}}<p class='fr' style="line-height: 25px;">{{rightBtn}}</p></div>
+      <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
@@ -103,7 +103,7 @@
   <gBtnSmall btnThema="light" btnTitle="취소" />
   <gBtnSmall class="mright-05" btnTitle="적용" />
   </div>
-  <selectType v-if="selectTypeYn" @closePop='selectTypeYn = false' @addFinish='addResult' />
+  <selectType v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
   <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
@@ -118,16 +118,17 @@ export default {
   props:{
     modiBoardDetailProps: {}
   },
-  mounted () {
+  created () {
+    this.boardDetail = this.modiBoardDetailProps
+    var test = this.modiBoardDetailProps
+    debugger
   },
   data () {
     return {
-      rightBtn: '>',
-      menuHeaderTitle: '새 게시판 추가',
-      newBoardName: '',
+      boardDetail: {},
       selectBoardTypeText:'게시판의 유형을 선택해주세요',
       selectId:'',
-      selectTypeYn:false,
+      selectTypePopShowYn:false,
       selectItem: '실명',
       show: false,
       multiStatus: [
@@ -164,13 +165,13 @@ export default {
       this.$emit('closePop')
     },
     boardTypeClick () {
-      this.selectTypeYn = true
+      this.selectTypePopShowYn = true
     },
     addResult (data) {
       this.selectBoardTypeText = data.chanMenuTitle
 
       this.selectId = data.idNum
-      this.selectTypeYn = false
+      this.selectTypePopShowYn = false
 
     },
     click () {

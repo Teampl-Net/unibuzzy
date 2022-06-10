@@ -307,13 +307,27 @@ const methods = {
   },
   async saveCabinet (inputParamMap) {
     // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
+    if (inputParamMap) {
+      paramSet = inputParamMap
+    }
+    var result = null
+    var response = await commonAxiosFunction({
+      url: '/tp.saveCabinet',
+      param: paramSet
+    })
+    result = response.data
+    return result
+  },
+  async getTeamMenuList (inputParamMap) {
+    // eslint-disable-next-line no-new-object
     var paramMap = new Map()
     if (inputParamMap) {
       paramMap = inputParamMap
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/tp.saveCabinet',
+      url: '/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     result = response.data
@@ -372,6 +386,8 @@ export default {
     Vue.config.globalProperties.$getCodeList = methods.getCodeList
     Vue.config.globalProperties.$updateStickerList = methods.updateStickerList
     Vue.config.globalProperties.$changeRecvAlimYn = methods.changeRecvAlimYn
+    Vue.config.globalProperties.$saveCabinet = methods.saveCabinet
+    Vue.config.globalProperties.$getTeamMenuList = methods.getTeamMenuList
     Vue.config.globalProperties.$groupDummyList = methods.groupDummyList
   }
 }

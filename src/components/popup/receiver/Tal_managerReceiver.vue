@@ -95,7 +95,8 @@ export default {
     },
     methods : {
         setResult(){
-            // alert(JSON.stringify(this.selectReceivers))
+            alert(JSON.stringify(this.selectReceivers))
+            
             this.$emit('selectedReceiver', this.selectReceivers)
         },
         delectClick(data, index){
