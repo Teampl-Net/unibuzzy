@@ -35,7 +35,7 @@
   </div>
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
-<editChanMenu v-if='editPopYn' @closePop='close' :editList='myBoardList' />
+<editChanMenu :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
 </template>
 <script>
 /* eslint-disable */
@@ -47,9 +47,12 @@ import chanListNew from './receiver/Tal_channelMenuListNew.vue'
 
 export default {
   props:{
-    addChanList:{}
+    addChanList:{},
+    propData: {},
+    chanAlimListTeamKey: {}
   },
   created () {
+    this.getTeamMenuList()
     this.dummyList = this.$groupDummyList()
   },
   mounted () {
@@ -77,11 +80,14 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
-    close(){
-      this.editPopYn = false
-      this.boardListLength()
+    async getTeamMenuList () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.currentTeamKey)
+      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      var result = await this.$getTeamMenuList(paramMap)
+      debugger
     },
-    groupListlength () {
+     groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
        this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
     },
