@@ -1,7 +1,7 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
-    <popHeader @closeXPop="goNo" style="" class="menuHeader headerShadow" :headerTitle="menuHeaderTitle" />
+    <popHeader @closeXPop="goNo" style="" class="menuHeader headerShadow" headerTitle="게시판 편집" />
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <div style="width: 100%; min-height: 30px; margin-bottom: 10px;">
         <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
@@ -60,7 +60,6 @@ export default {
   data () {
     return {
       boardList: [],
-      menuHeaderTitle:'게시판 편집',
       modiBoardDetailProps: null,
       editTeamName:'',
       editBtnYn: false,
