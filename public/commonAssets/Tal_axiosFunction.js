@@ -1,14 +1,15 @@
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://192.168.0.27:8080, http://localhost:8080, http://61.97.186.14:18080'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
+axios.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
-axios.defaults.headers.post['Content-Type'] = 'application/json'
-
+axios.defaults.headers.common['Content-Type'] = 'application/json;'
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://localhost:19090'
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
+axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'
 
 // axios.defaults.baseURL = 'http://localhost:19090'
@@ -126,7 +127,7 @@ const methods = {
     var resultList = null
 
     var result = await commonAxiosFunction({
-      url: '/tp.getUserTeamList',
+      url: '/tp.getContentsList',
       param: paramSet
     })
     resultList = result.data
