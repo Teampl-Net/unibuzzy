@@ -156,7 +156,6 @@ export default {
     async getUserInform () {
       var userInfo = await this.$getUserInform()
       var userKey = userInfo.userKey
-      debugger
       this.getMainBoard(userKey)
       if (userInfo !== undefined && userInfo !== null) {
         if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'

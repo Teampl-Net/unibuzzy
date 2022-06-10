@@ -85,7 +85,7 @@ export default {
       paramMap.set('teamKey', this.currentTeamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
-      debugger
+      // debugger
     },
      groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')

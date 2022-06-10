@@ -121,7 +121,7 @@ export default {
   created () {
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
-    debugger
+    // debugger
   },
   data () {
     return {
