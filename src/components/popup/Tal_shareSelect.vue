@@ -30,27 +30,27 @@
         </div>
     </div>
 
-    <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+    <manageBookList v-if="manageBookListYn" @closePop='manageBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import managerReceiver from './receiver/Tal_manageBookList.vue'
+import manageBookList from './receiver/Tal_manageBookList.vue'
 export default {
     data () {
         return{
-            managerReceiverYn: false,
+            manageBookListYn: false,
             menuHeaderTitle: '공유할 그룹에서 선택',
             selectedReceiver : '공유할 사람/그룹을 선택하세요'
         }
     },
-    components: { managerReceiver },
+    components: { manageBookList },
     methods: {
         showChanMenu () {
-            this.managerReceiverYn = true
+            this.manageBookListYn = true
         },
         setSelectedList (data) {
-            this.managerReceiverYn = false
+            this.manageBookListYn = false
 
             if(data[0].data.reveiverTeamName){
                 this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'

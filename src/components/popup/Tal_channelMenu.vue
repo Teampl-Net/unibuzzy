@@ -35,7 +35,7 @@
   </div>
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
-<editChanMenu :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
+<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
 </template>
 <script>
 /* eslint-disable */
@@ -52,9 +52,8 @@ export default {
     chanAlimListTeamKey: {}
   },
   created () {
-    
     this.dummyList = this.$groupDummyList()
-    alert(JSON.stringify(this.dummyList))
+    // alert(JSON.stringify(this.propData))
     this.getTeamMenuList()
   },
   mounted () {
@@ -84,11 +83,12 @@ export default {
   methods: {
     async getTeamMenuList () {
       var paramMap = new Map()
-      paramMap.set('teamKey', this.currentTeamKey)
+      paramMap.set('teamKey', this.chanAlimListTeamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
       // alert(true)
       this.myBoardList = result
+      debugger
     },
      groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
@@ -131,8 +131,13 @@ export default {
     editChanMenu (){
       this.editPopYn = true;
     },
-    chanMenuClick(boardName){
-      this.$emit('openItem',boardName)
+    chanMenuClick(data){
+      var params = new Object()
+      params.targetType = 'cabinetContentsList'
+      params.currentTeamKey = this.chanAlimListTeamKey
+      params.targetKey = data.cabinetKey
+      params.value = data
+      this.$emit('openItem',params)
     },
     receiverClick(){
       this.$emit('receiverManagerClick');

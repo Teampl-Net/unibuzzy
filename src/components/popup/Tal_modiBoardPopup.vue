@@ -82,10 +82,16 @@
     </div>
     <div class="itemWrite" style="border-bottom: none;">
       <p class="textLeft font16 fl" style="width: 150px;">공유대상</p>
-      <div @click="showChanMenu" class="inputBoxThema textLeft" >{{selectedReceiver}}</div>
+      <div style="width: 100%; min-height: 40px;">
+        <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
+          <input type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" style="height: 100%; float: left;" id="shareAll"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareAll">전체</label>
+          <input type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" style="height: 100%; float: left;" id="shareSelect"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareSelect">선택</label>
+        </div>
+        <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft"  style="width: 100%;">{{selectedReceiver}}</div>
+      </div>
     </div>
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
-    <div style="width: 100%; min-height: 100px;" v-show="sharePermissionShowYn">
+    <div style="width: 100%; min-height: 100px;">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
         <div @click="showChanMenu" class="inputBoxThema textLeft" >{{writePermission}}</div>
@@ -101,10 +107,10 @@
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
   <gBtnSmall btnThema="light" btnTitle="취소" />
-  <gBtnSmall class="mright-05" btnTitle="적용" />
+  <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
-  <selectType v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <managerReceiver v-if="managerReceiverYn" @closePop='managerReceiverYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
+  <manageBookList :chanInfo="this.chanInfo" v-if="manageBookListYn" @closePop='manageBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
 <script>
@@ -113,10 +119,11 @@
 import selectType from './Tal_addChannelMenu.vue'
 import shareSelect from './Tal_shareSelect.vue'
 
-import managerReceiver from './receiver/Tal_manageBookList.vue'
+import manageBookList from './receiver/Tal_manageBookList.vue'
 export default {
   props:{
-    modiBoardDetailProps: {}
+    modiBoardDetailProps: {},
+    chanInfo: {}
   },
   created () {
     this.boardDetail = this.modiBoardDetailProps
@@ -131,6 +138,7 @@ export default {
       selectTypePopShowYn:false,
       selectItem: '실명',
       show: false,
+      shareType: 'all',
       multiStatus: [
         '진행 중',
         '진행 완료',
@@ -140,7 +148,7 @@ export default {
       functionPopShowYn: false,
       inputvalue: '',
       showSelectStatusShowYn: false,
-      managerReceiverYn: false,
+      manageBookListYn: false,
       count: null,
       sharePermissionShowYn: false,
       statusSelectShowYn: false,
@@ -151,15 +159,52 @@ export default {
       commentPermission: '댓글권한'
     }
   },
-  components: {selectType, shareSelect, managerReceiver
+  components: {selectType, shareSelect, manageBookList
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    updateCabinet () {
+      var param = new Object()
+      var cabinet = new Object()
+      cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
+      cabinet.cabinetNameMtext = 'KO$^$' + this.boardDetail.cabinetNameMtext
+      cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
+      cabinet.MenuType = 'C'
+      var shareList = []
+      var itemList = []
+      var share = new Object()
+      var item = new Object()
+      share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+      if(this.shareType === 'all') {
+        share.accessKind = 'T'
+        share.accessKey = this.modiBoardDetailProps.teamKey
+        shareList.push(share)
+        share.shareSeq = 0
+        item.shareSeq = 0
+        item.shareType = 'W'
+        itemList.push(item)
+        item.shareType = 'V'
+        itemList.push(item)
+        item.shareType = 'R'
+        itemList.push(item)
+      } else if (this.shareType === 'select') {
+        // paramMap.set
+      }
+      cabinet.shareList = shareList
+      cabinet.itemList = itemList
+      cabinet.tempKeyList = [0, 1, 2, 3]
+      param.cabinet = cabinet
+      param.creMenuYn = false
+      var result = this.$saveCabinet(param)
+      if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+        alert('수정 성공!')
+      }
+    },
     /* nextStep () {
       this.shareSelectYn = true
     }, */
     showChanMenu () {
-        this.managerReceiverYn = true
+        this.manageBookListYn = true
     },
     goNo (){
       this.$emit('closePop')
@@ -185,7 +230,7 @@ export default {
 
     },
     setSelectedList (data) {
-        this.managerReceiverYn = false
+        this.manageBookListYn = false
         this.selectShareYn = true
         if(data[0].data.reveiverTeamName){
             this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
@@ -197,9 +242,9 @@ export default {
         }else{
             this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
         }
-
-
-
+    },
+    changeShareType (type) {
+      this.shareType = type
     },
     changed () {
       this.multiStatus += this.inputvalue

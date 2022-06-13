@@ -25,9 +25,9 @@
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @receiverManagerClick='receiverManagerYn = true' />
 
-      <chanMenuItem :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanItemYn' @closePop='openChanItemYn = false' :itemTitle="itemTitle"  @openPop='itemDetail' />
+      <cabinetContentsList :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'cabinetContentsList'" @closePop='openChanItemYn = false' @openPop='itemDetail' />
 
-      <chanMenuItemDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='chanMenuItemDetailData'/>
+      <cabinetContentsDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='cabinetContentsDetailData'/>
 
       <receiverManager :propData="this.params" v-if="receiverManagerYn" @closePop="receiverManagerYn = false" />
 
@@ -55,8 +55,8 @@ import PullToRefresh from 'pulltorefreshjs'
 import chanMenu from '../popup/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
-import chanMenuItem from '../popup/Tal_ChannelMenuItem.vue'
-import chanMenuItemDetail from '../popup/Tal_ChannelMenuItemDetail.vue'
+import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'
+import cabinetContentsDetail from '../popup/Tal_cabinetContentsDetail.vue'
 
 import receiverManager from '../popup/receiver/Tal_manageBookList.vue'
 
@@ -67,6 +67,7 @@ export default {
     document.addEventListener('message', e => this.BackPopClose(e))
     window.addEventListener('message', e => this.BackPopClose(e))
     localStorage.setItem('notiReloadPage', 'none')
+    // alert(JSON.stringify(this.params))
   },
   mounted () {
     PullToRefresh.destroyAll()
@@ -120,9 +121,9 @@ export default {
       successChanParam: {},
       sendOkYn: 0,
 
-      itemTitle: '',
+      // itemTitle: '',
       openChanItemDetailYn: false,
-      chanMenuItemDetailData: '',
+      cabinetContentsDetailData: '',
       receiverManagerYn: false,
       chanAlimListTeamKey: null // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
     }
@@ -148,8 +149,8 @@ export default {
     writePush,
 
     chanMenu,
-    chanMenuItem,
-    chanMenuItemDetail,
+    cabinetContentsList,
+    cabinetContentsDetail,
     receiverManager
   },
   updated () {
@@ -157,15 +158,15 @@ export default {
   methods: {
     itemDetail (parm) {
       this.openChanItemDetailYn = true
-      this.chanMenuItemDetailData = parm.data
+      this.cabinetContentsDetailData = parm.data
 
       // alert(parm)
     },
 
-    openChannelItem (item) {
-      this.itemTitle = item
+    openChannelItem (data) {
+      // this.itemTitle = item
       this.openChanMenuYn = false
-      this.openChanItemYn = true
+      this.openPop(data)
     },
     reloadParent () {
       this.$emit('reloadPop')
@@ -256,8 +257,10 @@ export default {
         }
       } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
-      } else if (this.params.targetType === 'chanMenuItemDetail') {
-        this.headerTitle = 'aaaaaaaaaaaa'
+      } else if (this.targetType === 'cabinetContentsList') {
+        // alert(this.$changeText(this.params.value.cabinetNameMtext))
+        this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
+        // alert(this.headerTitle)
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1

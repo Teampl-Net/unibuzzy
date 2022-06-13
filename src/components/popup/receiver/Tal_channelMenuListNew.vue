@@ -5,7 +5,7 @@
         <div class="fl" style="width:30px;height:30px; border-radius:100%; background-color:#ccc; margin-left:1rem;">
             <img src="../../../assets/images/main/main_subscriber.png" alt="" >
         </div>
-        <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{data.boardName}}</div>
+        <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{this.$changeText(data.cabinetNameMtext)}}</div>
     </div>
     <!-- <p>생성된 게시판이 없습니다.</p> -->
 </div>
@@ -25,7 +25,7 @@ export default {
     methods: {
         listClick (data) {
 
-            this.$emit('chanMenuClick', data.boardName)
+            this.$emit('chanMenuClick', data)
         }
     }
 }

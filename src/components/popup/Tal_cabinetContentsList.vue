@@ -2,17 +2,7 @@
 
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div style="position: absolute; top:0; left:0; z-index:9999; height: 100vh; position: absolute; background-color:white; width:100vw">
-
-    <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036;" >
-      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" src="../../assets/images/main/icon_back_white.png"/>
-      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" src="../../assets/images/common/icon_back.png"/>
-
-      <p >{{itemTitle}}</p>
-    </div>
-
-    <!-- {{scrollPosition}} -->
-
+  <div class="pagePaddingWrap" style=" height: 100vh;absolute; background-color:white; width:100vw">
     <div class= "pageHeader pushListCover" style="margin:0 1rem" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
@@ -50,15 +40,14 @@ export default {
     // searchResult
   },
   props: {
-    itemTitle: {}
+    propData: {}
   },
-
+  created () {
+    this.getCabinetDetail()
+  },
   mounted () {
     this.a = document.getElementById('test')
     this.a.addEventListener('scroll', this.updateScroll)
-    if (this.notiTargetKey) {
-      this.openPop({ contentsKey: this.notiTargetKey })
-    }
   },
   watch: {
     routerReloadKey () {
@@ -115,35 +104,11 @@ export default {
       this.findPopShowYn = false
     },
 
-    addSubHistory (pageName) {
-      // eslint-disable-next-line no-array-constructor
-      var sHistory = new Array()
-      if (this.subHistoryList) {
-        sHistory = this.subHistoryList
-      }
-      sHistory.push(pageName)
-      this.subHistoryList = sHistory
-    },
     closeSearchPop () {
       this.findPopShowYn = false
       this.subHistoryList.splice(-1, 1)
     },
-    BackPopClose (e) {
-      if (this.subHistoryList.length === 0) {
-        if (this.popYn === false) {
-          if (JSON.parse(e.data).type === 'goback') {
-            if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-              if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-                this.$removeHistoryStackForPage(this.pageHistoryName)
-              }
-            }
-          }
-        }
-      }
-    },
-    reload () {
-      this.getPushContentsList()
-    },
+    
     openPop (value) {
       // eslint-disable-next-line no-new-object
       // alert(value)
@@ -161,47 +126,22 @@ export default {
       this.$emit('openPop', params)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
-    subHeaderEvent (request) {
-      if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
-    },
+    
     changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      this.getPushContentsList()
+      this.getCabinetDetail()
     },
-    async getPushContentsList () {
+    async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
-      }
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        }
-      }
-      param.findLogReadYn = null
-      param.findActYn = false
-      param.findActLikeYn = false
-      param.findActStarYn = false
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (this.viewTab === 'L') {
-        param.findActYn = true
-        param.findActLikeYn = true
-      } else if (this.viewTab === 'S') {
-        param.findActYn = true
-        param.findActStarYn = true
-      } else if (this.viewTab === 'R') {
-        param.findLogReadYn = false
-      }
-      var resultList = await this.$getContentsList(param)
+      var tt = this.propData
+      param.currentTeamKey = this.propData.currentTeamKey
+      param.cabinetKey = this.propData.targetKey
+      var resultList = await this.$getCabinetDetail(param)
+      debugger
       this.commonListData = resultList.content
+      
       this.findPopShowYn = false
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
@@ -219,7 +159,7 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getPushContentsList()
+      await this.getCabinetDetail()
     },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
@@ -257,7 +197,7 @@ export default {
         delete this.findKeyList.fromCreDateStr
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getPushContentsList()
+      await this.getCabinetDetail()
     },
     async updateScroll () {
       this.ay = this.a.scrollTop
@@ -281,11 +221,7 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
 
-      testList: [
-        { title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyMinStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }
-
-      ]
-
+      
     }
   }
 }

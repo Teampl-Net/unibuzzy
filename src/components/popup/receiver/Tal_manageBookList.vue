@@ -63,13 +63,17 @@ import findContentsList from '../Tal_findContentsList.vue'
 import teamList from './Tal_receiverTeamList.vue'
 import memberList from './Tal_receiverTeamMemberList.vue'
 export default {
-    props: {selectPopYn: {} },
+    props: {
+        selectPopYn: {},
+        chanInfo: {}
+    },
 
     created (){
+        // alert(JSON.stringify(this.chanInfo))
         this.dummyList = this.$groupDummyList()
         if(this.selectPopYn) {
             this.receiverTitle = '대상 선택'
-            this.titleText = '대상선택 > 팀플'
+            this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
         }
 
     },

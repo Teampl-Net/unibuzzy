@@ -4,7 +4,7 @@
         <p class="font15 commonBlack">+</p>
     </div> -->
     {{editYn}}
-    <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="editYn? dragging: 'none'" >
+    <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" >
         <transition-group>
             <div v-for="(data, index) in teamList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->

@@ -32,7 +32,7 @@
     </div> -->
 
   </div>
-  <modiBoardPop :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
+  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
 
 </template>
 
@@ -46,6 +46,7 @@ export default {
   props:{
     // editList: {},
     addChanList: {},
+    chanInfo: {},
     currentTeamKey: {}
   },
   created () {
@@ -82,7 +83,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', this.currentTeamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-      paramMap.set('adminYn', 0)
+      paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
       for (var i = 0; i < this.boardList.length; i ++) {
