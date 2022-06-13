@@ -56,6 +56,24 @@ export default {
   },
 
   methods: {
+    async getCabinetDetail () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      var tt = this.propData
+
+      param.currentTeamKey = this.propData.currentTeamKey
+      param.cabinetKey = this.propData.targetKey
+      var resultList = await this.$getCabinetDetail(param)
+      debugger
+      //mShareItemList가 잘 들어오면 save잘 된것
+      alert(JSON.stringify(resultList))
+      this.commonListData = resultList.content
+      
+      this.findPopShowYn = false
+      // this.userDoList = resultList.userDo
+      this.$emit('closeLoading')
+    },
+
     async loadMore () {
       // console.log('옵저버 실행'+(this.offsetInt++))
       // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
@@ -131,20 +149,6 @@ export default {
       // this.$emit('openLoading')
       this.viewTab = tabName
       this.getCabinetDetail()
-    },
-    async getCabinetDetail () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      var tt = this.propData
-      param.currentTeamKey = this.propData.currentTeamKey
-      param.cabinetKey = this.propData.targetKey
-      var resultList = await this.$getCabinetDetail(param)
-      debugger
-      this.commonListData = resultList.content
-      
-      this.findPopShowYn = false
-      // this.userDoList = resultList.userDo
-      this.$emit('closeLoading')
     },
     async requestSearchList (param) {
       if (param) {

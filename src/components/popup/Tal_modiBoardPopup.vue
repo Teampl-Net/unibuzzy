@@ -181,11 +181,11 @@ export default {
         shareList.push(share)
         share.shareSeq = 0
         item.shareSeq = 0
-        item.shareType = 'W'
+        item.shareType = 'W' // 작성
         itemList.push(item)
-        item.shareType = 'V'
+        item.shareType = 'V' //열람
         itemList.push(item)
-        item.shareType = 'R'
+        item.shareType = 'R' //댓글
         itemList.push(item)
       } else if (this.shareType === 'select') {
         // paramMap.set
