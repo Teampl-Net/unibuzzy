@@ -5,12 +5,13 @@
 
     <div class="pagePaddingWrap" style="height:calc(100% - 300px); overflow: auto;" :class="{longHeight : selectPopYn !== true}" >
     <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-        <div style=" border-bottom:1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; " >
+        <div style=" border-bottom:1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden;" >
             <p class="fl mright-05 font16 h-100P fontBold colorBlack">{{titleText}}</p>
             <div class="mleft-01 fl" style="height: 100%; ">
                 <img class="fl" style="margin-top: 4px; width: 15px;" src="../../../assets/images/main/main_subscriber.png" />
                 <p class="fl font14" style="margin-top: 2px;">{{teamLength}}</p>
             </div>
+            <gBtnSmall btnTitle="전체 추가" v-if='selectPopYn === true' @click="addAllClick" />
             <gBtnSmall :btnTitle="teamBtnText"  @click="!detailOpenYn? teamEditClick() : memberEditClick()" v-if='selectPopYn !== true' />
             <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' />
         </div>
@@ -21,11 +22,17 @@
                 <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
             </transition>
         </div> -->
-        <div style="width: 100%; height: calc(100% - 100px); position: relative;">
-                <teamList style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="!detailOpenYn" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+
+        <div  style="width: 100%; height: calc(100% - 100px); position: relative;">
+            <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' />
+            <teamList v-else style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="!detailOpenYn && selectedList !== ''" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
             <transition name="showGroup">
                 <memberList style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" :listData="clickList" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
             </transition>
+            <!-- <transition name="showGroup">
+                <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
+            </transition> -->
+
         </div>
     </div>
 
@@ -37,7 +44,7 @@
         <div class="selectedReceiverBox" style="" >
             <div v-for="(data, index) in selectReceivers " :key="index" class="fl" style="margin-right:10px; height: 25px; padding: 0 10px; border-radius: 5px; position: relative; margin-bottom:10px;  border: 1px solid #6768A7; " >
 
-                <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>\
+                <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>
                 <p class="fl" style="font-size:16px; color:black;" v-if='data.data.name' >{{data.data.name}} </p>
                 <!-- <p class="fl" style="margin-left:10px; padding:0 5px; background-color:#BABBD780; border-radius:3px; height" v-if='data.data.name' >{{data.data.grade}} </p>
  -->
@@ -62,12 +69,13 @@
 import findContentsList from '../Tal_findContentsList.vue'
 import teamList from './Tal_receiverTeamList.vue'
 import memberList from './Tal_receiverTeamMemberList.vue'
+import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {
     props: {
         selectPopYn: {},
-        chanInfo: {}
+        chanInfo: {},
+        selectedList: {}
     },
-
     created (){
         // alert(JSON.stringify(this.chanInfo))
         this.dummyList = this.$groupDummyList()
@@ -75,11 +83,19 @@ export default {
             this.receiverTitle = '대상 선택'
             this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
         }
+        if(this.selectedList !== '' && this.selectedList !== null &&  this.selectedList !== undefined ){
+            this.selectedYn = true
+            this.setSelectedList = this.selectedList
+            // alert(this.setSelectedList.data.reveiverTeamName)
+        }
 
     },
-    components: { findContentsList,teamList,memberList },
+    components: { findContentsList,teamList,memberList,selectedListCompo },
     data () {
         return{
+            selectedYn:false,
+            setSelectedList:[],
+
             teamEditYn:false,
             teamBtnText:'편집',
             memberEditYn:false,
@@ -101,8 +117,8 @@ export default {
     },
     methods : {
         setResult(){
-            alert(JSON.stringify(this.selectReceivers))
-            
+            // alert(JSON.stringify(this.selectReceivers))
+
             this.$emit('selectedReceiver', this.selectReceivers)
         },
         delectClick(data, index){
@@ -115,12 +131,9 @@ export default {
             this.selectReceivers.splice(index, 1)
         },
         addList(obj){
+            // alert(JSON.stringify(obj))
             this.selectReceivers.unshift(obj)
-            // if(obj.data.reveiverTeamName){
-            //     this.selectReceivers.unshift(obj.data)
-            // }else if(obj.data.name){
-            //     this.selectReceivers.unshift(obj.data.name)
-            // }
+
         },
         teamEditClick(){
             if(this.teamEditYn){
@@ -156,7 +169,14 @@ export default {
                 if(this.selectPopYn) {
                     this.receiverTitle = '대상 선택'
                 }
-                this.titleText = '팀플'
+
+                if(this.selectPopYn){
+
+                    this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
+                }else{
+                    this.titleText = '팀플'
+                }
+
                 this.teamLength = 100
             }else{
                 this.$emit('closePop')
@@ -166,17 +186,39 @@ export default {
             if(!this.teamEditYn){
                 this.detailOpenYn = true
                 this.receiverTitle = '구성원 관리'
-                this.titleText = '팀플 > ' + data.reveiverTeamName
+                this.titleText += " > " + data.reveiverTeamName
                 if(this.selectPopYn) {
                     this.receiverTitle = '대상 선택'
+                    // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
                 }
                 this.teamLength = data.team.length
                 this.clickList = data
             }
             // alert(this.clickList)
         },
-        test(){
-            this.findPopShowYn = true
+        addAllClick () {
+            var i = 0
+            var obj = new Object()
+            if(this.detailOpenYn){
+                // 멤버 리스트에서 전체 추가 클릭
+                // alert(this.clickList.reveiverTeamName)
+                obj.data = this.clickList
+                this.selectReceivers.unshift(obj)
+                //  arr3.findIndex(i => i.name == "강호동"); 
+                const addAllMemTeamIdx = this.dummyList.findIndex(i => i.reveiverTeamName === this.clickList.reveiverTeamName)
+                this.dummyList.splice(addAllMemTeamIdx, 1) // 전체 리스트에서 해당 인덱스 삭제
+                this.detailOpenYn = false  // 삭제 되었으면 디테일 끄기
+                this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
+
+            }else{
+                // 팀 리스트에서 전체 추가 클릭
+                for(i=0; i < this.dummyList.length; i++){
+                    obj = new Object()
+                    obj.data = this.dummyList[i]
+                    this.selectReceivers.unshift(obj)
+                }
+                this.dummyList.splice(0, this.dummyList.length) // 전체 리스트에서 제거
+            }
         },
         closeSearchPop (){
             this.findPopShowYn = false

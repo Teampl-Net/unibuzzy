@@ -94,15 +94,15 @@
     <div style="width: 100%; min-height: 100px;">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
-        <div @click="showChanMenu" class="inputBoxThema textLeft" >{{writePermission}}</div>
+        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{writePermission}}</div>
       </div>
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>
-        <div @click="showChanMenu" class="inputBoxThema textLeft" >{{readPermission}}</div>
+        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{readPermission}}</div>
       </div>
       <div class="subItemWrite" style="">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">댓글</p>
-        <div @click="showChanMenu" class="inputBoxThema textLeft" >{{commentPermission}}</div>
+        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{commentPermission}}</div>
       </div>
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
@@ -117,7 +117,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import selectType from './Tal_addChannelMenu.vue'
-import shareSelect from './Tal_shareSelect.vue'
+// import shareSelect from './Tal_shareSelect.vue'
 
 import manageBookList from './receiver/Tal_manageBookList.vue'
 export default {
@@ -156,10 +156,11 @@ export default {
       selectedReceiver : '게시판을 공유할 대상을 선택해주세요',
       writePermission: '작성권한',
       readPermission: '열람권한',
-      commentPermission: '댓글권한'
+      commentPermission: '댓글권한',
+      selectedList :null,
     }
   },
-  components: {selectType, shareSelect, manageBookList
+  components: {selectType, manageBookList
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -203,6 +204,11 @@ export default {
     /* nextStep () {
       this.shareSelectYn = true
     }, */
+    selectedListSelect(){
+      this.managerReceiverYn =true
+
+
+    },
     showChanMenu () {
         this.manageBookListYn = true
     },
@@ -232,6 +238,7 @@ export default {
     setSelectedList (data) {
         this.manageBookListYn = false
         this.selectShareYn = true
+        this.selectedList = data
         if(data[0].data.reveiverTeamName){
             this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
         }else{
@@ -286,9 +293,10 @@ export default {
       if (this.sharePermissionShowYn) {
         this.sharePermissionShowYn = false
       }
-       else {
-         this.sharePermissionShowYn = true
-       }
+      else {
+        this.sharePermissionShowYn = true
+        // alert(JSON.stringify(this.selectedList))
+      }
     }
   }
 

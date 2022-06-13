@@ -53,8 +53,9 @@ export default {
   },
   created () {
     this.dummyList = this.$groupDummyList()
-    // alert(JSON.stringify(this.propData))
+
     this.getTeamMenuList()
+    // this. myBoardList =
   },
   mounted () {
     this.groupListlength()
@@ -62,11 +63,7 @@ export default {
   },
   data () {
     return {
-      myBoardList:[
-        { boardName: '포토게시판', idNum: 5 },
-        { boardName: '새소식', idNum: 6 },
-        { boardName: '문의사항', idNum: 7 },
-      ],
+      myBoardList:{},
       editYn:true,
       menuHeaderTitle:'채널 메뉴',
       addChanMenuList:{},
@@ -88,15 +85,15 @@ export default {
       var result = await this.$getTeamMenuList(paramMap)
       // alert(true)
       this.myBoardList = result
-      debugger
+      // debugger
     },
-     groupListlength () {
-       this.$refs.groupRef.style.setProperty('--menuHeight', this.dummyList.length * 70 + 20 + 'px')
-       this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
+    groupListlength () {
+       this.$refs.groupRef.style.setProperty('--menuHeight', (this.dummyList.length=== 0 ? 1 : this.dummyList.length) * 70 + 20 + 'px')
+      //  this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
     },
     boardListLength () {
-      this.$refs.boardRef.style.setProperty('--menuHeight', this.myBoardList.length * 50 + 20 + 'px')
-       this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
+      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
+      // this.menuHeight = (this.dummyList.length=== 0 ? 1 : this.dummyList.length) * 70 + 20 + 'px'
       return{
         '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
       }

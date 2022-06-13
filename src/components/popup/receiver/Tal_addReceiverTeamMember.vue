@@ -21,10 +21,10 @@
             <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">전화번호</p>
             <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr"  v-model="memPhone" >
         </div>
-        <gBtnSmall btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addNewMem" />
+        <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addNewMem" />
     </div>
 
-    <div style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
+    <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
         <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
         <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
             <table style="width:100% ; border-collapse: collapse;">
@@ -48,9 +48,9 @@
                 </tr>
             </table>
         </div>
-        <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" />
-    </div>
 
+    </div>
+    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="updateBtnClick" />
 </div>
 <popUp v-if="popYn" @no='popYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -64,7 +64,8 @@ export default {
         popUp
     },
     props:{
-        setEditMember:{}
+        setEditMember:{},
+        excelPopYn:{}
     },
     mounted(){
         if(this.setEditMember !== null && this.setEditMember !== undefined && this.setEditMember !== ''){
@@ -108,6 +109,34 @@ export default {
             this.$emit('closePop')
         },
         addNewMem() {
+            if(this.regTest()){
+                const testList = new Object();
+                testList.name = this.memName
+                testList.phoneNum = this.memPhone
+                testList.email = this.memEmail
+
+                this.memberList.unshift(testList)
+                this.memName = ''
+                this.memPhone = ''
+                this.memEmail = ''
+            }
+        },
+        deleteMem(data,index) {
+            this.memberList.splice(index, 1);
+        },
+        ok(){
+            this.popYn = false
+        },
+        updateBtnClick(){
+            if(this.regTest()){
+                this.setEditMember.name = this.memName
+                this.setEditMember.phone = this.memPhone
+                this.setEditMember.email = this.memEmail
+                this.$emit('updateMember', this.setEditMember)
+            }
+        },
+        regTest(){
+            var result = false
             if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail)) {
                     this.popYn = true
@@ -116,15 +145,7 @@ export default {
                     this.popYn = true
                     this.confirmText = '전화번호 형식이 유효하지 않습니다.'
                 } else {
-                    const testList = new Object();
-                    testList.name = this.memName
-                    testList.phoneNum = this.memPhone
-                    testList.email = this.memEmail
-
-                    this.memberList.unshift(testList)
-                    this.memName = ''
-                    this.memPhone = ''
-                    this.memEmail = ''
+                    result = true
                 }
             } else if (this.memName === '') {
                 this.popYn = true
@@ -136,13 +157,8 @@ export default {
                 this.popYn = true
                 this.confirmText = '전화번호를 입력하세요.'
             }
+            return result
         },
-        deleteMem(data,index) {
-            this.memberList.splice(index, 1);
-        },
-        ok(){
-            this.popYn = false
-        }
     }
 }
 </script>
@@ -187,7 +203,7 @@ margin-bottom: 2rem;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 50px);
     background-color: white;
 
 }

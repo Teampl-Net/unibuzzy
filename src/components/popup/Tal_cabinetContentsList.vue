@@ -64,11 +64,11 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      debugger
+
       //mShareItemList가 잘 들어오면 save잘 된것
       alert(JSON.stringify(resultList))
       this.commonListData = resultList.content
-      
+
       this.findPopShowYn = false
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
@@ -126,7 +126,7 @@ export default {
       this.findPopShowYn = false
       this.subHistoryList.splice(-1, 1)
     },
-    
+
     openPop (value) {
       // eslint-disable-next-line no-new-object
       // alert(value)
@@ -144,7 +144,7 @@ export default {
       this.$emit('openPop', params)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
-    
+
     changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
@@ -225,7 +225,7 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
 
-      
+
     }
   }
 }

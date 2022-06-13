@@ -1,22 +1,22 @@
 <template>
 <div  id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <!-- <div>{{pushKey}}</div> -->
-    <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
+  <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
 
-      <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
-        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
-          <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건</p>
-          <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
-        </div>
-        <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
-          <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
-          <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div>
-        </div>
-        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
-          <p class="font13 ">#라이프스타일</p>
-        </div>
-        <div style="width: 100%; padding: 0 20px; margin-top: 0.8rem; ">
-          <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+    <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
+      <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
+        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건</p>
+        <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
+      </div>
+      <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
+        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
+        <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div>
+      </div>
+      <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
+        <p class="font13 ">#라이프스타일</p>
+      </div>
+      <div style="width: 100%; padding: 0 20px; margin-top: 0.8rem; ">
+        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
           <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
         </div>
       </div>
@@ -25,20 +25,20 @@
       <span class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
       <span class="font13 mbottom-05 fl">#라이프스타일</span>
     </div>
-      <!-- <div style="width: 100%; height: 320px;float: left;">
-        <div id="summaryWrap2" class="summaryWrap2">
-          <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
-            <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-            <span class="font13 mbottom-05 fl">#라이프스타일</span>
-          </div>
+    <!-- <div style="width: 100%; height: 320px;float: left;">
+      <div id="summaryWrap2" class="summaryWrap2">
+        <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
+          <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
+          <span class="font13 mbottom-05 fl">#라이프스타일</span>
         </div>
-      </div> -->
+      </div>
+    </div> -->
 
-    </div>
+  </div>
 
-    <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-      <pushList :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
-    </div>
+  <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
+    <pushList :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
+  </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
@@ -64,9 +65,10 @@ export default {
 
       chanItem: {},
       detailShowYn: true,
-      adminYn: false
+      adminYn: false,
       // adminYn: true,
       // detailShowYn: false
+
 
     }
   },
@@ -75,9 +77,10 @@ export default {
   },
   components: {
     pushList,
-    chanDetailComp
+    chanDetailComp,
   },
   async created () {
+    this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
@@ -95,6 +98,7 @@ export default {
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
+
   },
   methods: {
     btnWritePush () {

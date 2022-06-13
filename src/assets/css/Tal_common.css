@@ -305,5 +305,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   border: 3px solid #ccc;
   background-color: rgba(186, 187, 215, 0.5);
   font-weight: bold;
-  transform: rotate(-2deg)
+  transform: rotate(-2deg);
+  /* cursor: move; */
 }

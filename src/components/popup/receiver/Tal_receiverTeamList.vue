@@ -3,26 +3,18 @@
     <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
-    {{editYn}}
-    <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" >
+    <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; " :disabled="!editYn" delay="200" >
         <transition-group>
             <div v-for="(data, index) in teamList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                 <div @click="clickList(data)" class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
-                    <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
+                    <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
                 </div>
                 <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
                 <div @click="clickList(data)" class="fl h-100P">
                     <input v-if="editYn" :id="index" v-model="data.reveiverTeamName" style="border:none; height: 100%; border-bottom: 0.5px solid #ccc;"/>
                     <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.reveiverTeamName + ' (' + data.team.length + ')'}}</p>
                 </div>
-
-                <!-- <div @click="clickList(data)" class="fr mright-1 mtop-05" v-if="!editYn" :class="{selPopFl: selectPopYn === true}">
-                    <p class="fr font15 commonBlack" style="margin-right:10px">{{data.team.length}}</p>
-                    <div style="width: 20px; float: left; height: 20px; border-radius: 100%; display: flex; justify-content: center; align-items: center; margin-right: 3px; border: 1.5px solid #6768A7;">
-                        <img src="../../../assets/images/main/main_subscriber.png"   class="receiverTeamSubscImg"  >
-                    </div>
-                </div> -->
 
                 <div v-if="editYn" @click="deleteTeamClick(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                     <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
@@ -35,6 +27,10 @@
             </div>
         </transition-group>
     </draggable>
+
+
+
+
 
 </div>
 </template>
@@ -74,6 +70,9 @@ export default {
         }
     },
     methods:{
+        checkMove(){
+            return this.editYn;
+        },
         teamPlusClick(data, index){
             const obj = new Object();
             obj.data = data;

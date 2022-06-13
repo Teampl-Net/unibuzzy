@@ -7,12 +7,13 @@
         <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
         <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" />
       </div>
-      <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+
+      <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
         <transition-group>
           <div @click="openModiBoardPop(data)"  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
             <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
-              <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
+              <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
             <div class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText"/>
@@ -72,7 +73,7 @@ export default {
       lastBoardKey: null,
       dragging: false,
       modiBoardPopShowYn: false,
-      longPressYn: false
+      enabled:false
     }
   },
   components: {
@@ -83,6 +84,11 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    checkMove(){
+
+      return false
+      // return (evt.draggedContext.element.cabinetNameMtext!=='게시판1');
+    },
     async getTeamMenuList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.currentTeamKey)

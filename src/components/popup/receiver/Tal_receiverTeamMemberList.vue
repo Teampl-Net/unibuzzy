@@ -5,7 +5,7 @@
     </div> -->
     <div v-for="(data, index) in memberList.team" :key='index' class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
 
-        <div class="fl" @click="editClick(data)" >
+        <div class="fl" @click="editClick(data,index)" >
             <!-- <div class="fl movePointerArea" style="width:30px; background-color:#ddd" v-if="editYn"><p class="tB trans90 commonBlack " >{{upTxt}}</p><p class="tB trans90 commonBlack">{{downTxt}}</p> </div> -->
             <!-- <div class="fl receiverTeamColor" :style="{background:teamColor}"></div> -->
             <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{data.name}}</p>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <addTeamMember v-if="addMemberPopYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' />
+    <addTeamMember v-if="addMemberPopYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' />
 </div>
 
 </template>
@@ -79,15 +79,19 @@ export default {
     },
     methods:{
         deleteMemberClick(data, index){
-            alert(index)
+            // alert(index)
             this.memberList.team.splice(index, 1)
         },
         editClick(data,index){
+            if(!this.selectPopYn){
+                data.index = index
+                this.editMember = data
+                // alert(JSON.stringify(this.editMember))
+                this.addMemberPopYn = true
+                this.$emit('openAddPop',this.addMemberPopYn)
+            }
 
-            this.editMember = data
-            // alert(JSON.stringify(this.editMember))
-            this.addMemberPopYn = true
-            this.$emit('openAddPop',this.addMemberPopYn)
+
         },
         memberPlusClick(data, index){
             const obj = new Object();
@@ -108,13 +112,18 @@ export default {
             }, 800);
         },
 
+        updateData(obj){
+            // obj -> prop으로 보낸 data에 수정을 직접해서 다시 $emit으로 받음
+            this.addMemberPopYn = false
+        }
+
     }
 }
 </script>
 
 <style >
 
-.receiverTeamMemberArea{float: left; margin-top: 10px; width: 100%;}
+.receiverTeamMemberArea{float: left; margin-top: 10px; width: 100%; }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee; background: #6768a712; border-radius: 8px; padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
 
