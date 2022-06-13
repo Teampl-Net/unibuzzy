@@ -23,13 +23,13 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
-      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @receiverManagerClick='receiverManagerYn = true' />
+      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
 
       <cabinetContentsList :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'cabinetContentsList'" @closePop='openChanItemYn = false' @openPop='itemDetail' />
 
       <cabinetContentsDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='cabinetContentsDetailData'/>
 
-      <receiverManager :propData="this.params" v-if="receiverManagerYn" @closePop="receiverManagerYn = false" />
+      <manageBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" />
 
     </div>
 </template>
@@ -58,7 +58,7 @@ import chanMenu from '../popup/Tal_channelMenu.vue'
 import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'
 import cabinetContentsDetail from '../popup/Tal_cabinetContentsDetail.vue'
 
-import receiverManager from '../popup/receiver/Tal_manageBookList.vue'
+import manageBookList from '../popup/receiver/Tal_manageBookList.vue'
 
 export default {
   async created () {
@@ -124,7 +124,6 @@ export default {
       // itemTitle: '',
       openChanItemDetailYn: false,
       cabinetContentsDetailData: '',
-      receiverManagerYn: false,
       chanAlimListTeamKey: null // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
     }
   },
@@ -151,7 +150,7 @@ export default {
     chanMenu,
     cabinetContentsList,
     cabinetContentsDetail,
-    receiverManager
+    manageBookList
   },
   updated () {
   },
@@ -260,6 +259,10 @@ export default {
       } else if (this.targetType === 'cabinetContentsList') {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
+        // alert(this.headerTitle)
+      } else if (this.targetType === 'editBookList') {
+        // alert(this.$changeText(this.params.value.cabinetNameMtext))
+        this.headerTitle = '주소록 관리'
         // alert(this.headerTitle)
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

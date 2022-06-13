@@ -32,7 +32,7 @@ import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import myObserver from './components/Tal_ScrollObserver.vue'
 
 import commonjs from './assets/js/Tal_common'
-import axiosFunction from '../public/commonAssets/Tal_axiosFunction'
+import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
@@ -86,6 +86,7 @@ axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // Vue.prototype.$http = axios
 
 app.config.globalProperties.$axios = axios
+app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
