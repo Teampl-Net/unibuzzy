@@ -145,7 +145,12 @@ export default {
                 if (addBoardNum > Number((boardExtraText.substring(1)).split(')')[0]) + 1) {
 
                 } else {
+                  debugger
                   addBoardNum = Number((boardExtraText.substring(1)).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
+                  // 아마도 수정 필요
+                  if (addBoardNum === NaN) {
+                    addBoardNum -= 1;
+                  }
                 }
               }
             }
