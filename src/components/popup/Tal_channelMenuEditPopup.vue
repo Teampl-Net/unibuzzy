@@ -5,7 +5,8 @@
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <div style="width: 100%; min-height: 30px; margin-bottom: 10px;">
         <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
-        <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" />
+        <!-- <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" /> -->
+
       </div>
 
       <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
@@ -24,6 +25,7 @@
           </div>
         </transition-group>
       </draggable>
+      <div class="btnPlus" btnTitle="추가" @click="addBoardRow"><p style="font-size:40px;">+</p></div>
     </div>
 
     <!-- <div style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%)"> -->
@@ -32,7 +34,7 @@
       <gBtnSmall class="btnBig" v-on:click="editYn = false" btnTitle="적용" style="margin-right:10px"/>
     </div> -->
 
-  </div>
+</div>
   <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
 
 </template>
@@ -194,6 +196,17 @@ export default {
 </script>
 
 <style scoped>
+.btnPlus{
+  width:4rem; height:4rem; display: flex;
+  padding-top: 5px;
+  justify-content: center; align-items: center;
+  color:#6768a7; border:3px solid #6768a7; background-color:white ;
+  z-index: 9999;
+  border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
+  box-shadow: 2px 2px 7px 3px #ccc;
+
+}
+
 .menuHeader {position: absolute; top: 0rem; left: 0;}
 .menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
