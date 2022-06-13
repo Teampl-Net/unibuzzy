@@ -5,6 +5,8 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://192.168.0
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Credentials'] = 'true'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+axios.defaults.headers.post['Content-Type'] = 'application/json;'
+
 axios.defaults.headers.common['Content-Type'] = 'application/json;'
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
@@ -334,6 +336,20 @@ const methods = {
     result = response.data
     return result
   },
+  async getCabinetDetail (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
+    if (inputParam) {
+      paramSet = inputParam
+    }
+    var result = null
+    var response = await commonAxiosFunction({
+      url: '/tp.getCabinetDetail',
+      param: paramSet
+    })
+    result = response.data
+    return result
+  },
   groupDummyList () {
     return [
       {
@@ -390,5 +406,6 @@ export default {
     Vue.config.globalProperties.$saveCabinet = methods.saveCabinet
     Vue.config.globalProperties.$getTeamMenuList = methods.getTeamMenuList
     Vue.config.globalProperties.$groupDummyList = methods.groupDummyList
+    Vue.config.globalProperties.$getCabinetDetail = methods.getCabinetDetail
   }
 }
