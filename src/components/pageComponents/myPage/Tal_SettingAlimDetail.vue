@@ -5,7 +5,7 @@
         <div class="alimSetting-01">
           <p class="font16" style="border-bottom:1px solid #888;">새로운 알림</p>
           <table style="width:100%">
-            <colgroup><col><col></colgroup>
+            <!-- <colgroup><col><col></colgroup> -->
             <!-- <tr style="border-bottom:1px solid #888;"><th colspan="2">새로운 알림 </th></tr> -->
             <tr>
               <td class="fl">
@@ -25,7 +25,7 @@
               </td>
             </tr>
 
-             <tr @click="test">
+            <tr @click="test">
               <td class="fl">
                 <p class="font14"> 알림음 선택 </p>
               </td>
@@ -61,7 +61,7 @@
             <tr rowspan="2" style="border-bottom:0px;">
               <td class="fl" rowspan="2" style=" text-align:left;">
                 <p class="font14"> 내 채널 알림 </p>
-                <p style="color:#ccc; font-size:12px;line-height:auto; margin-top:-1rem; margin-right:10px; line-height:1rem; ">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p>
+                <p style="color:#aaa; font-size:12px;line-height:auto; margin-top:-1rem; margin-right:10px; line-height:1rem; ">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p>
               </td>
 
               <td class="fr" >
@@ -69,17 +69,14 @@
               </td>
 
             </tr>
-
-              <!-- <td style="color:#ccc;font-size:12px;box">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</td> -->
-
           </table>
-          <!-- <p style="color:#ccc; font-size:12px">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p> -->
-
         </div>
     </div>
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import gtoggle from '../myPage/Tal_commonToggle.vue'
 import PullToRefresh from 'pulltorefreshjs'
 export default {
@@ -132,6 +129,7 @@ table tr{
 }
 th, td {
   text-align: center;
+  border-bottom: none !important;
 }
 
 .toggle-line{
