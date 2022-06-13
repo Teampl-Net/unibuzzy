@@ -5,18 +5,20 @@
     </div> -->
     <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; " :disabled="!editYn" delay="200" >
         <transition-group>
-            <div v-for="(data, index) in teamList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
+            <div v-for="(data, index) in cabinetList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                 <div @click="clickList(data)" class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
                 </div>
-                <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
+                <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
+                <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
                 <div @click="clickList(data)" class="fl h-100P">
-                    <input v-if="editYn" :id="index" v-model="data.reveiverTeamName" style="border:none; height: 100%; border-bottom: 0.5px solid #ccc;"/>
-                    <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.reveiverTeamName + ' (' + data.team.length + ')'}}</p>
+                    <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; height: 100%; border-bottom: 0.5px solid #ccc;"/>
+                    <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
+                    <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
                 </div>
 
-                <div v-if="editYn" @click="deleteTeamClick(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                     <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                 </div>
                 <div  @click="teamPlusClick(data, index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
@@ -27,10 +29,6 @@
             </div>
         </transition-group>
     </draggable>
-
-
-
-
 
 </div>
 </template>
@@ -43,10 +41,12 @@ export default {
     props:{
         listData:{},
         editYn:{},
-        selectPopYn:{}
+        selectPopYn:{},
+        chanAlimListTeamKey: {}
     },
     data(){
         return{
+            cabinetList: [],
             upTxt:'>',
             downTxt:'<',
             editTeamName:'',
@@ -56,6 +56,7 @@ export default {
         }
     },
     created () {
+        this.getTeamCabList()
     this.teamList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
@@ -70,10 +71,26 @@ export default {
         }
     },
     methods:{
+        async getTeamCabList () {
+            var paramMap = new Map()
+            paramMap.set('creTeamKey', this.chanAlimListTeamKey)
+            paramMap.set('sysCabinetCode', 'USER')
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getBookList',
+                param: Object.fromEntries(paramMap)
+            })
+            this.cabinetList = result.data
+            for(var i = 0; i < this.cabinetList.length; i ++) {
+                var changeT = this.cabinetList[i].cabinetNameMtext
+                this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
+            }
+            // debugger
+        },
         checkMove(){
             return this.editYn;
         },
         teamPlusClick(data, index){
+            // debugger
             const obj = new Object();
             obj.data = data;
             obj.index = index
@@ -81,8 +98,9 @@ export default {
             this.$emit('selectTeam', obj);
         },
         clickList(data){
+            // alert(true)
             // if(this.selectPopYn !== true)
-            this.$emit('openDetail',data) // alert(data.reveiverTeamName)
+            this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
         },
         deleteTeamClick(data,index){
 

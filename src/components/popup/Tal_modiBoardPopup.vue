@@ -110,7 +110,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <manageBookList :chanInfo="this.chanInfo" v-if="manageBookListYn" @closePop='manageBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <manageBookList :chanInfo="this.chanInfo" :propData="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="manageBookListYn" @closeXPop='manageBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
 <script>
@@ -126,6 +126,7 @@ export default {
     chanInfo: {}
   },
   created () {
+    alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
     // debugger
@@ -157,7 +158,8 @@ export default {
       writePermission: '작성권한',
       readPermission: '열람권한',
       commentPermission: '댓글권한',
-      selectedList :null,
+      bookList: null,
+      selectedList :null
     }
   },
   components: {selectType, manageBookList
@@ -189,11 +191,22 @@ export default {
         item.shareType = 'R' //댓글
         itemList.push(item)
       } else if (this.shareType === 'select') {
-        // paramMap.set
+
       }
       cabinet.shareList = shareList
+      // 대상 하나하나 > acc
+      /* 
+select *from TpCabinetShare;
+-- shareList : 공유대상 리스트
+    -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
+
+select *from TpCabinetShareItem;
+-- itemList : 권한 리스트
+    -- [{shareType / shareSeq}, {shareType, shareSeq}] */
+
+      
       cabinet.itemList = itemList
-      cabinet.tempKeyList = [0, 1, 2, 3]
+      // cabinet.tempKeyList = [0, 1, 2, 3]
       param.cabinet = cabinet
       param.creMenuYn = false
       var result = this.$saveCabinet(param)

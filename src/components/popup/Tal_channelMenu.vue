@@ -14,10 +14,10 @@
     <div class="fl" style="width:100%">
       <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
-      <gBtnSmall class="fr"   @click="receiverClick" btnTitle="편집" style=""/>
+      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style=""/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-      <teamList  :listData="dummyList" @openDetail='openTeamDetailPop' />
+      <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="dummyList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
 
@@ -51,15 +51,15 @@ export default {
     propData: {},
     chanAlimListTeamKey: {}
   },
-  created () {
+  async created () {
     this.dummyList = this.$groupDummyList()
 
     this.getTeamMenuList()
     // this. myBoardList =
   },
   mounted () {
-    this.groupListlength()
-    this.boardListLength()
+    // this.groupListlength()
+    // this.boardListLength()
   },
   data () {
     return {
@@ -136,8 +136,13 @@ export default {
       params.value = data
       this.$emit('openItem',params)
     },
-    receiverClick(){
-      this.$emit('receiverManagerClick');
+    receiverClick(data){
+      var params = new Object()
+      params.targetType = 'editBookList'
+      params.currentTeamKey = this.chanAlimListTeamKey
+      params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      params.value = data
+      this.$emit('openItem',params)
     }
   }
 }

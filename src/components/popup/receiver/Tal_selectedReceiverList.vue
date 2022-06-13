@@ -19,15 +19,7 @@
         </div>
     </div>
 
-
-
 </div>
-
-
-            <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-
-
-
 
 </div>
 </template>

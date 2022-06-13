@@ -65,10 +65,9 @@ export default {
 
       chanItem: {},
       detailShowYn: true,
-      adminYn: false,
+      adminYn: false
       // adminYn: true,
       // detailShowYn: false
-
 
     }
   },
@@ -77,7 +76,7 @@ export default {
   },
   components: {
     pushList,
-    chanDetailComp,
+    chanDetailComp
   },
   async created () {
     this.$emit('openLoading')
@@ -98,7 +97,6 @@ export default {
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
-
   },
   methods: {
     btnWritePush () {

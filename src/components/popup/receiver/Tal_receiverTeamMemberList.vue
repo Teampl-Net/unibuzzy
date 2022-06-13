@@ -3,12 +3,12 @@
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
-    <div v-for="(data, index) in memberList.team" :key='index' class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+    <div v-for="(data, index) in memberList" :key='index' class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
 
         <div class="fl" @click="editClick(data,index)" >
             <!-- <div class="fl movePointerArea" style="width:30px; background-color:#ddd" v-if="editYn"><p class="tB trans90 commonBlack " >{{upTxt}}</p><p class="tB trans90 commonBlack">{{downTxt}}</p> </div> -->
             <!-- <div class="fl receiverTeamColor" :style="{background:teamColor}"></div> -->
-            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{data.name}}</p>
+            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
         </div >
 
         <div v-if="selectPopYn" class="fr" style="position: relative;">
@@ -19,8 +19,8 @@
 
         <!-- <div class="fr"> -->
         <div class="fr mright-1" style="" :class="{selPopFr: selectPopYn === true || editYn === true}" >
-            <p class="fr font14 commonBlack" style="margin-right:10px; padding:0 5px; background-color:#BABBD780; border-radius:5px;">{{data.grade}}</p><br>
-            <p class="fr font12 commonBlack " style="margin-right:10px">등록일 : {{this.$dayjs(data.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="fr font14 commonBlack" style="margin-right:10px; padding:0 5px; background-color:#BABBD780; border-radius:5px;">{{구성원}}</p><br>
+            <!-- <p class="fr font12 commonBlack " style="margin-right:10px">등록일 : {{this.$dayjs(data.creDate).format('YYYY-MM-DD')}}</p> -->
             <div v-if="editYn" @click="deleteTeamClick(data)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
             </div>
@@ -54,6 +54,8 @@ export default {
         listData: {},
         editYn: {},
         selectPopYn: {},
+        propData: {},
+        selectPopYn: {},
         addPopOpenYn: {}
     },
     data () {
@@ -75,7 +77,15 @@ export default {
         }
     },
     created(){
-        this.memberList = this.listData
+        this.memberList = this.propData.mCabUserList
+        for (var i =0; i < this.memberList.length; i ++) {
+            if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+                
+            } else {
+                this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+            }
+        }
+        // this.memberList = this.listData
     },
     methods:{
         deleteMemberClick(data, index){

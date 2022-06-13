@@ -24,10 +24,10 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 100px); position: relative;">
-            <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' />
-            <teamList style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="detailOpenYn === false && selectedList !== '' " :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+                <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' />
+                <teamList :propData="selectBookDetail" style="position: absolute; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
             <transition name="showGroup">
-                <memberList style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" :listData="clickList" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
+                <memberList :propData="this.selectBookDetail" style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
             </transition>
             <!-- <transition name="showGroup">
                 <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
@@ -46,8 +46,6 @@
 
                 <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>
                 <p class="fl" style="font-size:16px; color:black;" v-if='data.data.name' >{{data.data.name}} </p>
-                <!-- <p class="fl" style="margin-left:10px; padding:0 5px; background-color:#BABBD780; border-radius:3px; height" v-if='data.data.name' >{{data.data.grade}} </p>
- -->
                 <img @click="delectClick(data,index)" src="../../../assets/images/common/close_black.svg" style=" width:15px; background: #fff; position: absolute; top:-5px; "/>
 
             </div>
@@ -76,11 +74,13 @@ export default {
     props: {
         selectPopYn: {},
         chanInfo: {},
+        propData: {},
         selectedList: {}
     },
     created (){
-        // alert(JSON.stringify(this.chanInfo))
-        this.dummyList = this.$groupDummyList()
+        // alert(JSON.stringify(chanInfo))
+        // this.dummyList = this.$groupDummyList()
+        // alert(JSON.stringify(this.propData))
         if(this.selectPopYn) {
             this.receiverTitle = '대상 선택'
             this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
@@ -107,14 +107,14 @@ export default {
             findPopShowYn : false,
             findKeyList: {},
             resultSearchKeyList: [] ,
-            dummyList : [],
             clickList: {},
             titleText: '팀플',
             receiverTitle: '그룹 관리',
             selectReceivers : [],
             teamLength: 100,
             addPopOpenYn:null,
-            addPopOpen:''
+            addPopOpen:'',
+            selectBookDetail: null
         }
     },
     methods : {
@@ -123,10 +123,10 @@ export default {
         },
         delectClick(data, index){
             if(data.data.reveiverTeamName){
-                this.dummyList.unshift(data.data)
+                // this.dummyList.unshift(data.data)
             }else if(data.data.name){
-                var record = this.dummyList.findIndex(function(item, index, arr){return item.reveiverTeamName === data.group});
-                this.dummyList[record].team.unshift(data.data)
+                // var record = this.dummyList.findIndex(function(item, index, arr){return item.reveiverTeamName === data.group});
+                // this.dummyList[record].team.unshift(data.data)
             }
             this.selectReceivers.splice(index, 1)
         },
@@ -158,7 +158,7 @@ export default {
         },
         backClick(){
             if(this.addPopOpenYn){
-                // MemberList에 구성원추가 팝업 끄기
+                // MemberList에 구성원추가 팝업 끄기manageBookList
                 this.addPopOpenYn = false
             }else if(this.detailOpenYn){
                 this.detailOpenYn = false
@@ -178,20 +178,24 @@ export default {
                 this.memberEditYn = false
 
             }else{
-                this.$emit('closePop')
+                this.$emit('closeXPop')
             }
         },
-        openTeamDetailPop(data){
+        openMCabUserList(data){
             if(!this.teamEditYn){
+                this.selectBookDetail = data
                 this.detailOpenYn = true
                 this.receiverTitle = '구성원 관리'
-                this.titleText += " > " + data.reveiverTeamName
+                // alert(JSON.stringify(this.propData))
+                if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '' ) { 
+                    this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
+                } else {
+                    this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
+                }
                 if(this.selectPopYn) {
                     this.receiverTitle = '대상 선택'
                     // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
                 }
-                this.teamLength = data.team.length
-                this.clickList = data
             }
             // alert(this.clickList)
         },
