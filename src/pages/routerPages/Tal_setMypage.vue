@@ -154,6 +154,9 @@ tr, td, th {
   height: 4rem;
   margin-bottom: 1rem
 }
+td {
+  border-bottom: none !important
+}
 tr{border-bottom: 1px solid #F3F3F3}
 th {color: #6768A7}
 
