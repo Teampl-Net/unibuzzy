@@ -5,7 +5,7 @@
 
     <div class="pagePaddingWrap" style="height:calc(100% - 300px); overflow: auto;" :class="{longHeight : selectPopYn !== true}" >
     <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-        <div style=" border-bottom:1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden;" >
+        <div style=" border-bottom:1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
             <p class="fl mright-05 font16 h-100P fontBold colorBlack">{{titleText}}</p>
             <div class="mleft-01 fl" style="height: 100%; ">
                 <img class="fl" style="margin-top: 4px; width: 15px;" src="../../../assets/images/main/main_subscriber.png" />
@@ -13,7 +13,7 @@
             </div>
             <gBtnSmall btnTitle="전체 추가" v-if='selectPopYn === true' @click="addAllClick" />
             <gBtnSmall :btnTitle="teamBtnText"  @click="!detailOpenYn? teamEditClick() : memberEditClick()" v-if='selectPopYn !== true' />
-            <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' />
+            <!-- <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' /> -->
         </div>
 
         <!-- <div style="display: none">
@@ -23,9 +23,9 @@
             </transition>
         </div> -->
 
-        <div  style="width: 100%; height: calc(100% - 100px); position: relative;">
+        <div style="width: 100%; height: calc(100% - 100px); position: relative;">
             <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' />
-            <teamList v-else style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="!detailOpenYn && selectedList !== ''" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+            <teamList style="position: absolute; top: 0; background: #fff;" ref="teamListRef" :listData="dummyList" @openDetail='openTeamDetailPop' v-if="detailOpenYn === false && selectedList !== '' " :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
             <transition name="showGroup">
                 <memberList style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" :listData="clickList" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
             </transition>
@@ -59,7 +59,9 @@
             <gBtnSmall class="btnBig" v-on:click="setResult" btnTitle="적용" style="margin-right:10px"/>
         </div>
     </div>
- </div>
+    <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' ><p style="font-size:40px;">+</p></div>
+
+</div>
 
 </template>
 
@@ -117,8 +119,6 @@ export default {
     },
     methods : {
         setResult(){
-            // alert(JSON.stringify(this.selectReceivers))
-
             this.$emit('selectedReceiver', this.selectReceivers)
         },
         delectClick(data, index){
@@ -147,10 +147,8 @@ export default {
         memberEditClick(){
             // alert('팀원 수정')
             if(this.memberEditYn){
-                this.memberBtnText = '편집'
                 this.memberEditYn = false
             }else{
-                this.memberBtnText = '저장'
                 this.memberEditYn = true
             }
         },
@@ -162,8 +160,7 @@ export default {
             if(this.addPopOpenYn){
                 // MemberList에 구성원추가 팝업 끄기
                 this.addPopOpenYn = false
-            }else
-            if(this.detailOpenYn){
+            }else if(this.detailOpenYn){
                 this.detailOpenYn = false
                 this.receiverTitle = '그룹 관리'
                 if(this.selectPopYn) {
@@ -178,6 +175,8 @@ export default {
                 }
 
                 this.teamLength = 100
+                this.memberEditYn = false
+
             }else{
                 this.$emit('closePop')
             }
@@ -263,6 +262,17 @@ export default {
 </script>
 
 <style >
+.btnPlus{
+    width:4rem; height:4rem; display: flex;
+    padding-top: 5px;
+    justify-content: center; align-items: center;
+    color:#6768a7; border:3px solid #6768a7; background-color:white ;
+
+    border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
+    box-shadow: 2px 2px 7px 3px #ccc;
+
+}
+
 .menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
 .menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
 .menuHeader img{ width: 0.8rem; line-height: 50px;}
