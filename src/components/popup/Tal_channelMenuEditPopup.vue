@@ -7,10 +7,10 @@
         <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
         <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" />
       </div>
-      <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+      <draggable ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
         <transition-group>
-          <div @click="openModiBoardPop(data)"  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
-        <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
+          <div @click="openModiBoardPop(data)"  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
+        <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
             <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="">
             </div>
@@ -38,6 +38,7 @@
 
 <script>
 /* eslint-disable */
+// import { VueDirectiveLongPress } from 'vue-directive-long-press'
 import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 import addChanMenu from './Tal_addChannelMenu.vue'
@@ -46,8 +47,9 @@ export default {
   props:{
     // editList: {},
     addChanList: {},
+    currentTeamKey: {},
+    editYn: {},
     chanInfo: {},
-    currentTeamKey: {}
   },
   created () {
     this.getTeamMenuList()
@@ -70,12 +72,14 @@ export default {
       lastBoardKey: null,
       dragging: false,
       modiBoardPopShowYn: false,
+      longPressYn: false
     }
   },
   components: {
     addChanMenu,
     modiBoardPop,
-    draggable: VueDraggableNext
+    draggable: VueDraggableNext,
+    // longPress: VueDirectiveLongPress
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -126,25 +130,57 @@ export default {
       this.modiBoardDetailProps = data
       this.modiBoardPopShowYn = true
     },
+
+    checkSameBoardName(data) {
+      var changedBoardName = data
+      var addBoardNum = 0
+      for (var i = 0; i < this.boardList.length; i++) {
+        if (this.boardList[i].cabinetNameMtext.indexOf(data) !== -1) {
+          if (this.boardList[i].cabinetNameMtext.indexOf(data) === 0) {
+            if (addBoardNum === 0 && changedBoardName === this.boardList[i].cabinetNameMtext) {
+            addBoardNum = 1
+            } else {
+              var boardExtraText = this.boardList[i].cabinetNameMtext.substring(data.length)
+              if (boardExtraText.substring(0,1) === '(') {
+                if (addBoardNum > Number((boardExtraText.substring(1)).split(')')[0]) + 1) {
+
+                } else {
+                  addBoardNum = Number((boardExtraText.substring(1)).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
+                }
+              }
+            }
+          }
+        }
+      }
+      if (addBoardNum > 0) {
+        changedBoardName = changedBoardName + '(' + addBoardNum + ')'
+      }
+      return changedBoardName
+    },
+
     async addBoardRow () {
       var param = new Object()
       param.creMenuYn = true
       var cabinet = new Object()
-      cabinet.cabinetNameMtext = 'KO$^$게시판' + (Number(this.lastBoardKey) + 1)
+      var defaultAddBoardName = this.checkSameBoardName('게시판')
+      cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
       param.cabinet = cabinet
       var result = await this.$saveCabinet(param)
-
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        var addBoard = {'boardName':'게시판' + (Number(this.lastBoardKey) + 1),'idNum':2, 'cabinetKey': result.cabinetKey, 'num': this.lastBoardKey + 1 }
-        this.boardList.unshift(addBoard)
-        this.lastBoardKey += 1
-      }
-      // this.boardList.push()
-    }
-  }
+        var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
 
+      }
+      this.boardList.unshift(addBoard)
+      document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+      setTimeout(() => {
+        document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
+      }, 800);
+    }
+      // this.boardList.push()
+  }
 }
+
 </script>
 
 <style scoped>
