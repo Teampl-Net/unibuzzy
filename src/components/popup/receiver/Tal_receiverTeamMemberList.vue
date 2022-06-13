@@ -21,9 +21,10 @@
         <div class="fr mright-1" style="" :class="{selPopFr: selectPopYn === true || editYn === true}" >
             <p class="fr font14 commonBlack" style="margin-right:10px; padding:0 5px; background-color:#BABBD780; border-radius:5px;">{{data.grade}}</p><br>
             <p class="fr font12 commonBlack " style="margin-right:10px">등록일 : {{this.$dayjs(data.creDate).format('YYYY-MM-DD')}}</p>
+            <div v-if="editYn" @click="deleteTeamClick(data)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+            </div>
         </div>
-
-
 
         <!-- <div class="fr " v-else style="position: relative; ">
             <div @click="editClick(data,index)" class="fl" style="background-color:#ddd;  width:55px; height: 60px; line-height:60px; position:absolute; top:-0.7rem; right: 55px;">
@@ -36,8 +37,6 @@
          <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
             <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
         </div>
-
-
     </div>
 
     <addTeamMember v-if="addMemberPopYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' />
@@ -101,6 +100,12 @@ export default {
         },
         newAddMember(){
             this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
+
+            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            setTimeout(() => {
+                document.getElementsByClassName('foo')[0].style.backgroundColor = ''
+
+            }, 800);
         },
 
     }
