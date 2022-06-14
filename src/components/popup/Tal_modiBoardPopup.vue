@@ -22,56 +22,56 @@
       <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
         <div class="itemWrite" style="width: 100%;">
-        <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
-        <div style="width: calc(100% - 80px);">
-          <input style = "" type="checkbox" id="toggle0" hidden>
-          <label for="toggle0" class="toggleSwitch fr" @click="click">
-            <span class="toggleButton" ></span>
-          </label>
-            <!-- <div v-if="show" class="dropdown"> -->
-          <div v-if="statusSelectShowYn" style=" height: 100%; float: right; margin-right: 10px;" class="dropdown" id="statusBox">
-            <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="showSelectStatus">진행 중</button>
-            <div class="dropdown-content" v-if="showSelectStatusShowYn">
-              <div style="line-height: 30px;" v-if="showNewYn">
-                <input type="text" style="height: 30px; width: 100%; float: left; border: 1px solid #ccc;" v-model="inputvalue"/>
+          <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
+          <div style="width: calc(100% - 80px);">
+            <input style = "" type="checkbox" id="toggle0" hidden>
+            <label for="toggle0" class="toggleSwitch fr" @click="click">
+              <span class="toggleButton" ></span>
+            </label>
+              <!-- <div v-if="show" class="dropdown"> -->
+            <div v-if="statusSelectShowYn" style=" height: 100%; float: right; margin-right: 10px;" class="dropdown" id="statusBox">
+              <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="showSelectStatus">진행 중</button>
+              <div class="dropdown-content" v-if="showSelectStatusShowYn">
+                <div style="line-height: 30px;" v-if="showNewYn">
+                  <input type="text" style="height: 30px; width: 100%; float: left; border: 1px solid #ccc;" v-model="inputvalue"/>
+                </div>
+
+                <div style="width:100%; margin: 0.5rem 0px;" class="fl" v-for="(status, index) in multiStatus" :key="index" >
+
+                  <div style="" class=" fl">{{status}}</div>
+                  <!-- {{status}} -->
+
+                  <button @click="statusDeleteYn(index)" style= "border-radius: 100px;border: none; height: 25px; width: 25px; line-height: 25px; background-color: #6768A7; color: white; float: right;">-</button>
+                </div>
               </div>
-
-              <div style="width:100%; margin: 0.5rem 0px;" class="fl" v-for="(status, index) in multiStatus" :key="index" >
-
-                <div style="" class=" fl">{{status}}</div>
-                <!-- {{status}} -->
-
-                <button @click="statusDeleteYn(index)" style= "border-radius: 100px;border: none; height: 25px; width: 25px; line-height: 25px; background-color: #6768A7; color: white; float: right;">-</button>
-              </div>
+              <button @click="showSelectStatus('input')" style= "width: 30px; height: 30px; background-color: #ccc; border: none; float: left;">+</button>
             </div>
-            <button @click="showSelectStatus('input')" style= "width: 30px; height: 30px; background-color: #ccc; border: none; float: left;">+</button>
           </div>
         </div>
-      </div>
       <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">작성자 명</p>
         <div class="toggleInputWrap">
           <div style= "width: 100px; height: 30px; border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
-            <div class= "toggleBtn" :class="{selecWriterShow: selectItem === '실명' }" @click="selectItem = '실명'">실명</div>
-            <div class= "toggleBtn" :class="{selecWriterShow: selectItem === '익명' }" @click="selectItem = '익명'">익명</div>
+            <div class= "toggleBtn" :class="{selecWriterShow: blindYn === false }" @click="blindYn = false">실명</div>
+            <div class= "toggleBtn" :class="{selecWriterShow: blindYn === true }" @click="blindYn = true">익명</div>
           </div>
         </div>
       </div>
       <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
-          <input type="checkbox" id="toggle1" hidden>
+          <input type="checkbox" v-model="replyYnInput" id="toggle1" :checked="replyYnInput === true" hidden>
           <label for="toggle1" class="toggleSwitch">
-            <span class="toggleButton"></span>
+            <span class="toggleButton">{{replyYnInput}}</span>
           </label>
         </div>
       </div>
       <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">파일 업로드</p>
         <div class="toggleInputWrap">
-          <input type="checkbox" id="toggle2" hidden>
+          <input type="checkbox" v-model="fileYnInput" id="toggle2" :checked="fileYnInput === true" hidden>
           <label for="toggle2" class="toggleSwitch">
-            <span class="toggleButton"></span>
+            <span class="toggleButton">{{fileYnInput}}</span>
           </label>
         </div>
       </div>
@@ -110,7 +110,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <selectBookList :chanInfo="this.chanInfo" :propData="propData" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
 <script>
@@ -126,7 +126,7 @@ export default {
     chanInfo: {}
   },
   created () {
-    // alert(JSON.stringify(this.chanInfo))
+    alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
     // debugger
@@ -137,10 +137,12 @@ export default {
       boardDetail: {},
       selectBoardTypeText:'게시판의 유형을 선택해주세요',
       selectId:'',
+      shareType: 'all', // 공유 대상자 (팔로워 전체: all, 대상 선택: select)
       selectTypePopShowYn:false,
-      selectItem: '실명',
+      blindYn: false, // 익명게시판
+      fileYnInput: true, // 파일업로드 게시판
+      replyYnInput: true, // 댓글 지원 게시판
       show: false,
-      shareType: 'all',
       multiStatus: [
         '진행 중',
         '진행 완료',
@@ -175,6 +177,9 @@ export default {
       cabinet.cabinetNameMtext = 'KO$^$' + this.boardDetail.cabinetNameMtext
       cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
       cabinet.MenuType = 'C'
+      cabinet.blindYn = this.blindYn
+      cabinet.fileYn = this.fileYnInput
+      cabinet.replyYn = this.replyYnInput
       var shareList = []
       var itemList = []
       var share = new Object()

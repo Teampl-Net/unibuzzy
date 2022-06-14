@@ -1,77 +1,86 @@
 <template>
-<div style="width: 100%;" class="">
-    <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
-        <p class="font15 commonBlack">+</p>
-    </div> -->
-    <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; " :disabled="!editYn" delay="200" >
-        <transition-group>
-            <div v-for="(data, index) in cabinetList" :id="'book'+ index" :key='index' :class="{widthPop:selectPopYn===true, foo: editYn === true && index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
-            <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-                <div @click="clickList(data)" class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
-                    <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
-                </div>
-                <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-                <div @click="clickList(data)" class="fl h-100P">
-                    <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; height: 100%; border-bottom: 0.5px solid #ccc;"/>
-                    <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                    <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
-                </div>
+    <div style="width: 100%; height: 100%;" class="">
+        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick"  :dataLength="cabinetList.length" />
+        <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
+            <p class="font15 commonBlack">+</p>
+        </div> -->
+        <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
+            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
+                <transition-group>
+                    <div @click="editYn? '' : clickList(data)" v-for="(data, index) in cabinetList" :id="'book'+ index" :key='index' :class="{foo:index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
+                    <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
+                        <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
+                            <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
+                        </div>
+                        <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
+                        <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
+                            <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
+                            <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
+                            <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
 
-                <div v-if="editYn" @click="deleteTeamClick(data, cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                    <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                </div>
-                <div  @click="teamPlusClick(data, index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
-                    <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                        <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                        <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                        </div>
                     </div>
-                </div>
-            </div>
-        </transition-group>
-    </draggable>
-
-</div>
+                </transition-group>
+            </draggable>
+        </div>
+        <div class="btnPlus" btnTitle="추가" @click="addNewBook" ><p style="font-size:40px;">+</p></div>
+    </div>
 </template>
 
 <script>
+import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
     props:{
         listData:{},
-        editYn:{},
-        selectPopYn:{},
+        propData: {},
         chanAlimListTeamKey: {}
     },
     data(){
         return{
             cabinetList: [],
             editTeamName:'',
-            editNameYn:null,
-            // teamList: {},
-            dragging: false
+            teamList: {},
+            dragging: false,
+            editYn : false,
+            pageTopBtnTitle: '편집'
         }
     },
     created () {
+        // alert(JSON.stringify(this.propData))
         this.getTeamCabList()
-    // this.teamList = this.listData
+    this.teamList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
     components: {
-        draggable: VueDraggableNext
+        draggable: VueDraggableNext,
+        pageTopCompo
     },
     computed: {
         setTotalHeight () {
             return {
-                '--scrollHeight' : this.cabinetList.length * 70 + 20 + 'px'
+                '--scrollHeight' : this.teamList.length * 70 + 20 + 'px'
             }
         }
     },
     methods:{
+        editClick () {
+            if(this.editYn) {
+                this.editYn = false
+                this.pageTopBtnTitle = '편집'
+            }
+            else {
+                this.editYn = true
+                this.pageTopBtnTitle = '저장'
+            }
+        },
         async getTeamCabList () {
             var paramMap = new Map()
-            paramMap.set('creTeamKey', this.chanAlimListTeamKey)
+            paramMap.set('creTeamKey', this.propData.currentTeamKey)
             paramMap.set('sysCabinetCode', 'USER')
             var result = await this.$commonAxiosFunction({
                 url: '/tp.getBookList',
@@ -84,42 +93,35 @@ export default {
             }
             // debugger
         },
-        checkMove(){
-            return this.editYn;
-        },
-        teamPlusClick(data, index){
-            // debugger
-            // const obj = new Object();
-            // obj.data = data;
-            // obj.index = index
-            this.cabinetList.splice(index, 1)
-            this.$emit('selectTeam', data);
-        },
         clickList(data){
-            // alert(true)
-            // if(this.selectPopYn !== true)
             this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
         },
         deleteTeamClick(data,index){
-            // alert(index)
-            this.cabinetList.splice(index, 1)
+
+            this.teamList.splice(index, 1)
         },
-        editClick(data, index){
-            var editTeamName = document.getElementById(index)
-            if(this.editNameYn === index){
-                this.editNameYn = null
-                data.reveiverTeamName = editTeamName.value
-            }else{
-                this.editNameYn = index
-                editTeamName.value = data.reveiverTeamName
+        async addNewBook(){
+
+            var param = new Object()
+            param.creMenuYn = true
+            var cabinet = new Object()
+            var defaultAddBoardName = this.$checkSameName(this.cabinetList, '주소록')
+            cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
+            cabinet.currentTeamKey = this.propData.currentTeamKey
+            cabinet.sysCabinetCode = 'USER'
+            cabinet.creTeamKey = this.propData.currentTeamKey
+            param.cabinet = cabinet
+            var result = await this.$saveCabinet(param)
+            if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+                var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+
             }
-        },
-        newAddTeam(){
-            this.editNameYn = null
-            this.cabinetList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
+            this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            // debugger
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
+                // document.getElementsByClassName('foo')[0].classList.remove('foo')
             }, 800);
         }
     }

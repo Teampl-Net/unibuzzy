@@ -1,6 +1,6 @@
 <template>
-<div class="addTeamMemberArea" style="margin-top:50px">
-
+<div class="addTeamMemberArea" style="margin-top:50px; z-index: 9999;">
+    <popHeader class="headerShadow" @closeXPop="this.$emit('closePop')" style="z-index: 9999;" headerTitle="구성원 추가" />
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
@@ -8,24 +8,24 @@
 
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">이름</p>
+            <p class="textLeft font16 fl cBlack " style="line-height: 30px;">이름</p>
             <input type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
         </div>
 
         <div style="width:100%; height: 30px;" class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">이메일</p>
+            <p class="textLeft font16 fl cBlack " style="line-height: 30px;">이메일</p>
             <input type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
         </div>
 
         <div style="width:100%; height: 30px; " class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">전화번호</p>
+            <p class="textLeft font16 fl cBlack " style="line-height: 30px;">전화번호</p>
             <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr"  v-model="memPhone" >
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addNewMem" />
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
-        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
+        <p class="font20 fonold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
         <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
             <table style="width:100% ; border-collapse: collapse;">
                 <colgroup>
@@ -44,13 +44,13 @@
                     <td class="font12 memList">{{data.name}}</td>
                     <td class="font12 memList">{{data.email}}</td>
                     <td class="font12 memList">{{data.phoneNum}}</td>
-                    <td class="font16 memList fontBold" @click="deleteMem(data,index)">X</td>
+                    <td class="font16 memList fonold" @click="deleteMem(data,index)">X</td>
                 </tr>
             </table>
         </div>
 
     </div>
-    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="updateBtnClick" />
+    <gBtnSmall btnTitle="저장" style="position:absolute; bottom:2rem; right: 3rem;" @click="updateBtnClick" />
 </div>
 <popUp v-if="popYn" @no='popYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -65,18 +65,20 @@ export default {
     },
     props:{
         setEditMember:{},
-        excelPopYn:{}
+        excelPopYn:{},
+        newYn: {}
     },
     mounted(){
-        if(this.setEditMember !== null && this.setEditMember !== undefined && this.setEditMember !== ''){
-            this.memName = this.setEditMember.name
-            this.memEmail= this.setEditMember.email
-            this.memPhone = this.setEditMember.phone
+        if (!this.newYn) {
+            if(this.setEditMember !== null && this.setEditMember !== undefined && this.setEditMember !== ''){
+                this.memName = this.$changeText(this.setEditMember.userDispMtext)
+                this.memEmail= this.setEditMember.userEmail
+                this.memPhone = this.setEditMember.phoneLast
+            }
         }
     },
     data () {
         return {
-        receiverTitle: '구성원 추가하기',
         memName: '',
         memEmail: '',
         memPhone: '',
@@ -206,11 +208,6 @@ margin-bottom: 2rem;
     height: calc(100vh - 50px);
     background-color: white;
 
-}
-
-
-.tB{
-    font-weight: bold;
 }
 
 .creMemberBigBtn{

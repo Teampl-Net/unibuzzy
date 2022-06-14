@@ -52,6 +52,7 @@ export default {
     chanAlimListTeamKey: {}
   },
   async created () {
+    // alert(this.chanAlimListTeamKey)
     this.dummyList = this.$groupDummyList()
 
     this.getTeamMenuList()

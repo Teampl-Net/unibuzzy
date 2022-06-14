@@ -196,6 +196,41 @@ const methods = {
 
   PullToRefreshDestroy () {
     PullToRefresh.destroyAll()
+  },
+
+  checkUserAuth () {
+    //
+  },
+  checkSameName (checkList, checkText) {
+    var changedBoardName = checkText
+    var addBoardNum = 0
+    for (var i = 0; i < checkList.length; i++) {
+      if (checkList[i].cabinetNameMtext.indexOf(checkText) !== -1) {
+        if (checkList[i].cabinetNameMtext.indexOf(checkText) === 0) {
+          if (addBoardNum === 0 && changedBoardName === checkList[i].cabinetNameMtext) {
+            addBoardNum = 1
+          } else {
+            var boardExtraText = checkList[i].cabinetNameMtext.substring(checkText.length)
+            if (boardExtraText.substring(0, 1) === '(') {
+              if (addBoardNum > Number((boardExtraText.substring(1)).split(')')[0]) + 1) {
+
+              } else {
+                addBoardNum = Number((boardExtraText.substring(1)).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
+                // 아마도 수정 필요
+                // eslint-disable-next-line use-isnan
+                if (addBoardNum === NaN) {
+                  addBoardNum -= 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    if (addBoardNum > 0) {
+      changedBoardName = changedBoardName + '(' + addBoardNum + ')'
+    }
+    return changedBoardName
   }
 
 }
@@ -215,5 +250,7 @@ export default {
 
     Vue.config.globalProperties.$fullToInit = methods.PullToRefreshInit
     Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
+    Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
+    Vue.config.globalProperties.$checkSameName = methods.checkSameName
   }
 }

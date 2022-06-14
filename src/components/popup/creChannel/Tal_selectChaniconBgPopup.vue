@@ -74,7 +74,7 @@ export default {
         param.selectPath = this.selectPath
         this.$emit('makeParam', param)
       } else {
-        alert(this.msgError)
+        // alert(this.msgError)
       }
     },
     selectChanInfo (value) {

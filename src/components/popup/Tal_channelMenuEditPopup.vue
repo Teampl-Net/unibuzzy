@@ -139,44 +139,17 @@ export default {
       this.modiBoardPopShowYn = true
     },
 
-    checkSameBoardName(data) {
-      var changedBoardName = data
-      var addBoardNum = 0
-      for (var i = 0; i < this.boardList.length; i++) {
-        if (this.boardList[i].cabinetNameMtext.indexOf(data) !== -1) {
-          if (this.boardList[i].cabinetNameMtext.indexOf(data) === 0) {
-            if (addBoardNum === 0 && changedBoardName === this.boardList[i].cabinetNameMtext) {
-            addBoardNum = 1
-            } else {
-              var boardExtraText = this.boardList[i].cabinetNameMtext.substring(data.length)
-              if (boardExtraText.substring(0,1) === '(') {
-                if (addBoardNum > Number((boardExtraText.substring(1)).split(')')[0]) + 1) {
-
-                } else {
-                  addBoardNum = Number((boardExtraText.substring(1)).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
-                  // 아마도 수정 필요
-                  if (addBoardNum === NaN) {
-                    addBoardNum -= 1;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      if (addBoardNum > 0) {
-        changedBoardName = changedBoardName + '(' + addBoardNum + ')'
-      }
-      return changedBoardName
-    },
-
     async addBoardRow () {
       var param = new Object()
       param.creMenuYn = true
       var cabinet = new Object()
-      var defaultAddBoardName = this.checkSameBoardName('게시판')
+      var defaultAddBoardName = this.$checkSameName(this.boardList, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
+      cabinet.MenuType = 'C'
+      cabinet.blindYn = false
+      cabinet.fileYn = true
+      cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
       param.cabinet = cabinet
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {

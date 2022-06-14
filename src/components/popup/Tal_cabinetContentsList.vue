@@ -66,7 +66,7 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
 
       //mShareItemList가 잘 들어오면 save잘 된것
-      alert(JSON.stringify(resultList))
+      debugger
       this.commonListData = resultList.content
 
       this.findPopShowYn = false
