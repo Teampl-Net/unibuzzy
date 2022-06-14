@@ -1,25 +1,16 @@
 <template>
-<div style="width: 100%;" class="">
-    <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
+<div style="width: 100%; min-height: 300px; background: #ccc; padding: 10px;" class="">
+    <p class="textLeft fontBold font16 mbottom-1">선택된 리스트</p>
+    <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
-<div v-for="(data, index) in teamList" :key='index' :class="{widthPop:selectPopYn===true}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
-    <!-- {{data.data.reveiverTeamName}} -->
-
-    <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-    <div @click="clickList(data)" class="fl h-100P">
-        <p v-if="data.data.name" class="fl font15 commonBlack mleft-1 receiverTeamText">{{data.data.name}}</p>
-        <p v-else class="fl font15 commonBlack mleft-1 receiverTeamText">{{data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}}</p>
-
+    <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;" >
+        <p class="fl font15 commonBlack">{{'그룹: ' + team.cabinetNameMtext}}</p>
+        <span class="fr" @click="removeSelectedYn('book',index)">x</span>
     </div>
-
-    <div  @click="teamPlusClick(data, index)" class="fr" style="position: relative; width:20%">
-        <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
-        </div>
+    <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;"  >
+        <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext)}}</p>
     </div>
-
-</div>
             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
 </div>
 </template>
@@ -43,10 +34,21 @@ export default {
         }
     },
     created () {
-    this.teamList = this.listData
-    // alert(JSON.stringify(this.teamList[0].data.name))
-    // alert(JSON.stringify(this.teamList[0].data.reveiverTeamName))
-    // alert(this.setTotalHeight.scrollHeight)
+        this.teamList = this.listData
+    /* this.teamList = {
+        bookList: [
+            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
+            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
+            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
+            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200}
+        ],
+        memeberList: [
+            {userDispMtext: 'KO$^$수망고', userKey: 1},
+            {userDispMtext: 'KO$^$수망고', userKey: 1},
+            {userDispMtext: 'KO$^$수망고', userKey: 1},
+            {userDispMtext: 'KO$^$수망고', userKey: 1}
+        ]
+    } */
     },
     components: {
         draggable: VueDraggableNext
@@ -59,6 +61,14 @@ export default {
     //     }
     // },
     methods:{
+        removeSelectedYn (type, index) {
+            if(type === 'book') {
+                this.teamList.bookList.splice(index, 1)
+            } else if(type === 'member') {
+                this.teamList.memberList.splice(index, 1)
+            }
+            this.$emit('changeSelectedList', this.teamList)
+        },
         teamPlusClick(data, index){
             // const obj = new Object();
             // obj.data = data;

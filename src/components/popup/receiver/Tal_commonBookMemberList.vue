@@ -1,22 +1,28 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="this.$changeText(teamInfo.value.nameMtext) + ' > ' + propData.cabinetNameMtext" :btnTitle="'편집'" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :btnTitle="'편집'" @btnClick="changeEdit" :dataLength="memberList.length" />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
     <div style="width: 100%; height: calc(100% - 60px); padding: 0 10px; margin-top: 10px;">
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
-                <div @click="openModiPop(data,index)" v-for="(data, index) in memberList" :key='index' class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
-                    <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
-                    <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                        <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                <template v-for="(data, index) in memberList" :key='data' >
+                    <div @click="!selectPopYn? openModiPop(data,index): ''" v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                        <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
+                        <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                        </div>
+                        <div  @click="addSelectedList(data,index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
+                            <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </template>
             </transition-group>
         </draggable>
     </div>
-    <div class="btnPlus" btnTitle="추가" @click="newAddMember" ><p style="font-size:40px;">+</p></div>
     <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' />
 </div>
 
@@ -32,7 +38,9 @@ export default {
     props: {
         teamInfo: {},
         listData: {},
-        propData: {}
+        propData: {},
+        selectPopYn: {},
+        parentSelectList: {}
     },
     data () {
         return {
@@ -42,13 +50,17 @@ export default {
             addMemberPopYn: false,
 
             dragable: false,
-            newYn: true
+            newYn: true,
+            selectedMemberList: []
         }
     },
     watch:{
     },
     created(){
-        // alert(JSON.stringify(this.teamInfo ))
+        if(this.parentSelectList.memberList) {
+            this.selectedBookList = this.parentSelectList.memberList
+        }
+
         this.memberList = this.propData.mCabUserList
         if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {
@@ -92,6 +104,11 @@ export default {
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
             }, 800); */
+        },
+        addSelectedList (data,index) {
+            this.memberList[index].selectedYn = true
+            this.selectedMemberList.push(data)
+            this.$emit('changeSelectMemberList', this.selectedMemberList)
         },
 
         updateData(obj){

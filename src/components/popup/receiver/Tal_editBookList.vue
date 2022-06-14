@@ -18,9 +18,7 @@
             <transition name="showGroup">
                 <memberList :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
-            <!-- <transition name="showGroup">
-                <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
-            </transition> -->
+            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.teamListRef.refaddNewBook():this.$refs.memberListRef.newAddMember()" ><p style="font-size:40px;">+</p></div>
         </div>
 
     </div>

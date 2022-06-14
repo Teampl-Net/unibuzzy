@@ -110,7 +110,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="propData" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
 <script>
@@ -126,7 +126,7 @@ export default {
     chanInfo: {}
   },
   created () {
-    alert(JSON.stringify(this.chanInfo))
+    // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
     // debugger
