@@ -25,11 +25,14 @@
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
 
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
-      <cabinetContentsList :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'cabinetContentsList'" @closePop='openChanItemYn = false' @openPop='itemDetail' />
-      <cabinetContentsDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='cabinetContentsDetailData'/>
+      <boardMain :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @closePop='openChanItemYn = false' @openPop='openPop' />
+
+      <boardMainDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='boardMainDetailData'/>
       <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
 
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
+
+      <boardWrite @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' />
 
     </div>
 </template>
@@ -55,12 +58,12 @@ import PullToRefresh from 'pulltorefreshjs'
 import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
-import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'
-import cabinetContentsDetail from '../popup/Tal_cabinetContentsDetail.vue'
-
+import boardMain from '../popup/board/Tal_boardMain.vue'
+import boardMainDetail from '../popup/board/Tal_boardMainDetail.vue'
 import editBookList from '../popup/receiver/Tal_editBookList.vue'
-
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
+
+import boardWrite from '../popup/board/Tal_boardWrite.vue'
 
 export default {
   async created () {
@@ -125,7 +128,7 @@ export default {
 
       // itemTitle: '',
       openChanItemDetailYn: false,
-      cabinetContentsDetailData: '',
+      boardMainDetailData: '',
       chanAlimListTeamKey: null // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
     }
   },
@@ -148,18 +151,19 @@ export default {
     createChannel,
     writePush,
     chanMenu,
-    cabinetContentsList,
-    cabinetContentsDetail,
+    boardMain,
+    boardMainDetail,
     editBookList,
-    bookMemberDetail
+    bookMemberDetail,
+    boardWrite
   },
   updated () {
   },
   methods: {
     itemDetail (parm) {
-      this.openChanItemDetailYn = true
-      this.cabinetContentsDetailData = parm.data
-
+      // alert(parm)
+      // this.openChanItemDetailYn = true
+      // this.boardMainDetailData = parm.data
       // alert(parm)
     },
 
@@ -257,7 +261,7 @@ export default {
         }
       } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
-      } else if (this.targetType === 'cabinetContentsList') {
+      } else if (this.targetType === 'boardMain') {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
         // alert(this.headerTitle)
@@ -267,6 +271,8 @@ export default {
         // alert(this.headerTitle)
       } else if(this.targetType === 'bookMemberDetail'){
         this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
+      } else if(this.targetType === 'writeBoard'){
+        this.headerTitle = '게시판 작성'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
