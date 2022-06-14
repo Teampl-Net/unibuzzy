@@ -24,7 +24,7 @@ import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvLi
 import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 
-import manaReceiver from '../components/popup/receiver/Tal_manageBookList.vue'
+import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
 
 const routes = [
   {

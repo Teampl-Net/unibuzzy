@@ -85,12 +85,13 @@ export default {
                 this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
             }
         }
+        alert(JSON.stringify(this.memberList))
         // this.memberList = this.listData
     },
     methods:{
         deleteMemberClick(data, index){
             // alert(index)
-            this.memberList.team.splice(index, 1)
+            this.memberList.splice(index, 1)
         },
         editClick(data,index){
             if(!this.selectPopYn){
@@ -104,16 +105,17 @@ export default {
 
         },
         memberPlusClick(data, index){
-            const obj = new Object();
-            obj.group = this.listData.reveiverTeamName
-            obj.data = data;
-            obj.index = index
-            this.listData.team.splice(index, 1)
+            // const obj = new Object();
+            // obj.group = this.listData.reveiverTeamName
+            // obj.data = data;
+            // obj.index = index
+            this.memberList.splice(index, 1)
             // alert(obj.data.reveiverTeamName)
-            this.$emit('selectMember', obj);
+            // this.$emit('selectMember', obj);
+            this.$emit('selectMember', data);
         },
         newAddMember(){
-            this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
+            this.memberList.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
 
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             setTimeout(() => {

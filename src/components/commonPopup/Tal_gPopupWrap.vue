@@ -29,7 +29,7 @@
 
       <cabinetContentsDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='cabinetContentsDetailData'/>
 
-      <manageBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" />
+      <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" />
 
     </div>
 </template>
@@ -58,7 +58,7 @@ import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
 import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'
 import cabinetContentsDetail from '../popup/Tal_cabinetContentsDetail.vue'
 
-import manageBookList from '../popup/receiver/Tal_manageBookList.vue'
+import editBookList from '../popup/receiver/Tal_editBookList.vue'
 
 export default {
   async created () {
@@ -150,7 +150,7 @@ export default {
     chanMenu,
     cabinetContentsList,
     cabinetContentsDetail,
-    manageBookList
+    editBookList
   },
   updated () {
   },

@@ -11,45 +11,32 @@
                 <img class="fl" style="margin-top: 4px; width: 15px;" src="../../../assets/images/main/main_subscriber.png" />
                 <p class="fl font14" style="margin-top: 2px;">{{teamLength}}</p>
             </div>
-            <gBtnSmall btnTitle="전체 추가" v-if='selectPopYn === true' @click="addAllClick" />
-            <gBtnSmall :btnTitle="teamBtnText"  @click="!detailOpenYn? teamEditClick() : memberEditClick()" v-if='selectPopYn !== true' />
-            <!-- <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' /> -->
+            <gBtnSmall btnTitle="전체 추가" @click="addAllClick" />
+
         </div>
 
-        <!-- <div style="display: none">
-            <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-            <transition name="showModal">
-                <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-            </transition>
-        </div> -->
-
         <div style="width: 100%; height: calc(100% - 100px); position: relative;">
-                <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' />
-                <teamList :propData="selectBookDetail" style="position: absolute; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" :editYn='teamEditYn' :selectPopYn="selectPopYn"  @selectTeam='addList' />
+                <!-- <selectedListCompo v-if='selectedYn' style="position: absolute; top: 0; background: #fff; width:100%; height:100%;" transition="showGroup" :listData='setSelectedList' /> -->
+                <bookList :propData="selectBookDetail" style="position: absolute; top: 0; background: #fff;" ref="bookListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" :selectPopYn="selectPopYn"  @selectTeam='addTeamList' />
             <transition name="showGroup">
-                <memberList :propData="this.selectBookDetail" style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" :editYn='memberEditYn' :selectPopYn="selectPopYn"  @selectMember='addList' @openAddPop='checkAddPopOpend' :addPopOpenYn='addPopOpenYn' />
+                <memberList :propData="this.selectBookDetail" style="position: absolute; top: 0; background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn"  :selectPopYn="selectPopYn"  @selectMember='addMemberList' :addPopOpenYn='addPopOpenYn' />
             </transition>
             <!-- <transition name="showGroup">
                 <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
             </transition> -->
         </div>
-
     </div>
 
-<!-- <div v-if="selectPopYn" style="width: 100vw; height:calc(50% - 50px); background-color:white; position: absolute; left:0; bottom:0; box-shadow: 0px -7px 9px -9px #00000036;"> -->
-    <div v-if="selectPopYn" style="width: 100vw; height:250px; background-color:#F0F0F6; position: absolute; left:0; bottom:0; padding: 20px; box-shadow: rgb(0 0 0 / 21%) 0px -9px 9px -9px">
+    <div style="width: 100vw; height:250px; background-color:#F0F0F6; position: absolute; left:0; bottom:0; padding: 20px; box-shadow: rgb(0 0 0 / 21%) 0px -9px 9px -9px">
         <!--  장바구니  -->
         <p class="" style="font-size: 16px; text-align: left; ">선택된 대상</p>
 
         <div class="selectedReceiverBox" style="" >
             <div v-for="(data, index) in selectReceivers " :key="index" class="fl" style="margin-right:10px; height: 25px; padding: 0 10px; border-radius: 5px; position: relative; margin-bottom:10px;  border: 1px solid #6768A7; " >
-
-                <p class="fl" style="font-size:16px; color:black;" v-if="data.data.reveiverTeamName">{{ '그룹: ' + data.data.reveiverTeamName + ' (' + data.data.team.length + ')'}} </p>
-                <p class="fl" style="font-size:16px; color:black;" v-if='data.data.name' >{{data.data.name}} </p>
+                <p class="fl" style="font-size:16px; color:black;" v-if="data.cabinetNameMtext">{{ '그룹: ' + data.cabinetNameMtext + ' (' + data.mCabUserList.length + ')'}} </p>
+                <p class="fl" style="font-size:16px; color:black;" v-else >{{this.$changeText(data.userDispMtext)}} </p>
                 <img @click="delectClick(data,index)" src="../../../assets/images/common/close_black.svg" style=" width:15px; background: #fff; position: absolute; top:-5px; "/>
-
             </div>
-
         </div>
 
         <div style="position: absolute; right: 2rem; bottom: 2rem;">
@@ -57,7 +44,6 @@
             <gBtnSmall class="btnBig" v-on:click="setResult" btnTitle="적용" style="margin-right:10px"/>
         </div>
     </div>
-    <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' ><p style="font-size:40px;">+</p></div>
 
 </div>
 
@@ -66,9 +52,8 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import findContentsList from '../Tal_findContentsList.vue'
-import teamList from './Tal_receiverTeamList.vue'
-import memberList from './Tal_receiverTeamMemberList.vue'
+import bookList from './Tal_commonBookList.vue'
+import memberList from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {
     props: {
@@ -101,22 +86,14 @@ export default {
         }
 
     },
-    components: { findContentsList,teamList,memberList,selectedListCompo },
+    components: { bookList,memberList,selectedListCompo },
     data () {
         return{
             selectedYn:false,
             setSelectedList:[],
-
-            teamEditYn:false,
-            teamBtnText:'편집',
-            memberEditYn:false,
-            memberBtnText:'편집',
             detailOpenYn: false,
-            changeSearchList: [],
-            findPopShowYn : false,
-            findKeyList: {},
-            resultSearchKeyList: [] ,
-            clickList: {},
+
+
             titleText: '팀플',
             receiverTitle: '그룹 관리',
             selectReceivers : [],
@@ -141,48 +118,31 @@ export default {
             // this.$emit('selectedReceiver', this.selectReceivers)
         },
         delectClick(data, index){
-            if(data.data.reveiverTeamName){
+            if(data.reveiverTeamName){
                 // this.dummyList.unshift(data.data)
-            }else if(data.data.name){
+            }else if(data.name){
                 // var record = this.dummyList.findIndex(function(item, index, arr){return item.reveiverTeamName === data.group});
                 // this.dummyList[record].team.unshift(data.data)
             }
             this.selectReceivers.splice(index, 1)
         },
         addTeamList(obj){
-            this.selectedTeamList.unshift(obj)
+            // this.selectedTeamList.unshift(obj)
             this.selectReceivers.unshift(obj)
+            alert(JSON.stringify(this.selectReceivers))
         },
         addMemberList(obj){
-            this.selectedMemberList.unshift(obj)
+            // this.selectedMemberList.unshift(obj)
+
             this.selectReceivers.unshift(obj)
+            alert(JSON.stringify(this.selectReceivers))
+            // alert(JSON.stringify(this.selectReceivers))
+            // alert(JSON.stringify(this.selectReceivers.userDispMtext))
         },
-        teamEditClick(){
-            if(this.teamEditYn){
-                this.teamEditYn = false
-                this.teamBtnText = '편집'
-            }else{
-                this.teamEditYn = true
-                this.teamBtnText = '저장'
-            }
-        },
-        memberEditClick(){
-            // alert('팀원 수정')
-            if(this.memberEditYn){
-                this.teamBtnText = '편집'
-                this.memberEditYn = false
-            }else{
-                this.teamBtnText = '저장'
-                this.memberEditYn = true
-            }
-        },
-        checkAddPopOpend(isOpend){
-            // MemberList에 구성원추가 팝업 on/off 체크
-            this.addPopOpenYn = isOpend
-        },
+
         backClick(){
             if(this.addPopOpenYn){
-                // MemberList에 구성원추가 팝업 끄기manageBookList
+                // MemberList에 구성원추가 팝업
                 this.addPopOpenYn = false
             }else if(this.detailOpenYn){
                 this.detailOpenYn = false
@@ -221,70 +181,33 @@ export default {
                     // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
                 }
             }
-            // alert(this.clickList)
+
         },
         addAllClick () {
             var i = 0
             var obj = new Object()
             if(this.detailOpenYn){
                 // 멤버 리스트에서 전체 추가 클릭
-                // alert(this.clickList.reveiverTeamName)
+
                 obj.data = this.clickList
                 this.selectReceivers.unshift(obj)
                 //  arr3.findIndex(i => i.name == "강호동"); 
-                const addAllMemTeamIdx = this.dummyList.findIndex(i => i.reveiverTeamName === this.clickList.reveiverTeamName)
-                this.dummyList.splice(addAllMemTeamIdx, 1) // 전체 리스트에서 해당 인덱스 삭제
+                const addAllMemTeamIdx = this.selectBookDetail.findIndex(i => i.reveiverTeamName === this.clickList.reveiverTeamName)
+                this.selectBookDetail.splice(addAllMemTeamIdx, 1) // 전체 리스트에서 해당 인덱스 삭제
                 this.detailOpenYn = false  // 삭제 되었으면 디테일 끄기
                 this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
 
             }else{
                 // 팀 리스트에서 전체 추가 클릭
-                for(i=0; i < this.dummyList.length; i++){
+                for(i=0; i < this.selectBookDetail.length; i++){
                     obj = new Object()
-                    obj.data = this.dummyList[i]
+                    obj.data = this.selectBookDetail[i]
                     this.selectReceivers.unshift(obj)
                 }
-                this.dummyList.splice(0, this.dummyList.length) // 전체 리스트에서 제거
+                this.selectBookDetail.splice(0, this.selectBookDetail.length) // 전체 리스트에서 제거
             }
         },
-        closeSearchPop (){
-            this.findPopShowYn = false
-        },
-        async requestSearchList (param) {
-            if (param) {
-                if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-                this.findKeyList.searchKey = param.searchKey
-                } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
-                this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
-                } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
-                this.findKeyList.toCreDateStr = param.toCreDateStr
-                } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
-                this.findKeyList.fromCreDateStr = param.fromCreDateStr
-                }
-            }
-            this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-            await this.getPushContentsList()
-        },
-        /* async changeSearchList (type) {
-            if (type === 'searchKey') {
-                delete this.findKeyList.searchKey
-            } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
-                delete this.findKeyList.toCreDateStr
-                delete this.findKeyList.fromCreDateStr
-            }
-            this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-            await this.getPushContentsList()
-        },
- */
-        addSubHistory (pageName) {
-            // eslint-disable-next-line no-array-constructor
-            var sHistory = new Array()
-            if (this.subHistoryList) {
-                sHistory = this.subHistoryList
-            }
-            sHistory.push(pageName)
-            this.subHistoryList = sHistory
-        },
+
     }
 }
 </script>

@@ -110,7 +110,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <manageBookList :chanInfo="this.chanInfo" :propData="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="manageBookListYn" @closeXPop='manageBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <selectBookList :chanInfo="this.chanInfo" :propData="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
 </template>
 
 <script>
@@ -119,7 +119,7 @@
 import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
 
-import manageBookList from './receiver/Tal_manageBookList.vue'
+import selectBookList from './receiver/Tal_selectBookList.vue'
 export default {
   props:{
     modiBoardDetailProps: {},
@@ -150,7 +150,7 @@ export default {
       functionPopShowYn: false,
       inputvalue: '',
       showSelectStatusShowYn: false,
-      manageBookListYn: false,
+      selectBookListYn: false,
       count: null,
       sharePermissionShowYn: false,
       statusSelectShowYn: false,
@@ -164,7 +164,7 @@ export default {
       selectedListYn : false
     }
   },
-  components: {selectType, manageBookList,
+  components: {selectType, selectBookList,
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -234,12 +234,10 @@ select *from TpCabinetShareItem;
       this.shareSelectYn = true
     }, */
     selectedListSelect(){
-      this.manageBookListYn =true
-
-
+      this.selectBookListYn =true
     },
     showChanMenu () {
-        this.manageBookListYn = true
+        this.selectBookListYn = true
         // this.selectedList = null
     },
     goNo (){
@@ -269,7 +267,7 @@ select *from TpCabinetShareItem;
       // alert(JSON.stringify(datas.selectedTeamList))
       // alert(JSON.stringify(datas.selectedMemberList))
       var data = datas.data
-      this.manageBookListYn = false
+      this.selectBookListYn = false
       this.selectShareYn = true
       // alert(JSON.stringify(data[0].data.reveiverTeamName))
       this.selectedList = datas

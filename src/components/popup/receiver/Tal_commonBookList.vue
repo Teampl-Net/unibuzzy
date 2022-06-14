@@ -18,7 +18,7 @@
                     <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
                 </div>
 
-                <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                <div v-if="editYn" @click="deleteTeamClick(data, cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                     <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                 </div>
                 <div  @click="teamPlusClick(data, index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
@@ -49,13 +49,13 @@ export default {
             cabinetList: [],
             editTeamName:'',
             editNameYn:null,
-            teamList: {},
+            // teamList: {},
             dragging: false
         }
     },
     created () {
         this.getTeamCabList()
-    this.teamList = this.listData
+    // this.teamList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
     components: {
@@ -64,7 +64,7 @@ export default {
     computed: {
         setTotalHeight () {
             return {
-                '--scrollHeight' : this.teamList.length * 70 + 20 + 'px'
+                '--scrollHeight' : this.cabinetList.length * 70 + 20 + 'px'
             }
         }
     },
@@ -89,11 +89,11 @@ export default {
         },
         teamPlusClick(data, index){
             // debugger
-            const obj = new Object();
-            obj.data = data;
-            obj.index = index
-            this.teamList.splice(index, 1)
-            this.$emit('selectTeam', obj);
+            // const obj = new Object();
+            // obj.data = data;
+            // obj.index = index
+            this.cabinetList.splice(index, 1)
+            this.$emit('selectTeam', data);
         },
         clickList(data){
             // alert(true)
@@ -101,8 +101,8 @@ export default {
             this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
         },
         deleteTeamClick(data,index){
-
-            this.teamList.splice(index, 1)
+            // alert(index)
+            this.cabinetList.splice(index, 1)
         },
         editClick(data, index){
             var editTeamName = document.getElementById(index)
@@ -116,22 +116,11 @@ export default {
         },
         newAddTeam(){
             this.editNameYn = null
-            // var addlistData = []
-
-            // const newList = [
-            //     ...addlistData,
-            //     ...this.teamList
-            // ]
-            // this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
-            this.teamList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
-            // this.editNameYn = 0
+            this.cabinetList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-            // debugger
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-                // document.getElementsByClassName('foo')[0].classList.remove('foo')
             }, 800);
-            // document.getElementById(0).focus()
         }
     }
 
