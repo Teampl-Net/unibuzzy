@@ -8,7 +8,7 @@
       <!-- 유민 -->
       <div id="summaryWrap" class="summaryWrap">
           <div class="summaryTop">
-            <p class="cBlack" style="font-size: 16px;">공유 {{commonListData.mCabinet.length}} | 게시글 21개 </p>
+            <p class="cBlack" style="font-size: 16px;">공유 {{commonListData.mCabinet.shareCnt}} | 게시글 21개 </p>
             <p class="cBlack" style="font-size: 22px; font-weight: bold;">{{this.$changeText(commonListData.mCabinet[0].cabinetNameMtext)}}</p>
           </div>
           <div class="centerSpace"></div>
@@ -238,51 +238,6 @@ export default {
       viewTab: 'N',
       commonListData: {
         mCabinet: [
-          {
-            cabShareKey: 24,
-            cabinetKey: 10527,
-            cabinetNameMtext: 'KO$^$게시판안녕',
-            creDate: '2022-06-13T05:55:11.000+00:00',
-            deleteYn: 0,
-            mShareItemList: [
-              {
-                accessKey: 200,
-                accessKind: 'T',
-                cabItemKey: 62,
-                cabShareKey: 24,
-                cabinetKey: 10257,
-                creDate: '2022-06-13T05:55:11.000+00:00',
-                shareType: 'R',
-                blindYn: true,
-                replyYn: false,
-                fileYn: true
-              },
-              {
-                accessKey: 200,
-                accessKind: 'T',
-                cabItemKey: 62,
-                cabShareKey: 24,
-                cabinetKey: 10257,
-                creDate: '2022-06-13T05:55:11.000+00:00',
-                shareType: 'R',
-                blindYn: false,
-                replyYn: false,
-                fileYn: false
-              },
-              {
-                accessKey: 200,
-                accessKind: 'T',
-                cabItemKey: 62,
-                cabShareKey: 24,
-                cabinetKey: 10257,
-                creDate: '2022-06-13T05:55:11.000+00:00',
-                shareType: 'R',
-                blindYn: false,
-                replyYn: false,
-                fileYn: false
-              }
-            ]
-          },
           {
             cabShareKey: 24,
             cabinetKey: 10527,

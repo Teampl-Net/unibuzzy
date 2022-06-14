@@ -198,8 +198,19 @@ const methods = {
     PullToRefresh.destroyAll()
   },
 
-  checkUserAuth () {
+  checkUserAuth (data) {
     //
+    var authList = { R: true, W: false, V: false }
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].accessKind === 'W' && authList.W !== false) {
+        authList.W = true
+      } else if (data[i].accessKind === 'R' && authList.R !== false) {
+        authList.R = true
+      } else if (data[i].accessKind === 'V' && authList.V !== false) {
+        authList.V = true
+      }
+    }
+    return authList
   },
   checkSameName (checkList, checkText) {
     var changedBoardName = checkText

@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     btnWriteBoard () {
+      // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeBoard'
       params.currentTeamKey = this.propData.currentTeamKey
@@ -64,6 +65,7 @@ export default {
       this.$emit('openPop', params)
     },
     async getCabinetDetail () {
+      // alert(true)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData

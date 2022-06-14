@@ -269,9 +269,9 @@ export default {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
         this.headerTitle = '주소록 관리'
         // alert(this.headerTitle)
-      } else if(this.targetType === 'bookMemberDetail'){
+      } else if (this.targetType === 'bookMemberDetail') {
         this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
-      } else if(this.targetType === 'writeBoard'){
+      } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시판 작성'
       }
 

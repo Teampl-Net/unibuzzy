@@ -32,7 +32,7 @@ export default {
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {
-        this.$emit('sendOk')
+      this.$emit('sendOk')
       // }
     },
 
