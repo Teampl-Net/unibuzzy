@@ -52,7 +52,7 @@ import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
 import PullToRefresh from 'pulltorefreshjs'
 
-import chanMenu from '../popup/Tal_channelMenu.vue'
+import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
 import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'

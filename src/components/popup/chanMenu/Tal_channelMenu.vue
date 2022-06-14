@@ -3,16 +3,15 @@
 
 <div class="channelMenuWrap" :class="{editWrap: editYn === true }">
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
-      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
-      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
+      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
+      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
   </div>
-
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
   <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
 
     <div class="fl" style="width:100%">
-      <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
+      <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style=""/>
     </div>
@@ -25,7 +24,7 @@
 
   <div style="width:100%; margin-top:calc(20px);" :class="{editmTop:editYn !== true}" class="fl">
     <div class="fl" style="width:100%">
-      <img src="../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
+      <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
       <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-show="editYn" />
     </div>
@@ -34,6 +33,7 @@
     </div>
   </div>
 </div>
+
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
 </template>
@@ -41,9 +41,9 @@
 /* eslint-disable */
 // eslint-disable-next-line
 // eslint-disable-next-line no-new-object
-import editChanMenu from './Tal_channelMenuEditPopup.vue'
-import teamList from './receiver/Tal_receiverTeamList.vue'
-import chanListNew from './receiver/Tal_channelMenuListNew.vue'
+import editChanMenu from '../Tal_channelMenuEditPopup.vue'
+import teamList from '../chanMenu/Tal_menuBookList.vue'
+import chanListNew from '../chanMenu/Tal_menuBoardList.vue'
 
 export default {
   props:{
@@ -80,6 +80,7 @@ export default {
   methods: {
     async getTeamMenuList () {
       var paramMap = new Map()
+      // alert(this.chanAlimListTeamKey)
       paramMap.set('teamKey', this.chanAlimListTeamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)

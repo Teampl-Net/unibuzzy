@@ -1,15 +1,14 @@
 <template>
-    <template v-if="!listData">
+    <template v-if="listData">
         <div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; " @click="listClick(data)" >
-        <div style="width:100%; height:30px; " class="fl">
-            <!-- <img src="" /> -->
-            <div class="fl" style="width:30px;height:30px; border-radius:100%; background-color:#ccc; margin-left:1rem;">
-                <img src="../../../assets/images/main/main_subscriber.png" alt="" >
+            <div style="width:100%; height:30px; " class="fl">
+                <!-- <img src="" /> -->
+                <div class="fl" style="width:30px;height:30px; border-radius:100%; background-color:#ccc; margin-left:1rem;">
+                    <img src="../../../assets/images/main/main_subscriber.png" alt="" >
+                </div>
+                <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{this.$changeText(data.cabinetNameMtext)}}</div>
             </div>
-            <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{this.$changeText(data.cabinetNameMtext)}}</div>
         </div>
-
-    </div>
     </template>
 
     <div v-else><p>생성된 게시판이 없습니다.</p></div>
@@ -28,7 +27,6 @@ export default {
     },
     methods: {
         listClick (data) {
-
             this.$emit('chanMenuClick', data)
         }
     }

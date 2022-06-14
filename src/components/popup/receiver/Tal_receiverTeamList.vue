@@ -47,8 +47,6 @@ export default {
     data(){
         return{
             cabinetList: [],
-            upTxt:'>',
-            downTxt:'<',
             editTeamName:'',
             editNameYn:null,
             teamList: {},

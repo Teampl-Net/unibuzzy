@@ -32,8 +32,8 @@
             <!-- <transition name="showGroup">
                 <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
             </transition> -->
-
         </div>
+
     </div>
 
 <!-- <div v-if="selectPopYn" style="width: 100vw; height:calc(50% - 50px); background-color:white; position: absolute; left:0; bottom:0; box-shadow: 0px -7px 9px -9px #00000036;"> -->
@@ -74,8 +74,10 @@ export default {
     props: {
         selectPopYn: {},
         chanInfo: {},
-        propData: {},
-        selectedList: {}
+        selectedList: {},
+        detailSelectedYn:{},
+        selectedListYn:{},
+        propData: {}
     },
     created (){
         // alert(JSON.stringify(chanInfo))
@@ -89,6 +91,13 @@ export default {
             this.selectedYn = true
             this.setSelectedList = this.selectedList
             // alert(this.setSelectedList.data.reveiverTeamName)
+        }
+
+        if(this.selectedListYn){
+            alert(JSON.stringify(this.selectedList))
+            this.selectedTeamList = selectedList.selectedTeamList
+            this.selectedMemberList = selectedList.selectedMemberList
+
         }
 
     },
@@ -114,12 +123,22 @@ export default {
             teamLength: 100,
             addPopOpenYn:null,
             addPopOpen:'',
+            selectedTeamList : [],
+            selectedMemberList : [],
+
             selectBookDetail: null
         }
     },
     methods : {
         setResult(){
-            this.$emit('selectedReceiver', this.selectReceivers)
+            // alert(JSON.stringify(this.selectReceivers))
+            var obj = new Object();
+            obj.data = this.selectReceivers
+            obj.selectedTeamList = this.selectedTeamList
+            obj.selectedMemberList = this.selectedMemberList
+            // this.$emit('selectedReceiver', this.selectReceivers)
+            this.$emit('selectedReceiver', obj)
+            // this.$emit('selectedReceiver', this.selectReceivers)
         },
         delectClick(data, index){
             if(data.data.reveiverTeamName){
@@ -130,10 +149,13 @@ export default {
             }
             this.selectReceivers.splice(index, 1)
         },
-        addList(obj){
-            // alert(JSON.stringify(obj))
+        addTeamList(obj){
+            this.selectedTeamList.unshift(obj)
             this.selectReceivers.unshift(obj)
-
+        },
+        addMemberList(obj){
+            this.selectedMemberList.unshift(obj)
+            this.selectReceivers.unshift(obj)
         },
         teamEditClick(){
             if(this.teamEditYn){
@@ -147,8 +169,10 @@ export default {
         memberEditClick(){
             // alert('팀원 수정')
             if(this.memberEditYn){
+                this.teamBtnText = '편집'
                 this.memberEditYn = false
             }else{
+                this.teamBtnText = '저장'
                 this.memberEditYn = true
             }
         },
@@ -187,7 +211,7 @@ export default {
                 this.detailOpenYn = true
                 this.receiverTitle = '구성원 관리'
                 // alert(JSON.stringify(this.propData))
-                if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '' ) { 
+                if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '' ) {
                     this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
                 } else {
                     this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext

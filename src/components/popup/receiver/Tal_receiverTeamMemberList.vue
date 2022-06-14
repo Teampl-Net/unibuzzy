@@ -80,7 +80,7 @@ export default {
         this.memberList = this.propData.mCabUserList
         for (var i =0; i < this.memberList.length; i ++) {
             if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
-                
+
             } else {
                 this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
             }

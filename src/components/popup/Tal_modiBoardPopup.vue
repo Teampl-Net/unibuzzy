@@ -126,10 +126,11 @@ export default {
     chanInfo: {}
   },
   created () {
-    alert(JSON.stringify(this.chanInfo))
+    // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
     // debugger
+
   },
   data () {
     return {
@@ -159,10 +160,11 @@ export default {
       readPermission: '열람권한',
       commentPermission: '댓글권한',
       bookList: null,
-      selectedList :null
+      selectedList :null,
+      selectedListYn : false
     }
   },
-  components: {selectType, manageBookList
+  components: {selectType, manageBookList,
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -193,9 +195,18 @@ export default {
       } else if (this.shareType === 'select') {
 
       }
+      // 대상 하나하나 > acc
+      /*
+      select *from TpCabinetShare;
+      -- shareList : 공유대상 리스트
+      -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
+
+      select *from TpCabinetShareItem;
+      -- itemList : 권한 리스트
+      -- [{shareType / shareSeq}, {shareType, shareSeq}] */
       cabinet.shareList = shareList
       // 대상 하나하나 > acc
-      /* 
+      /*
 select *from TpCabinetShare;
 -- shareList : 공유대상 리스트
     -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
@@ -204,26 +215,32 @@ select *from TpCabinetShareItem;
 -- itemList : 권한 리스트
     -- [{shareType / shareSeq}, {shareType, shareSeq}] */
 
-      
+
       cabinet.itemList = itemList
       // cabinet.tempKeyList = [0, 1, 2, 3]
       param.cabinet = cabinet
       param.creMenuYn = false
+      // alert(JSON.stringify(param))
       var result = this.$saveCabinet(param)
+      // alert(JSON.stringify(result))
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        alert('수정 성공!')
+
+
       }
+      alert('수정 성공!')
+      this.$emit('closePop')
     },
     /* nextStep () {
       this.shareSelectYn = true
     }, */
     selectedListSelect(){
-      this.managerReceiverYn =true
+      this.manageBookListYn =true
 
 
     },
     showChanMenu () {
         this.manageBookListYn = true
+        // this.selectedList = null
     },
     goNo (){
       this.$emit('closePop')
@@ -248,20 +265,32 @@ select *from TpCabinetShareItem;
       }
 
     },
-    setSelectedList (data) {
-        this.manageBookListYn = false
-        this.selectShareYn = true
-        this.selectedList = data
-        if(data[0].data.reveiverTeamName){
-            this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
-        }else{
-            this.selectedReceiver = data[0].data.name
-        }
-        if(data.length === 1){
-            this.selectedReceiver
-        }else{
-            this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
-        }
+    setSelectedList (datas) {
+      // alert(JSON.stringify(datas.selectedTeamList))
+      // alert(JSON.stringify(datas.selectedMemberList))
+      var data = datas.data
+      this.manageBookListYn = false
+      this.selectShareYn = true
+      // alert(JSON.stringify(data[0].data.reveiverTeamName))
+      this.selectedList = datas
+      this.selectedListYn = true
+      if(data[0].data.reveiverTeamName){
+          this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
+      }else{
+          this.selectedReceiver = data[0].data.name
+      }
+      this.writePermission = this.selectedReceiver
+      this.readPermission = this.selectedReceiver
+      this.commentPermission = this.selectedReceiver
+
+      if(data.length === 1){
+          this.selectedReceiver
+      }else{
+          this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+          this.writePermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+          this.readPermission += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+          this.commentPermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+      }
     },
     changeShareType (type) {
       this.shareType = type
