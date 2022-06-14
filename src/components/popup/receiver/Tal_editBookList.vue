@@ -14,10 +14,9 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-
                 <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
             <transition name="showGroup">
-                <memberList :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+                <memberList :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
             <!-- <transition name="showGroup">
                 <selectedListCompo style="position: absolute; top: 0; background: #fff" transition="showGroup" :listData='s' />
@@ -72,8 +71,8 @@ export default {
             }
         },
         openMCabUserList(data){
-                this.selectBookDetail = data
-                this.detailOpenYn = true
+            this.selectBookDetail = data
+            this.detailOpenYn = true
         },
         closeSearchPop (){
             this.findPopShowYn = false
@@ -113,6 +112,9 @@ export default {
             sHistory.push(pageName)
             this.subHistoryList = sHistory
         },
+        openAddPop (data) {
+            this.$emit('openPop', data)
+        }
     }
 }
 </script>

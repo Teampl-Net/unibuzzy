@@ -26,9 +26,9 @@
 import pageTopCompo from './Tal_commonBookTitle.vue'
 /* eslint-disable */
 // eslint-disable-next-line
-import addTeamMember from './Tal_addReceiverTeamMember.vue'
+// import addTeamMember from './Tal_addReceiverTeamMember.vue'
 export default {
-    components: {addTeamMember,pageTopCompo},
+    components: {pageTopCompo},
     props: {
         teamInfo: {},
         listData: {},
@@ -40,7 +40,7 @@ export default {
             teamColor : '',
             editYn: false,
             addMemberPopYn: false,
-            editMember: {},
+
             dragable: false,
             newYn: true
         }
@@ -75,11 +75,13 @@ export default {
         },
         openModiPop (data,index){
             // debugger
-            data.index = index
-            this.editMember = data
+            // data.index = index
+            // this.editMember = data
             // alert(JSON.stringify(this.editMember))
             this.newYn = false
-            this.addMemberPopYn = true
+            // this.addMemberPopYn = true
+            data.targetType = 'bookMemberDetail'
+            this.$emit('openAddPop',data)
         },
         newAddMember(){
             this.newYn = true
@@ -89,7 +91,6 @@ export default {
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-
             }, 800); */
         },
 

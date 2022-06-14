@@ -23,13 +23,13 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn'/>
+
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
-
       <cabinetContentsList :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'cabinetContentsList'" @closePop='openChanItemYn = false' @openPop='itemDetail' />
-
       <cabinetContentsDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='cabinetContentsDetailData'/>
+      <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
 
-      <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" />
+      <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
     </div>
 </template>
@@ -59,6 +59,8 @@ import cabinetContentsList from '../popup/Tal_cabinetContentsList.vue'
 import cabinetContentsDetail from '../popup/Tal_cabinetContentsDetail.vue'
 
 import editBookList from '../popup/receiver/Tal_editBookList.vue'
+
+import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 
 export default {
   async created () {
@@ -143,14 +145,13 @@ export default {
     talInfo,
     question,
     leaveTal,
-
     createChannel,
     writePush,
-
     chanMenu,
     cabinetContentsList,
     cabinetContentsDetail,
-    editBookList
+    editBookList,
+    bookMemberDetail
   },
   updated () {
   },
@@ -264,7 +265,10 @@ export default {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
         this.headerTitle = '주소록 관리'
         // alert(this.headerTitle)
+      } else if(this.targetType === 'bookMemberDetail'){
+        this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
       }
+
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1
       } else {

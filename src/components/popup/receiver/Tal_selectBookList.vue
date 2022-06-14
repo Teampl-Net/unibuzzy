@@ -67,7 +67,7 @@ export default {
     created (){
         // alert(JSON.stringify(chanInfo))
         // this.dummyList = this.$groupDummyList()
-        alert(JSON.stringify(this.propData))
+        // alert(JSON.stringify(this.propData))
         if(this.selectPopYn) {
             this.receiverTitle = '대상 선택'
             this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
@@ -92,8 +92,6 @@ export default {
             selectedYn:false,
             setSelectedList:[],
             detailOpenYn: false,
-
-
             titleText: '팀플',
             receiverTitle: '그룹 관리',
             selectReceivers : [],
