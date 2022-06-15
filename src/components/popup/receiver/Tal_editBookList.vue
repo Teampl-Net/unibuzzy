@@ -14,7 +14,7 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-                <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; " ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
+            <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; " ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
             <transition name="showGroup">
                 <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>

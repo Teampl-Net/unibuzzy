@@ -94,15 +94,15 @@
     <div style="width: 100%; min-height: 100px;">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
-        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{writePermission}}</div>
+        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{writePermission}}</div>
       </div>
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>
-        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{readPermission}}</div>
+        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{readPermission}}</div>
       </div>
       <div class="subItemWrite" style="">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">댓글</p>
-        <div @click="selectedListSelect" class="inputBoxThema textLeft" >{{commentPermission}}</div>
+        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{commentPermission}}</div>
       </div>
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
@@ -110,7 +110,9 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @selectedReceiver='setSelectedList' />
+  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
+
+  <receiverAccessList :chanInfo="this.chanInfo" :propData="chanInfo" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList' />
 </template>
 
 <script>
@@ -118,8 +120,8 @@
 // eslint-disable-next-line
 import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
-
 import selectBookList from './receiver/Tal_selectBookList.vue'
+import receiverAccessList from './receiver/Tal_selectReceiverAccessList.vue'
 export default {
   props:{
     modiBoardDetailProps: {},
@@ -127,6 +129,7 @@ export default {
   },
   created () {
     // alert(JSON.stringify(this.chanInfo))
+    console.log(this.chanInfo)
     this.boardDetail = this.modiBoardDetailProps
     var test = this.modiBoardDetailProps
     // debugger
@@ -162,14 +165,19 @@ export default {
       readPermission: '열람권한',
       commentPermission: '댓글권한',
       bookList: null,
-      selectedList :null,
-      selectedListYn : false
+      selectedList : [],
+      receiverAccessListYn : false
+
     }
   },
-  components: {selectType, selectBookList,
+  components: {selectType, selectBookList,receiverAccessList,
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    showSelectedList () {
+      // alert('sss')
+      this.receiverAccessListYn = true
+    },
     updateCabinet () {
       var param = new Object()
       var cabinet = new Object()
@@ -269,31 +277,54 @@ select *from TpCabinetShareItem;
 
     },
     setSelectedList (datas) {
-      // alert(JSON.stringify(datas.selectedTeamList))
-      // alert(JSON.stringify(datas.selectedMemberList))
-      var data = datas.data
+      console.log(datas)
+      console.log(datas.bookList)
+      console.log(datas.memberList)
       this.selectBookListYn = false
-      this.selectShareYn = true
-      // alert(JSON.stringify(data[0].data.reveiverTeamName))
-      this.selectedList = datas
-      this.selectedListYn = true
-      if(data[0].data.reveiverTeamName){
-          this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
-      }else{
-          this.selectedReceiver = data[0].data.name
+      var text =''
+      var selectLength = 0
+      if(datas.bookList !== undefined ){
+        text = '그룹: ' +datas.bookList[0].cabinetNameMtext
+        selectLength += datas.bookList.length
       }
+      if(datas.memberList !== undefined ){
+        text = '개인: ' + this.$changeText(datas.memberList[0].userDispMtext)
+        selectLength += datas.memberList.length
+      }
+
+      if(selectLength !== 1){this.selectedReceiver = text + ' 외 ' + (selectLength - 1)+'개'}
+      if(selectLength == 1){this.selectedReceiver = text }
+
       this.writePermission = this.selectedReceiver
       this.readPermission = this.selectedReceiver
       this.commentPermission = this.selectedReceiver
+      this.selectedList = datas
 
-      if(data.length === 1){
-          this.selectedReceiver
-      }else{
-          this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
-          this.writePermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
-          this.readPermission += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
-          this.commentPermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
-      }
+      // alert(JSON.stringify(datas.selectedTeamList))
+      // alert(JSON.stringify(datas.selectedMemberList))
+      // var data = datas.data
+      // this.selectBookListYn = false
+      // this.selectShareYn = true
+      // // alert(JSON.stringify(data[0].data.reveiverTeamName))
+      // this.selectedList = datas
+      // this.selectedListYn = true
+      // if(data[0].data.reveiverTeamName){
+      //     this.selectedReceiver =data[0].data.reveiverTeamName + ' 그룹'
+      // }else{
+      //     this.selectedReceiver = data[0].data.name
+      // }
+      // this.writePermission = this.selectedReceiver
+      // this.readPermission = this.selectedReceiver
+      // this.commentPermission = this.selectedReceiver
+
+      // if(data.length === 1){
+      //     this.selectedReceiver
+      // }else{
+      //     this.selectedReceiver += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+      //     this.writePermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+      //     this.readPermission += ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+      //     this.commentPermission+= ' 외 '+(data.length - 1) + ' 개의 그룹/사람'
+      // }
     },
     changeShareType (type) {
       this.shareType = type

@@ -15,10 +15,7 @@
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
 
-            <bookList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
-            <transition name="showGroup">
-                <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
-            </transition>
+          <selectBookNMemberList  :propData='propData' :selectBookNList='parentList'  />
         </div>
         <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
 
@@ -28,26 +25,21 @@
 </template>
 
 <script>
-import bookList from './Tal_commonBookList.vue'
-import memberList from './Tal_commonBookMemberList.vue'
+import selectBookNMemberList from './Tal_selectBookAndMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {
   props: {
     selectPopYn: {},
     chanInfo: {},
     detailSelectedYn: {},
-    selectedListYn: {},
-    propData: {}
+    propData: {},
+    parentList: {}
   },
-  created () {
-    // alert(JSON.stringify(this.propData))
-    if (this.selectedListYn) {
-      // alert(JSON.stringify(this.selectedList))
-      this.selectedTeamList = this.selectedList.selectedTeamList
-      this.selectedMemberList = this.selectedList.selectedMemberList
-    }
+  created(){
+    alert(JSON.stringify(this.parentList) + 'sssss')
+
   },
-  components: { bookList, memberList, selectedListCompo },
+  components: { selectedListCompo, selectBookNMemberList },
   data () {
     return {
       selectedYn: false,
@@ -105,13 +97,13 @@ export default {
     addTeamList (obj) {
       // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
-      alert(JSON.stringify(this.selectReceivers))
+      // alert(JSON.stringify(this.selectReceivers))
     },
     addMemberList (obj) {
       // this.selectedMemberList.unshift(obj)
 
       this.selectReceivers.unshift(obj)
-      alert(JSON.stringify(this.selectReceivers))
+      // alert(JSON.stringify(this.selectReceivers))
       // alert(JSON.stringify(this.selectReceivers))
       // alert(JSON.stringify(this.selectReceivers.userDispMtext))
     },
