@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
+        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
@@ -8,25 +8,28 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; ">
-                            <div @click="clickList(data)" style="width: calc(100% - 60px); height: 100%;" class="fl">
+                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;" >
+                            <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
                                 </div>
-                            <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
+                                <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
                                 <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-                                    <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
-                                    <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                    <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
+                                <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
+                                <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
+                                <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
 
                                 <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                     <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                                 </div>
-                                <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
-                                    <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                                        <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
-                                    </div>
+                            </div>
+                            <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                            </div>
+                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
+                                <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                                    <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
                                 </div>
                             </div>
                         </div>
@@ -55,6 +58,7 @@ export default {
     },
     data(){
         return{
+            propObject: {},
             cabinetList: [],
             editTeamName:'',
             cabinetList: {},
@@ -65,6 +69,11 @@ export default {
         }
     },
     async created () {
+        this.propObject = this.propData
+        if(this.propObject.targetNameMtext !== undefined && this.propObject.targetNameMtext !== null && this.propObject.targetNameMtext !== '') {
+            this.propObject.teamNameMtext = this.$changeText(this.propObject.targetNameMtext)
+            // alert(this.propObject.teamNameMtext)
+        }
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
@@ -136,7 +145,7 @@ export default {
         },
         async getTeamCabList () {
             var paramMap = new Map()
-            paramMap.set('creTeamKey', this.propData.currentTeamKey)
+            paramMap.set('creTeamKey', this.propObject.currentTeamKey)
             paramMap.set('sysCabinetCode', 'USER')
             var result = await this.$commonAxiosFunction({
                 url: '/tp.getBookList',
@@ -157,7 +166,7 @@ export default {
         },
         async deleteCabinet(data,index){
             var param = new Object()
-            param.currentTeamKey = this.propData.currentTeamKey
+            param.currentTeamKey = this.propObject.currentTeamKey
             param.cabinetKey = data.cabinetKey
             this.cabinetList.splice(index, 1)
             var result = await this.$deleteCabinet(param)
@@ -179,9 +188,9 @@ export default {
             var cabinet = new Object()
             var defaultAddBoardName = this.$checkSameName(this.cabinetList, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-            cabinet.currentTeamKey = this.propData.currentTeamKey
+            cabinet.currentTeamKey = this.propObject.currentTeamKey
             cabinet.sysCabinetCode = 'USER'
-            cabinet.creTeamKey = this.propData.currentTeamKey
+            cabinet.creTeamKey = this.propObject.currentTeamKey
             param.cabinet = cabinet
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {

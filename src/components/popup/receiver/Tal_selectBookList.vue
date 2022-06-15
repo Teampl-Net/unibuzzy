@@ -15,9 +15,9 @@
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
 
-            <bookList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+            <bookList :teamInfo="propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
             <transition name="showGroup">
-                <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+                <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
         </div>
         <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
@@ -40,6 +40,7 @@ export default {
     propData: {}
   },
   created () {
+    alert(JSON.stringify(this.propData))
     // alert(JSON.stringify(this.propData))
     if (this.selectedListYn) {
       // alert(JSON.stringify(this.selectedList))
@@ -67,8 +68,12 @@ export default {
     }
   },
   methods: {
-    sendReceivers (data) {
-      this.$emit('sendReceivers', this.selectedList)
+    sendReceivers () {
+      var obj = new Object()
+      obj.data = this.selectedList
+      this.$emit('sendReceivers', obj)
+      // this.$emit('selectedList', this.selectedList)
+      console.log(this.selectedList)
     },
     changeSelectMemberList (data) {
       // eslint-disable-next-line vue/no-mutating-props
@@ -81,18 +86,18 @@ export default {
     changeSelectedList (selectedListData) {
       this.selectedList = selectedListData
     },
-    // setResult () {
-    //   // alert(JSON.stringify(this.selectReceivers))
-    //   // eslint-disable-next-line no-new-object
-    //   var obj = new Object()
-    //   obj.data = this.selectReceivers
-    //   obj.selectedTeamList = this.selectedTeamList
-    //   obj.selectedMemberList = this.selectedMemberList
-    //   // this.$emit('selectedReceiver', this.selectReceivers)
-    //   console.log('@@@selectBookList // '+obj)
-    //   this.$emit('selectedReceiver', obj)
-    //   // this.$emit('selectedReceiver', this.selectReceivers)
-    // },
+    setResult () {
+      // alert(JSON.stringify(this.selectReceivers))
+      // eslint-disable-next-line no-new-object
+      var obj = new Object()
+      obj.data = this.selectReceivers
+      obj.selectedTeamList = this.selectedTeamList
+      obj.selectedMemberList = this.selectedMemberList
+      // this.$emit('selectedReceiver', this.selectReceivers)
+      // console.log('@@@selectBookList // '+obj)
+      this.$emit('selectedReceiver', obj)
+      // this.$emit('selectedReceiver', this.selectReceivers)
+    },
     delectClick (data, index) {
       if (data.reveiverTeamName) {
         // this.dummyList.unshift(data.data)
@@ -105,13 +110,13 @@ export default {
     addTeamList (obj) {
       // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
-      alert(JSON.stringify(this.selectReceivers))
+      // alert(JSON.stringify(this.selectReceivers))
     },
     addMemberList (obj) {
       // this.selectedMemberList.unshift(obj)
 
       this.selectReceivers.unshift(obj)
-      alert(JSON.stringify(this.selectReceivers))
+      // alert(JSON.stringify(this.selectReceivers))
       // alert(JSON.stringify(this.selectReceivers))
       // alert(JSON.stringify(this.selectReceivers.userDispMtext))
     },

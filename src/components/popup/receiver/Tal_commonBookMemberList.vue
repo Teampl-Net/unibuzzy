@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="teamInfo.teamNameMtext + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -64,7 +64,7 @@ export default {
     watch:{
     },
     created(){
-        alert(JSON.stringify(this.propData))
+        alert(JSON.stringify(this.teamInfo))
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedBookList = this.parentSelectList.memberList

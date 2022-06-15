@@ -37,7 +37,7 @@ export default {
     itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
   created () {
-    alert(JSON.stringify(this.parentList) + 'sssss')
+    alert(JSON.stringify(this.parentList))
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {

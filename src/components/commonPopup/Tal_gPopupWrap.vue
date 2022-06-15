@@ -22,7 +22,7 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
-      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'/>
+      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'  />
 
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
       <boardMain :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @closePop='openChanItemYn = false' @openPop='openPop' />
@@ -33,8 +33,6 @@
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
       <boardWrite @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
-
-      <selectBook @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'selectBook'"  />
 
     </div>
 </template>
@@ -66,8 +64,6 @@ import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
-
-import selectBook from '../popup/receiver/Tal_selectBookList.vue'
 
 export default {
   async created () {
@@ -133,7 +129,8 @@ export default {
       // itemTitle: '',
       openChanItemDetailYn: false,
       boardMainDetailData: '',
-      chanAlimListTeamKey: null // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
+      chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
+      receiverList:{}
     }
   },
   props: {
@@ -159,8 +156,7 @@ export default {
     boardMainDetail,
     editBookList,
     bookMemberDetail,
-    boardWrite,
-    selectBook
+    boardWrite
   },
   updated () {
   },
