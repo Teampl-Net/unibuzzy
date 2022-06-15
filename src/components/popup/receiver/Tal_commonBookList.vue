@@ -63,7 +63,7 @@ export default {
             selectedBookList: [],
         }
     },
-    async mounted () {
+    async created () {
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
@@ -184,17 +184,17 @@ export default {
             param.cabinet = cabinet
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-                var addBoard = {'cabinetNameMtext': 'KO$^$'+defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+                var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
 
             }
             // alert(JSON.stringify(result))
             this.cabinetList.unshift(addBoard)
-            // document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-            // // debugger
-            // setTimeout(() => {
-            //     document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-            //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
-            // }, 800);
+            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            // debugger
+            setTimeout(() => {
+                document.getElementsByClassName('foo')[0].style.backgroundColor = ''
+                // document.getElementsByClassName('foo')[0].classList.remove('foo')
+            }, 800);
         }
     }
 
