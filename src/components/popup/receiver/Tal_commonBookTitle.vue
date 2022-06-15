@@ -5,7 +5,7 @@
                 <img class="fl" style="margin-top: 4px; width: 15px;" src="../../../assets/images/main/main_subscriber.png" />
                 <p class="fl font14" style="margin-top: 2px;">{{teamLength}}</p>
             </div>
-            <gBtnSmall :btnTitle="btnTitle"  @click="this.$emit('btnClick')"  /> <!-- !detailOpenYn? teamEditClick() : memberEditClick() -->
+            <gBtnSmall v-if="!selectPopYn" :btnTitle="btnTitle"  @click="this.$emit('btnClick')"  /> <!-- !detailOpenYn? teamEditClick() : memberEditClick() -->
             <!-- <gBtnSmall btnThema="light" btnTitle="추가" class="mright-05"  @click="!detailOpenYn? this.$refs.teamListRef.newAddTeam() : this.$refs.memberListRef.newAddMember()" v-if='teamEditYn || memberEditYn' /> -->
         </div>
 </template>
@@ -15,7 +15,8 @@ export default {
   props: {
     titleText: {},
     dataLength: {},
-    btnTitle: {}
+    btnTitle: {},
+    selectPopYn: {}
   }
 }
 </script>

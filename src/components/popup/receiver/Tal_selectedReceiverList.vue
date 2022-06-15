@@ -1,6 +1,10 @@
 <template>
 <div style="width: 100%; min-height: 300px; background: #ccc; padding: 10px;" class="">
-    <p class="textLeft fontBold font16 mbottom-1">선택된 리스트</p>
+    <div class="mbottom-1" style="width: 100%; height: 30px;">
+        <p class="textLeft fontBold font16 fl">선택된 리스트</p>
+        <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers"  />
+    </div>
+
     <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -61,7 +65,10 @@ export default {
     //     }
     // },
     methods:{
-        removeSelectedYn (type, index) {
+        sendReceivers() {
+            this.$emit('btnClick', this.teamList)
+        },
+        removeSelectedYn(type, index) {
             if(type === 'book') {
                 this.teamList.bookList.splice(index, 1)
             } else if(type === 'member') {

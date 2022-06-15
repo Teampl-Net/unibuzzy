@@ -62,7 +62,7 @@
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="replyYnInput" id="toggle1" :checked="replyYnInput === true" hidden>
           <label for="toggle1" class="toggleSwitch">
-            <span class="toggleButton">{{replyYnInput}}</span>
+            <span class="toggleButton"></span>
           </label>
         </div>
       </div>
@@ -71,7 +71,7 @@
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="fileYnInput" id="toggle2" :checked="fileYnInput === true" hidden>
           <label for="toggle2" class="toggleSwitch">
-            <span class="toggleButton">{{fileYnInput}}</span>
+            <span class="toggleButton"></span>
           </label>
         </div>
       </div>

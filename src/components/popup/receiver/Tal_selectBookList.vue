@@ -20,7 +20,7 @@
                 <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
         </div>
-        <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' />
+        <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
 
     </div>
 </div>
@@ -40,7 +40,6 @@ export default {
     propData: {}
   },
   created () {
-
     // alert(JSON.stringify(this.propData))
     if (this.selectedListYn) {
       // alert(JSON.stringify(this.selectedList))
@@ -68,6 +67,10 @@ export default {
     }
   },
   methods: {
+    sendReceivers (data) {
+      this.$emit('selectedList', this.selectedList)
+      console.log(this.selectedList)
+    },
     changeSelectMemberList (data) {
       // eslint-disable-next-line vue/no-mutating-props
       this.selectedList.memberList = data

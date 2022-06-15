@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick"  :dataLength="cabinetList.length" />
+        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
@@ -8,8 +8,9 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div @click="clickList(data)" v-if="data.selectedYn !== true" :id="'book'+ index" :class="{foo:index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
-                        <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
+                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; ">
+                            <div @click="clickList(data)" style="width: calc(100% - 60px); height: 100%;" class="fl">
+                            <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                             <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                 <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
                             </div>
@@ -18,11 +19,11 @@
                                 <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
                                 <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
-
-                            <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                                <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                    <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                                </div>
                             </div>
-                            <div  @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
+                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
                                 <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
                                     <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
                                 </div>
