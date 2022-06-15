@@ -1,23 +1,25 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :btnTitle="'편집'" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="'편집'" @btnClick="changeEdit" :dataLength="memberList.length" />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
     <div style="width: 100%; height: calc(100% - 60px); padding: 0 10px; margin-top: 10px;">
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
-                <template v-for="(data, index) in memberList" :key='data'  >
-                    <div @click="!selectPopYn? openModiPop(data,index): ''" v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0}" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
-                        <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
-                        <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                            <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                        </div>
-                        <div  @click="addSelectedList(data,index)" v-if="selectPopYn" class="fr" style="position: relative; width:20%">
-                            <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                <template v-for="(data, index) in memberList" :key='data'>
+                    <div v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0}" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
+                            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
+                            <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
                         </div>
+                    <div @click="addSelectedList(data,index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%; width: 60px;">
+                        <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                        </div>
+                    </div>
                     </div>
                 </template>
             </transition-group>
@@ -108,7 +110,8 @@ export default {
             this.addMemberPopYn = true
             this.memberList.unshift({ userDispMtext: 'KO$^$새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
 
-            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            // document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            document.getElementsByClassName('foo')[0].style.backgroundColor = 'black'
             // debugger
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
