@@ -9,17 +9,17 @@
 
       </div>
 
-      <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
+      <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div @click="openModiBoardPop(data)"  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
+          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
             <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
-            <div class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
+            <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText"/>
             </div>
-            <div  @click="delFormCard()" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
+            <div  @click="deleteCabinet(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
               <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer; z-index: 999" alt="">
             </div>
           </div>
@@ -94,6 +94,7 @@ export default {
     async getTeamMenuList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.currentTeamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
@@ -114,6 +115,14 @@ export default {
     },
     goNo (){
       this.$emit('closePop')
+    },
+    async deleteCabinet(data,index){
+        var param = new Object()
+        param.currentTeamKey = this.currentTeamKey
+        param.cabinetKey = data.cabinetKey
+        // this.teamList.splice(index, 1)
+        var result = await this.$deleteCabinet(param)
+        debugger
     },
     /* addChanClick(){
       this.openAddChanMenuYn = true
@@ -146,6 +155,7 @@ export default {
       var defaultAddBoardName = this.$checkSameName(this.boardList, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
+      cabinet.sysCabinetCode = 'BOAR'
       cabinet.MenuType = 'C'
       cabinet.blindYn = false
       cabinet.fileYn = true
@@ -161,6 +171,31 @@ export default {
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
       }, 800);
+    },
+    async changePosTeamMenu () {
+      // alert(true)
+      var paramSet = new Object()
+      var teamMenuList = new Array()
+      var menu = new Object()
+      for (var i = 0; i < this.boardList.length; i ++) {
+        menu = {}
+        if(this.boardList[i].menuType)
+          menu.MenuType = this.boardList[i].menuType
+        if(this.boardList[i].teamKey)
+          menu.teamKey = this.boardList[i].teamKey
+        if(this.boardList[i].parentMenuKey)
+          menu.parentMenuKey = this.boardList[i].parentMenuKey
+
+        teamMenuList.push(menu)
+      }
+      paramSet.teamMenuList = teamMenuList
+      var result = await this.$commonAxiosFunction(
+        {
+          url: 'tp.changePosTeamMenu',
+          param: paramSet
+        }
+      )
+      debugger
     }
       // this.boardList.push()
   }

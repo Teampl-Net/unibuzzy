@@ -83,6 +83,7 @@ export default {
       var paramMap = new Map()
       // alert(this.chanAlimListTeamKey)
       paramMap.set('teamKey', this.chanAlimListTeamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
       // alert(true)

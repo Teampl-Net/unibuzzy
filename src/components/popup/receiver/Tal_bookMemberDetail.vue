@@ -50,7 +50,7 @@
         </div>
 
     </div>
-    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="updateBtnClick" />
+    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="saveBookMember" />
 </div>
 <popUp v-if="popYn" @no='popYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -64,19 +64,23 @@ export default {
         popUp
     },
     props:{
+        propData: {},
         setEditMember:{},
         excelPopYn:{}
     },
-    mounted(){
-        if(this.setEditMember !== null && this.setEditMember !== undefined && this.setEditMember !== ''){
-            this.memName = this.setEditMember.name
-            this.memEmail= this.setEditMember.email
-            this.memPhone = this.setEditMember.phone
+    created(){
+        alert(JSON.stringify(this.propData))
+        if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
+            // alert(JSON.stringify(this.propData))
+            this.memName = this.$changeText(this.propData.userDispMtext)
+            this.memEmail= this.propData.userEmail
+            this.memPhone = this.propData.userPhone
+        } else {
+            
         }
     },
     data () {
         return {
-        receiverTitle: '구성원 추가하기',
         memName: '',
         memEmail: '',
         memPhone: '',
@@ -109,7 +113,7 @@ export default {
             this.$emit('closePop')
         },
         addNewMem() {
-            if(this.regTest()){
+            if(this.saveBookMember()){
                 const testList = new Object();
                 testList.name = this.memName
                 testList.phoneNum = this.memPhone
@@ -127,15 +131,29 @@ export default {
         ok(){
             this.popYn = false
         },
-        updateBtnClick(){
-            if(this.regTest()){
-                this.setEditMember.name = this.memName
-                this.setEditMember.phone = this.memPhone
-                this.setEditMember.email = this.memEmail
-                this.$emit('updateMember', this.setEditMember)
+        async saveBookMember(){
+            var checkYn = await this.checkParam()
+            if(checkYn) {
+                var param = new Object()
+                var mCabContents = new Object()
+                
+                mCabContents.jobkindId = 'USER'
+                mCabContents.cabinetKey = this.propData.currentCabinetKey
+                // param.targetKey = this.propData.currentTeamKey
+                if (this.propData.mccKey) {
+                    mCabContents.mccKey = this.propData.mccKey
+                    mCabContents.targetKey = this.propData.targetKey //update
+                }
+                mCabContents.inEmail = this.memEmail
+                mCabContents.inPhone = this.memPhone
+                mCabContents.inUserName = this.memName
+                param.mCabContents = mCabContents
+                // alert(true)
+                debugger
+                this.$saveMCabContents(param)
             }
         },
-        regTest(){
+        checkParam(){
             var result = false
             if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail)) {

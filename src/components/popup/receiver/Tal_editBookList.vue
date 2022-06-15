@@ -14,11 +14,11 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-            <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; " ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
+                <bookListCompo :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
             <transition name="showGroup">
                 <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
-
+            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.refaddNewBook():this.$refs.memberListRef.newAddMember()" ><p style="font-size:40px;">+</p></div>
         </div>
 
     </div>
@@ -30,7 +30,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import findContentsList from '../Tal_findContentsList.vue'
-import teamList from './Tal_commonBookList.vue'
+import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 export default {
     props: {
@@ -40,7 +40,7 @@ export default {
     created (){
         // alert(JSON.stringify(this.propData))
     },
-    components: { findContentsList, teamList,memberList },
+    components: { findContentsList, bookListCompo,memberList },
     data () {
         return{
             detailOpenYn: false,

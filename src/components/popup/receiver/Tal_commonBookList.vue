@@ -19,9 +19,9 @@
                                 <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
                                 <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
-                                <div v-if="editYn" @click="deleteTeamClick(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                    <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                                </div>
+
+                            <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
                             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
                                 <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
@@ -154,9 +154,13 @@ export default {
             }
 
         },
-        deleteTeamClick(data,index){
-
+        async deleteCabinet(data,index){
+            var param = new Object()
+            param.currentTeamKey = this.propData.currentTeamKey
+            param.cabinetKey = data.cabinetKey
             this.cabinetList.splice(index, 1)
+            var result = await this.$deleteCabinet(param)
+            debugger
         },
          addSelectedList (data,index) {
             // alert(true)

@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' />
+    <!-- <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' /> -->
 </div>
 
 </template>
@@ -63,6 +63,7 @@ export default {
     watch:{
     },
     created(){
+        alert(JSON.stringify(this.propData))
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedBookList = this.parentSelectList.memberList
@@ -97,6 +98,8 @@ export default {
                 this.newYn = false
                 // this.addMemberPopYn = true
                 data.targetType = 'bookMemberDetail'
+                data.currentCabinetKey = this.propData.cabinetKey
+                data.currentTeamKey = this.teamInfo.teamKey
                 this.$emit('openAddPop',data)
             }
             // debugger
@@ -106,9 +109,13 @@ export default {
 
         },
         newAddMember(){
-            this.newYn = true
-            this.addMemberPopYn = true
-            this.memberList.unshift({ userDispMtext: 'KO$^$새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
+            this.newYn = false
+            var data = new Object()
+            data.targetType = 'bookMemberDetail'
+            data.currentCabinetKey = this.propData.cabinetKey
+            data.currentTeamKey = this.teamInfo.teamKey
+            this.$emit('openAddPop',data)
+            /* this.memberList.unshift({ userDispMtext: 'KO$^$새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
 
             // document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'black'
@@ -116,7 +123,7 @@ export default {
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
                 // document.getElementsByClassName('foo')[0].classList.remove('foo')
-            }, 800);
+            }, 800); */
 
         },
         addSelectedList (data,index) {
