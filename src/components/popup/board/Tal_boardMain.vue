@@ -8,8 +8,8 @@
       <!-- 유민 -->
       <div id="summaryWrap" class="summaryWrap">
           <div class="summaryTop">
-            <p class="cBlack" style="font-size: 16px;">공유 {{commonListData.mCabinet.length}} | 게시글 21개 </p>
-            <p class="cBlack" style="font-size: 22px; font-weight: bold;">{{this.$changeText(commonListData.mCabinet[0].cabinetNameMtext)}}</p>
+            <!-- <p class="cBlack" style="font-size: 16px;">공유 {{commonListData.mCabinet.len}} | 게시글 21개 </p> -->
+            <p class="cBlack" style="font-size: 22px; font-weight: bold;">{{this.$changeText(commonListData.mCabinet.cabinetNameMtext)}}</p>
           </div>
           <div class="centerSpace"></div>
           <div style="display: flex; flex-direction: column; width: 100%; height: 30%;">
@@ -21,9 +21,9 @@
             <p class="summaryBottom" style="margin-top: 15px; width: 60%;">공지게시판</p>
           </div>
             <div style="width: 100%; height: 10%; display: flex; justify-content: flex-start; align-items: center;">
-              <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet[0].mShareItemList[0].blindYn }"></div>
-              <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet[0].mShareItemList[0].replyYn }"></div>
-              <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet[0].mShareItemList[0].fileYn }" style="margin-right: none !important;"></div>
+              <!-- <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet.mShareItemList.blindYn }"></div>
+              <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet.mShareItemList.replyYn }"></div>
+              <div class="summaryIcon" :class="{summaryIconChange: commonListData.mCabinet.mShareItemList.fileYn }" style="margin-right: none !important;"></div> -->
           </div>
       </div>
 
@@ -50,14 +50,14 @@ export default {
     propData: {}
   },
   created () {
+    this.$emit('openLoading')
     this.getCabinetDetail()
   },
   mounted () {
-    // alert(JSON.stringify(this.propData))
+    // alert(true)
   },
   methods: {
     btnWriteBoard () {
-      // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeBoard'
       params.currentTeamKey = this.propData.currentTeamKey
@@ -65,7 +65,6 @@ export default {
       this.$emit('openPop', params)
     },
     async getCabinetDetail () {
-      // alert(true)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData
@@ -74,10 +73,12 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
 
       // mShareItemList가 잘 들어오면 save잘 된것
-      alert(JSON.stringify(resultList))
+      // alert(JSON.stringify(resultList))
       this.commonListData = resultList
-      alert(JSON.stringify(this.commonListData))
+      // alert(JSON.stringify(this.commonListData))
+      console.log(this.commonListData)
       this.findPopShowYn = false
+      // debugger
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')
     },
