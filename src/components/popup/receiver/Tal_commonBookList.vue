@@ -8,7 +8,7 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div @click="{} editYn || !selectPopYn? '' : clickList(data);" v-if="data.selectedYn !== true" :id="'book'+ index" :class="{foo:index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
+                        <div @click="clickList(data)" v-if="data.selectedYn !== true" :id="'book'+ index" :class="{foo:index === 0}" class="receiverTeamListCard fl"  style="width:100%; overflow: hidden; height:60px; position: relative; margin-bottom:10px; "  >
                         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                             <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                 <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
@@ -33,6 +33,9 @@
             </draggable>
         </div>
     </div>
+    <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
+        <p style="font-size:40px;">+</p>
+    </div>
 </template>
 
 <script>
@@ -52,7 +55,7 @@ export default {
         return{
             cabinetList: [],
             editTeamName:'',
-            teamList: {},
+            cabinetList: {},
             dragging: false,
             editYn : false,
             pageTopBtnTitle: '편집',
@@ -68,7 +71,7 @@ export default {
         }
         await this.getTeamCabList()
         this.changeSelectedList()
-        // this.teamList = this.listData
+        // this.cabinetList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
     updated () {
@@ -99,7 +102,7 @@ export default {
     computed: {
         setTotalHeight () {
             return {
-                '--scrollHeight' : this.teamList.length * 70 + 20 + 'px'
+                '--scrollHeight' : this.cabinetList.length * 70 + 20 + 'px'
             }
         }
     },
@@ -145,16 +148,19 @@ export default {
             // debugger
         },
         clickList(data){
-            this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
+            if(!this.editYn){
+                this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
+            }
+
         },
         deleteTeamClick(data,index){
 
-            this.teamList.splice(index, 1)
+            this.cabinetList.splice(index, 1)
         },
          addSelectedList (data,index) {
             // alert(true)
             this.cabinetList[index].selectedYn = true
-            debugger
+
             this.selectedBookList.push(data)
 
             this.$emit('changeSelectBookList', this.selectedBookList)
@@ -176,6 +182,7 @@ export default {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
 
             }
+            // alert(JSON.stringify(result))
             this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             // debugger

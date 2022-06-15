@@ -29,7 +29,7 @@
       <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-show="editYn" />
     </div>
     <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-      <chanListNew  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+      <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
     </div>
   </div>
 </div>
@@ -43,7 +43,7 @@
 // eslint-disable-next-line no-new-object
 import editChanMenu from '../Tal_channelMenuEditPopup.vue'
 import teamList from '../chanMenu/Tal_menuBookList.vue'
-import chanListNew from '../chanMenu/Tal_menuBoardList.vue'
+import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
 
 export default {
   props:{
@@ -75,7 +75,7 @@ export default {
       groupDropDownYn:null
     }
   },
-  components: {editChanMenu,teamList,chanListNew,
+  components: {editChanMenu,teamList,menuBoardList,
   },
   emits: ['openPop', 'goPage'],
   methods: {
@@ -132,7 +132,7 @@ export default {
     },
     chanMenuClick(data){
       var params = new Object()
-      params.targetType = 'cabinetContentsList'
+      params.targetType = 'boardMain'
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data

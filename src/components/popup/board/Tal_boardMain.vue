@@ -74,9 +74,9 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
 
       // mShareItemList가 잘 들어오면 save잘 된것
-      // alert(JSON.stringify(resultList))
+      alert(JSON.stringify(resultList))
       this.commonListData = resultList
-      // alert(JSON.stringify(this.commonListData))
+      alert(JSON.stringify(this.commonListData))
       this.findPopShowYn = false
       // this.userDoList = resultList.userDo
       this.$emit('closeLoading')

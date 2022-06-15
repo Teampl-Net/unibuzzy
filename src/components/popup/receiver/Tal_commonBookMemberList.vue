@@ -7,8 +7,8 @@
     <div style="width: 100%; height: calc(100% - 60px); padding: 0 10px; margin-top: 10px;">
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
-                <template v-for="(data, index) in memberList" :key='data' >
-                    <div @click="!selectPopYn? openModiPop(data,index): ''" v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                <template v-for="(data, index) in memberList" :key='data'  >
+                    <div @click="!selectPopYn? openModiPop(data,index): ''" v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0}" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
                         <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
                         <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                             <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
@@ -22,7 +22,11 @@
                 </template>
             </transition-group>
         </draggable>
+        <div class="btnPlus" btnTitle="추가" @click="this.newAddMember" v-if="editYn">
+            <p style="font-size:40px;">+</p>
+        </div>
     </div>
+
     <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' />
 </div>
 
@@ -57,7 +61,8 @@ export default {
     watch:{
     },
     created(){
-        if(this.parentSelectList.memberList) {
+        // alert(this.parentSelectList)
+        if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedBookList = this.parentSelectList.memberList
         }
 
@@ -83,27 +88,33 @@ export default {
         },
         deleteMemberClick(data, index){
             // alert(index)
-            this.memberList.team.splice(index, 1)
+            this.memberList.splice(index, 1)
         },
         openModiPop (data,index){
+            if(!this.editYn){
+                this.newYn = false
+                // this.addMemberPopYn = true
+                data.targetType = 'bookMemberDetail'
+                this.$emit('openAddPop',data)
+            }
             // debugger
             // data.index = index
             // this.editMember = data
             // alert(JSON.stringify(this.editMember))
-            this.newYn = false
-            // this.addMemberPopYn = true
-            data.targetType = 'bookMemberDetail'
-            this.$emit('openAddPop',data)
+
         },
         newAddMember(){
             this.newYn = true
             this.addMemberPopYn = true
-            /* this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
+            this.memberList.unshift({ userDispMtext: 'KO$^$새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
 
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+            // debugger
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-            }, 800); */
+                // document.getElementsByClassName('foo')[0].classList.remove('foo')
+            }, 800);
+
         },
         addSelectedList (data,index) {
             this.memberList[index].selectedYn = true
@@ -122,12 +133,9 @@ export default {
 
 <style >
 
-.receiverTeamMemberArea{float: left; margin-top: 10px; width: 100%; }
+.receiverTeamMemberArea{float: left;  width: 100%; }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee; background: #6768a712; border-radius: 8px; padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
-
-
-
 
 .cBlack{
     color: black;

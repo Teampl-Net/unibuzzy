@@ -18,8 +18,7 @@
                 <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
-                  <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);">
-                  ㄴ
+                  <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="this.$emit('open')">
                     <!-- [{{this.$changeText(this.params.targetNameMtext)}}] 구독자 -->
                     <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
                   </div>
@@ -114,7 +113,7 @@ export default {
     }
   },
   created () {
-    // alert(true)
+
   },
   methods: {
     setParamInnerHtml (formCard) {

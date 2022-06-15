@@ -14,11 +14,11 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-                <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
+                <teamList :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; " ref="teamListRef"  @openMCabUserList='openMCabUserList' v-show="!detailOpenYn"/>
             <transition name="showGroup">
-                <memberList :teamInfo="propData.value" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
+                <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
-            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.teamListRef.refaddNewBook():this.$refs.memberListRef.newAddMember()" ><p style="font-size:40px;">+</p></div>
+
         </div>
 
     </div>
@@ -38,13 +38,11 @@ export default {
         propData: {}
     },
     created (){
+        // alert(JSON.stringify(this.propData))
     },
     components: { findContentsList, teamList,memberList },
     data () {
         return{
-
-            teamBtnText:'편집',
-            memberBtnText:'편집',
             detailOpenYn: false,
             changeSearchList: [],
             findPopShowYn : false,
@@ -69,8 +67,10 @@ export default {
             }
         },
         openMCabUserList(data){
+
             this.selectBookDetail = data
             this.detailOpenYn = true
+
         },
         closeSearchPop (){
             this.findPopShowYn = false
