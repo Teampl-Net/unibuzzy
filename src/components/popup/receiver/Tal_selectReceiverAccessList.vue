@@ -15,7 +15,7 @@
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
 
-          <selectBookNMemberList  :propData='propData' :selectBookNList='parentList'  />
+          <selectBookNMemberList :itemType="itemType" @changeSelectedItem="changeSelectedItem" :propData='propData' :selectBookNList='parentList'  />
         </div>
         <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
 
@@ -33,17 +33,17 @@ export default {
     chanInfo: {},
     detailSelectedYn: {},
     propData: {},
-    parentList: {}
+    parentList: {},
+    itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
-  created(){
+  created () {
     alert(JSON.stringify(this.parentList) + 'sssss')
-
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
     return {
       selectedYn: false,
-      setSelectedList: [],
+      setSelectedList: {},
       detailOpenYn: false,
 
       titleText: '팀플',
@@ -55,10 +55,22 @@ export default {
       selectedTeamList: [],
       selectedMemberList: [],
       selectedList: {},
-      selectBookDetail: null
+      selectBookDetail: null,
+      itemList: []
     }
   },
   methods: {
+    changeSelectedItem (data) {
+      // data = {itemList: [], itemType: 'w'}
+      // setSelectedList = {R: [], V: [], W: []}
+      if (data.itemType === 'V') {
+        this.setSelectedList.V = data.itemList
+      } else if (data.itemType === 'W') {
+        this.setSelectedList.W = data.itemList
+      } else if (data.itemType === 'R') {
+        this.setSelectedList.R = data.itemList
+      }
+    },
     sendReceivers (data) {
       this.$emit('sendReceivers', this.selectedList)
     },
