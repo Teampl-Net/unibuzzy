@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="'편집'" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -57,7 +57,8 @@ export default {
 
             dragable: false,
             newYn: true,
-            selectedMemberList: []
+            selectedMemberList: [],
+            pageTopBtnTitle: '편집'
         }
     },
     watch:{
@@ -85,8 +86,10 @@ export default {
         changeEdit () {
             if(this.editYn) {
                 this.editYn = false
+                this.pageTopBtnTitle = '편집'
             } else {
                 this.editYn = true
+                this.pageTopBtnTitle = '저장'
             }
         },
         deleteMemberClick(data, index){

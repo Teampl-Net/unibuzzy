@@ -320,6 +320,20 @@ const methods = {
     result = response.data
     return result
   },
+  async deleteCabinet (inputParamMap) {
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
+    if (inputParamMap) {
+      paramSet = inputParamMap
+    }
+    var result = null
+    var response = await commonAxiosFunction({
+      url: '/tp.deleteCabinet',
+      param: paramSet
+    })
+    result = response.data
+    return result
+  },
   async getTeamMenuList (inputParamMap) {
     // eslint-disable-next-line no-new-object
     var paramMap = new Map()
@@ -348,40 +362,14 @@ const methods = {
     result = response.data
     return result
   },
-  groupDummyList () {
-    return [
-      {
-        receiverTeamColor: '#ccc',
-        reveiverTeamName: '관리자',
-        subscrib: '4',
-        team: [
-          { name: '최병진', grade: '매니저', creDate: '2021.12.01 09:55:32', email: 'choi123@susoft.co.kr', phone: '010-0000-1111' },
-          { name: '황수민', grade: '구성원', creDate: '2021.12.11 09:55:32', email: 'sumango@susoft.co.kr', phone: '010-1111-1111' },
-          { name: '정재준', grade: '구성원', creDate: '2022.01.04 09:55:32', email: 'jeong@susoft.co.kr', phone: '010-2222-1111' },
-          { name: '최유민', grade: '구성원', creDate: '2022.02.20 09:55:32', email: 'umin@susoft.co.kr', phone: '010-3333-1111' }]
-      },
-      {
-        receiverTeamColor: '#ccc',
-        reveiverTeamName: '더알림 프로젝트',
-        subscrib: '4',
-        team: [
-          { name: '최병진', grade: '매니저', creDate: '2021.12.01 09:55:32', email: 'choi123@susoft.co.kr', phone: '010-1234-5551' },
-          { name: '황수민', grade: '구성원', creDate: '2021.12.11 09:55:32', email: 'sumango@susoft.co.kr', phone: '010-5555-1235' },
-          { name: '정재준', grade: '구성원', creDate: '2022.01.04 09:55:32', email: 'jeong@susoft.co.kr', phone: '010-4567-1111' },
-          { name: '최유민', grade: '구성원', creDate: '2022.02.20 09:55:32', email: 'umin@susoft.co.kr', phone: '010-8764-1235' }]
-      },
-      {
-        receiverTeamColor: '#ccc',
-        reveiverTeamName: '런하이 프로젝트',
-        subscrib: '4',
-        team: [
-          { name: '이충원', grade: '매니저', creDate: '2021.12.01 09:55:32', email: 'lee@susoft.co.kr', phone: '010-6764-1357' },
-          { name: '최영환', grade: '매니저', creDate: '2021.12.11 09:55:32', email: 'hanw@susoft.co.kr', phone: '010-3782-5786' },
-          { name: '김정호', grade: '매니저', creDate: '2022.01.04 09:55:32', email: 'Kim123@susoft.co.kr', phone: '010-1365-5683' },
-          { name: '안영준', grade: '구성원', creDate: '2022.02.20 09:55:32', email: 'an0@susoft.co.kr', phone: '010-1257-3225' },
-          { name: '박지현', grade: '구성원', creDate: '2022.03.13 09:55:32', email: 'jihyun@susoft.co.kr', phone: '010-8742-4567' },
-          { name: '공유택', grade: '구성원', creDate: '2022.04.22 09:55:32', email: 'share@susoft.co.kr', phone: '010-1578-8854' }]
-      }]
+  async saveMCabContents (paramSet) {
+    var result = null
+    var response = await commonAxiosFunction({
+      url: '/tp.saveMCabContents',
+      param: paramSet
+    })
+    result = response.data
+    return result
   }
 }
 
@@ -403,7 +391,8 @@ export default {
     Vue.config.globalProperties.$changeRecvAlimYn = methods.changeRecvAlimYn
     Vue.config.globalProperties.$saveCabinet = methods.saveCabinet
     Vue.config.globalProperties.$getTeamMenuList = methods.getTeamMenuList
-    Vue.config.globalProperties.$groupDummyList = methods.groupDummyList
+    Vue.config.globalProperties.$deleteCabinet = methods.deleteCabinet
     Vue.config.globalProperties.$getCabinetDetail = methods.getCabinetDetail
+    Vue.config.globalProperties.$saveMCabContents = methods.saveMCabContents
   }
 }

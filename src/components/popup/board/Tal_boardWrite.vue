@@ -116,7 +116,8 @@ export default {
 
   },
   methods: {
-    openBoardReceiverSelect(){
+    openBoardReceiverSelect () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'selectBook'
       this.$emit('openPop', param)

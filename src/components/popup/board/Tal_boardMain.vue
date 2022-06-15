@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     btnWriteBoard () {
+      // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeBoard'
       params.currentTeamKey = this.propData.currentTeamKey

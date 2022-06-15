@@ -11,21 +11,22 @@
                         <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; ">
                             <div @click="clickList(data)" style="width: calc(100% - 60px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-                            <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
-                                <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
-                            </div>
+                                <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
+                                    <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
+                                </div>
                             <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                            <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-                                <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
-                                <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
+                                <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
+                                    <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
+                                    <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
+                                    <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
 
-                            <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                            </div>
-                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
-                                <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                                    <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                                <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                    <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                                </div>
+                                <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
+                                    <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                                        <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                                    </div>
                                 </div>
                             </div>
                         </div>
