@@ -113,6 +113,7 @@
   <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
 
   <receiverAccessList :chanInfo="this.chanInfo" :propData="chanInfo" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList' />
+  <selectReceiverAccess v-if="selectReceiverAccessYn" />
 </template>
 
 <script>
@@ -137,6 +138,7 @@ export default {
   },
   data () {
     return {
+      selectReceiverAccessYn: false,
       boardDetail: {},
       selectBoardTypeText:'게시판의 유형을 선택해주세요',
       selectId:'',
@@ -246,6 +248,10 @@ select *from TpCabinetShareItem;
     /* nextStep () {
       this.shareSelectYn = true
     }, */
+    // 유민 작성/열람/댓글 권한
+    selectReceiverAccess() {
+      this.selectReceiverAccessYn = true
+    },
     selectedListSelect(){
       this.selectBookListYn =true
     },
