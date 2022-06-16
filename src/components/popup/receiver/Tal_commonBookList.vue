@@ -8,7 +8,7 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;" >
+                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="" >
                             <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
@@ -50,7 +50,7 @@ import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 export default {
     props:{
-        listData:{},
+        // listData:{},
         propData: {},
         chanAlimListTeamKey: {},
         parentSelectList: {},
@@ -69,11 +69,19 @@ export default {
         }
     },
     async created () {
+        // alert(JSON.stringify(this.propData))
         this.propObject = this.propData
+
         if(this.propObject.targetNameMtext !== undefined && this.propObject.targetNameMtext !== null && this.propObject.targetNameMtext !== '') {
             this.propObject.teamNameMtext = this.$changeText(this.propObject.targetNameMtext)
             // alert(this.propObject.teamNameMtext)
+        }else if(this.propObject.value.nameMtext !== undefined && this.propObject.value.nameMtext !== null && this.propObject.value.nameMtext !== ''){
+            this.propObject.teamNameMtext = this.$changeText(this.propObject.value.nameMtext)
+        }else{
+            this.propObject.teamNameMtext = this.$changeText(this.propObject.value.value.nameMtext)
         }
+
+
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
@@ -240,8 +248,10 @@ export default {
 } */
 
 .receiverTeamListCard {
-   transition : background-color 0.5s ease-in !important;
+    width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;
+    transition : background-color 0.5s ease-in !important;
 }
+
 input {
     background: none;
 }

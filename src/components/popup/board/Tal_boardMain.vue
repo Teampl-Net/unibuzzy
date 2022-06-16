@@ -55,12 +55,14 @@ export default {
   },
   mounted () {
     // alert(true)
+    // alert(JSON.stringify(this.propData))
   },
   methods: {
     btnWriteBoard () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeBoard'
+      params.targetNameMtext = this.propData.nameMtext
       params.currentTeamKey = this.propData.currentTeamKey
       params.cabinetKey = this.propData.targetKey
       this.$emit('openPop', params)

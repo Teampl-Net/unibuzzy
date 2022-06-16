@@ -25,11 +25,7 @@
                   <input class="mright-05" type="radio" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
                   <label class="mright-1" for="allFalse">선택</label>
                   <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
-
                     {{receiverText}}
-                    <!-- [{{this.$changeText(this.params.targetNameMtext)}}] 구독자 -->
-
-                    <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
                   </div>
                 </div>
               </div>
@@ -79,7 +75,6 @@ export default {
   },
   watch: {
     sendOk: function () {
-      // alert(this.sendOk)
       this.clickPageTopBtn()
     }
   },
@@ -114,9 +109,9 @@ export default {
       editorType: 'text',
       receiverPopYn:false,
       receiverList :'',
-      receiverText:'',
+      receiverText:'수신자를 선택해주세요',
       allRecvYn:true,
-      list:[],
+      selectedReceiverList:[],
       allRecvYnInput: true
 
     }
@@ -134,6 +129,7 @@ export default {
     }
   },
   created () {
+    alert(JSON.stringify(this.params))
   },
   methods: {
     selectRecvType (allRecvYnInput) {
@@ -146,7 +142,7 @@ export default {
       this.receiverPopYn = false
       // debugger
       this.receiverList = obj.data
-      this.list=[]
+      this.selectedReceiverList=[]
       this.receiverText = ''
       var shareItemBookList = []
       var shareItemBookObject = new Object()
@@ -158,9 +154,9 @@ export default {
         shareItemBookObject.accessKind='C'
         shareItemBookObject.accessKey = selectedBookList.cabinetKey
 
-        /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-        this.receiverText += ", "+selectedBookList.cabinetNameMtext
-        this.list.push(shareItemBookObject)
+        /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+        this.receiverText += selectedBookList.cabinetNameMtext +', '
+        this.selectedReceiverList.push(shareItemBookObject)
       }
       }
       // alert(JSON.stringify(this.receiverList))
@@ -175,13 +171,13 @@ export default {
           shareItemMemberObject.accessKind='U'
           shareItemMemberObject.accessKey = selectedMemberList.userKey
 
-          /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-          this.receiverText += ", "+selectedMemberList.userDispMtext
-          this.list.push(shareItemMemberObject)
+          /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+          this.receiverText += this.$changeText(selectedMemberList.userDispMtext) +', '
+          this.selectedReceiverList.push(shareItemMemberObject)
         }
       }
 
-      // alert(JSON.stringify(this.list))
+      // alert(JSON.stringify(this.selectedReceiverList))
 
       console.log(obj)
     },
@@ -218,9 +214,9 @@ export default {
       if(this.allRecvYn === true) {
 
       } else {
-        // alert(this.list.length)
-        if(this.list.length > 0) {
-          param.actorList = this.list
+        // alert(this.selectedReceiverList.length)
+        if(this.selectedReceiverList.length > 0) {
+          param.actorList = this.selectedReceiverList
         } else {
           alert('수신자를 선택해주세요')
           return

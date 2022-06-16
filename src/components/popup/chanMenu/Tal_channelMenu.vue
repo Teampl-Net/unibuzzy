@@ -134,9 +134,11 @@ export default {
     chanMenuClick(data){
       var params = new Object()
       params.targetType = 'boardMain'
+      params.nameMtext = this.propData.value.nameMtext
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
+
       this.$emit('openItem',params)
     },
     receiverClick(data){

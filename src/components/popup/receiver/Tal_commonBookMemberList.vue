@@ -4,22 +4,22 @@
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
-    <div style="width: 100%; height: calc(100% - 60px); padding: 0 10px; margin-top: 10px;">
+    <div style="width: 100%; height: calc(100% - 30px); padding: 0 10px; margin-top: 10px; overflow: hidden scroll;">
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0}" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                    <div v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
                             <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
                             <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
                         </div>
-                    <div @click="addSelectedList(data,index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%; width: 60px;">
-                        <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                        <div @click="addSelectedList(data,index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%; width: 60px;">
+                            <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </template>
             </transition-group>
@@ -64,7 +64,11 @@ export default {
     watch:{
     },
     created(){
-        alert(JSON.stringify(this.teamInfo))
+        // alert(JSON.stringify(this.teamInfo))
+        if(this.teamInfo.teamNameMtext === undefined || this.teamInfo.teamNameMtext === null || this.teamInfo.teamNameMtext === ''){
+            this.teamInfo.teamNameMtext = this.$changeText(this.teamInfo.nameMtext)
+        }
+
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedBookList = this.parentSelectList.memberList
@@ -149,7 +153,9 @@ export default {
 .receiverTeamMemberArea{float: left;  width: 100%; }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #eee; background: #6768a712; border-radius: 8px; padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
-
+/* .selectLastMargin :last-child{
+    margin-bottom: 30px;
+} */
 .cBlack{
     color: black;
 }

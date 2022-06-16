@@ -40,7 +40,7 @@ export default {
     propData: {}
   },
   created () {
-    alert(JSON.stringify(this.propData))
+    // alert(JSON.stringify(this.propData))
     // alert(JSON.stringify(this.propData))
     if (this.selectedListYn) {
       // alert(JSON.stringify(this.selectedList))

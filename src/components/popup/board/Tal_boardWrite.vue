@@ -18,18 +18,20 @@
                 <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
-                  <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
-                    <!-- [{{this.$changeText(this.params.targetNameMtext)}}] 구독자 -->
-                    <!-- <img class="orgaIcon" @click="changeOption(0)" src="../../assets/images/organizationIcon.svg" alt=""> -->
+                  <input type="radio" name="receiveAllYn" class="mright-05" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
+                  <label class="mright-1" for="allTrue">전체</label>
+
+                  <input class="mright-05" type="radio" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
+                  <label class="mright-1" for="allFalse">선택</label>
+                  <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
+                    {{receiverText}}
                   </div>
                 </div>
               </div>
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
                 <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 알림 내용을 작성해주세요</div>
-                <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
-                  {{msgData}}
-                </div> -->
+
               </div>
 
             </div>
@@ -49,6 +51,9 @@
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
     <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
+  <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999"  >
+      <selectReceivPop  :selectPopYn='true' :propData='propData' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' />
+  </div>
 
 </template>
 <script>
@@ -58,6 +63,8 @@
 // import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
+import selectReceivPop from '../receiver/Tal_selectBookList.vue'
+
 export default {
   props: {
     propData: {},
@@ -97,7 +104,13 @@ export default {
       selectedC: 0,
       pushDetailPopShowYn: true,
       progressShowYn: false,
-      editorType: 'text'
+      editorType: 'text',
+      receiverPopYn : false,
+      receiverList :'',
+      receiverText:'수신자를 선택해주세요',
+      allRecvYn:true,
+      selectedReceiverList:[],
+      allRecvYnInput: true
     }
   },
   computed: {
@@ -116,11 +129,57 @@ export default {
 
   },
   methods: {
+    selectRecvType (allRecvYnInput) {
+      this.allRecvYn = allRecvYnInput
+    },
+    setSelectedList(obj){
+      this.receiverPopYn = false
+      // debugger
+      this.receiverList = obj.data
+      this.selectedReceiverList=[]
+      this.receiverText = ''
+
+      var shareItemBookList = []
+      var shareItemBookObject = new Object()
+      if (this.receiverList.bookList) {
+        for (let i = 0; i < this.receiverList.bookList.length; i++) {
+        var selectedBookList = this.receiverList.bookList[i]
+
+        shareItemBookObject= {}
+        shareItemBookObject.accessKind='C'
+        shareItemBookObject.accessKey = selectedBookList.cabinetKey
+
+        /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+        this.receiverText += selectedBookList.cabinetNameMtext +', '
+        this.selectedReceiverList.push(shareItemBookObject)
+      }
+      }
+      // alert(JSON.stringify(this.receiverList))
+
+      var shareItemMemberList = []
+      var shareItemMemberObject = new Object()
+      if(this.receiverList.memberList) {
+        for (let i = 0; i < this.receiverList.memberList.length; i++) {
+          var selectedMemberList = this.receiverList.memberList[i]
+
+          shareItemMemberObject= {}
+          shareItemMemberObject.accessKind='U'
+          shareItemMemberObject.accessKey = selectedMemberList.userKey
+
+          /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+          this.receiverText += this.$changeText(selectedMemberList.userDispMtext) +', '
+          this.selectedReceiverList.push(shareItemMemberObject)
+        }
+      }
+
+      // alert(JSON.stringify(this.list))
+      alert(JSON.stringify(this.selectedReceiverList))
+      console.log(obj)
+
+    },
     openBoardReceiverSelect () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.targetType = 'selectBook'
-      this.$emit('openPop', param)
+      // alert(JSON.stringify(this.propData))
+      this.receiverPopYn = true
     },
     setParamInnerHtml (formCard) {
       var innerHtml = ''
@@ -142,24 +201,42 @@ export default {
         this.propFormData = innerText
       }
     },
+
     async sendMsg () {
-      this.sendLoadingYn = true
+      // this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
+      // alert(JSON.stringify(this.propData))
       var param = new Object()
       var innerHtml = document.getElementById('msgBox').innerHTML
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
-      param.creTeamKey = this.params.targetKey
+      param.allRecvYn = this.allRecvYn
+      if(this.allRecvYn === true) {
+
+      } else {
+        // alert(this.selectedReceiverList.length)
+        if(this.selectedReceiverList.length > 0) {
+          param.actorList = this.selectedReceiverList
+        } else {
+          alert('수신자를 선택해주세요')
+          return
+        }
+      }
+
+      param.creTeamKey = this.propData.currentTeamKey
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
-      var result = await this.$saveContents(param)
-      if (result === true) {
-        this.sendLoadingYn = false
-        this.$emit('closeXPop')
-      }
+
+      alert(JSON.stringify(param))
+      // var result = await this.$saveContents(param)
+      // if (result === true) {
+      //   this.sendLoadingYn = false
+      //   this.$emit('closeXPop')
+      // }
     },
+
     messageAreaClick () {
       this.msgPopYn = true
     },
@@ -223,7 +300,8 @@ export default {
 
   components: {
     commonConfirmPop,
-    formEditor
+    formEditor,
+    selectReceivPop
     // msgPop,
     // writePushPageTitle,
     // pushPop
