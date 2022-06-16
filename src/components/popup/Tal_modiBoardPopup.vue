@@ -192,7 +192,7 @@ export default {
             }
             var access = null
             if (type === 'U') {
-                access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.3  }
+                access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq  }
             } else if (type == 'C') {
                 access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
             }

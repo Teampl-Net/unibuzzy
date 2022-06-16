@@ -20,7 +20,7 @@
             <div v-for="(data, index) in memberList" :key="index">
                 <div class="receiverTeamListCard fl" v-if="data.selectedYn !== true" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;">
                     <div style="width: calc(100% - 60px); height: 100%;" class="fl">
-                        <p class="fl font15 commonBlack  receiverTeamText">{{data.userNameMtext}}</p>
+                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
                     </div>
                     <div @click="addSelectedList(data, index, 'U')" class="fr" style="position: relative; height: 100%;">
                         <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
@@ -45,11 +45,15 @@ export default {
         itemType: {}
     },
     created() {
+        alert(JSON.stringify(this.selectBookNList.memberList))
         // this.bookList = this.selectBookNList.data.bookList
         // this.memberList = this.selectBookNList.data.memberList
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
             if (this.selectBookNList.memberList.length > 0) {
                     this.memberList = this.selectBookNList.memberList
+                    for (var i = 0; i < this.memberList.length; i++) {
+                    this.memberList[i].selectedYn = false
+                }
                 }
         }
         if (this.selectBookNList.bookList !== undefined && this.selectBookNList.bookList !== null && this.selectBookNList.bookList !== []) {
