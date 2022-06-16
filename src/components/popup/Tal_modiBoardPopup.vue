@@ -94,15 +94,15 @@
     <div style="width: 100%; min-height: 100px;">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
-        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{writePermission}}</div>
+        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" >{{writePermission}}</div>
       </div>
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>
-        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{readPermission}}</div>
+        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" >{{readPermission}}</div>
       </div>
       <div class="subItemWrite" style="">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">댓글</p>
-        <div @click="showSelectedList" class="inputBoxThema textLeft" >{{commentPermission}}</div>
+        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div>
       </div>
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
@@ -112,7 +112,7 @@
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
   <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
 
-  <receiverAccessList :chanInfo="this.chanInfo" :propData="chanInfo" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList' />
+  <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
   <selectReceiverAccess v-if="selectReceiverAccessYn" />
 </template>
 
@@ -168,7 +168,8 @@ export default {
       commentPermission: '댓글권한',
       bookList: null,
       selectedList : [],
-      receiverAccessListYn : false
+      receiverAccessListYn: false,
+      shareActorItemType: ''
 
     }
   },
@@ -176,8 +177,33 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
-    showSelectedList () {
+    setOk(data) {
+      if (data.bookList) {
+        access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
+      }
+            // Cabinet(Team) : cabinetKey 만
+            // User: userKey만
+            if (data.memberList.length > 0 && type === 'U') {
+                data.memberList[index].selectedYn = true
+                // alert(true)
+            }
+            if (data.bookList.length > 0 && type === 'C') {
+                data.bookList[index].selectedYn = true
+            }
+            var access = null
+            if (type === 'U') {
+                access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.3  }
+            } else if (type == 'C') {
+                access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
+            }
+            this.itemList.push(access)
+            // eslint-disable-next-line no-debugger
+
+            this.$emit('changeSelectedItem', { itemList: this.itemList, itemType: this.itemType })
+    },
+    selectShareActorItem (itemType) {
       // alert('sss')
+      this.shareActorItemType= itemType
       this.receiverAccessListYn = true
     },
     updateCabinet () {
