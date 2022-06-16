@@ -130,7 +130,7 @@ export default {
       openChanItemDetailYn: false,
       boardMainDetailData: '',
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
-      receiverList:{}
+      receiverList: {}
     }
   },
   props: {

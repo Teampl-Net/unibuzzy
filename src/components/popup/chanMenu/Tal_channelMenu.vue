@@ -53,7 +53,7 @@ export default {
   },
   async created () {
     // alert(this.chanAlimListTeamKey)
-    this.dummyList = this.$groupDummyList()
+    // this.dummyList = this.$groupDummyList()
 
     this.getTeamMenuList()
     // this. myBoardList =

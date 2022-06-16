@@ -247,8 +247,6 @@ const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    paramSet.jobkindId = 'ALIM'
-    paramSet.allRecvYn = true
     /* alert(JSON.stringify(param))
     var tt = true
     if (tt === true) {

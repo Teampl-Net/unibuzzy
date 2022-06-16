@@ -35,7 +35,7 @@ export default {
     itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
   created () {
-    // alert(JSON.stringify(this.parentList))
+    // alert(JSON.stringify(this.parentList) + 'sssss')
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
@@ -73,7 +73,7 @@ export default {
         this.setSelectedList.R = data.itemList
       }
     },
-    sendReceivers(data) {
+    sendReceivers (data) {
       for (var i = 0; i < data.length; i++) {
         data.shareType = this.itemType
       }

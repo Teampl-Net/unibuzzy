@@ -15,7 +15,7 @@
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
 
-            <bookList :teamInfo="propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+            <bookList :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData.value" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
             <transition name="showGroup">
                 <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
             </transition>

@@ -226,13 +226,10 @@ export default {
         share.accessKey = this.modiBoardDetailProps.teamKey
         shareList.push(share)
         share.shareSeq = 0
-        item.shareSeq = 0
-        item.shareType = 'W' // 작성
-        itemList.push(item)
-        item.shareType = 'V' //열람
-        itemList.push(item)
-        item.shareType = 'R' //댓글
-        itemList.push(item)
+        itemList.push({shareSeq: 0, shareType: 'W'})
+        itemList.push({shareSeq: 0, shareType: 'V'})
+        itemList.push({shareSeq: 0, shareType: 'R'})
+        debugger
       } else if (this.shareType === 'select') {
 
       }

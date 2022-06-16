@@ -202,14 +202,16 @@ const methods = {
     //
     var authList = { R: true, W: false, V: false }
     for (var i = 0; i < data.length; i++) {
-      if (data[i].accessKind === 'W' && authList.W !== false) {
+      if (data[i].shareType === 'W' && authList.W === false) {
         authList.W = true
-      } else if (data[i].accessKind === 'R' && authList.R !== false) {
+      } else if (data[i].shareType === 'R' && authList.R === false) {
         authList.R = true
-      } else if (data[i].accessKind === 'V' && authList.V !== false) {
+      } else if (data[i].shareType === 'V' && authList.V === false) {
         authList.V = true
       }
     }
+    // eslint-disable-next-line no-debugger
+    debugger
     return authList
   },
   checkSameName (checkList, checkText) {

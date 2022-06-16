@@ -251,6 +251,7 @@ export default {
       param.findActYn = false
       param.findActLikeYn = false
       param.findActStarYn = false
+      param.jobkindId = 'ALIM'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (this.viewTab === 'L') {
         param.findActYn = true

@@ -13,8 +13,6 @@
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
             </div>
         </div>
-        <p class="font22">{{this.testText}}</p>
-        <p class="font22">{{this.testText2}}</p>
         <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyMinStr)"></div>
 
         <div id="alimCheckArea">
@@ -57,9 +55,7 @@ export default {
       alimDetail: {},
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
-      userDoStickerList: [],
-      testText: '000000000',
-      testText2: '1411111111'
+      userDoStickerList: []
 
     }
   },
@@ -84,7 +80,6 @@ export default {
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      this.testText2 = 'base4 디코드'
       return changeText
     },
     async getContentsList () {
@@ -97,7 +92,6 @@ export default {
         param.contentsKey = this.detailVal.contentsKey
       }
       var resultList = await this.$getContentsList(param)
-      this.testText = '데이터 도착!!!!!'
       // alert(true)
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList

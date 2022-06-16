@@ -58,7 +58,6 @@
       <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' />
   </div>
 
-
 </template>
 <script>
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
@@ -71,7 +70,7 @@ import selectReceivPop from '../../../components/popup/receiver/Tal_selectBookLi
 export default {
   props: {
     params: {},
-    sendOk: {},
+    sendOk: {}
   },
   watch: {
     sendOk: function () {
@@ -107,11 +106,11 @@ export default {
       pushDetailPopShowYn: true,
       progressShowYn: false,
       editorType: 'text',
-      receiverPopYn:false,
-      receiverList :'',
-      receiverText:'수신자를 선택해주세요',
-      allRecvYn:true,
-      selectedReceiverList:[],
+      receiverPopYn: false,
+      receiverList: '',
+      receiverText: '수신자를 선택해주세요',
+      allRecvYn: true,
+      selectedReceiverList: [],
       allRecvYnInput: true
 
     }
@@ -136,43 +135,49 @@ export default {
       this.allRecvYn = allRecvYnInput
     },
     // setReceiverText(){
-      // this.$changeText(this.params.targetNameMtext)
+    // this.$changeText(this.params.targetNameMtext)
     // },
-    setSelectedList(obj){
+    setSelectedList (obj) {
       this.receiverPopYn = false
       // debugger
       this.receiverList = obj.data
-      this.selectedReceiverList=[]
+      this.list = []
+      this.selectedReceiverList = []
       this.receiverText = ''
-      var shareItemBookList = []
+      // var shareItemBookList = []
+      // eslint-disable-next-line no-new-object
       var shareItemBookObject = new Object()
       if (this.receiverList.bookList) {
         for (let i = 0; i < this.receiverList.bookList.length; i++) {
-        var selectedBookList = this.receiverList.bookList[i]
+          var selectedBookList = this.receiverList.bookList[i]
 
-        shareItemBookObject= {}
-        shareItemBookObject.accessKind='C'
-        shareItemBookObject.accessKey = selectedBookList.cabinetKey
+          shareItemBookObject = {}
+          shareItemBookObject.accessKind = 'C'
+          shareItemBookObject.accessKey = selectedBookList.cabinetKey
 
+          /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
+          this.receiverText += ', ' + selectedBookList.cabinetNameMtext
+          this.list.push(shareItemBookObject)
+        }
         /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-        this.receiverText += selectedBookList.cabinetNameMtext +', '
+        this.receiverText += selectedBookList.cabinetNameMtext + ', '
         this.selectedReceiverList.push(shareItemBookObject)
-      }
       }
       // alert(JSON.stringify(this.receiverList))
 
-      var shareItemMemberList = []
+      // var shareItemMemberList = []
+      // eslint-disable-next-line no-new-object
       var shareItemMemberObject = new Object()
-      if(this.receiverList.memberList) {
+      if (this.receiverList.memberList) {
         for (let i = 0; i < this.receiverList.memberList.length; i++) {
           var selectedMemberList = this.receiverList.memberList[i]
 
-          shareItemMemberObject= {}
-          shareItemMemberObject.accessKind='U'
+          shareItemMemberObject = {}
+          shareItemMemberObject.accessKind = 'U'
           shareItemMemberObject.accessKey = selectedMemberList.userKey
 
           /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-          this.receiverText += this.$changeText(selectedMemberList.userDispMtext) +', '
+          this.receiverText += this.$changeText(selectedMemberList.userDispMtext) + ', '
           this.selectedReceiverList.push(shareItemMemberObject)
         }
       }
@@ -181,7 +186,7 @@ export default {
 
       console.log(obj)
     },
-    openPushReceiverSelect(){
+    openPushReceiverSelect () {
       this.receiverPopYn = true
     },
     setParamInnerHtml (formCard) {
@@ -211,11 +216,11 @@ export default {
       var innerHtml = document.getElementById('msgBox').innerHTML
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
-      if(this.allRecvYn === true) {
+      if (this.allRecvYn === true) {
 
       } else {
         // alert(this.selectedReceiverList.length)
-        if(this.selectedReceiverList.length > 0) {
+        if (this.selectedReceiverList.length > 0) {
           param.actorList = this.selectedReceiverList
         } else {
           alert('수신자를 선택해주세요')
@@ -227,6 +232,8 @@ export default {
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
+      param.jobkindId = 'ALIM'
+
       var result = await this.$saveContents(param)
       if (result === true) {
         this.sendLoadingYn = false

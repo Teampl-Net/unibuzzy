@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="teamInfo.teamNameMtext + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -64,17 +64,14 @@ export default {
     watch:{
     },
     created(){
+        this.getBookMemberList()
         // alert(JSON.stringify(this.teamInfo))
-        if(this.teamInfo.teamNameMtext === undefined || this.teamInfo.teamNameMtext === null || this.teamInfo.teamNameMtext === ''){
-            this.teamInfo.teamNameMtext = this.$changeText(this.teamInfo.nameMtext)
-        }
-
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedBookList = this.parentSelectList.memberList
         }
 
-        this.memberList = this.propData.mCabUserList
+       // this.memberList = this.propData.mCabUserList
         if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {
                 if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
@@ -87,6 +84,26 @@ export default {
         // this.memberList = this.listData
     },
     methods:{
+        async getBookMemberList () {
+            var paramMap = new Map()
+            paramMap.set('cabinetKey', this.propData.cabinetKey)
+            paramMap.set('jobkindId', 'USER')
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getMCabContentsList',
+                param: Object.fromEntries(paramMap)
+            })
+            this.memberList = result.data
+            if (this.memberList) { // dispName이 없을시 userName으로 대체
+            for (var i =0; i < this.memberList.length; i ++) {
+                if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+                    } else {
+                        this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+                    }
+                }
+            }
+            // debugger
+        },
         changeEdit () {
             if(this.editYn) {
                 this.editYn = false

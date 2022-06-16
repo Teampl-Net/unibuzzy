@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
+        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
@@ -72,15 +72,6 @@ export default {
         // alert(JSON.stringify(this.propData))
         this.propObject = this.propData
 
-        if(this.propObject.targetNameMtext !== undefined && this.propObject.targetNameMtext !== null && this.propObject.targetNameMtext !== '') {
-            this.propObject.teamNameMtext = this.$changeText(this.propObject.targetNameMtext)
-            // alert(this.propObject.teamNameMtext)
-        }else if(this.propObject.value.nameMtext !== undefined && this.propObject.value.nameMtext !== null && this.propObject.value.nameMtext !== ''){
-            this.propObject.teamNameMtext = this.$changeText(this.propObject.value.nameMtext)
-        }else{
-            this.propObject.teamNameMtext = this.$changeText(this.propObject.value.value.nameMtext)
-        }
-
 
         if(this.selectPopYn){
             this.selectedBookList = []
@@ -98,7 +89,7 @@ export default {
     },
     watch: {
         parentSelectList: function () {
-            // alert(true)
+            
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
                     for (var i = 0; i < this.cabinetList.length; i ++) {
@@ -153,7 +144,7 @@ export default {
         },
         async getTeamCabList () {
             var paramMap = new Map()
-            paramMap.set('creTeamKey', this.propObject.currentTeamKey)
+            paramMap.set('creTeamKey', this.propObject.currentTeamKey || this.propObject.teamKey)
             paramMap.set('sysCabinetCode', 'USER')
             var result = await this.$commonAxiosFunction({
                 url: '/tp.getBookList',
