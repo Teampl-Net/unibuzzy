@@ -21,15 +21,14 @@
                   <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
                   </div>
                 </div> -->
+                <div style="width: 100%; height: 30px;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
+                <div style="width: 100%; height: 30px;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
               </div>
               <div class="pageMsgArea" style="">
-                <p  class="">내용</p>
+                <p style="width: 60px;">내용</p>
                 <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
-
               </div>
-
             </div>
-
           </div>
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
@@ -67,6 +66,8 @@ export default {
   },
   data () {
     return {
+      allowSenderNameYn: false,
+      allowReplyYn: false,
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,
@@ -149,6 +150,8 @@ export default {
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
+      param.allowSenderNameYn = this.allowSenderNameYn
+      param.allowReplyYn = this.allowReplyYn
 
       // alert(JSON.stringify(param))
       // eslint-disable-next-line no-unused-vars
@@ -279,7 +282,8 @@ export default {
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .writeBoardPageTopArea{
-  width: 100%; height: 3rem;
+  /* width: 100%; height: 3rem; */
+  width: 100%; height: 6.5rem;
 }
 .writeBoardPageTopArea >div{
   width: 100%; min-height: 2.5rem;
