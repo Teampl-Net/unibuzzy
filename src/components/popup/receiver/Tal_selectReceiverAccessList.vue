@@ -14,11 +14,9 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-
-          <selectBookNMemberList :itemType="itemType" @changeSelectedItem="changeSelectedItem" :propData='propData' :selectBookNList='parentList'  />
+          <selectBookNMemberList :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
         </div>
-        <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
-
+        <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="float: left;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
 
@@ -37,7 +35,7 @@ export default {
     itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
   created () {
-    alert(JSON.stringify(this.parentList))
+    // alert(JSON.stringify(this.parentList))
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
@@ -61,8 +59,12 @@ export default {
   },
   methods: {
     changeSelectedItem (data) {
-      // data = {itemList: [], itemType: 'w'}
+      // alert(true)
+      // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
+      alert(true)
+      // eslint-disable-next-line no-debugger
+      debugger
       if (data.itemType === 'V') {
         this.setSelectedList.V = data.itemList
       } else if (data.itemType === 'W') {
@@ -71,32 +73,16 @@ export default {
         this.setSelectedList.R = data.itemList
       }
     },
-    sendReceivers (data) {
-      this.$emit('sendReceivers', this.selectedList)
+    sendReceivers(data) {
+      for (var i = 0; i < data.length; i++) {
+        data.shareType = this.itemType
+      }
+      this.$emit('sendReceivers', data)
     },
-    changeSelectMemberList (data) {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.selectedList.memberList = data
+    addSelectList (data) {
+      this.setSelectedList = data
+      this.$refs.testCompo.upDatePage(data)
     },
-    changeSelectBookList (data) {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.selectedList.bookList = data
-    },
-    changeSelectedList (selectedListData) {
-      this.selectedList = selectedListData
-    },
-    // setResult () {
-    //   // alert(JSON.stringify(this.selectReceivers))
-    //   // eslint-disable-next-line no-new-object
-    //   var obj = new Object()
-    //   obj.data = this.selectReceivers
-    //   obj.selectedTeamList = this.selectedTeamList
-    //   obj.selectedMemberList = this.selectedMemberList
-    //   // this.$emit('selectedReceiver', this.selectReceivers)
-    //   console.log('@@@selectBookList // '+obj)
-    //   this.$emit('selectedReceiver', obj)
-    //   // this.$emit('selectedReceiver', this.selectReceivers)
-    // },
     delectClick (data, index) {
       if (data.reveiverTeamName) {
         // this.dummyList.unshift(data.data)

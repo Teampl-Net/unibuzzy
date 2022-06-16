@@ -5,11 +5,11 @@
         <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
             <p class="font16">선택된 그룹</p>
             <div v-for="(data, index) in bookList" :key="index">
-                <div class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;">
+                <div class="receiverTeamListCard fl" v-if="data.selectedYn !== true" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;">
                     <div @click="clickList(data)" style="width: calc(100% - 60px); height: 100%;" class="fl">
                         <p class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
                     </div>
-                    <div @click="addSelectedList(data, index)" class="fr" style="position: relative; height: 100%;">
+                    <div @click="addSelectedList(data, index, 'C')" class="fr" style="position: relative; height: 100%;">
                         <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
                             <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
                         </div>
@@ -18,11 +18,11 @@
             </div>
             <p class="font16">선택된 사람</p>
             <div v-for="(data, index) in memberList" :key="index">
-                <div class="receiverTeamListCard fl" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;">
+                <div class="receiverTeamListCard fl" v-if="data.selectedYn !== true" style="width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;">
                     <div style="width: calc(100% - 60px); height: 100%;" class="fl">
                         <p class="fl font15 commonBlack  receiverTeamText">{{data.userNameMtext}}</p>
                     </div>
-                    <div @click="addSelectedList(data, index)" class="fr" style="position: relative; height: 100%;">
+                    <div @click="addSelectedList(data, index, 'U')" class="fr" style="position: relative; height: 100%;">
                         <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
                             <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
                         </div>
@@ -44,16 +44,30 @@ export default {
         selectBookNList: {},
         itemType: {}
     },
-    created () {
-        this.bookList = this.selectBookNList.bookList
-        this.memberList = this.selectBookNList.memberList
+    created() {
+        // this.bookList = this.selectBookNList.data.bookList
+        // this.memberList = this.selectBookNList.data.memberList
+        if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
+            if (this.selectBookNList.memberList.length > 0) {
+                    this.memberList = this.selectBookNList.memberList
+                }
+        }
+        if (this.selectBookNList.bookList !== undefined && this.selectBookNList.bookList !== null && this.selectBookNList.bookList !== []) {
+            if (this.selectBookNList.bookList.length > 0) {
+                this.bookList = this.selectBookNList.bookList
+                for (var i = 0; i < this.bookList.length; i++) {
+                    this.bookList[i].selectedYn = false
+                }
+                // alert(JSON.stringify(this.bookList))
+            }
+        }
     },
     data () {
         return {
             bookList:[],
             memberList: [],
             itemList: [],
-            type: ''
+            setSelectedList: { bookList: [], memberList: [] }
         }
     },
     components: {
@@ -63,21 +77,44 @@ export default {
         clickList(data) {
             this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
         },
-        addSelectedList(data, index) {
+        addSelectedList(data, index, type) {
+            if (this.memberList.length > 0 && type === 'U') {
+                this.memberList[index].selectedYn = true
+                // alert(true)
+            }
+            if (this.bookList.length > 0 && type === 'C') {
+                this.bookList[index].selectedYn = true
+            }
+
+            if (type === 'U') {
+                this.setSelectedList.memberList.push(data)
+            }
+            else if (type === 'C') {
+                this.setSelectedList.bookList.push(data)
+            }
+            this.$emit('addSelectList', this.setSelectedList)
+        }
+        /* addSelectedList(data, index, type) {
             // Cabinet(Team) : cabinetKey 만
             // User: userKey만
-            this.memberList[index].selectedYn = true
+            if (this.memberList.length > 0 && type === 'U') {
+                this.memberList[index].selectedYn = true
+                // alert(true)
+            }
+            if (this.bookList.length > 0 && type === 'C') {
+                this.bookList[index].selectedYn = true
+            }
             var access = null
             if (type === 'U') {
-                debugger
-                access = { accessKey: data.userKey, accessKind: type, shareType: itemType, shareSeq: data.shareSeq }
-            } else if (type === 'C') {
-                access = { accessKey: data.cabinetKey, accessKind: type, shareType: itemType, shareSeq: data.shareSeq }
+                access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
+            } else if (type == 'C') {
+                access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
             }
             this.itemList.push(access)
-            this.$emit('changeSelectedItem', { itemList: this.itemList, itemType })
+            // eslint-disable-next-line no-debugger
 
-        }
+            this.$emit('changeSelectedItem', { itemList: this.itemList, itemType: this.itemType })
+        } */
     }
 }
 </script>

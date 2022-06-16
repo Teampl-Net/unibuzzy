@@ -180,7 +180,8 @@ export default {
             var result = await this.$deleteCabinet(param)
             debugger
         },
-         addSelectedList (data,index) {
+        //유민참고
+        addSelectedList(data, index) {
             // alert(true)
             this.cabinetList[index].selectedYn = true
 

@@ -20,7 +20,7 @@
                 <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
         </div>
-        <selectedListCompo @changeSelectedList="changeSelectedList" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
+        <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
 
     </div>
 </div>
@@ -69,22 +69,26 @@ export default {
   },
   methods: {
     sendReceivers () {
+      // eslint-disable-next-line no-new-object
       var obj = new Object()
       obj.data = this.selectedList
       this.$emit('sendReceivers', obj)
       // this.$emit('selectedList', this.selectedList)
       console.log(this.selectedList)
     },
+    // 유민참고
     changeSelectMemberList (data) {
-      // eslint-disable-next-line vue/no-mutating-props
       this.selectedList.memberList = data
+      this.$refs.selectedListCompo.upDatePage()
     },
     changeSelectBookList (data) {
       // eslint-disable-next-line vue/no-mutating-props
       this.selectedList.bookList = data
+      this.$refs.selectedListCompo.upDatePage()
     },
     changeSelectedList (selectedListData) {
       this.selectedList = selectedListData
+      this.$refs.selectedListCompo.upDatePage()
     },
     setResult () {
       // alert(JSON.stringify(this.selectReceivers))

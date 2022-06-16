@@ -1,22 +1,21 @@
 <template>
-<div style="width: 100%; min-height: 300px; background: #ccc; padding: 10px;" class="">
-    <div class="mbottom-1" style="width: 100%; height: 30px;">
-        <p class="textLeft fontBold font16 fl">선택된 리스트</p>
-        <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers"  />
+    <div style="width: 100%; min-height: 300px; background: #ccc; padding: 10px;" class="">
+        <div class="mbottom-1" style="width: 100%; height: 30px;">
+            <p class="textLeft fontBold font16 fl">선택된 리스트</p>
+            <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers"  />
+        </div>
+        <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
+            <p class="font15 commonBlack">+</p>
+        </div> -->
+        <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;" >
+            <p class="fl font15 commonBlack">{{'그룹: ' + team.cabinetNameMtext}}</p>
+            <span class="fr" @click="removeSelectedYn('book',index)">x</span>
+        </div>
+        <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;"  >
+            <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext)}}</p>
+        </div>
+                <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
     </div>
-
-    <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
-        <p class="font15 commonBlack">+</p>
-    </div> -->
-    <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;" >
-        <p class="fl font15 commonBlack">{{'그룹: ' + team.cabinetNameMtext}}</p>
-        <span class="fr" @click="removeSelectedYn('book',index)">x</span>
-    </div>
-    <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;"  >
-        <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext)}}</p>
-    </div>
-            <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-</div>
 </template>
 
 <script>
@@ -25,7 +24,8 @@ import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 export default {
     props:{
-        listData:{},
+        listData: {},
+        itemType: {}
     },
     data(){
         return{
@@ -33,12 +33,12 @@ export default {
             downTxt:'<',
             editTeamName:'',
             editNameYn:null,
-            teamList: {},
+            teamList: {bookList: [], memberList: []},
             dragging: false
         }
     },
-    created () {
-        this.teamList = this.listData
+    created() {
+        this.upDatePage()
     /* this.teamList = {
         bookList: [
             {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
@@ -54,6 +54,8 @@ export default {
         ]
     } */
     },
+    watch: {
+    },
     components: {
         draggable: VueDraggableNext
     },
@@ -64,7 +66,27 @@ export default {
     //         }
     //     }
     // },
-    methods:{
+    methods: {
+        //유민참고
+        upDatePage(data) {
+            if (data) {
+                if (data.bookList !== undefined && data.bookList !== null) {
+                    this.teamList.bookList = data.bookList
+                }
+                if (data.memberList !== undefined && data.memberList !== null && data.memberList.length > 0) {
+                    this.teamList.memberList = data.memberList
+                }
+            } else {
+                if (this.listData !== undefined && this.listData !== null) {
+                    if (this.listData.bookList !== undefined && this.listData.bookList !== null) {
+                        this.teamList.bookList = this.listData.bookList
+                    }
+                    if (this.listData.memberList !== undefined && this.listData.memberList !== null && this.listData.memberList.length > 0) {
+                        this.teamList.memberList = this.listData.memberList
+                    }
+                }
+            }
+        },
         sendReceivers() {
             this.$emit('btnClick', this.teamList)
         },
