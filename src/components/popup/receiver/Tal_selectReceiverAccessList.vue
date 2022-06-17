@@ -62,9 +62,9 @@ export default {
       // alert(true)
       // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
-      alert(true)
+      // alert(true)
       // eslint-disable-next-line no-debugger
-      debugger
+      // debugger
       if (data.itemType === 'V') {
         this.setSelectedList.V = data.itemList
       } else if (data.itemType === 'W') {
@@ -95,15 +95,10 @@ export default {
     addTeamList (obj) {
       // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
-      // alert(JSON.stringify(this.selectReceivers))
     },
     addMemberList (obj) {
       // this.selectedMemberList.unshift(obj)
-
       this.selectReceivers.unshift(obj)
-      // alert(JSON.stringify(this.selectReceivers))
-      // alert(JSON.stringify(this.selectReceivers))
-      // alert(JSON.stringify(this.selectReceivers.userDispMtext))
     },
 
     backClick () {
@@ -134,7 +129,6 @@ export default {
         this.selectBookDetail = data
         this.detailOpenYn = true
         this.receiverTitle = '구성원 관리'
-        // alert(JSON.stringify(this.propData))
         if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
         } else {

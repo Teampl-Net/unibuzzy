@@ -45,7 +45,7 @@ export default {
         itemType: {}
     },
     created() {
-        alert(JSON.stringify(this.selectBookNList.memberList))
+        // alert(JSON.stringify(this.selectBookNList.memberList))
         // this.bookList = this.selectBookNList.data.bookList
         // this.memberList = this.selectBookNList.data.memberList
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
@@ -89,7 +89,7 @@ export default {
             if (this.bookList.length > 0 && type === 'C') {
                 this.bookList[index].selectedYn = true
             }
-
+            data.shareType = this.itemType
             if (type === 'U') {
                 this.setSelectedList.memberList.push(data)
             }

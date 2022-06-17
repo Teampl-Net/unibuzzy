@@ -103,6 +103,7 @@ export default {
         var changeText = this.boardList[i].cabinetNameMtext
         this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
       }
+
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -122,7 +123,7 @@ export default {
         param.cabinetKey = data.cabinetKey
         // this.teamList.splice(index, 1)
         var result = await this.$deleteCabinet(param)
-        debugger
+        // debugger
     },
     /* addChanClick(){
       this.openAddChanMenuYn = true
@@ -195,7 +196,7 @@ export default {
           param: paramSet
         }
       )
-      debugger
+      // debugger
     }
       // this.boardList.push()
   }

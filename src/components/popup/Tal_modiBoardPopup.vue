@@ -15,7 +15,7 @@
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 40%;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="float: right; width: calc(100% - 150px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >진행상태O/실명/댓글지원O/파일업로드O</div>
+      <div style="float: right; width: calc(100% - 150px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn" class="function" style="width: 80%; position: fixed; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
@@ -113,7 +113,7 @@
   <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
-  <selectReceiverAccess v-if="selectReceiverAccessYn" />
+
 </template>
 
 <script>
@@ -130,9 +130,12 @@ export default {
   },
   created () {
     // alert(JSON.stringify(this.chanInfo))
-    console.log(this.chanInfo)
     this.boardDetail = this.modiBoardDetailProps
-    var test = this.modiBoardDetailProps
+    this.getCabinetDetail()
+
+    console.log(this.boardDetail)
+    console.log(this.chanInfo)
+
     // debugger
 
   },
@@ -145,8 +148,8 @@ export default {
       shareType: 'all', // 공유 대상자 (팔로워 전체: all, 대상 선택: select)
       selectTypePopShowYn:false,
       blindYn: false, // 익명게시판
-      fileYnInput: true, // 파일업로드 게시판
-      replyYnInput: true, // 댓글 지원 게시판
+      fileYnInput: false, // 파일업로드 게시판
+      replyYnInput: false, // 댓글 지원 게시판
       show: false,
       multiStatus: [
         '진행 중',
@@ -169,7 +172,12 @@ export default {
       bookList: null,
       selectedList : [],
       receiverAccessListYn: false,
-      shareActorItemType: ''
+      shareActorItemType: '',
+      selectShareList:[],
+      selectItemList:[],
+
+      okFunctionList:'진행상태O/실명/댓글지원O/파일업로드O',
+
 
     }
   },
@@ -177,36 +185,118 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
-    setOk(data) {
-      if (data.bookList) {
-        access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
-      }
-            // Cabinet(Team) : cabinetKey 만
-            // User: userKey만
-            if (data.memberList.length > 0 && type === 'U') {
-                data.memberList[index].selectedYn = true
-                // alert(true)
-            }
-            if (data.bookList.length > 0 && type === 'C') {
-                data.bookList[index].selectedYn = true
-            }
-            var access = null
-            if (type === 'U') {
-                access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq  }
-            } else if (type == 'C') {
-                access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
-            }
-            this.itemList.push(access)
-            // eslint-disable-next-line no-debugger
+    async getCabinetDetail () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // var tt = this.propData
+      param.currentTeamKey = this.modiBoardDetailProps.teamKey
+      param.cabinetKey = this.modiBoardDetailProps.cabinetKey
+      param.adminYn = true
+      var resultList = await this.$getCabinetDetail(param)
 
-            this.$emit('changeSelectedItem', { itemList: this.itemList, itemType: this.itemType })
+      console.log('@@@!########################')
+      console.log(resultList)
+
+      this.settingCabDetail(resultList)
     },
+    settingCabDetail (data) {
+      console.log(data.mCabinet.blindYn)
+      // 진행상태O/실명/댓글지원O/파일업로드O
+      this.okFunctionList =''
+      this.okFunctionList += '진행상태O/'
+      if(data.mCabinet.blindYn === 0){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
+      if(data.mCabinet.replyYn === 0){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
+      if(data.mCabinet.fileYn=== 0){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
+
+      if(data.mCabinet.mShareItemList[0].accessKind === 'T'){
+        this.changeShareType('all')
+        this.selectedReceiver = '전체에게 공유 중'
+        this.writePermission = '전체에게 권한 부여'
+        this.readPermission = '전체에게 권한 부여'
+        this.commentPermission ='전체에게 권한 부여'
+
+      }else{
+        this.changeShareType('select')
+
+        this.selectedReceiver = data.mCabinet.shareCnt + '명에게 공유 중'
+      var W=0, R=0, V =0;
+      for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
+        if(data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
+        if(data.mCabinet.mShareItemList[i].shareType === 'V') V += 1
+        if(data.mCabinet.mShareItemList[i].shareType === 'R') R += 1
+      }
+      this.writePermission = W +'명에게 권한 부여함'
+      this.readPermission = V+'명에게 권한 부여함'
+      this.commentPermission = R+'명에게 권한 부여함'
+
+
+      }
+
+
+
+
+
+    },
+    setOk (data) {
+      // console.log(data)
+
+      if(data.bookList){
+        for (let i = 0; i < data.bookList.length; i++) {
+          var teampItemList ={}
+         // if(teampItemList.shareType !== data.bookList[i].shareType ){
+          teampItemList.shareType = data.bookList[i].shareType
+          teampItemList.shareSeq = data.bookList[i].shareSeq
+          this.selectItemList.push(teampItemList)
+        }
+      }
+
+      if(data.memberList){
+        for (let i = 0; i < data.memberList.length; i++) {
+          var teampItemList ={}
+
+          teampItemList.shareType = data.memberList[i].shareType
+          teampItemList.shareSeq = data.memberList[i].shareSeq
+          this.selectItemList.push(teampItemList)
+        }
+      }
+      console.log('##ShareList##')
+      console.log(this.selectShareList)
+      console.log('##ItemList##')
+      console.log(this.selectItemList)
+
+
+      // var access = null
+      // if (data.bookList) {
+      //   access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
+      // }
+
+      // if (data.memberList.length > 0 && type === 'U') {
+      //     data.memberList[index].selectedYn = true
+      // }
+      // if (data.bookList.length > 0 && type === 'C') {
+      //     data.bookList[index].selectedYn = true
+      // }
+      // access = null
+      // if (type === 'U') {
+      //     access = { accessKey: data.userKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq  }
+      // } else if (type == 'C') {
+      //     access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
+      // }
+
+
+      this.receiverAccessListYn =false
+    },
+
     selectShareActorItem (itemType) {
       // alert('sss')
-      this.shareActorItemType= itemType
-      this.receiverAccessListYn = true
+      console.log(this.selectedList)
+      if(this.selectedList.length !== 0){
+        this.shareActorItemType= itemType
+        this.receiverAccessListYn = true
+      }
+
     },
-    updateCabinet () {
+    async updateCabinet () {
       var param = new Object()
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
@@ -221,52 +311,65 @@ export default {
       var share = new Object()
       var item = new Object()
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+      console.log(this.shareType)
       if(this.shareType === 'all') {
         share.accessKind = 'T'
         share.accessKey = this.modiBoardDetailProps.teamKey
-        shareList.push(share)
         share.shareSeq = 0
-        itemList.push({shareSeq: 0, shareType: 'W'})
-        itemList.push({shareSeq: 0, shareType: 'V'})
-        itemList.push({shareSeq: 0, shareType: 'R'})
-        debugger
+        shareList.push(share)
+
+        item.shareSeq = 0
+        item.shareType = 'W' // 작성
+        itemList.push(item)
+
+        item.shareType = 'V' //열람
+        itemList.push(item)
+
+        item.shareType = 'R' //댓글
+
+        itemList.push(item)
+
+        cabinet.shareList = shareList
+        cabinet.itemList = itemList
+
       } else if (this.shareType === 'select') {
+        cabinet.shareList = this.selectShareList
+        cabinet.itemList = this.selectItemList
 
       }
-      // 대상 하나하나 > acc
+      cabinet.creteamkey =this.chanInfo.targetKey
+      cabinet.creuserkey =this.chanInfo.value.creUserKey
+
       /*
+      // cabinet.shareList = shareList
+      // cabinet.itemList = itemList
+      /*
+
+      // 대상 하나하나 > acc
       select *from TpCabinetShare;
       -- shareList : 공유대상 리스트
-      -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
+      -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
 
       select *from TpCabinetShareItem;
       -- itemList : 권한 리스트
       -- [{shareType / shareSeq}, {shareType, shareSeq}] */
-      cabinet.shareList = shareList
-      // 대상 하나하나 > acc
-      /*
-select *from TpCabinetShare;
--- shareList : 공유대상 리스트
-    -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
-
-select *from TpCabinetShareItem;
--- itemList : 권한 리스트
-    -- [{shareType / shareSeq}, {shareType, shareSeq}] */
 
 
-      cabinet.itemList = itemList
+
       // cabinet.tempKeyList = [0, 1, 2, 3]
       param.cabinet = cabinet
       param.creMenuYn = false
       // alert(JSON.stringify(param))
-      var result = this.$saveCabinet(param)
-      // alert(JSON.stringify(result))
-      if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
 
-
-      }
-      alert('수정 성공!')
-      this.$emit('closePop')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(param)
+      var result = await this.$saveCabinet(param)
+      alert(JSON.stringify(result))
+      // if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+      //   console.log('@@성공@@')
+      // }
+      // alert('수정 성공!')
+      // this.$emit('closePop')
     },
     /* nextStep () {
       this.shareSelectYn = true
@@ -306,19 +409,19 @@ select *from TpCabinetShareItem;
 
     },
     setSelectedList (datas) {
-      console.log(datas)
-      console.log(datas.bookList)
-      console.log(datas.memberList)
+      this.selectItemList = []
+      this.selectShareList = []
+      var data = datas.data
       this.selectBookListYn = false
       var text =''
       var selectLength = 0
-      if(datas.bookList !== undefined ){
-        text = '그룹: ' +datas.bookList[0].cabinetNameMtext
-        selectLength += datas.bookList.length
+      if(data.bookList !== undefined ){
+        text = '그룹: ' +data.bookList[0].cabinetNameMtext
+        selectLength += data.bookList.length
       }
-      if(datas.memberList !== undefined ){
-        text = '개인: ' + this.$changeText(datas.memberList[0].userDispMtext)
-        selectLength += datas.memberList.length
+      if(data.memberList !== undefined ){
+        text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext)
+        selectLength += data.memberList.length
       }
 
       if(selectLength !== 1){this.selectedReceiver = text + ' 외 ' + (selectLength - 1)+'개'}
@@ -328,6 +431,64 @@ select *from TpCabinetShareItem;
       this.readPermission = this.selectedReceiver
       this.commentPermission = this.selectedReceiver
       this.selectedList = datas
+
+      if(data.bookList){
+        for (let i = 0; i < data.bookList.length; i++) {
+          var tempList ={}
+          tempList.accessKey  = data.bookList[i].creTeamKey
+          tempList.accessKind = 'C'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = data.bookList[i].shareSeq
+          this.selectShareList.push(tempList)
+        }
+      }
+
+      if(data.memberList){
+
+        for (let i = 0; i < data.memberList.length; i++) {
+          var tempList ={}
+          tempList.accessKey  = data.memberList[i].userKey
+          tempList.accessKind = 'U'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = data.memberList[i].shareSeq
+          this.selectShareList.push(tempList)
+        }
+      }
+
+
+      // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
+      if(data.bookList){
+        for (let i = 0; i < data.bookList.length; i++) {
+          var list = ['W', 'V', 'R']
+
+          for (let type of list) {
+            var teampItemList ={}
+            console.log(type)
+            teampItemList.shareType = type
+            teampItemList.shareSeq = data.bookList[i].shareSeq
+            this.selectItemList.push(teampItemList)
+          }
+        // if(teampItemList.shareType !== data.bookList[i].shareType ){
+
+        }
+      }
+
+      if(data.memberList){
+        for (let i = 0; i < data.memberList.length; i++) {
+          var list = ['W', 'V', 'R']
+
+          for (let type of list) {
+            var teampItemList ={}
+            teampItemList.shareType = type
+            teampItemList.shareSeq = data.memberList[i].shareSeq
+            this.selectItemList.push(teampItemList)
+          }
+        }
+      }
+
+      console.log(this.selectItemList)
+
+
 
       // alert(JSON.stringify(datas.selectedTeamList))
       // alert(JSON.stringify(datas.selectedMemberList))

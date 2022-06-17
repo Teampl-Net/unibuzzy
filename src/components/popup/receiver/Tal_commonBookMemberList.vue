@@ -152,6 +152,8 @@ export default {
         },
         addSelectedList (data,index) {
             this.memberList[index].selectedYn = true
+            // data.shareSeq = ''+data.cabinetKey + data.userKey
+            data.shareSeq = data.userKey
             this.selectedMemberList.push(data)
             this.$emit('changeSelectMemberList', this.selectedMemberList)
         },

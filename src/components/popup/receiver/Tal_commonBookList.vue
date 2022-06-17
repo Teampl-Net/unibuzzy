@@ -169,13 +169,14 @@ export default {
             param.cabinetKey = data.cabinetKey
             this.cabinetList.splice(index, 1)
             var result = await this.$deleteCabinet(param)
-            debugger
+
         },
         //유민참고
         addSelectedList(data, index) {
             // alert(true)
             this.cabinetList[index].selectedYn = true
-
+            console.log(data)
+            data.shareSeq = data.cabinetKey
             this.selectedBookList.push(data)
 
             this.$emit('changeSelectBookList', this.selectedBookList)

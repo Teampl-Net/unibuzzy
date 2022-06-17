@@ -38,6 +38,7 @@ export default {
         }
     },
     created() {
+
         this.upDatePage()
     /* this.teamList = {
         bookList: [
@@ -88,6 +89,8 @@ export default {
             }
         },
         sendReceivers() {
+            // this.teamList.itemType = this.itemType
+
             this.$emit('btnClick', this.teamList)
         },
         removeSelectedYn(type, index) {
