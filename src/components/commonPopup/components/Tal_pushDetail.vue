@@ -24,7 +24,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-
+            <div style="background-color: #ccc; width: 60px; height: 30px;" >답장하기</div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
