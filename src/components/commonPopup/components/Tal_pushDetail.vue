@@ -6,14 +6,15 @@
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
-            <div class="pushDetailHeaderTextArea">
-              <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-            <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
-              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
-            </div>
+          <div class="pushDetailHeaderTextArea">
+            <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+            <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
+            <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
+            <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+          </div>
         </div>
-        <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyMinStr)"></div>
+        <div id="bodyArea"  class="font15 mbottom-2" v-html="decodeContents(alim.bodyMinStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -24,15 +25,15 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <div @click="alimReply" style="background-color: #ccc; width: 60px; height: 30px;" >답장하기</div>
-            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
-              <template v-if="userDo.doType === 'ST'">
-                <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'LI'">
+            <gBtnSmall v-if="alim.canReplyYn" btnTitle="답장하기" @click="alimReply"/>
+            <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
+              <template v-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+              </template>
+              <template v-else-if="userDo.doType === 'ST'">
+                <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
               </template>
             </div>
           </div>
@@ -75,11 +76,51 @@ export default {
       }
     } */
   },
+  mounted () {
+    this.changeMode()
+    /* alert(this.$store.state.historyStack)
+    var test = this.$store.state.historyStack
+    test.push(0)
+    this.$store.commit('updateStack', test)
+    alert(this.$store.state.historyStack) */
+  },
+  unmounted () {
+    /* if (this.$historyStack) {
+      for (var i = 0; i < this.$historyStack.length; i++) {
+        if (this.$historyStack[i] === 'detail') {
+          this.$historyStack.splice(i, 1)
+        }
+      }
+      alert(this.$historyStack)
+    } */
+  },
+  computed: {
+    historyStack () {
+      return this.$store.state.historyStack
+    }
+  },
+  watch: {
+    historyStack () {
+      // alert(true)
+    }
+  },
   methods: {
+    changeMode () {
+      var formList = document.querySelectorAll('#bodyArea .formCard')
+      // eslint-disable-next-line no-debugger
+      // debugger
+      for (var i = 0; i < formList.length; i++) {
+        formList[i].contentEditable = false
+      }
+    },
     alimReply () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetKey = this.detailVal.value.creTeamKey
+      params.creUserName = this.alimDetail[0].creUserName
+      params.creUserKey = this.alimDetail[0].creUserKey
+      params.targetContentsKey = this.alimDetail[0].contentsKey
+      params.replyPopYn = true
       params.targetType = 'writePush'
       params.targetNameMtext = this.detailVal.value.nameMtext
       params.contentsKey = this.detailVal.contentsKey
@@ -88,6 +129,7 @@ export default {
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
+      // eslint-disable-next-line no-debugger
       return changeText
     },
     async getContentsList () {
@@ -101,6 +143,8 @@ export default {
       }
       var resultList = await this.$getContentsList(param)
       // alert(true)
+      // eslint-disable-next-line no-debugger
+      debugger
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
@@ -196,7 +240,7 @@ export default {
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
-.alimCheckContents{width: 100%;float: right; height: 30px;}
+.alimCheckContents{width: 100%;float: left; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}

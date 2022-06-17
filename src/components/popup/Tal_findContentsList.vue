@@ -53,30 +53,35 @@ export default {
 
         { searchKeyword: '삼천리', searchDate: '20210821' }
       ],
-      autoSaveLog: '끄기'
+      autoSaveLog: '끄기',
+      popId: null
     }
   },
   created () {
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
-    var history = localStorage.getItem('popHistoryStack').split('$#$')
-    this.pageHistoryName = 'subPop' + (history.length)
-    this.$addHistoryStack(this.pageHistoryName)
-    this.$emit('addSubHistory', this.pageHistoryName)
+    var history = this.$store.getters.hStack
+    this.popId = 'searchPop' + history.length
+    history.push(this.popId)
+    // alert(history)
+    this.$store.commit('updateStack', history)
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      // alert(value)
+      if (this.popId === value) {
+        this.closeXPop()
+      }
+      /* alert(val + oldVal) */
+    }
   },
   methods: {
-    BackPopClose (e) {
-      if (JSON.parse(e.data).type === 'goback') {
-        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-          if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-            this.closeXPop()
-          }
-        }
-      }
-    },
     closeXPop () {
       this.$emit('closePop')
-      this.$removeHistoryStack()
+      // this.$removeHistoryStack()
     },
     settingDateFormat (date) {
       return this.$dayjs(date).format('YYYY-MM-DD')

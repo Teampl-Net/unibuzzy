@@ -47,8 +47,6 @@ import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 export default {
   async created () {
     await this.settingPop()
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
   },
   mounted () {
   },
@@ -103,17 +101,6 @@ export default {
   },
   methods: {
     BackPopClose (e) {
-      if (e === 'headerClick') {
-        this.closeXPop()
-      } else if (JSON.parse(e.data).type === 'goback') {
-        if (localStorage.getItem('popHistoryStack')) {
-          if (localStorage.getItem('pageDeleteYn')) {
-            if ((localStorage.getItem('curentPage') === this.targetType + this.thisPopN)) {
-              this.closeXPop()
-            }
-          }
-        }
-      }
     },
     async settingPop () {
       this.chanFollowYn = false
@@ -175,11 +162,11 @@ export default {
         this.thisPopN = 100
       }
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
-      if (this.params.targetKey) {
+      /* if (this.params.targetKey) {
         this.$addHistoryStack(this.targetType + this.params.targetKey)
       } else {
         this.$addHistoryStack(this.targetType + this.thisPopN)
-      }
+      } */
     },
     openPop (params) {
       this.popParams = params

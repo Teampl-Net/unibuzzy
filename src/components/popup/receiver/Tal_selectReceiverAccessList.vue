@@ -62,7 +62,12 @@ export default {
       // alert(true)
       // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
+<<<<<<< .mine
+||||||| .r362
+      alert(true)
+=======
       // alert(true)
+>>>>>>> .r369
       // eslint-disable-next-line no-debugger
       // debugger
       if (data.itemType === 'V') {

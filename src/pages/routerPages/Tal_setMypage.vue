@@ -83,10 +83,8 @@ export default {
     this.getUserInform()
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', '설정')
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
-    var history = localStorage.getItem('popHistoryStack').split('$#$')
-    this.pageHistoryName = 'page' + (history.length - 1)
+    /* var history = localStorage.getItem('popHistoryStack').split('$#$')
+    this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
   },
@@ -95,16 +93,6 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
-    BackPopClose (e) {
-      if (JSON.parse(e.data).type === 'goback') {
-        if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-          // alert(localStorage.getItem('curentPage') + this.pageHistoryName)
-          if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-            this.$removeHistoryStackForPage(this.pageHistoryName)
-          }
-        }
-      }
-    },
     openPop (target) {
       // eslint-disable-next-line no-new-object
       var params = new Object()

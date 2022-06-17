@@ -38,11 +38,35 @@ export default {
         propData: {}
     },
     created (){
+        var history = this.$store.getters.hStack
+        this.popId = 'editBookList' + history.length
+        history.push(this.popId)
+        // alert(history)
+        this.$store.commit('updateStack', history)
+        
         // alert(JSON.stringify(this.propData))
+    },
+    computed: {
+        historyStack () {
+        return this.$store.getters.hRPage
+        }
+    },
+    watch: {
+        historyStack (value, old) {
+        if (this.popId === value) {
+            if(this.detailOpenYn) {
+                this.detailOpenYn = false
+            } else {
+                this.backClick()
+            }
+        }
+        /* alert(val + oldVal) */
+        }
     },
     components: { findContentsList, bookListCompo,memberList },
     data () {
         return{
+            popId: null,
             detailOpenYn: false,
             changeSearchList: [],
             findPopShowYn : false,
@@ -101,7 +125,7 @@ export default {
             await this.getPushContentsList()
         },
  */
-        addSubHistory (pageName) {
+        /* addSubHistory (pageName) {
             // eslint-disable-next-line no-array-constructor
             var sHistory = new Array()
             if (this.subHistoryList) {
@@ -109,7 +133,7 @@ export default {
             }
             sHistory.push(pageName)
             this.subHistoryList = sHistory
-        },
+        }, */
         openAddPop (data) {
             this.$emit('openPop', data)
         }

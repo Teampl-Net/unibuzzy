@@ -26,12 +26,17 @@ export default {
     // searchChannel
     // myChanList
   },
+  computed: {
+    historyStack () {
+      return this.$store.state.historyStack
+    }
+  },
   watch: {
+    historyStack () {
+    },
     routerReloadKey () {
       this.refreshList()
     }
-  },
-  computed: {
   },
   mounted () {
 
@@ -52,10 +57,8 @@ export default {
   async created () {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
-      document.addEventListener('message', e => this.BackPopClose(e))
-      window.addEventListener('message', e => this.BackPopClose(e))
-      var history = localStorage.getItem('popHistoryStack').split('$#$')
-      this.pageHistoryName = 'page' + (history.length - 1)
+      /* var history = localStorage.getItem('popHistoryStack').split('$#$')
+      this.pageHistoryName = 'page' + (history.length - 1) */
     }
     this.$emit('changePageHeader', '채널')
     var resultList = await this.getChannelList()
@@ -94,17 +97,6 @@ export default {
       // location.href = location.href
       // console.log(location.href)
       // }
-    },
-    BackPopClose (e) {
-      if (this.popYn === false) {
-        if (JSON.parse(e.data).type === 'goback') {
-          if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-            if (localStorage.getItem('curentPage') === this.pageHistoryName) {
-              this.$removeHistoryStackForPage(this.pageHistoryName)
-            }
-          }
-        }
-      }
     },
     clickCreateChannel () {
       // eslint-disable-next-line no-new-object

@@ -50,10 +50,8 @@ export default {
     // alert(true)
     this.$userLoginCheck()
     this.$emit('openLoading')
-    localStorage.setItem('popHistoryStack', '')
+    /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
     // onMessage('REQ', 'getUserInfo')
     // await this.saveUserPhone()
     localStorage.setItem('loginYn', false)
@@ -110,16 +108,10 @@ export default {
         } else {
           message = e.data
         }
-        if (message.type === 'goback') {
-          if (localStorage.getItem('pageDeleteYn') === true || localStorage.getItem('pageDeleteYn') === 'true') {
-            if (localStorage.getItem('popHistoryStack') === '') {
-              this.appCloseYn = true
-            }
-          }
-        } else if (message.type === 'refresh') {
-          if (localStorage.getItem('popHistoryStack') === '') {
+        if (message.type === 'refresh') {
+          /* if (localStorage.getItem('popHistoryStack') === '') {
             this.$router.go(0)
-          }
+          } */
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

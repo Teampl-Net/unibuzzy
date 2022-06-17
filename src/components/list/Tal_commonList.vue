@@ -176,6 +176,7 @@ export default {
       // eslint-disable-next-line no-undef
       str = Base64.decode(str)
       // str = atob(str)
+      str.replace('contenteditable= true', '')
       if (str.length > 130) {
         str.substring(0, 130)
       }

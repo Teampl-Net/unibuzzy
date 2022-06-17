@@ -16,8 +16,8 @@ export default {
         return
       }
       this.$emit('openLoading')
-      var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
-      this.$addHistoryStack(history)
+      /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
+      this.$addHistoryStack(history) */
       this.$router.push(page)
     }
   },

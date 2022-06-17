@@ -45,7 +45,11 @@ export default {
         itemType: {}
     },
     created() {
-        // alert(JSON.stringify(this.selectBookNList.memberList))
+        var history = this.$store.getters.hStack
+        this.popId = 'selectBookNMemPop' + history.length
+        history.push(this.popId)
+      // alert(history)
+        this.$store.commit('updateStack', history)
         // this.bookList = this.selectBookNList.data.bookList
         // this.memberList = this.selectBookNList.data.memberList
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
@@ -66,8 +70,22 @@ export default {
             }
         }
     },
+    computed: {
+        historyStack () {
+        return this.$store.getters.hRPage
+        }
+    },
+    watch: {
+        historyStack (value, old) {
+        if (this.popId === value) {
+            this.closeXPop()
+        }
+        /* alert(val + oldVal) */
+        }
+    },
     data () {
         return {
+            popId: null,
             bookList:[],
             memberList: [],
             itemList: [],

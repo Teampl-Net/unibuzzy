@@ -42,7 +42,7 @@
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
-    <chanDetailComp  @openPop="openPushDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp :alimSubPopYn="alimListToDetail" @openPop="openPushDetailPop" @closeDetailPop="this.detailShowYn = false" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
 
 </div>
@@ -55,6 +55,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
   data () {
     return {
+      alimListToDetail: false,
       box: null,
       scrollDirection: null,
       scrollPosition: null,
@@ -167,12 +168,14 @@ export default {
       // if (changeTxt !== undefined) { return changeTxt }
     },
     openPop () {
+      this.alimListToDetail = true
       this.detailShowYn = true
       this.detailHeaderShowYn = true
     },
     updateScroll () {
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
+      // alert(this.box.scrollTop)
       if (this.box.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
       } else if (this.box.scrollTop < this.scrollPosition) {

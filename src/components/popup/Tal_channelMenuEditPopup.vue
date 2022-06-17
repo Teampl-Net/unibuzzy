@@ -11,7 +11,7 @@
 
       <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
+          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
             <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
@@ -54,7 +54,26 @@ export default {
     editYn: {},
     chanInfo: {},
   },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if (this.popId === value) {
+        this.goNo()
+      }
+      /* alert(val + oldVal) */
+    }
+  },
   created () {
+    var history = this.$store.getters.hStack
+    this.popId = 'manageBoardPop' + this.currentTeamKey
+    history.push(this.popId)
+      // alert(history)
+    this.$store.commit('updateStack', history)
+	  
     this.getTeamMenuList()
     /* if (this.editList) {
       // alert(JSON.stringify(this.editList))
@@ -67,6 +86,7 @@ export default {
   },
   data () {
     return {
+      popId: null,
       boardList: [],
       modiBoardDetailProps: null,
       editTeamName:'',
@@ -178,18 +198,31 @@ export default {
       var paramSet = new Object()
       var teamMenuList = new Array()
       var menu = new Object()
-      for (var i = 0; i < this.boardList.length; i ++) {
-        menu = {}
-        if(this.boardList[i].menuType)
-          menu.MenuType = this.boardList[i].menuType
-        if(this.boardList[i].teamKey)
-          menu.teamKey = this.boardList[i].teamKey
-        if(this.boardList[i].parentMenuKey)
-          menu.parentMenuKey = this.boardList[i].parentMenuKey
-
-        teamMenuList.push(menu)
+      var cardList = document.getElementsByClassName('receiverTeamListCard')
+      var index = null
+      debugger
+      for (var s = cardList.length - 1 ; s >=0; s--) {
+        index = Number(cardList[s].getAttribute('index'))
+        for (var i = 0; i < this.boardList.length; i ++) {
+          if(index === i) {
+            menu = {}
+            if(this.boardList[i].menuType)
+              menu.MenuType = this.boardList[i].menuType
+            if(this.boardList[i].teamKey)
+              menu.teamKey = this.boardList[i].teamKey
+            if(this.boardList[i].parentMenuKey)
+              menu.parentMenuKey = this.boardList[i].parentMenuKey
+            if(this.boardList[i].cabinetKey)
+              menu.cabinetKey = this.boardList[i].cabinetKey
+            if(this.boardList[i].cabinetNameMtext)
+              menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext
+            teamMenuList.push(menu)
+            break
+          }
+        }
       }
       paramSet.teamMenuList = teamMenuList
+      
       var result = await this.$commonAxiosFunction(
         {
           url: 'tp.changePosTeamMenu',

@@ -44,19 +44,12 @@ export default {
     commonConfirmPop
   },
   created () {
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
   },
   methods: {
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
       this.appCloseYn = false
-    },
-    BackPopClose (e) {
-      if (JSON.parse(e.data).type === 'goback') {
-        this.appCloseYn = true
-      }
     },
     openTestLoginPage () {
       this.$router.replace('/testLoginPage')

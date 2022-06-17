@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import store from '../../store'
 
 const isJsonString = (str) => {
   try {
@@ -107,7 +108,19 @@ const isJsonString = (str) => {
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'goback') {
-          localStorage.setItem('pageDeleteYn', true)
+          var history = store.getters.hStack
+          // alert(history)
+          var removePage = history[history.length - 1]
+          // alert('removePage' + removePage)
+          if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+            router.replace({ path: '/' })
+          } else {
+            history = history.filter((element, index) => index < history.length - 1)
+            // alert('ㅂㅕㄴㄱㅕ<br>' + history)
+            store.commit('setRemovePage', removePage)
+            // alert(store.getters.hRPage)
+            store.commit('updateStack', history)
+          }
           /* if (localStorage.getItem('popHistoryStack')) {
             ;
           } else {

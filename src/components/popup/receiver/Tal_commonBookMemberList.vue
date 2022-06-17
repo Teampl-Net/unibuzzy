@@ -50,6 +50,7 @@ export default {
     },
     data () {
         return {
+            popId: null,
             memberList: [],
             teamColor : '',
             editYn: false,
@@ -64,6 +65,11 @@ export default {
     watch:{
     },
     created(){
+        var history = this.$store.getters.hStack
+        history.push(this.popId)
+        // alert(history)
+        this.$store.commit('updateStack', history)
+        
         this.getBookMemberList()
         // alert(JSON.stringify(this.teamInfo))
         // alert(this.parentSelectList)

@@ -37,13 +37,32 @@ export default {
     return {
       newestSearchKeyWordList: {},
       newestSearchYn: false,
-      nameMtext: ''
+      nameMtext: '',
+      popId: null
     }
   },
   props: {
     tab: {}
   },
   computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if (this.popId === value) {
+        this.closeXPop()
+      }
+      /* alert(val + oldVal) */
+    }
+  },
+  created () {
+    var history = this.$store.getters.hStack
+    this.popId = 'searchChanPop' + history.length
+    history.push(this.popId)
+    // alert(history)
+    this.$store.commit('updateStack', history)
   },
   mounted () {
     document.getElementById('chanSearchInput').focus()

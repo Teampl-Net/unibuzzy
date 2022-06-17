@@ -6,7 +6,7 @@
     <div class= "pageHeader pushListCover" style="margin:0 1rem" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
-        <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
@@ -124,7 +124,7 @@ export default {
 
     closeSearchPop () {
       this.findPopShowYn = false
-      this.subHistoryList.splice(-1, 1)
+      /* this.subHistoryList.splice(-1, 1) */
     },
 
     openPop (value) {

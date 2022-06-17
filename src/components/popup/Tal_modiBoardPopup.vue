@@ -18,17 +18,17 @@
       <div style="float: right; width: calc(100% - 150px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
+    <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
     <div v-if="functionPopShowYn" class="function" style="width: 80%; position: fixed; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
       <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
-        <div class="itemWrite" style="width: 100%;">
+        <!-- <div class="itemWrite" style="width: 100%;">
           <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
           <div style="width: calc(100% - 80px);">
             <input style = "" type="checkbox" id="toggle0" hidden>
             <label for="toggle0" class="toggleSwitch fr" @click="click">
               <span class="toggleButton" ></span>
             </label>
-              <!-- <div v-if="show" class="dropdown"> -->
             <div v-if="statusSelectShowYn" style=" height: 100%; float: right; margin-right: 10px;" class="dropdown" id="statusBox">
               <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="showSelectStatus">진행 중</button>
               <div class="dropdown-content" v-if="showSelectStatusShowYn">
@@ -39,15 +39,13 @@
                 <div style="width:100%; margin: 0.5rem 0px;" class="fl" v-for="(status, index) in multiStatus" :key="index" >
 
                   <div style="" class=" fl">{{status}}</div>
-                  <!-- {{status}} -->
-
                   <button @click="statusDeleteYn(index)" style= "border-radius: 100px;border: none; height: 25px; width: 25px; line-height: 25px; background-color: #6768A7; color: white; float: right;">-</button>
                 </div>
               </div>
               <button @click="showSelectStatus('input')" style= "width: 30px; height: 30px; background-color: #ccc; border: none; float: left;">+</button>
             </div>
           </div>
-        </div>
+        </div> -->
       <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">작성자 명</p>
         <div class="toggleInputWrap">
@@ -129,6 +127,12 @@ export default {
     chanInfo: {}
   },
   created () {
+    var history = this.$store.getters.hStack
+    this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
+    history.push(this.popId)
+    // alert(history)
+    this.$store.commit('updateStack', history)
+	  
     // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
@@ -139,8 +143,22 @@ export default {
     // debugger
 
   },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if (this.popId === value) {
+        this.$emit('closePop')
+      }
+      /* alert(val + oldVal) */
+    }
+  },
   data () {
     return {
+      popId: null,
       selectReceiverAccessYn: false,
       boardDetail: {},
       selectBoardTypeText:'게시판의 유형을 선택해주세요',

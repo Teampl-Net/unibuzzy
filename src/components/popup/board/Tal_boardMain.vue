@@ -27,7 +27,7 @@
     <div class="pagePaddingWrap" style="padding-top: 10px; width: 100%; float: left; background: #FFF;">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
-        <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
       <boardList :commonBoardListData="this.mCabContentsList" />
@@ -79,7 +79,7 @@ export default {
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
-      subHistoryList: [],
+      /* subHistoryList: [], */
 
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
@@ -167,7 +167,7 @@ export default {
     },
     closeSearchPop () {
       this.findPopShowYn = false
-      this.subHistoryList.splice(-1, 1)
+      /* this.subHistoryList.splice(-1, 1) */
     },
     openPop (value) {
       // eslint-disable-next-line no-new-object

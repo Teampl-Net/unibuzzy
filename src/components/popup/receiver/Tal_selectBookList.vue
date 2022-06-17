@@ -40,17 +40,37 @@ export default {
     propData: {}
   },
   created () {
-    // alert(JSON.stringify(this.propData))
-    // alert(JSON.stringify(this.propData))
+    var history = this.$store.getters.hStack
+    this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
+    history.push(this.popId)
+    // alert(history)
+    this.$store.commit('updateStack', history)
+
     if (this.selectedListYn) {
-      // alert(JSON.stringify(this.selectedList))
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
+    }
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if (this.popId === value) {
+        // alert(this.detailOpenYn)
+        if (this.detailOpenYn) {
+          this.detailOpenYn = false
+        } else { this.backClick() }
+      }
+      /* alert(val + oldVal) */
     }
   },
   components: { bookList, memberList, selectedListCompo },
   data () {
     return {
+      popId: null,
       selectedYn: false,
       setSelectedList: [],
       detailOpenYn: false,

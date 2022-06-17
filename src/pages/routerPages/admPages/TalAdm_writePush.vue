@@ -16,24 +16,29 @@
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
                 <!-- {{receiverList}} -->
-                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
-                  <input type="radio" name="receiveAllYn" class="mright-05" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
-                  <label class="mright-1" for="allTrue">전체</label>
+                  <div style="width: calc(100% - 100px); float: left;" v-if="!this.replyPopYn">
+                    <input type="radio" name="receiveAllYn" class="mright-05" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
+                    <label class="mright-1" for="allTrue">전체</label>
 
-                  <input class="mright-05" type="radio" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
-                  <label class="mright-1" for="allFalse">선택</label>
-                  <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
-                    {{receiverText}}
+                    <input class="mright-05" type="radio" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
+                    <label class="mright-1" for="allFalse">선택</label>
+                    <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                      {{receiverText}}
+                    </div>
+                  </div>
+                  <div style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); height: 100%; margin-top: 2px; float: left;" v-else>
+                    <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
-                <div style="width: 150px; height: 30px; float: left;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
-                <div style="width: 100px; height: 30px; float: left;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
+                <div style="width: 120px; min-height: 25px; float: right;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
+                <div style="width: 100px; min-height: 25px; float: right;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
               <div class="pageMsgArea" style="">
-                <p class="">내용</p>
-                <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 알림 내용을 작성해주세요</div>
+                <!-- <p class="">내용</p> -->
+                <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -73,7 +78,8 @@ import selectReceivPop from '../../../components/popup/receiver/Tal_selectBookLi
 export default {
   props: {
     params: {},
-    sendOk: {}
+    sendOk: {},
+    replyData: {}
   },
   watch: {
     sendOk: function () {
@@ -82,8 +88,9 @@ export default {
   },
   data () {
     return {
-      allowSenderNameYn: false,
-      allowReplyYn: false,
+      replyPopYn: false,
+      showCreNameYn: false,
+      canReplyYn: false,
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,
@@ -116,7 +123,8 @@ export default {
       receiverText: '수신자를 선택해주세요',
       allRecvYn: true,
       selectedReceiverList: [],
-      allRecvYnInput: true
+      allRecvYnInput: true,
+      creUserName: null
 
     }
   },
@@ -133,7 +141,12 @@ export default {
     }
   },
   created () {
-    alert(JSON.stringify(this.params))
+    if (this.params.replyPopYn) {
+      this.replyPopYn = true
+      this.allRecvYn = false
+      this.creUserName = this.$changeText(this.params.creUserName)
+    }
+    // alert(JSON.stringify(this.params))
   },
   methods: {
     selectRecvType (allRecvYnInput) {
@@ -218,18 +231,30 @@ export default {
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      param.bodyHtmlYn = false
+      var formList = document.querySelectorAll('#msgBox .formCard')
+      if (formList) {
+        for (var f = 0; f < formList.length; f++) {
+          formList[f].contentEditable = false
+        }
+        param.getBodyHtmlYn = true
+      }
       var innerHtml = document.getElementById('msgBox').innerHTML
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
 
       } else {
-        // alert(this.selectedReceiverList.length)
-        if (this.selectedReceiverList.length > 0) {
-          param.actorList = this.selectedReceiverList
+        if(this.replyPopYn) {
+        param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
         } else {
-          alert('수신자를 선택해주세요')
-          return
+          // alert(this.selectedReceiverList.length)
+          if (this.selectedReceiverList.length > 0) {
+            param.actorList = this.selectedReceiverList
+          } else {
+            alert('수신자를 선택해주세요')
+            return
+          }
         }
       }
       param.creTeamKey = this.params.targetKey
@@ -238,14 +263,18 @@ export default {
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
       param.jobkindId = 'ALIM'
-
+      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey || JSON.parse(localStorage.getItem('sessionUser')).userKey 
+      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext 
+      
+      param.showCreNameYn = this.showCreNameYn
+      param.canReplyYn = this.canReplyYn
+      debugger
       var result = await this.$saveContents(param)
       if (result === true) {
         this.sendLoadingYn = false
         this.$emit('closeXPop')
       }
-      param.allowSenderNameYn = this.allowSenderNameYn
-      param.allowReplyYn = this.allowReplyYn
+      
     },
     messageAreaClick () {
       this.msgPopYn = true
@@ -360,13 +389,13 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
+.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
-  width: 100%; height: 8.5rem;
+  width: 100%; min-height: 5rem;
 }
 .pageTopArea >div{
   width: 100%; min-height: 2.5rem;

@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div id="innerText" v-show="this.viewTab === 'text'" style="min-height: 500px; margin: 0 auto; border: 1px solid #6768a745; text-align: left; padding: 10px; background: #fff; width: calc(100%);" contenteditable="true">
+        <div id="innerText" v-show="this.viewTab === 'text'" style="min-height: 500px; margin: 0 auto; border: 1px solid #6768a745; text-align: left; padding: 10px; background: #fff; width: calc(100%);" contenteditable=true>
 
         </div>
         <!-- <p>{{formCardList}}</p> -->
@@ -152,6 +152,7 @@ export default {
       if (this.viewTab === 'complex') {
         // eslint-disable-next-line no-unused-vars
         var formCard = document.querySelectorAll('.formDiv .formCard')
+
         for (var i = 0; i < formCard.length; i++) {
           this.formCardList[i].outerHtml = formCard[i].outerHTML
           this.formCardList[i].innerHtml = formCard[i].innerHTML

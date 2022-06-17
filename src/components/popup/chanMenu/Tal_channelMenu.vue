@@ -51,10 +51,28 @@ export default {
     propData: {},
     chanAlimListTeamKey: {}
   },
+  	  
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if ('chanMenu' + this.chanAlimListTeamKey === value) {
+        this.$emit('closePop')
+      }
+      /* alert(val + oldVal) */
+    }
+  },
   async created () {
     // alert(this.chanAlimListTeamKey)
     // this.dummyList = this.$groupDummyList()
-
+    var history = this.$store.getters.hStack
+    history.push('chanMenu' + this.chanAlimListTeamKey)
+      // alert(history)
+    this.$store.commit('updateStack', history)
+	  
     this.getTeamMenuList()
     // this. myBoardList =
   },

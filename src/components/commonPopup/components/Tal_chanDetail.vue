@@ -75,12 +75,37 @@ export default {
     }
   },
   props: {
-    chanDetail: {}
+    chanDetail: {},
+    alimSubPopYn: {} // 구독자일 경우, 채널메인을통해 open되는 풀팝업
   },
   components: {
     /* followerList */
   },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      // alert(this.alimSubPopYn)
+      // alert(value + '"""""' + this.popId)
+      // alert(value[value.length - 1] + 'test' + this.popId)
+      if (this.alimSubPopYn) {
+        if ('channelAlimToDetail' + this.chanDetail.teamKey === value) {
+          this.$emit('closeDetailPop')
+        }
+      }
+      /* alert(val + oldVal) */
+    }
+  },
   async created () {
+    if (this.alimSubPopYn) {
+      var history = this.$store.getters.hStack
+      history.push('channelAlimToDetail' + this.chanDetail.teamKey)
+      this.$store.commit('updateStack', history)
+    }
+
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'

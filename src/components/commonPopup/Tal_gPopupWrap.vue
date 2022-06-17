@@ -1,10 +1,10 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <transition name="showModal">
-        <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="'gPop'+this.thisPopN" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && targetType === 'chanDetail'? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="BackPopClose('headerClick')" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} && targetType === 'chanDetail'? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -64,13 +64,10 @@ import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
-
 export default {
   async created () {
     await this.settingPop()
-    this.$addHistoryStack('pop' + this.thisPopN)
-    document.addEventListener('message', e => this.BackPopClose(e))
-    window.addEventListener('message', e => this.BackPopClose(e))
+    /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
     // alert(JSON.stringify(this.params))
   },
@@ -95,15 +92,10 @@ export default {
       }
     })
   },
-  computed: {
-    getWindowSize () {
-      return {
-        '--widndowWidth': window.innerWidth + 'px'
-      }
-    }
-  },
   data () {
     return {
+      popId: '',
+
       openChanItemYn: false,
       openAddChanMenuYn: false,
       openChanMenuYn: false,
@@ -160,6 +152,28 @@ export default {
   },
   updated () {
   },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    getWindowSize () {
+      return {
+        '--widndowWidth': window.innerWidth + 'px'
+      }
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      // alert(value + '"""""' + this.popId)
+      // alert(value[value.length - 1] + 'test' + this.popId)
+      if (this.popId === value) {
+        // alert(true)
+        // alert(true)
+        this.closeXPop()
+      }
+      /* alert(val + oldVal) */
+    }
+  },
   methods: {
     itemDetail (parm) {
       // alert(parm)
@@ -189,17 +203,11 @@ export default {
 
     // },
     BackPopClose (e) {
-      if (e === 'headerClick') {
-        this.closeXPop()
-      } else if (JSON.parse(e.data).type === 'goback') {
-        if (localStorage.getItem('popHistoryStack')) {
-          if (localStorage.getItem('pageDeleteYn')) {
-            if ((localStorage.getItem('curentPage') === 'pop' + this.thisPopN)) {
-              this.closeXPop()
-            }
-          }
-        }
-      }
+      // if (e === 'headerClick') {
+      this.closeXPop()
+      // } else if (JSON.parse(e.data).type === 'goback') {
+
+      // }
     },
     async settingPop (successChanYn) {
       this.chanFollowYn = false
@@ -212,6 +220,7 @@ export default {
       // var tt = this.params
       if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
         this.detailVal = target
+        this.popId = this.targetType + this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
         if (this.detailVal.value) {
           if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
             this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
@@ -282,6 +291,13 @@ export default {
       } else {
         this.thisPopN = 100
       }
+      if (this.popId === '') {
+        this.popId = 'gPopup' + this.thisPopN
+      }
+      var history = this.$store.getters.hStack
+      history.push(this.popId)
+      // alert(history)
+      this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
     openPop (params) {
@@ -311,11 +327,9 @@ export default {
         this.settingPop(true)
       }
     },
-    async closeXPop (reloadYn) { // 내 팝업 닫기
-      if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
-        this.$emit('closePop', reloadYn)
-        this.$removeHistoryStack(this.thisPopN)
-      }
+    closeXPop (reloadYn) { // 내 팝업 닫기
+      this.$emit('closePop', reloadYn)
+      // this.$removeHistoryStack(this.thisPopN)
     },
     // sucssesCreChan(){
     //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {

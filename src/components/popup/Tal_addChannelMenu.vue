@@ -35,6 +35,7 @@
 export default{
     data(){
         return{
+          popId: null,
             chanInfo: [
               {groupName: '공지 게시판', idNum: 0},
               {groupName: '문의 게시판', idNum: 1},
@@ -53,6 +54,27 @@ export default{
       // ]
 
     }
+  },	  
+computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    }
+  },
+  watch: {
+    historyStack (value, old) {
+      if (this.popId === value) {
+        this.$emit('closePop')
+      }
+      /* alert(val + oldVal) */
+    }
+  },
+  created () {
+    var history = this.$store.getters.hStack
+    this.popId = 'selectChanTypePop' + history.length
+    history.push(this.popId)
+    // alert(history)
+    this.$store.commit('updateStack', history)
+	 
   },
   methods: {
     setResult () {

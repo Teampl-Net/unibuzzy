@@ -69,7 +69,6 @@ export default {
         excelPopYn:{}
     },
     created(){
-        alert(JSON.stringify(this.propData))
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             // alert(JSON.stringify(this.propData))
             this.memName = this.$changeText(this.propData.userDispMtext)
@@ -148,8 +147,6 @@ export default {
                 mCabContents.inPhone = this.memPhone
                 mCabContents.inUserName = this.memName
                 param.mCabContents = mCabContents
-                // alert(true)
-                debugger
                 this.$saveMCabContents(param)
             }
         },

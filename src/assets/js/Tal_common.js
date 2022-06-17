@@ -124,7 +124,7 @@ const methods = {
 
   addHistoryStack (n) {
     // eslint-disable-next-line no-array-constructor
-    var historyS = ''
+    /* var historyS = ''
     var history = localStorage.getItem('popHistoryStack')
     if (history) {
       historyS = history
@@ -132,10 +132,10 @@ const methods = {
     historyS += '$#$' + n
     localStorage.setItem('popHistoryStack', historyS)
     localStorage.setItem('curentPage', n)
-    return localStorage.getItem('popHistoryStack').split('$#$').length
+    return localStorage.getItem('popHistoryStack').split('$#$').length */
   },
 
-  removeHistoryStack () {
+  /* removeHistoryStack () {
     var history = localStorage.getItem('popHistoryStack').split('$#$')
     history.splice(-1, 1)
     // eslint-disable-next-line no-array-constructor
@@ -147,8 +147,8 @@ const methods = {
     localStorage.setItem('popHistoryStack', historyS)
     localStorage.setItem('curentPage', history[history.length - 1])
     localStorage.setItem('pageDeleteYn', false)
-  },
-  removeHistoryStackForPage (pageHistoryName) {
+  }, */
+  /* removeHistoryStackForPage (pageHistoryName) {
     if (localStorage.getItem('popHistoryStack')) {
       var history = localStorage.getItem('popHistoryStack').split('$#$')
       if (history[history.length - 1] === pageHistoryName) {
@@ -156,7 +156,7 @@ const methods = {
         this.$router.go(-1)
       }
     }
-  },
+  }, */
   isJsonString (str) {
     try {
       var json = JSON.parse(str)
