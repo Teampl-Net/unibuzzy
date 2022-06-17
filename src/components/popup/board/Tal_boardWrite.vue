@@ -21,8 +21,6 @@
                   <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
                   </div>
                 </div> -->
-                <div style="width: 100%; height: 30px;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
-                <div style="width: 100%; height: 30px;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
               </div>
               <div class="pageMsgArea" style="">
                 <p style="width: 60px;">내용</p>
@@ -66,8 +64,6 @@ export default {
   },
   data () {
     return {
-      allowSenderNameYn: false,
-      allowReplyYn: false,
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,
@@ -150,9 +146,6 @@ export default {
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
-      param.allowSenderNameYn = this.allowSenderNameYn
-      param.allowReplyYn = this.allowReplyYn
-
       // alert(JSON.stringify(param))
       // eslint-disable-next-line no-unused-vars
       var result = await this.$saveContents(param)
@@ -163,7 +156,6 @@ export default {
         this.$emit('closeXPop')
       }
     },
-
     messageAreaClick () {
       this.msgPopYn = true
     },
@@ -282,8 +274,7 @@ export default {
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .writeBoardPageTopArea{
-  /* width: 100%; height: 3rem; */
-  width: 100%; height: 6.5rem;
+  width: 100%; height: 3rem;
 }
 .writeBoardPageTopArea >div{
   width: 100%; min-height: 2.5rem;
