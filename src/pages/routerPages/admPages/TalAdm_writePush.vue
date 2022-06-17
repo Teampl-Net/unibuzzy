@@ -368,7 +368,7 @@ export default {
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
-  width: 100%; height: 6.5rem;
+  width: 100%; height: 8rem;
   /* width: 100%; height: 5rem; */
 }
 .pageTopArea >div{
