@@ -28,6 +28,10 @@
                     {{receiverText}}
                   </div>
                 </div>
+
+                <div style="width: 100%; height: 30px;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
+                <div style="width: 100%; height: 30px;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
+
               </div>
               <div class="pageMsgArea" style="">
                 <p  class="">내용</p>
@@ -57,9 +61,10 @@
   <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999"  >
       <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' />
   </div>
-
 </template>
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
 // import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
@@ -79,6 +84,8 @@ export default {
   },
   data () {
     return {
+      allowSenderNameYn: false,
+      allowReplyYn: false,
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,
@@ -239,6 +246,8 @@ export default {
         this.sendLoadingYn = false
         this.$emit('closeXPop')
       }
+      param.allowSenderNameYn = this.allowSenderNameYn
+      param.allowReplyYn = this.allowReplyYn
     },
     messageAreaClick () {
       this.msgPopYn = true
@@ -359,7 +368,8 @@ export default {
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
-  width: 100%; height: 5rem;
+  width: 100%; height: 6.5rem;
+  /* width: 100%; height: 5rem; */
 }
 .pageTopArea >div{
   width: 100%; min-height: 2.5rem;
