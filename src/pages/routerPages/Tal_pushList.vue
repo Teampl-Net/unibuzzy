@@ -87,7 +87,8 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    historyStack () {
+    currentPage () {
+      // alert(true)
     },
     commonListData () {
       this.refreshYn = false
@@ -126,6 +127,9 @@ export default {
   computed: {
     historyStack () {
       return this.$store.state.historyStack
+    },
+    currentPage () {
+      return this.$store.getters.hCPage
     },
     setStickerWidth () {
       var stickerCnt = this.stickerList.length
@@ -168,6 +172,7 @@ export default {
     async recvNoti (e) {
       if (JSON.parse(e.data).type === 'pushmsg') {
         var target = JSON.parse(e.data).pushMessage
+        // alert(JSON.parse(target).data.targetKind)
         if (JSON.parse(target).data.targetKind === 'CONT') {
           this.refreshList()
         }
@@ -330,7 +335,7 @@ export default {
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
-      /* subHistoryList: [], */
+      subHistoryList: [],
       stickerList: [
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },

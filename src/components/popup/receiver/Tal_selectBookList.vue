@@ -40,7 +40,6 @@ export default {
     propData: {}
   },
   created () {
-
     var history = this.$store.getters.hStack
     this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
     history.push(this.popId)

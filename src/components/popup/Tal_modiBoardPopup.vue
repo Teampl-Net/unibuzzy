@@ -98,9 +98,6 @@
           <input type="radio" :checked="this.writePermissionAllYn ===  'use' ? true : false" @click="changePermission('write','use')" name="writePermissionAllYn" value="use" style="height: 100%; float: left;" id="writeTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeTrue">사용</label>
           <input type="radio" :checked="this.writePermissionAllYn ===  'unuse' ? true : false" @click="changePermission('write','unuse')" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
         </div>
-
-
-
       </div>
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>

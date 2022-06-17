@@ -205,6 +205,10 @@ export default {
           if (Number(JSON.parse(target).data.targetKey) === this.chanItem.teamKey) {
             this.getChanDetail(true)
           }
+        } else if (JSON.parse(target).data.targetKind === 'CONT') {
+          /* if ('chanDetail' + this.chanDetail.teamKey === ) {
+
+          } */
         }
       }
     }

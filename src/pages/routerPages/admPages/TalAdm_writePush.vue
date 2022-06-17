@@ -263,12 +263,11 @@ export default {
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
       param.jobkindId = 'ALIM'
-      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey || JSON.parse(localStorage.getItem('sessionUser')).userKey 
       param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext 
       
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
-      debugger
+      //debugger
       var result = await this.$saveContents(param)
       if (result === true) {
         this.sendLoadingYn = false

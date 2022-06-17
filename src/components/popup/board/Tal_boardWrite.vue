@@ -131,9 +131,6 @@ export default {
     },
 
     async sendMsg () {
-      // this.sendLoadingYn = true
-      // eslint-disable-next-line no-new-object
-      // alert(JSON.stringify(this.propData))
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var innerHtml = document.getElementById('msgBox').innerHTML
@@ -146,14 +143,11 @@ export default {
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
-      // alert(JSON.stringify(param))
-      // eslint-disable-next-line no-unused-vars
       var result = await this.$saveContents(param)
-      // eslint-disable-next-line no-debugger
-      debugger
       if (result === true) {
         this.sendLoadingYn = false
-        this.$emit('closeXPop')
+        // this.$emit('successSave')
+        this.$emit('closeXPop', true)
       }
     },
     messageAreaClick () {
