@@ -1,32 +1,29 @@
 <template>
-
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div class="" style=" height: 100vh; background-color: rgb(115 116 190 / 48%); width:100vw; position: relative;">
-    <div class= "pageHeader pushListCover" style="margin:0 1rem" >
-
-      <!-- 유민 -->
-      <div id="summaryWrap" class="pagePaddingWrap summaryWrap">
-          <div class="summaryTop">
-            <p class="cBlack" style="font-size: 16px;">공유 {{mCabinetContentsDetail.shareCnt}} | 게시글 21개 </p>
-            <p class="cBlack" style="font-size: 22px; font-weight: bold;">{{this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          </div>
-          <div class="centerSpace"></div>
-          <div style="display: flex; flex-direction: column; width: 100%; height: 30%;">
-            <div class="summaryBottom" style="width: 70%;">
-              <p style="margin-right: 10px; float: left">열람{{shareAuth.V}}</p>
-              <p style="margin-right: 10px; float: left">작성{{shareAuth.W}}</p>
-              <p style="float: left">댓글{{shareAuth.R}}</p>
+  <div class="" style=" height: 100vh; background-color: #ece6cc; width:100vw; position: relative;">
+    <div class= "pageHeader pushListCover" style="margin:0 1rem" ></div>
+    <div class="pagePaddingWrap summaryWrap">
+          <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
+          <div class="summaryTop" >
+            <p class="cBlack fl font16" style="width: 100%; height: 30px; border-right: 1px solid white">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
+            <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList.length}}개</p>
+            <!-- 관리자 여부 확인 -->
+            <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;"> -->
+            <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;">
+              <p class="cBlack fl font16" style="width: 60px; height: 100%;">관리자</p>
+              <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div>
             </div>
-            <p class="summaryBottom" style="margin-top: 15px; width: 60%;">공지게시판</p>
           </div>
-            <div style="width: 100%; height: 10%; display: flex; justify-content: flex-start; align-items: center;">
-              <div class="summaryIcon" :class="{summaryIconChange: mCabinetContentsDetail.blindYn }">익명/실명</div>
-              <div class="summaryIcon" :class="{summaryIconChange: mCabinetContentsDetail.replyYn }">댓글</div>
-              <div class="summaryIcon" :class="{summaryIconChange: mCabinetContentsDetail.fileYn }" style="margin-right: none !important;">파일</div>
+          <!-- 게시판 이름 , 소속 채널 -->
+          <div style="padding: 0 10px; width: 100%; height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
+            <p class="cBlack fl font20" style="width: 100%; height: 50px; line-height: 50px;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+            <p class="fl font14 cBlack" style="width: 100%; height: 50px; line-height: 50px; color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
           </div>
+          <!-- 익명게시판 여부 -->
+          <div v-if="mCabinetContentsDetail.blindYn" style="width: 100%; font-size: 16px; margin-top: 10px;">익명게시판</div>
       </div>
-    </div>
+
     <div class="pagePaddingWrap" style="padding-top: 10px; width: 100%; float: left; background: #FFF;">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
@@ -54,8 +51,9 @@ export default {
     propData: {}
   },
   async created () {
+    alert(JSON.stringify(this.propData))
     this.$emit('openLoading')
-    await this.getCabinetDetail()
+    // await this.getCabinetDetail()
   },
   mounted () {
     // alert(true)
@@ -65,18 +63,17 @@ export default {
     return {
       shareAuth: { R: false, W: false, V: false },
       mCabinetContentsDetail: {
-        blindYn: false,
+        blindYn: true,
         fileYn: false,
         replyYn: false,
         shareCnt: 0,
-        cabinetNameMtext: ''
+        cabinetNameMtext: 'KO$^$안녕게시판'
       },
-
       offsetInt: 0,
       mCabContentsList: [
-        /* { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' } */
+        // { title: 'test', bodyMinStr: 'testtesttesttest' },
+        // { title: 'test', bodyMinStr: 'testtesttesttest' },
+        // { title: 'test', bodyMinStr: 'testtesttesttest' }
       ],
       scrollPosition: null,
       loadVal: true,
@@ -108,9 +105,8 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
-
+      alert(JSON.stringify(resultList))
       // mShareItemList가 잘 들어오면 save잘 된것
-      // alert(JSON.stringify(resultList))
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-unused-vars
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
@@ -299,11 +295,10 @@ export default {
 
 <style scoped>
 .summaryWrap{height: calc(35vh); width: 100%; float: left; }
-.summaryTop{width: 100%; height: 30%; background-color: #ccc; padding: 10px; display: flex; flex-direction: column; justify-content: space-around;}
+.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-bottom: 5px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}
 .summaryBottom p {color: #fff;}
-.summaryIcon{margin-right: 10px; border-radius: 100%; background-color: #fff; width: 60px; height: 25px; font-size: 13px;}
 
 .pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
 
