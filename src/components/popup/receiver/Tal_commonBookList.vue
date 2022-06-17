@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" />
+        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" />
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
@@ -69,10 +69,8 @@ export default {
         }
     },
     async created () {
-        // alert(JSON.stringify(this.propData))
+
         this.propObject = this.propData
-
-
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
@@ -89,7 +87,7 @@ export default {
     },
     watch: {
         parentSelectList: function () {
-            
+
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
                     for (var i = 0; i < this.cabinetList.length; i ++) {

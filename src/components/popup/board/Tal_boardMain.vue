@@ -51,7 +51,7 @@ export default {
     propData: {}
   },
   async created () {
-    alert(JSON.stringify(this.propData))
+    // alert(JSON.stringify(this.propData))
     this.$emit('openLoading')
     // await this.getCabinetDetail()
   },
@@ -105,13 +105,12 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      alert(JSON.stringify(resultList))
+      // alert(JSON.stringify(resultList))
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-unused-vars
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       // eslint-disable-next-line no-debugger
-      debugger
       // alert(JSON.stringify(this.mCabinetContentsDetail)
       this.findPopShowYn = false
       var result = await this.getContentsList()
@@ -162,7 +161,7 @@ export default {
       // alert(JSON.stringify(param))
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-debugger
-      debugger
+
       return resultList
     },
     closeSearchPop () {

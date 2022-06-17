@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" :dataLength="cabinetList.length" /> -->
+        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext" @btnClick="editClick" :selectPopYn="selectPopYn"  /> -->
         <!-- {{selectBookNList}} -->
         <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
             <p class="font16">선택된 그룹</p>

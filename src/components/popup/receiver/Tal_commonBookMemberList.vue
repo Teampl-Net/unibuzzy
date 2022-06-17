@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit" :dataLength="memberList.length" />
+    <pageTopCompo :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit"  />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -64,13 +64,14 @@ export default {
     },
     watch:{
     },
-    created(){
+    async created(){
+
         var history = this.$store.getters.hStack
         history.push(this.popId)
         // alert(history)
         this.$store.commit('updateStack', history)
-        
-        this.getBookMemberList()
+
+        await this.getBookMemberList()
         // alert(JSON.stringify(this.teamInfo))
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
@@ -98,6 +99,7 @@ export default {
                 url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
+            // alert(result)
             this.memberList = result.data
             if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {

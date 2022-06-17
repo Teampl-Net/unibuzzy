@@ -92,15 +92,35 @@
     <div style="width: 100%; min-height: 100px;">
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
-        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" >{{writePermission}}</div>
+        <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
+        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{writePermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
+          <input type="radio" :checked="this.writePermissionAllYn ===  'use' ? true : false" @click="changePermission('write','use')" name="writePermissionAllYn" value="use" style="height: 100%; float: left;" id="writeTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeTrue">사용</label>
+          <input type="radio" :checked="this.writePermissionAllYn ===  'unuse' ? true : false" @click="changePermission('write','unuse')" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
+        </div>
+
+
+
       </div>
       <div class="subItemWrite">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>
-        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" >{{readPermission}}</div>
+        <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
+        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{readPermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
+          <input type="radio" :checked="this.readPermissionAllYn ===  'use' ? true : false" @click="changePermission('read','use')" name="readPermissionAllYn" value="use" style="height: 100%; float: left;" id="readTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="readTrue">사용</label>
+          <input type="radio" :checked="this.readPermissionAllYn ===  'unuse' ? true : false" @click="changePermission('read','unuse')" name="readPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="readFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="readFalse">사용 안함</label>
+        </div>
+
       </div>
       <div class="subItemWrite" style="">
         <p class="textLeft mleft-1 font16 fl " style="width: 150px;">댓글</p>
-        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div>
+        <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
+        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft"  v-if="this.shareType == 'select'" >{{commentPermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
+          <input type="radio" :checked="this.commentPermissionAllYn ===  'use' ? true : false" @click="changePermission('comment','use')" name="commentPermissionAllYn" value="use" style="height: 100%; float: left;" id="commentTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="commentTrue">사용</label>
+          <input type="radio" :checked="this.commentPermissionAllYn ===  'unuse' ? true : false" @click="changePermission('comment','unuse')" name="commentPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="commentFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="commentFalse">사용 안함</label>
+        </div>
+
       </div>
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
@@ -132,7 +152,7 @@ export default {
     history.push(this.popId)
     // alert(history)
     this.$store.commit('updateStack', history)
-	  
+
     // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
@@ -196,6 +216,10 @@ export default {
 
       okFunctionList:'진행상태O/실명/댓글지원O/파일업로드O',
 
+      writePermissionAllYn: 'use',
+      readPermissionAllYn: 'use',
+      commentPermissionAllYn: 'use',
+
 
     }
   },
@@ -203,6 +227,20 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    changePermission(id,type){
+      switch (id) {
+        case 'write':
+          this.writePermissionAllYn = type
+          break;
+        case 'read':
+          this.readPermissionAllYn = type
+          break;
+        case 'comment':
+          this.commentPermissionAllYn = type
+          break;
+
+      }
+    },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -222,36 +260,47 @@ export default {
       // 진행상태O/실명/댓글지원O/파일업로드O
       this.okFunctionList =''
       this.okFunctionList += '진행상태O/'
-      if(data.mCabinet.blindYn === 0){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
-      if(data.mCabinet.replyYn === 0){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
-      if(data.mCabinet.fileYn=== 0){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
+      if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
+      if(data.mCabinet.replyYn === 1){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
+      if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
 
       if(data.mCabinet.mShareItemList[0].accessKind === 'T'){
         this.changeShareType('all')
+        this.writePermissionAllYn = 'unuse'
+        this.readPermissionAllYn = 'unuse'
+        this.commentPermissionAllYn = 'unuse'
+        for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
+
+          switch (data.mCabinet.mShareItemList[i].shareType) {
+            case 'W':
+              this.writePermissionAllYn = 'use'
+              break;
+            case 'V':
+              this.readPermissionAllYn = 'use'
+              break;
+            case 'R':
+              this.commentPermissionAllYn = 'use'
+              break;
+          }
+        }
         this.selectedReceiver = '전체에게 공유 중'
         this.writePermission = '전체에게 권한 부여'
         this.readPermission = '전체에게 권한 부여'
         this.commentPermission ='전체에게 권한 부여'
-
       }else{
         this.changeShareType('select')
 
         this.selectedReceiver = data.mCabinet.shareCnt + '명에게 공유 중'
-      var W=0, R=0, V =0;
-      for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-        if(data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
-        if(data.mCabinet.mShareItemList[i].shareType === 'V') V += 1
-        if(data.mCabinet.mShareItemList[i].shareType === 'R') R += 1
+        var W=0, R=0, V =0;
+        for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
+          if(data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
+          if(data.mCabinet.mShareItemList[i].shareType === 'V') V += 1
+          if(data.mCabinet.mShareItemList[i].shareType === 'R') R += 1
+        }
+        this.writePermission = W +'명에게 권한 부여함'
+        this.readPermission = V+'명에게 권한 부여함'
+        this.commentPermission = R+'명에게 권한 부여함'
       }
-      this.writePermission = W +'명에게 권한 부여함'
-      this.readPermission = V+'명에게 권한 부여함'
-      this.commentPermission = R+'명에게 권한 부여함'
-
-
-      }
-
-
-
 
 
     },
@@ -336,16 +385,29 @@ export default {
         share.shareSeq = 0
         shareList.push(share)
 
-        item.shareSeq = 0
-        item.shareType = 'W' // 작성
-        itemList.push(item)
+        if(this.writePermissionAllYn === 'use'){
+          item = {}
+          item.shareSeq = 0
+          item.shareType = 'W' // 작성
+          itemList.push(item)
+          console.log(this.writePermissionAllYn)
+        }
 
-        item.shareType = 'V' //열람
-        itemList.push(item)
+        if(this.readPermissionAllYn === 'use'){
+          item = {}
+          item.shareSeq = 0
+          item.shareType = 'V' //열람
+          itemList.push(item)
+          console.log(this.readPermissionAllYn)
+        }
 
-        item.shareType = 'R' //댓글
-
-        itemList.push(item)
+        if(this.commentPermissionAllYn === 'use'){
+          item = {}
+          item.shareSeq = 0
+          item.shareType = 'R' //댓글
+          itemList.push(item)
+          console.log(this.commentPermissionAllYn)
+        }
 
         cabinet.shareList = shareList
         cabinet.itemList = itemList
@@ -382,12 +444,13 @@ export default {
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       console.log(param)
       var result = await this.$saveCabinet(param)
-      alert(JSON.stringify(result))
-      // if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-      //   console.log('@@성공@@')
-      // }
-      // alert('수정 성공!')
-      // this.$emit('closePop')
+      // alert(JSON.stringify(result))
+      if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+        // console.log('@@성공@@')
+        alert('수정 성공!')
+      }
+
+      this.$emit('closePop')
     },
     /* nextStep () {
       this.shareSelectYn = true
@@ -473,12 +536,10 @@ export default {
         }
       }
 
-
+      var list = ['W','V','R']
       // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
       if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {
-          var list = ['W', 'V', 'R']
-
           for (let type of list) {
             var teampItemList ={}
             console.log(type)
@@ -493,8 +554,6 @@ export default {
 
       if(data.memberList){
         for (let i = 0; i < data.memberList.length; i++) {
-          var list = ['W', 'V', 'R']
-
           for (let type of list) {
             var teampItemList ={}
             teampItemList.shareType = type
@@ -504,6 +563,7 @@ export default {
         }
       }
 
+      console.log('############################################')
       console.log(this.selectItemList)
 
 

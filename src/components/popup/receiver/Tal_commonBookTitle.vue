@@ -14,7 +14,6 @@
 export default {
   props: {
     titleText: {},
-    dataLength: {},
     btnTitle: {},
     selectPopYn: {}
   }
