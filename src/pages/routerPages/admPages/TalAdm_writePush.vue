@@ -28,13 +28,11 @@
                     {{receiverText}}
                   </div>
                 </div>
-
-                <div style="width: 100%; height: 30px;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
-                <div style="width: 100%; height: 30px;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
-
+                <div style="width: 150px; height: 30px; float: left;"><p>작성자명</p><input type="checkbox" v-model="allowSenderNameYn"></div>
+                <div style="width: 100px; height: 30px; float: left;"><p>댓글허용</p><input type="checkbox" v-model="allowReplyYn"></div>
               </div>
               <div class="pageMsgArea" style="">
-                <p  class="">내용</p>
+                <p class="">내용</p>
                 <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 알림 내용을 작성해주세요</div>
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
@@ -368,8 +366,7 @@ export default {
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
-  width: 100%; height: 8rem;
-  /* width: 100%; height: 5rem; */
+  width: 100%; height: 8.5rem;
 }
 .pageTopArea >div{
   width: 100%; min-height: 2.5rem;
