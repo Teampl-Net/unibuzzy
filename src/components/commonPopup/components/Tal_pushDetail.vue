@@ -24,7 +24,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <div style="background-color: #ccc; width: 60px; height: 30px;" >답장하기</div>
+            <div @click="alimReply" style="background-color: #ccc; width: 60px; height: 30px;" >답장하기</div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
@@ -47,7 +47,6 @@
   </div>
 </template>
 <script>
-
 /* import manageStickerPop from '../../popup/Tal_manageStickerPop.vue' */
 export default {
   data () {
@@ -77,6 +76,15 @@ export default {
     } */
   },
   methods: {
+    alimReply () {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      params.targetKey = this.detailVal.value.creTeamKey
+      params.targetType = 'writePush'
+      params.targetNameMtext = this.detailVal.value.nameMtext
+      params.contentsKey = this.detailVal.contentsKey
+      this.$emit('openPop', params)
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
