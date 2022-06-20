@@ -1,37 +1,45 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div class="" style=" height: 100vh; background-color: #ece6cc; width:100vw; position: relative;">
-    <div class= "pageHeader pushListCover" style="margin:0 1rem" ></div>
-    <div class="pagePaddingWrap summaryWrap">
+  <div id="boardWrap" style=" height: 100vh; width:100vw; overflow: scroll; background-color: #ece6cc;" class="boardDetailWrap">
+    <div id="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
+      <div id="boardInfoSummary" class="mt-header boardWhiteBox">
+        <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
-          <div class="summaryTop" >
-            <p class="cBlack fl font16" style="width: 100%; height: 30px; border-right: 1px solid white">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
-            <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList.length}}개</p>
-            <!-- 관리자 여부 확인 -->
-            <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;"> -->
-            <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;">
-              <p class="cBlack fl font16" style="width: 60px; height: 100%;">관리자</p>
-              <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div>
-            </div>
+          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-right: 1px solid white">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
+          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList.length}}개</p>
+          <!-- 관리자 여부 확인 -->
+          <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;"> -->
+          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;">
+            <p class="cBlack fl font16" style="width: 60px; height: 100%;">관리자</p>
+            <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div>
           </div>
-          <!-- 게시판 이름 , 소속 채널 -->
-          <div style="padding: 0 10px; width: 100%; height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
-            <p class="cBlack fl font20" style="width: 100%; height: 50px; line-height: 50px;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-            <p class="fl font14 cBlack" style="width: 100%; height: 50px; line-height: 50px; color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
-          </div>
-          <!-- 익명게시판 여부 -->
-          <div v-if="mCabinetContentsDetail.blindYn" style="width: 100%; font-size: 16px; margin-top: 10px;">익명게시판</div>
+        </div>
+        <!-- 게시판 이름 , 소속 채널 -->
+        <div style="padding: 0 10px; width: 90%; height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
+          <p class="cBlack fl font20" style="width: 100%; height: 50px; line-height: 50px;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+          <p class="fl font14 cBlack" style="width: 100%; height: 50px; line-height: 50px; color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
+        </div>
+        <!-- 익명게시판 여부 -->
+        <div v-if="mCabinetContentsDetail.blindYn" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
+      <div id="boardInfoSummary2" style="">
+        <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
+        <span class="font13 mbottom-05 fl">{{ this.$changeText(this.propData.nameMtext) }}</span>
+      </div>
+    </div>
 
-    <div class="pagePaddingWrap" style="padding-top: 10px; width: 100%; float: left; background: #FFF;">
+    <div class="pagePaddingWrap" style="position: relative; padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF; height: calc(100% - 50px); ">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
-      <boardList :commonBoardListData="this.mCabContentsList" />
+      <div class="boardItemBox " id="boardItemBox"  style="padding: 0px 1.5rem; margin-top: 0.8rem; height: calc(100% - 160px); ">
+        <boardList :commonBoardListData="this.mCabContentsList" style="height: 100%;" />
+      </div>
     </div>
+    <!-- </div> -->
   <div class="btnPlus" @click="btnWriteBoard" ><p style="font-size:40px;">+</p></div>
 </div>
 </template>
@@ -45,13 +53,11 @@ export default {
   components: {
     findContentsList,
     boardList
-    // searchResult
   },
   props: {
     propData: {}
   },
   async created () {
-    // alert(JSON.stringify(this.propData))
     this.$emit('openLoading')
     // await this.getCabinetDetail()
   },
@@ -59,28 +65,44 @@ export default {
     // alert(true)
     // alert(JSON.stringify(this.propData))
   },
+  updated () {
+    // eslint-disable-next-line no-unused-vars
+    this.box = document.getElementById('boardWrap') // 이 dom scroll 이벤트를 모니터링합니다
+    this.box.addEventListener('scroll', this.updateScroll)
+    this.box.addEventListener('mousewheel', e => {
+      this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+    })
+  },
   data () {
     return {
+      box: null,
+      scrollDirection: null,
+      scrollPosition: null,
       shareAuth: { R: false, W: false, V: false },
       mCabinetContentsDetail: {
         blindYn: true,
         fileYn: false,
         replyYn: false,
         shareCnt: 0,
-        cabinetNameMtext: 'KO$^$안녕게시판'
+        cabinetNameMtext: 'KO$^$공개게시판'
       },
       offsetInt: 0,
       mCabContentsList: [
-        // { title: 'test', bodyMinStr: 'testtesttesttest' },
-        // { title: 'test', bodyMinStr: 'testtesttesttest' },
-        // { title: 'test', bodyMinStr: 'testtesttesttest' }
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' },
+        { title: 'test', bodyMinStr: 'testtesttesttest' }
       ],
-      scrollPosition: null,
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
       /* subHistoryList: [], */
-
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       findKeyList: {},
@@ -88,6 +110,32 @@ export default {
     }
   },
   methods: {
+
+    updateScroll () {
+      // console.log(this.scrollPosition)
+      var blockBox = document.getElementById('summaryHeader')
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
+
+      this.scrollPosition = this.box.scrollTop
+
+      if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
+        blockBox.style.height = 50 + 'px'
+        // blockBox.scrollHeight = 100
+        document.getElementById('boardInfoSummary').classList.add('displayNIm')
+        document.getElementById('boardInfoSummary2').classList.add('displayBIm')
+        document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
+        document.getElementById('boardInfoSummary').classList.remove('displayNIm')
+        blockBox.style.height = '350px'
+        this.box.style.height = ''
+        document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
+        document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
+      }
+    },
     btnWriteBoard () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -288,16 +336,34 @@ export default {
       // this.commonListData = newArr
       this.findPopShowYn = false
     }
+  },
+  computed: {
+    setBlockBoxHeight () {
+      return {
+        '--height': 300 - this.scrollPosition + 'px'
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
-.summaryWrap{height: calc(35vh); width: 100%; float: left; }
-.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-bottom: 5px; display: flex; justify-content: space-around;}
+#boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
+.boardDetailWrap{
+  height: 100vh;
+  background-size: cover;
+}
+.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 350px; }
+.boardItemBox{background-color: #fff; position: relative; width: 100%;float: left; box-sizing: border-box;}
+.boardItemBoxHeight{height: calc(100% - 50px)!important;}
+.displayNIm{display: none!important;}
+.displayBIm{display: flex!important;}
+.summaryWrap{height: calc(35vh); width: 100%; float: left; position: fixed;}
+.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 60px; margin-bottom: 5px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}
 .summaryBottom p {color: #fff;}
+.blockBox{width: 100%; height: 320px;float: left; height: var(--height); min-height: 50px;}
 
 .pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
 
