@@ -44,7 +44,6 @@
 <script>
 import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
-import { computed } from '@vue/runtime-core'
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
@@ -162,6 +161,7 @@ export default {
                 var changeT = this.cabinetList[i].cabinetNameMtext
                 this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
             }
+            debugger
             // debugger
         },
         clickList(data){
@@ -253,6 +253,7 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('receiverTeamListCard')
             var index = null
+            var tt = this.cabinetList
             console.log(this.cabinetList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
