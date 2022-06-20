@@ -16,7 +16,7 @@
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style=""/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-      <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="dummyList" @openDetail='openTeamDetailPop' />
+      <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="cabinetList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
 
@@ -51,7 +51,7 @@ export default {
     propData: {},
     chanAlimListTeamKey: {}
   },
-  	  
+
   computed: {
     historyStack () {
       return this.$store.getters.hRPage
@@ -67,13 +67,17 @@ export default {
   },
   async created () {
     // alert(this.chanAlimListTeamKey)
-    // this.dummyList = this.$groupDummyList()
+    // this.cabinetList = this.$groupDummyList()
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
       // alert(history)
     this.$store.commit('updateStack', history)
-	  
-    this.getTeamMenuList()
+
+    await this.getTeamMenuList()
+
+    // alert(this.chanAlimListTeamKey)
+    await this.getTeamCabList()
+
     // this. myBoardList =
   },
   mounted () {
@@ -87,7 +91,7 @@ export default {
       menuHeaderTitle:'채널 메뉴',
       addChanMenuList:{},
       editPopYn : false,
-      dummyList:[],
+      cabinetList:[],
       menuHeight: null,
       boardDropDownYn:true,
       groupDropDownYn:null
@@ -97,6 +101,25 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    async getTeamCabList () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.chanAlimListTeamKey)
+      paramMap.set('sysCabinetCode', 'USER')
+      paramMap.set('adminYn', true)
+      var result = await this.$commonAxiosFunction({
+          url: '/tp.getTeamMenuList',
+          param: Object.fromEntries(paramMap)
+      })
+      this.cabinetList = result.data
+      for(var i = 0; i < this.cabinetList.length; i ++) {
+          var changeT = this.cabinetList[i].cabinetNameMtext
+          this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
+      }
+      // console.log('#####')
+      // console.log(this.cabinetList)
+      // alert(JSON.stringify(cabinetList))
+      // debugger
+    },
     async getTeamMenuList () {
       var paramMap = new Map()
       // alert(this.chanAlimListTeamKey)
@@ -109,12 +132,12 @@ export default {
       // debugger
     },
     groupListlength () {
-       this.$refs.groupRef.style.setProperty('--menuHeight', (this.dummyList.length=== 0 ? 1 : this.dummyList.length) * 70 + 20 + 'px')
-      //  this.menuHeight = this.dummyList.length * 70 + 20 + 'px'
+       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length=== 0 ? 1 : this.cabinetList.length) * 50 + 10 + 'px')
+      //  this.menuHeight = this.cabinetList.length * 70 + 20 + 'px'
     },
     boardListLength () {
       this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
-      // this.menuHeight = (this.dummyList.length=== 0 ? 1 : this.dummyList.length) * 70 + 20 + 'px'
+      // this.menuHeight = (this.cabinetList.length=== 0 ? 1 : this.cabinetList.length) * 70 + 20 + 'px'
       return{
         '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
       }

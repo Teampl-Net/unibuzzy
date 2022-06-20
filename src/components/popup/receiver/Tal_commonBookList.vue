@@ -36,6 +36,9 @@
             </draggable>
         </div>
     </div>
+    <!-- <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
+        <p style="font-size:40px;">+</p>
+    </div> -->
 </template>
 
 <script>
@@ -173,14 +176,22 @@ export default {
             param.cabinetKey = data.cabinetKey
             param.currentTeamKey = this.propData.currentTeamKey
             param.menuType = data.menuType
-            var result = await this.$commonAxiosFunction({
-                url: '/tp.deleteCabinet',
-                param: param
-            })
-            if(result.data === 'true' || result.data === true){
-                console.log(result)
-                this.cabinetList.splice(index, 1)
+            try{
+                // this.cabinetList.splice(index, 1)
+                var result = await this.$commonAxiosFunction({
+                    url: '/tp.deleteCabinet',
+                    param: param
+                })
+
+                if(result.data === 'true' || result.data === true){
+                    console.log(result)
+                    this.cabinetList.splice(index, 1)
+                }
+            }catch(e){
+                console.log(e)
             }
+
+
         },
         //유민참고
         addSelectedList(data, index) {

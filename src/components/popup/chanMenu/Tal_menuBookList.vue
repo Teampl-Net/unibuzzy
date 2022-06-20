@@ -1,7 +1,7 @@
 <template>
 
-<div v-if="cabinetList" style="width: 100%; margin-top:0.5rem;" class="">
-    <div v-for="(data, index) in cabinetList" :id="'book'+ index" :key='index' class="cabinetListCard fl" >
+<div v-if="listData.length > 0" style="width: 100%; margin-top:0.5rem;" class="">
+    <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard fl" >
 
         <div style="width:100%; height:30px;" class="fl">
             <!-- <img src="" /> -->
@@ -31,7 +31,7 @@ export default {
     data(){
         return{
             // cabinetList: [{cabinetNameMtext:'KO$^$SSS'},{cabinetNameMtext:'KO$^$BBB'}],
-            cabinetList: [],
+
             editTeamName:'',
             editNameYn:null,
             teamList: {},
@@ -39,38 +39,13 @@ export default {
         }
     },
     async created () {
-        await this.getTeamCabList()
+
 
     },
     components: {
         // draggable: VueDraggableNext
     },
-    computed: {
-        setTotalHeight () {
-            return {
-                '--scrollHeight' : this.teamList.length * 70 + 20 + 'px'
-            }
-        }
-    },
     methods:{
-        async getTeamCabList () {
-            var paramMap = new Map()
-
-            paramMap.set('creTeamKey', this.chanAlimListTeamKey)
-            paramMap.set('sysCabinetCode', 'USER')
-            var result = await this.$commonAxiosFunction({
-                url: '/tp.getBookList',
-                param: Object.fromEntries(paramMap)
-            })
-
-            this.cabinetList = result.data
-            for(var i = 0; i < this.cabinetList.length; i ++) {
-                var changeT = this.cabinetList[i].cabinetNameMtext
-                this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
-            }
-            // alert(JSON.stringify(cabinetList))
-            // debugger
-        },
         clickList(data){
             // alert(true)
             // if(this.selectPopYn !== true)
