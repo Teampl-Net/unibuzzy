@@ -404,64 +404,66 @@ export default {
       } else if (this.shareType === 'select') {
         if (!this.permissionSelectedYn.W) {
           // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
-          if(this.setSelectedList.bookList){
-            for (let i = 0; i < dthis.setSelectedListata.bookList.length; i++) {
+          if(this.selectedList.data.bookList){
+            for (let i = 0; i < this.selectedList.data.bookList.length; i++) {
                 var teampItemList ={}
                 teampItemList.shareType = 'W'
-                teampItemList.shareSeq = this.setSelectedList.bookList[i].shareSeq
+                teampItemList.shareSeq = this.selectedList.data.bookList[i].shareSeq
                 this.selectItemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
 
             }
           }
 
-          if(this.setSelectedList.memberList){
-            for (let i = 0; i < this.setSelectedList.memberList.length; i++) {
+          if(this.selectedList.data.memberList){
+            for (let i = 0; i < this.selectedList.data.memberList.length; i++) {
               var teampItemList ={}
               teampItemList.shareType = 'W'
-              teampItemList.shareSeq = this.setSelectedList.memberList[i].shareSeq
+              teampItemList.shareSeq = this.selectedList.data.memberList[i].shareSeq
               this.selectItemList.push(teampItemList)
             }
           }
-        } else if (!this.permissionSelectedYn.R){
+        }
+        if (!this.permissionSelectedYn.R){
             // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
-            if(this.setSelectedList.bookList){
-              for (let i = 0; i < this.setSelectedList.bookList.length; i++) {
+            if(this.selectedList.data.bookList){
+              for (let i = 0; i < this.selectedList.data.bookList.length; i++) {
                   var teampItemList ={}
                   teampItemList.shareType = 'R'
-                  teampItemList.shareSeq = this.setSelectedList.bookList[i].shareSeq
+                  teampItemList.shareSeq = this.selectedList.data.bookList[i].shareSeq
                   this.selectItemList.push(teampItemList)
               // if(teampItemList.shareType !== data.bookList[i].shareType ){
 
               }
             }
 
-            if(this.setSelectedList.memberList){
-              for (let i = 0; i < this.setSelectedList.memberList.length; i++) {
+            if(this.selectedList.data.memberList){
+              for (let i = 0; i < this.selectedList.data.memberList.length; i++) {
                 var teampItemList ={}
                 teampItemList.shareType = 'R'
-                teampItemList.shareSeq = this.setSelectedList.memberList[i].shareSeq
+                teampItemList.shareSeq = this.selectedList.data.memberList[i].shareSeq
                 this.selectItemList.push(teampItemList)
               }
             }
-        } else if (!this.permissionSelectedYn.V){
+        }
+        if (!this.permissionSelectedYn.V){
             // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
-            if(this.setSelectedList.bookList){
-              for (let i = 0; i < this.setSelectedList.bookList.length; i++) {
+            if(this.selectedList.data.bookList){
+              for (let i = 0; i < this.selectedList.data.bookList.length; i++) {
                   var teampItemList ={}
                   teampItemList.shareType = 'V'
-                  teampItemList.shareSeq = this.setSelectedList.bookList[i].shareSeq
+                  teampItemList.shareSeq = this.selectedList.data.bookList[i].shareSeq
                   this.selectItemList.push(teampItemList)
               // if(teampItemList.shareType !== data.bookList[i].shareType ){
 
               }
             }
 
-            if(this.setSelectedList.memberList){
-              for (let i = 0; i < this.setSelectedList.memberList.length; i++) {
+            if(this.selectedList.data.memberList){
+              for (let i = 0; i < this.selectedList.data.memberList.length; i++) {
                 var teampItemList ={}
                 teampItemList.shareType = 'V'
-                teampItemList.shareSeq = this.setSelectedList.memberList[i].shareSeq
+                teampItemList.shareSeq = this.selectedList.data.memberList[i].shareSeq
                 this.selectItemList.push(teampItemList)
               }
             }
