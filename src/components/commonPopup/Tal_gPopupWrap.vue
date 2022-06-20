@@ -4,7 +4,7 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && targetType === 'chanDetail'? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import pushDetail from './components/Tal_pushDetail.vue'
 import changeInfo from './components/Tal_changeInfo.vue'
 import pushList from '../../pages/routerPages/Tal_pushList.vue'
@@ -175,6 +177,9 @@ export default {
     }
   },
   methods: {
+    transparentHeader() {
+
+    },
     itemDetail (parm) {
       // alert(parm)
       // this.openChanItemDetailYn = true
@@ -356,5 +361,4 @@ export default {
 .dNone{display: none;}
 
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}
-.transBack {background: transparent;}
 </style>
