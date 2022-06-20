@@ -8,14 +8,14 @@
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 150px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div>
+      <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 40%;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="float: right; width: calc(100% - 150px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >{{okFunctionList}}</div>
+      <div style="float: right; width: calc(100% - 133px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
@@ -85,7 +85,7 @@
           <input type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" style="height: 100%; float: left;" id="shareAll"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareAll">전체</label>
           <input type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" style="height: 100%; float: left;" id="shareSelect"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareSelect">선택</label>
         </div>
-        <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft"  style="width: 100%;">{{selectedReceiver}}</div>
+        <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft" style="width: 100%;">{{selectedReceiver}}</div>
       </div>
     </div>
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
@@ -96,7 +96,7 @@
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{writePermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
           <input type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use" style="height: 100%; float: left;" id="writeTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeTrue">사용</label>
-          <input type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
+          <input type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
         </div>
       </div>
       <div class="subItemWrite">
@@ -105,7 +105,7 @@
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{readPermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
           <input type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" style="height: 100%; float: left;" id="readTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="readTrue">사용</label>
-          <input type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="readFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="readFalse">사용 안함</label>
+          <input type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="readFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="readFalse">사용 안함</label>
         </div>
 
       </div>
@@ -115,7 +115,7 @@
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft"  v-if="this.shareType == 'select'" >{{commentPermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
           <input type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" style="height: 100%; float: left;" id="commentTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="commentTrue">사용</label>
-          <input type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="commentFalse"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="commentFalse">사용 안함</label>
+          <input type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="commentFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="commentFalse">사용 안함</label>
         </div>
 
       </div>
@@ -128,6 +128,7 @@
   <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
+  <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
 
 </template>
 
@@ -175,6 +176,7 @@ export default {
   },
   data () {
     return {
+      okPopYn: false,
       popId: null,
       selectReceiverAccessYn: false,
       boardDetail: {},
@@ -211,7 +213,7 @@ export default {
       selectShareList:[],
       selectItemList:[],
 
-      okFunctionList:'진행상태O/실명/댓글지원O/파일업로드O',
+      okFunctionList:'작성자명/댓글지원O/파일업로드O',
 
       writePermissionAllYn: true,
       readPermissionAllYn: true,
@@ -247,14 +249,13 @@ export default {
       param.adminYn = true
       var resultList = await this.$getCabinetDetail(param)
 
-      debugger
+      // debugger
       this.settingCabDetail(resultList)
     },
     settingCabDetail (data) {
       console.log(data.mCabinet.blindYn)
-      // 진행상태O/실명/댓글지원O/파일업로드O
+      // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
-      this.okFunctionList += '진행상태O/'
       if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
       if(data.mCabinet.replyYn === 1){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
       if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
@@ -353,7 +354,6 @@ export default {
 
     },
     async updateCabinet () {
-      if((!this.selectedList.data  && this.shareType === 'all' ) || (this.selectedList.data && this.shareType === 'select')){
       var param = new Object()
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
@@ -503,11 +503,11 @@ export default {
       // alert(JSON.stringify(result))
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // console.log('@@성공@@')
-        alert('수정 성공!')
+        this.okPopYn = true
       }
-
+    },
+    closePop() {
       this.$emit('closePop')
-      }else{alert('공유대상을 설정해주세요.')}
     },
     /* nextStep () {
       this.shareSelectYn = true
@@ -673,10 +673,9 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height:26px; font-size: 14px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left;}
+.inputBoxThema{height: 30px; font-size: 14px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;}
 .editWrap{
   background-color: #F9F9F9;
-
 }
 .editmenuHeader{
 border-bottom: 1.5px solid #999;

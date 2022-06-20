@@ -36,9 +36,6 @@
             </draggable>
         </div>
     </div>
-    <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
-        <p style="font-size:40px;">+</p>
-    </div>
 </template>
 
 <script>
@@ -140,10 +137,12 @@ export default {
             if(this.editYn) {
                 this.editYn = false
                 this.pageTopBtnTitle = '편집'
+                this.$emit('editYn',this.editYn)
             }
             else {
                 this.editYn = true
-                this.pageTopBtnTitle = '저장'
+                this.pageTopBtnTitle = '닫기'
+                this.$emit('editYn',this.editYn)
             }
         },
         async getTeamCabList () {

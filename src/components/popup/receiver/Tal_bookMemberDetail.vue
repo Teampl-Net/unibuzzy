@@ -75,7 +75,7 @@ export default {
             this.memEmail= this.propData.userEmail
             this.memPhone = this.propData.userPhone
         } else {
-            
+
         }
     },
     data () {
@@ -135,7 +135,7 @@ export default {
             if(checkYn) {
                 var param = new Object()
                 var mCabContents = new Object()
-                
+
                 mCabContents.jobkindId = 'USER'
                 mCabContents.cabinetKey = this.propData.currentCabinetKey
                 // param.targetKey = this.propData.currentTeamKey
@@ -152,7 +152,10 @@ export default {
         },
         checkParam(){
             var result = false
-            if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
+            if (this.memName === '' || this.memName === null || this.memName === undefined) {
+                this.popYn = true
+                this.confirmText = '이름을 입력하세요.'
+            } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail)) {
                     this.popYn = true
                     this.confirmText = '이메일 형식이 유효하지 않습니다.'
@@ -162,10 +165,7 @@ export default {
                 } else {
                     result = true
                 }
-            } else if (this.memName === '') {
-                this.popYn = true
-                this.confirmText = '이름을 입력하세요.'
-            } else if (this.memEmail === '') {
+            }  else if (this.memEmail === '') {
                 this.popYn = true
                 this.confirmText = '이메일을 입력하세요.'
             } else {
