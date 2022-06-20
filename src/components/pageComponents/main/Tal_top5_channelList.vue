@@ -1,6 +1,6 @@
 <template>
   <listTitle listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop"/>
-  <gActiveBar :tabList="this.activeTabList" class=" mtop-1" @changeTab= "changeTab" />
+  <gActiveBar :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
@@ -74,12 +74,12 @@ export default {
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
-      this.chanList = resultList.content
+      this.chanList = resultList.data.content
 
-      console.log(this.chanList)
     },
     async changeTab (data) {
       this.viewTab = data
+      // console.log(data)
       await this.getContentsList()
     }
   }

@@ -8,8 +8,8 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
-                            <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
+                        <div :class="{foo:index === 0}" v-if="data.s!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
+                            <div @click="clickList(data)" style="width: calc(10electedYn 0% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
@@ -64,7 +64,6 @@ export default {
             editYn : false,
             pageTopBtnTitle: '편집',
             selectedBookList: [],
-            deleteList:[],
             editIndex:null
         }
     },
@@ -161,7 +160,6 @@ export default {
                 var changeT = this.cabinetList[i].cabinetNameMtext
                 this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
             }
-            debugger
             // debugger
         },
         clickList(data){
@@ -210,10 +208,11 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-
+                this.cabinetList = []
+                this.getTeamCabList()
             }
             // alert(JSON.stringify(result))
-            this.cabinetList.unshift(addBoard)
+            // this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             // debugger
             setTimeout(() => {
@@ -228,12 +227,9 @@ export default {
             cabinet.currentTeamKey = data.currentTeamKey
             cabinet.sysCabinetCode = data.sysCabinetCode
             cabinet.cabinetKey = data.cabinetKey
-
             var paramSet = new Object()
-
             paramSet.creMenuYn = false
             paramSet.cabinet = cabinet
-
 
             var result = null
             var response = await this.$commonAxiosFunction({
@@ -253,37 +249,29 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('receiverTeamListCard')
             var index = null
-            var tt = this.cabinetList
             console.log(this.cabinetList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
+                console.log()
                 for (var i = 0; i < this.cabinetList.length; i ++) {
                 if(index === i) {
                     menu = {}
                     var tt = this.cabinetList[i]
-                    debugger
                     if(this.cabinetList[i].menuType)
                         menu.menuType = this.cabinetList[i].menuType
-
                     menu.teamKey = this.propObject.currentTeamKey
-
                     if(this.cabinetList[i].parentMenuKey)
                         menu.parentMenuKey = this.cabinetList[i].parentMenuKey
-
                     if(this.cabinetList[i].cabinetKey)
                         menu.cabinetKey = this.cabinetList[i].cabinetKey
-
                     if(this.cabinetList[i].cabinetNameMtext)
                         menu.cabinetNameMtext = this.cabinetList[i].cabinetNameMtext
-
                     teamMenuList.push(menu)
                     break
                 }
                 }
             }
             paramSet.teamMenuList = teamMenuList
-            console.log("###3###")
-            console.log(teamMenuList)
 
             var result = await this.$commonAxiosFunction(
                 {
@@ -293,6 +281,9 @@ export default {
             )
             console.log(result)
             // debugger
+            // getTeamCabList ()
+            this.cabinetList = []
+            this.getTeamCabList()
         }
     }
 

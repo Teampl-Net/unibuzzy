@@ -302,7 +302,7 @@ export default {
         this.readPermissionAllYn = false
         this.commentPermissionAllYn = false
       }
-      
+
 
 
     },
@@ -353,6 +353,7 @@ export default {
 
     },
     async updateCabinet () {
+      if((!this.selectedList.data  && this.shareType === 'all' ) || (this.selectedList.data && this.shareType === 'select')){
       var param = new Object()
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
@@ -506,6 +507,7 @@ export default {
       }
 
       this.$emit('closePop')
+      }else{alert('공유대상을 설정해주세요.')}
     },
     /* nextStep () {
       this.shareSelectYn = true

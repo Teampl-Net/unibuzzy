@@ -144,12 +144,11 @@ export default {
         param.currentTeamKey = this.currentTeamKey
         param.cabinetKey = data.cabinetKey
         param.menuType = data.menuType
-
         var result = await this.$deleteCabinet(param)
-        if(result.data === true || result.data ==='true') {
-          this.teamList.splice(index, 1)
+        if(result === true || result ==='true') {
+          this.boardList.splice(index, 1)
         }
-        // debugger
+
     },
     /* addChanClick(){
       this.openAddChanMenuYn = true
@@ -183,7 +182,7 @@ export default {
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
       cabinet.sysCabinetCode = 'BOAR'
-      cabinet.MenuType = 'C'
+      cabinet.menuType = 'C'
       cabinet.blindYn = false
       cabinet.fileYn = true
       cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
@@ -191,9 +190,10 @@ export default {
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-
+        this.boardList = []
+        await this.getTeamMenuList()
       }
-      this.boardList.unshift(addBoard)
+      // this.boardList.unshift(addBoard)
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
@@ -229,17 +229,14 @@ export default {
         }
       }
       paramSet.teamMenuList = teamMenuList
-
-      console.log("###3###")
-      console.log(teamMenuList)
-
-
       var result = await this.$commonAxiosFunction(
         {
           url: 'tp.changePosTeamMenu',
           param: paramSet
         }
       )
+      this.boardList = []
+      this.getTeamMenuList()
       // debugger
     }
       // this.boardList.push()

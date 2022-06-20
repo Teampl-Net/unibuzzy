@@ -21,7 +21,7 @@
           <p class="fl font14 cBlack" style="width: 100%; height: 50px; line-height: 50px; color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div>
         <!-- 익명게시판 여부 -->
-        <div v-if="mCabinetContentsDetail.blindYn" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
+        <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
       <div id="boardInfoSummary2" style="">
         <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
@@ -39,8 +39,7 @@
         <boardList :commonBoardListData="this.mCabContentsList" style="height: 100%;" />
       </div>
     </div>
-    <!-- </div> -->
-  <div class="btnPlus" @click="btnWriteBoard" ><p style="font-size:40px;">+</p></div>
+  <div class="btnPlus" @click="btnWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
 </template>
 
@@ -59,7 +58,8 @@ export default {
   },
   async created () {
     this.$emit('openLoading')
-    // await this.getCabinetDetail()
+    await this.getCabinetDetail()
+    console.log(this.propData)
   },
   mounted () {
     // alert(true)
@@ -156,8 +156,14 @@ export default {
       // alert(JSON.stringify(resultList))
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
+
       // eslint-disable-next-line no-unused-vars
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
+      console.log(this.shareAuth)
+      if(this.shareAuth.V ===false) {
+        alert('읽기 권한이 없습니다.')
+        this.$emit('closeXPop')
+      }
       // eslint-disable-next-line no-debugger
       // alert(JSON.stringify(this.mCabinetContentsDetail)
       this.findPopShowYn = false

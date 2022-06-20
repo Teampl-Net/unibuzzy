@@ -25,7 +25,7 @@
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'  />
 
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
-      <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' />
+      <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
       <boardMainDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='boardMainDetailData'/>
       <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
