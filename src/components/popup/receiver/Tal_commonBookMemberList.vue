@@ -24,11 +24,7 @@
                 </template>
             </transition-group>
         </draggable>
-        <div class="btnPlus" btnTitle="추가" @click="this.newAddMember" v-if="editYn">
-            <p style="font-size:40px;">+</p>
-        </div>
     </div>
-
     <!-- <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' /> -->
 </div>
 
@@ -116,9 +112,11 @@ export default {
             if(this.editYn) {
                 this.editYn = false
                 this.pageTopBtnTitle = '편집'
+                this.$emit('editYn',this.editYn)
             } else {
                 this.editYn = true
-                this.pageTopBtnTitle = '저장'
+                this.pageTopBtnTitle = '닫기'
+                this.$emit('editYn',this.editYn)
             }
         },
         deleteMemberClick(data, index){
