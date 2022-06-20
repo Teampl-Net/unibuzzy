@@ -14,7 +14,7 @@
         </div> -->
 
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-          <selectBookNMemberList :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
+          <selectBookNMemberList :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='selectedList'  />
         </div>
         <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="float: left;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
@@ -35,6 +35,7 @@ export default {
     itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
   created () {
+    this.settingList()
     // alert(JSON.stringify(this.parentList) + 'sssss')
   },
   components: { selectedListCompo, selectBookNMemberList },
@@ -58,6 +59,24 @@ export default {
     }
   },
   methods: {
+    settingList(){
+      console.log("######@!@#!@#!@#!@#######")
+      console.log(this.parentList)
+      // if(this.parentList.bookList){
+      //   for (let index = 0; index < array.length; index++) {
+      //     const element = array[index];
+
+      //   }
+      // }
+      // if(this.parentList.bookList){
+      //   for (let i = 0; i < array.length; i++) {
+      //     const element = array[i];
+
+      //   }
+      // }
+
+      // // this.addSelectList()
+    },
     changeSelectedItem (data) {
       // alert(true)
       // data = {itemList: [], itemType: 'W'}

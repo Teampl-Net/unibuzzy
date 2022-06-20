@@ -3,7 +3,7 @@
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" />
     <div class="itemWrite" style="">
       <p class="textLeft font16 fl" style="width: 150px;">게시판 이름</p>
-      <input v-model="boardDetail.cabinetNameMtext" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
+      <input v-model="boardName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 150px;">유형</p>
@@ -121,20 +121,24 @@
       </div>
     </div>
   <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
-  <gBtnSmall btnThema="light" btnTitle="취소" />
+  <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
   <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
-  <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
+  <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
 
 </template>
 
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
+
+
+
+
 import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
 import selectBookList from './receiver/Tal_selectBookList.vue'
@@ -155,8 +159,8 @@ export default {
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
 
-    console.log(this.boardDetail)
-    console.log(this.chanInfo)
+    // console.log(this.boardDetail)
+    // console.log(this.chanInfo)
 
     // debugger
 
@@ -218,7 +222,8 @@ export default {
       writePermissionAllYn: true,
       readPermissionAllYn: true,
       commentPermissionAllYn: true,
-      permissionSelectedYn: {W: false, R: false, V: false}
+      permissionSelectedYn: {W: false, R: false, V: false},
+      boardName:''
 
     }
   },
@@ -253,7 +258,9 @@ export default {
       this.settingCabDetail(resultList)
     },
     settingCabDetail (data) {
-      console.log(data.mCabinet.blindYn)
+      console.log('setting')
+      console.log(data.mCabinet)
+      this.boardName = this.$changeText(data.mCabinet.cabinetNameMtext)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
       if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
@@ -284,6 +291,8 @@ export default {
           this.readPermission = '전체에게 권한 부여'
           this.commentPermission ='전체에게 권한 부여'
         }else{
+          console.log("######@@@@@@#######")
+          console.log(data)
           this.changeShareType('select')
 
           this.selectedReceiver = data.mCabinet.shareCnt + '명에게 공유 중'
@@ -296,6 +305,7 @@ export default {
           this.writePermission = W +'명에게 권한 부여함'
           this.readPermission = V+'명에게 권한 부여함'
           this.commentPermission = R+'명에게 권한 부여함'
+
         }
       }else {
         this.changeShareType('all')
@@ -368,7 +378,7 @@ export default {
       var share = new Object()
       var item = new Object()
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
-      console.log(this.shareType)
+      // console.log(this.shareType)
       if(this.shareType === 'all') {
         share.accessKind = 'T'
         share.accessKey = this.modiBoardDetailProps.teamKey

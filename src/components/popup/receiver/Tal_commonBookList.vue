@@ -16,11 +16,11 @@
                                 </div>
                                 <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
                                 <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-                                <input v-if="editYn && editIndex === index" :id="index" v-model="data.cabinetNameMtext"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+                                <input v-if="editYn && editIndex === index" :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-else class="fl font15 commonBlack  receiverTeamText" @click="changedText(index)" >{{data.cabinetNameMtext}}</p>
+                                <p v-else class="fl font15 commonBlack  receiverTeamText" @click="changedText(data,index)" >{{data.cabinetNameMtext}}</p>
 
-                                <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data)" >
+                                <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data,index)" >
                             </div>
                             <div v-if="editYn" @click="deleteCabinet(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
@@ -64,7 +64,8 @@ export default {
             editYn : false,
             pageTopBtnTitle: '편집',
             selectedBookList: [],
-            editIndex:null
+            editIndex:null,
+            cabinetInputText:''
         }
     },
     async created () {
@@ -116,9 +117,9 @@ export default {
         }
     },
     methods:{
-        changedText(index){
-
+        changedText(data, index){
             this.editIndex = index
+            this.cabinetInputText = data.cabinetNameMtext
         },
 
         changeSelectedList () {
@@ -230,26 +231,26 @@ export default {
                 // document.getElementsByClassName('foo')[0].classList.remove('foo')
             }, 800);
         },
-        async updateCabinet(data){
-            var cabinet = new Object()
+        async updateCabinet(data, index){
 
-            cabinet.cabinetNameMtext = 'KO$^$'+data.cabinetNameMtext
-            cabinet.currentTeamKey = data.currentTeamKey
-            cabinet.sysCabinetCode = data.sysCabinetCode
-            cabinet.cabinetKey = data.cabinetKey
-            var paramSet = new Object()
-            paramSet.creMenuYn = false
-            paramSet.cabinet = cabinet
+                var cabinet = new Object()
+                cabinet.cabinetNameMtext = 'KO$^$'+this.cabinetInputText
+                cabinet.currentTeamKey = data.currentTeamKey
+                cabinet.sysCabinetCode = data.sysCabinetCode
+                cabinet.cabinetKey = data.cabinetKey
+                var paramSet = new Object()
+                paramSet.creMenuYn = false
+                paramSet.cabinet = cabinet
 
-            var result = null
-            var response = await this.$commonAxiosFunction({
-            url: '/tp.saveCabinet',
-            param: paramSet
-            })
-            result = response.data
-
-            // debugger
-            console.log(result)
+                var result = null
+                var response = await this.$commonAxiosFunction({
+                url: '/tp.saveCabinet',
+                param: paramSet
+                })
+                result = response.data
+                data.cabinetNameMtext =this.cabinetInputText
+                // console.log(result)
+                this.editIndex = null
 
         },
         async changePosTeamMenu () {
@@ -259,10 +260,9 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('receiverTeamListCard')
             var index = null
-            console.log(this.cabinetList)
+            // console.log(this.cabinetList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
-                console.log()
                 for (var i = 0; i < this.cabinetList.length; i ++) {
                 if(index === i) {
                     menu = {}
@@ -289,7 +289,7 @@ export default {
                 param: paramSet
                 }
             )
-            console.log(result)
+            // console.log(result)
             // debugger
             // getTeamCabList ()
             this.cabinetList = []
