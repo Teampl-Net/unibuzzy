@@ -5,10 +5,10 @@
             <p class="font15 commonBlack">+</p>
         </div> -->
         <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" >
+            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" style="" >
+                        <div :class="{foo:index === 0}" v-if="data.selectedYn !== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
                             <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
@@ -16,15 +16,13 @@
                                 </div>
                                 <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
                                 <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
-                                <input v-if="editYn" :id="index" v-model="data.cabinetNameMtext" style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc;"/>
+                                <input v-if="editYn && editIndex === index" :id="index" v-model="data.cabinetNameMtext"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
+                                <p v-else class="fl font15 commonBlack  receiverTeamText" @click="changedText(index)" >{{data.cabinetNameMtext}}</p>
 
-                                <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                    <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                                </div>
+                                <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data)" >
                             </div>
-                            <div v-if="editYn" @click="deleteCabinet(data,cabinetKey)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <div v-if="editYn" @click="deleteCabinet(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
                             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
@@ -46,6 +44,7 @@
 <script>
 import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
+import { computed } from '@vue/runtime-core'
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
@@ -66,6 +65,8 @@ export default {
             editYn : false,
             pageTopBtnTitle: '편집',
             selectedBookList: [],
+            deleteList:[],
+            editIndex:null
         }
     },
     async created () {
@@ -79,6 +80,8 @@ export default {
         }
         await this.getTeamCabList()
         this.changeSelectedList()
+
+        // console.log(this.cabinetList)
         // this.cabinetList = this.listData
     // alert(this.setTotalHeight.scrollHeight)
     },
@@ -115,6 +118,11 @@ export default {
         }
     },
     methods:{
+        changedText(index){
+
+            this.editIndex = index
+        },
+
         changeSelectedList () {
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
@@ -142,10 +150,11 @@ export default {
         },
         async getTeamCabList () {
             var paramMap = new Map()
-            paramMap.set('creTeamKey', this.propObject.currentTeamKey || this.propObject.teamKey)
+            paramMap.set('teamKey', this.propObject.currentTeamKey || this.propObject.teamKey)
             paramMap.set('sysCabinetCode', 'USER')
+            paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getBookList',
+                url: '/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.cabinetList = result.data
@@ -162,12 +171,19 @@ export default {
 
         },
         async deleteCabinet(data,index){
-            var param = new Object()
-            param.currentTeamKey = this.propObject.currentTeamKey
+            console.log(data)
+            var param = {}
             param.cabinetKey = data.cabinetKey
-            this.cabinetList.splice(index, 1)
-            var result = await this.$deleteCabinet(param)
-
+            param.currentTeamKey = this.propData.currentTeamKey
+            param.menuType = data.menuType
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.deleteCabinet',
+                param: param
+            })
+            if(result.data === 'true' || result.data === true){
+                console.log(result)
+                this.cabinetList.splice(index, 1)
+            }
         },
         //유민참고
         addSelectedList(data, index) {
@@ -179,7 +195,6 @@ export default {
 
             this.$emit('changeSelectBookList', this.selectedBookList)
         },
-
         async addNewBook(){
 
             var param = new Object()
@@ -190,6 +205,7 @@ export default {
             cabinet.currentTeamKey = this.propObject.currentTeamKey
             cabinet.sysCabinetCode = 'USER'
             cabinet.creTeamKey = this.propObject.currentTeamKey
+            cabinet.menuType = 'G'
             param.cabinet = cabinet
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
@@ -204,6 +220,78 @@ export default {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
                 // document.getElementsByClassName('foo')[0].classList.remove('foo')
             }, 800);
+        },
+        async updateCabinet(data){
+            var cabinet = new Object()
+
+            cabinet.cabinetNameMtext = 'KO$^$'+data.cabinetNameMtext
+            cabinet.currentTeamKey = data.currentTeamKey
+            cabinet.sysCabinetCode = data.sysCabinetCode
+            cabinet.cabinetKey = data.cabinetKey
+
+            var paramSet = new Object()
+
+            paramSet.creMenuYn = false
+            paramSet.cabinet = cabinet
+
+
+            var result = null
+            var response = await this.$commonAxiosFunction({
+            url: '/tp.saveCabinet',
+            param: paramSet
+            })
+            result = response.data
+
+            // debugger
+            console.log(result)
+
+        },
+        async changePosTeamMenu () {
+            // alert(true)
+            var paramSet = new Object()
+            var teamMenuList = new Array()
+            var menu = new Object()
+            var cardList = document.getElementsByClassName('receiverTeamListCard')
+            var index = null
+            console.log(this.cabinetList)
+            for (var s = cardList.length - 1 ; s >=0; s--) {
+                index = Number(cardList[s].getAttribute('index'))
+                for (var i = 0; i < this.cabinetList.length; i ++) {
+                if(index === i) {
+                    menu = {}
+                    var tt = this.cabinetList[i]
+                    debugger
+                    if(this.cabinetList[i].menuType)
+                        menu.menuType = this.cabinetList[i].menuType
+
+                    menu.teamKey = this.propObject.currentTeamKey
+
+                    if(this.cabinetList[i].parentMenuKey)
+                        menu.parentMenuKey = this.cabinetList[i].parentMenuKey
+
+                    if(this.cabinetList[i].cabinetKey)
+                        menu.cabinetKey = this.cabinetList[i].cabinetKey
+
+                    if(this.cabinetList[i].cabinetNameMtext)
+                        menu.cabinetNameMtext = this.cabinetList[i].cabinetNameMtext
+
+                    teamMenuList.push(menu)
+                    break
+                }
+                }
+            }
+            paramSet.teamMenuList = teamMenuList
+            console.log("###3###")
+            console.log(teamMenuList)
+
+            var result = await this.$commonAxiosFunction(
+                {
+                url: 'tp.changePosTeamMenu',
+                param: paramSet
+                }
+            )
+            console.log(result)
+            // debugger
         }
     }
 

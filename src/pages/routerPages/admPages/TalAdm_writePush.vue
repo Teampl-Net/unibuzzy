@@ -33,7 +33,7 @@
                     <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
-                <div style="width: 120px; min-height: 25px; float: right;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
+                <div style="width: 150px; min-height: 25px; float: right;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
                 <div style="width: 100px; min-height: 25px; float: right;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
               <div class="pageMsgArea" style="">
@@ -263,8 +263,8 @@ export default {
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
       param.jobkindId = 'ALIM'
-      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext 
-      
+      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
       //debugger
@@ -273,7 +273,7 @@ export default {
         this.sendLoadingYn = false
         this.$emit('closeXPop')
       }
-      
+
     },
     messageAreaClick () {
       this.msgPopYn = true

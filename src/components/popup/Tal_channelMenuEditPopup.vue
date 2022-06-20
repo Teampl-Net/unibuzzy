@@ -73,8 +73,9 @@ export default {
     history.push(this.popId)
       // alert(history)
     this.$store.commit('updateStack', history)
-	  
+
     this.getTeamMenuList()
+
     /* if (this.editList) {
       // alert(JSON.stringify(this.editList))
       this.boardList = this.editList
@@ -119,6 +120,7 @@ export default {
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
+      console.log(this.boardList)
       for (var i = 0; i < this.boardList.length; i ++) {
         var changeText = this.boardList[i].cabinetNameMtext
         this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
@@ -141,8 +143,12 @@ export default {
         var param = new Object()
         param.currentTeamKey = this.currentTeamKey
         param.cabinetKey = data.cabinetKey
-        // this.teamList.splice(index, 1)
+        param.menuType = data.menuType
+
         var result = await this.$deleteCabinet(param)
+        if(result.data === true || result.data ==='true') {
+          this.teamList.splice(index, 1)
+        }
         // debugger
     },
     /* addChanClick(){
@@ -200,7 +206,8 @@ export default {
       var menu = new Object()
       var cardList = document.getElementsByClassName('receiverTeamListCard')
       var index = null
-      debugger
+      // debugger
+      console.log(this.boardList)
       for (var s = cardList.length - 1 ; s >=0; s--) {
         index = Number(cardList[s].getAttribute('index'))
         for (var i = 0; i < this.boardList.length; i ++) {
@@ -222,7 +229,11 @@ export default {
         }
       }
       paramSet.teamMenuList = teamMenuList
-      
+
+      console.log("###3###")
+      console.log(teamMenuList)
+
+
       var result = await this.$commonAxiosFunction(
         {
           url: 'tp.changePosTeamMenu',

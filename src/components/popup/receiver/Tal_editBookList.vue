@@ -17,7 +17,7 @@
             <transition name="showGroup">
                 <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
-            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.refaddNewBook():this.$refs.memberListRef.newAddMember()" ><p style="font-size:40px;">+</p></div>
+            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook():this.$refs.memberListRef.newAddMember()" ><p style="font-size:40px;">+</p></div>
         </div>
     </div>
 </div>
@@ -36,12 +36,13 @@ export default {
         propData: {}
     },
     created (){
+        console.log(this.propData)
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
         history.push(this.popId)
         // alert(history)
         this.$store.commit('updateStack', history)
-        
+
         // alert(JSON.stringify(this.propData))
     },
     computed: {
