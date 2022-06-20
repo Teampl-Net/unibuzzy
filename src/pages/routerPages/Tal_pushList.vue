@@ -324,11 +324,10 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)
       var pageSize = 10
-      this.offsetInt= 0
+      this.offsetInt = 0
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       this.commonListData = resultList.content
       this.findPopShowYn = false
-
     }
   },
   data () {

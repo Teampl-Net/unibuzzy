@@ -160,7 +160,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       console.log(this.shareAuth)
-      if(this.shareAuth.V ===false) {
+      if (this.shareAuth.V === false) {
         alert('읽기 권한이 없습니다.')
         this.$emit('closeXPop')
       }

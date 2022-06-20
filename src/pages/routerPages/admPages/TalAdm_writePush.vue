@@ -19,26 +19,30 @@
                 <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
-                  <div style="width: calc(100% - 100px); float: left;" v-if="!this.replyPopYn">
-                    <input type="radio" name="receiveAllYn" class="mright-05" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
-                    <label class="mright-1" for="allTrue">전체</label>
+                  <div style="width: calc(100% - 100px); padding-top: 3px; float: left;" v-if="!this.replyPopYn">
+                    <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
+                    <label class="mright-1 fl" for="allTrue">전체</label>
 
-                    <input class="mright-05" type="radio" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
-                    <label class="mright-1" for="allFalse">선택</label>
-                    <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                    <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
+                    <label class="mright-1 fl" for="allFalse">선택</label>
+                    <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; width: 100%; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
                     </div>
                   </div>
-                  <div style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); height: 100%; margin-top: 2px; float: left;" v-else>
+                  <div style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; border-radius: 5px; height: 100%; margin-top: 2px; float: left;" v-else>
                     <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
-                <div style="width: 150px; min-height: 25px; float: right;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
-                <div style="width: 100px; min-height: 25px; float: right;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;" :disabled="replyPopYn? true: false" :checked="replyPopYn? 'checked': false" v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
+                <p style="mright-05">옵션선택</p>
+                <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
+                <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
+              <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                 <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
                 </div> -->
@@ -124,7 +128,9 @@ export default {
       allRecvYn: true,
       selectedReceiverList: [],
       allRecvYnInput: true,
-      creUserName: null
+      creUserName: null,
+      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
+      viewTab: 'text'
 
     }
   },
@@ -149,6 +155,9 @@ export default {
     // alert(JSON.stringify(this.params))
   },
   methods: {
+    changeTab (tab) {
+      this.viewTab = tab
+    },
     selectRecvType (allRecvYnInput) {
       this.allRecvYn = allRecvYnInput
     },
@@ -231,15 +240,24 @@ export default {
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.bodyHtmlYn = false
-      var formList = document.querySelectorAll('#msgBox .formCard')
-      if (formList) {
-        for (var f = 0; f < formList.length; f++) {
-          formList[f].contentEditable = false
+      var innerHtml =''
+      if(this.viewTab === 'complex') {
+        param.bodyHtmlYn = true
+        var formList = document.querySelectorAll('#msgBox .formCard')
+        if (formList) {
+          for (var f = 0; f < formList.length; f++) {
+            formList[f].contentEditable = false
+          }
+          param.getBodyHtmlYn = true
         }
-        param.getBodyHtmlYn = true
+        innerHtml = document.getElementById('msgBox').innerHTML
+      } else if (this.viewTab === 'text') {
+        param.bodyHtmlYn = false
+        document.querySelectorAll('#textMsgBox .formCard').contentEditable = false
+        innerHtml = document.getElementById('textMsgBox').innerHTML
+        
       }
-      var innerHtml = document.getElementById('msgBox').innerHTML
+      
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
@@ -293,7 +311,12 @@ export default {
         this.failPopYn = true
         return
       }
-      var msgData = document.getElementById('msgBox').innerHTML
+      var msgData = ''
+      if(this.viewTab === 'complex') {
+        msgData = document.getElementById('msgBox').innerHTML
+      } else if (this.viewTab === 'text') {
+        msgData = document.getElementById('textMsgBox').innerHTML
+      }
       if (msgData !== undefined && msgData !== null && msgData !== '') {
       } else {
         this.errorText = '알림 내용을 입력해주세요'
@@ -388,10 +411,10 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;}
+.pageMsgArea{ height: 100px; height: calc(100% - 12rem); width: 100%; float: left;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
   width: 100%; min-height: 5rem;
@@ -418,7 +441,7 @@ export default {
 
 .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 100%; height: calc(100% - 15rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 10rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}

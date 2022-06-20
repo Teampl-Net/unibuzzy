@@ -75,7 +75,6 @@ export default {
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
       this.chanList = resultList.data.content
-
     },
     async changeTab (data) {
       this.viewTab = data

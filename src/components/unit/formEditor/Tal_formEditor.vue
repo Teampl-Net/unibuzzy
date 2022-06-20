@@ -3,7 +3,7 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <div v-if="this.viewTab  === 'complex'" style="position: fixed; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
+    <div style="position: fixed; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
         <div v-if="toolBoxShowYn">
           <span style=" color: #6768A7; float: left; margin-right: 5px; font-size: 18px;">폰트 |</span>
           <div v-if="fontSelectBoxShowYn" style="width: 110px; position: absolute; background: #fff; min-height: 80px; left: 45px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
@@ -26,8 +26,8 @@
     </div>
     <gBtnSmall @click="setParamInnerHtml" style="position: fixed; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" />
     <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 0 10px; overflow: scroll; overflow-x: hidden; background: #f1f1f1; position: relative;">
-        <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" />
-        <div v-show="this.viewTab  === 'complex'" style="">
+        <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
+        <div style="">
             <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
@@ -50,9 +50,6 @@
                 </div>
             </div>
         </div>
-        <div id="innerText" v-show="this.viewTab === 'text'" style="min-height: 500px; margin: 0 auto; border: 1px solid #6768a745; text-align: left; padding: 10px; background: #fff; width: calc(100%);" contenteditable=true>
-
-        </div>
         <!-- <p>{{formCardList}}</p> -->
         <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
                         </div> -->
@@ -68,19 +65,12 @@ export default {
   created () {
     // alert(this.editorType)
     // this.$refs.activeBar.switchtab(1)
-    this.viewTab = this.editorType
-    if (this.editorType === 'complex') {
-      this.formCardList = [{ type: 'text', targetKey: 0 }]
-      if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
-        this.formCardList = this.propFormData
-      }
+    this.formCardList = [{ type: 'text', targetKey: 0 }]
+    if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
+      this.formCardList = this.propFormData
     }
   },
   mounted () {
-    if (this.editorType === 'text') {
-      document.getElementById('innerText').innerHTML = ''
-      document.getElementById('innerText').innerHTML = this.propFormData
-    }
   },
   props: {
     propFormData: {},
@@ -100,13 +90,11 @@ export default {
       tools: { boldYn: false, italicYn: false, underLineYn: false, ftSize: 16 },
       selectedCardKey: '',
       selectFile: '',
-      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
       selectFromScrollH: 50,
       selectFromOffsetTop: 0,
       previewImgUrl: '',
       selectFileList: [],
-      selectRow: 0,
-      viewTab: 'text'
+      selectRow: 0
     }
   },
   components: {
@@ -144,29 +132,24 @@ export default {
       this.tools.ftSize = fontSize
       this.changeTextStyle('font')
     },
-    changeTab (data) {
-      this.viewTab = data
-      // await this.getContentsList()
-    },
     setParamInnerHtml () {
-      if (this.viewTab === 'complex') {
-        // eslint-disable-next-line no-unused-vars
-        var formCard = document.querySelectorAll('.formDiv .formCard')
+      var formCard = document.querySelectorAll('.formDiv .formCard')
 
-        for (var i = 0; i < formCard.length; i++) {
-          this.formCardList[i].outerHtml = formCard[i].outerHTML
-          this.formCardList[i].innerHtml = formCard[i].innerHTML
-          if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
-            this.formCardList[i].type = 'image'
-          } else {
-            this.formCardList[i].type = 'text'
-          }
+      for (var i = 0; i < formCard.length; i++) {
+        this.formCardList[i].outerHtml = formCard[i].outerHTML
+        this.formCardList[i].innerHtml = formCard[i].innerHTML
+        if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
+          this.formCardList[i].type = 'image'
+        } else {
+          this.formCardList[i].type = 'text'
         }
-        this.$emit('setParamInnerHtml', this.formCardList)
+      }
+      this.$emit('setParamInnerHtml', this.formCardList)
+      /*
       } else if (this.viewTab === 'text') {
         var innerText = document.getElementById('innerText').innerHTML
         this.$emit('setParamInnerText', innerText)
-      }
+      } */
       // this.$saveContents(param)
     },
     addFormCard (type, src) {

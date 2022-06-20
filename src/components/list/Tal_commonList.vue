@@ -11,7 +11,7 @@
             <div class="pushDetailHeaderTextArea">
               <p class=" font15 fontBold commonBlack">{{resizeText(alim.title)}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
+              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.creUserName? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
             </div>
         </div>
@@ -79,8 +79,9 @@ export default {
   /* emits: ['goDetail'], */
   methods: {
     resizeText (text) {
-      if (text.length > 20) {
-        text = text.substr(0, 20)
+      if (text.length > 15) {
+        text = text.substr(0, 15)
+        text += '...'
       }
       return text
     },

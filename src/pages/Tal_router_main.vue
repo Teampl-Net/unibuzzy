@@ -84,9 +84,10 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
+          alert(true)
           this.notiDetail = message.pushMessage
+          alert(this.notiDetail)
           if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
-            // alert(Number(JSON.parse(this.notiDetail).data.creUserKey))
             if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
