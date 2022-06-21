@@ -16,7 +16,6 @@
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
                 <!-- {{receiverList}} -->
-                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="">
                   <p style="">수신대상</p>
                   <div style="width: calc(100% - 100px); padding-top: 3px; float: left;" v-if="!this.replyPopYn">
@@ -37,10 +36,14 @@
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
                 <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
-              <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+              <div style="width: 100%; min-height: 30px; position: relative;">
+                <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+                <div style="width: 100px; height: 100%; position: absolute; right: 0; top: 1.3rem;"><label class="fr" for="titleShow">제목추가</label><input type="checkbox" v-model="titleShowYn" class="fr" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow"></div>
+              </div>
+              <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                 <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
                 <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
@@ -130,8 +133,8 @@ export default {
       allRecvYnInput: true,
       creUserName: null,
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
-      viewTab: 'text'
-
+      viewTab: 'text',
+      titleShowYn: true
     }
   },
   computed: {
@@ -253,7 +256,8 @@ export default {
         innerHtml = document.getElementById('msgBox').innerHTML
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
-        document.querySelectorAll('#textMsgBox .formCard').contentEditable = false
+        document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+        // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
         
       }
@@ -275,6 +279,7 @@ export default {
           }
         }
       }
+      param.teamName = this.$changeText(this.params.targetNameMtext)
       param.creTeamKey = this.params.targetKey
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
@@ -305,12 +310,15 @@ export default {
     },
     async clickPageTopBtn () {
       var title = this.writePushTitle
-      if (title !== undefined && title !== null && title !== '') {
-      } else {
-        this.errorText = '제목을 입력해주세요'
-        this.failPopYn = true
-        return
+      if (this.titleShowYn) {
+        if (title !== undefined && title !== null && title !== '') {
+        } else {
+          this.errorText = '제목을 입력해주세요'
+          this.failPopYn = true
+          return
+        }
       }
+      
       var msgData = ''
       if(this.viewTab === 'complex') {
         msgData = document.getElementById('msgBox').innerHTML
@@ -411,16 +419,16 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; height: calc(100% - 12rem); width: 100%; float: left;}
+.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .pageTopArea{
-  width: 100%; min-height: 5rem;
+  width: 100%; min-height: 3.5rem;
 }
 .pageTopArea >div{
-  width: 100%; min-height: 2.5rem;
+  width: 100%; min-height: 2rem;
 }
 .pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;}
 .pageTopArea input{font-size: 15px;}

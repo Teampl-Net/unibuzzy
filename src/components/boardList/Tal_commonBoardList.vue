@@ -1,7 +1,6 @@
 
 <template>
   <div id="boardListWrap" class="commonBoardListWrap">
-    <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <div class="commonListContentBox pushMbox" v-for="(board, index) in commonBoardListData" :key="index">
         <div @click="goDetail(board)" class="pushDetailTopArea">
             <div class="">

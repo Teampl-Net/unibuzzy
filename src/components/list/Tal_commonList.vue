@@ -77,9 +77,13 @@ export default {
   /* emits: ['goDetail'], */
   methods: {
     resizeText (text) {
-      if (text.length > 15) {
-        text = text.substr(0, 15)
-        text += '...'
+      if (text) {
+        if (text.length > 15) {
+          text = text.substr(0, 15)
+          text += '...'
+        }
+      } else {
+        text = '[' + this.$changeText(this.contentsList[0].nameMtext) + '] 제목없는 알림'
       }
       return text
     },

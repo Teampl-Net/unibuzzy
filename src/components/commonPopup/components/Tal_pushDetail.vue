@@ -7,8 +7,7 @@
         <div class="pushDetailTopArea">
           <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
           <div class="pushDetailHeaderTextArea">
-            {{this.alimDetail[0].creUserKey}}
-            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{alim.title}}</p>
+            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
             <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
@@ -108,6 +107,12 @@ export default {
     }
   },
   methods: {
+    resizeText (text) {
+      if (!text) {
+        text = '[' + this.$changeText(this.alimDetail[0].nameMtext) + '] 제목없는 알림'
+      }
+      return text
+    },
     checkAlimReply () {
       var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // var userKey = 1
@@ -129,10 +134,6 @@ export default {
       params.targetKey = this.detailVal.value.creTeamKey
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
-      alert(JSON.stringify(params.creUserKey))
-      if (params.creUserKey !== this.alim.creUserKey) {
-        this.alimReplyCreatorYn = false
-      }
       params.targetContentsKey = this.alimDetail[0].contentsKey
       params.replyPopYn = true
       params.targetType = 'writePush'
@@ -155,6 +156,7 @@ export default {
       } else if (this.detailVal.contentsKey !== undefined && this.detailVal.contentsKey !== null && this.detailVal.contentsKey !== '') {
         param.contentsKey = this.detailVal.contentsKey
       }
+      param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       // alert(true)
       // eslint-disable-next-line no-debugger

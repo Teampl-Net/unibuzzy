@@ -22,9 +22,12 @@
                   </div>
                 </div> -->
               </div>
+              <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
-                <p style="width: 60px;">내용</p>
-                <div @click="formEditorShowYn = true" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                <!-- <p class="">내용</p> -->
+                <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+
               </div>
             </div>
           </div>
@@ -40,7 +43,7 @@
   </div>
   <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
-    <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
 </template>
 <script>
@@ -90,7 +93,8 @@ export default {
       selectedC: 0,
       pushDetailPopShowYn: true,
       progressShowYn: false,
-      editorType: 'text'
+      viewTab: 'text',
+      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }]
     }
   },
   computed: {
@@ -109,6 +113,9 @@ export default {
     // alert(JSON.stringify(this.propData))
   },
   methods: {
+    changeTab (tab) {
+      this.viewTab = tab
+    },
     setParamInnerHtml (formCard) {
       var innerHtml = ''
       for (var i = 0; i < formCard.length; i++) {
@@ -117,31 +124,45 @@ export default {
       this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
-      this.editorType = 'complex'
       this.formEditorShowYn = false
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerText
-        this.editorType = 'text'
         this.formEditorShowYn = false
         this.propFormData = innerText
       }
     },
-
     async sendMsg () {
+      this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      var innerHtml = document.getElementById('msgBox').innerHTML
+
+      var innerHtml = ''
+      if (this.viewTab === 'complex') {
+        param.bodyHtmlYn = true
+        var formList = document.querySelectorAll('#msgBox .formCard')
+        if (formList) {
+          for (var f = 0; f < formList.length; f++) {
+            formList[f].contentEditable = false
+          }
+          param.getBodyHtmlYn = true
+        }
+        innerHtml = document.getElementById('msgBox').innerHTML
+      } else if (this.viewTab === 'text') {
+        param.bodyHtmlYn = false
+        document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+        // debugger
+        innerHtml = document.getElementById('textMsgBox').innerHTML
+      }
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+
       param.jobkindId = 'BOAR'
       // alert(this.propData)
       param.cabinetKey = this.propData.cabinetKey
       param.creTeamKey = this.propData.currentTeamKey
       param.actorList = this.propData.actorList
-      // eslint-disable-next-line no-debugger
-      debugger
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -171,7 +192,12 @@ export default {
         this.failPopYn = true
         return
       }
-      var msgData = document.getElementById('msgBox').innerHTML
+      var msgData = ''
+      if (this.viewTab === 'complex') {
+        msgData = document.getElementById('msgBox').innerHTML
+      } else if (this.viewTab === 'text') {
+        msgData = document.getElementById('textMsgBox').innerHTML
+      }
       if (msgData !== undefined && msgData !== null && msgData !== '') {
       } else {
         this.errorText = '알림 내용을 입력해주세요'

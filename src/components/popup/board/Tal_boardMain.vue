@@ -61,6 +61,7 @@ export default {
     var result = await this.getContentsList()
     this.mCabContentsList = result.content
     await this.getCabinetDetail()
+    // alert(true)
     console.log(this.propData)
     // eslint-disable-next-line no-debugger
     // debugger
@@ -90,6 +91,7 @@ export default {
         shareCnt: 0,
         cabinetNameMtext: 'KO$^$공개게시판'
       },
+      mCabContentsList: [],
       offsetInt: 0,
       /*  mCabContentsList: [
         { title: 'test', bodyMinStr: 'testtesttesttest' },
@@ -249,10 +251,8 @@ export default {
     async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      var result = await this.getContentsList()
-      // eslint-disable-next-line no-debugger
-      debugger
-      this.mCabContentsList = result.content
+      var resultList = await this.getContentsList()
+      this.mCabContentsList = resultList.content
     },
     async requestSearchList (param) {
       if (param) {
