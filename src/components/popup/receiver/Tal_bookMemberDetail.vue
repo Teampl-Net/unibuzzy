@@ -8,7 +8,7 @@
 
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">이름</p>
+            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;" @click="testInput">이름</p>
             <input type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
         </div>
 
@@ -70,7 +70,6 @@ export default {
     },
     created(){
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
-            // alert(JSON.stringify(this.propData))
             this.memName = this.$changeText(this.propData.userDispMtext)
             this.memEmail= this.propData.userEmail
             this.memPhone = this.propData.userPhone
@@ -91,6 +90,11 @@ export default {
         }
     },
     methods:{
+        testInput(){
+            this.memName = '정재준'
+            this.memEmail = 'wowns4963@naver.com'
+            this.memPhone = '01050044963'
+        },
         regEmail(text) {
             var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
             if (regemail.test(text) === true) {
@@ -107,9 +111,6 @@ export default {
             } else {
                 return false
             }
-        },
-        backClick(){
-            this.$emit('closeXPop')
         },
         addNewMem() {
             // if(this.saveBookMember()){
@@ -148,8 +149,9 @@ export default {
                 mCabContents.inPhone = this.memPhone
                 mCabContents.inUserName = this.memName
                 param.mCabContents = mCabContents
-                var result = this.$saveMCabContents(param)
-                this.$emit('closeXPop')
+                var result = await this.$saveMCabContents(param)
+                if (result.data.result === true)
+                    this.$emit('closeXPop', true)
             }
         },
         checkParam(){

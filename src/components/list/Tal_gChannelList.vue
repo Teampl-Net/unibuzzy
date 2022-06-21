@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <myObserver @triggerIntersected="loadMore" class="fl" />
+    <myObserver @triggerIntersected="loadMore" class="fl wich" />
 </template>
 
 <script>

@@ -173,9 +173,7 @@ export default {
       this.detailHeaderShowYn = true
     },
     updateScroll () {
-      // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryWrap')
-      // alert(this.box.scrollTop)
       if (this.box.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
       } else if (this.box.scrollTop < this.scrollPosition) {

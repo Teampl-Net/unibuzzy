@@ -61,15 +61,14 @@ export default {
     watch:{
     },
     async created(){
+        console.log("#!@#!@#!!@# memberList")
+        console.log(this.propData)
 
         var history = this.$store.getters.hStack
         history.push(this.popId)
-        // alert(history)
         this.$store.commit('updateStack', history)
 
         await this.getBookMemberList()
-        // alert(JSON.stringify(this.teamInfo))
-        // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
             this.selectedMemberList = this.parentSelectList.memberList
         }
@@ -87,10 +86,10 @@ export default {
         this.setParentSelectList()
         // this.memberList = this.listData
     },
-    render(){
-        console.log('지금?')
-    },
     methods:{
+        async refresh () {
+            await this.getBookMemberList()
+        },
         setParentSelectList() {
 
             if(this.parentSelectList) {
@@ -115,7 +114,6 @@ export default {
                 url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
-            // alert(result)
             this.memberList = result.data
             if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {
@@ -140,7 +138,6 @@ export default {
             }
         },
         async deleteMemberClick(data, index){
-            // alert(index)
             var param = {}
             console.log(data)
             param.mccKey = data.mccKey
@@ -174,7 +171,6 @@ export default {
             // debugger
             // data.index = index
             // this.editMember = data
-            // alert(JSON.stringify(this.editMember))
 
         },
         newAddMember(){

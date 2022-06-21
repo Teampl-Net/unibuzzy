@@ -109,7 +109,6 @@ export default{
       obj.chanMenuTitle = this.selectedItemTitle
       obj.idNum = this.selectedItemNum
 
-      // alert(obj.selectedTitle + '\n' + obj.selectedIdNum)
       this.$emit('addFinish', obj)
     },
     selectItem (name, idNum) {

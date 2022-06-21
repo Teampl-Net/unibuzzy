@@ -61,7 +61,6 @@ export default {
   },
   watch: {
     sendOk: function () {
-      // alert(this.sendOk)
       this.clickPageTopBtn()
     }
   },
@@ -110,7 +109,6 @@ export default {
     }
   },
   created () {
-    // alert(JSON.stringify(this.propData))
   },
   methods: {
     changeTab (tab) {
@@ -159,7 +157,6 @@ export default {
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
       param.jobkindId = 'BOAR'
-      // alert(this.propData)
       param.cabinetKey = this.propData.cabinetKey
       param.creTeamKey = this.propData.currentTeamKey
       param.actorList = this.propData.actorList

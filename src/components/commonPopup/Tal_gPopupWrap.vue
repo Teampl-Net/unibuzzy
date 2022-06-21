@@ -28,7 +28,7 @@
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
       <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='params'/>
-      <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
+      <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
 
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
@@ -141,14 +141,9 @@ export default {
   },
   watch: {
     historyStack (value, old) {
-      // alert(value + '"""""' + this.popId)
-      // alert(value[value.length - 1] + 'test' + this.popId)
       if (this.popId === value) {
-        // alert(true)
-        // alert(true)
         this.closeXPop()
       }
-      /* alert(val + oldVal) */
     }
   },
   methods: {
@@ -248,21 +243,14 @@ export default {
       } else if (this.targetType === 'writePush') {
         this.headerTitle = '알림 작성'
       } else if (this.targetType === 'boardMain') {
-        // alert(this.$changeText(this.params.value.cabinetNameMtext))
         // this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
-        // alert(this.headerTitle)
       } else if (this.targetType === 'editBookList') {
-        // alert(this.$changeText(this.params.value.cabinetNameMtext))
         this.headerTitle = '주소록 관리'
-        // alert(this.headerTitle)
       } else if (this.targetType === 'bookMemberDetail') {
-        // alert(JSON.stringify(this.params))
         this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시판 작성'
       } else if (this.targetType === 'boardDetail') {
-        // alert(true)
-        // alert(JSON.stringify(this.params.value))
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       }
 
@@ -276,7 +264,6 @@ export default {
       }
       var history = this.$store.getters.hStack
       history.push(this.popId)
-      // alert(history)
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
@@ -284,7 +271,7 @@ export default {
       this.popParams = params
       this.popShowYn = true
     },
-    closePop (reloadYn) { // 자식 팝업닫기
+    async closePop (reloadYn) { // 자식 팝업닫기
       this.popShowYn = false
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
@@ -294,6 +281,8 @@ export default {
             this.reloadYn = false
           }, 100)
           // this.reloadYn = false
+        } else if(this.targetType === 'editBookList') {
+          await this.$refs.editBookListComp.refresh()
         }
       }
     },

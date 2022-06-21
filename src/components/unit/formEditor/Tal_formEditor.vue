@@ -63,7 +63,6 @@ import formImage from './Tal_formImage.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
-    // alert(this.editorType)
     // this.$refs.activeBar.switchtab(1)
     this.formCardList = [{ type: 'text', targetKey: 0 }]
     if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
@@ -236,7 +235,6 @@ export default {
       // eslint-disable-next-line no-unused-vars
       const end = range.endOffset
       var formList = document.getElementsByClassName('formDiv')
-      // alert(formList[idx].offsetTop)
       this.selectFromOffsetTop = formList[idx].offsetTop
       this.selectFromScrollH = formList[idx].scrollHeight
       if (selection.baseNode.parentElement.style.fontSize === '16px') { this.tools.ftSize = '16' } else if (selection.baseNode.parentElement.style.fontSize === '12px') { this.tools.ftSize = '12' } else if (selection.baseNode.parentElement.style.fontSize === '20px') { this.tools.ftSize = '20' } else { this.tools.ftSize = '16' }
@@ -326,14 +324,12 @@ export default {
       for (var i = 0; i < this.formCardList.length; i++) {
         if (this.selectedCardKey === this.formCardList[i].targetKey) {
           this.formCardList[i].inputHtml = data.value
-          // alert(this.formCardList[i].inputHtml)
           break
         }
       }
       /* } */
     },
     allBlur () {
-      // alert(true)
       this.selectedCardKey = ''
     },
     async formSubmit () {

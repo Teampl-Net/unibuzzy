@@ -13,7 +13,7 @@
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
-      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style=""/>
+      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style="" v-if="propData.value.followerType ==='A' || propData.value.followerType ==='M'"/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
       <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="cabinetList" @openDetail='openTeamDetailPop' />
@@ -26,7 +26,7 @@
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
-      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-show="editYn" />
+      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-if="propData.value.followerType ==='A' || propData.value.followerType ==='M'" />
     </div>
     <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
       <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
@@ -35,7 +35,7 @@
 </div>
 
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
-<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closePop='editPopYn = false' :editList='myBoardList' />
+<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' />
 </template>
 <script>
 /* eslint-disable */
@@ -62,22 +62,17 @@ export default {
       if ('chanMenu' + this.chanAlimListTeamKey === value) {
         this.$emit('closePop')
       }
-      /* alert(val + oldVal) */
     }
   },
   async created () {
-    // alert(this.chanAlimListTeamKey)
     // this.cabinetList = this.$groupDummyList()
+
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
-      // alert(history)
     this.$store.commit('updateStack', history)
 
     await this.getTeamMenuList()
-
-    // alert(this.chanAlimListTeamKey)
     await this.getTeamCabList()
-
     // this. myBoardList =
   },
   mounted () {
@@ -101,6 +96,21 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    closeEditPop () {
+      // this.editPopYn = false
+      this.goNo()
+    },
+    openTeamDetailPop(data){
+      // console.log(data)
+      var params = {}
+      params.targetType = 'editBookList'
+      params.currentTeamKey = this.chanAlimListTeamKey
+      params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      this.propData.clickData = data
+      params.value = this.propData
+      this.$emit('openItem',params)
+
+    },
     async getTeamCabList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanAlimListTeamKey)
@@ -117,19 +127,15 @@ export default {
       }
       // console.log('#####')
       // console.log(this.cabinetList)
-      // alert(JSON.stringify(cabinetList))
-      // debugger
+      // albugger
     },
     async getTeamMenuList () {
       var paramMap = new Map()
-      // alert(this.chanAlimListTeamKey)
       paramMap.set('teamKey', this.chanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
-      // alert(true)
       this.myBoardList = result
-      // debugger
     },
     groupListlength () {
        this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length=== 0 ? 1 : this.cabinetList.length) * 50 + 10 + 'px')
@@ -179,7 +185,6 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-
       this.$emit('openItem',params)
     },
     receiverClick(data){
@@ -187,6 +192,7 @@ export default {
       params.targetType = 'editBookList'
       params.currentTeamKey = this.chanAlimListTeamKey
       params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
       this.$emit('openItem',params)
     }

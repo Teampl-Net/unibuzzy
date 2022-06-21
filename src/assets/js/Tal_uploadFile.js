@@ -70,7 +70,6 @@ const methods = {
     // tempImg.src = url
     // oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
     // var content = document.getElementById("smarteditor").value;
-    // alert(content)
 } */
 
 }

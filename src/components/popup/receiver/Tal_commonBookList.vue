@@ -70,11 +70,11 @@ export default {
         }
     },
     async created () {
-
+        // console.log("#####")
+        // console.log(this.propData)
         this.propObject = this.propData
         if(this.selectPopYn){
             this.selectedBookList = []
-            // alert(JSON.stringify(this.parentSelectList))
             if(this.parentSelectList.bookList) {
                 this.selectedBookList = this.parentSelectList.bookList
             }
@@ -84,7 +84,6 @@ export default {
 
         // console.log(this.cabinetList)
         // this.cabinetList = this.listData
-    // alert(this.setTotalHeight.scrollHeight)
     },
     updated () {
         this.changeSelectedList()
@@ -170,12 +169,11 @@ export default {
         },
         clickList(data){
             if(!this.editYn){
-                this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
+                this.$emit('openMCabUserList',data)
             }
-
         },
         async deleteCabinet(data,index){
-            console.log(data)
+            // console.log(data)
             var param = {}
             param.cabinetKey = data.cabinetKey
             param.currentTeamKey = this.propData.currentTeamKey
@@ -199,7 +197,6 @@ export default {
         },
         //유민참고
         addSelectedList(data, index) {
-            // alert(true)
             this.cabinetList[index].selectedYn = true
             console.log(data)
             data.shareSeq = data.cabinetKey
@@ -226,7 +223,6 @@ export default {
                 this.cabinetList = []
                 this.getTeamCabList()
             }
-            // alert(JSON.stringify(result))
             // this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             // debugger
@@ -258,7 +254,6 @@ export default {
 
         },
         async changePosTeamMenu () {
-            // alert(true)
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()

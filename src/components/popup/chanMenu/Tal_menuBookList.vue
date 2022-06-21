@@ -1,7 +1,7 @@
 <template>
 
 <div v-if="listData.length > 0" style="width: 100%; margin-top:0.5rem;" class="">
-    <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard fl" >
+    <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard fl" @click="clickList(data)">
 
         <div style="width:100%; height:30px;" class="fl">
             <!-- <img src="" /> -->
@@ -47,9 +47,7 @@ export default {
     },
     methods:{
         clickList(data){
-            // alert(true)
-            // if(this.selectPopYn !== true)
-            // this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
+            this.$emit('openDetail',data)
         },
     }
 

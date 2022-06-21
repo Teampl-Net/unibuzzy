@@ -247,7 +247,7 @@ const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    /* alert(JSON.stringify(param))
+    /*
     var tt = true
     if (tt === true) {
       return
@@ -368,8 +368,11 @@ const methods = {
       url: '/tp.saveMCabContents',
       param: paramSet
     })
-    result = response.data
-    return result
+    // console.log("## axios saveMCabContents")
+    // console.log(response)
+    // console.log("##")
+    // result = response
+    return response
   }
 }
 

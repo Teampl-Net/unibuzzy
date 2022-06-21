@@ -76,9 +76,7 @@ export default {
       console.log(this.chanList)
     },
     changeTab (data) {
-      // alert(data)
       this.viewTab = data
-      // alert(data)
       // await this.getContentsList()
     }
   }

@@ -109,16 +109,12 @@ const isJsonString = (str) => {
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'goback') {
           var history = store.getters.hStack
-          // alert(history)
           var removePage = history[history.length - 1]
-          // alert('removePage' + removePage)
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           } else {
             history = history.filter((element, index) => index < history.length - 1)
-            // alert('ㅂㅕㄴㄱㅕ<br>' + history)
             store.commit('setRemovePage', removePage)
-            // alert(store.getters.hRPage)
             store.commit('updateStack', history)
           }
           /* if (localStorage.getItem('popHistoryStack')) {
@@ -126,7 +122,6 @@ const isJsonString = (str) => {
           } else {
             router.go(-1)
           } */
-          /* alert('뒤로가래!!!') */
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

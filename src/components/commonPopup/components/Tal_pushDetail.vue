@@ -80,11 +80,11 @@ export default {
   },
   mounted () {
     this.changeMode()
-    /* alert(this.$store.state.historyStack)
+    /*
     var test = this.$store.state.historyStack
     test.push(0)
     this.$store.commit('updateStack', test)
-    alert(this.$store.state.historyStack) */
+    */
   },
   unmounted () {
     /* if (this.$historyStack) {
@@ -93,17 +93,11 @@ export default {
           this.$historyStack.splice(i, 1)
         }
       }
-      alert(this.$historyStack)
     } */
   },
   computed: {
     historyStack () {
       return this.$store.state.historyStack
-    }
-  },
-  watch: {
-    historyStack () {
-      // alert(true)
     }
   },
   methods: {
@@ -158,7 +152,6 @@ export default {
       }
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
-      // alert(true)
       // eslint-disable-next-line no-debugger
       debugger
       this.alimDetail = resultList.content

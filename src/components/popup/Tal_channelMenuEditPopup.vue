@@ -35,7 +35,7 @@
     </div> -->
 
 </div>
-  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='modiBoardPopShowYn =false' />
+  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' />
 
 </template>
 
@@ -64,20 +64,18 @@ export default {
       if (this.popId === value) {
         this.goNo()
       }
-      /* alert(val + oldVal) */
+      /* val + oldVal) */
     }
   },
   created () {
     var history = this.$store.getters.hStack
     this.popId = 'manageBoardPop' + this.currentTeamKey
     history.push(this.popId)
-      // alert(history)
     this.$store.commit('updateStack', history)
 
     this.getTeamMenuList()
 
     /* if (this.editList) {
-      // alert(JSON.stringify(this.editList))
       this.boardList = this.editList
       for (var i = 0; i < this.boardList.length; i ++) {
         this.boardList[i].num = i
@@ -107,10 +105,9 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
-    checkMove(){
-
-      return false
-      // return (evt.draggedContext.element.cabinetNameMtext!=='게시판1');
+    closeNrefresh(){
+      this.modiBoardPopShowYn =false
+      this.getTeamMenuList()
     },
     async getTeamMenuList () {
       var paramMap = new Map()
@@ -137,7 +134,7 @@ export default {
       this.$emit('openPop', params)
     },
     goNo (){
-      this.$emit('closePop')
+      this.$emit('closeXPop')
     },
     async deleteCabinet(data,index){
         var param = new Object()
@@ -160,16 +157,13 @@ export default {
       //   this.addChanMenuList = data
     }, */
     /* chanMenuClick (chanMenuTitle) {
-      // alert(chanMenuTitle)
       this.$emit('openItem',chanMenuTitle)
     }, */
    /*  receiverClick () {
       this.$emit('receiverManagerClick');
-      // alert('s')
     }, */
 
     openModiBoardPop (data) {
-      // alert('s')
       this.modiBoardDetailProps = data
       this.modiBoardPopShowYn = true
     },
@@ -200,7 +194,6 @@ export default {
       }, 800);
     },
     async changePosTeamMenu () {
-      // alert(true)
       var paramSet = new Object()
       var teamMenuList = new Array()
       var menu = new Object()

@@ -155,7 +155,6 @@ export default {
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
     }
-    // alert(JSON.stringify(this.params))
   },
   methods: {
     changeTab (tab) {
@@ -193,7 +192,6 @@ export default {
         this.receiverText += selectedBookList.cabinetNameMtext + ', '
         this.selectedReceiverList.push(shareItemBookObject)
       }
-      // alert(JSON.stringify(this.receiverList))
 
       // var shareItemMemberList = []
       // eslint-disable-next-line no-new-object
@@ -212,7 +210,6 @@ export default {
         }
       }
 
-      // alert(JSON.stringify(this.selectedReceiverList))
 
       console.log(obj)
     },
@@ -259,9 +256,9 @@ export default {
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
-        
+
       }
-      
+
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
@@ -270,7 +267,6 @@ export default {
         if(this.replyPopYn) {
         param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
         } else {
-          // alert(this.selectedReceiverList.length)
           if (this.selectedReceiverList.length > 0) {
             param.actorList = this.selectedReceiverList
           } else {
@@ -318,7 +314,7 @@ export default {
           return
         }
       }
-      
+
       var msgData = ''
       if(this.viewTab === 'complex') {
         msgData = document.getElementById('msgBox').innerHTML

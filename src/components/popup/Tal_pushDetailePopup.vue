@@ -35,7 +35,6 @@ export default {
   },
   methods: {
     goOk () {
-      // alert(this.detailVal)
       this.$emit('ok', this.detailVal)
     },
     goNo () {

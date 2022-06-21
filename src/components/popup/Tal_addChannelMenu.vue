@@ -54,7 +54,7 @@ export default{
       // ]
 
     }
-  },	  
+  },
 computed: {
     historyStack () {
       return this.$store.getters.hRPage
@@ -65,16 +65,14 @@ computed: {
       if (this.popId === value) {
         this.$emit('closePop')
       }
-      /* alert(val + oldVal) */
     }
   },
   created () {
     var history = this.$store.getters.hStack
     this.popId = 'selectChanTypePop' + history.length
     history.push(this.popId)
-    // alert(history)
     this.$store.commit('updateStack', history)
-	 
+
   },
   methods: {
     setResult () {
@@ -84,7 +82,6 @@ computed: {
       obj.chanMenuTitle = this.selectedItemTitle
       obj.idNum = this.selectedItemNum
 
-      // alert(obj.selectedTitle + '\n' + obj.selectedIdNum)
       this.$emit('addFinish', obj)
     },
     selectItem (name, idNum) {
@@ -92,7 +89,7 @@ computed: {
       this.selectedItemTitle = name
 
       switch (this.selectedItemNum) {
-        
+
         case 0 : //공지게시판
           this.explainText = '새 소식에 대한 공지를 올립니다. <br>' +
                     '*게시글 권한 대상 : 매니저 '

@@ -46,7 +46,6 @@ export async function userLoginCheck () {
       localStorage.setItem('loginYn', false)
     }
   }).catch((error) => {
-    alert(error)
     localStorage.setItem('user', '')
     localStorage.setItem('loginYn', false)
     router.replace('/policies')

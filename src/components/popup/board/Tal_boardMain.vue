@@ -41,8 +41,8 @@
     </div>
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
+<gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
-
 <script>
 // eslint-disable-next-line no-unused-vars
 // import findContentsList from '../Tal_findContentsList.vue'
@@ -61,14 +61,11 @@ export default {
     var result = await this.getContentsList()
     this.mCabContentsList = result.content
     await this.getCabinetDetail()
-    // alert(true)
     console.log(this.propData)
     // eslint-disable-next-line no-debugger
     // debugger
   },
   mounted () {
-    // alert(true)
-    // alert(JSON.stringify(this.propData))
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -80,6 +77,8 @@ export default {
   },
   data () {
     return {
+      errorBoxYn:false,
+      errorBoxText:'',
       box: null,
       scrollDirection: null,
       scrollPosition: null,
@@ -117,7 +116,6 @@ export default {
     }
   },
   methods: {
-
     updateScroll () {
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryHeader')
@@ -161,7 +159,6 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      // alert(JSON.stringify(resultList))
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
 
@@ -169,14 +166,11 @@ export default {
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       console.log(this.shareAuth)
       /* if (this.shareAuth.V === false) {
-        alert('읽기 권한이 없습니다.')
         this.$emit('closeXPop')
       } */
       // eslint-disable-next-line no-debugger
-      // alert(JSON.stringify(this.mCabinetContentsDetail)
       this.actorList = this.mCabinetContentsDetail.mShareItemList
       this.findPopShowYn = false
-      //  alert(JSON.stringify(this.mCabContentsList))
       // eslint-disable-next-line no-debugger
       this.$emit('closeLoading')
     },
@@ -187,7 +181,6 @@ export default {
         param.creTeamKey = this.chanDetailKey
       } */
       param.cabinetKey = this.propData.targetKey
-      // alert(offsetInt)
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
       } else {
@@ -220,7 +213,6 @@ export default {
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
-      // alert(JSON.stringify(param))
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-debugger
 
@@ -231,7 +223,14 @@ export default {
       /* this.subHistoryList.splice(-1, 1) */
     },
     goDetail (value) {
-      this.openPop(value)
+      if (this.shareAuth.V === false) {
+        this.errorBoxText= '권한이 없습니다.'
+        this.errorBoxYn = true
+
+      }else{
+        this.openPop(value)
+      }
+
     },
     openPop (value) {
       // eslint-disable-next-line no-new-object

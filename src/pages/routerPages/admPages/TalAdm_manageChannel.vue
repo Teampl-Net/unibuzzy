@@ -146,11 +146,11 @@ export default {
       param.reqKeyList = reqList
       var result = await this.$createTeamForReq(param)
       if (result === true) {
-        alert('채널신청에 성공했습니다!')
+        // alert('채널신청에 성공했습니다!')
         this.selectedChan = []
         this.getTeamReqList()
       } else {
-        alert('채널신청에 실패했습니다!')
+        // alert('채널신청에 실패했습니다!')
       }
     }
   }

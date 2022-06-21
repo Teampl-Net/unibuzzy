@@ -37,7 +37,6 @@ export default {
   },
   created () {
     // this.settingList()
-    // alert(JSON.stringify(this.parentList) + 'sssss')
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
@@ -79,11 +78,9 @@ export default {
     // // this.addSelectList()
     // },
     changeSelectedItem (data) {
-      // alert(true)
       // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
       // eslint-disable-next-line no-debugger
-      // debugger
       if (data.itemType === 'V') {
         this.setSelectedList.V = data.itemList
       } else if (data.itemType === 'W') {

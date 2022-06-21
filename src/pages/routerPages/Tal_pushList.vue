@@ -17,7 +17,7 @@
 
       </div>
     </div> -->
-    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" />
+    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
     <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
@@ -75,9 +75,9 @@ export default {
     } else if (this.viewTab === 'S') {
       this.$refs.activeBar.switchtab(3)
     }
-    /* alert(this.$store.state.historyStack)
-    this.$store.commit('updateStack', [0])
-    alert(this.$store.state.historyStack) */
+
+    // this.$store.commit('updateStack', [0])
+
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     if (this.notiTargetKey) {
@@ -90,7 +90,6 @@ export default {
   },
   watch: {
     currentPage () {
-      // alert(true)
     },
     commonListData () {
       this.refreshYn = false
@@ -186,7 +185,6 @@ export default {
     async recvNoti (e) {
       if (JSON.parse(e.data).type === 'pushmsg') {
         var target = JSON.parse(e.data).pushMessage
-        // alert(JSON.parse(target).data.targetKind)
         if (JSON.parse(target).data.targetKind === 'CONT') {
           this.refreshList()
         }
@@ -244,7 +242,6 @@ export default {
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       }
-      // alert(offsetInt)
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
       } else {

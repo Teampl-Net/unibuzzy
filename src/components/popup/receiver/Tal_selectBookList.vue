@@ -41,14 +41,12 @@ export default {
     pSelectedList: {}
   },
   created () {
-    // alert(JSON.stringify(this.pSelectedList))
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
     }
     var history = this.$store.getters.hStack
     this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
     history.push(this.popId)
-    // alert(history)
     this.$store.commit('updateStack', history)
 
     if (this.selectedListYn) {
@@ -64,12 +62,10 @@ export default {
   watch: {
     historyStack (value, old) {
       if (this.popId === value) {
-        // alert(this.detailOpenYn)
         if (this.detailOpenYn) {
           this.detailOpenYn = false
         } else { this.backClick() }
       }
-      /* alert(val + oldVal) */
     }
   },
   components: { bookList, memberList, selectedListCompo },
@@ -116,7 +112,6 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     setResult () {
-      // alert(JSON.stringify(this.selectReceivers))
       // eslint-disable-next-line no-new-object
       var obj = new Object()
       obj.data = this.selectReceivers
@@ -139,15 +134,12 @@ export default {
     addTeamList (obj) {
       // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
-      // alert(JSON.stringify(this.selectReceivers))
     },
     addMemberList (obj) {
       // this.selectedMemberList.unshift(obj)
 
       this.selectReceivers.unshift(obj)
-      // alert(JSON.stringify(this.selectReceivers))
-      // alert(JSON.stringify(this.selectReceivers))
-      // alert(JSON.stringify(this.selectReceivers.userDispMtext))
+
     },
 
     backClick () {
@@ -178,7 +170,6 @@ export default {
         this.selectBookDetail = data
         this.detailOpenYn = true
         this.receiverTitle = '구성원 관리'
-        // alert(JSON.stringify(this.propData))
         if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
         } else {

@@ -48,7 +48,6 @@ export default {
         var history = this.$store.getters.hStack
         this.popId = 'selectBookNMemPop' + history.length
         history.push(this.popId)
-      // alert(history)
         this.$store.commit('updateStack', history)
         // this.bookList = this.selectBookNList.data.bookList
         // this.memberList = this.selectBookNList.data.memberList
@@ -66,7 +65,6 @@ export default {
                 for (var i = 0; i < this.bookList.length; i++) {
                     this.bookList[i].selectedYn = false
                 }
-                // alert(JSON.stringify(this.bookList))
             }
         }
     },
@@ -80,7 +78,6 @@ export default {
         if (this.popId === value) {
             this.closeXPop()
         }
-        /* alert(val + oldVal) */
         }
     },
     data () {
@@ -97,12 +94,11 @@ export default {
     },
     methods: {
         clickList(data) {
-            this.$emit('openMCabUserList',data) // alert(data.reveiverTeamName)
+            this.$emit('openMCabUserList',data)
         },
         addSelectedList(data, index, type) {
             if (this.memberList.length > 0 && type === 'U') {
                 this.memberList[index].selectedYn = true
-                // alert(true)
             }
             if (this.bookList.length > 0 && type === 'C') {
                 this.bookList[index].selectedYn = true
@@ -121,7 +117,6 @@ export default {
             // User: userKey만
             if (this.memberList.length > 0 && type === 'U') {
                 this.memberList[index].selectedYn = true
-                // alert(true)
             }
             if (this.bookList.length > 0 && type === 'C') {
                 this.bookList[index].selectedYn = true

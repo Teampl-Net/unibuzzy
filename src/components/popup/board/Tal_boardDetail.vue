@@ -79,7 +79,6 @@ export default {
   },
   async created () {
     // this.alimDetail = this.detailVal
-    // alert(this.alimDetail.title)
     await this.getContentsList()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {

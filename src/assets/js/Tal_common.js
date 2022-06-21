@@ -20,12 +20,10 @@ const methods = {
     } else {
       if (viewType === 'detail') { return this.$convertDate(compareDate, 'yyyyMMDDHHmmss') } else if (viewType === 'list') { return this.$convertDate(compareDate, 'yyyyMMDD') }
     }
-  //   // alert(new Date(+toDate + 3240 * 10000).toISOString().split('-')[0])
     //   if (compareDate === toDate) {
     //     return changeDateHM(compareDate)
     //   } else {
     //   }
-  //   // alert(this.$convertDate(toDate, 'yyyy') + ' :yyyy\n' + this.$convertDate(toDate, 'MM') + ' :MM\n' + this.$convertDate(toDate, 'DD') + ' :DD\n' +
   //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
   //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
   },
@@ -200,7 +198,6 @@ const methods = {
       }
     }
     // eslint-disable-next-line no-debugger
-    debugger
     return authList
   },
   checkSameName (checkList, checkText) {

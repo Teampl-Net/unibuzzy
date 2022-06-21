@@ -54,14 +54,12 @@ export default {
       if (this.popId === value) {
         this.closeXPop()
       }
-      /* alert(val + oldVal) */
     }
   },
   created () {
     var history = this.$store.getters.hStack
     this.popId = 'searchChanPop' + history.length
     history.push(this.popId)
-    // alert(history)
     this.$store.commit('updateStack', history)
   },
   mounted () {

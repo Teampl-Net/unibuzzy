@@ -46,7 +46,6 @@ export default {
     }
   },
   created () {
-    // alert(this.activetabProp)
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {

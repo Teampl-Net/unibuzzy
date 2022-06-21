@@ -39,7 +39,6 @@ export default {
         }
     },
     created() {
-        // alert(JSON.stringify(this.listData))
         this.upDatePage()
     /* this.teamList = {
         bookList: [

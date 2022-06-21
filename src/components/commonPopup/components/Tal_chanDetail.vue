@@ -88,15 +88,11 @@ export default {
   },
   watch: {
     historyStack (value, old) {
-      // alert(this.alimSubPopYn)
-      // alert(value + '"""""' + this.popId)
-      // alert(value[value.length - 1] + 'test' + this.popId)
       if (this.alimSubPopYn) {
         if ('channelAlimToDetail' + this.chanDetail.teamKey === value) {
           this.$emit('closeDetailPop')
         }
       }
-      /* alert(val + oldVal) */
     }
   },
   async created () {
@@ -196,7 +192,6 @@ export default {
     /* editChannelClick () {
       this.setEditValue()
       if (this.editYn === true) {
-        // alert(this.editInputMsg + '\n' + this.editInputUrl)
         this.editYn = false
         this.editBtnTitle = '채널수정'
       } else {

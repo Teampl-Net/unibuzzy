@@ -13,7 +13,6 @@ export default {
     searchList: {}
   },
   updated () {
-    // alert('검색:' + JSON.stringify(this.searchList))
   },
   data () {
     return {

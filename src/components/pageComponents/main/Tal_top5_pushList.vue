@@ -68,7 +68,6 @@ export default {
       }
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       // if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
-      // alert(JSON.stringify(params))
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {

@@ -31,14 +31,6 @@
 </template>
 <script>
 export default {
-  watch: {
-    commonListData () {
-      // alert(false)
-    }
-  },
-  created () {
-    // this.getContentsList()
-  },
   mounted () {
     if (this.mainYnProp === true) { this.mainYn = true }
   },

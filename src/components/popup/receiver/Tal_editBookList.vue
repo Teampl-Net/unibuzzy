@@ -1,26 +1,26 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
-    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" />
-    <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
+    <div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
+        <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" />
+        <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
 
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
-    <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
+        <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
+        <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
 
-        <!-- <div style="display: none">
-            <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-            <transition name="showModal">
-                <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-            </transition>
-        </div> -->
-        <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-            <bookListCompo :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
-            <transition name="showGroup">
-                <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
-            </transition>
-            <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook():this.$refs.memberListRef.newAddMember()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
+            <!-- <div style="display: none">
+                <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
+                <transition name="showModal">
+                    <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+                </transition>
+            </div> -->
+            <div style="width: 100%; height: calc(100% - 10px); position: relative;">
+                <bookListCompo  :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
+                <transition name="showGroup">
+                    <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                </transition>
+                <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook():this.$refs.memberListRef.newAddMember()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
+            </div>
         </div>
     </div>
-</div>
 
 </template>
 
@@ -36,14 +36,18 @@ export default {
         propData: {}
     },
     created (){
-        console.log(this.propData)
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
         history.push(this.popId)
-        // alert(history)
         this.$store.commit('updateStack', history)
 
-        // alert(JSON.stringify(this.propData))
+        if(this.propData.value.clickData){
+            this.selectBookDetail = this.propData.value.clickData
+            this.detailOpenYn = true
+        }
+
+
+
     },
     computed: {
         historyStack () {
@@ -60,7 +64,6 @@ export default {
             }
             }
 
-        /* alert(val + oldVal) */
         }
     },
     components: { findContentsList, bookListCompo,memberList },
@@ -80,6 +83,9 @@ export default {
         }
     },
     methods: {
+        async refresh () {
+            await this.$refs.memberListRef.refresh()
+        },
         editYnCheck(data) {
             this.editYn = data
         },

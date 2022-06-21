@@ -78,49 +78,50 @@
         <div @click="nextStep" class="creChanBigBtn">다음</div>
       </div> -->
     </div>
-    <div class="itemWrite" style="border-bottom: none;">
+    <div class="itemWrite fl" style="border-bottom: none;">
       <p class="textLeft font16 fl" style="width: 150px;">공유대상</p>
-      <div style="width: 100%; min-height: 40px;">
-        <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
-          <input type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" style="height: 100%; float: left;" id="shareAll"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareAll">전체</label>
-          <input type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" style="height: 100%; float: left;" id="shareSelect"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="shareSelect">선택</label>
-        </div>
-        <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft" style="width: 100%;">{{selectedReceiver}}</div>
+      <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
+        <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl mleft-05" for="shareAll">전체</label>
+        <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl mleft-05" for="shareSelect">선택</label>
       </div>
     </div>
+    <div class="fl" style="width: 100%;">
+      <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft fl" style="width: 100%;">{{selectedReceiver}}</div>
+    </div>
+
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
-    <div style="width: 100%; min-height: 100px;">
+    <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
       <div class="subItemWrite">
-        <p class="textLeft mleft-1 font16 fl" style="width: 150px;">작성</p>
+        <p class="textLeft mleft-1 font16 fl" style="flex:1">작성</p>
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
-        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{writePermission}}</div>
-        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
-          <input type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use" style="height: 100%; float: left;" id="writeTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeTrue">사용</label>
-          <input type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: 50%; float: left; height: 30px; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
+        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" style="flex:3" v-if="this.shareType == 'select'">{{writePermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2;" >
+          <input class="h-100P fl" type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use"  id="writeTrue"><label class="fl mleft-05" for="writeTrue">사용</label>
+          <input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" id="writeFalse"><label class="fl mleft-05" for="writeFalse">사용 안함</label>
         </div>
       </div>
       <div class="subItemWrite">
-        <p class="textLeft mleft-1 font16 fl " style="width: 150px;">열람</p>
+        <p class="textLeft mleft-1 font16 fl " style="flex:1">열람</p>
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
-        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{readPermission}}</div>
-        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
-          <input type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" style="height: 100%; float: left;" id="readTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="readTrue">사용</label>
-          <input type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="readFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="readFalse">사용 안함</label>
+        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="flex:3;" v-if="this.shareType == 'select'">{{readPermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2">
+          <input class="h-100P fl" type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" id="readTrue"><label class="fl mleft-05" for="readTrue">사용</label>
+          <input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" id="readFalse"><label class="fl mleft-05" for="readFalse">사용 안함</label>
         </div>
 
       </div>
       <div class="subItemWrite" style="">
-        <p class="textLeft mleft-1 font16 fl " style="width: 150px;">댓글</p>
+        <p class="textLeft mleft-1 font16 fl " style="flex:1">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
-        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft"  v-if="this.shareType == 'select'" >{{commentPermission}}</div>
-        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
-          <input type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" style="height: 100%; float: left;" id="commentTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="commentTrue">사용</label>
-          <input type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" style="height: 100%; float: left;" id="commentFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="commentFalse">사용 안함</label>
+        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="flex:3" v-if="this.shareType == 'select'" >{{commentPermission}}</div>
+        <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2">
+          <input class="h-100P fl" type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" id="commentTrue"><label class="fl mleft-05"  for="commentTrue">사용</label>
+          <input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" id="commentFalse"><label class="fl mleft-05" for="commentFalse">사용 안함</label>
         </div>
 
       </div>
     </div>
-  <div style="background: #ccc; margin-bottom: 10px; width: 100%; height: 0.5px; margin-top: 10px;"></div>
+
   <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
@@ -152,10 +153,8 @@ export default {
     var history = this.$store.getters.hStack
     this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
     history.push(this.popId)
-    // alert(history)
     this.$store.commit('updateStack', history)
 
-    // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
     // console.log(this.boardDetail)
@@ -174,7 +173,6 @@ export default {
       if (this.popId === value) {
         this.$emit('closePop')
       }
-      /* alert(val + oldVal) */
     }
   },
   data () {
@@ -298,7 +296,6 @@ export default {
             var tempList2 = []
             for (var s = 0; s < data.mCabinet.cabShareList.length; s++) {
               if (data.mCabinet.cabShareList[s].accessKind === 'C') {
-                // alert(JSON.stringify(data.mCabinet.cabShareList[s]))
                 tempList.push({cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext)})
               } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
                 debugger
@@ -369,7 +366,6 @@ export default {
     },
 
     selectShareActorItem (itemType) {
-      // alert('sss')
       if(itemType === 'V')
         this.permissionSelectedYn.V = true
       else if(itemType === 'R')
@@ -390,8 +386,7 @@ export default {
       var param = new Object()
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
-      cabinet.cabinetNameMtext = 'KO$^$' + this.boardDetail.cabinetNameMtext
-      // alert(JSON.stringify(cabinet.cabinetNameMtext))
+      cabinet.cabinetNameMtext = 'KO$^$' + this.boardName
       cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
       cabinet.MenuType = 'C'
       cabinet.blindYn = this.blindYn
@@ -529,12 +524,10 @@ export default {
       // cabinet.tempKeyList = [0, 1, 2, 3]
       param.cabinet = cabinet
       param.creMenuYn = false
-      // alert(JSON.stringify(param))
 
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       console.log(param)
       var result = await this.$saveCabinet(param)
-      // alert(JSON.stringify(result))
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // console.log('@@성공@@')
         this.okPopYn = true
@@ -672,7 +665,6 @@ export default {
       }
       else {
         this.sharePermissionShowYn = true
-        // alert(JSON.stringify(this.selectedList))
       }
     }
   }
@@ -707,7 +699,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 14px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;}
+.inputBoxThema{height: 30px; font-size: 14px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;white-space: nowrap}
 .editWrap{
   background-color: #F9F9F9;
 }
@@ -860,4 +852,15 @@ input:-internal-autofill-selected {
     background-color:#ccc;
   }
 }
+
+.modilabel{
+ line-height: 30px; margin-left: 5px;
+}
+
+.moidRadioArea{
+  white-space: nowrap; border:none
+}
+
+
+
 </style>

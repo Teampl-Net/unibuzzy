@@ -32,7 +32,6 @@ export default {
         params.targetType = 'chanList'
       }
       this.$emit('openPop', params)
-      // alert(JSON.stringify(params))
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     }
   }

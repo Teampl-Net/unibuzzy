@@ -47,7 +47,6 @@ export default {
     testYn: {}
   },
   async created () {
-    // alert(true)
     this.$userLoginCheck()
     this.$emit('openLoading')
     /* localStorage.setItem('popHistoryStack', '') */

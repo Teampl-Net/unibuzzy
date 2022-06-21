@@ -64,7 +64,7 @@ export default {
       // this.resize()
     },
     inputResize (value) {
-      /* alert(value)
+      /*
       this.formTextArea = document.getElementById(value).outerHTML
       this.$emit('updateCard', { value: this.formTextArea, type: 'updateInput' }) */
       // this.resize()
