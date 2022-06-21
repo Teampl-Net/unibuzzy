@@ -8,7 +8,7 @@
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     </div>
-    <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
+    <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
     <!-- <div class="stickerWrap">
       <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
         <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
@@ -41,9 +43,13 @@ export default {
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {},
-    notiTargetKey: {}
+    notiTargetKey: {},
+    propData: {}
   },
-  async created () {
+  async created() {
+    if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
+      this.viewTab = this.propData.alimTabType
+    }
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
       /* var history = localStorage.getItem('popHistoryStack').split('$#$')
@@ -59,7 +65,16 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
+  if (this.viewTab === 'N') {
+      this.$refs.activeBar.switchtab(0)
+    } else if (this.viewTab === 'R') {
+      this.$refs.activeBar.switchtab(1)
+    } else if (this.viewTab === 'L') {
+      this.$refs.activeBar.switchtab(2)
+    } else if (this.viewTab === 'S') {
+      this.$refs.activeBar.switchtab(3)
+    }
     /* alert(this.$store.state.historyStack)
     this.$store.commit('updateStack', [0])
     alert(this.$store.state.historyStack) */
@@ -132,6 +147,18 @@ export default {
     }
   },
   methods: {
+    // changeTabBar () {
+    //   // N R L S
+    //   if (this.viewTab === 'N') {
+    //     this.$refs.activeBar.switchtab(0)
+    //   } else if (this.viewTab === 'R') {
+    //     this.$refs.activeBar.switchtab(1)
+    //   } else if (this.viewTab === 'L') {
+    //     this.$refs.activeBar.switchtab(2)
+    //   } else if (this.viewTab === 'S') {
+    //     this.$refs.activeBar.switchtab(3)
+    //   }
+    // },
     onRefresh () {
       if (this.scrollPosition < 1) {
         this.$router.go(0)
@@ -254,7 +281,6 @@ export default {
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
-      // alert(JSON.stringify(param))
       var resultList = await this.$getContentsList(param)
       return resultList
     },
