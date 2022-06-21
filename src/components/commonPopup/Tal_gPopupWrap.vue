@@ -55,7 +55,6 @@ import leaveTal from './components/Tal_leaveTheAlim.vue'
 import createChannel from '../popup/creChannel/Tal_creChannel.vue'
 import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
-import PullToRefresh from 'pulltorefreshjs'
 
 import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
@@ -72,27 +71,6 @@ export default {
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
     // alert(JSON.stringify(this.params))
-  },
-  mounted () {
-    PullToRefresh.destroyAll()
-    PullToRefresh.init({
-      mainElement: '#gPopup',
-      // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-      distThreshold: '80',
-      // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-      distMax: '100',
-      // 새로고침 후 갖고있는 영역의 크기
-      distReload: '80',
-      // 최소 새로고침에 도달 했을 때 문구
-      instructionsReleaseToRefresh: ' ',
-      // 끌고 있을 때 문구
-      instructionsPullToRefresh: ' ',
-      // 새로고침 중 문구
-      instructionsRefreshing: ' ',
-      onRefresh () {
-        window.location.reload()
-      }
-    })
   },
   data () {
     return {

@@ -1,6 +1,7 @@
 
 <template>
   <div id="chanWrap" class="commonListWrap">
+
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
         <div @click="goDetail(alim)" class="pushDetailTopArea">
@@ -42,8 +43,10 @@
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
 
+
+      <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
       </div>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
+
 
   </div>
 </template>
@@ -51,7 +54,6 @@
 
 export default {
   components: {
-
   },
   created () {
     this.contentsList = this.commonListData
@@ -166,6 +168,7 @@ export default {
       }
     },
     async loadMore () {
+      console.log(this.contentsList.length-4)
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

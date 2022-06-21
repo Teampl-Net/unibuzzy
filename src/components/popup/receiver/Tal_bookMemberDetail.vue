@@ -109,20 +109,21 @@ export default {
             }
         },
         backClick(){
-            this.$emit('closePop')
+            this.$emit('closeXPop')
         },
         addNewMem() {
-            if(this.saveBookMember()){
-                const testList = new Object();
-                testList.name = this.memName
-                testList.phoneNum = this.memPhone
-                testList.email = this.memEmail
+            // if(this.saveBookMember()){
+                // const testList = new Object();
+                // testList.name = this.memName
+                // testList.phoneNum = this.memPhone
+                // testList.email = this.memEmail
 
-                this.memberList.unshift(testList)
-                this.memName = ''
-                this.memPhone = ''
-                this.memEmail = ''
-            }
+                // this.memberList.unshift(testList)
+                // this.memName = ''
+                // this.memPhone = ''
+                // this.memEmail = ''
+
+            // }
         },
         deleteMem(data,index) {
             this.memberList.splice(index, 1);
@@ -147,7 +148,8 @@ export default {
                 mCabContents.inPhone = this.memPhone
                 mCabContents.inUserName = this.memName
                 param.mCabContents = mCabContents
-                this.$saveMCabContents(param)
+                var result = this.$saveMCabContents(param)
+                this.$emit('closeXPop')
             }
         },
         checkParam(){

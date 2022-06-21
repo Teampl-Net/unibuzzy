@@ -78,7 +78,6 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import gtoggle from '../myPage/Tal_commonToggle.vue'
-import PullToRefresh from 'pulltorefreshjs'
 export default {
   data () {
     return {
@@ -87,9 +86,6 @@ export default {
   },
   props: {
 
-  },
-  mounted () {
-    PullToRefresh.destroyAll()
   },
   components: { gtoggle },
   methods: {

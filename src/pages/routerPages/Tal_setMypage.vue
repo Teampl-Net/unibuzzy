@@ -21,7 +21,7 @@
       <div class="subPaddingWrap">
         <table>
           <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr>
-          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(getUserInform.creDate).format('YYYY-MM-DD')}}</td></tr>
+          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr>
           <tr @click="openPolicyPop('personalInfo')"><th colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th colspan="2">이용약관</th></tr>
           <tr>
@@ -124,6 +124,8 @@ export default {
       if (this.userInfo.userDispMtext); else {
         if (this.userInfo.userNameMtext) { this.userInfo.userDispMtext = this.userInfo.userNameMtext } else { this.userInfo.phoneLast = '등록된 이름이 없습니다.' }
       }
+
+
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)

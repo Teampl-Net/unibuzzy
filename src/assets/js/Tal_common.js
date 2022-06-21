@@ -165,39 +165,29 @@ const methods = {
       return false
     }
   },
-
-  PullToRefreshInit () {
-    PullToRefresh.init({
-      mainElement: 'body',
-
-      // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-      distThreshold: '90',
-
-      // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-      distMax: '100',
-
-      // 새로고침 후 갖고있는 영역의 크기
-      distReload: '80',
-
-      // 최소 새로고침에 도달 했을 때 문구
-      instructionsReleaseToRefresh: ' ',
-
-      // 끌고 있을 때 문구
-      instructionsPullToRefresh: ' ',
-
-      // 새로고침 중 문구
-      instructionsRefreshing: ' ',
-
-      onRefresh () {
-        window.location.reload()
-      }
-    })
-  },
-
-  PullToRefreshDestroy () {
-    PullToRefresh.destroyAll()
-  },
-
+  // PullToRefreshInit () {
+  //   PullToRefresh.init({
+  //     mainElement: 'body',
+  //     // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
+  //     distThreshold: '90',
+  //     // 최대 거리 (영역이 길어질 수 있는 최대 거리)
+  //     distMax: '100',
+  //     // 새로고침 후 갖고있는 영역의 크기
+  //     distReload: '80',
+  //     // 최소 새로고침에 도달 했을 때 문구
+  //     instructionsReleaseToRefresh: ' ',
+  //     // 끌고 있을 때 문구
+  //     instructionsPullToRefresh: ' ',
+  //     // 새로고침 중 문구
+  //     instructionsRefreshing: ' ',
+  //     onRefresh () {
+  //       window.location.reload()
+  //     }
+  //   })
+  // },
+  // PullToRefreshDestroy () {
+  //   PullToRefresh.destroyAll()
+  // },
   checkUserAuth (data) {
     //
     var authList = { R: true, W: false, V: false }
@@ -261,8 +251,8 @@ export default {
     Vue.config.globalProperties.$removeHistoryStackForPage = methods.removeHistoryStackForPage
     Vue.config.globalProperties.$isJsonString = methods.isJsonString
 
-    Vue.config.globalProperties.$fullToInit = methods.PullToRefreshInit
-    Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
+    // Vue.config.globalProperties.$fullToInit = methods.PullToRefreshInit
+    // Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
     Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = methods.checkSameName
   }

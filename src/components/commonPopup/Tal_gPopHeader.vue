@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import PullToRefresh from 'pulltorefreshjs'
 export default {
   name: 'talHeader',
   props: {
@@ -27,7 +26,6 @@ export default {
   },
   methods: {
     closeXPop () {
-      this.pullToRefresh()
       this.$emit('closeXPop', this.thisPopN)
     },
     sendBtnClick () {
@@ -35,27 +33,6 @@ export default {
         this.$emit('sendOk')
       }
     },
-
-    pullToRefresh () {
-      PullToRefresh.init({
-        mainElement: 'body',
-        // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-        distThreshold: '80',
-        // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-        distMax: '100',
-        // 새로고침 후 갖고있는 영역의 크기
-        distReload: '80',
-        // 최소 새로고침에 도달 했을 때 문구
-        instructionsReleaseToRefresh: ' ',
-        // 끌고 있을 때 문구
-        instructionsPullToRefresh: ' ',
-        // 새로고침 중 문구
-        instructionsRefreshing: ' ',
-        onRefresh () {
-          window.location.reload()
-        }
-      })
-    }
   },
   data () {
     return {

@@ -33,7 +33,6 @@
 import findContentsList from './Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 // eslint-disable-next-line no-unused-vars
-import PullToRefresh from 'pulltorefreshjs'
 export default {
   components: {
     findContentsList

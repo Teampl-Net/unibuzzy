@@ -321,7 +321,6 @@
 </template>
 
 <script>
-import PullToRefresh from 'pulltorefreshjs'
 export default {
   data () {
     return {
@@ -333,7 +332,6 @@ export default {
   },
   mounted () {
     this.settingPop()
-    PullToRefresh.destroyAll()
   },
   components: {
   },
@@ -343,16 +341,6 @@ export default {
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
       this.$emit('closePolicyPop')
-
-      PullToRefresh.init({
-        mainElement: 'body',
-        instructionsReleaseToRefresh: ' ',
-        instructionsPullToRefresh: ' ',
-        instructionsRefreshing: ' ',
-        onRefresh () {
-          window.location.reload()
-        }
-      })
     }
   }
 }

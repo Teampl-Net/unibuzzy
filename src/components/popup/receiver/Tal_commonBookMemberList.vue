@@ -86,6 +86,9 @@ export default {
         }
         // this.memberList = this.listData
     },
+    render(){
+        console.log('지금?')
+    },
     methods:{
         async getBookMemberList () {
             var paramMap = new Map()
@@ -119,9 +122,28 @@ export default {
                 this.$emit('editYn',this.editYn)
             }
         },
-        deleteMemberClick(data, index){
+        async deleteMemberClick(data, index){
             // alert(index)
-            this.memberList.splice(index, 1)
+            var param = {}
+            console.log(data)
+            param.mccKey = data.mccKey
+            param.jobkindId = data.jobkindId
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.deleteMCabContents',
+                param: param
+            })
+
+            console.log(result)
+            if(result.data === 'true' || result.data === true){
+                this.memberList = []
+                this.getBookMemberList()
+            }
+            // param.cabinetKey = data.cabinetKey
+
+            // param.currentTeamKey = this.propData.currentTeamKey
+            // param.menuType = data.menuType
+            // this.memberList.splice(index, 1)
+
         },
         openModiPop (data,index){
             if(!this.editYn){

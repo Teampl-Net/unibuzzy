@@ -28,7 +28,6 @@
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
-import PullToRefresh from 'pulltorefreshjs'
 export default {
   name: 'pushList',
   components: {
@@ -69,18 +68,6 @@ export default {
     if (this.notiTargetKey) {
       this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
     }
-    /* PullToRefresh.init({
-      mainElement: '.testt',
-      instructionsReleaseToRefresh: ' ',
-      instructionsPullToRefresh: ' ',
-      instructionsRefreshing: ' ',
-      onRefresh () {
-        alert(this.scrollPosition)
-        if (this.scrollPosition < 1) {
-          this.$router.go(0)
-        }
-      }
-    }) */
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -97,32 +84,32 @@ export default {
     routerReloadKey () {
       this.refreshList()
     },
-    ay () {
-      if (!this.ay) {
-        try {
-          PullToRefresh.init({
-            mainElement: 'body',
-            distThreshold: '90',
-            distMax: '100',
-            distReload: '80',
-            instructionsReleaseToRefresh: ' ',
-            instructionsPullToRefresh: ' ',
-            instructionsRefreshing: ' ',
-            onRefresh () {
-              window.location.reload()
-            }
-          })
-        } catch (e) {
-          console.log(e)
-        }
-      } else {
-        try {
-          PullToRefresh.destroyAll()
-        } catch (e) {
-          console.log(e)
-        }
-      }
-    }
+    // ay () {
+    //   if (!this.ay) {
+    //     try {
+    //       PullToRefresh.init({
+    //         mainElement: 'body',
+    //         distThreshold: '90',
+    //         distMax: '100',
+    //         distReload: '80',
+    //         instructionsReleaseToRefresh: ' ',
+    //         instructionsPullToRefresh: ' ',
+    //         instructionsRefreshing: ' ',
+    //         onRefresh () {
+    //           window.location.reload()
+    //         }
+    //       })
+    //     } catch (e) {
+    //       console.log(e)
+    //     }
+    //   } else {
+    //     try {
+    //       PullToRefresh.destroyAll()
+    //     } catch (e) {
+    //       console.log(e)
+    //     }
+    //   }
+    // }
   },
   computed: {
     historyStack () {
@@ -179,6 +166,8 @@ export default {
       }
     },
     async loadMore (pageSize) {
+
+      console.log('실행'+this.offsetInt)
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
@@ -186,8 +175,13 @@ export default {
           ...this.commonListData,
           ...resultList.content
         ]
-        if (resultList.content.length < pageSize) { this.endListYn = true }
+        if (resultList.content.length < pageSize) {
+
+          this.endListYn = true
+
+        }
         this.commonListData = newArr
+
       }
     },
     /* addSubHistory (pageName) {

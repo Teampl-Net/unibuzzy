@@ -24,7 +24,6 @@ import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/Tal_menu.vue'
 import loadingCompo from '../components/Tal_loading.vue'
 
-import PullToRefresh from 'pulltorefreshjs'
 
 export default {
   data () {
@@ -49,10 +48,6 @@ export default {
     TalMenu,
     loadingCompo,
     pushPop
-  },
-
-  beforeUnmount () {
-    PullToRefresh.destroyAll()
   },
   mounted () {
   },
