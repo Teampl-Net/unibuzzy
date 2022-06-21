@@ -96,7 +96,7 @@
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" v-if="this.shareType == 'select'">{{writePermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft">
           <input type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use" style="height: 100%; float: left;" id="writeTrue"><label style="width: calc(50% - 50px); float: left; line-height: 30px; margin-left: 10px;" for="writeTrue">사용</label>
-          <input type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: 50%; float: left; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
+          <input type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" style="height: 100%; float: left;" id="writeFalse"><label style="width: 50%; float: left; height: 30px; line-height: 30px; margin-left: 10px;" for="writeFalse">사용 안함</label>
         </div>
       </div>
       <div class="subItemWrite">
@@ -158,7 +158,6 @@ export default {
     // alert(JSON.stringify(this.chanInfo))
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
-
     // console.log(this.boardDetail)
     // console.log(this.chanInfo)
 
@@ -307,7 +306,7 @@ export default {
                 if (!uName) {
                   uName = data.mCabinet.cabShareList[s].userNameMtext
                 }
-                
+
                 tempList2.push({userKey: data.mCabinet.cabShareList[s].accessKey, userDispMtext: uName } )
               }
             }
@@ -392,6 +391,7 @@ export default {
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
       cabinet.cabinetNameMtext = 'KO$^$' + this.boardDetail.cabinetNameMtext
+      // alert(JSON.stringify(cabinet.cabinetNameMtext))
       cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
       cabinet.MenuType = 'C'
       cabinet.blindYn = this.blindYn

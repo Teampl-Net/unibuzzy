@@ -1,5 +1,5 @@
 <template>
-  <listTitle style="margin-bottom: 1rem" listTitle= "알림" :moreLink="this.moreLink" @openPop= "openPop"/>
+  <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar ref="activeBar" :tabList="this.activeTabList" @changeTab= "changeTab" />
     <div class="pushListWrap">
       <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
@@ -21,7 +21,7 @@ export default {
       mainYn: true,
       moreLink: 'push',
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      viewTab: 'newest',
+      viewTab: 'N',
       listLeloadYn: true
     }
   },
@@ -62,12 +62,13 @@ export default {
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
         params.targetType = value.targetType
+        params.alimTabType = this.viewTab
       } else {
         params.targetType = 'pushDetail'
       }
-      params.value = value
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       // if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
+      // alert(JSON.stringify(params))
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {

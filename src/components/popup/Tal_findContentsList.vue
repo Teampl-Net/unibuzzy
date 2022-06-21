@@ -21,7 +21,7 @@
             ></Datepicker>
             </section>
         </div>
-        <div class="newestFindWrap">
+        <!-- <div class="newestFindWrap">
             <div style="width: 100%; height: 30px;">
                 <p class="fl textLeft font18 fontBold">최근 검색</p>
                 <div class="fr"><span class="font15">전체 삭제</span><span style="margin: 0 10px;">|</span><span class="font15">자동저장 {{this.autoSaveLog}}</span></div>
@@ -30,7 +30,7 @@
                 <p class="fl font16 commonBlack">{{value.searchKeyword}}</p>
                 <span class="fr font16">{{settingDateFormat(Number(value.searchDate))}}<span @click="deleteChannelFindLogList(index)" class="mleft-1">x</span></span>
             </div>
-        </div>
+        </div> -->
     </div>
   </div>
 </template>
@@ -46,14 +46,14 @@ export default {
       searchKey: '',
       creTeam: '',
       creDate: '',
-      searchLogList: [
-        { searchKeyword: '삼천리', searchDate: '20210821' },
+      // searchLogList: [
+      //   { searchKeyword: '삼천리', searchDate: '20210821' },
 
-        { searchKeyword: '삼천리', searchDate: '20210821' },
+      //   { searchKeyword: '삼천리', searchDate: '20210821' },
 
-        { searchKeyword: '삼천리', searchDate: '20210821' }
-      ],
-      autoSaveLog: '끄기',
+      //   { searchKeyword: '삼천리', searchDate: '20210821' }
+      // ],
+      // autoSaveLog: '끄기',
       popId: null
     }
   },
@@ -144,7 +144,7 @@ export default {
 .searchInput{border: none; margin-bottom: 5px!important; font-size: 15px; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}
 .findPopBody{min-height: 3.6rem; padding-top: 0; margin-bottom: 1rem;}
-.newestFindWrap{width: 100%; min-height: 200px; float: left; margin-top: 10px; padding-top: 20px
+/* .newestFindWrap{width: 100%; min-height: 200px; float: left; margin-top: 10px; padding-top: 20px
 }
-.newestfindContentsListWrap{width: 100%; padding: 10px; height: 35px; border-bottom : 1px solid #ccc;}
+.newestfindContentsListWrap{width: 100%; padding: 10px; height: 35px; border-bottom : 1px solid #ccc;} */
 </style>

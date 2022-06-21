@@ -23,6 +23,9 @@ import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.v
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
 import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
+import test1 from '../pages/test1.vue'
+import test2 from '../pages/test2.vue'
+import test3 from '../pages/test3.vue'
 
 import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
 
@@ -174,6 +177,21 @@ const routes = [
     name: 'admWritePush',
     component: admWritePush
   },
+  {
+    path: '/test1',
+    name: 'test1',
+    component: test1
+  },
+  {
+    path: '/test2',
+    name: 'test2',
+    component: test2
+  },
+  {
+    path: '/test3',
+    name: 'test3',
+    component: test3
+  },
   // {
   //  path: '/about',
   // name: 'About',
@@ -187,7 +205,6 @@ const routes = [
     path: '/testReceiver',
     component: manaReceiver
   }
-
 ]
 
 const router = createRouter({
