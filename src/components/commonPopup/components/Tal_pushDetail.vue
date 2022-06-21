@@ -7,14 +7,15 @@
         <div class="pushDetailTopArea">
           <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+            {{this.alimDetail[0].creUserKey}}
+            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{alim.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
             <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
             <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
           </div>
         </div>
-        <div id="bodyArea"  class="font15 mbottom-2" v-html="decodeContents(alim.bodyMinStr)"></div>
+        <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyMinStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -25,7 +26,8 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <gBtnSmall v-if="alim.canReplyYn" btnTitle="답장하기" @click="alimReply"/>
+            <gBtnSmall v-if="alim.canReplyYn && !this.alimReplyCreatorYn " btnTitle="답장하기" @click="alimReply"/>
+            {{this.alimReplyCreatorYn + '(true가 나오면 답장버튼 X)'}}
             <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
@@ -52,6 +54,7 @@
 export default {
   data () {
     return {
+      alimReplyCreatorYn: false,
       alimDetail: {},
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
@@ -68,6 +71,7 @@ export default {
   async created () {
     this.$emit('openLoading')
     await this.getContentsList()
+    this.checkAlimReply()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -105,6 +109,13 @@ export default {
     }
   },
   methods: {
+    checkAlimReply () {
+      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // var userKey = 1
+      if (userKey === this.alimDetail[0].creUserKey) {
+        this.alimReplyCreatorYn = true
+      }
+    },
     changeMode () {
       var formList = document.querySelectorAll('#bodyArea .formCard')
       // eslint-disable-next-line no-debugger
@@ -119,6 +130,10 @@ export default {
       params.targetKey = this.detailVal.value.creTeamKey
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
+      alert(JSON.stringify(params.creUserKey))
+      if (params.creUserKey !== this.alim.creUserKey) {
+        this.alimReplyCreatorYn = false
+      }
       params.targetContentsKey = this.alimDetail[0].contentsKey
       params.replyPopYn = true
       params.targetType = 'writePush'
@@ -235,9 +250,9 @@ export default {
     padding-top: 0;
 }
 .pushDetailWrap{height: fit-content;}
-.pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.pushDetailTopArea{ margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
-.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
+.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: left; height: 30px;}
