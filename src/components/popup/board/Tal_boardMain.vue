@@ -77,8 +77,8 @@ export default {
   },
   data () {
     return {
-      errorBoxYn:false,
-      errorBoxText:'',
+      errorBoxYn: false,
+      errorBoxText: '',
       box: null,
       scrollDirection: null,
       scrollPosition: null,
@@ -224,13 +224,11 @@ export default {
     },
     goDetail (value) {
       if (this.shareAuth.V === false) {
-        this.errorBoxText= '권한이 없습니다.'
+        this.errorBoxText = '권한이 없습니다.'
         this.errorBoxYn = true
-
-      }else{
+      } else {
         this.openPop(value)
       }
-
     },
     openPop (value) {
       // eslint-disable-next-line no-new-object

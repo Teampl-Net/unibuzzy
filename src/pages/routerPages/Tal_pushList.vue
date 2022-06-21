@@ -47,8 +47,10 @@ export default {
     propData: {}
   },
   async created() {
-    if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
-      this.viewTab = this.propData.alimTabType
+    if (this.propData) {
+      if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
+        this.viewTab = this.propData.alimTabType
+      }
     }
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')

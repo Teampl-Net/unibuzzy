@@ -139,7 +139,6 @@ export default {
       // this.selectedMemberList.unshift(obj)
 
       this.selectReceivers.unshift(obj)
-
     },
 
     backClick () {

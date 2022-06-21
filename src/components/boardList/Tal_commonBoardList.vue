@@ -74,11 +74,6 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
-    openDetail(board, index){
-      // var param = {}
-      // param.board = board
-      this.$emit('openDetail', board)
-    },
     resizeText (text) {
       if (text.length > 20) {
         text = text.substr(0, 20)
