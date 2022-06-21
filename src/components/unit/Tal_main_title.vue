@@ -9,6 +9,8 @@
 </template>
 <script>
 export default {
+  created () {
+  },
   mounted () {
   },
   data: function () {
@@ -30,6 +32,7 @@ export default {
         params.targetType = 'chanList'
       }
       this.$emit('openPop', params)
+      // alert(JSON.stringify(params))
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     }
   }
