@@ -6,7 +6,7 @@
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
         <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
-            <p class="font15 fl fontBold mNone" v-html="this.$makeMtextMap(value.nameMtext, 'KO')"></p>
+            <p class="font15 fl fontBold mNone commonBlack" style="width: 180px;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
             <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
                 <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColo font12" >{{value.followerCount}}</span>
@@ -46,6 +46,13 @@ export default {
     listTitle
   },
   methods: {
+    resizeText (text) {
+      if (text.length > 15) {
+        text = text.substr(0, 15)
+        text += '...'
+      }
+      return text
+    },
     openPop (value) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
