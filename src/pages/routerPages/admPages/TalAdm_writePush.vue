@@ -16,7 +16,7 @@
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
                 <!-- {{receiverList}} -->
-                <div class="">
+                <div class="fl">
                   <p style="">수신대상</p>
                   <div style="width: calc(100% - 100px); padding-top: 3px; float: left;" v-if="!this.replyPopYn">
                     <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
@@ -36,9 +36,9 @@
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
                 <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
-              <div style="width: 100%; min-height: 30px; position: relative;">
+              <div style="width: 100%; float: left; min-height: 30px; position: relative;">
                 <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
-                <div style="width: 100px; height: 100%; position: absolute; right: 0; top: 1.3rem;"><label class="fr" for="titleShow">제목추가</label><input type="checkbox" v-model="titleShowYn" class="fr" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow"></div>
+                <div style="width: 100px; height: 100%; position: absolute; right: 0; top: 1rem;"><label class="fr" for="titleShow">제목추가</label><input type="checkbox" v-model="titleShowYn" class="fr" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow"></div>
               </div>
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
@@ -134,7 +134,7 @@ export default {
       creUserName: null,
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
       viewTab: 'text',
-      titleShowYn: true
+      titleShowYn: false
     }
   },
   computed: {
