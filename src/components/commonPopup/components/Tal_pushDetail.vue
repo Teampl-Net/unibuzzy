@@ -153,7 +153,6 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-debugger
-      debugger
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
