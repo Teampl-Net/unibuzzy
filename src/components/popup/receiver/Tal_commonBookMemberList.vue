@@ -71,7 +71,7 @@ export default {
         // alert(JSON.stringify(this.teamInfo))
         // alert(this.parentSelectList)
         if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
-            this.selectedBookList = this.parentSelectList.memberList
+            this.selectedMemberList = this.parentSelectList.memberList
         }
 
        // this.memberList = this.propData.mCabUserList
@@ -84,12 +84,29 @@ export default {
                 }
             }
         }
+        this.setParentSelectList()
         // this.memberList = this.listData
     },
     render(){
         console.log('지금?')
     },
     methods:{
+        setParentSelectList() {
+
+            if(this.parentSelectList) {
+                if (this.parentSelectList.memberList) {
+                    for (var i = 0; i < this.memberList.length; i ++) {
+                        this.memberList[i].selectedYn = false
+                        for (var s = 0; s < this.parentSelectList.memberList.length; s ++) {
+                            if (this.parentSelectList.memberList[s].userKey === this.memberList[i].userKey) {
+                                this.memberList[i].selectedYn = true
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        },
         async getBookMemberList () {
             var paramMap = new Map()
             paramMap.set('cabinetKey', this.propData.cabinetKey)

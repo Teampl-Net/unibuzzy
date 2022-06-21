@@ -37,9 +37,14 @@ export default {
     chanInfo: {},
     detailSelectedYn: {},
     selectedListYn: {},
-    propData: {}
+    propData: {},
+    pSelectedList: {}
   },
   created () {
+    // alert(JSON.stringify(this.pSelectedList))
+    if (this.pSelectedList) {
+      this.selectedList = this.pSelectedList
+    }
     var history = this.$store.getters.hStack
     this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
     history.push(this.popId)

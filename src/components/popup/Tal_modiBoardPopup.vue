@@ -125,7 +125,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' />
+  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
@@ -223,7 +223,8 @@ export default {
       readPermissionAllYn: true,
       commentPermissionAllYn: true,
       permissionSelectedYn: {W: false, R: false, V: false},
-      boardName:''
+      boardName:'',
+      dbSelectedList: {bookList: [], memberList: []}
 
     }
   },
@@ -254,7 +255,7 @@ export default {
       param.adminYn = true
       var resultList = await this.$getCabinetDetail(param)
 
-      // debugger
+      debugger
       this.settingCabDetail(resultList)
     },
     settingCabDetail (data) {
@@ -291,11 +292,31 @@ export default {
           this.readPermission = '전체에게 권한 부여'
           this.commentPermission ='전체에게 권한 부여'
         }else{
-          console.log("######@@@@@@#######")
-          console.log(data)
           this.changeShareType('select')
+          // debugger
+          if(data.mCabinet.cabShareList){
+            var tempList = []
+            var tempList2 = []
+            for (var s = 0; s < data.mCabinet.cabShareList.length; s++) {
+              if (data.mCabinet.cabShareList[s].accessKind === 'C') {
+                // alert(JSON.stringify(data.mCabinet.cabShareList[s]))
+                tempList.push({cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext)})
+              } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
+                debugger
+                var uName = data.mCabinet.cabShareList[s].userDispMtext
+                if (!uName) {
+                  uName = data.mCabinet.cabShareList[s].userNameMtext
+                }
+                
+                tempList2.push({userKey: data.mCabinet.cabShareList[s].accessKey, userDispMtext: uName } )
+              }
+            }
+            var listData = {bookList: tempList, memberList: tempList2}
+            // debugger
+            this.selectedList.data = listData
 
-          this.selectedReceiver = data.mCabinet.shareCnt + '명에게 공유 중'
+          }
+          this.selectedReceiver = data.mCabinet.cabShareList.length + '명에게 공유 중'
           var W=0, R=0, V =0;
           for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
             if(data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
@@ -357,9 +378,12 @@ export default {
       if(itemType === 'W')
         this.permissionSelectedYn.W = true
       console.log(this.selectedList)
-      if(this.selectedList.length !== 0){
-        this.shareActorItemType= itemType
-        this.receiverAccessListYn = true
+      var tt = this.selectedList
+      if (this.selectedList.data) {
+        if(this.selectedList.data.bookList.length !== 0 || this.selectedList.data.memberList.length !== 0 ){
+          this.shareActorItemType= itemType
+          this.receiverAccessListYn = true
+        }
       }
 
     },
@@ -583,7 +607,7 @@ export default {
       if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {
           var tempList ={}
-          tempList.accessKey  = data.bookList[i].creTeamKey
+          tempList.accessKey  = data.bookList[i].cabinetKey
           tempList.accessKind = 'C'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.shareSeq = data.bookList[i].shareSeq

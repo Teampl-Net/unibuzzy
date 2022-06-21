@@ -139,6 +139,9 @@ export default {
       // alert(this.propData)
       param.cabinetKey = this.propData.cabinetKey
       param.creTeamKey = this.propData.currentTeamKey
+      param.actorList = this.propData.actorList
+      // eslint-disable-next-line no-debugger
+      debugger
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey

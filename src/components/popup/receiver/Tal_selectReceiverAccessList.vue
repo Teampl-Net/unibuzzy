@@ -61,22 +61,22 @@ export default {
   },
   methods: {
     // settingList(){
-      // console.log("######@!@#!@#!@#!@#######")
-      // console.log(this.parentList)
-      // if(this.parentList.bookList){
-      //   for (let index = 0; index < array.length; index++) {
-      //     const element = array[index];
+    // console.log("######@!@#!@#!@#!@#######")
+    // console.log(this.parentList)
+    // if(this.parentList.bookList){
+    //   for (let index = 0; index < array.length; index++) {
+    //     const element = array[index];
 
-      //   }
-      // }
-      // if(this.parentList.bookList){
-      //   for (let i = 0; i < array.length; i++) {
-      //     const element = array[i];
+    //   }
+    // }
+    // if(this.parentList.bookList){
+    //   for (let i = 0; i < array.length; i++) {
+    //     const element = array[i];
 
-      //   }
-      // }
+    //   }
+    // }
 
-      // // this.addSelectList()
+    // // this.addSelectList()
     // },
     changeSelectedItem (data) {
       // alert(true)

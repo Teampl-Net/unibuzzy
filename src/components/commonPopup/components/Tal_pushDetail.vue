@@ -27,7 +27,6 @@
               </div>
             </div> -->
             <gBtnSmall v-if="alim.canReplyYn && !this.alimReplyCreatorYn " btnTitle="답장하기" @click="alimReply"/>
-            {{this.alimReplyCreatorYn + '(true가 나오면 답장버튼 X)'}}
             <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">

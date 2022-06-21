@@ -1,4 +1,3 @@
-import PullToRefresh from 'pulltorefreshjs'
 
 // 당일: 시,분
 // 당월: 일, 시, 분

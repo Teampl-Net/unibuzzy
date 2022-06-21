@@ -4,7 +4,7 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -27,7 +27,7 @@
       <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem'/>
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
-      <boardMainDetail :propData="this.params"  v-if="openChanItemDetailYn" @closePop='openChanItemDetailYn = false' style="padding-top:0 !important" :detailVal='boardMainDetailData'/>
+      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='params'/>
       <editBookList @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
 
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
@@ -60,7 +60,7 @@ import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
 import boardMain from '../popup/board/Tal_boardMain.vue'
-import boardMainDetail from '../popup/board/Tal_boardMainDetail.vue'
+import boardDetail from '../popup/board/Tal_boardDetail.vue'
 import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 
@@ -99,8 +99,6 @@ export default {
       sendOkYn: 0,
 
       // itemTitle: '',
-      openChanItemDetailYn: false,
-      boardMainDetailData: '',
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
       receiverList: {}
     }
@@ -125,7 +123,7 @@ export default {
     writePush,
     chanMenu,
     boardMain,
-    boardMainDetail,
+    boardDetail,
     editBookList,
     bookMemberDetail,
     boardWrite
@@ -157,12 +155,6 @@ export default {
   methods: {
     transparentHeader() {
 
-    },
-    itemDetail (parm) {
-      // alert(parm)
-      // this.openChanItemDetailYn = true
-      // this.boardMainDetailData = parm.data
-      // alert(parm)
     },
 
     openChannelItem (data) {
@@ -256,7 +248,7 @@ export default {
         this.headerTitle = '알림 작성'
       } else if (this.targetType === 'boardMain') {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
-        this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
+        // this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
         // alert(this.headerTitle)
       } else if (this.targetType === 'editBookList') {
         // alert(this.$changeText(this.params.value.cabinetNameMtext))
@@ -267,6 +259,10 @@ export default {
         this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시판 작성'
+      } else if (this.targetType === 'boardDetail') {
+        // alert(true)
+        // alert(JSON.stringify(this.params.value))
+        this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

@@ -12,7 +12,7 @@
             <div class="pushDetailHeaderTextArea">
               <p class=" font15 fontBold commonBlack">{{resizeText(alim.title)}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.creUserName? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
               <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
             </div>
         </div>
@@ -42,12 +42,8 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
-
-
       <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
       </div>
-
-
   </div>
 </template>
 <script>
@@ -168,7 +164,7 @@ export default {
       }
     },
     async loadMore () {
-      console.log(this.contentsList.length-4)
+      console.log(this.contentsList.length - 4)
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

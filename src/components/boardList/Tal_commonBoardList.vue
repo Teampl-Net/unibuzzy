@@ -1,8 +1,8 @@
 
 <template>
-  <div id="boardListWrap" class="commonListWrap">
+  <div id="boardListWrap" class="commonBoardListWrap">
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
-    <div class="commonListContentBox pushMbox" v-for="(board, index) in this.boardList" :key="index">
+    <div class="commonListContentBox pushMbox" v-for="(board, index) in commonBoardListData" :key="index">
         <div @click="goDetail(board)" class="pushDetailTopArea">
             <div class="">
               <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
@@ -57,12 +57,11 @@ export default {
 
   },
   created () {
-    this.boardList = this.commonBoardListData
+    // this.boardList = this.commonBoardListData
+  },
+  computed: {
   },
   watch: {
-    commonBoardListData () {
-      this.boardList = this.commonBoardListData
-    }
   },
   updated () {
     this.boardListWrap.scrollTop = this.currentScroll
@@ -90,8 +89,9 @@ export default {
     goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'pushDetail'
+      param.targetType = 'boardDetail'
       param.contentsKey = value.contentsKey
+      param.targetKey = value.contentsKey
       param.value = value
 
       this.$emit('goDetail', param)
@@ -160,8 +160,6 @@ export default {
       }
       return str
     }
-  },
-  computed: {
   }
 }
 </script>
@@ -173,7 +171,7 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
-.commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 200px);}
+.commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);}
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}

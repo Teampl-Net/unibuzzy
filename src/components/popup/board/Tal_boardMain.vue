@@ -7,7 +7,7 @@
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
           <p class="cBlack fl font16" style="width: 100%; height: 30px; border-right: 1px solid white">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
-          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList.length}}개</p>
+          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList? mCabContentsList.length : 0}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;"> -->
           <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;">
@@ -29,17 +29,17 @@
       </div>
     </div>
 
-    <div class="pagePaddingWrap" style="position: relative; padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF; height: calc(100% - 50px); ">
+    <div class="" id="boardItemBox" style=" padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
-      <div class="boardItemBox " id="boardItemBox"  style="padding: 0px 1.5rem; margin-top: 0.8rem; height: calc(100% - 160px); ">
-        <boardList :commonBoardListData="this.mCabContentsList" style="height: 100%;" />
+      <div class=" " id=""  style="margin-top: 0.8rem; height: calc(100% - 20px)">
+        <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
       </div>
     </div>
-  <div class="btnPlus" @click="btnWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
+  <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
 </template>
 
@@ -58,8 +58,12 @@ export default {
   },
   async created () {
     this.$emit('openLoading')
+    var result = await this.getContentsList()
+    this.mCabContentsList = result.content
     await this.getCabinetDetail()
     console.log(this.propData)
+    // eslint-disable-next-line no-debugger
+    // debugger
   },
   mounted () {
     // alert(true)
@@ -87,7 +91,7 @@ export default {
         cabinetNameMtext: 'KO$^$공개게시판'
       },
       offsetInt: 0,
-      mCabContentsList: [
+      /*  mCabContentsList: [
         { title: 'test', bodyMinStr: 'testtesttesttest' },
         { title: 'test', bodyMinStr: 'testtesttesttest' },
         { title: 'test', bodyMinStr: 'testtesttesttest' },
@@ -98,10 +102,11 @@ export default {
         { title: 'test', bodyMinStr: 'testtesttesttest' },
         { title: 'test', bodyMinStr: 'testtesttesttest' },
         { title: 'test', bodyMinStr: 'testtesttesttest' }
-      ],
+      ], */
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
+      actorList: [],
       /* subHistoryList: [], */
       activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
@@ -129,17 +134,18 @@ export default {
         document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
-        document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         blockBox.style.height = '350px'
         this.box.style.height = ''
+        document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
       }
     },
-    btnWriteBoard () {
+    openWriteBoard () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeBoard'
+      params.actorList = this.actorList
       params.targetNameMtext = this.propData.nameMtext
       params.currentTeamKey = this.propData.currentTeamKey
       params.cabinetKey = this.propData.targetKey
@@ -160,15 +166,15 @@ export default {
       // eslint-disable-next-line no-unused-vars
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       console.log(this.shareAuth)
-      if (this.shareAuth.V === false) {
+      /* if (this.shareAuth.V === false) {
         alert('읽기 권한이 없습니다.')
         this.$emit('closeXPop')
-      }
+      } */
       // eslint-disable-next-line no-debugger
       // alert(JSON.stringify(this.mCabinetContentsDetail)
+      this.actorList = this.mCabinetContentsDetail.mShareItemList
       this.findPopShowYn = false
-      var result = await this.getContentsList()
-      this.mCabContentsList = result.content
+      //  alert(JSON.stringify(this.mCabContentsList))
       // eslint-disable-next-line no-debugger
       this.$emit('closeLoading')
     },
@@ -190,7 +196,7 @@ export default {
       } else {
         pageSize = 10
       }
-      /* if (this.findKeyList) {
+      if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
           param.title = this.findKeyList.searchKey
         } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
@@ -200,10 +206,10 @@ export default {
         } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
         }
-      } */
+      }
       param.jobkindId = 'BOAR'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      /* if (this.viewTab === 'L') {
+      if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
       } else if (this.viewTab === 'S') {
@@ -211,7 +217,7 @@ export default {
         param.findActStarYn = true
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
-      } */
+      }
       // alert(JSON.stringify(param))
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-debugger
@@ -221,6 +227,9 @@ export default {
     closeSearchPop () {
       this.findPopShowYn = false
       /* this.subHistoryList.splice(-1, 1) */
+    },
+    goDetail (value) {
+      this.openPop(value)
     },
     openPop (value) {
       // eslint-disable-next-line no-new-object
@@ -237,10 +246,13 @@ export default {
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
 
-    changeTab (tabName) {
+    async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      this.getCabinetDetail()
+      var result = await this.getContentsList()
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.mCabContentsList = result.content
     },
     async requestSearchList (param) {
       if (param) {
@@ -255,7 +267,7 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getCabinetDetail()
+      await this.getContentsList()
     },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
@@ -365,7 +377,7 @@ export default {
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
 .summaryWrap{height: calc(35vh); width: 100%; float: left; position: fixed;}
-.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 60px; margin-bottom: 5px; display: flex; justify-content: space-around;}
+.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 5px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}
 .summaryBottom p {color: #fff;}

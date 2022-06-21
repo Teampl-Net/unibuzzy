@@ -65,8 +65,8 @@ export default {
       detailHeaderShowYn: false,
 
       chanItem: {},
-      detailShowYn: null,
-      adminYn: null
+      detailShowYn: true,
+      adminYn: false
       // adminYn: true,
       // detailShowYn: false
 
@@ -80,6 +80,7 @@ export default {
     chanDetailComp
   },
   async created () {
+    this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
@@ -108,7 +109,6 @@ export default {
       this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {
-      this.$emit('openLoading')
       var paramMap = new Map()
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail

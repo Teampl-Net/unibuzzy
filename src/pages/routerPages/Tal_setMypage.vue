@@ -124,8 +124,6 @@ export default {
       if (this.userInfo.userDispMtext); else {
         if (this.userInfo.userNameMtext) { this.userInfo.userDispMtext = this.userInfo.userNameMtext } else { this.userInfo.phoneLast = '등록된 이름이 없습니다.' }
       }
-
-
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)

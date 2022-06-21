@@ -24,7 +24,6 @@ import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/Tal_menu.vue'
 import loadingCompo from '../components/Tal_loading.vue'
 
-
 export default {
   data () {
     return {
@@ -79,9 +78,7 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          alert(true)
           this.notiDetail = message.pushMessage
-          alert(this.notiDetail)
           if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
             if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return

@@ -13,6 +13,7 @@
         </div>
         <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;"  >
             <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext)}}</p>
+            <span class="fr" @click="removeSelectedYn('memeber',index)">x</span>
         </div>
                 <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
     </div>
@@ -38,7 +39,7 @@ export default {
         }
     },
     created() {
-
+        // alert(JSON.stringify(this.listData))
         this.upDatePage()
     /* this.teamList = {
         bookList: [

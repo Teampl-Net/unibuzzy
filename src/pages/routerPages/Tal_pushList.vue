@@ -83,7 +83,7 @@ export default {
     },
     routerReloadKey () {
       this.refreshList()
-    },
+    }
     // ay () {
     //   if (!this.ay) {
     //     try {
@@ -166,8 +166,7 @@ export default {
       }
     },
     async loadMore (pageSize) {
-
-      console.log('실행'+this.offsetInt)
+      console.log('실행' + this.offsetInt)
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
@@ -176,12 +175,9 @@ export default {
           ...resultList.content
         ]
         if (resultList.content.length < pageSize) {
-
           this.endListYn = true
-
         }
         this.commonListData = newArr
-
       }
     },
     /* addSubHistory (pageName) {
