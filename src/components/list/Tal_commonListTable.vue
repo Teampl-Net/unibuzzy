@@ -16,7 +16,7 @@
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             </td>
             <td>
-                <p v-html="resizeText(value.title)" class="commonBlack mtop-03 font15 fontBold" style="width: 180px;" />
+                <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 180px;" />
                 <div>
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>
                     <span class="commonBlack mtop-01 font12 fr">{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</span>
@@ -44,10 +44,14 @@ export default {
   },
   emits: ['goDetail'],
   methods: {
-    resizeText (text) {
-      if (text.length > 12) {
-        text = text.substr(0, 12)
-        text += '...'
+    resizeText (text, name) {
+      if (text) {
+        if (text.length > 15) {
+          text = text.substr(0, 15)
+          text += '...'
+        }
+      } else {
+        text = '[' + this.$changeText(name) + '] 제목없는 알림'
       }
       return text
     },
