@@ -1,5 +1,5 @@
 <template>
-  <listTitle listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop"/>
+  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" :activeTabList="this.activeTabList" />
   <gActiveBar :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
@@ -58,6 +58,7 @@ export default {
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
         params.targetType = value.targetType
+        params.channelTabType = this.viewTab
       } else {
         params.targetType = 'chanDetail'
       }
