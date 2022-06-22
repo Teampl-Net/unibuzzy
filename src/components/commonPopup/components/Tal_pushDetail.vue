@@ -25,7 +25,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <gBtnSmall v-if="alim.canReplyYn && !this.alimReplyCreatorYn " btnTitle="답장하기" @click="alimReply"/>
+            <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
             <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
@@ -52,12 +52,11 @@
 export default {
   data () {
     return {
-      alimReplyCreatorYn: false,
+      creatorYn: false,
       alimDetail: {},
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: []
-
     }
   },
   props: {
@@ -69,7 +68,7 @@ export default {
   async created () {
     this.$emit('openLoading')
     await this.getContentsList()
-    this.checkAlimReply()
+    this.checkCreator()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -107,11 +106,11 @@ export default {
       }
       return text
     },
-    checkAlimReply () {
+    checkCreator () {
       var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // var userKey = 1
       if (userKey === this.alimDetail[0].creUserKey) {
-        this.alimReplyCreatorYn = true
+        this.creatorYn = true
       }
     },
     changeMode () {
@@ -128,6 +127,9 @@ export default {
       params.targetKey = this.detailVal.value.creTeamKey
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
+      if (params.creUserKey !== this.alim.creUserKey) {
+        this.creatorYn = false
+      }
       params.targetContentsKey = this.alimDetail[0].contentsKey
       params.replyPopYn = true
       params.targetType = 'writePush'
@@ -155,7 +157,6 @@ export default {
       }
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
-      // eslint-disable-next-line no-debugger
       this.alimDetail = resultList.content
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
