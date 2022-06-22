@@ -1,9 +1,9 @@
-
 <template>
   <div id="chanWrap" class="commonListWrap">
-
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
-    <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
+    <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
+    <div :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
+      <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div>
         <div @click="goDetail(alim)" class="pushDetailTopArea">
           <div class="chanLogoImgWrap">
             <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
@@ -47,7 +47,6 @@
   </div>
 </template>
 <script>
-
 export default {
   components: {
   },
@@ -100,7 +99,21 @@ export default {
       param.nameMtext = nameMtext
       this.$emit('goDetail', param)
     },
+    // creatorBox (value) {
+    //   // eslint-disable-next-line no-new-object
+    //   var param = new Object()
+    //   param.targetType = 'pushDetail'
+    //   param.contentsKey = value.contentsKey
+    //   param.value = value
 
+    //   var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    //   // var userKey = 1
+    //   if (userKey === value.creUserKey) {
+    //     this.creatorYn = true
+    //   } else {
+    //     this.creatorYn = false
+    //   }
+    // },
     goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -189,6 +202,7 @@ export default {
   },
   data: function () {
     return { // 데이터 정의
+      commonListCreUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       mainYn: false,
       chanWrap: null,
       contentsList: {},
@@ -221,7 +235,7 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
-.commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 200px);}
+.commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: 100%;}
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
@@ -237,7 +251,6 @@ export default {
 .chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;}
 .pushMbox{margin-bottom: 20px;}
 .userDoWrap img {width: 1rem;}
-
 .commonListContentBox{
     position: relative;
     width: calc(100% - 1rem);
@@ -251,5 +264,9 @@ export default {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 7px 3px #b7b4b440;
+    }
+.creatorListContentBox{
+    background-color: #6768a712 !important;
+    box-shadow: 0 0 7px 3px #6768a740 !important;
     }
 </style>
