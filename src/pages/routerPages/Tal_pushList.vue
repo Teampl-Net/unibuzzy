@@ -1,14 +1,15 @@
 <template>
-  <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
-
-    <div class= "pageHeader pushListCover" style="" >
+  <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
+    <!-- <div class="pageHeader pushListCover"> -->
+    <div id="pageHeader" class="pushListCover" :class="{'headroom--unpinned': this.scrolledYn === true }" v-on="handleScroll" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-    </div>
     <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
+    </div>
+    <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
     <!-- <div class="stickerWrap">
       <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
         <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -17,11 +18,12 @@
 
       </div>
     </div> -->
-    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+    <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 150px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
     <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
-  <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-  </div>
+    <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
+    </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -45,6 +47,15 @@ export default {
     chanDetailKey: {},
     pushListAndDetailYn: {},
     propData: {}
+  },
+  updated() {
+    alert(true)
+    // eslint-disable-next-line no-unused-vars
+    this.box = document.getElementById('pushListWrap') // 이 dom scroll 이벤트를 모니터링합니다
+    this.box.addEventListener('scroll', this.handleScroll)
+    this.box.addEventListener('mousewheel', e => {
+      this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+    })
   },
   async created() {
     if (this.propData) {
@@ -91,7 +102,7 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    
+
     currentPage () {
     },
     commonListData () {
@@ -101,32 +112,6 @@ export default {
     routerReloadKey () {
       this.refreshList()
     }
-    // ay () {
-    //   if (!this.ay) {
-    //     try {
-    //       PullToRefresh.init({
-    //         mainElement: 'body',
-    //         distThreshold: '90',
-    //         distMax: '100',
-    //         distReload: '80',
-    //         instructionsReleaseToRefresh: ' ',
-    //         instructionsPullToRefresh: ' ',
-    //         instructionsRefreshing: ' ',
-    //         onRefresh () {
-    //           window.location.reload()
-    //         }
-    //       })
-    //     } catch (e) {
-    //       console.log(e)
-    //     }
-    //   } else {
-    //     try {
-    //       PullToRefresh.destroyAll()
-    //     } catch (e) {
-    //       console.log(e)
-    //     }
-    //   }
-    // }
   },
   computed: {
     historyStack () {
@@ -148,25 +133,71 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      scrollDirection: null,
+      box: null,
+      scrolledYn: false,
+      scrollPosition: 0,
+      offsetInt: 0,
+      endListYn: false,
+      loadVal: true,
+      pageHistoryName: '',
+      findPopShowYn: false,
+      subHistoryList: [],
+      stickerList: [
+        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
+        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
+      ],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      viewTab: 'N',
+      commonListData: [],
+      findKeyList: {},
+      resultSearchKeyList: [],
+      refreshYn: true
+    }
+  },
   methods: {
-    // changeTabBar () {
-    //   // N R L S
-    //   if (this.viewTab === 'N') {
-    //     this.$refs.activeBar.switchtab(0)
-    //   } else if (this.viewTab === 'R') {
-    //     this.$refs.activeBar.switchtab(1)
-    //   } else if (this.viewTab === 'L') {
-    //     this.$refs.activeBar.switchtab(2)
-    //   } else if (this.viewTab === 'S') {
-    //     this.$refs.activeBar.switchtab(3)
-    //   }
-    // },
+    handleScroll() {
+      alert('scroll')
+      var blockBox = document.getElementById('pageHeader')
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
+      this.scrollPosition = this.box.scrollTop
+
+      if (this.scrollDirection === 'down' && this.scrollPosition > 0) {
+        this.scrolledYn = true;
+        // move up!
+      } else if (this.scrollDirection === 'up' && this.scrollPosition <= 0) {
+        this.scrolledYn = false;
+      }
+      console.log('##############')
+      console.log(this.scrollDirection)
+      // if (this.scrollPosition < window.scrollY && 0 < window.scrollY) {
+      //   console.log("up")
+      //   this.scrolledYn = true;
+      //   // move up!
+      // }
+      // if (this.scrollPosition > window.scrollY) {
+      //   console.log("down")
+      //   this.scrolledYn = false;
+      //   // move down
+      // }
+      // this.scrollPosition = window.scrollY;
+    },
     onRefresh () {
       if (this.scrollPosition < 1) {
         this.$router.go(0)
       }
     },
-    currentScroll (value) {
+    currentScroll(value) {
       this.scrollPosition = value
     },
     async refreshList () {
@@ -203,7 +234,6 @@ export default {
       }
     },
     async loadMore (pageSize) {
-      console.log('실행' + this.offsetInt)
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
@@ -354,45 +384,32 @@ export default {
       this.commonListData = resultList.content
       this.findPopShowYn = false
     }
-  },
-  data () {
-    return {
-      offsetInt: 0,
-      endListYn: false,
-      scrollPosition: 0,
-      loadVal: true,
-      pageHistoryName: '',
-      findPopShowYn: false,
-      subHistoryList: [],
-      stickerList: [
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
-      ],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      viewTab: 'N',
-      commonListData: [],
-      findKeyList: {},
-      resultSearchKeyList: [],
-      refreshYn: true
-    }
   }
 }
 </script>
 
 <style scoped>
-
-.pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
+.headroom {
+  will-change: transform;
+  transition: transform 200ms linear;
+}
+.headroom--pinned {
+    transform: translateY(0%);
+}
+.headroom--unpinned {
+    transform: translateY(-100%);
+}
+.pushListCover{height: 132px; margin-bottom: 1rem; z-index: 1; width: calc(100% - 0.75rem); position: fixed; padding-right: 48px; }
 
 .stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
-
 .popHeight{
+  margin-top: 150px;
+  height: calc(100% - 150px);
+}
+/* .popHeight{
   padding-right: 0; padding-left: 0;
   height: calc(100vh - 35px) !important;
-}
+} */
 </style>
