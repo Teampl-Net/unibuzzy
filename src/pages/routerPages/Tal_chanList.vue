@@ -39,22 +39,18 @@ export default {
     }
   },
   mounted () {
-
-    //   var scrolltop = window.scrollTop();
-    //   console.log(scrolltop);
-    // var height = window.height();
-    // console.log(height);
-    // var height_win = $(window).height();
-    // console.log(height_win);
-    // if (Math.round( $(window).scrollTop()) == $(document).height() - $(window).height()) {
-    //   moreList();
-
-    // }
-    // })
-
+    if (this.viewTab === 'user') {
+      this.$refs.activeBar.switchtab(0)
+    } else if (this.viewTab === 'all') {
+      this.$refs.activeBar.switchtab(1)
+    }
   },
-
   async created () {
+    if (this.propData) {
+      if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
+        this.viewTab = this.propData.channelTabType
+      }
+    }
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
       /* var history = localStorage.getItem('popHistoryStack').split('$#$')
@@ -217,7 +213,8 @@ export default {
   props: {
     routerReloadKey: {},
     params: {},
-    popYn: Boolean
+    popYn: Boolean,
+    propData: {}
   }
 }
 </script>
