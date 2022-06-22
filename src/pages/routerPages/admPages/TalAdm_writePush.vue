@@ -36,7 +36,7 @@
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
                 <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
               </div>
-              <div style="width: 100%; float: left; min-height: 30px; position: relative;">
+              <div style="width: 100%;float: left; min-height: 30px; position: relative;">
                 <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
                 <div style="width: 100px; height: 100%; position: absolute; right: 0; top: 1rem;"><label class="fr" for="titleShow">제목추가</label><input type="checkbox" v-model="titleShowYn" class="fr" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow"></div>
               </div>
@@ -241,6 +241,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var innerHtml =''
+      param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
+      var targetMsgDiv = null
       if(this.viewTab === 'complex') {
         param.bodyHtmlYn = true
         var formList = document.querySelectorAll('#msgBox .formCard')
@@ -250,14 +252,16 @@ export default {
           }
           param.getBodyHtmlYn = true
         }
-        innerHtml = document.getElementById('msgBox').innerHTML
+        targetMsgDiv = document.getElementById('msgBox')
       } else if (this.viewTab === 'text') {
-        param.bodyHtmlYn = false
+        // param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         // debugger
-        innerHtml = document.getElementById('textMsgBox').innerHTML
+        targetMsgDiv = document.getElementById('textMsgBox')
 
       }
+      innerHtml = targetMsgDiv.innerHTML
+      
 
       param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
@@ -270,7 +274,8 @@ export default {
           if (this.selectedReceiverList.length > 0) {
             param.actorList = this.selectedReceiverList
           } else {
-            alert('수신자를 선택해주세요')
+            this.errorText = '수신자를 선택해주세요'
+            this.failPopYn = true
             return
           }
         }
@@ -280,7 +285,12 @@ export default {
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.title = this.writePushTitle
+      if(this.writePushTitle !== '') {
+        param.title = this.writePushTitle
+      } else {
+        param.title = this.$titleToBody(targetMsgDiv)
+      }
+      // debugger
       param.jobkindId = 'ALIM'
       param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
 
@@ -290,7 +300,7 @@ export default {
       var result = await this.$saveContents(param)
       if (result === true) {
         this.sendLoadingYn = false
-        this.$emit('closeXPop')
+        this.$emit('closeXPop', true)
       }
 
     },
