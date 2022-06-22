@@ -160,10 +160,10 @@ export default {
                 this.popYn = true
                 this.confirmText = '이름을 입력하세요.'
             } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
-                if(!this.regEmail(this.memEmail)) {
+                if(!this.regEmail(this.memEmail.trim())) {
                     this.popYn = true
                     this.confirmText = '이메일 형식이 유효하지 않습니다.'
-                } else if(!this.regPhoneNumber(this.memPhone)) {
+                } else if(!this.regPhoneNumber(this.memPhone.trim())) {
                     this.popYn = true
                     this.confirmText = '전화번호 형식이 유효하지 않습니다.'
                 } else {
