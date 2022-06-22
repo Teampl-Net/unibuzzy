@@ -145,10 +145,13 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
-      if (this.detailVal.targetKey !== undefined && this.detailVal.targetKey !== null && this.detailVal.targetKey !== '') {
-        param.contentsKey = this.detailVal.targetKey
-      } else if (this.detailVal.contentsKey !== undefined && this.detailVal.contentsKey !== null && this.detailVal.contentsKey !== '') {
-        param.contentsKey = this.detailVal.contentsKey
+      if (this.detailVal) {
+        param.contentsKey = this.detailVal.targetKey || this.detailVal.targetKey
+      }
+      if (!param.contentsKey) {
+        if (this.detailVal.value) {
+          param.contentsKey = this.detailVal.value.contentsKey || this.detailVal.value.targetKey
+        }
       }
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)

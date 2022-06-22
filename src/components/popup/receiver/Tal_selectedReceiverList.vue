@@ -110,7 +110,7 @@ export default {
         },
         clickList(data){
             // if(this.selectPopYn !== true)
-            // this.$emit('openDetail',data) // alert(data.reveiverTeamName)
+            // this.$emit('openDetail',data) 
         },
         deleteTeamClick(data,index){
 

@@ -1,5 +1,6 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
+      <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
       <transition name="showModal">
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
@@ -10,7 +11,7 @@
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :propData="this.params" :ref="'gPopPush'" :notiTargetKey="notiTargetKey" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
+        <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import pushPop from '../../components/popup/Tal_pushDetailPopup.vue'
 /* eslint-disable */
 // eslint-disable-next-line
 import pushDetail from './components/Tal_pushDetail.vue'
@@ -67,11 +69,19 @@ import boardWrite from '../popup/board/Tal_boardWrite.vue'
 export default {
   async created() {
     await this.settingPop()
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
   },
+  unmounted() {
+    document.removeEventListener('message', e => this.recvNoti(e))
+    window.removeEventListener('message', e => this.recvNoti(e))
+  },
   data () {
     return {
+      notiDetail: {},
+      notiDetailShowYn: false,
       popId: '',
       openBookMenuYn: false,
       openChanItemYn: false,
@@ -85,7 +95,7 @@ export default {
       thisPopN: {},
       newHeaderT: '',
       headerTitle: '',
-      notiTargetKey: '',
+      pushListAndDetailYn: false,
       popParams: '',
       changInfoType: '',
 
@@ -124,7 +134,8 @@ export default {
     boardDetail,
     editBookList,
     bookMemberDetail,
-    boardWrite
+    boardWrite,
+    pushPop
   },
   updated () {
   },
@@ -203,7 +214,7 @@ export default {
           this.chanAlimListTeamKey = target.targetKey || target.teamKey
         }
       } else if (this.targetType === 'pushListAndDetail') {
-        this.notiTargetKey = target.targetKey
+        this.pushListAndDetailYn = true
         this.targetType = 'pushList'
         this.headerTitle = '알림'
       } else if (this.targetType === 'pushList') {
@@ -282,6 +293,10 @@ export default {
           // this.reloadYn = false
         } else if(this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
+        } else if (this.targetType === 'boardMain') {
+          await this.$refs.boardMainPop.refresh()
+        } else if (this.targetType === 'chanDetail') {
+          await this.$refs.boardMainPop.refreshList()
         }
       }
     },
@@ -297,7 +312,6 @@ export default {
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
       this.$emit('closePop', reloadYn)
-      // this.$removeHistoryStack(this.thisPopN)
     },
     // sucssesCreChan(){
     //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
@@ -310,6 +324,63 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    openDetailPop (params) {
+      var setParams = params
+      if (this.targetType === 'pushList') {
+        setParams.targetType = 'pushDetail'
+        this.openPop(setParams)
+      } else {
+        setParams.targetType = 'pushListAndDetail'
+        this.openPop(setParams)
+      }
+      this.openPop(params)
+      this.notiDetailShowYn = false
+    },
+    recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          this.notiDetail = JSON.parse(message.pushMessage)
+          if (this.notiDetail.noti.data.targetKind === 'CONT') {
+            if (Number(this.notiDetail.noti.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+              return
+            }
+            var currentPage = this.$store.getters.hCPage
+            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'tr') {
+              if ((currentPage === 0 || currentPage === undefined)) {
+              } else {
+                if (this.targetType === 'chanDetail') {
+                  if(this.chanAlimListTeamKey === Number(this.notiDetail.noti.data.creTeamKey)) {
+                    this.$refs.boardMainPop.refreshList()
+                  } else {
+                    this.notiDetailShowYn = true
+                  }                
+                } else {
+                  this.notiDetailShowYn = true
+                }
+              }
+            } else {
+              var currentPage = this.$store.getters.hCPage
+              if ((currentPage === 0 || currentPage === undefined)) {
+              } else {
+                if (this.targetType === 'pushList') {
+                  this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushDetail', value: this.notiDetail.noti.data })
+                } else {
+                  this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushListAndDetail', value: this.notiDetail.noti.data })
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
     }
   }
 }

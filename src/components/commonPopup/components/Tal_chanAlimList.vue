@@ -37,7 +37,7 @@
   </div>
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-    <pushList :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
+    <pushList ref="pushListCompo" :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
@@ -100,6 +100,9 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    refreshList () {
+      this.$ref.pushListCompo.refreshList()
+    },
     btnWritePush () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -198,7 +201,7 @@ export default {
     },
     recvNoti (e) {
       if (JSON.parse(e.data).type === 'pushmsg') {
-        var target = JSON.parse(e.data).pushMessage
+        var target = JSON.parse(JSON.parse(e.data).pushMessage).noti
         if (JSON.parse(target).data.targetKind === 'TEAM') {
           if (Number(JSON.parse(target).data.targetKey) === this.chanItem.teamKey) {
             this.getChanDetail(true)

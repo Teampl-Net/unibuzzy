@@ -37,15 +37,14 @@
             <p class="textLeft font14 fl mleft-05" style="line-height:30px;" >{{selectTypeText}}</p>
           </div>
         </div>
-        <div style="width:100%; height: 40px" class="mtop-1" >
+        <!-- <div style="width:100%; height: 40px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">키워드</p>
           <div class="keywordWrap ">
-            <!-- <input v-for="(input, index) in 3" :key="index" class="categoryBox" style="border: 1px solid #ccc; flex:1" @change="setKeyword(index,text)" /> -->
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord0" />
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord1" />
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord2" />
           </div>
-        </div>
+        </div> -->
         <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>

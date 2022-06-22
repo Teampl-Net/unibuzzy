@@ -1,6 +1,6 @@
 <template>
-  <div class="w-100P h-100P listRefresh" >
-    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
+  <div class="w-100P h-100P listRefresh" > <!-- v-if="notiDetailShowYn" -->
+    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
       <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
@@ -39,7 +39,8 @@ export default {
       routerReloadKey: 0,
       notiDetail: '',
       notiDetailShowYn: false,
-      reloadYn: false
+      reloadYn: false,
+      testData: { contentsKey: 1001172, creUserKey: 1 }
     }
   },
   props: {},
@@ -81,7 +82,13 @@ export default {
     },
     openDetailPop (params) {
       this.closePushPop()
-      this.openPop(params)
+      if (params.targetType === 'pushDetail') {
+        this.$router.replace({ path: '/pushList' })
+      } else {
+      }
+      this.popParams = params
+      this.popShowYn = true
+      this.showMenuYn = false
     },
     closePushPop () {
       this.notiDetailShowYn = false
@@ -95,16 +102,37 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          this.notiDetail = message.pushMessage
-          if (JSON.parse(this.notiDetail).data.targetKind === 'CONT') {
-            if (Number(JSON.parse(this.notiDetail).data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+          this.notiDetail = JSON.parse(message.pushMessage)
+          if (this.notiDetail.noti.data.targetKind === 'CONT') {
+            if (Number(this.notiDetail.noti.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
-            this.notiDetailShowYn = true
+            var currentPage = this.$store.getters.hCPage
+            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'tr') {
+              if ((currentPage === 0 || currentPage === undefined)) {
+                this.notiDetailShowYn = true
+              }
+            } else {
+              if ((currentPage === 0 || currentPage === undefined)) {
+                this.$router.replace({ path: '/pushList' })
+                this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushDetail', value: this.notiDetail.noti.data })
+              } else {
+                this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushListAndDetail', value: this.notiDetail.noti.data })
+              }
+            }
           }
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
+      }
+    },
+    test () {
+      var currentPage = this.$store.getters.hCPage
+      if ((currentPage === 0 || currentPage === undefined)) {
+        this.$router.replace({ path: '/pushList' })
+        this.openPop({ contentsKey: this.testData.contentsKey, targetType: 'pushDetail', value: this.testData })
+      } else {
+        this.openPop({ contentsKey: this.testData.contentsKey, targetKey: this.testData.contentsKey, targetType: 'pushListAndDetail', value: this.testData })
       }
     },
     showMenu () {

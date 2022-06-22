@@ -4,6 +4,11 @@
 // 당해: 월, 일, 시, 분
 // 그 외: 년, 월, 일, 시, 분
 const methods = {
+  parseHTML (html) {
+    var t = document.createElement('template')
+    t.innerHTML = html
+    return t.content.cloneNode(true)
+  },
   changeDateFormat (date, viewType) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
@@ -230,6 +235,24 @@ const methods = {
       changedBoardName = changedBoardName + '(' + addBoardNum + ')'
     }
     return changedBoardName
+  },
+  titleToBody (inHtml) {
+    var childNodes = inHtml.childNodes
+    var titleText = ''
+    titleText = childNodes[0].textContent
+    if (titleText.length < 5) {
+      for (var i = 1; i < childNodes.length; i++) {
+        var node = childNodes[i]
+        titleText += node.textContent
+        if (titleText.length > 4) {
+          break
+        }
+      }
+    }
+    if (titleText.length > 64) {
+      titleText.substring(0, 64)
+    }
+    return titleText
   }
 
 }
@@ -251,5 +274,6 @@ export default {
     // Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
     Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = methods.checkSameName
+    Vue.config.globalProperties.$titleToBody = methods.titleToBody
   }
 }

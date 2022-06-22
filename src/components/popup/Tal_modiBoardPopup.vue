@@ -580,11 +580,11 @@ export default {
       this.selectBookListYn = false
       var text =''
       var selectLength = 0
-      if(data.bookList !== undefined ){
+      if(data.bookList.length > 0 ){
         text = '그룹: ' +data.bookList[0].cabinetNameMtext
         selectLength += data.bookList.length
       }
-      if(data.memberList !== undefined ){
+      if(data.memberList.length > 0 ){
         text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext)
         selectLength += data.memberList.length
       }

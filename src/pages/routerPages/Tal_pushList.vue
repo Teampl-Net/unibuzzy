@@ -21,7 +21,7 @@
     <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
   <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-</div>
+  </div>
 </template>
 
 <script>
@@ -43,7 +43,7 @@ export default {
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {},
-    notiTargetKey: {},
+    pushListAndDetailYn: {},
     propData: {}
   },
   async created() {
@@ -78,12 +78,12 @@ export default {
       this.$refs.activeBar.switchtab(3)
     }
 
-    // this.$store.commit('updateStack', [0])
-
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    if (this.notiTargetKey) {
-      this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
+    if (this.pushListAndDetailYn) {
+      var propObj = this.propData
+      propObj.targetType = 'pushDetail'
+      this.openPop(propObj)
     }
   },
   unmounted () {
@@ -91,6 +91,7 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    
     currentPage () {
     },
     commonListData () {
@@ -185,11 +186,20 @@ export default {
       this.endList = false
     },
     async recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        var target = JSON.parse(e.data).pushMessage
-        if (JSON.parse(target).data.targetKind === 'CONT') {
-          this.refreshList()
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
         }
+        if (message.type === 'pushmsg') {
+          if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
+            this.refreshList()
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     async loadMore (pageSize) {

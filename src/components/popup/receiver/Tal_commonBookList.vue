@@ -200,7 +200,6 @@ export default {
             this.cabinetList[index].selectedYn = true
             console.log(data)
             data.shareSeq = data.cabinetKey
-            var tt = this.selectedBookList
             this.selectedBookList.push(data)
 
             this.$emit('changeSelectBookList', this.selectedBookList)

@@ -52,7 +52,7 @@
     </div>
     <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="saveBookMember" />
 </div>
-<popUp v-if="popYn" @no='popYn = false' :confirmText='confirmText' confirmType='timeout' />
+<popUp v-if="confirmPopShowYn" @no='confirmPopShowYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
 
 <script>
@@ -72,7 +72,7 @@ export default {
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             this.memName = this.$changeText(this.propData.userDispMtext)
             this.memEmail= this.propData.userEmail
-            this.memPhone = this.propData.userPhone
+            this.memPhone = this.propData.phoneEnc
         } else {
 
         }
@@ -84,7 +84,7 @@ export default {
         memPhone: '',
         memberList:[],
         addMemYn: false,
-        popYn: false,
+        confirmPopShowYn: false,
         tempIndex: null,
         confirmText: ''
         }
@@ -130,7 +130,7 @@ export default {
             this.memberList.splice(index, 1);
         },
         ok(){
-            this.popYn = false
+            this.confirmPopShowYn = false
         },
         async saveBookMember(){
             var checkYn = await this.checkParam()
@@ -150,30 +150,36 @@ export default {
                 mCabContents.inUserName = this.memName
                 param.mCabContents = mCabContents
                 var result = await this.$saveMCabContents(param)
-                if (result.data.result === true)
-                    this.$emit('closeXPop', true)
+                if (result.data.result === true) {
+                    if (result.data.message === 'OK') {
+                        this.$emit('closeXPop', true)
+                    } else {
+                        this.confirmPopShowYn = true
+                        this.confirmText = result.data.message
+                    }
+                }
             }
         },
         checkParam(){
             var result = false
             if (this.memName === '' || this.memName === null || this.memName === undefined) {
-                this.popYn = true
+                this.confirmPopShowYn = true
                 this.confirmText = '이름을 입력하세요.'
             } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail.trim())) {
-                    this.popYn = true
+                    this.confirmPopShowYn = true
                     this.confirmText = '이메일 형식이 유효하지 않습니다.'
                 } else if(!this.regPhoneNumber(this.memPhone.trim())) {
-                    this.popYn = true
+                    this.confirmPopShowYn = true
                     this.confirmText = '전화번호 형식이 유효하지 않습니다.'
                 } else {
                     result = true
                 }
             }  else if (this.memEmail === '') {
-                this.popYn = true
+                this.confirmPopShowYn = true
                 this.confirmText = '이메일을 입력하세요.'
             } else {
-                this.popYn = true
+                this.confirmPopShowYn = true
                 this.confirmText = '전화번호를 입력하세요.'
             }
             return result

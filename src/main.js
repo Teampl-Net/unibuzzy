@@ -31,6 +31,7 @@ import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 
 import myObserver from './components/Tal_ScrollObserver.vue'
 
+import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import uploadFile from './assets/js/Tal_uploadFile'
@@ -60,6 +61,7 @@ app.component('myObserver', myObserver)
 app.component('gWhiteSelect', gWhiteSelect)
 app.use(webViewBridge)
 app.use(axiosFunction)
+app.use(htmlParser)
 
 app.use(store)
 app.use(uploadFile)

@@ -122,6 +122,8 @@ const isJsonString = (str) => {
           } else {
             router.go(-1)
           } */
+        } else if (message.type === 'pushmsg') {
+
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

@@ -5,9 +5,9 @@
       <div class="pushDetailTopArea">
         <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">{{pushDetail.title}}sss</p>
+          <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-          <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}aaa</p>
+          <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}</p>
           <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.changeText(pushDetail.creUserName) + ')'}}</p>
           <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.creDate).format('YYYY-MM-DD HH:mm')}}</p>
 
@@ -15,7 +15,7 @@
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="pushDetail.body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
+      <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
       <div class="detailPopUpBtnArea">
         <gBtnSmall btnTitle="바로가기" class="mright-05" style="height: 30px;" @click="goOk"/>
         <gBtnSmall btnTitle="닫기" class="mleft-05" style="height: 30px;" @click="goNo"/>
@@ -29,7 +29,8 @@ export default {
     return {
       loadYn: true,
       pushDetail: {},
-      targetKey: ''
+      targetKey: '',
+      body: ''
       // testTargetKey:1000002,
     }
   },
@@ -37,10 +38,12 @@ export default {
     detailVal: {}
   },
   methods: {
-    decodeContents (data) {
+    /* decodeContents (data) {
       // eslint-disable-next-line no-undef
-      return Base64.decode(data)
-    },
+      var changeText = Base64.decode(data)
+      // eslint-disable-next-line no-debugger
+      return changeText
+    }, */
     goOk () {
       this.openPushDetailPop()
     },
@@ -49,12 +52,12 @@ export default {
       // this.timeOut()
     },
     openPushDetailPop () {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetType = 'pushListAndDetail'
-      params.notiBridgeYn = true
-      params.targetKey = this.targetKey
-      this.$emit('openDetailPop', params)
+      var currentPage = this.$store.getters.hCPage
+      if ((currentPage === 0 || currentPage === undefined)) {
+        this.$emit('openDetailPop', { contentsKey: this.detailVal.data.contentsKey, targetKey: this.detailVal.data.contentsKey, targetType: 'pushDetail', value: this.pushDetail })
+      } else {
+        this.$emit('openDetailPop', { contentsKey: this.detailVal.data.contentsKey, targetKey: this.detailVal.data.contentsKey, targetType: 'pushListAndDetail', value: this.pushDetail })
+      }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     changeText (text) {
@@ -63,24 +66,26 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    async getContentsList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // param.baseContentsKey = this.detailVal.targetKey
+      param.contentsKey = 1001172
+      /* param.contentsKey = this.detailVal.data.targetKey */
+      param.contentsKey = this.detailVal.data.contentsKey
+      var resultList = await this.$getContentsList(param)
+      return resultList
     }
 
   },
   computed: {
 
   },
-  created () {
-      // this.pushDetail = this.detailVal.data
-    if (localStorage.getItem('systemName') === 'iOS') {
-      this.pushDetail = JSON.parse(this.detailVal).data
-
-      this.targetKey = this.pushDetail.targetKey
-      alert(this.pushDetail)
-
-    } else {
-      this.pushDetail = JSON.parse(this.detailVal).data
-      this.targetKey = this.pushDetail.targetKey
-    }
+  async created () {
+    this.body = this.detailVal.data.body
+    var resultList = await this.getContentsList()
+    this.pushDetail = resultList.content[0]
   }
 }
 </script>

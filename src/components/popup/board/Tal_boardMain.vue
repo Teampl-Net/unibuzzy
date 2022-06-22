@@ -116,6 +116,10 @@ export default {
     }
   },
   methods: {
+    async refresh () {
+      var result = await this.getContentsList()
+      this.mCabContentsList = result.content
+    },
     updateScroll () {
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryHeader')
