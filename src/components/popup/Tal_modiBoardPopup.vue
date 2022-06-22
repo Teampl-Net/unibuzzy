@@ -8,7 +8,8 @@
     <div class="itemWrite">
       <p class="textLeft font16 fl " style="width: 150px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div>
+      <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
+      <div class="fontBlack fr font16 inputBoxThema textLeft" style="margin-top: 10px;">자유게시판</div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
@@ -20,7 +21,7 @@
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
     <div v-if="functionPopShowYn" class="function" style="width: 80%; position: fixed; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
-      <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
+      <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
         <!-- <div class="itemWrite" style="width: 100%;">
           <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
@@ -46,7 +47,7 @@
             </div>
           </div>
         </div> -->
-      <div class="itemWrite">
+      <!-- <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">작성자 명</p>
         <div class="toggleInputWrap">
           <div style= "width: 100px; height: 30px; border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
@@ -54,7 +55,7 @@
             <div class= "toggleBtn" :class="{selecWriterShow: blindYn === true }" @click="blindYn = true">익명</div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
@@ -64,7 +65,7 @@
           </label>
         </div>
       </div>
-      <div class="itemWrite">
+      <!-- <div class="itemWrite">
         <p style = "width: 150px;" class="textLeft font16 fl toggleLine">파일 업로드</p>
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="fileYnInput" id="toggle2" :checked="fileYnInput === true" hidden>
@@ -72,7 +73,7 @@
             <span class="toggleButton"></span>
           </label>
         </div>
-      </div>
+      </div> -->
       </div>
       <!-- <div style="padding: 0 8px; margin-top: 30px;">
         <div @click="nextStep" class="creChanBigBtn">다음</div>
@@ -214,7 +215,8 @@ export default {
       selectShareList:[],
       selectItemList:[],
 
-      okFunctionList:'작성자명/댓글지원O/파일업로드O',
+      // okFunctionList:'작성자명/댓글지원O/파일업로드O',
+      okFunctionList:'댓글 지원 O',
 
       writePermissionAllYn: true,
       readPermissionAllYn: true,
@@ -261,9 +263,9 @@ export default {
       this.boardName = this.$changeText(data.mCabinet.cabinetNameMtext)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
-      if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
+      // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
       if(data.mCabinet.replyYn === 1){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
-      if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
+      // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
       if(data.mCabinet.mShareItemList.length > 0) {
         if(data.mCabinet.mShareItemList[0].accessKind === 'T'){
           this.changeShareType('all')
