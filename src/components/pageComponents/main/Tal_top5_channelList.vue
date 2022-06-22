@@ -1,5 +1,5 @@
 <template>
-  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" :activeTabList="this.activeTabList" />
+  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
   <gActiveBar :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       moreLink: 'subs',
-      activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
+      activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       chanList: {}
     }
@@ -78,6 +78,9 @@ export default {
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
+      } else if (this.viewTab === 'mychannel') {
+        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        paramMap.set('followerType', 'A')
       }
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
