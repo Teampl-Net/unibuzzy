@@ -43,6 +43,8 @@ export default {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'all') {
       this.$refs.activeBar.switchtab(1)
+    } else if (this.viewTab === 'mychannel') {
+      this.$refs.activeBar.switchtab(2)
     }
   },
   async created () {
