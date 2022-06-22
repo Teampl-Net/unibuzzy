@@ -5,10 +5,12 @@
       <div class="pushDetailTopArea">
         <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
+          <p class=" font18 fontBold commonColor">{{pushDetail.title}}sss</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-          <p class="font12 fl lightGray">{{this.changeText(pushDetail.title)}}</p>
+          <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}aaa</p>
+          <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.changeText(pushDetail.creUserName) + ')'}}</p>
           <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(JSON.parse(this.detailVal).sendTime).format('YYYY-MM-DD HH:mm')}}</p> -->
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
@@ -68,9 +70,13 @@ export default {
 
   },
   created () {
+      // this.pushDetail = this.detailVal.data
     if (localStorage.getItem('systemName') === 'iOS') {
       this.pushDetail = JSON.parse(this.detailVal).data
+
       this.targetKey = this.pushDetail.targetKey
+      alert(this.pushDetail)
+
     } else {
       this.pushDetail = JSON.parse(this.detailVal).data
       this.targetKey = this.pushDetail.targetKey
