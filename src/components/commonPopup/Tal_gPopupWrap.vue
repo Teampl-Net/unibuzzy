@@ -157,7 +157,6 @@ export default {
     }
   },
   methods: {
-
     openChannelItem (data) {
       // this.itemTitle = item
       this.openChanMenuYn = false
