@@ -1,7 +1,8 @@
+
 <template>
-  <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
-    <!-- <div class="pageHeader pushListCover"> -->
-    <div id="pageHeader" class="pushListCover" :class="{'headroom--unpinned': this.scrolledYn === true }" v-on="handleScroll" >
+  <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
+
+    <div class="pageHeader pushListCover">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -9,7 +10,6 @@
       <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
     <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
     </div>
-    <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
     <!-- <div class="stickerWrap">
       <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
         <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -18,12 +18,11 @@
 
       </div>
     </div> -->
-    <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 150px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
     <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
-    <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-    </div>
-  <!-- </div> -->
+  <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
+</div>
 </template>
 
 <script>
@@ -45,17 +44,8 @@ export default {
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {},
-    pushListAndDetailYn: {},
+    notiTargetKey: {},
     propData: {}
-  },
-  updated() {
-    alert(true)
-    // eslint-disable-next-line no-unused-vars
-    this.box = document.getElementById('pushListWrap') // 이 dom scroll 이벤트를 모니터링합니다
-    this.box.addEventListener('scroll', this.handleScroll)
-    this.box.addEventListener('mousewheel', e => {
-      this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
-    })
   },
   async created() {
     if (this.propData) {
@@ -89,12 +79,12 @@ export default {
       this.$refs.activeBar.switchtab(3)
     }
 
+    // this.$store.commit('updateStack', [0])
+
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    if (this.pushListAndDetailYn) {
-      var propObj = this.propData
-      propObj.targetType = 'pushDetail'
-      this.openPop(propObj)
+    if (this.notiTargetKey) {
+      this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
     }
   },
   unmounted () {
@@ -102,7 +92,6 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-
     currentPage () {
     },
     commonListData () {
@@ -135,9 +124,7 @@ export default {
   },
   data () {
     return {
-      scrollDirection: null,
-      box: null,
-      scrolledYn: false,
+      // scrolledYn: false,
       scrollPosition: 0,
       offsetInt: 0,
       endListYn: false,
@@ -162,42 +149,23 @@ export default {
     }
   },
   methods: {
-    handleScroll() {
-      alert('scroll')
-      var blockBox = document.getElementById('pageHeader')
-      if (this.box.scrollTop > this.scrollPosition) {
-        this.scrollDirection = 'down'
-      } else if (this.box.scrollTop < this.scrollPosition) {
-        this.scrollDirection = 'up'
-      }
-      this.scrollPosition = this.box.scrollTop
-
-      if (this.scrollDirection === 'down' && this.scrollPosition > 0) {
-        this.scrolledYn = true;
-        // move up!
-      } else if (this.scrollDirection === 'up' && this.scrollPosition <= 0) {
-        this.scrolledYn = false;
-      }
-      console.log('##############')
-      console.log(this.scrollDirection)
-      // if (this.scrollPosition < window.scrollY && 0 < window.scrollY) {
-      //   console.log("up")
-      //   this.scrolledYn = true;
-      //   // move up!
-      // }
-      // if (this.scrollPosition > window.scrollY) {
-      //   console.log("down")
-      //   this.scrolledYn = false;
-      //   // move down
-      // }
-      // this.scrollPosition = window.scrollY;
-    },
+    // handleScroll() {
+    //   if (this.scrollPosition < window.scrollY && 0 < window.scrollY) {
+    //     this.scrolledYn = true;
+    //     // move up!
+    //   }
+    //   if (this.scrollPosition > window.scrollY) {
+    //     this.scrolledYn = false;
+    //     // move down
+    //   }
+    //   this.scrollPosition = window.scrollY;
+    // },
     onRefresh () {
       if (this.scrollPosition < 1) {
         this.$router.go(0)
       }
     },
-    currentScroll(value) {
+    currentScroll (value) {
       this.scrollPosition = value
     },
     async refreshList () {
@@ -217,23 +185,15 @@ export default {
       this.endList = false
     },
     async recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
+      if (JSON.parse(e.data).type === 'pushmsg') {
+        var target = JSON.parse(e.data).pushMessage
+        if (JSON.parse(target).data.targetKind === 'CONT') {
+          this.refreshList()
         }
-        if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
-            this.refreshList()
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     async loadMore (pageSize) {
+      console.log('실행' + this.offsetInt)
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
@@ -399,17 +359,14 @@ export default {
 .headroom--unpinned {
     transform: translateY(-100%);
 }
-.pushListCover{height: 132px; margin-bottom: 1rem; z-index: 1; width: calc(100% - 0.75rem); position: fixed; padding-right: 48px; }
+.pushListCover{height: 132px; margin-bottom: 1rem; z-index: 1; width: 100%;}
 
 .stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
+
 .popHeight{
-  margin-top: 150px;
-  height: calc(100% - 150px);
-}
-/* .popHeight{
   padding-right: 0; padding-left: 0;
   height: calc(100vh - 35px) !important;
-} */
+}
 </style>
