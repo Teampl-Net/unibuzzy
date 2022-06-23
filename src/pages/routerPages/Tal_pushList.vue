@@ -19,7 +19,7 @@
 
         </div>
       </div> -->
-        <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 150px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
@@ -430,9 +430,9 @@ export default {
   height: calc(100vh - 35px) !important;
 } */
 
-.pushListHeader {
+/* .pushListHeader {
     position: absolute;
-    /* padding: 0px 1.5rem; */
+
     top: 0;
     left: 0;
     will-change: transform;
@@ -443,6 +443,6 @@ export default {
 }
 .pushListHeader--unpinned {
     transform: translateY(-100%);
-}
+} */
 
 </style>

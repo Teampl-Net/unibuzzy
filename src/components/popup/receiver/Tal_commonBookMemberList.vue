@@ -120,6 +120,10 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
+            this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
+            // debugger
+        },
+        dispNameChangeUserName(){
             if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {
                 if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
@@ -129,7 +133,6 @@ export default {
                     }
                 }
             }
-            // debugger
         },
         async getFollowerList () {
             var paramMap = new Map()
@@ -141,6 +144,7 @@ export default {
             })
             console.log(result)
             this.memberList = result.data.content
+            this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
         },
         changeEdit () {
             if(this.editYn) {

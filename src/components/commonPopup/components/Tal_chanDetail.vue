@@ -163,11 +163,14 @@ export default {
         // this.$emit('changeFollowYn', this.followYn)
       } else {
         result = await this.$changeFollower(param, 'save')
+
         this.followYn = true
       }
+      console.log(result.data)
       if (result) {
         this.$emit('changeFollowYn', this.followYn)
         //         this.getChanDetail()
+        this.errorMsg = '구독되었습니다.'
       } else {
         this.errorPopYn = true
       }

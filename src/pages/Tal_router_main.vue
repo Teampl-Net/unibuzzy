@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P listRefresh" > <!-- v-if="notiDetailShowYn" -->
+  <div class="w-100P h-100P listRefresh"> <!-- v-if="notiDetailShowYn" -->
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">

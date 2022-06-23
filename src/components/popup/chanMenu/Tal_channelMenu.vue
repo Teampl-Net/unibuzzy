@@ -12,7 +12,7 @@
   <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
 
     <div class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
-      <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 관리자 관리 </p>
+      <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
     </div>
 
     <div class="fl" style="width:100%">

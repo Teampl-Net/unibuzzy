@@ -12,6 +12,9 @@
             <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
             <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
             <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            <p style="position:relative; top:0; right: 0;" v-if="alim.rUserCount === 1">나에게만</p>
+            <p style="position:relative; top:0; right: 0;" v-else-if="alim.rUserCount > 1">여러명에게</p>
+            <p v-else>전체에게</p>
           </div>
         </div>
         <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
@@ -169,7 +172,7 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
       // eslint-disable-next-line no-debugger
-      debugger
+
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
       // console.log(this.alimDetail)

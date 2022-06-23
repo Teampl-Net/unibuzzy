@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100vh; overflow:auto">
+  <div class="w-100P" style=" height: 100vh; overflow:auto" id="testArea">
     <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
@@ -43,7 +43,7 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div id="textMsgBox" class="formCard" @click="test" v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
                 <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
@@ -156,6 +156,9 @@ export default {
     }
   },
   methods: {
+    test(){
+
+    },
     changeTab (tab) {
       this.viewTab = tab
     },
@@ -227,6 +230,7 @@ export default {
       this.formEditorShowYn = false
     },
     setParamInnerText (innerText) {
+      alert(true)
       if (innerText !== undefined && innerText !== null && innerText !== '') {
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerText
@@ -260,7 +264,7 @@ export default {
 
       }
       innerHtml = targetMsgDiv.innerHTML
-      
+
 
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
@@ -454,7 +458,7 @@ export default {
 .activeColor p{color: #6768A7!important;}
 .editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
-.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
+.writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 600px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
 .paperBackground{width: 100%; height: calc(100% - 10rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
