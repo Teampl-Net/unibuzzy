@@ -1,5 +1,6 @@
 <template>
     <div style="padding-bottom: 60px">
+    <!-- <pushPop :detailVal='dummy' @closePushPop="closePushPop" /> -->
       <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
@@ -21,7 +22,9 @@
       <div class="subPaddingWrap">
         <table>
           <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr>
-          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr>
+          <!-- <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr> -->
+          <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
+          <!-- <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat('2021-06-22 14:22')}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th colspan="2">이용약관</th></tr>
           <tr>
@@ -55,6 +58,7 @@ import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop.vue'
 import settingAlim from '../../components/pageComponents/myPage/Tal_SettingAlimDetail.vue'
+import pushPop from '../../components/popup/Tal_pushDetailPopup.vue'
 
 export default {
   name: 'myPage',
@@ -62,7 +66,8 @@ export default {
     userItem,
     logoutPop,
     policyPop,
-    settingAlim
+    settingAlim,
+    pushPop
   },
   data () {
     return {
@@ -76,19 +81,21 @@ export default {
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
-      settingAlimPopYn: false
+      settingAlimPopYn: false,
+      // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
   created () {
     this.getUserInform()
+
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', '설정')
+
     /* var history = localStorage.getItem('popHistoryStack').split('$#$')
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
   },
-
   mounted () {
     this.$emit('closeLoading')
   },
@@ -124,10 +131,12 @@ export default {
       if (this.userInfo.userDispMtext); else {
         if (this.userInfo.userNameMtext) { this.userInfo.userDispMtext = this.userInfo.userNameMtext } else { this.userInfo.phoneLast = '등록된 이름이 없습니다.' }
       }
+      // console.log(this.userInfo.creDate)
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
-    }
+    },
+
   }
 }
 </script>

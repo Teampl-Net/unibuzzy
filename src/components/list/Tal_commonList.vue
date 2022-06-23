@@ -46,6 +46,7 @@
           <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
           </div>
       </template>
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
   </div>
 </template>
 <script>
@@ -183,7 +184,7 @@ export default {
       }
     },
     async loadMore () {
-      console.log(this.contentsList.length - 4)
+
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

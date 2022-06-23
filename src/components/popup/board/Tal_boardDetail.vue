@@ -9,7 +9,7 @@
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray">{{this.changeText(alim.cabinetNameMtext)}}</p>
+            <p class="font12 fl lightGray">{{this.changeText(alim.cabinetNameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
             <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
           </div>
         </div>
@@ -191,7 +191,8 @@ export default {
 .boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 70px; width: 100vw; background: rgb(236, 230, 204); height: calc(100vh);}
 .pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
-.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
+/* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */
+.pushDetailHeaderTextArea{width: 100%; cursor: pointer; float: left;margin-top: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; height: 30px;}

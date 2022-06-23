@@ -78,7 +78,6 @@
 // import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
 // import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
-// import pushPop from '../../../components/popup/Tal_pushDetailePopup.vue'
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../../components/unit/formEditor/Tal_formEditor.vue'
 import selectReceivPop from '../../../components/popup/receiver/Tal_selectBookList.vue'

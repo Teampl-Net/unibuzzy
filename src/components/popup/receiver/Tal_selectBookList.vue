@@ -137,7 +137,6 @@ export default {
     },
     addMemberList (obj) {
       // this.selectedMemberList.unshift(obj)
-
       this.selectReceivers.unshift(obj)
     },
 

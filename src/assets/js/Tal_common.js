@@ -4,6 +4,7 @@
 // 당해: 월, 일, 시, 분
 // 그 외: 년, 월, 일, 시, 분
 const methods = {
+
   parseHTML (html) {
     var t = document.createElement('template')
     t.innerHTML = html
@@ -13,18 +14,33 @@ const methods = {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
     var toDate = new Date()
-
-    if (this.$convertDate(compareDate, 'yyyy') === this.$convertDate(toDate, 'yyyy')) {
-      if (this.$convertDate(compareDate, 'MM') === this.$convertDate(toDate, 'MM')) {
-        if (this.$convertDate(compareDate, 'DD') === this.$convertDate(toDate, 'DD')) {
-          return this.$convertDate(compareDate, 'HHmmss')
+    var format = ''
+    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
+      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
+        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+          // 년도 월 일 이 같으면 만든 시간, 분
+          format = 'HH:mm'
+          // format = 'HH시 mm분'
+        } else {
+          //같은 년도, 월이 같으면
+          format = 'MM-DD'
+          // format = 'MM월 DD일'
         }
       } else {
-        return this.$convertDate(compareDate, 'MMDDHHmmss')
+        // 년도만 같으면
+        format = 'MM-DD'
+        // format = 'MM월 DD일'
       }
     } else {
-      if (viewType === 'detail') { return this.$convertDate(compareDate, 'yyyyMMDDHHmmss') } else if (viewType === 'list') { return this.$convertDate(compareDate, 'yyyyMMDD') }
+      format = 'YYYY-MM-DD'
+      // if (viewType === 'detail') {
+      //   return this.$dayjs(compareDate).format('yyyyMMDDHHmmss')
+      // } else if (viewType === 'list') {
+      //   return this.$dayjs(compareDate).format('yyyyMMDD')
+      // }
     }
+    if (mustTimeShowYn) format += ' HH:MM'
+    return this.$dayjs(compareDate).format(format)
     //   if (compareDate === toDate) {
     //     return changeDateHM(compareDate)
     //   } else {
@@ -32,7 +48,6 @@ const methods = {
   //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
   //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
   },
-
   extractYear (date) {
     return new Date(+new Date() + 3240 * 10000).toISOString().split('T')[1]
   },
@@ -257,7 +272,7 @@ const methods = {
 
 }
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.config.globalProperties.$changeDateFormat = methods.changeDateFormat
     Vue.config.globalProperties.$convertDate = methods.convertDate
     Vue.config.globalProperties.$extractYear = methods.extractYear

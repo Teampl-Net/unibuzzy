@@ -254,7 +254,6 @@ export default {
       param.adminYn = true
       var resultList = await this.$getCabinetDetail(param)
 
-      debugger
       this.settingCabDetail(resultList)
     },
     settingCabDetail (data) {
@@ -300,7 +299,7 @@ export default {
               if (data.mCabinet.cabShareList[s].accessKind === 'C') {
                 tempList.push({cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext)})
               } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
-                debugger
+
                 var uName = data.mCabinet.cabShareList[s].userDispMtext
                 if (!uName) {
                   uName = data.mCabinet.cabShareList[s].userNameMtext

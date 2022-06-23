@@ -6,7 +6,8 @@
         <p>추가 게시판 유형</p>
     </div>
     <div class="listArea" style="padding-top:10px;">
-        <div v-for="(data, index) in chanInfo" :key="index" @click="selectItem(data.groupName,data.idNum)" class="channelMenuItem" >
+        <!-- <div v-for="(data, index) in chanInfo" :key="index" @click="selectItem(data.groupName,data.idNum)" class="channelMenuItem" :class="{noneSelected:index !== selectedItemNum}"> -->
+          <div v-for="(data, index) in chanInfo" :key="index" @click="selectItem(data.groupName,data.idNum)" class="channelMenuItem">
                 <div class="fl" style="width:50px; height: 50px;"> <img src="../../assets/images/common/Tal_checkImage.svg" style="width:1rem" v-if="selectedItemNum === data.idNum"></div>
                 <div class="fl chanImg" ><img src="../../assets/images/main/main_subscriber.png" /></div>
 
@@ -43,8 +44,8 @@ export default{
               {groupName: '대상지정 게시판', idNum: 3},
               {groupName: '익명 게시판', idNum: 4}
           ],
-      selectedItemNum: null,
-      explainText: '',
+      selectedItemNum: 2,
+      explainText: '구독자라면 누구나 자유롭게 소통하는 게시판입니다. <br>' +'*게시글 권한 대상 : 모두 ',
       selectedItemTitle: ''
 
       // list: [
@@ -85,32 +86,33 @@ computed: {
       this.$emit('addFinish', obj)
     },
     selectItem (name, idNum) {
-      this.selectedItemNum = idNum
-      this.selectedItemTitle = name
 
-      switch (this.selectedItemNum) {
+      // this.selectedItemNum = idNum
+      // this.selectedItemTitle = name
 
-        case 0 : //공지게시판
-          this.explainText = '새 소식에 대한 공지를 올립니다. <br>' +
-                    '*게시글 권한 대상 : 매니저 '
-          break
-        case 1 : //문의게시판
-          this.explainText = '구독자가 문의를 할 때, 그에 대한 답을 줄 수 있습니다. <br>' +
-                    '*게시글 권한 대상 : 매니저 '
-          break
-        case 2 : //자유게시판
-          this.explainText = '구독자라면 누구나 자유롭게 소통하는 게시판입니다. <br>' +
-                    '*게시글 권한 대상 : 모두 '
-          break
-        case 3 : //대상지정 게시판
-          this.explainText = '대상을 지정해 업무를 지정하고, 대상자에게 지정 알림을 보냅니다. <br>' +
-                    '*게시글 권한 대상 : 대상지정 '
-          break
-        case 4 : // 익명게시판
-          this.explainText = '구독자가 익명으로 채널 및 타 구독자와 소통합니다. <br>' +
-                    '*게시글 권한 대상 : 모두 '
-          break
-      }
+      // switch (this.selectedItemNum) {
+
+      //   case 0 : //공지게시판
+      //     this.explainText = '새 소식에 대한 공지를 올립니다. <br>' +
+      //               '*게시글 권한 대상 : 매니저 '
+      //     break
+      //   case 1 : //문의게시판
+      //     this.explainText = '구독자가 문의를 할 때, 그에 대한 답을 줄 수 있습니다. <br>' +
+      //               '*게시글 권한 대상 : 매니저 '
+      //     break
+      //   case 2 : //자유게시판
+      //     this.explainText = '구독자라면 누구나 자유롭게 소통하는 게시판입니다. <br>' +
+      //               '*게시글 권한 대상 : 모두 '
+      //     break
+      //   case 3 : //대상지정 게시판
+      //     this.explainText = '대상을 지정해 업무를 지정하고, 대상자에게 지정 알림을 보냅니다. <br>' +
+      //               '*게시글 권한 대상 : 대상지정 '
+      //     break
+      //   case 4 : // 익명게시판
+      //     this.explainText = '구독자가 익명으로 채널 및 타 구독자와 소통합니다. <br>' +
+      //               '*게시글 권한 대상 : 모두 '
+      //     break
+      // }
     }
   }
 
@@ -188,5 +190,8 @@ computed: {
     /* color: black !important; */
     font-weight: bold;
     background-color: #6768a710;
+}
+.noneSelected{
+  background-color:#cccccc80
 }
 </style>

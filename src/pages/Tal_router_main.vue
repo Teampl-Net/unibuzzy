@@ -207,6 +207,7 @@ export default {
   z-index: 999999;
   right: 0;
 }
+
 .show_view-enter {
   animation: show_view-dialog-fade-in 0.5s ease;
 }

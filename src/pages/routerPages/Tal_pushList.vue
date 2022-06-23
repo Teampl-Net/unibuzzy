@@ -103,6 +103,7 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+
     currentPage () {
     },
     commonListData () {
@@ -118,7 +119,7 @@ export default {
       // var pageHeader = document.querySelector('#pageHeader')
       // var pageHeader = this.$refs.pushListHeader
       return {
-        '--headerHeight' : '-' + (this.headerTop - 20)  + 'px' 
+        '--headerHeight' : '-' + (this.headerTop - 20)  + 'px'
       }
     },
     historyStack () {
@@ -312,10 +313,16 @@ export default {
       } else if (this.viewTab === 'S') {
         param.findActYn = true
         param.findActStarYn = true
-      } else if (this.viewTab === 'R') {
-        param.findLogReadYn = false
+      // } else if (this.viewTab === 'R') {
+      //   param.findLogReadYn = false
+      // }
+      } else if (this.viewTab === 'M') {
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-      var resultList = await this.$getContentsList(param)
+
+      var result = await this.$getContentsList(param)
+      // console.log(result)
+      var resultList =result
       return resultList
     },
     async requestSearchList (param) {
@@ -379,6 +386,32 @@ export default {
       this.commonListData = resultList.content
       this.findPopShowYn = false
     }
+  },
+  data () {
+    return {
+      offsetInt: 0,
+      endListYn: false,
+      scrollPosition: 0,
+      loadVal: true,
+      pageHistoryName: '',
+      findPopShowYn: false,
+      subHistoryList: [],
+      stickerList: [
+        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
+        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
+        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
+      ],
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      viewTab: 'N',
+      commonListData: [],
+      findKeyList: {},
+      resultSearchKeyList: [],
+      refreshYn: true
+    }
   }
 }
 </script>
@@ -400,7 +433,7 @@ export default {
 .pushListHeader {
     position: absolute;
     /* padding: 0px 1.5rem; */
-    top: 0; 
+    top: 0;
     left: 0;
     will-change: transform;
     transition: transform 1s linear;

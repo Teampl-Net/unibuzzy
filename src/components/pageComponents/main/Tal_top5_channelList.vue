@@ -37,6 +37,7 @@ export default {
   data () {
     return {
       moreLink: 'subs',
+      // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       chanList: {}
@@ -78,7 +79,7 @@ export default {
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
-      } else if (this.viewTab === 'mychannel') {
+      }else if (this.viewTab === 'mychannel') {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
         paramMap.set('followerType', 'A')
       }

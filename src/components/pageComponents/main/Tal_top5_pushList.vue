@@ -20,7 +20,8 @@ export default {
     return {
       mainYn: true,
       moreLink: 'push',
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       listLeloadYn: true
     }
@@ -65,6 +66,7 @@ export default {
         params.alimTabType = this.viewTab
       } else {
         params.targetType = 'pushDetail'
+        params.value = value
       }
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       // if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
@@ -93,8 +95,12 @@ export default {
         param.findActYn = true
         param.findActStarYn = true
       }
-      if (this.viewTab === 'R') {
-        param.findLogReadYn = false
+      // if (this.viewTab === 'R') {
+      //   param.findLogReadYn = false
+      // }
+      if (this.viewTab === 'M') {
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        console.log(param)
       }
       resultData = await this.$getContentsList(param)
       return resultData

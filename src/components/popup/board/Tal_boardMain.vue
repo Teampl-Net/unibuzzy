@@ -31,14 +31,17 @@
 
     <div class="" id="boardItemBox" style=" padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+
       <transition name="showModal">
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
+
       <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
       <div class=" " id=""  style="margin-top: 0.8rem; height: calc(100% - 20px)">
         <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
       </div>
     </div>
+
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
@@ -61,9 +64,10 @@ export default {
     var result = await this.getContentsList()
     this.mCabContentsList = result.content
     await this.getCabinetDetail()
-    console.log(this.propData)
+    console.log(this.mCabContentsList)
     // eslint-disable-next-line no-debugger
     // debugger
+    // cothis.mCabContentsList
   },
   mounted () {
   },
@@ -195,6 +199,7 @@ export default {
       } else {
         pageSize = 10
       }
+      console.log(this.findKeyList);
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
           param.title = this.findKeyList.searchKey
@@ -217,6 +222,8 @@ export default {
       } else if (this.viewTab === 'R') {
         param.findLogReadYn = false
       }
+      // console.log("@@@@@@@@@@@@@@@@@@@");
+      // console.log(param);
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-debugger
 
@@ -256,6 +263,7 @@ export default {
       this.mCabContentsList = resultList.content
     },
     async requestSearchList (param) {
+      console.log(param);
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -267,8 +275,11 @@ export default {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
         }
       }
+
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      await this.getContentsList()
+      var result = await this.getContentsList()
+      this.mCabContentsList = result.content
+      this.findPopShowYn = false
     },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object

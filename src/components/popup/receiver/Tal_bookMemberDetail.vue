@@ -69,6 +69,8 @@ export default {
         excelPopYn:{}
     },
     created(){
+        // console.log('##memberDetail##')
+        // console.log(this.propData)
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             this.memName = this.$changeText(this.propData.userDispMtext)
             this.memEmail= this.propData.userEmail
@@ -134,31 +136,60 @@ export default {
         },
         async saveBookMember(){
             var checkYn = await this.checkParam()
+            console.log( this.propData);
             if(checkYn) {
-                var param = new Object()
-                var mCabContents = new Object()
+                if(this.propData.currentCabinetKey){
+                    var param = new Object()
+                    var mCabContents = new Object()
 
-                mCabContents.jobkindId = 'USER'
-                mCabContents.cabinetKey = this.propData.currentCabinetKey
-                // param.targetKey = this.propData.currentTeamKey
-                if (this.propData.mccKey) {
-                    mCabContents.mccKey = this.propData.mccKey
-                    mCabContents.targetKey = this.propData.targetKey //update
-                }
-                mCabContents.inEmail = this.memEmail
-                mCabContents.inPhone = this.memPhone
-                mCabContents.inUserName = this.memName
-                param.mCabContents = mCabContents
-                var result = await this.$saveMCabContents(param)
-                if (result.data.result === true) {
-                    if (result.data.message === 'OK') {
-                        this.$emit('closeXPop', true)
-                    } else {
-                        this.confirmPopShowYn = true
-                        this.confirmText = result.data.message
+                    mCabContents.jobkindId = 'USER'
+                    mCabContents.cabinetKey = this.propData.currentCabinetKey
+                    // param.targetKey = this.propData.currentTeamKey
+                    if (this.propData.mccKey) {
+                        mCabContents.mccKey = this.propData.mccKey
+                        mCabContents.targetKey = this.propData.targetKey //update
                     }
+                    mCabContents.inEmail = this.memEmail
+                    mCabContents.inPhone = this.memPhone
+                    mCabContents.inUserName = this.memName
+                    param.mCabContents = mCabContents
+                    var result = await this.$saveMCabContents(param)
+                    if (result.data.result === true) {
+                        if (result.data.message === 'OK') {
+                            this.$emit('closeXPop', true)
+                        } else {
+                            this.confirmPopShowYn = true
+                            this.confirmText = result.data.message
+                        }
+                    }
+                }else{
+                    await this.saveFollower()
+
                 }
             }
+        },
+        async saveFollower(){
+            var param = {}
+            var mCabContents = new Object()
+            mCabContents.teamKey = this.propData.currentTeamKey
+
+            if (this.propData.followerKey) {
+                mCabContents.followerKey = this.propData.followerKey
+                // mCabContents.followerType = this.propData.followerType //update
+            }
+
+            mCabContents.inEmail = this.memEmail
+            mCabContents.inPhone = this.memPhone
+            mCabContents.inUserName = this.memName
+
+            param.mCabContents = mCabContents
+             var result = await this.$commonAxiosFunction({
+                url: '/tp.saveFollower',
+                param: param
+            })
+
+            console.log(result)
+
         },
         checkParam(){
             var result = false

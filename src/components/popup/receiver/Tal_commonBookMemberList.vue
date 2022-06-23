@@ -68,22 +68,27 @@ export default {
         history.push(this.popId)
         this.$store.commit('updateStack', history)
 
-        await this.getBookMemberList()
-        if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
-            this.selectedMemberList = this.parentSelectList.memberList
-        }
+        if(this.propData.managerOpen === null || this.propData.managerOpen === undefined || this.propData.managerOpen === ''){
 
-       // this.memberList = this.propData.mCabUserList
-        if (this.memberList) { // dispName이 없을시 userName으로 대체
-            for (var i =0; i < this.memberList.length; i ++) {
-                if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+            await this.getBookMemberList()
+            if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
+                this.selectedMemberList = this.parentSelectList.memberList
+            }
 
-                } else {
-                    this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+        // this.memberList = this.propData.mCabUserList
+            if (this.memberList) { // dispName이 없을시 userName으로 대체
+                for (var i =0; i < this.memberList.length; i ++) {
+                    if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+                    } else {
+                        this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+                    }
                 }
             }
+            this.setParentSelectList()
+        }else{
+            await this.getFollowerList()
         }
-        this.setParentSelectList()
         // this.memberList = this.listData
     },
     methods:{
@@ -125,6 +130,17 @@ export default {
                 }
             }
             // debugger
+        },
+        async getFollowerList () {
+            var paramMap = new Map()
+            paramMap.set('teamKey', this.propData.currentTeamKey)
+            paramMap.set('followerType', 'M')
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getFollowerList',
+                param: Object.fromEntries(paramMap)
+            })
+            console.log(result)
+            this.memberList = result.data.content
         },
         changeEdit () {
             if(this.editYn) {

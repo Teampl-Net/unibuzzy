@@ -1,16 +1,18 @@
 <template>
   <div class="commonPopHeaerWrap">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
-    <img src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
+    <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
+    <img v-else src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')}">{{headerTitle}}</span>
 
     <gBtnSmall v-if="this.headerTitle === '알림 작성' || this.headerTitle === '게시판 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
-
     <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="this.$emit('openMenu')">
-      <img src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
+      <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
+
+      <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
   </div>
 </template>
@@ -22,7 +24,8 @@ export default {
     headerTitle: {},
     chanAlimListTeamKey: {},
     subTitlebtnList: {},
-    thisPopN: {}
+    thisPopN: {},
+    bgblack:{}
   },
   methods: {
     closeXPop () {
@@ -36,6 +39,14 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  created (){
+console.log(this.bgblack);
+  },
+  watch:{
+    bgblack(){
+      console.log('s');
     }
   }
 }

@@ -1,14 +1,19 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
 
-<div class="channelMenuWrap" :class="{editWrap: editYn === true }">
+<div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
       <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
   </div>
+
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
   <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
+
+    <div class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
+      <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 관리자 관리 </p>
+    </div>
 
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
@@ -32,10 +37,15 @@
       <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
     </div>
   </div>
-</div>
 
+
+
+</div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' />
+
+<!-- <selectBookList :chanInfo="propData" :propData="propData" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" /> -->
+<selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' />
 </template>
 <script>
 /* eslint-disable */
@@ -44,6 +54,7 @@
 import editChanMenu from '../Tal_channelMenuEditPopup.vue'
 import teamList from '../chanMenu/Tal_menuBookList.vue'
 import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
+import selectManagerList from '../receiver/Tal_selectManagerList.vue'
 
 export default {
   props:{
@@ -65,8 +76,9 @@ export default {
     }
   },
   async created () {
+    console.log(this.addChanList);
+    console.log(this.propData)
     // this.cabinetList = this.$groupDummyList()
-
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
     this.$store.commit('updateStack', history)
@@ -89,13 +101,55 @@ export default {
       cabinetList:[],
       menuHeight: null,
       boardDropDownYn:true,
-      groupDropDownYn:null
+      groupDropDownYn:null,
+      selectManagerListYn:false,
+
+      selectedList : [],
+      selectAdminList : []
     }
   },
-  components: {editChanMenu,teamList,menuBoardList,
+  components: {editChanMenu,teamList,menuBoardList,selectManagerList
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    setSelectedList(datas){
+      var data = datas.data
+
+      console.log(data);
+
+      this.selectManagerListYn = false // 선택창 닫기
+
+      if(data.bookList){
+        for (let i = 0; i < data.bookList.length; i++) {
+          var tempList ={}
+          tempList.accessKey  = data.bookList[i].cabinetKey
+          tempList.accessKind = 'C'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = data.bookList[i].shareSeq
+          this.selectAdminList.push(tempList)
+        }
+      }
+
+      if(data.memberList){
+
+        for (let i = 0; i < data.memberList.length; i++) {
+          var tempList ={}
+          tempList.accessKey  = data.memberList[i].userKey
+          tempList.accessKind = 'U'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = data.memberList[i].shareSeq
+          this.selectAdminList.push(tempList)
+        }
+      }
+
+      console.log(this.selectAdminList);
+    },
+    adminManagingClick(){
+      this.propData.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      this.propData.currentTeamKey = this.chanAlimListTeamKey
+      this.propData.managerOpen = true
+      this.selectManagerListYn = true
+    },
     closeEditPop () {
       // this.editPopYn = false
       this.goNo()
@@ -195,6 +249,10 @@ export default {
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
       this.$emit('openItem',params)
+    },
+    openPopup(data){
+      alert(data.targetType)
+      this.$emit('openPop',data)
     }
   }
 }

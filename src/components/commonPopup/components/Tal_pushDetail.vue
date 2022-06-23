@@ -68,6 +68,7 @@ export default {
     /* manageStickerPop */
   },
   async created () {
+
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
@@ -78,6 +79,7 @@ export default {
         bodyFullStr: '오류입니다.'
       }
     } */
+    console.log(this.alimDetail)
   },
   mounted () {
     this.changeMode()

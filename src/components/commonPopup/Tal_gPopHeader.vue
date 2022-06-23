@@ -5,10 +5,9 @@
         <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
           <img :src="value.icon" />
         </div>
+
         <span class="popHeaderTitleSpan">{{headerTitle}}</span>
-
         <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
-
         <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="this.$emit('openMenu')">
           <img src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
         </div>

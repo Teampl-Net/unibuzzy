@@ -5,11 +5,11 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
-      <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop"/>
+      <chanAlimList :ref="'gPopDetail'" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor'/>
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
@@ -24,7 +24,10 @@
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'  />
-      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
+
+      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem' @openPop="openPop"/>
+
+
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
       <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='params'/>
@@ -108,7 +111,9 @@ export default {
 
       // itemTitle: '',
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
-      receiverList: {}
+      receiverList: {},
+      bgblackYn : false
+
     }
   },
   props: {
@@ -157,6 +162,10 @@ export default {
     }
   },
   methods: {
+    bgcolor(data){
+      console.log(data);
+      this.bgblackYn = data
+    },
     openChannelItem (data) {
       // this.itemTitle = item
       this.openChanMenuYn = false
@@ -256,7 +265,11 @@ export default {
       } else if (this.targetType === 'editBookList') {
         this.headerTitle = '주소록 관리'
       } else if (this.targetType === 'bookMemberDetail') {
-        this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
+        if(target.currentCabinetKey){
+          this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
+        }else{
+          this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+        }
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시판 작성'
       } else if (this.targetType === 'boardDetail') {
@@ -359,7 +372,7 @@ export default {
                     this.$refs.boardMainPop.refreshList()
                   } else {
                     this.notiDetailShowYn = true
-                  }                
+                  }
                 } else {
                   this.notiDetailShowYn = true
                 }
@@ -394,4 +407,11 @@ export default {
 .dNone{display: none;}
 
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}
+fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 </style>

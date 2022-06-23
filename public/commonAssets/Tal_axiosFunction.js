@@ -9,10 +9,10 @@ axios.defaults.headers.common['Content-Type'] = 'application/json;'
 axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://localhost:19090'
-// axios.defaults.baseURL = 'http://192.168.0.27:19090'
-axios.defaults.baseURL = 'http://61.97.186.14:19090'
+axios.defaults.baseURL = 'http://192.168.0.27:19090'
+// axios.defaults.baseURL = 'http://61.97.186.14:19090'
 
-// axios.defaults.baseURL = 'http://localhost:19090'
+// axios.defaults.baseURL = 'http://192.168.0.29:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
@@ -117,6 +117,27 @@ const methods = {
     resultList = result
     return resultList
   },
+  // async getContentsList(inputParam) {
+  //   // eslint-disable-next-line no-new-object
+  //   var paramSet = new Object()
+  //   if (inputParam) {
+  //     paramSet = inputParam
+  //   }
+  //   paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+  //   var resultList = null
+  //   let config = {
+  //     onUploadProgress(progressEvent) {
+  //       var percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+  //       // execute the callback
+  //       onProgress(percentCompleted)
+  //       return percentage;
+  //     },
+  //   };
+  //   var response = await axios.post('/tp.getContentsList', paramSet, config)
+
+  //   resultList = response.data
+  //   return resultList
+  // },
   async getContentsList (inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()

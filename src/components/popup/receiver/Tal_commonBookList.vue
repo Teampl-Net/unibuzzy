@@ -82,6 +82,8 @@ export default {
         await this.getTeamCabList()
         this.changeSelectedList()
 
+        console.log(this.propData);
+
         // console.log(this.cabinetList)
         // this.cabinetList = this.listData
     },
@@ -124,7 +126,6 @@ export default {
         },
 
         changeSelectedList () {
-            debugger
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
                     for (var i = 0; i < this.cabinetList.length; i ++) {

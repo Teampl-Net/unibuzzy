@@ -8,6 +8,8 @@
               <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
               <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
+              <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
+              <p class="font12 fl lightGray">{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p>
               <p class="font12 fr lightGray">{{this.$dayjs(board.creDate).format('YYYY-MM-DD HH:mm')}}</p>
             </div>
         </div>

@@ -145,6 +145,9 @@ export default {
         //   this.adminYn = true
         // }
         }
+        var bgblackYn = true //chanItem.blackYn
+        this.$emit('bgcolor',bgblackYn)
+
       }
 
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
