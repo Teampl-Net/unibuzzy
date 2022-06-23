@@ -58,21 +58,21 @@ export default {
       this.contentsList = this.commonListData
     }
   },
-  updated () {
-    this.chanWrap.scrollTop = this.currentScroll
-  },
-  mounted () {
-    this.chanWrap = document.getElementById('chanWrap')
-    this.chanWrap.addEventListener('scroll', this.saveScroll)
-    if (this.mainYnProp === true) { this.mainYn = true }
-    var imgList = document.querySelectorAll('.bodyMinStr img')
-    for (var i = 0; i < imgList.length; i++) {
-      imgList[i].setAttribute('style', 'display: none')
-    }
-  },
-  unmounted () {
-    this.chanWrap.removeEventListener('scroll', this.saveScroll)
-  },
+  // updated () {
+  //   this.chanWrap.scrollTop = this.currentScroll
+  // },
+  // mounted () {
+  //   this.chanWrap = document.getElementById('chanWrap')
+  //   this.chanWrap.addEventListener('scroll', this.saveScroll)
+  //   if (this.mainYnProp === true) { this.mainYn = true }
+  //   var imgList = document.querySelectorAll('.bodyMinStr img')
+  //   for (var i = 0; i < imgList.length; i++) {
+  //     imgList[i].setAttribute('style', 'display: none')
+  //   }
+  // },
+  // unmounted () {
+  //   this.chanWrap.removeEventListener('scroll', this.saveScroll)
+  // },
   /* emits: ['goDetail'], */
   methods: {
     resizeText (text, name) {
