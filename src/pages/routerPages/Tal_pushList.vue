@@ -1,28 +1,31 @@
-
 <template>
-  <div id="wrapwrap" class="testt" style="padding-right: 0; padding-left: 0; height: 100%;">
-
-    <div class="pageHeader pushListCover">
-      <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-      <transition name="showModal">
-        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-      </transition>
-      <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-    <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
-    </div>
-    <!-- <div class="stickerWrap">
-      <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
-        <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
-          <p class="font12">{{value.stickerName}}</p>
-        </div>
-
+  <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
+    <!-- <div class="pageHeader pushListCover"> -->
+    <div style="width: 100%; height: 100%; position: relative; float: left; overflow: hidden scroll;">
+      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="{'pushListHeader--unpinned': this.scrolledYn, 'pushListHeader--pinned': !this.scrolledYn }" v-on="handleScroll" >
+        <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+        <transition name="showModal">
+          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        </transition>
+        <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
+        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
       </div>
-    </div> -->
-    <commonList @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
-    <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
+      <div id="wrapwrap" :style="calcHeaderHeight" class="testt" style="padding-right: 0; float: left; padding-left: 0; height: calc(100% - var(--headerHeight)); margin-top: var(--headerHeight);">
+      <!-- <div class="stickerWrap">
+        <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
+          <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
+            <p class="font12">{{value.stickerName}}</p>
+          </div>
 
-  <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
-</div>
+        </div>
+      </div> -->
+        <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 150px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+      <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
+
+      <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
+      </div>
+    </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -44,8 +47,16 @@ export default {
     routerReloadKey: {},
     readySearhList: {},
     chanDetailKey: {},
-    notiTargetKey: {},
+    pushListAndDetailYn: {},
     propData: {}
+  },
+  updated() {
+    // eslint-disable-next-line no-unused-vars
+    this.box = document.getElementById('pushListWrap') // 이 dom scroll 이벤트를 모니터링합니다
+    this.box.addEventListener('scroll', this.handleScroll)
+    this.box.addEventListener('mousewheel', e => {
+      this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+    })
   },
   async created() {
     if (this.propData) {
@@ -79,12 +90,12 @@ export default {
       this.$refs.activeBar.switchtab(3)
     }
 
-    // this.$store.commit('updateStack', [0])
-
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    if (this.notiTargetKey) {
-      this.openPop({ contentsKey: this.notiTargetKey, targetType: 'pushDetail', value: this.commonListData })
+    if (this.pushListAndDetailYn) {
+      var propObj = this.propData
+      propObj.targetType = 'pushDetail'
+      this.openPop(propObj)
     }
   },
   unmounted () {
@@ -103,6 +114,13 @@ export default {
     }
   },
   computed: {
+    calcHeaderHeight () {
+      // var pageHeader = document.querySelector('#pageHeader')
+      // var pageHeader = this.$refs.pushListHeader
+      return {
+        '--headerHeight' : '-' + (this.headerTop - 20)  + 'px' 
+      }
+    },
     historyStack () {
       return this.$store.state.historyStack
     },
@@ -124,7 +142,10 @@ export default {
   },
   data () {
     return {
-      // scrolledYn: false,
+      headerTop: 0,
+      scrollDirection: null,
+      box: null,
+      scrolledYn: false,
       scrollPosition: 0,
       offsetInt: 0,
       endListYn: false,
@@ -149,23 +170,29 @@ export default {
     }
   },
   methods: {
-    // handleScroll() {
-    //   if (this.scrollPosition < window.scrollY && 0 < window.scrollY) {
-    //     this.scrolledYn = true;
-    //     // move up!
-    //   }
-    //   if (this.scrollPosition > window.scrollY) {
-    //     this.scrolledYn = false;
-    //     // move down
-    //   }
-    //   this.scrollPosition = window.scrollY;
-    // },
+    handleScroll() {
+      var blockBox = document.getElementById('pageHeader')
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
+      this.scrollPosition = this.box.scrollTop
+      this.headerTop = this.scrollPosition
+      if (this.scrollDirection === 'down' && this.scrollPosition > 0) {
+        // alert(true)
+        this.scrolledYn = true;
+        // move up!
+      } else if (this.scrollDirection === 'up' && this.scrollPosition <= 145) {
+        this.scrolledYn = false;
+      }
+    },
     onRefresh () {
       if (this.scrollPosition < 1) {
         this.$router.go(0)
       }
     },
-    currentScroll (value) {
+    currentScroll(value) {
       this.scrollPosition = value
     },
     async refreshList () {
@@ -185,15 +212,23 @@ export default {
       this.endList = false
     },
     async recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        var target = JSON.parse(e.data).pushMessage
-        if (JSON.parse(target).data.targetKind === 'CONT') {
-          this.refreshList()
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
         }
+        if (message.type === 'pushmsg') {
+          if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
+            this.refreshList()
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
     async loadMore (pageSize) {
-      console.log('실행' + this.offsetInt)
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
@@ -349,24 +384,32 @@ export default {
 </script>
 
 <style scoped>
-.headroom {
-  will-change: transform;
-  transition: transform 200ms linear;
-}
-.headroom--pinned {
-    transform: translateY(0%);
-}
-.headroom--unpinned {
-    transform: translateY(-100%);
-}
-.pushListCover{height: 132px; margin-bottom: 1rem; z-index: 1; width: 100%;}
 
 .stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
-
 .popHeight{
+  margin-top: 150px;
+  height: calc(100% - 150px);
+}
+/* .popHeight{
   padding-right: 0; padding-left: 0;
   height: calc(100vh - 35px) !important;
+} */
+
+.pushListHeader {
+    position: absolute;
+    /* padding: 0px 1.5rem; */
+    top: 0; 
+    left: 0;
+    will-change: transform;
+    transition: transform 1s linear;
 }
+.pushListHeader--pinned {
+    transform: translateY(0%);
+}
+.pushListHeader--unpinned {
+    transform: translateY(-100%);
+}
+
 </style>

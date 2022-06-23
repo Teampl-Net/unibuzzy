@@ -37,7 +37,7 @@
   </div>
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-    <pushList ref="pushListCompo" :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.chanDetail.targetKey" />
+    <pushList ref="pushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" />
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
