@@ -1,7 +1,8 @@
 
 <template>
   <div id="boardListWrap" class="commonBoardListWrap">
-    <div class="commonListContentBox pushMbox" v-for="(board, index) in commonBoardListData" :key="index">
+    <template v-for="(board, index) in commonBoardListData" :key="index">
+      <div class="commonListContentBox pushMbox" v-if="board.bodyFullStr" >
         <div @click="goDetail(board)" class="pushDetailTopArea">
             <div class="">
               <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
@@ -10,7 +11,7 @@
               <p class="font12 fr lightGray">{{this.$dayjs(board.creDate).format('YYYY-MM-DD HH:mm')}}</p>
             </div>
         </div>
-        <div @click="goDetail(board)" class="font14 mbottom-05 bodyMinStr" v-html="setBodyLength(board.bodyMinStr)"></div>
+        <div @click="goDetail(board)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
         <div id="alimCheckArea">
           <div class="alimCheckContents">
             <!-- <div class="pushDetailStickerWrap">
@@ -19,7 +20,7 @@
               </div>
             </div> -->
 
-            <!-- <p v-show="board.bodyMinStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+            <!-- <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
             <div @click="changeAct(userDo, board.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
@@ -33,7 +34,8 @@
           </div>
         </div>
       </div>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
+    </template>
+    <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
 
   </div>
 </template>
@@ -163,7 +165,7 @@ export default {
 }
 </script>
 <style scoped>
-.bodyMinStr {
+.bodyFullStr {
   max-height: 400px;
   overflow: hidden;
 }

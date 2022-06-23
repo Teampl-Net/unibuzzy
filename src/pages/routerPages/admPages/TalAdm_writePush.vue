@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100vh;top: 50px; position: absolute; overflow:auto">
+  <div class="w-100P" style=" height: 100vh; overflow:auto">
     <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
@@ -263,12 +263,13 @@ export default {
       innerHtml = targetMsgDiv.innerHTML
       
 
-      param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+      param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
 
       } else {
         if(this.replyPopYn) {
+        param.parentContentsKey = this.params.targetContentsKey
         param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
         } else {
           if (this.selectedReceiverList.length > 0) {
@@ -298,6 +299,7 @@ export default {
       param.canReplyYn = this.canReplyYn
       //debugger
       var result = await this.$saveContents(param)
+      debugger
       if (result === true) {
         this.sendLoadingYn = false
         this.$emit('closeXPop', true)

@@ -70,7 +70,7 @@ export default {
       this.alimDetail = {
         teamName: '',
         creDate: '0',
-        bodyMinStr: '오류입니다.'
+        bodyFullStr: '오류입니다.'
       }
     } */
   },

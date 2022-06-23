@@ -93,16 +93,16 @@ export default {
       mCabContentsList: [],
       offsetInt: 0,
       /*  mCabContentsList: [
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' },
-        { title: 'test', bodyMinStr: 'testtesttesttest' }
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' },
+        { title: 'test', bodyFullStr: 'testtesttesttest' }
       ], */
       loadVal: true,
       pageHistoryName: '',

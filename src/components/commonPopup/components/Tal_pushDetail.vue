@@ -14,7 +14,7 @@
             <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
           </div>
         </div>
-        <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyMinStr)"></div>
+        <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -26,6 +26,7 @@
               </div>
             </div> -->
             <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
+            <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
             <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
@@ -56,7 +57,8 @@ export default {
       alimDetail: {},
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
-      userDoStickerList: []
+      userDoStickerList: [],
+      parentContentsKey: null
     }
   },
   props: {
@@ -73,7 +75,7 @@ export default {
       this.alimDetail = {
         teamName: '',
         creDate: '0',
-        bodyMinStr: '오류입니다.'
+        bodyFullStr: '오류입니다.'
       }
     } */
   },
@@ -100,6 +102,13 @@ export default {
     }
   },
   methods: {
+    setParentContents (data) {
+      if (data.parentContentsKey) {
+        return true
+      } else {
+        return false
+      }
+    },
     resizeText (text) {
       if (!text) {
         text = '[' + this.$changeText(this.alimDetail[0].nameMtext) + '] 제목없는 알림'
@@ -158,6 +167,8 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
+      // eslint-disable-next-line no-debugger
+      debugger
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
       // console.log(this.alimDetail)

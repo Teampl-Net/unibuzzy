@@ -154,7 +154,7 @@ export default {
         // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
       }
-      param.bodyMinStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+      param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
       param.jobkindId = 'BOAR'
       param.cabinetKey = this.propData.cabinetKey

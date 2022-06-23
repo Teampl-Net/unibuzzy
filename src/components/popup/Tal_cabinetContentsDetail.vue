@@ -22,7 +22,7 @@
             <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
           </div>
         </div>
-        <div  class="font15 mbottom-2" v-html="alim.bodyMinStr"></div>
+        <div  class="font15 mbottom-2" v-html="alim.bodyFullStr"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       loadYn: true,
-      alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyMinStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
+      alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
       tempAlimList: {
         readYn: false,
@@ -93,7 +93,7 @@ export default {
       this.alimDetail = {
         teamName: '',
         creDate: '0',
-        bodyMinStr: '오류입니다.'
+        bodyFullStr: '오류입니다.'
       }
     } */
   },

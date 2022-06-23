@@ -11,7 +11,7 @@
           <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="alim.bodyMinStr" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
+      <div class="font15 mbottom-1" v-html="alim.bodyFullStr" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
       <div class="detailPopUpBtnArea">
         <gBtnSmall btnTitle="닫기" class="mright-05" @click="goNo"/>
         <gBtnSmall btnTitle="바로가기" class="mleft-05" @click="goOk"/>

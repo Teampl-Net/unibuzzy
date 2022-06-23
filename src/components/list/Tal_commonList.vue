@@ -2,48 +2,50 @@
   <div id="chanWrap" class="commonListWrap">
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
-    <div :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index">
-      <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div>
-        <div @click="goDetail(alim)" class="pushDetailTopArea">
-          <div class="chanLogoImgWrap">
-            <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
-            <img v-else class="flcursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
-          </div>
-            <div class="pushDetailHeaderTextArea">
-              <p class=" font15 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
-            <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-              <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-              <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
-            </div>
-        </div>
-        <div @click="goDetail(alim)" class="font14 mbottom-05 bodyMinStr" v-html="setBodyLength(alim.bodyMinStr)"></div>
-        <div id="alimCheckArea">
-          <div class="alimCheckContents">
-            <!-- <div class="pushDetailStickerWrap">
-              <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
-                <img :src="value.stickerIcon" alt="">
+      <template v-for="(alim, index) in this.contentsList" :key="index" >
+        <div :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" v-if="alim.bodyFullStr">
+          <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div>
+            <div @click="goDetail(alim)" class="pushDetailTopArea">
+              <div class="chanLogoImgWrap">
+                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
+                <img v-else class="flcursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
               </div>
-            </div> -->
-            <p v-show="alim.bodyMinStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
-              <template v-if="userDo.doType === 'ST'">
-                <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-              </template>
+                <div class="pushDetailHeaderTextArea">
+                  <p class=" font15 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+                  <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                  <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+                </div>
             </div>
+            <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
+            <div id="alimCheckArea">
+              <div class="alimCheckContents">
+                <!-- <div class="pushDetailStickerWrap">
+                  <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
+                    <img :src="value.stickerIcon" alt="">
+                  </div>
+                </div> -->
+                <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+                <div @click="changeAct(userDo, alim.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                  <template v-if="userDo.doType === 'ST'">
+                    <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                    <img class="fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                  </template>
+                  <template v-else-if="userDo.doType === 'LI'">
+                    <img class="mright-05 fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                    <img class="mright-05 fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                  </template>
+                </div>
+              </div>
+            </div>
+            <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
+            <!-- <div> -->
+              <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
+              <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
+            <!-- </div> -->
+          <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
           </div>
-        </div>
-        <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
-        <!-- <div> -->
-          <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
-          <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
-        <!-- </div> -->
-      <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
-      </div>
+      </template>
   </div>
 </template>
 <script>
@@ -65,7 +67,7 @@ export default {
   //   this.chanWrap = document.getElementById('chanWrap')
   //   this.chanWrap.addEventListener('scroll', this.saveScroll)
   //   if (this.mainYnProp === true) { this.mainYn = true }
-  //   var imgList = document.querySelectorAll('.bodyMinStr img')
+  //   var imgList = document.querySelectorAll('.bodyFullStr img')
   //   for (var i = 0; i < imgList.length; i++) {
   //     imgList[i].setAttribute('style', 'display: none')
   //   }
@@ -228,7 +230,7 @@ export default {
 }
 </script>
 <style scoped>
-.bodyMinStr {
+.bodyFullStr {
   max-height: 400px;
   overflow: hidden;
 }
