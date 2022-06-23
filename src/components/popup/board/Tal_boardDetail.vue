@@ -9,26 +9,25 @@
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray">{{this.changeText(alim.cabinetNameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-            <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
+            <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
           </div>
         </div>
         <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
-            <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
+            <!-- <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
             <div class="pushDetailStickerWrap">
               <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
-                <!-- <span class="font15">{{value.stickerName}}</span> -->
                 <img :src="value.picPath" alt="">
               </div>
-            </div>
+            </div> -->
 
-            <div @click="changeAct(userDo, alim.contentsKey)"  class="fr" v-for="(userDo, index) in this.userDoList" :key="index">
+            <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+                <img class="mright-05 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="mright-05 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
@@ -36,6 +35,12 @@
               </template>
             </div>
 
+          </div>
+          <div style="width: 100%; height: 50px; padding: 10px 0; border-bottom: 1.5px dashed #ccc; float: left;">
+            <gBtnSmall btnTitle="댓글추가" @click="this.memoShowYn = true"/>
+          </div>
+          <div style="width: 100%; min-height: 100px; float: left;">
+            <gMemoList :memoList="memoList"/>
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -46,6 +51,11 @@
 
       </div>
     </div>
+    <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0; " @click="this.memoShowYn = false"></div>
+    <transition name="showMemoPop">
+      <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" />
+    </transition>
+    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false' />
   </div>
 </template>
 <script>
@@ -55,6 +65,10 @@ import manageStickerPop from '../Tal_manageStickerPop.vue'
 export default {
   data () {
     return {
+      memoList: [],
+      confirmText: '',
+      confirmPopShowYn: false,
+      memoShowYn: false,
       loadYn: true,
       alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
@@ -80,6 +94,7 @@ export default {
   async created () {
     // this.alimDetail = this.detailVal
     await this.getContentsList()
+    await this.getMemoList()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -88,11 +103,49 @@ export default {
       }
     } */
   },
+  computed: {
+    getWindowSize () {
+      return {
+        '--widndowHeight': window.innerHeight + 'px'
+      }
+    }
+  },
   methods: {
+    async getMemoList () {
+      var memo = new Object()
+      memo.targetKind = 'C'
+      memo.targetKey = this.alimDetail[0].contentsKey
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getMemoList',
+        param: memo
+      })
+      if(result.data.content) {
+        this.memoList = result.data.content
+      }
+    },
+    async saveMemo (text) {
+      var memo = new Object()
+      memo.bodyFullStr = text
+      /* memo.bodyFilekey  */
+      memo.targetKind = 'C'
+      memo.targetKey = this.alimDetail[0].contentsKey
+      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
+      memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveMemo',
+        param: {memo: memo}
+      })
+      if(result.data.result === true || result.data.result === 'true') {
+        /* this.confirmText = '댓글 저장 성공'
+        this.confirmPopShowYn = true */
+        this.memoShowYn = false
+        await this.getMemoList()
+      }
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      // eslint-disable-next-line no-debugger
       return changeText
     },
     async getContentsList () {
@@ -236,5 +289,19 @@ export default {
       bottom: 0;
       right: 0;
   }
+
+
+.showMemoPop-enter {animation: showMemoPop-dialog-fade-in 0.2s ease;}
+.showMemoPop-leave {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
+.showMemoPop-enter-active {animation: showMemoPop-dialog-fade-in 0.2s ease;}
+.showMemoPop-leave-active {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
+@keyframes showMemoPop-dialog-fade-in {
+    0% {transform: translateY(var(--widndowHeight));}
+    100% {transform: translateY(0);}
+}
+@keyframes showMemoPop-dialog-fade-out {
+    0% {transform: translateY(0);}
+    100% { transform: translateY(var(--widndowHeight));}
+}
 
 </style>

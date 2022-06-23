@@ -13,7 +13,7 @@
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
         <div class="boardWritePaperBack">
           <div class="whitePaper">
-            <div class="overFlowYScroll pushInputArea">``
+            <div class="overFlowYScroll pushInputArea">
               <div class="writeBoardPageTopArea">
                 <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <!-- <div class="">
@@ -21,9 +21,9 @@
                   <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
                   </div>
                 </div> -->
-                <p style="mright-05">옵션선택</p>
+                <!-- <p style="mright-05">옵션선택</p>
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
-                <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답글허용</label></div>
+                <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답글허용</label></div> -->
               </div>
               <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
@@ -95,9 +95,7 @@ export default {
       pushDetailPopShowYn: true,
       progressShowYn: false,
       viewTab: 'text',
-      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
-      showCreNameYn: false,
-      canReplyYn: false
+      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }]
     }
   },
   computed: {
@@ -171,8 +169,7 @@ export default {
       param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.writePushTitle
-      param.showCreNameYn = this.showCreNameYn
-      param.canReplyYn = this.canReplyYn
+      param.showCreNameYn = true
 
       var result = await this.$saveContents(param)
       if (result === true) {

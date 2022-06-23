@@ -9,8 +9,8 @@
             <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
               <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
               <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
-              <p class="font12 fl lightGray">{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p>
-              <p class="font12 fr lightGray">{{this.$dayjs(board.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+              <p class="font12 fl lightGray">{{board.showCreNameYn === 1? this.$changeText(board.creUserName): ''}}</p>
+              <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
             </div>
         </div>
         <div @click="goDetail(board)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>

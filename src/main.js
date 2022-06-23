@@ -30,6 +30,8 @@ import gColorPicker from './components/unit/Tal_colorPicker.vue'
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 
 import myObserver from './components/Tal_ScrollObserver.vue'
+import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
+import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
 
 import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
@@ -59,6 +61,8 @@ app.directive('longclick', longClickInstance)
 app.component('gConfirmPop', gConfirmPop)
 app.component('myObserver', myObserver)
 app.component('gWhiteSelect', gWhiteSelect)
+app.component('gMemoPop', gMemoPop)
+app.component('gMemoList', gMemoList)
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(htmlParser)
