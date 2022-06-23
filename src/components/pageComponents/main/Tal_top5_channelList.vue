@@ -79,7 +79,7 @@ export default {
       if (this.viewTab === 'user') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
-      }else if (this.viewTab === 'mychannel') {
+      } else if (this.viewTab === 'mychannel') {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
         paramMap.set('followerType', 'A')
       }

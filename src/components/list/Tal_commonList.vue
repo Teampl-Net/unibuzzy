@@ -184,7 +184,6 @@ export default {
       }
     },
     async loadMore () {
-
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

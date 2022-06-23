@@ -96,8 +96,8 @@ export default {
       progressShowYn: false,
       viewTab: 'text',
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
-      showCreNameYn :false,
-      canReplyYn : false
+      showCreNameYn: false,
+      canReplyYn: false
     }
   },
   computed: {

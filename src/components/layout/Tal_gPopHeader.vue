@@ -25,7 +25,7 @@ export default {
     chanAlimListTeamKey: {},
     subTitlebtnList: {},
     thisPopN: {},
-    bgblack:{}
+    bgblack: {}
   },
   methods: {
     closeXPop () {
@@ -41,12 +41,12 @@ export default {
     return {
     }
   },
-  created (){
-console.log(this.bgblack);
+  created () {
+    console.log(this.bgblack)
   },
-  watch:{
-    bgblack(){
-      console.log('s');
+  watch: {
+    bgblack () {
+      console.log('s')
     }
   }
 }

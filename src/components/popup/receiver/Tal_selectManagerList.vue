@@ -23,11 +23,11 @@ export default {
     // chanInfo: {},
     // detailSelectedYn: {},
     // selectedListYn: {},
-    propData: {},
+    propData: {}
     // pSelectedList: {}
   },
   created () {
-    console.log("######!@#!@#!#@!#!@#@!########")
+    console.log('######!@#!@#!#@!#!@#@!########')
     console.log(this.propData)
   },
   computed: {
@@ -44,7 +44,6 @@ export default {
       this.$emit('closeXPop')
     },
     openMCabUserList (data) {
-
       this.selectBookDetail = data
       this.receiverTitle = '구성원 관리'
       if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
@@ -53,16 +52,16 @@ export default {
         this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
       }
     },
-    openAddManagerPop(){
+    openAddManagerPop () {
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.currentTeamKey
 
-      this.$emit('openPop',param)
+      this.$emit('openPop', param)
 
       // this.openAddManagerPopYn = true
-    },
+    }
 
   }
 }

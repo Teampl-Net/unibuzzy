@@ -68,7 +68,6 @@ export default {
     /* manageStickerPop */
   },
   async created () {
-
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()

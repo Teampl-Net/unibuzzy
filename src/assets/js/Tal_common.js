@@ -10,7 +10,7 @@ const methods = {
     t.innerHTML = html
     return t.content.cloneNode(true)
   },
-  changeDateFormat (date, viewType) {
+  changeDateFormat (date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
     var toDate = new Date()
@@ -22,7 +22,7 @@ const methods = {
           format = 'HH:mm'
           // format = 'HH시 mm분'
         } else {
-          //같은 년도, 월이 같으면
+          // 같은 년도, 월이 같으면
           format = 'MM-DD'
           // format = 'MM월 DD일'
         }
@@ -39,7 +39,7 @@ const methods = {
       //   return this.$dayjs(compareDate).format('yyyyMMDD')
       // }
     }
-    if (mustTimeShowYn) format += ' HH:MM'
+    if (mustTimeShowYn && format !== 'HH:mm') format += ' HH:mm'
     return this.$dayjs(compareDate).format(format)
     //   if (compareDate === toDate) {
     //     return changeDateHM(compareDate)
@@ -272,7 +272,7 @@ const methods = {
 
 }
 export default {
-  install(Vue) {
+  install (Vue) {
     Vue.config.globalProperties.$changeDateFormat = methods.changeDateFormat
     Vue.config.globalProperties.$convertDate = methods.convertDate
     Vue.config.globalProperties.$extractYear = methods.extractYear

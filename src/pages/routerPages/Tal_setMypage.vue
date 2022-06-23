@@ -58,7 +58,7 @@ import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop.vue'
 import settingAlim from '../../components/pageComponents/myPage/Tal_SettingAlimDetail.vue'
-import pushPop from '../../components/popup/Tal_pushDetailPopup.vue'
+/* import pushPop from '../../components/popup/Tal_pushDetailPopup.vue' */
 
 export default {
   name: 'myPage',
@@ -66,8 +66,7 @@ export default {
     userItem,
     logoutPop,
     policyPop,
-    settingAlim,
-    pushPop
+    settingAlim
   },
   data () {
     return {
@@ -81,7 +80,7 @@ export default {
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
-      settingAlimPopYn: false,
+      settingAlimPopYn: false
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -135,7 +134,7 @@ export default {
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
-    },
+    }
 
   }
 }
