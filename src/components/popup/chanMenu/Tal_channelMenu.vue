@@ -11,7 +11,7 @@
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
   <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
 
-    <div  v-if="adminYn" class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
+    <div  v-if="ownerYn" class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
       <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
     </div>
 
@@ -76,6 +76,9 @@ export default {
   async created () {
     if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
       this.adminYn = true
+      // alert(this.propData.value.ownerYn)
+      if(this.propData.value.ownerYn)
+        this.ownerYn = true
     }
     console.log(this.addChanList);
     console.log(this.propData)
@@ -94,6 +97,7 @@ export default {
   },
   data () {
     return {
+      ownerYn: false,
       adminYn: false,
       myBoardList:{},
       editYn:true,

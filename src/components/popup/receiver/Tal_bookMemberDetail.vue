@@ -27,7 +27,7 @@
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
         <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
         <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
-            <table style="width:100% ; border-collapse: collapse;">
+            <table class="memberTable" style="width:100% ; border-collapse: collapse;">
                 <colgroup>
                     <col width="20%">
                     <col width="40%">
@@ -230,7 +230,7 @@ table {
     table-layout: fixed;
     word-break: break-all;
 }
-td {
+.memberTable td {
     border-bottom: 1px solid #ccc !important;
 }
 .memList {

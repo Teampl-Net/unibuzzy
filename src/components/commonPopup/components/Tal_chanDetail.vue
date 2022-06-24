@@ -2,6 +2,7 @@
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'">
   <gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false' />
   <!-- <div>{{pushKey}}</div> -->
+  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
     <div style="width: 100%; height: 100%; position: relative;">
       <div ref="chanImg"  class="mt-header chanWhiteBox">
@@ -41,9 +42,10 @@
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"></td>
             <td><div class="w-20P fl textLeft commonColor fontBold" > 산업군 </div><div class="w-80P fl textLeft"> {{teamTypeText}}<!-- <span class="fl mr-04">{{chanDetail.followerCount}}명</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="공유하기" /> --></div></td>
           </tr>
-          <tr>
-            <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div><!-- <gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="링크열기" />  --></td>
-          </tr>
+          <!-- <tr>
+            <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div>
+            </td>
+          </tr> -->
         </table>
       </div>
     </div>
@@ -71,7 +73,8 @@ export default {
       followYn: false,
       errorMsg: '',
       followTypeText: '',
-      teamTypeText: ''
+      teamTypeText: '',
+      sendLoadingYn: false
     }
   },
   props: {
@@ -157,7 +160,9 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.teamKey = this.chanDetail.teamKey
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       var result = false
+      this.sendLoadingYn = true
       if (fStatus) {
         result = await this.$changeFollower(param, 'del')
         this.followYn = false
@@ -168,11 +173,24 @@ export default {
         this.followYn = true
       }
       console.log(result.data)
-      if (result) {
-        this.$emit('changeFollowYn', this.followYn)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (result.result || result) {
+        this.sendLoadingYn = false
+        if (fStatus) {
+          this.$emit('pageReload')
+        } else {
+          if (result.message === 'OK') {
+            this.$emit('changeFollowYn', this.followYn)
+          } else {
+            this.errorMsg = result.message
+            this.errorPopYn = true
+          }
+        }
         //         this.getChanDetail()
-        this.errorMsg = '구독되었습니다.'
       } else {
+        this.sendLoadingYn = false
+        this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
         this.errorPopYn = true
       }
     },
@@ -225,6 +243,9 @@ export default {
   padding-top: 1rem;
   min-height: 3rem;
   text-align: left;
+}
+.chanDetailWrap tr {
+  border-bottom: 1px solid #ccc;
 }
 .chanWhiteBox{position: absolute; top: -170px; bottom: 50vh; height: 100%; display: flex; flex-direction: column;align-items: center;width: 100%;z-index: 999;}
 .channelItemBox{background-color: #fff; width: 100%; height: 65%; position: absolute; bottom: 0; box-sizing: border-box;}

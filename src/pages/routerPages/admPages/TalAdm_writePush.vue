@@ -482,34 +482,5 @@ export default {
 .formText {padding: 0;}
 
 .msgArea span {padding: 0;}
-#loading {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top:0;
-  left:0;
-  z-index: 999999;
-  background: #0101014b;
-}
 
-@keyframes spinner {
-  from {transform: rotate(0deg); }
-  to {transform: rotate(360deg);}
-}
-
-#loading .spinner {
-  box-sizing: border-box;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 64px;
-  height: 64px;
-  margin-top: -32px;
-  margin-left: -32px;
-  border-radius: 50%;
-  border: 8px solid transparent;
-  border-top-color: #6768A7;
-  border-bottom-color: #6768A7;
-  animation: spinner .8s ease infinite;
-}
 </style>

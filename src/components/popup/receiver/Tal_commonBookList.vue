@@ -4,7 +4,7 @@
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
-        <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
+        <div v-if="cabinetList.length > 0" style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
@@ -35,6 +35,9 @@
                 </transition-group>
             </draggable>
         </div>
+        <div v-else>
+            <p class="textLeft font15 ">{{'주소록이 없습니다.'}}</p>
+        </div>
     </div>
     <!-- <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
         <p style="font-size:40px;">+</p>
@@ -59,7 +62,6 @@ export default {
             propObject: {},
             cabinetList: [],
             editTeamName:'',
-            cabinetList: {},
             dragging: false,
             editYn : false,
             pageTopBtnTitle: '편집',
@@ -70,6 +72,7 @@ export default {
         }
     },
     async created () {
+        alert(JSON.stringify(this.propObject))
         // console.log("#####")
         // console.log(this.propData)
         this.propObject = this.propData
@@ -154,7 +157,9 @@ export default {
         },
         async getTeamCabList () {
             var paramMap = new Map()
-            paramMap.set('teamKey', this.propObject.currentTeamKey || this.propObject.teamKey)
+            var te = this.propObject
+            // alert(JSON.stringify(this.propObject))
+            paramMap.set('teamKey', this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey)
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
