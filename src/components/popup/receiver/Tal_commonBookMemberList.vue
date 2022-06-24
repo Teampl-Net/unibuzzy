@@ -132,7 +132,7 @@ export default {
         },
         async getFollowerList () {
             var paramMap = new Map()
-            debugger
+            console.log(this.propData);
             paramMap.set('teamKey', this.propData.currentTeamKey)
             // paramMap.set('followerType', 'M')
             var result = await this.$commonAxiosFunction({

@@ -8,7 +8,7 @@
         <!-- <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" /> -->
 
     </div>
-    <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
+    <div class="btnPlus" @click="w" ><p style="font-size: 40px;">+</p></div>
 
 </template>
 

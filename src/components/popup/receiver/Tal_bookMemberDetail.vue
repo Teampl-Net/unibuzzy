@@ -141,10 +141,8 @@ export default {
                 if(this.propData.currentCabinetKey){
                     var param = new Object()
                     var mCabContents = new Object()
-
                     mCabContents.jobkindId = 'USER'
                     mCabContents.cabinetKey = this.propData.currentCabinetKey
-                    // param.targetKey = this.propData.currentTeamKey
                     if (this.propData.mccKey) {
                         mCabContents.mccKey = this.propData.mccKey
                         mCabContents.targetKey = this.propData.targetKey //update
@@ -153,7 +151,9 @@ export default {
                     mCabContents.inPhone = this.memPhone
                     mCabContents.inUserName = this.memName
                     param.mCabContents = mCabContents
+                    console.log(param)
                     var result = await this.$saveMCabContents(param)
+                    console.log(result)
                     if (result.data.result === true) {
                         if (result.data.message === 'OK') {
                             this.$emit('closeXPop', true)
@@ -171,6 +171,7 @@ export default {
         async saveFollower(){
             var param = {}
             var mCabContents = new Object()
+            console.log(this.propData)
             param.teamKey = this.propData.currentTeamKey
 
             /* if (this.propData.followerKey) {
