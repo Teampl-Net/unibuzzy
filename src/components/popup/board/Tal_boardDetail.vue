@@ -37,7 +37,7 @@
 
           </div>
           <div style="width: 100%; height: 50px; padding: 10px 0; border-bottom: 1.5px dashed #ccc; float: left;">
-            <gBtnSmall btnTitle="댓글추가" @click="this.memoShowYn = true"/>
+            <gBtnSmall btnTitle="댓글 쓰기" @click="this.memoShowYn = true"/>
           </div>
           <div style="width: 100%; min-height: 100px; float: left;">
             <gMemoList :memoList="memoList"/>
@@ -91,7 +91,8 @@ export default {
   components: {
     manageStickerPop
   },
-  async created () {
+  async created() {
+    alert(true)
     // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
