@@ -87,7 +87,7 @@
       </div>
     </div>
     <div class="fl" style="width: 100%;">
-      <div v-show="this.shareType === 'select'" @click="showChanMenu" class="inputBoxThema textLeft fl" style="width: 100%;">{{selectedReceiver}}</div>
+      <div v-show="this.shareType === 'select'" @click="showSelectBookPop" class="inputBoxThema textLeft fl" style="width: 100%;">{{selectedReceiver}}</div>
     </div>
 
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
@@ -127,7 +127,7 @@
   <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="chanInfo" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" />
+  <selectBookList :chanInfo="this.chanInfo" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
@@ -158,6 +158,8 @@ export default {
 
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
+    this.chanProps = this.chanInfo.value
+    this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
     // console.log(this.boardDetail)
     // console.log(this.chanInfo)
 
@@ -178,6 +180,7 @@ export default {
   },
   data () {
     return {
+      chanProps: {},
       okPopYn: false,
       popId: null,
       selectReceiverAccessYn: false,
@@ -199,7 +202,7 @@ export default {
       functionPopShowYn: false,
       inputvalue: '',
       showSelectStatusShowYn: false,
-      selectBookListYn: false,
+      selectBookListShowYn: false,
       count: null,
       sharePermissionShowYn: false,
       statusSelectShowYn: false,
@@ -545,10 +548,10 @@ export default {
       this.selectReceiverAccessYn = true
     },
     selectedListSelect(){
-      this.selectBookListYn =true
+      this.selectBookListShowYn =true
     },
-    showChanMenu () {
-        this.selectBookListYn = true
+    showSelectBookPop () {
+        this.selectBookListShowYn = true
         // this.selectedList = null
     },
     goNo (){
@@ -578,7 +581,7 @@ export default {
       this.selectItemList = []
       this.selectShareList = []
       var data = datas.data
-      this.selectBookListYn = false
+      this.selectBookListShowYn = false
       var text =''
       var selectLength = 0
       if(data.bookList.length > 0 ){

@@ -39,7 +39,6 @@ export default {
     memoList: {}
   },
   mounted () {
-    // alert(JSON.stringify(this.memoList))
     this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   },
   data () {
@@ -58,7 +57,6 @@ export default {
       param = data
       param.clickIndex = index
       this.$emit('deleteMemo', param)
-      // alert(JSON.stringify(param))
     },
     editMemoClick(data, index){
       this.editIndex = index

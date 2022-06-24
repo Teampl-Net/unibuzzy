@@ -165,6 +165,7 @@ export default {
 
     openModiBoardPop (data) {
       this.modiBoardDetailProps = data
+      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext) 
       this.modiBoardPopShowYn = true
     },
 

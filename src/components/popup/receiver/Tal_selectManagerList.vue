@@ -53,7 +53,6 @@ export default {
       }
     },
     openAddManagerPop () {
-      // alert(true)
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey

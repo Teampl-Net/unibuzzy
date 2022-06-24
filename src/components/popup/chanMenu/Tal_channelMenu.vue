@@ -76,7 +76,6 @@ export default {
   async created () {
     if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
       this.adminYn = true
-      // alert(this.propData.value.ownerYn)
       if(this.propData.value.ownerYn)
         this.ownerYn = true
     }
@@ -259,7 +258,6 @@ export default {
       this.$emit('openItem',params)
     },
     openPopup(data){
-      // alert(data.targetType)
       this.$emit('openPop',data)
     }
   }
