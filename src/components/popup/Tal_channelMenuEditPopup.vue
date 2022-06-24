@@ -9,7 +9,7 @@
 
       </div>
 
-      <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; 0" :disabled='enabled' delay="200"  >
+      <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
           <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
@@ -17,7 +17,7 @@
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
             <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
-                <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText"/>
+                <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
             <div  @click="deleteCabinet(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
               <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer; z-index: 999" alt="">
@@ -67,14 +67,13 @@ export default {
       /* val + oldVal) */
     }
   },
-  created () {
+  created() {
     var history = this.$store.getters.hStack
     this.popId = 'manageBoardPop' + this.currentTeamKey
     history.push(this.popId)
     this.$store.commit('updateStack', history)
 
     this.getTeamMenuList()
-
     /* if (this.editList) {
       this.boardList = this.editList
       for (var i = 0; i < this.boardList.length; i ++) {
@@ -117,7 +116,8 @@ export default {
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
-      console.log(this.boardList)
+
+      // console.log(this.boardList)
       for (var i = 0; i < this.boardList.length; i ++) {
         var changeText = this.boardList[i].cabinetNameMtext
         this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
