@@ -74,13 +74,7 @@ export default {
     }
   },
   async created () {
-    if (this.propData.value) {
-      if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
-        this.adminYn = true
-        if(this.propData.value.ownerYn)
-          this.ownerYn = true
-      }
-    }
+    this.getFollowerList()
     console.log(this.addChanList);
     console.log(this.propData)
     // this.cabinetList = this.$groupDummyList()
@@ -119,6 +113,22 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    async getFollowerList () {
+      var params = new Object()
+      params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      params.teamKey = this.propData.teamKey || this.propData.targetKey
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getFollowerList',
+        param: params
+      })
+      if (result.data) {
+        if(result.data.content[0].managerKey !== undefined && result.data.content[0].managerKey !== null && result.data.content[0].managerKey !== '') {
+          this.adminYn = true
+        }
+        if(result.data.content[0].ownerYn)
+          this.ownerYn = true
+      }
+    },
     setSelectedList(datas){
       var data = datas.data
 
