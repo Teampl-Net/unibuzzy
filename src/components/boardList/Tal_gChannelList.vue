@@ -47,8 +47,8 @@ export default {
         ...resultList.content
       ]
       this.commonListData = newArr */
-    },
-    settingFollowerType (value) {
+    }
+    /* settingFollowerType (value) {
       var followerTypeText = ''
       var userTeamInfo = null
       if (value.userTeamInfo !== undefined && value.userTeamInfo !== null && value.userTeamInfo !== '') {
@@ -70,7 +70,7 @@ export default {
       }
 
       return followerTypeText
-    }
+    } */
   },
   computed: {
   }

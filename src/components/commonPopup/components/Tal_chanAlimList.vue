@@ -131,19 +131,15 @@ export default {
           this.detailShowYn = false
           this.adminYn = false
           this.followTypeText = '구독자'
-          // if((resultList.content[0].userTeamInfo.followerType === 'A' ||resultList.content[0].userTeamInfo.followerType === 'M'  )
-          // && (JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType === 'A'|| JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType ==='M') ){
-          if (this.chanItem.userTeamInfo.followerType === 'A' || this.chanItem.userTeamInfo.followerType === 'M') {
+
+          if (this.chanItem.userTeamInfo.managerKey !== undefined && this.chanItem.userTeamInfo.managerKey !== null && this.chanItem.userTeamInfo.managerKey !== '') {
             this.adminYn = true
-            if (this.chanItem.userTeamInfo.followerType === 'A') {
+            if (this.chanItem.userTeamInfo.ownerYn === true || this.chanItem.userTeamInfo.ownerYn === 'true') {
               this.followTypeText = '소유자'
-            } else if (this.chanItem.userTeamInfo.followerType === 'A') {
+            } else {
               this.followTypeText = '관리자'
             }
           }
-        // if (resultList.content[0].userTeamInfo.followerType === JSON.parse(localStorage.getItem('sessionUser')).userTeamInfo.followerType) {
-        //   this.adminYn = true
-        // }
         }
         var bgblackYn = true // chanItem.blackYn
         this.$emit('bgcolor', bgblackYn)

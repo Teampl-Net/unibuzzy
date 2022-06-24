@@ -105,9 +105,10 @@ export default {
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'
-      if (this.chanDetail.userTeamInfo.followerType === 'A' || this.chanDetail.userTeamInfo.followerType === 'M') {
-        this.admYn = true
-        if (this.chanDetail.userTeamInfo.followerType === 'A') {
+
+      if (this.chanDetail.userTeamInfo.managerKey !== undefined && this.chanDetail.userTeamInfo.managerKey !== null && this.chanDetail.userTeamInfo.managerKey !== '') {
+        this.adminYn = true
+        if (this.chanDetail.userTeamInfo.ownerYn === true || this.chanDetail.userTeamInfo.ownerYn === 'true') {
           this.followTypeText = '소유자'
         } else {
           this.followTypeText = '관리자'

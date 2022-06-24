@@ -18,7 +18,7 @@
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
-      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style="" v-if="propData.value.followerType ==='A' || propData.value.followerType ==='M'"/>
+      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style="" v-if="adminYn"/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
       <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="cabinetList" @openDetail='openTeamDetailPop' />
@@ -31,7 +31,7 @@
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
-      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-if="propData.value.followerType ==='A' || propData.value.followerType ==='M'" />
+      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-if="adminYn" />
     </div>
     <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
       <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
@@ -74,6 +74,9 @@ export default {
     }
   },
   async created () {
+    if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
+      this.adminYn = true
+    }
     console.log(this.addChanList);
     console.log(this.propData)
     // this.cabinetList = this.$groupDummyList()
@@ -91,6 +94,7 @@ export default {
   },
   data () {
     return {
+      adminYn: false,
       myBoardList:{},
       editYn:true,
       menuHeaderTitle:'채널 메뉴',

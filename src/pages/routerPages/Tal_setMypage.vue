@@ -1,5 +1,5 @@
 <template>
-    <div style="padding-bottom: 60px">
+    <div style="padding-bottom: 60px; overflow: hidden scroll; height: 100%;">
     <!-- <pushPop :detailVal='dummy' @closePushPop="closePushPop" /> -->
       <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
@@ -42,8 +42,6 @@
             </tr> -->
 
         </table>
-      </div>
-      <div class="subPaddingWrap">
         <div v-on:click="openLogoutPop" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
           더알림 로그아웃
         </div>
@@ -156,7 +154,7 @@ td {
 tr{border-bottom: 1px solid #F3F3F3}
 th {color: #6768A7}
 
-.subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; height: 100%;}
+.subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
 .leaveText{text-align: left; color: #A1A1A1;}
 .leaveText span {text-decoration: underline;}
 </style>

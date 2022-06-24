@@ -171,23 +171,24 @@ export default {
         async saveFollower(){
             var param = {}
             var mCabContents = new Object()
-            mCabContents.teamKey = this.propData.currentTeamKey
+            param.teamKey = this.propData.currentTeamKey
 
-            if (this.propData.followerKey) {
+            /* if (this.propData.followerKey) {
                 mCabContents.followerKey = this.propData.followerKey
                 // mCabContents.followerType = this.propData.followerType //update
-            }
+            } */
 
-            mCabContents.inEmail = this.memEmail
-            mCabContents.inPhone = this.memPhone
-            mCabContents.inUserName = this.memName
+            param.inEmail = this.memEmail
+            param.inPhone = this.memPhone
+            param.inUserName = this.memName
 
-            param.mCabContents = mCabContents
              var result = await this.$commonAxiosFunction({
-                url: '/tp.saveFollower',
+                url: '/tp.saveManager',
                 param: param
             })
-
+            if (result.data === true) {
+                this.$emit('closeXPop', true)
+            }
             console.log(result)
 
         },

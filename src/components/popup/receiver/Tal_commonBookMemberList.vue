@@ -8,9 +8,9 @@
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="data.selectedYn !== true" class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                    <div v-if="data.selectedYn !== true && (propData.managerOpen && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
-                            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
+                            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
@@ -76,15 +76,6 @@ export default {
             }
 
         // this.memberList = this.propData.mCabUserList
-            if (this.memberList) { // dispName이 없을시 userName으로 대체
-                for (var i =0; i < this.memberList.length; i ++) {
-                    if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
-
-                    } else {
-                        this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
-                    }
-                }
-            }
             this.setParentSelectList()
         }else{
             await this.getFollowerList()
@@ -137,7 +128,7 @@ export default {
         async getFollowerList () {
             var paramMap = new Map()
             paramMap.set('teamKey', this.propData.currentTeamKey)
-            paramMap.set('followerType', 'M')
+            // paramMap.set('followerType', 'M')
             var result = await this.$commonAxiosFunction({
                 url: '/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
@@ -158,14 +149,26 @@ export default {
             }
         },
         async deleteMemberClick(data, index){
-            var param = {}
-            console.log(data)
-            param.mccKey = data.mccKey
-            param.jobkindId = data.jobkindId
-            var result = await this.$commonAxiosFunction({
-                url: '/tp.deleteMCabContents',
-                param: param
-            })
+            if(this.propData.managerOpen) {
+                var param = {}
+                console.log(data)
+                param.userKey = data.userKey
+                param.teamKey = data.teamKey
+                var result = await this.$commonAxiosFunction({
+                    url: '/tp.deleteManager',
+                    param: param
+                })    
+            } else {
+                var param = {}
+                console.log(data)
+                param.mccKey = data.mccKey
+                param.jobkindId = data.jobkindId
+                var result = await this.$commonAxiosFunction({
+                    url: '/tp.deleteMCabContents',
+                    param: param
+                })
+            }
+            
 
             console.log(result)
             if(result.data === 'true' || result.data === true){

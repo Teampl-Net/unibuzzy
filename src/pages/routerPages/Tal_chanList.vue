@@ -143,7 +143,7 @@ export default {
         paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'mychannel') {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-        paramMap.set('followerType', 'A')
+        paramMap.set('ownerYn', true)
       }
       if (this.resultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)
@@ -160,6 +160,7 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       // var pageable = resultList.pageable
+      // eslint-disable-next-line no-debugger
       this.totalPages = resultList.totalPages
       this.totalElements = resultList.totalElements
       return resultList.data

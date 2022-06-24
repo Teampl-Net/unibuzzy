@@ -1,8 +1,8 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div style="width: 100%; height: 100%; position: relative; float: left; overflow: hidden scroll;">
-      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="{'pushListHeader--unpinned': this.scrolledYn, 'pushListHeader--pinned': !this.scrolledYn }" v-on="handleScroll" >
+    <div id="" style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <transition name="showModal">
           <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -10,7 +10,8 @@
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
       </div>
-      <div id="wrapwrap" :style="calcHeaderHeight" class="testt" style="padding-right: 0; float: left; padding-left: 0; height: calc(100% - var(--headerHeight)); margin-top: var(--headerHeight);">
+      <div id="pushListWrap" :style="calcHeaderHeight" class="testt" style="float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
+      <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -19,7 +20,7 @@
 
         </div>
       </div> -->
-        <commonList id="pushListWrap" @currentScroll="currentScroll" v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
@@ -50,13 +51,8 @@ export default {
     pushListAndDetailYn: {},
     propData: {}
   },
+
   updated() {
-    // eslint-disable-next-line no-unused-vars
-    this.box = document.getElementById('pushListWrap') // 이 dom scroll 이벤트를 모니터링합니다
-    this.box.addEventListener('scroll', this.handleScroll)
-    this.box.addEventListener('mousewheel', e => {
-      this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
-    })
   },
   async created() {
     if (this.propData) {
@@ -78,8 +74,13 @@ export default {
       this.requestSearchList(this.readySearhList)
     }
   },
-
+  updated() {
+    this.box = document.getElementById('pushListWrap')
+  },
   mounted() {
+  this.box = document.getElementById('pushListWrap')
+  this.box.addEventListener('scroll', this.handleScroll)
+
   if (this.viewTab === 'N') {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'R') {
@@ -99,6 +100,7 @@ export default {
     }
   },
   unmounted () {
+    
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
   },
@@ -118,8 +120,13 @@ export default {
     calcHeaderHeight () {
       // var pageHeader = document.querySelector('#pageHeader')
       // var pageHeader = this.$refs.pushListHeader
+      if (this.headerTop) {
+      } else {
+        this.headerTop = 150
+      }
+      // debugger
       return {
-        '--headerHeight' : '-' + (this.headerTop - 20)  + 'px'
+        '--headerHeight' : this.headerTop  + 'px'
       }
     },
     historyStack () {
@@ -143,6 +150,7 @@ export default {
   },
   data () {
     return {
+      firstContOffsetY: null,
       headerTop: 0,
       scrollDirection: null,
       box: null,
@@ -171,30 +179,31 @@ export default {
     }
   },
   methods: {
+    getAbsoluteTop(element) {
+      return window.pageYOffset + element.getBoundingClientRect().top
+    },
     handleScroll() {
-      var blockBox = document.getElementById('pageHeader')
-      if (this.box.scrollTop > this.scrollPosition) {
-        this.scrollDirection = 'down'
-      } else if (this.box.scrollTop < this.scrollPosition) {
-        this.scrollDirection = 'up'
+      // alert(true)
+      var element = document.getElementsByClassName('creatorListContentBox')[0]
+      // debugger
+      var parentElement = element.parentElement
+      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+
+      var test = document.getElementById('pageHeader')
+      parentElement = element.parentElement
+      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+      
+      if(this.firstContOffsetY < 0) {
+        if (this.box.scrollTop > this.scrollPosition) {
+          this.scrollDirection = 'down'
+          this.scrolledYn = true
+        } else if (this.box.scrollTop < this.scrollPosition) {
+          this.scrollDirection = 'up'
+          this.scrolledYn = false
+        }
       }
       this.scrollPosition = this.box.scrollTop
-      this.headerTop = this.scrollPosition
-      if (this.scrollDirection === 'down' && this.scrollPosition > 0) {
-        // alert(true)
-        this.scrolledYn = true;
-        // move up!
-      } else if (this.scrollDirection === 'up' && this.scrollPosition <= 145) {
-        this.scrolledYn = false;
-      }
-    },
-    onRefresh () {
-      if (this.scrollPosition < 1) {
-        this.$router.go(0)
-      }
-    },
-    currentScroll(value) {
-      this.scrollPosition = value
+      
     },
     async refreshList () {
       var pSize = 10
@@ -444,5 +453,22 @@ export default {
 .pushListHeader--unpinned {
     transform: translateY(-100%);
 } */
+.pushListHeader {
+    width: 100%; 
+    min-height: 132px;
+    position: absolute;
+    background-color: #FFF;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    will-change: transform;
+    transition: transform 0.3s linear;
+}
 
+.pushListHeader--pinned {
+    transform: translateY(0%);
+}
+.pushListHeader--unpinned {
+    transform: translateY(-100%);
+} 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="chanWrap" class="commonListWrap">
+  <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <template v-for="(alim, index) in this.contentsList" :key="index" >
@@ -43,11 +43,11 @@
               <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
               <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
             <!-- </div> -->
-          <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style="position: absolute; bottom: 3rem;"></myObserver>
+          <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
           </div>
       </template>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-  </div>
+      <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
+  <!-- </div> -->
 </template>
 <script>
 export default {
