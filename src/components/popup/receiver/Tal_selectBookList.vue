@@ -41,6 +41,7 @@ export default {
     pSelectedList: {}
   },
   created () {
+    this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
     }
