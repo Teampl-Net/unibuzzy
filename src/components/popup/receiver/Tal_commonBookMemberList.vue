@@ -9,7 +9,7 @@
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="data.selectedYn !== true && (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                    <div v-if="data.selectedYn !== true || (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
                             <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <div v-if="editYn || propData.managerOpenYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
@@ -114,6 +114,7 @@ export default {
                 url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
+            debugger
             this.memberList = result.data
             this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
             // debugger
@@ -131,6 +132,7 @@ export default {
         },
         async getFollowerList () {
             var paramMap = new Map()
+            debugger
             paramMap.set('teamKey', this.propData.currentTeamKey)
             // paramMap.set('followerType', 'M')
             var result = await this.$commonAxiosFunction({
@@ -139,6 +141,11 @@ export default {
             })
             console.log(result)
             this.memberList = result.data.content
+            for (var i = 0; i < this.memberList.length; i ++) {
+                this.memberList[i].selectedYn = true
+            }
+            var test =this.memberList
+
             this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
         },
         changeEdit () {

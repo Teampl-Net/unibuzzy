@@ -12,19 +12,19 @@
         <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
         <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div>
       </div>
-      <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
+      <!-- <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
         <p class="font13 ">#라이프스타일</p>
-      </div>
-      <div style="width: 100%; padding: 0 20px; margin-top: 0.8rem; ">
+      </div> -->
+      <div style="width: 100%; padding: 0 20px; margin-top: 1rem;">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
           <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
         </div>
       </div>
     </div>
-    <div id="chanInfoSummary2" ref="chanImg2" style="">
+    <!-- <div id="chanInfoSummary2" ref="chanImg2" style="">
       <span class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
       <span class="font13 mbottom-05 fl">#라이프스타일</span>
-    </div>
+    </div> -->
     <!-- <div style="width: 100%; height: 320px;float: left;">
       <div id="summaryWrap2" class="summaryWrap2">
         <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
@@ -41,8 +41,8 @@
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
-    <popHeader v-if="detailHeaderShowYn" :headerTitle="changeText(chanItem.nameMtext)" @click="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader"/>
-    <chanDetailComp :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.detailShowYn = false" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
+    <chanDetailComp :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.detailShowYn = false" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
 
 </div>

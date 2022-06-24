@@ -16,7 +16,7 @@ export default {
     return {
       transition: 'slide-next',
       activetab: 0,
-      tabwidth: 4.8,
+      tabwidth: 4.5,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null }
     }
   },

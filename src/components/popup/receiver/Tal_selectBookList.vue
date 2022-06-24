@@ -41,6 +41,7 @@ export default {
     pSelectedList: {}
   },
   created () {
+    // eslint-disable-next-line vue/no-mutating-props
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList

@@ -145,9 +145,6 @@ export default {
       params.targetKey = this.detailVal.value.creTeamKey
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
-      if (params.creUserKey !== this.alim.creUserKey) {
-        this.creatorYn = false
-      }
       params.targetContentsKey = this.alimDetail[0].contentsKey
       params.replyPopYn = true
       params.targetType = 'writePush'

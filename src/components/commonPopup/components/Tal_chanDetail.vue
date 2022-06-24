@@ -10,7 +10,7 @@
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
-        <div v-if="admYn === false" style="width: 100%; position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
+        <div v-if="adminYn" style="width: 100%; position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
           <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
@@ -156,6 +156,10 @@ export default {
       }
     },
     async changeFollowYn () {
+      if (this.admYn === true) {
+        this.errorMsg = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
+        this.errorPopYn = true
+      }
       var fStatus = this.followYn
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -172,9 +176,6 @@ export default {
 
         this.followYn = true
       }
-      console.log(result.data)
-      // eslint-disable-next-line no-debugger
-      debugger
       if (result.result || result) {
         this.sendLoadingYn = false
         if (fStatus) {
@@ -198,10 +199,11 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
-      if (this.admYn === true) {
+      /* if (this.admYn === true) {
         this.errorMsg = '소유자/관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
         this.errorPopYn = true
-      }
+        return
+      } */
       if (this.recvAlimYn === true) {
         param.notiYn = false
         this.recvAlimYn = false

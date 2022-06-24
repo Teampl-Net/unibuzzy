@@ -16,9 +16,9 @@
           </div>
         </div>
         <!-- 게시판 이름 , 소속 채널 -->
-        <div style="padding: 0 10px; width: 90%; height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
-          <p class="cBlack fl font20" style="width: 100%; height: 50px; line-height: 50px;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          <p class="fl font14 cBlack" style="width: 100%; height: 50px; line-height: 50px; color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
+        <div style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
+          <p class="cBlack fl font20" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+          <p class="fl font14 cBlack" style="width: 100%;  color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div>
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
@@ -36,7 +36,7 @@
         <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
 
-      <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100% - 2rem); margin-left:1rem"/>
+      <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
       <div class=" " id=""  style="margin-top: 0.8rem; height: calc(100% - 20px)">
         <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
       </div>
