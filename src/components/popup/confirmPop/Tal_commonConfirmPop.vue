@@ -71,7 +71,7 @@ export default {
 .confirmPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.8rem 0.5rem;}
 .confirmPopHeader img{width: 1.7rem; margin: 0 0.4rem}
 .confirmText{color: #3E3F6A; font-size: 18px; font-weight: bold;}
-.confirmPopBody{width: 100%; padding: 3rem 0}
+.confirmPopBody{width: 100%; padding: 3rem 1rem}
 .confirmBtnArea{display: flex; margin: 2rem auto; height: 20px; justify-content:center;}
 
 .confirmPopWrap {
