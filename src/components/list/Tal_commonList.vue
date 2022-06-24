@@ -11,10 +11,10 @@
                 <img v-else class="flcursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
               </div>
                 <div class="pushDetailHeaderTextArea">
-                  <p class=" font15 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                  <p class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
                 <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                  <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-                  <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                  <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                  <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                 </div>
             </div>
             <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
@@ -238,9 +238,9 @@ export default {
 .commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: 100%;}
 
 .pushDetailWrap{height: fit-content;}
-.pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 30px;height: 30px; margin-right: 1px;}
-.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
+.pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
 .alimCheckContents{width: 100%;float: right; min-height: 20px;}
 .alimCheckContents > img {margin-top: 3px;}
