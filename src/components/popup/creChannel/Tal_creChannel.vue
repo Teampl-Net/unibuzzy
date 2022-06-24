@@ -50,7 +50,7 @@
     </div>
   </div>
   <gConfirmPop :confirmText="'[' + inputChannelName + '] 채널을 ' + pageType + '하겠습니다'" @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
-  <gConfirmPop :confirmText="'채널이' + pageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" />
+  <!-- <gConfirmPop :confirmText="'채널이' + pageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" /> -->
   <!-- <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' /> -->
 
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false,checkPopYn=false' />

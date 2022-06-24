@@ -74,10 +74,12 @@ export default {
     }
   },
   async created () {
-    if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
-      this.adminYn = true
-      if(this.propData.value.ownerYn)
-        this.ownerYn = true
+    if (this.propData.value) {
+      if (this.propData.value.managerKey !== undefined && this.propData.value.managerKey !== null && this.propData.value.managerKey !== '') {
+        this.adminYn = true
+        if(this.propData.value.ownerYn)
+          this.ownerYn = true
+      }
     }
     console.log(this.addChanList);
     console.log(this.propData)

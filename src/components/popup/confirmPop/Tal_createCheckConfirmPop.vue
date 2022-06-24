@@ -6,22 +6,22 @@
 export default {
   data () {
     return {
-      checkPopYn:true,
-      okPopYn:false,
+      checkPopYn: true,
+      okPopYn: false
     }
   },
   props: {
     // checkProp:{}
-    createText:{}
+    createText: {}
   },
   methods: {
-    ok(){
+    ok () {
       this.okPopYn = true
       this.$emit('ok')
     }
   },
   computed: {
-  },
+  }
 }
 </script>
 <style scoped>

@@ -21,10 +21,10 @@
         </div>
       </div>
     </div>
-    <!-- <div id="chanInfoSummary2" ref="chanImg2" style="">
-      <span class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-      <span class="font13 mbottom-05 fl">#라이프스타일</span>
-    </div> -->
+    <div id="chanInfoSummary2" ref="chanImg2" style="">
+      <span class="font20 fontBold mtop-05">{{changeText(chanItem.nameMtext)}}</span>
+      <!-- <span class="font13 mbottom-05 fl">#라이프스타일</span> -->
+    </div>
     <!-- <div style="width: 100%; height: 320px;float: left;">
       <div id="summaryWrap2" class="summaryWrap2">
         <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
@@ -113,6 +113,9 @@ export default {
     },
     async getChanDetail (addContentsListYn) {
       var paramMap = new Map()
+
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {

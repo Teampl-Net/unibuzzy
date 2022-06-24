@@ -79,9 +79,9 @@ axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
-// axios.defaults.baseURL = 'http://192.168.0.22:19090'
+axios.defaults.baseURL = 'http://192.168.0.22:19090'
 
-axios.defaults.baseURL = 'http://61.97.186.14:19090'
+// axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
