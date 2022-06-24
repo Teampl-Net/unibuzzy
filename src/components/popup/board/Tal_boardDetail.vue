@@ -40,7 +40,7 @@
             <gBtnSmall btnTitle="댓글 쓰기" @click="this.memoShowYn = true"/>
           </div>
           <div style="width: 100%; min-height: 100px; float: left;">
-            <gMemoList :memoList="memoList"/>
+            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -92,7 +92,6 @@ export default {
     manageStickerPop
   },
   async created() {
-    alert(true)
     // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
@@ -112,6 +111,19 @@ export default {
     }
   },
   methods: {
+    async deleteMemo (param) {
+      console.log(param);
+      var memo = {}
+      memo.memoKey = param.memoKey
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.deleteMemo',
+        param: memo
+      })
+      if(result.data.result == true){
+        this.memoList = []
+        await this.getMemoList()
+      }
+    },
     async getMemoList () {
       var memo = new Object()
       memo.targetKind = 'C'
@@ -123,6 +135,9 @@ export default {
       if(result.data.content) {
         this.memoList = result.data.content
       }
+
+
+
     },
     async saveMemo (text) {
       var memo = new Object()

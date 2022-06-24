@@ -230,7 +230,7 @@ export default {
       this.formEditorShowYn = false
     },
     setParamInnerText (innerText) {
-      alert(true)
+      // alert(true)
       if (innerText !== undefined && innerText !== null && innerText !== '') {
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerText

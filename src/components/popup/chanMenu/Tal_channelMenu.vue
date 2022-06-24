@@ -259,7 +259,7 @@ export default {
       this.$emit('openItem',params)
     },
     openPopup(data){
-      alert(data.targetType)
+      // alert(data.targetType)
       this.$emit('openPop',data)
     }
   }

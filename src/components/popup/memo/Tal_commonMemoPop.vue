@@ -6,6 +6,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default {
   data () {
     return {

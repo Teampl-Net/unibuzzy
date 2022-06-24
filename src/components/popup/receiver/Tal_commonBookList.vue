@@ -72,7 +72,7 @@ export default {
         }
     },
     async created () {
-        alert(JSON.stringify(this.propObject))
+        // alert(JSON.stringify(this.propObject))
         // console.log("#####")
         // console.log(this.propData)
         this.propObject = this.propData
