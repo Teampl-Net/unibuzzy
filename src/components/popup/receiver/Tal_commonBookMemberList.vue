@@ -6,7 +6,7 @@
         <p class="font15 commonBlack">+</p>
     </div> -->
     <div style="width: 100%; height: calc(100% - 30px); padding: 0 10px; margin-top: 10px; overflow: hidden scroll;">
-        <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
+        <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
                     <div v-if="data.selectedYn !== true && (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
@@ -85,7 +85,7 @@ export default {
     },
     methods:{
         async refresh () {
-            if(this.propData.managerOpenYn) 
+            if(this.propData.managerOpenYn)
                 await this.getFollowerList()
             else
                 await this.getBookMemberList()
@@ -161,7 +161,7 @@ export default {
                 var result = await this.$commonAxiosFunction({
                     url: '/tp.deleteManager',
                     param: param
-                })    
+                })
             } else {
                 var param = {}
                 console.log(data)
@@ -172,7 +172,7 @@ export default {
                     param: param
                 })
             }
-            
+
 
             console.log(result)
             if(result.data === 'true' || result.data === true){

@@ -5,7 +5,7 @@
             <p class="font15 commonBlack">+</p>
         </div> -->
         <div v-if="cabinetList.length > 0" style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; " :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
+            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
                         <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
