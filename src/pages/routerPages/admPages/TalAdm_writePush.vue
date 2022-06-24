@@ -32,13 +32,16 @@
                     <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
-                <p style="mright-05">옵션선택</p>
+                <p class="mright-05" style="min-height: 75px; ">옵션선택</p>
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
-                <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
+                <div style="width: 150px; margin-left: 5px; min-height: 25px;float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
+                <div style="width: 150px; margin-left: 5px; height: 25px; margin-left: 5px; float: left; right: 0; top: 1rem;">
+                  <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
+                  <label class="fl" for="titleShow">제목추가</label>
+                </div>
               </div>
               <div style="width: 100%;float: left; min-height: 30px; position: relative;">
-                <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
-                <div style="width: 100px; height: 100%; position: absolute; right: 0; top: 1rem;"><label class="fr" for="titleShow">제목추가</label><input type="checkbox" v-model="titleShowYn" class="fr" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow"></div>
+                <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
               </div>
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
