@@ -1,6 +1,6 @@
 <template>
 <div class="modalBack">
-    <div style="leaveContainer">
+    <div class="leaveContainer">
       <div class="leaveContentsArea">
         <img src="../../../assets/images/common/message_logo.png" alt="종모양 아이콘">
         <p class="leaveComplete-1">회원 탈퇴가 완료되었습니다.</p>
@@ -25,7 +25,7 @@ export default {
 </script>
 <style scoped>
 .modalBack{width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center;}
-.leaveContainer{width: 80%; max-width: 670px; background-color: #FFFFFF; height: 600px; border-radius: 10px; padding: 1rem;}
+.leaveContainer{width: 80%; max-width: 670px; background-color: #FFFFFF !important; height: 600px; border-radius: 10px; padding: 1rem;}
 .leaveContentsArea{height: 90%;display: flex; justify-content: center; align-items: center; flex-direction: column;}
 .leaveContentsArea img {width: 6rem;}
 .leaveComplete-1{color: #6768A7; font-size: 15px; font-weight: bold; margin-top: 2rem;}

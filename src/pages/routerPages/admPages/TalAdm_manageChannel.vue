@@ -47,7 +47,7 @@
                 <p v-else-if="value.reqStatus === '19'">채널탈퇴</p>
               </template>
             </td>
-            <td>{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</td>
+            <td>{{this.$changeDateFormat(value.creDate)}}</td>
             <td class="cursorP font16Im fontBold"  @click="checkRow(index)"> {{this.$makeMtextMap(value.nameMtext, 'KO')}}</td>
             <td>{{this.$makeMtextMap(value.managerNameMtext, 'KO')}}</td>
             <td>

@@ -10,7 +10,7 @@
           <div style="width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;">
             <p  @click="goChanDetail" class=" font18 fontBold commonColor">더알림대학교</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 lightGray">{{this.$dayjs(this.alimDetail.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="font12 lightGray">{{this.$changeDateFormat(this.alimDetail.creDate)}}</p>
           </div>
       </div>
       <div id="alimCheckArea" style="min-height: 35px; <!-- margin: 15px 0px;  -->; margin-bottom: 1rem;">

@@ -15,7 +15,7 @@ import chanList from '../pages/routerPages/Tal_chanList.vue'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
 import test from '../pages/test copy.vue'
-import myChanList from '../components/popup/del_Tal_managerChanList.vue'
+// import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
 import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
 import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
@@ -161,12 +161,12 @@ const routes = [
     props: true,
     component: test
   },
-  {
-    path: '/myChanList',
-    name: 'myChanList',
-    props: true,
-    component: myChanList
-  },
+  // {
+  //   path: '/myChanList',
+  //   name: 'myChanList',
+  //   props: true,
+  //   component: myChanList
+  // },
 
   {
     path: '/writePushTest',

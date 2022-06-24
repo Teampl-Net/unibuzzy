@@ -8,7 +8,7 @@
               <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
               <span class="commonColor font12" >{{value.followerCount}}</span>
           </div>
-          <span class="commonBlack font12 fr" style="">{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</span>
+          <span class="commonBlack font12 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
         </div>
         <div style="width: 100%; margin-top: 4px; position: relative;">
           <span class="chanMsgWrap w-100P fl font12 lightGray "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" >

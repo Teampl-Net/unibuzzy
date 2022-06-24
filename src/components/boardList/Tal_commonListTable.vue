@@ -19,7 +19,7 @@
                 <p v-html="value.title" class="commonBlack mtop-03 font15 fontBold" />
                 <div>
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>
-                    <span class="commonBlack mtop-01 font12 fr">{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</span>
+                    <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
                     <!-- <div :style="'background-color:' + value2.stickerColor" v-for="(value2, index2) in value.stickerList" :key="index2" style="width: 15px; margin-top: 8px; margin-right: 5px; height: 15px;float: right;border-radius: 10px; font-size: 12px; text-align: center;">{{cutStickerName(value2.stickerName)}}</div> -->
                 </div>
             </td>
@@ -46,9 +46,7 @@ export default {
     goDetail (value) {
       this.$emit('goDetail', value)
     },
-    settingDateFormat (date) {
-      return this.$dayjs(date).format('YYYY-MM-DD')
-    },
+
     cutStickerName (value) {
       var cutName = value.substr(0, 1)
       return cutName

@@ -31,7 +31,7 @@
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_2.png" alt="발행일 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행일 </div><div class="w-80P fl textLeft"> {{this.$dayjs(chanDetail.creDate).format('YYYY-MM-DD')}}</div></td>
+            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행일 </div><div class="w-80P fl textLeft"> {{this.$changeDateFormat(chanDetail.creDate)}}</div></td>
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>

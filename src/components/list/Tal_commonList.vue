@@ -14,7 +14,7 @@
                   <p class=" font15 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
                 <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                   <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-                  <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+                  <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                 </div>
             </div>
             <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
@@ -126,9 +126,7 @@ export default {
 
       this.$emit('goDetail', param)
     },
-    settingDateFormat (date) {
-      return this.$dayjs(date).format('YYYY-MM-DD')
-    },
+
     cutStickerName (value) {
       var cutName = value.substr(0, 1)
       return cutName

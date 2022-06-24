@@ -19,7 +19,7 @@
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
-            <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
           </div>
         </div>
         <div  class="font15 mbottom-2" v-html="alim.bodyFullStr"></div>

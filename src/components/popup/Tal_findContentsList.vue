@@ -80,9 +80,7 @@ export default {
       this.$emit('closePop')
       // this.$removeHistoryStack()
     },
-    settingDateFormat (date) {
-      return this.$dayjs(date).format('YYYY-MM-DD')
-    },
+
     deleteChannelFindLogList (index) {
       var deleteLogKey = this.searchLogList[index].searchKey
       // eslint-disable-next-line no-new-object

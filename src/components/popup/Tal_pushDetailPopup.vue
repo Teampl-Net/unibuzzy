@@ -9,7 +9,7 @@
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}</p>
           <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.changeText(pushDetail.creUserName) + ')'}}</p>
-          <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.creDate).format('YYYY-MM-DD HH:mm')}}</p>
+          <p class="font12 fr lightGray">{{this.$changeDateFormat(pushDetail.creDate)}}</p>
 
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(JSON.parse(this.detailVal).sendTime).format('YYYY-MM-DD HH:mm')}}</p> -->
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->

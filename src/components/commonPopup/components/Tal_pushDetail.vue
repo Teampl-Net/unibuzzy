@@ -5,13 +5,18 @@
 
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
-          <img @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+          <div v-if="alim.logoPathMtext" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem"><img alt="채널 프로필이미지" style="width:80%" :src="alim.logoPathMtext"></div>
+          <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
+            <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
+
+            <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+          <!-- </div> -->
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
             <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
-            <p class="font12 fr lightGray">{{this.$dayjs(alim.creDate).format('YYYY-MM-DD')}}</p>
+            <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
             <p style="position:relative; top:0; right: 0;" v-if="alim.rUserCount === 1">나에게만</p>
             <p style="position:relative; top:0; right: 0;" v-else-if="alim.rUserCount > 1">여러명에게</p>
             <p v-else>전체에게</p>
