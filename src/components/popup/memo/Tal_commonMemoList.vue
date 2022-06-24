@@ -20,7 +20,7 @@
         </div>
         <div v-else>
           <div style="float: right; width: 40px; height: 100%; text-align: center;" @click="memoDeleteClick(memo, index)" >삭제</div>
-          <!-- <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa; color:#ccc" >답글</div> -->
+          <!-- <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa; color:#ccc" @click="memoMemoClick(memo)">답글</div> -->
           <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa;" @click="editMemoClick(memo, index)" >수정</div>
         </div>
 
@@ -86,11 +86,11 @@ export default {
         this.editIndex = ''
         this.$emit('editTrue')
       }
-
-
-
+    },
+    memoMemoClick (memo) {
 
     }
+
   }
 }
 </script>
