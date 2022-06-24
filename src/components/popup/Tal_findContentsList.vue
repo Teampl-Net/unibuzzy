@@ -80,7 +80,6 @@ export default {
       this.$emit('closePop')
       // this.$removeHistoryStack()
     },
-
     deleteChannelFindLogList (index) {
       var deleteLogKey = this.searchLogList[index].searchKey
       // eslint-disable-next-line no-new-object
