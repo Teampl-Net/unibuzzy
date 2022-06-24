@@ -15,7 +15,7 @@
           <div style="width: 100%; margin-top: 4px; position: relative;">
             <span class="chanMsgWrap w-70P fl font12 commonBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" >
             </span>
-            <span class="commonBlack font12 fr" style="position: absolute; bottom: 0; right: 0;">{{this.$dayjs(value.creDate).format('YYYY-MM-DD')}}</span>
+            <span class="commonBlack font12 fr" style="position: absolute; bottom: 0; right: 0;">{{this.$changeDateFormat(value.creDate)}}</span>
           </div>
       </div>
     </div>
