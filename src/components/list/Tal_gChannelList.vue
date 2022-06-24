@@ -3,16 +3,15 @@
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
         <div class=" text-start mr-04 w-100P" >
-          <p class="font15 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+          <p class="font16 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
           <div style="line-height: 0.05rem; float: left; margin-top: 6px; margin-left: 8px;">
               <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
-              <span class="commonColor font12" >{{value.followerCount}}</span>
+              <span class="commonColor font14" >{{value.followerCount}}</span>
           </div>
-          <span class="commonBlack font12 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
+          <span class="lightGray font14 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
         </div>
         <div style="width: 100%; margin-top: 4px; position: relative;">
-          <span class="chanMsgWrap w-100P fl font12 lightGray "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" >
-          </span>
+          <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
         </div>
       </div>
     </div>
