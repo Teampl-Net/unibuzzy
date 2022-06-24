@@ -25,13 +25,13 @@
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'  />
 
-      <chanMenu :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem' @openPop="openPop"/>
+      <chanMenu :propData="this.params" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
       <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='params'/>
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
-
+      <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
       <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
@@ -66,7 +66,7 @@ import boardMain from '../popup/board/Tal_boardMain.vue'
 import boardDetail from '../popup/board/Tal_boardDetail.vue'
 import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
-
+import editManagerList from '../popup/receiver/Tal_selectManagerList.vue'
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
 export default {
   async created() {
@@ -139,7 +139,8 @@ export default {
     editBookList,
     bookMemberDetail,
     boardWrite,
-    pushPop
+    pushPop,
+    editManagerList
   },
   updated () {
   },
@@ -273,6 +274,8 @@ export default {
         this.headerTitle = '게시판 작성'
       } else if (this.targetType === 'boardDetail') {
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
+      } else if (this.targetType === 'editManagerList') {
+        this.headerTitle = '매니저관리'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -304,6 +307,8 @@ export default {
           // this.reloadYn = false
         } else if(this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
+        } else if(this.targetType === 'editManagerList') {
+          await this.$refs.editManagerListComp.refresh()
         } else if (this.targetType === 'boardMain') {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {

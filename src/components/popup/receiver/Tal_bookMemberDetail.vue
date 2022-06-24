@@ -186,8 +186,13 @@ export default {
                 url: '/tp.saveManager',
                 param: param
             })
-            if (result.data === true) {
-                this.$emit('closeXPop', true)
+            if (result.data.result === true) {
+                if(result.data.message === 'OK') {
+                    this.$emit('closeXPop', true)
+                } else {
+                    this.confirmText = result.data.message
+                    this.confirmPopShowYn = true
+                }
             }
             console.log(result)
 
@@ -195,24 +200,24 @@ export default {
         checkParam(){
             var result = false
             if (this.memName === '' || this.memName === null || this.memName === undefined) {
-                this.confirmPopShowYn = true
                 this.confirmText = '이름을 입력하세요.'
+                this.confirmPopShowYn = true
             } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail.trim())) {
-                    this.confirmPopShowYn = true
                     this.confirmText = '이메일 형식이 유효하지 않습니다.'
-                } else if(!this.regPhoneNumber(this.memPhone.trim())) {
                     this.confirmPopShowYn = true
+                } else if(!this.regPhoneNumber(this.memPhone.trim())) {
                     this.confirmText = '전화번호 형식이 유효하지 않습니다.'
+                    this.confirmPopShowYn = true
                 } else {
                     result = true
                 }
             }  else if (this.memEmail === '') {
-                this.confirmPopShowYn = true
                 this.confirmText = '이메일을 입력하세요.'
-            } else {
                 this.confirmPopShowYn = true
+            } else {
                 this.confirmText = '전화번호를 입력하세요.'
+                this.confirmPopShowYn = true
             }
             return result
         },

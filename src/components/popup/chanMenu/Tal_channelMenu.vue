@@ -11,11 +11,11 @@
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
   <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
 
-    <div class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
+    <div  v-if="adminYn" class="fl w-100P mtop-05 mbottom-2" @click="adminManagingClick">
       <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
     </div>
 
-    <div class="fl" style="width:100%">
+    <div v-if="adminYn" class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style="" v-if="adminYn"/>
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <div v-show="editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div>
+  <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div>
 
   <div style="width:100%; margin-top:calc(20px);" :class="{editmTop:editYn !== true}" class="fl">
     <div class="fl" style="width:100%">
@@ -147,10 +147,12 @@ export default {
       console.log(this.selectAdminList);
     },
     adminManagingClick(){
-      this.propData.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
-      this.propData.currentTeamKey = this.chanAlimListTeamKey
-      this.propData.managerOpen = true
-      this.selectManagerListYn = true
+      var param = new Object()
+      param.targetType = 'editManagerList'
+      param.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      param.currentTeamKey = this.chanAlimListTeamKey
+      param.managerOpenYn = true
+      this.$emit('openPop', param)
     },
     closeEditPop () {
       // this.editPopYn = false

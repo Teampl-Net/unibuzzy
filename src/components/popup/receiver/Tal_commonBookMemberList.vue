@@ -1,6 +1,7 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit"  />
+    <pageTopCompo v-if="propData.managerOpenYn" :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + '매니저'" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit"  />
+    <pageTopCompo v-else :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit"  />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>
     </div> -->
@@ -8,7 +9,7 @@
         <draggable  ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="data.selectedYn !== true && (propData.managerOpen && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                    <div v-if="data.selectedYn !== true && (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
                             <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <div v-if="editYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
@@ -68,7 +69,7 @@ export default {
         history.push(this.popId)
         this.$store.commit('updateStack', history)
 
-        if(this.propData.managerOpen === null || this.propData.managerOpen === undefined || this.propData.managerOpen === ''){
+        if(this.propData.managerOpenYn === null || this.propData.managerOpenYn === undefined || this.propData.managerOpenYn === ''){
 
             await this.getBookMemberList()
             if(this.parentSelectList !== '' && this.parentSelectList.memberList) {
@@ -84,7 +85,10 @@ export default {
     },
     methods:{
         async refresh () {
-            await this.getBookMemberList()
+            if(this.propData.managerOpenYn) 
+                await this.getFollowerList()
+            else
+                await this.getBookMemberList()
         },
         setParentSelectList() {
 
@@ -149,7 +153,7 @@ export default {
             }
         },
         async deleteMemberClick(data, index){
-            if(this.propData.managerOpen) {
+            if(this.propData.managerOpenYn) {
                 var param = {}
                 console.log(data)
                 param.userKey = data.userKey

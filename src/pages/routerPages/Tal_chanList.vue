@@ -143,7 +143,7 @@ export default {
         paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'mychannel') {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-        paramMap.set('ownerYn', true)
+        paramMap.set('managerYn', true)
       }
       if (this.resultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.resultSearchKeyList[0].keyword)

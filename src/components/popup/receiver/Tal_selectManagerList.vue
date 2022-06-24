@@ -1,16 +1,14 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
-    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
+    <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  /> -->
+    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-        <memberList  @openAddPop='openAddManagerPop' @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
+        <memberList ref="managerListCompo" :managerOpenYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
         <!-- <memberList :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/> -->
         </div>
         <!-- <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" /> -->
 
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
-</div>
 
 </template>
 
@@ -40,12 +38,14 @@ export default {
     }
   },
   methods: {
+    refresh () {
+      this.$refs.managerListCompo.refresh()
+    },
     backClick () {
       this.$emit('closeXPop')
     },
     openMCabUserList (data) {
       this.selectBookDetail = data
-      this.receiverTitle = '구성원 관리'
       if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
         this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
       } else {
@@ -53,6 +53,7 @@ export default {
       }
     },
     openAddManagerPop () {
+      // alert(true)
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey

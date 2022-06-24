@@ -81,7 +81,7 @@ export default {
         paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'mychannel') {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-        paramMap.set('ownerYn', true)
+        paramMap.set('managerYn', true)
       }
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
