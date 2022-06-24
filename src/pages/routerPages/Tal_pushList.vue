@@ -100,7 +100,7 @@ export default {
     }
   },
   unmounted () {
-    
+
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
   },
@@ -192,7 +192,7 @@ export default {
       var test = document.getElementById('pageHeader')
       parentElement = element.parentElement
       this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-      
+
       if(this.firstContOffsetY < 0) {
         if (this.box.scrollTop > this.scrollPosition) {
           this.scrollDirection = 'down'
@@ -203,7 +203,7 @@ export default {
         }
       }
       this.scrollPosition = this.box.scrollTop
-      
+
     },
     async refreshList () {
       var pSize = 10
@@ -413,7 +413,7 @@ export default {
         { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
         { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
       ],
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
@@ -454,7 +454,7 @@ export default {
     transform: translateY(-100%);
 } */
 .pushListHeader {
-    width: 100%; 
+    width: 100%;
     min-height: 132px;
     position: absolute;
     background-color: #FFF;
@@ -470,5 +470,5 @@ export default {
 }
 .pushListHeader--unpinned {
     transform: translateY(-100%);
-} 
+}
 </style>
