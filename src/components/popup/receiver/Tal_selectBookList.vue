@@ -59,21 +59,23 @@ export default {
   computed: {
     historyStack () {
       return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+    },
     historyStack (value, old) {
-      if (this.popId === value) {
-        if (this.detailOpenYn) {
-          this.detailOpenYn = false
-        } else { this.backClick() }
-      }
     }
   },
   components: { bookList, memberList, selectedListCompo },
   data () {
     return {
       popId: null,
+      subPopId: null,
       selectedYn: false,
       setSelectedList: [],
       detailOpenYn: false,
@@ -82,7 +84,6 @@ export default {
       receiverTitle: '그룹 관리',
       selectReceivers: [],
       teamLength: 100,
-      addPopOpenYn: null,
       addPopOpen: '',
       selectedTeamList: [],
       selectedMemberList: [],
@@ -143,10 +144,13 @@ export default {
     },
 
     backClick () {
-      if (this.addPopOpenYn) {
-        // MemberList에 구성원추가 팝업
-        this.addPopOpenYn = false
-      } else if (this.detailOpenYn) {
+      var hStack = this.$store.getters.hStack
+      var removePage = history[hStack.length - 1]
+      if (this.subPopId === hStack[hStack.length - 1]) {
+        // alert(removePage)
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
         this.detailOpenYn = false
         this.receiverTitle = '그룹 관리'
         if (this.selectPopYn) {
@@ -161,7 +165,12 @@ export default {
 
         this.teamLength = 100
         this.memberEditYn = false
-      } else {
+      } else if (this.popId === hStack[hStack.length - 1]) {
+        // alert(removePage)
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
+
         this.$emit('closeXPop')
       }
     },
@@ -169,6 +178,13 @@ export default {
       if (!this.teamEditYn) {
         this.selectBookDetail = data
         this.detailOpenYn = true
+
+        this.selectBookDetail = data
+        var history = this.$store.getters.hStack
+        this.subPopId = 'commonBookMemberList' + history.length
+        history.push(this.subPopId)
+        this.$store.commit('updateStack', history)
+
         this.receiverTitle = '구성원 관리'
         if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext

@@ -86,16 +86,26 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters.hStack
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
+    /*
+    historyStack () {
+      return this.$store.getters.hRPage
+    } */
   },
   watch: {
-    historyStack (value, old) {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
       if (this.alimSubPopYn) {
-        if ('channelAlimToDetail' + this.chanDetail.teamKey === value) {
+        if ('channelAlimToDetail' + this.chanDetail.teamKey === hStack[hStack.length - 1]) {
           this.$emit('closeDetailPop')
         }
       }
+    },
+    historyStack (value, old) {
     }
   },
   async created () {

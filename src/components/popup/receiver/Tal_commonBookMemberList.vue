@@ -63,13 +63,6 @@ export default {
     watch:{
     },
     async created(){
-        console.log("#!@#!@#!!@# memberList")
-        console.log(this.propData)
-
-        var history = this.$store.getters.hStack
-        history.push(this.popId)
-        this.$store.commit('updateStack', history)
-
         if(this.propData.managerOpenYn === null || this.propData.managerOpenYn === undefined || this.propData.managerOpenYn === ''){
 
             await this.getBookMemberList()

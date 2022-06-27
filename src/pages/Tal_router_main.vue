@@ -155,6 +155,12 @@ export default {
       if (reloadYn === true) {
         this.$router.go(0)
       }
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.popShowYn = false
     },
     /* closeXPushPop () {

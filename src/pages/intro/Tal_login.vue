@@ -11,11 +11,12 @@
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
       </div> -->
-      <div class="loginBtn" v-on:click="NaverLoginBtn">
-        <img src="../../assets/images/intro/login/login_naver.png">
-        네이버 로그인
+      <div id="naver_id_login" class="loginBtn" >
+        <a :href="naverLoginURL"><img src="../../assets/images/intro/login/login_naver.png">
+        네이버 로그인</a>
       </div>
-      <div class="loginBtn" v-on:click="GoogleLoginBtn">
+      <!-- <GoogleLogin class="big-button" -->
+      <div class="loginBtn" v-on:click="signWithGoogle">
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
@@ -30,14 +31,31 @@
 <script>
 
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
+import firebase from 'firebase/compat/app'
+// Other libraries might need to also be prefixed with "compat":
+import 'firebase/compat/auth'
 
-import { onMessage } from '../../assets/js/webviewInterface'
+const firebaseConfig = {
+  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
+  authDomain: 'thealim-2602c.firebaseapp.com',
+  projectId: 'thealim-2602c',
+  storageBucket: 'thealim-2602c.appspot.com',
+  messagingSenderId: '777053173385',
+  appId: '1:777053173385:web:0de7347501346c761d3858',
+  measurementId: 'G-0BYBFKL8TS'
+}
 export default {
   name: '',
   data () {
     return {
       systemName: 'iOS',
-      appCloseYn: false
+      appCloseYn: false,
+      CLIENTIDforNAVER: 'BbUrvFqJkUbcMb6ISALy',
+      redirectURIforNAVER: 'http://192.168.0.22:19090/login',
+      //  FIXME state 값 random string 으로 변경
+      stateforNAVER: 123,
+      naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code'
+
     }
   },
   components: {
@@ -45,54 +63,50 @@ export default {
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+    firebase.initializeApp(firebaseConfig)
+    this.naverLoginURL += '&client_id=' + this.CLIENTIDforNAVER
+    this.naverLoginURL += '&redirect_uri=' + this.redirectURIforNAVER
+    this.naverLoginURL += '&state=' + this.stateforNAVER
+    alert(this.naverLoginURL)
   },
   methods: {
-    closeApp () {
-      onMessage('closeApp', 'requestUserPermission')
-      this.appCloseYn = false
+    naverLoginBtn () {
+      // eslint-disable-next-line camelcase
+      var client_id = 'BbUrvFqJkUbcMb6ISALy'
+      var callbackUrl = 'http://192.168.0.22:19090/login'// 서버 주소
+      // eslint-disable-next-line camelcase
+      var url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + client_id + '&redirect_uri=' + callbackUrl + '&state=1234'
+      window.location.replace(url)
     },
-    openTestLoginPage () {
-      this.$router.replace('/testLoginPage')
+    async signWithGoogle () {
+      console.log('login')
+      firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
     },
-    GoogleLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginGoogle'
-        })
-      )
+    async loginWithGoogle () {
+      var auth = firebase.auth()
+      const provider = new firebase.auth.GoogleAuthProvider()
+      // firebase.auth().languageCode = "korean";
+      try {
+        // eslint-disable-next-line no-unused-vars
+        await auth.signInWithPopup(provider)
+        alert(true)
+        // eslint-disable-next-line no-debugger
+        debugger
+      } finally {
+      }
     },
-    KakaoLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginKakao'
-        })
-      )
+    signInSucceed (result) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (result.credential) {
+        // eslint-disable-next-line no-debugger
+        debugger
+        /* googleAccountToken = result.credential.accessToken;
+        user = result.user */
+      }
     },
-    NaverLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginNaver'
-        })
-      )
-    },
-    AppleLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginApple'
-        })
-      )
-    },
-    pictureResponse (data) {
-    },
-    requestPermission: () => {
-      // 모바일이라면 모바일의 카메라 권한을 물어보는 액션을 전달합니다.
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: 'REQ_CAMERA_PERMISSION' })
-      )
+    signOut () {
+      this.$firebase.auth().signOut()
     }
   }
   // onMessage (data) {

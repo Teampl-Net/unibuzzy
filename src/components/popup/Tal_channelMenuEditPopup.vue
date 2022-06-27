@@ -57,14 +57,19 @@ export default {
   computed: {
     historyStack () {
       return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
-    historyStack (value, old) {
-      if (this.popId === value) {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
         this.goNo()
       }
-      /* val + oldVal) */
+    },
+    historyStack (value, old) {
     }
   },
   created() {
@@ -134,6 +139,12 @@ export default {
       this.$emit('openPop', params)
     },
     goNo (){
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('closeXPop')
     },
     async deleteCabinet(data,index){

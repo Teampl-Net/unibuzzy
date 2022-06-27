@@ -169,13 +169,25 @@ export default {
   computed: {
     historyStack () {
       return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
-    historyStack (value, old) {
-      if (this.popId === value) {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
+        var history = this.$store.getters.hStack
+        var removePage = history[history.length - 1]
+        // alert(removePage)
+        history = history.filter((element, index) => index < history.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', history)
         this.$emit('closePop')
       }
+    },
+    historyStack (value, old) {
     }
   },
   data () {
@@ -564,6 +576,13 @@ export default {
       this.selectBoardTypeText = data.chanMenuTitle
 
       this.selectId = data.idNum
+      
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.selectTypePopShowYn = false
 
     },

@@ -2,7 +2,7 @@
 
 <div class="addChanMenuArea">
     <div class="addChanH" >
-        <img v-on:click="this.$emit('closePop')" class="mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
+        <img v-on:click="this.closeXPop()" class="mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/common/icon_back.png"/>
         <p>추가 게시판 유형</p>
     </div>
     <div class="listArea" style="padding-top:10px;">
@@ -22,7 +22,7 @@
         <p class="channelMenuTitle" style="margin-top:1.6rem; margin-left: calc(1rem + 20px)">설명</p>
         <div class="channelItemExplain" style="" v-html="explainText"></div>
         <div style="position: absolute; right: 2rem; bottom: 2rem;">
-            <gBtnSmall class="btnBig  " v-on:click="this.$emit('closePop')" btnTitle="닫기" style="margin-left:10px"/>
+            <gBtnSmall class="btnBig  " v-on:click="this.closeXPop()" btnTitle="닫기" style="margin-left:10px"/>
             <gBtnSmall class="btnBig" v-on:click="setResult" btnTitle="적용" style="margin-right:10px"/>
         </div>
     </div>
@@ -59,13 +59,19 @@ export default{
 computed: {
     historyStack () {
       return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
-    historyStack (value, old) {
-      if (this.popId === value) {
-        this.$emit('closePop')
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.closeXPop()
       }
+    },
+    historyStack (value, old) {
     }
   },
   created () {
@@ -76,6 +82,15 @@ computed: {
 
   },
   methods: {
+    closeXPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+      this.$emit('closePop')
+    },
     setResult () {
       // eslint-disable-next-line no-new-object
       var obj = new Object()

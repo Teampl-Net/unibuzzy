@@ -65,18 +65,30 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters.hStack
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
-    historyStack (value, old) {
-      if (this.popId === value) {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
         this.closeXPop()
       }
+    },
+    historyStack (value, old) {
     }
   },
   methods: {
     closeXPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('closePop')
       // this.$removeHistoryStack()
     },
@@ -133,7 +145,7 @@ export default {
 </script>
 
 <style scoped>
-.findPopupWrap{position: fixed;width: 100vw; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: fixed; width: 100vw; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.3rem; right: 8px;}
 .searchInput{border: none; margin-bottom: 5px!important; font-size: 15px; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}

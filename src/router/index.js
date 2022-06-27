@@ -25,7 +25,7 @@ import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 
 import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
-
+import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 const routes = [
   {
     path: '/',
@@ -129,7 +129,21 @@ const routes = [
     path: '/login',
     name: 'login',
     props: true,
-    component: login
+    component: login,
+    children: [
+      {
+        path: '/login',
+        name: 'login',
+        props: true,
+        component: login
+      },
+      {
+        path: '/login/naver/callback',
+        name: 'login',
+        props: true,
+        component: naverCallback
+      }
+    ]
   },
   {
     path: '/permissions',

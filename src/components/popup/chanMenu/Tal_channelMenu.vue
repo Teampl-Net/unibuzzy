@@ -4,8 +4,8 @@
 
 <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
-      <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
-      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/>
+      <img v-if="editYn === false" v-on:click="this.goNo" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
+      <img v-else v-on:click="this.goNo()" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold" >{{menuHeaderTitle}}</p>
   </div>
 
@@ -65,13 +65,19 @@ export default {
   computed: {
     historyStack () {
       return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     }
   },
   watch: {
-    historyStack (value, old) {
-      if ('chanMenu' + this.chanAlimListTeamKey === value) {
-        this.$emit('closePop')
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if ('chanMenu' + this.chanAlimListTeamKey === hStack[hStack.length - 1]) {
+        this.goNo()
       }
+    },
+    historyStack (value, old) {
     }
   },
   async created () {
@@ -178,6 +184,14 @@ export default {
       param.teamNameMtext = this.$changeText(teamName)
       param.currentTeamKey = this.chanAlimListTeamKey
       param.managerOpenYn = true
+
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+      
       this.$emit('openPop', param)
     },
     closeEditPop () {
@@ -192,6 +206,13 @@ export default {
       params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = data
       params.value = this.propData
+
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('openItem',params)
 
     },
@@ -257,6 +278,12 @@ export default {
       this.$emit('openPop', params)
     },
     goNo (){
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('closePop')
     },
     editChanMenu (){
@@ -269,6 +296,13 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
+
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('openItem',params)
     },
     bookMenuClick(data) {
@@ -289,6 +323,13 @@ export default {
       params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
+
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('openItem',params)
     },
     openPopup(data){

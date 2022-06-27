@@ -37,6 +37,24 @@ export default {
   props: {
     detailVal: {}
   },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hStack
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.goNo()
+      }
+    },
+    historyStack (value, old) {
+    }
+  },
   methods: {
     /* decodeContents (data) {
       // eslint-disable-next-line no-undef
@@ -48,6 +66,12 @@ export default {
       this.openPushDetailPop()
     },
     goNo () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.$emit('closePushPop')
       // this.timeOut()
     },
@@ -79,13 +103,14 @@ export default {
     }
 
   },
-  computed: {
-
-  },
   async created () {
     this.body = this.detailVal.data.body
     var resultList = await this.getContentsList()
     this.pushDetail = resultList.content[0]
+    var history = this.$store.getters.hStack
+    this.popId = 'pushDetailPop' + history.length
+    history.push(this.popId)
+    this.$store.commit('updateStack', history)
   }
 }
 </script>

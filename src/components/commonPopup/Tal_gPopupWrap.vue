@@ -147,7 +147,10 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters.hStack
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
     },
     getWindowSize () {
       return {
@@ -156,10 +159,17 @@ export default {
     }
   },
   watch: {
-    historyStack (value, old) {
-      if (this.popId === value) {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (hStack[hStack.length - 1] === this.popId) {
+        // alert(false)
         this.closeXPop()
       }
+    },
+    historyStack (value, old) {
+      /* if (this.popId === value) {
+        this.closeXPop()
+      } */
     }
   },
   methods: {
@@ -302,6 +312,12 @@ a      } else if (this.targetType === 'bookMemberDetail') {
     },
     async closePop (reloadYn) { // 자식 팝업닫기
       this.popShowYn = false
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
         if (this.targetType === 'pushList' || this.targetType === 'chanList') {
@@ -332,7 +348,9 @@ a      } else if (this.targetType === 'bookMemberDetail') {
       }
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
+      
       this.$emit('closePop', reloadYn)
+      
     },
     // sucssesCreChan(){
     //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {

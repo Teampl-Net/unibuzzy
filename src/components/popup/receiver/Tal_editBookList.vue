@@ -38,35 +38,38 @@ export default {
     created (){
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
-        history.push(this.popId)
-        this.$store.commit('updateStack', history)
+        
 
         if(this.propData.value.clickData){
             this.selectBookDetail = this.propData.value.clickData
+            var history = this.$store.getters.hStack
+            this.subPopId = 'commonBookMemberList' + history.length
+            // alert(this.subPopId)
+            history.push(this.subPopId)
+            this.$store.commit('updateStack', history)
             this.detailOpenYn = true
         }
     },
     computed: {
         historyStack () {
-        return this.$store.getters.hRPage
+            return this.$store.getters.hRPage
+        },
+        pageUpdate () {
+            return this.$store.getters.hUpdate
         }
     },
     watch: {
+        pageUpdate (value, old) {
+            this.backClick()
+        },
         historyStack (value, old) {
-        if (this.popId === value) {
-            if(this.detailOpenYn) {
-                this.detailOpenYn = false
-            } else {
-                this.backClick()
-            }
-            }
-
         }
     },
     components: { findContentsList, bookListCompo,memberList },
     data () {
         return {
             editYn: false,
+            subPopId: null,
             popId: null,
             detailOpenYn: false,
             changeSearchList: [],
@@ -86,20 +89,32 @@ export default {
         editYnCheck(data) {
             this.editYn = data
         },
-        backClick(){
-            if(this.addPopOpenYn){
-                // MemberList에 구성원추가 팝업 끄기manageBookList
-                this.addPopOpenYn = false
-            }else if(this.detailOpenYn){
+        backClick () {
+            var hStack = this.$store.getters.hStack
+            var removePage = hStack[hStack.length - 1]
+            if (this.subPopId === hStack[hStack.length - 1]) {
+                // alert(removePage)
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
+                
+            } else if (this.popId === hStack[hStack.length - 1]) {
+                // alert(removePage)
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
 
-            }else{
                 this.$emit('closeXPop')
             }
         },
         openMCabUserList(data){
-
             this.selectBookDetail = data
+            var history = this.$store.getters.hStack
+            this.subPopId = 'commonBookMemberList' + history.length
+            // alert(this.subPopId)
+            history.push(this.subPopId)
+            this.$store.commit('updateStack', history)
             this.detailOpenYn = true
 
         },

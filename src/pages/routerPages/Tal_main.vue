@@ -61,6 +61,17 @@ export default {
       await this.$userLoginCheck()
     }
     await this.getUserInform()
+    this.$store.commit('setRemovePage', 0)
+    this.$store.commit('updateStack', [0])
+    const searchParams = new URLSearchParams(location.search)
+
+    // eslint-disable-next-line no-unused-vars
+    for (const param of searchParams) {
+      if (param[0] === 'code') {
+        // eslint-disable-next-line no-unused-vars
+        var naverCode = param[1]
+      }
+    }
     // <%= ${sessionName} != null %>
   },
   mounted () {

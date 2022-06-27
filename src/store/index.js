@@ -4,7 +4,9 @@ export default createStore({
   state: {
     historyStack: [0],
     currentPage: null,
-    removePage: 0
+    removePage: 0,
+    pageUpdate: 0,
+    recvPushQueue: []
   },
   mutations: {
     updateStack (state, stack) {
@@ -15,6 +17,12 @@ export default createStore({
     },
     setCurrentPage (state, page) {
       state.currentPage = page
+    },
+    updatePage (state, page) {
+      state.pageUpdate = page
+    },
+    addPushQueue (state, page) {
+      state.recvPushQueue = page
     }
   },
   actions: {
@@ -30,6 +38,12 @@ export default createStore({
     },
     hCPage (state) { // 현재 로그인 상태인지 확인 (true/false)
       return state.historyStack[state.historyStack.length - 1]
+    },
+    hUpdate (state) { // 현재 로그인 상태인지 확인 (true/false)
+      return state.pageUpdate
+    },
+    pushQueue (state) { // 현재 로그인 상태인지 확인 (true/false)
+      return state.recvPushQueue
     }
   }
 })

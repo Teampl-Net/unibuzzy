@@ -41,8 +41,8 @@
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
-    <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.detailShowYn = false" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
-    <chanDetailComp :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.detailShowYn = false" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
+    <chanDetailComp :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
 
 </div>
@@ -100,6 +100,15 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    closeDetailPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+      this.detailShowYn = false
+    },
     refreshList () {
       this.$ref.pushListCompo.refreshList()
     },

@@ -112,11 +112,15 @@ const isJsonString = (str) => {
           var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
-          } else {
+          }
+          var current = store.getters.hUpdate
+          store.commit('updatePage', current + 1)
+          // alert(true)
+          /* else {
             history = history.filter((element, index) => index < history.length - 1)
             store.commit('setRemovePage', removePage)
             store.commit('updateStack', history)
-          }
+          } */
           /* if (localStorage.getItem('popHistoryStack')) {
             ;
           } else {
