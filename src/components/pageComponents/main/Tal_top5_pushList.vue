@@ -86,6 +86,7 @@ export default {
       var resultData = null
       param.offsetInt = 0
       param.pageSize = 5
+      param.jobkindId = 'ALIM'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (this.viewTab === 'L') {
         param.findActYn = true

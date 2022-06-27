@@ -4,7 +4,7 @@
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <template v-for="(alim, index) in this.contentsList" :key="index" >
         <div :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" v-if="alim.bodyFullStr">
-          <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div>
+          <!-- <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div> -->
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
@@ -100,6 +100,7 @@ export default {
       param.teamKey = teamKey
       param.targetKey = teamKey
       param.nameMtext = nameMtext
+      param.chanName = nameMtext
       this.$emit('goDetail', param)
     },
     // creatorBox (value) {

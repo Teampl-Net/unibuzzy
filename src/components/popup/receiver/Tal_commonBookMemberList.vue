@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <pageTopCompo v-if="this.propData.managerOpenYn" :titleText="teamInfo.teamNameMtext + ' 채널 매니저'" :selectPopYn="true" />
+    <pageTopCompo v-if="this.propData.managerOpenYn" :titleText="teamInfo.teamNameMtext" :selectPopYn="true" />
     <pageTopCompo v-else :titleText="teamInfo.teamNameMtext || this.$changeText(teamInfo.nameMtext) + ' > ' + propData.cabinetNameMtext" :selectPopYn="selectPopYn" :btnTitle="pageTopBtnTitle" @btnClick="changeEdit"  />
     <!-- <div v-if="editYn" @click="newAddMember" class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
         <p class="font15 commonBlack">+</p>

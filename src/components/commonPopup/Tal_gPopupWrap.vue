@@ -301,7 +301,7 @@ export default {
       this.popShowYn = false
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
-        if (this.targetType === 'pushList' || this.targetType === 'chanList' || this.targetType === 'chanDetail') {
+        if (this.targetType === 'pushList' || this.targetType === 'chanList') {
           this.reloadYn = true
           setTimeout(() => {
             this.reloadYn = false
@@ -353,6 +353,9 @@ export default {
         this.openPop(setParams)
       }
       this.openPop(params)
+      this.notiDetailShowYn = false
+    },
+    closePushPop ( ){
       this.notiDetailShowYn = false
     },
     recvNoti (e) {

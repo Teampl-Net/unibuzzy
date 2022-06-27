@@ -18,7 +18,7 @@
     <div v-if="adminYn" class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:groupDropDownYn ===true }" @click="groupDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
-      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="편집" style="" v-if="adminYn"/>
+      <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
       <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="cabinetList" @openDetail='openTeamDetailPop' />
@@ -31,7 +31,7 @@
     <div class="fl" style="width:100%">
       <img src="../../../assets/images/common/icon_back.png" class="fl dropdownBtn" :class="{dropupBtn:boardDropDownYn ===true }" @click="boardDropDown">
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
-      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="편집" style="" v-if="adminYn" />
+      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
     </div>
     <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
       <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
@@ -164,7 +164,17 @@ export default {
     adminManagingClick(){
       var param = new Object()
       param.targetType = 'editManagerList'
-      param.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
+      var teamName
+      if(this.propData) {
+        if(this.propData.value) {
+          teamName = this.propData.value.nameMtext || this.propData.value.teamNameMtext
+        } else {
+          if(this.propData.nameMtext) {
+            teamName = this.propData.nameMtext
+          }
+        }
+      }
+      param.teamNameMtext = teamName
       param.currentTeamKey = this.chanAlimListTeamKey
       param.managerOpenYn = true
       this.$emit('openPop', param)
