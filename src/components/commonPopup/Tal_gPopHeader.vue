@@ -46,7 +46,7 @@ export default {
 .commonPopHeaerWrap > img {position: absolute; left: 1rem;}
 .commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; box-shadow: 0px 7px 9px -9px #00000036;}
 
-.popHeaderTitleSpan{position: absolute; color: #6768A7; font-size: 20px;}
+.popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; font-size: 20px;}
 .commonPopBackBtn{width: 0.8rem;}
 
 .chanMenubar{

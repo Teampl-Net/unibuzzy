@@ -11,7 +11,7 @@
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
       </div>
       <div id="pushListWrap" :style="calcHeaderHeight" class="testt" style="float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
-      <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
+        <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -197,7 +197,7 @@ export default {
         if (this.box.scrollTop > this.scrollPosition) {
           this.scrollDirection = 'down'
           this.scrolledYn = true
-        } else if (this.box.scrollTop < this.scrollPosition) {
+        } else if (this.box.scrollTop <= this.scrollPosition) {
           this.scrollDirection = 'up'
           this.scrolledYn = false
         }

@@ -1,13 +1,15 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
 
-<div style="width: 100%; height: calc(100% - 60px);">
-
-  <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
-  <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
-  <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
+<div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+  <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
+    <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
+    <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
+    <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
+  </div>
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div style="height: calc(100% - 60px); width: 100%; padding: 0.2rem 0; padding-bottom:70px; overflow:scroll;" @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: calc(100%); width: 100%; padding-bottom:70px; overflow:scroll;" @mousedown="testTwo" @mouseup="testTr">
+    <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
@@ -26,7 +28,21 @@ export default {
     // searchChannel
     // myChanList
   },
+  updated () {
+    this.box = document.getElementById('chanListWrap')
+  },
   computed: {
+    calcHeaderHeight () {
+      if (this.headerTop) {
+      } else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.headerTop = 140
+      }
+      // debugger
+      return {
+        '--headerHeight': this.headerTop + 'px'
+      }
+    },
     historyStack () {
       return this.$store.state.historyStack
     }
@@ -39,6 +55,9 @@ export default {
     }
   },
   mounted () {
+    this.box = document.getElementById('chanListWrap')
+    this.box.addEventListener('scroll', this.handleScroll)
+
     if (this.viewTab === 'user') {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'all') {
@@ -64,6 +83,31 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    getAbsoluteTop (element) {
+      return window.pageYOffset + element.getBoundingClientRect().top
+    },
+    handleScroll () {
+      var element = document.getElementsByClassName('chanRow')[0]
+      // eslint-disable-next-line no-debugger
+      // debugger
+      var parentElement = element.parentElement
+      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+
+      var test = document.getElementById('chanListPageHeader')
+      parentElement = element.parentElement
+      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+
+      if (this.firstContOffsetY < 0) {
+        if (this.box.scrollTop > this.scrollPosition) {
+          this.scrollDirection = 'down'
+          this.scrolledYn = true
+        } else if (this.box.scrollTop <= this.scrollPosition) {
+          this.scrollDirection = 'up'
+          this.scrolledYn = false
+        }
+      }
+      this.scrollPosition = this.box.scrollTop
+    },
     async refreshList () {
       var pSize = 10
       if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
@@ -88,14 +132,14 @@ export default {
       }
     },
 
-    testRefresh () {
-      var top = document.getElementById('refresh').getBoundingClientRect().top
-      console.log(top)
-      // if(top>80){
-      // location.href = location.href
-      // console.log(location.href)
-      // }
-    },
+    // testRefresh () {
+    //   var top = document.getElementById('refresh').getBoundingClientRect().top
+    //   console.log(top)
+    //   // if(top>80){
+    //   // location.href = location.href
+    //   // console.log(location.href)
+    //   // }
+    // },
     clickCreateChannel () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -197,6 +241,12 @@ export default {
   },
   data () {
     return {
+      box: null,
+      scrollPosition: 0,
+      scrollDirection: null,
+      firstContOffsetY: null,
+      scrolledYn: false,
+      headerTop: 0,
       offsetInt: 0,
       pageHistoryName: '',
       endListYn: false,
@@ -223,7 +273,24 @@ export default {
 </script>
 
 <style scoped>
+.chanListHeader {
+    width: 100%;
+    min-height: 132px;
+    position: absolute;
+    background-color: #FFF;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    will-change: transform;
+    transition: transform 0.3s linear;
+}
 
+.chanListHeader--pinned {
+    transform: translateY(0%);
+}
+.chanListHeader--unpinned {
+    transform: translateY(-100%);
+}
 .moveBox{transition: 0.5s ease;}
 .btnPlus{
   width:4rem; height:4rem; display: flex;

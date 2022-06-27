@@ -5,8 +5,8 @@
 
         <div style="width:100%; height:30px;" class="fl">
             <!-- <img src="" /> -->
-            <div class="fl" style="width:30px;height:30px; border-radius:100%; background-color:#ccc; margin-left:1rem;">
-                <img src="../../../assets/images/main/main_subscriber.png" alt="" >
+            <div class="fl" style="width:30px;height:30px; margin-left:1rem;">
+                <img src="../../../assets/images/channel/channer_addressBook.svg" alt="" >
             </div>
             <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{data.cabinetNameMtext}}</div>
         </div>
@@ -38,8 +38,7 @@ export default {
             dragging: false
         }
     },
-    async created () {
-
+    async created() {
 
     },
     components: {

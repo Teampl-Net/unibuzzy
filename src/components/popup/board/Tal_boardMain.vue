@@ -17,14 +17,14 @@
         </div>
         <!-- 게시판 이름 , 소속 채널 -->
         <div style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
-          <p class="cBlack fl font20" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          <p class="fl font14 cBlack" style="width: 100%;  color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
+          <p class="cBlack fl font20" style="width: 100%; ">{{ this.$changeText(this.propData.value.cabinetNameMtext)}}</p>
+          <p class="fl font16 cBlack" style="width: 100%;  color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div>
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
       <div id="boardInfoSummary2" style="">
-        <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
+        <span class="font20 fontBold">{{ this.$changeText(this.propData.value.cabinetNameMtext)}}</span>
         <span class="font13 mbottom-05 fl">{{ this.$changeText(this.propData.nameMtext) }}</span>
       </div>
     </div>
@@ -86,28 +86,28 @@ export default {
       box: null,
       scrollDirection: null,
       scrollPosition: null,
-      shareAuth: { R: false, W: false, V: false },
+      shareAuth: { R: true, W: true, V: true },
       mCabinetContentsDetail: {
         blindYn: true,
         fileYn: false,
         replyYn: false,
         shareCnt: 0,
-        cabinetNameMtext: 'KO$^$공개게시판'
+        cabinetNameMtext: 'KO$^$'
       },
       mCabContentsList: [],
       offsetInt: 0,
-      /*  mCabContentsList: [
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' },
-        { title: 'test', bodyFullStr: 'testtesttesttest' }
-      ], */
+      // mCabContentsList: [
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
+      //   { title: 'test', bodyFullStr: 'testtesttesttest' }
+      // ],
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,

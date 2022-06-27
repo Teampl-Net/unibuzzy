@@ -53,7 +53,10 @@ export default {
         // this.memberList = this.selectBookNList.data.memberList
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
             if (this.selectBookNList.memberList.length > 0) {
-                    this.memberList = this.selectBookNList.memberList
+                this.memberList = this.selectBookNList.memberList
+                    for (var i = 0; i < this.bookList.length; i++) {
+                        this.bookList[i].selectedYn = false
+                    }
                     for (var i = 0; i < this.memberList.length; i++) {
                     this.memberList[i].selectedYn = false
                 }

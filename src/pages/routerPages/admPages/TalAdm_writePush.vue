@@ -17,13 +17,17 @@
               <div class="pageTopArea">
                 <!-- {{receiverList}} -->
                 <div class="fl">
-                  <p style="">수신대상</p>
-                  <div style="width: calc(100% - 100px); padding-top: 3px; float: left;" v-if="!this.replyPopYn">
-                    <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
+                  <p class="fontBold commonColor">수신대상</p>
+                  <div style="width: calc(100% - 115px); min-height: 2rem; padding-top: 3px; float: left; margin-bottom: 10px;" v-if="!this.replyPopYn">
+                    <div class="fl" style="border: 1px solid #ccc; border-radius: 10%; margin-bottom: 10px;">
+                      <div class="fl" style="width: 50px; text-align: center; border-right: 1px solid #ccc;" @click="selectRecvType(true)" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
+                      <div class="fl" style="width: 50px; text-align: center;" @click="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">선택</div>
+                    </div>
+                    <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
                     <label class="mright-1 fl" for="allTrue">전체</label>
 
                     <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
-                    <label class="mright-1 fl" for="allFalse">선택</label>
+                    <label class="mright-1 fl" for="allFalse">선택</label> -->
                     <div v-if="!allRecvYn" class="inputArea recvUserArea" style="padding-left: 2px; width: 100%; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
                     </div>
@@ -32,16 +36,16 @@
                     <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
-                <p class="mright-05" style="min-height: 75px; ">옵션선택</p>
-                <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
-                <div style="width: 150px; margin-left: 5px; min-height: 25px;float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답변허용</label></div>
-                <div style="width: 150px; margin-left: 5px; height: 25px; margin-left: 5px; float: left; right: 0; top: 1rem;">
-                  <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
-                  <label class="fl" for="titleShow">제목추가</label>
-                </div>
+                <p class=" fontBold commonColor" style="min-height: 50px; ">옵션 선택</p>
+                <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자명 공개</label></div>
+                <div style="width: 120px; margin-left: 5px; min-height: 25px;float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div>
               </div>
-              <div style="width: 100%;float: left; min-height: 30px; position: relative;">
-                <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+              <div style="width: 100%;float: left; min-height: 50px; position: relative;">
+                <gActiveBar :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+                <div style="width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: 0; position: absolute; margin-top: 7px; ">
+                  <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
+                  <label class="fl" for="titleShow">제목 추가</label>
+                </div>
               </div>
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
@@ -97,6 +101,7 @@ export default {
   },
   data () {
     return {
+      receiverClickYn: false,
       replyPopYn: false,
       showCreNameYn: false,
       canReplyYn: false,
@@ -167,6 +172,11 @@ export default {
     },
     selectRecvType (allRecvYnInput) {
       this.allRecvYn = allRecvYnInput
+      if (this.receiverClickYn) {
+        this.receiverClickYn = false
+      } else {
+        this.receiverClickYn = true
+      }
     },
     // setReceiverText(){
     // this.$changeText(this.params.targetNameMtext)
@@ -391,6 +401,15 @@ export default {
 }
 </script>
 <style scoped>
+.receiverClickColor {
+  background-color: #363c5f;
+  color: white;
+}
+.toggleInputWrap {
+  width: calc(100% - 150px); float: left; display: flex; justify-content: flex-end;
+}
+.toggleBtn{width: 50%; height: 100%;background-color: #fff; float: left; line-height: 25px;}
+
 .whitePaper {
       position: relative;
       width: 100%;
@@ -434,8 +453,8 @@ export default {
 /* add by_jeong */
 .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
-.pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
+.pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 16px;}
 
 .pageTopArea{
   width: 100%; min-height: 3.5rem;
@@ -443,8 +462,9 @@ export default {
 .pageTopArea >div{
   width: 100%; min-height: 2rem;
 }
-.pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;}
-.pageTopArea input{font-size: 15px;}
+.pageTopArea p{width: 90px; font-size: 16px; float: left; line-height: 30px; margin-left: 5px; margin-right: 10px; }
+/* .pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;} */
+.pageTopArea input{font-size: 16px;}
 .pageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
 
 #toolBox{margin-top: -1rem; float: left; height: 100%; background: #FFFFFF; display: flex;  width: var(--width); height: 100%;  border-left: none;}
@@ -470,12 +490,12 @@ export default {
 .pushInputArea .recvUserArea{border: 1px solid #BFBFDA; border-radius: 5px; height: 30px; float: left; position: relative; }
 .orgaIcon{position: absolute; top: 0.3rem; right: 0.5rem; cursor: pointer;}
 
-.pushBodyInput{resize: none; border-radius: 5px; border: 1px solid #BFBFDA; width: 100%; height: calc(100% - 7rem); padding: 1rem; box-sizing: border-box; color: #010101; font-size: 15px;}
+.pushBodyInput{resize: none; border-radius: 5px; border: 1px solid #BFBFDA; width: 100%; height: calc(100% - 7rem); padding: 1rem; box-sizing: border-box; color: #010101; font-size: 16px;}
 .attatchFileBtn{cursor: pointer; width: 80px; height: 80px;margin-top: 0.5rem;border-radius: 5px; background: #A9AACD; display: flex; flex-direction: column; justify-content: center; align-items: center;}
 .attatchFileBtn p{color: #FFFFFF; font-size: 10px; margin-top: 0.5rem;}
 
 .toolBtnArea{justify-content: flex-end; position: absolute; right: 0; top: 0rem}
-.toolLeftTab{color: #6768A7; font-weight: bold; font-size: 15px;margin-bottom: 1rem;}
+.toolLeftTab{color: #6768A7; font-weight: bold; font-size: 16px;margin-bottom: 1rem;}
 
 .toolSearchBox{border: 1px solid #BFBFDA!important; border-radius: 5px!important;}
 .toolPushCard{box-shadow: none !important; border: 1px solid #E1E1E1 !important;}

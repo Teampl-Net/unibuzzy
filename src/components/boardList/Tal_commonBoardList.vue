@@ -96,7 +96,6 @@ export default {
       param.contentsKey = value.contentsKey
       param.targetKey = value.contentsKey
       param.value = value
-
       this.$emit('goDetail', param)
     },
     cutStickerName (value) {

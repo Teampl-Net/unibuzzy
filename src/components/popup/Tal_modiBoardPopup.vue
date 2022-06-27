@@ -2,11 +2,11 @@
   <div class="addNewBoardWrap pagePaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" />
     <div class="itemWrite" style="">
-      <p class="textLeft font16 fl" style="width: 150px;">게시판 이름</p>
-      <input v-model="boardName" type="text" placeholder="게시판 이름을 입력해주세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
+      <p class="fontBold textLeft font16 fl" style="width: 150px;">게시판 이름</p>
+      <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
-      <p class="textLeft font16 fl " style="width: 150px;">유형</p>
+      <p class="fontBold textLeft font16 fl " style="width: 150px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
       <div class="fontBlack fr font16 inputBoxThema textLeft" style="margin-top: 10px;">자유게시판</div>
@@ -14,9 +14,9 @@
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
     <div class="itemWrite">
-      <p class="textLeft font16 fl " style="width: 40%;">기능 </p>
+      <p class="fontBold textLeft font16 fl " style="width: 150px;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="float: right; width: calc(100% - 133px); " @click="this.functionPopShowYn = true" class=" font14 textRight lightGray" >{{okFunctionList}}</div>
+      <div style="width: calc(100% - 150px); text-align: left;" @click="this.functionPopShowYn = true" class="fl font16 lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
@@ -57,7 +57,7 @@
         </div>
       </div> -->
       <div class="itemWrite">
-        <p style = "width: 150px;" class="textLeft font16 fl toggleLine">댓글 지원</p>
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="replyYnInput" id="toggle1" :checked="replyYnInput === true" hidden>
           <label for="toggle1" class="toggleSwitch">
@@ -80,7 +80,7 @@
       </div> -->
     </div>
     <div class="itemWrite fl" style="border-bottom: none;">
-      <p class="textLeft font16 fl" style="width: 150px;">공유대상</p>
+      <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상</p>
       <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
         <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl mleft-05" for="shareAll">전체</label>
         <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl mleft-05" for="shareSelect">선택</label>
@@ -122,9 +122,10 @@
 
       </div>
     </div>
-
-  <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
-  <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
+  <div style="">
+    <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
+    <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
+  </div>
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
   <selectBookList :chanInfo="this.chanInfo" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" />
@@ -722,7 +723,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 14px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;white-space: nowrap}
+.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;white-space: nowrap}
 .editWrap{
   background-color: #F9F9F9;
 }

@@ -9,6 +9,11 @@
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
+
+    <!-- <transition name="show_view">
+      <chanMenu transition="show_view" @hideMenu="hideMenu" v-if="showMenuYn" />
+    </transition> -->
+
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 99"/>
     <div v-if="reloadYn === false" class="pagePaddingWrap" style="height: calc(100vh - 60px); overflow: hidden;">
       <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
@@ -20,6 +25,7 @@
 <script>
 // import index from '../../router/index'
 // import { onMessage } from '../assets/js/webviewInterface.js'
+// import chanMenu from '../components/popup/chanMenu/Tal_channelMenu.vue'
 import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/Tal_menu.vue'
 import loadingCompo from '../components/Tal_loading.vue'
@@ -49,6 +55,7 @@ export default {
     TalMenu,
     loadingCompo,
     pushPop
+    // chanMenu
   },
   beforeUnmount () {
     // PullToRefresh.destroyAll()

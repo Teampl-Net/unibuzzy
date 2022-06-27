@@ -48,8 +48,7 @@ export default {
       event.preventDefault()
       // Chrome에서는 returnValue 설정이 필요함
       event.returnValue = ''
-    }
-    )
+    })
 
     // PullToRefresh.init({
     //   mainElement: 'listRefresh',
@@ -64,7 +63,6 @@ export default {
     //   }
     // })
   }
-
 }
 </script>
 <style>

@@ -8,6 +8,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default ({
   data () {
     return {
@@ -40,7 +42,7 @@ export default ({
   position: relative;
   width: 60px;
   height: 25px;
-  /* border-radius:60px; */
+  border-radius:60px;
   background: #d9d9d9;
   line-height: 27px;
   text-align: center;
@@ -56,7 +58,7 @@ export default ({
   width: 30px;
   height: 27px;
   margin: 5px;
-  /* border-radius:100%; */
+  border-radius:100%;
   transition:left 0.3s;
   font-size: 11px;
   font-weight: bold;
@@ -76,6 +78,7 @@ export default ({
 .toggle-switch input[type=checkbox]:checked + label .toggle-track:before{
   content:'On';
   left: -6px;
-  background: #babbd7;
+  background: #6768A7;
+  color: white;
 }
 </style>

@@ -15,6 +15,8 @@ export default {
   name: 'top5PushList',
   created () {
     this.pushList = this.alimList
+    // // eslint-disable-next-line no-debugger
+    // debugger
   },
   data () {
     return {

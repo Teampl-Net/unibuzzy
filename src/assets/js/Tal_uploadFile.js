@@ -1,4 +1,3 @@
-
 const methods = {
   async sendMessage (previewImgList) {
     for (var i = 0; i < previewImgList.length; i++) {

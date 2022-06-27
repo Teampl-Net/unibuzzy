@@ -65,10 +65,10 @@ export default {
       detailHeaderShowYn: false,
 
       chanItem: {},
-      detailShowYn: true,
-      adminYn: false
-      // adminYn: true,
-      // detailShowYn: false
+      // detailShowYn: true,
+      // adminYn: false
+      adminYn: true,
+      detailShowYn: false
 
     }
   },
@@ -84,6 +84,7 @@ export default {
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
+    alert(JSON.stringify(this.chanItem))
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -124,7 +125,7 @@ export default {
       var paramMap = new Map()
 
       // eslint-disable-next-line no-debugger
-      debugger
+      // debugger
       // eslint-disable-next-line no-unused-vars
       var tt = this.chanDetail
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {

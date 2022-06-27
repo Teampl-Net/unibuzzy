@@ -81,7 +81,7 @@ export default {
       detailOpenYn: false,
 
       titleText: '팀플',
-      receiverTitle: '그룹 관리',
+      receiverTitle: '주소록 관리',
       selectReceivers: [],
       teamLength: 100,
       addPopOpen: '',
@@ -152,7 +152,7 @@ export default {
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
         this.detailOpenYn = false
-        this.receiverTitle = '그룹 관리'
+        this.receiverTitle = '주소록 관리'
         if (this.selectPopYn) {
           this.receiverTitle = '대상 선택'
         }
