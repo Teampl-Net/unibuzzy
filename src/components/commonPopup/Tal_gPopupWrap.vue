@@ -5,7 +5,7 @@
         <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' />
+      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
@@ -14,7 +14,7 @@
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'chanList'">
+      <div class="pagePaddingWrap" style="padding-top: 35px; position: relative;" v-if="this.targetType === 'chanList'">
         <chanList :propData="this.params" :popYn="true" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
@@ -29,7 +29,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
-      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='params'/>
+      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params'/>
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' />
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
@@ -112,8 +112,8 @@ export default {
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
       receiverList: {},
       bgblackYn : false,
-      propParams: {}
-
+      propParams: {},
+      chanName: ''
     }
   },
   props: {
@@ -266,7 +266,8 @@ export default {
         // this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       } else if (this.targetType === 'editBookList') {
         this.headerTitle = '주소록 관리'
-      } else if (this.targetType === 'bookMemberDetail') {
+        this.chanName = this.propParams.teamNameMtext
+a      } else if (this.targetType === 'bookMemberDetail') {
         if(target.currentCabinetKey){
           this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
         }else{
@@ -277,7 +278,9 @@ export default {
       } else if (this.targetType === 'boardDetail') {
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       } else if (this.targetType === 'editManagerList') {
-        this.headerTitle = '매니저관리'
+        this.headerTitle = '매니저 관리'
+        this.chanName = this.propParams.teamNameMtext
+        // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
