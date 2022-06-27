@@ -5,7 +5,7 @@ import routerMain from '../pages/Tal_router_main.vue'
 
 import testLoginPage from '../pages/intro/testLoginPage.vue'
 import main from '../pages/routerPages/Tal_main.vue'
-import login from '../pages/intro/Tal_login.vue'
+import login from '../pages/intro/Tal_login_web.vue'
 import permissions from '../pages/intro/Tal_permissions.vue'
 import policies from '../pages/intro/Tal_policies.vue'
 import setMypage from '../pages/routerPages/Tal_setMypage.vue'
@@ -25,7 +25,7 @@ import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 
 import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
-import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
+/* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
     path: '/',
@@ -129,8 +129,8 @@ const routes = [
     path: '/login',
     name: 'login',
     props: true,
-    component: login,
-    children: [
+    component: login
+    /* children: [
       {
         path: '/login',
         name: 'login',
@@ -143,7 +143,7 @@ const routes = [
         props: true,
         component: naverCallback
       }
-    ]
+    ] */
   },
   {
     path: '/permissions',

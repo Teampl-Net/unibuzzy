@@ -106,26 +106,17 @@ export default {
       }, 2000)
       // this.$emit('closeLoading')
     },
+    openCloseAppPop () {
+      var history = this.$store.getters.hStack
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+        if (this.$route.path === '/') {
+          this.appCloseYn = true
+        }
+      }
+    },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
       this.appCloseYn = false
-    },
-    BackPopClose (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'refresh') {
-          /* if (localStorage.getItem('popHistoryStack') === '') {
-            this.$router.go(0)
-          } */
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
     },
     forceRerender () {
       this.componentKey += 1
@@ -200,6 +191,19 @@ export default {
     }
   },
   computed: {
+    historyStack () {
+      return this.$store.getters.hStack
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.openCloseAppPop()
+    },
+    historyStack (value, old) {
+    }
   }
   // onMessage (data) {
   //   window.nsWebViewBridge.emit('onMessage', data)
