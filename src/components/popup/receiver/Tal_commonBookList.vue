@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext || propData.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" />
+        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext || propData.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
