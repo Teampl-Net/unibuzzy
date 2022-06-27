@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaerWrap">
+  <div class="commonPopHeaderWrap headerShadow">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
     <img v-else src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
@@ -7,6 +7,7 @@
       <img :src="value.icon" />
     </div>
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')}">{{headerTitle}}</span>
+    <div class="commonColor font14" style="height: 25px;; line-height: 25px; width: 120px; text-align: right; right: 1rem; position: absolute;" v-if="this.headerTitle === '주소록 관리' || this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집'">{{chanName}}</div>
 
     <gBtnSmall v-if="this.headerTitle === '알림 작성' || this.headerTitle === '게시판 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
     <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="this.$emit('openMenu')">
@@ -21,6 +22,7 @@
 export default {
   name: 'talHeader',
   props: {
+    chanName: {},
     headerTitle: {},
     chanAlimListTeamKey: {},
     subTitlebtnList: {},
@@ -54,10 +56,10 @@ export default {
 </script>
 
 <style>
-.commonPopHeaerWrap > img {position: absolute; left: 1rem;}
-.commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
+.commonPopHeaderWrap > img {position: absolute; left: 1rem;}
+.commonPopHeaderWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
 
-.popHeaderTitleSpan{position: absolute; color: #6768A7}
+.popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold;}
 .commonPopBackBtn{width: 0.8rem;}
 
 .chanMenubar{
