@@ -175,7 +175,7 @@ export default {
           }
         }
       }
-      param.teamNameMtext = teamName
+      param.teamNameMtext = this.$changeText(teamName)
       param.currentTeamKey = this.chanAlimListTeamKey
       param.managerOpenYn = true
       this.$emit('openPop', param)
@@ -272,8 +272,6 @@ export default {
       this.$emit('openItem',params)
     },
     bookMenuClick(data) {
-            alert(JSON.stringify(data))
-
       var params = new Object()
       params.targetType = 'editBookList'
       params.value = data
