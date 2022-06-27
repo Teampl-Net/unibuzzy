@@ -1,11 +1,12 @@
 <template>
+<!-- <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
 <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
 
 <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" >
       <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/>
-      <p :class="{editColor: editYn === true }" >{{menuHeaderTitle}}</p>
+      <p :class="{editColor: editYn === true }" class="fontBold" >{{menuHeaderTitle}}</p>
   </div>
 
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
@@ -21,7 +22,7 @@
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-      <teamList :chanAlimListTeamKey="chanAlimListTeamKey"  :listData="cabinetList" @openDetail='openTeamDetailPop' />
+      <teamList @bookMenuClick="bookMenuClick" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
 
@@ -270,6 +271,19 @@ export default {
       params.value = data
       this.$emit('openItem',params)
     },
+    bookMenuClick(data) {
+            alert(JSON.stringify(data))
+
+      var params = new Object()
+      params.targetType = 'editBookList'
+      params.value = data
+      // params.currentTeamKey = this.data.teamKey
+      //   // alert(JSON.stringify(params.currentTeamKey))
+      // params.bookNameMtext = this.$changeText(this.data.cabinetNameMtext)
+      // params.value = data
+      this.$emit('openBookDetail', params)
+
+    },
     receiverClick(data){
       var params = new Object()
       params.targetType = 'editBookList'
@@ -317,7 +331,8 @@ export default {
 
 }
 .editmenuHeader{
-  border-bottom: 1.5px solid #999;
+  /* border-bottom: 1.5px solid #aaa; */
+  box-shadow: 0px 7px 9px -9px #00000036
 }
 .editColor{
   color: #6768a7 !important;
