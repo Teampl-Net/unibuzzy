@@ -162,7 +162,6 @@ export default {
     pageUpdate (value, old) {
       var hStack = this.$store.getters.hStack
       if (hStack[hStack.length - 1] === this.popId) {
-        // alert(false)
         this.closeXPop()
       }
     },
@@ -314,7 +313,6 @@ a      } else if (this.targetType === 'bookMemberDetail') {
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
