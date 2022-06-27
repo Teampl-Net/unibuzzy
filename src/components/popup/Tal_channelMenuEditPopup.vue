@@ -79,7 +79,6 @@ export default {
     this.$store.commit('updateStack', history)
 
     this.getTeamMenuList()
-    alert(JSON.stringify(this.chanInfo))
     /* if (this.editList) {
       this.boardList = this.editList
       for (var i = 0; i < this.boardList.length; i ++) {

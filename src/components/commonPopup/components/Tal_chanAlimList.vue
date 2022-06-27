@@ -55,7 +55,7 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
@@ -71,11 +71,11 @@ export default {
       detailHeaderShowYn: false,
 
       chanItem: {},
-      detailShowYn: true,
-      adminYn: false,
-      // adminYn: true,
-      // detailShowYn: false
-      memberText :'맴버 신청하기 >',
+      // detailShowYn: true,
+      // adminYn: false,
+      adminYn: true,
+      detailShowYn: false,
+      memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two'
@@ -90,7 +90,6 @@ export default {
     chanDetailComp
   },
   async created () {
-
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))

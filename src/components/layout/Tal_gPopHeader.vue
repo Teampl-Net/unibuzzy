@@ -9,7 +9,8 @@
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')}">{{headerTitle}}</span>
     <div class="commonColor font16" style="height: 25px;; line-height: 25px; width: 120px; text-align: right; right: 1rem; position: absolute;" v-if="this.headerTitle === '주소록 관리' || this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집'">{{chanName}}</div>
 
-    <gBtnSmall v-if="this.headerTitle === '알림 작성' || this.headerTitle === '게시판 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
+    <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
+    <gBtnSmall v-else-if="this.headerTitle === '게시판 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" />
     <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="this.$emit('openMenu')">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
 
@@ -29,7 +30,7 @@ export default {
     subTitlebtnList: {},
     thisPopN: {},
     bgblack: {},
-    managerBtn:{}
+    managerBtn: {}
   },
   methods: {
     closeXPop () {

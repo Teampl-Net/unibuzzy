@@ -28,9 +28,6 @@
 
       </div>
 
-
-
-
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
     </div>
@@ -46,16 +43,12 @@
       <div class="fl" style="width:20px; height: 100%; " @click="boardDropDown" >
         <img v-show="boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
         <img v-show="boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
-
       </div>
-
-
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
       <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
-
     </div>
     <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-      <menuBoardList  :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+      <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
     </div>
   </div>
 
@@ -100,7 +93,7 @@ export default {
     historyStack (value, old) {
     }
   },
-  async created () {
+  async created() {
     this.getFollowerList()
     console.log(this.addChanList);
     console.log(this.propData)
@@ -343,10 +336,9 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-
+      params.ownerYn = this.propData.value.ownerYn
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)

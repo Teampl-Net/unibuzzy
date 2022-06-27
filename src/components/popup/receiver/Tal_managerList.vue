@@ -11,6 +11,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 import memberList from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {

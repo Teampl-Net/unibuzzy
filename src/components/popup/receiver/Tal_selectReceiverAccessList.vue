@@ -36,24 +36,6 @@ export default {
     itemType: {} // W: 작성/ V: 열람/ R: 댓글
   },
   created () {
-    // this.settingList()
-    console.log(this.parentList);
-    // this.setSelectedList = this.parentList
-    // this.parentList = {}
-    // this.addSelectList()
-    // var data = {}
-    // if(this.parentList.bookList){
-    //   for (let i = 0; i < this.parentList.bookList.length; i++) {
-    //     this.addSelectList(this.parentList.bookList[i])
-    //   }
-    // }
-    // console.log("#!@#");
-    // if(this.parentList.memberList){
-    //   for (let i = 0; i < this.parentList.memberList.length; i++) {
-    //     this.addSelectList(this.parentList.memberList[i])
-    //   }
-    // }
-    console.log("!##!");
 
   },
   components: { selectedListCompo, selectBookNMemberList },
