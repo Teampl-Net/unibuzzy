@@ -1,5 +1,5 @@
 <template>
-    <div class="commonPopHeaerWrap">
+    <div class="commonPopHeaderWrap">
         <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
         <img src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
         <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
@@ -42,10 +42,11 @@ export default {
 </script>
 
 <style>
+/* 오타오타오타 */
 .commonPopHeaerWrap > img {position: absolute; left: 1rem;}
-.commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
+.commonPopHeaerWrap{ position: fixed; justify-content: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; box-shadow: 0px 7px 9px -9px #00000036;}
 
-.popHeaderTitleSpan{position: absolute; color: #6768A7}
+.popHeaderTitleSpan{position: absolute; color: #6768A7; font-size: 20px;}
 .commonPopBackBtn{width: 0.8rem;}
 
 .chanMenubar{
