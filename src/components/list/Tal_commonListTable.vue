@@ -1,20 +1,19 @@
 
 <template>
-  <div>
     <table class="w-100P">
         <colgroup>
-            <col class="listHeader" width="90px">
-            <col width="85%" >
+            <col class="listHeader" style="width: 65px; height: 100%;">
+            <col style="width: calc(100% - 45px); margin-left: 10px;">
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
-            <td v-if="mainYn === false">
-                <img :src="value.logoPathMtext" style="width: 50px;"/>
+            <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px;">
+              <div class="chanLogoImgWrap fl" style=""><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
             </td>
-            <td class="textCenter" v-if="mainYn === true">
-                <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem">
+            <!-- <td class="textCenter" v-if="mainYn === true"> -->
+                <!-- <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
                 <!-- <img v-if="value.readYn === true" src="../../assets/images/main/icon_notice1.png" style="width:1.5rem">
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
-            </td>
+            <!-- </td> -->
             <td>
                 <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 180px;" />
                 <div>
@@ -23,14 +22,14 @@
                     <!-- <div :style="'background-color:' + value2.stickerColor" v-for="(value2, index2) in value.stickerList" :key="index2" style="width: 15px; margin-top: 8px; margin-right: 5px; height: 15px;float: right;border-radius: 10px; font-size: 12px; text-align: center;">{{cutStickerName(value2.stickerName)}}</div> -->
                 </div>
             </td>
-            <td>
-            </td>
         </tr>
     </table>
-  </div>
 </template>
 <script>
 export default {
+  created () {
+    // alert(JSON.stringify(this.commonListData))
+  },
   mounted () {
     if (this.mainYnProp === true) { this.mainYn = true }
   },
@@ -78,6 +77,9 @@ export default {
 }
 </script>
 <style scoped>
+.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
+.chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
+
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}

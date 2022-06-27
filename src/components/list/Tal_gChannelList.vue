@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
+    <div class="chanRow w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
         <div class=" text-start mr-04 w-100P" >
