@@ -12,18 +12,20 @@
         <p v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; font-size: 16px; height: 100%;" class="commonBlack" >{{memo.bodyFullStr}} </p>
 
       </div>
-      <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" v-if="memo.creUserKey == this.userKey">
+
+
+
+      <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" >
         <!-- <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" > -->
         <div v-if="editIndex === index">
             <div style="float: right; width: 40px; height: 100%; text-align: center;" @click="editEnd(memo, index)" >완료</div>
             <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa;" @click="cancelEdit(memo, index)" >취소</div>
         </div>
-        <div v-else>
+        <div v-if="editIndex !== index && memo.creUserKey == this.userKey">
           <div style="float: right; width: 40px; height: 100%; text-align: center;" @click="memoDeleteClick(memo, index)" >삭제</div>
-          <!-- <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa; color:#ccc" @click="memoMemoClick(memo)">답글</div> -->
           <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa;" @click="editMemoClick(memo, index)" >수정</div>
         </div>
-
+        <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa;" @click="memoMemoClick(memo)">답글</div>
       </div>
       <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
         <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
@@ -88,7 +90,7 @@ export default {
       }
     },
     memoMemoClick (memo) {
-
+      this.$emit('mememo',memo)
     }
 
   }

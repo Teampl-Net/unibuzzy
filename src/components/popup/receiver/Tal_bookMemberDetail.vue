@@ -164,7 +164,6 @@ export default {
                     }
                 }else{
                     await this.saveFollower()
-
                 }
             }
         },
@@ -173,12 +172,10 @@ export default {
             var mCabContents = new Object()
             console.log(this.propData)
             param.teamKey = this.propData.currentTeamKey
-
             /* if (this.propData.followerKey) {
                 mCabContents.followerKey = this.propData.followerKey
                 // mCabContents.followerType = this.propData.followerType //update
             } */
-
             param.inEmail = this.memEmail
             param.inPhone = this.memPhone
             param.inUserName = this.memName

@@ -2,7 +2,7 @@
     <div style="width: 100%; min-height: 300px; background: #ccc; padding: 10px;" class="">
         <div class="mbottom-1" style="width: 100%; height: 30px;">
             <p class="textLeft fontBold font16 fl">선택된 리스트</p>
-            <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers"  />
+            <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers" v-if="btnVisible !== false" />
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
@@ -13,20 +13,20 @@
         </div>
         <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 0 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;"  >
             <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext)}}</p>
-            <span class="fr" @click="removeSelectedYn('memeber',index)">x</span>
+            <span class="fr" @click="removeSelectedYn('member',index)">x</span>
         </div>
                 <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
     </div>
 </template>
 
 <script>
-import { VueDraggableNext } from 'vue-draggable-next'
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
     props:{
         listData: {},
-        itemType: {}
+        itemType: {},
+        btnVisible: {}
     },
     data(){
         return{
@@ -58,7 +58,6 @@ export default {
     watch: {
     },
     components: {
-        draggable: VueDraggableNext
     },
     // computed: {
     //     setTotalHeight () {
@@ -110,7 +109,7 @@ export default {
         },
         clickList(data){
             // if(this.selectPopYn !== true)
-            // this.$emit('openDetail',data) 
+            // this.$emit('openDetail',data)
         },
         deleteTeamClick(data,index){
 

@@ -392,10 +392,11 @@ export default {
       console.log(this.selectedList)
       var tt = this.selectedList
       if (this.selectedList.data) {
-        if(this.selectedList.data.bookList.length !== 0 || this.selectedList.data.memberList.length !== 0 ){
+        if(this.selectedList.data.bookList || this.selectedList.data.memberList){
           this.shareActorItemType= itemType
           this.receiverAccessListYn = true
         }
+
       }
 
     },
@@ -604,22 +605,44 @@ export default {
       this.selectBookListShowYn = false
       var text =''
       var selectLength = 0
-      if(data.bookList.length > 0 ){
-        text = '그룹: ' +data.bookList[0].cabinetNameMtext
-        selectLength += data.bookList.length
+      console.log("#######################")
+      console.log(data);
+      // console.log(datas);
+      var dataLength = 0
+      if (data.bookList) {
+        // if(data.bookList !== null && data.bookList !== undefined && data.bookList !== []  ){
+        if(data.bookList.length > 0){
+          text = '그룹: ' +data.bookList[0].cabinetNameMtext || data.bookList.cabinetNameMtext
+          selectLength += data.bookList.length
+        }
       }
-      if(data.memberList.length > 0 ){
-        text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext)
-        selectLength += data.memberList.length
+
+      if (data.memberList) {
+        if(data.memberList.length > 0){
+          text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList.userDispMtext)
+          selectLength += data.memberList.length
+        }
       }
 
       if(selectLength !== 1){this.selectedReceiver = text + ' 외 ' + (selectLength - 1)+'개'}
       if(selectLength == 1){this.selectedReceiver = text }
 
+      dataLength += data.bookList.length
+      dataLength += data.memberList.length
+
+
+
+      if(dataLength === 0) {
+        this.selectedReceiver = '0명에게 공유중'
+      }
+
       this.writePermission = this.selectedReceiver
       this.readPermission = this.selectedReceiver
       this.commentPermission = this.selectedReceiver
       this.selectedList = datas
+
+
+
 
       if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {

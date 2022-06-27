@@ -15,6 +15,7 @@
 
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
+    <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="추가하기" style="position: absolute; right: 1rem" />
   </div>
 </template>
 
@@ -27,7 +28,8 @@ export default {
     chanAlimListTeamKey: {},
     subTitlebtnList: {},
     thisPopN: {},
-    bgblack: {}
+    bgblack: {},
+    managerBtn:{}
   },
   methods: {
     closeXPop () {

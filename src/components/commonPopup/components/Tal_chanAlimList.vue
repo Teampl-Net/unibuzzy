@@ -20,6 +20,11 @@
           <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
         </div>
       </div>
+      <div style="width: 100%; padding: 0 20px; margin-top: 1rem;">
+        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+          <p class="font14 fontBold" @click="memberClick" style="">{{memberText}}</p>
+        </div>
+      </div>
     </div>
     <div id="chanInfoSummary2" ref="chanImg2" style="">
       <span class="font20 fontBold mtop-05">{{changeText(chanItem.nameMtext)}}</span>
@@ -44,7 +49,8 @@
     <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
     <chanDetailComp :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
-
+  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
+ <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 </div>
 </template>
 
@@ -65,10 +71,14 @@ export default {
       detailHeaderShowYn: false,
 
       chanItem: {},
-      // detailShowYn: true,
-      // adminYn: false
-      adminYn: true,
-      detailShowYn: false
+      detailShowYn: true,
+      adminYn: false,
+      // adminYn: true,
+      // detailShowYn: false
+      memberText :'맴버 신청하기 >',
+      errorBoxYn : false,
+      errorBoxText : '',
+      errorBoxType :'two'
 
     }
   },
@@ -80,11 +90,13 @@ export default {
     chanDetailComp
   },
   async created () {
+
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
-    alert(JSON.stringify(this.chanItem))
+    console.log('this.chanItem');
+    console.log(this.chanItem);
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -101,6 +113,26 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    memberClick () {
+      this.errorBoxText = '['+this.$changeText(this.chanDetail.value.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
+      this.errorBoxType = 'two'
+      this.errorBoxYn = true
+    },
+    async saveMember(){
+      var param = {}
+      param.followerKey = this.chanDetail.value.followerKey
+      param.teamKey = this.chanItem.teamKey
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.memberYn = true
+      console.log(param);
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveFollower',
+        param: param
+      })
+      this.errorBoxYn = false
+
+      console.log(result);
+    },
     closeDetailPop () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
@@ -123,11 +155,6 @@ export default {
     },
     async getChanDetail (addContentsListYn) {
       var paramMap = new Map()
-
-      // eslint-disable-next-line no-debugger
-      // debugger
-      // eslint-disable-next-line no-unused-vars
-      var tt = this.chanDetail
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {
         paramMap.set('teamKey', this.chanDetail.targetKey)
       } else if (this.chanDetail.teamKey !== undefined && this.chanDetail.teamKey !== null && this.chanDetail.teamKey !== '') {

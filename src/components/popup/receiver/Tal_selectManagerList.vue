@@ -9,12 +9,15 @@
 
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
+    <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :pSelectedList='list' @sendReceivers='setSelectedList'/>
 
 </template>
 
 <script>
 import memberList from './Tal_commonBookMemberList.vue'
+// import selectBookList from '../receiver/Tal_selectBookList.vue'
 // import selectedListCompo from './Tal_selectedReceiverList.vue'
+import selectBookList from '../receiver/Tal_managerList.vue'
 export default {
   props: {
     // selectPopYn: {},
@@ -32,10 +35,11 @@ export default {
   computed: {
 
   },
-  components: { memberList },
+  components: { memberList, selectBookList },
   data () {
     return {
       // openAddManagerPopYn:false
+      selectBookListShowYn : false,
       receiverTitle: '매니저 관리'
     }
   },
@@ -54,13 +58,28 @@ export default {
         this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
       }
     },
-    openAddManagerPop () {
-      var param = {}
-      param.targetType = 'bookMemberDetail'
-      // param.currentCabinetKey = this.propData.cabinetKey
-      param.currentTeamKey = this.propData.currentTeamKey
+    async openAddManagerPop () {
+      var params = new Object()
+      params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      params.teamKey = this.propData.currentTeamKey
+      params.memeberYn = true
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getFollowerList',
+        param: params
+      })
 
-      this.$emit('openPop', param)
+      console.log(result);
+      this.list = result.content
+      // this.list = []
+
+      this.selectBookListShowYn = true
+
+      // var param = {}
+      // param.targetType = 'bookMemberDetail'
+      // // param.currentCabinetKey = this.propData.cabinetKey
+      // param.currentTeamKey = this.propData.currentTeamKey
+
+      // this.$emit('openPop', param)
 
       // this.openAddManagerPopYn = true
     }

@@ -37,6 +37,24 @@ export default {
   },
   created () {
     // this.settingList()
+    console.log(this.parentList);
+    // this.setSelectedList = this.parentList
+    // this.parentList = {}
+    // this.addSelectList()
+    // var data = {}
+    // if(this.parentList.bookList){
+    //   for (let i = 0; i < this.parentList.bookList.length; i++) {
+    //     this.addSelectList(this.parentList.bookList[i])
+    //   }
+    // }
+    // console.log("#!@#");
+    // if(this.parentList.memberList){
+    //   for (let i = 0; i < this.parentList.memberList.length; i++) {
+    //     this.addSelectList(this.parentList.memberList[i])
+    //   }
+    // }
+    console.log("!##!");
+
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
@@ -81,11 +99,20 @@ export default {
       // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
       // eslint-disable-next-line no-debugger
-      if (data.itemType === 'V') {
+
+      // if (this.itemType === 'V') {
+      //   this.setSelectedList.V = data.itemList
+      // } else if (data.itemType === 'W') {
+      //   this.setSelectedList.W = data.itemList
+      // } else if (data.itemType === 'R') {
+      //   this.setSelectedList.R = data.itemList
+      // }
+
+      if (this.itemType === 'V') {
         this.setSelectedList.V = data.itemList
-      } else if (data.itemType === 'W') {
+      } else if (this.itemType === 'W') {
         this.setSelectedList.W = data.itemList
-      } else if (data.itemType === 'R') {
+      } else if (this.itemType === 'R') {
         this.setSelectedList.R = data.itemList
       }
     },

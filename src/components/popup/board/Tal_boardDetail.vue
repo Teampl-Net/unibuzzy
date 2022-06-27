@@ -40,7 +40,7 @@
             <gBtnSmall btnTitle="댓글 쓰기" @click="this.memoShowYn = true"/>
           </div>
           <div style="width: 100%; min-height: 100px; float: left;">
-            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' />
+            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -81,7 +81,9 @@ export default {
         ]
       },
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
-      userDoStickerList: []
+      userDoStickerList: [],
+
+      memeoValue:{}
 
     }
   },
@@ -111,6 +113,21 @@ export default {
     }
   },
   methods: {
+    writeMememo (memo) {
+      console.log(memo)
+      var data = {}
+      // data.targetKey = memo.memoKey
+      // data.targetKind = 'M' //
+      // data.toUserKey = memo.memoKey //대댓글때 사용하는것임
+      data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
+      // data.creMemoKey = memo.memoKey //대댓글때 사용하는것임
+      // data.toMemoKey = memo.memoKey //대댓글때 사용하는것임
+      // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      this.mememoValue = data
+      this.memoShowYn = true
+      console.log(this.mememoValue)
+    },
     async deleteMemo (param) {
       console.log(param);
       var memo = {}
@@ -136,11 +153,12 @@ export default {
         this.memoList = result.data.content
       }
 
-
-
     },
     async saveMemo (text) {
       var memo = new Object()
+      if(this.memeoValue !== null && this.memeoValue !== '' && this.memeoValue !== undefined ){
+        memo = this.mememoValue
+      }
       memo.bodyFullStr = text
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
@@ -148,6 +166,9 @@ export default {
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+
+      console.log(memo);
+
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
         param: {memo: memo}
