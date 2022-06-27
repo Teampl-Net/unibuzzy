@@ -9,7 +9,7 @@
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
                         <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
-                            <div @click="clickList(data)" style="width: calc(10electedYn 0% - 100px); height: 100%;" class="fl">
+                            <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
@@ -75,6 +75,7 @@ export default {
         // console.log("#####")
         // console.log(this.propData)
         this.propObject = this.propData
+        // alert(JSON.stringify(this.propObject.teamNameMtext))
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
