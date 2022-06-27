@@ -10,9 +10,10 @@
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
                     <div v-if="data.selectedYn !== true || (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
-                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%" >
+                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
+                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 60px); height: 100%;" >
                             <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
-                            <div v-if="editYn || propData.managerOpenYn" @click="deleteMemberClick(data,index)" class="fl" style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <div v-if="editYn || propData.managerOpenYn" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
                         </div>
@@ -246,7 +247,7 @@ export default {
 
 .receiverTeamMemberArea{float: left;  width: 100%; }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
-.receiverTeamMemberCard {border-bottom:1px solid #eee; background: #6768a712; border-radius: 8px; padding: 0.7rem 0;box-shadow: 0px 1px 5px 0px #ccc;}
+.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 0.7rem 0;}
 /* .selectLastMargin :last-child{
     margin-bottom: 30px;
 } */

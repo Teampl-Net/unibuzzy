@@ -1,6 +1,6 @@
 <template>
-    <div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
-        <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" />
+    <div style="height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0">
+        <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.propData.teamNameMtext" /> -->
         <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
 
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
@@ -45,9 +45,6 @@ export default {
             this.selectBookDetail = this.propData.value.clickData
             this.detailOpenYn = true
         }
-
-
-
     },
     computed: {
         historyStack () {
@@ -78,7 +75,7 @@ export default {
             resultSearchKeyList: [] ,
             clickList: {},
             titleText: '',
-            receiverTitle: '그룹 관리',
+            receiverTitle: '주소록 관리',
             teamLength: 0
         }
     },

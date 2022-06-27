@@ -1,5 +1,5 @@
 <template>
-    <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  /> -->
+    <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.$changeText(this.propData.teamNameMtext)" /> -->
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
         <memberList ref="managerListCompo" :managerOpenYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
@@ -27,6 +27,7 @@ export default {
   created () {
     console.log('######!@#!@#!#@!#!@#@!########')
     console.log(this.propData)
+    // alert(JSON.stringify(this.propData.teamNameMtext))
   },
   computed: {
 
@@ -35,6 +36,7 @@ export default {
   data () {
     return {
       // openAddManagerPopYn:false
+      receiverTitle: '매니저 관리'
     }
   },
   methods: {
