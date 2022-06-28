@@ -2,11 +2,11 @@
 <template>
     <table class="w-100P">
         <colgroup>
-            <col class="listHeader" style="width: 65px; height: 100%;">
-            <col style="width: calc(100% - 45px); margin-left: 10px;">
+            <col class="listHeader" style="width: 65px; float: left;">
+            <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
-            <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px;">
+            <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;">
               <div class="chanLogoImgWrap fl" style=""><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->
@@ -27,9 +27,7 @@
 </template>
 <script>
 export default {
-  created () {
-    // alert(JSON.stringify(this.commonListData))
-  },
+
   mounted () {
     if (this.mainYnProp === true) { this.mainYn = true }
   },
@@ -77,6 +75,8 @@ export default {
 }
 </script>
 <style scoped>
+/* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
+
 .chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 
