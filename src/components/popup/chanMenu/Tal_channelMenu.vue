@@ -28,11 +28,11 @@
 
       </div>
 
-      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">그룹 </p>
+      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">주소록 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
     </div>
     <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-      <teamList @bookMenuClick="bookMenuClick" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+      <teamList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
 
@@ -54,7 +54,7 @@
 
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
-<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' />
+<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
 
 <!-- <selectBookList :chanInfo="propData" :propData="propData" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" /> -->
 <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' />
@@ -133,7 +133,8 @@ export default {
       selectedList : [],
       selectAdminList : [],
       book:true,
-      board:true
+      board:true,
+      teamNameText:''
     }
   },
   components: {editChanMenu,teamList,menuBoardList,selectManagerList
@@ -239,11 +240,15 @@ export default {
       this.propData.clickData = data
       params.value = this.propData
 
+      params.teamNameMtext = this.teamName()
+
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
+
+
       this.$emit('openItem',params)
 
     },
@@ -324,9 +329,11 @@ export default {
       this.$emit('closePop')
     },
     editChanMenu (){
+      this.teamNameText = this.teamName()
       this.editPopYn = true;
     },
     chanMenuClick(data){
+      alert(true)
       var params = new Object()
       params.targetType = 'boardMain'
       params.nameMtext = this.propData.value.nameMtext
@@ -341,17 +348,19 @@ export default {
       this.$store.commit('updateStack', history)
       this.$emit('openItem',params)
     },
-    bookMenuClick(data) {
-      var params = new Object()
-      params.targetType = 'editBookList'
-      params.value = data
-      // params.currentTeamKey = this.data.teamKey
-      //   // alert(JSON.stringify(params.currentTeamKey))
-      // params.bookNameMtext = this.$changeText(this.data.cabinetNameMtext)
-      // params.value = data
-      this.$emit('openBookDetail', params)
+    // bookMenuClick(data) {
+    //   var params = new Object()
+    //   params.targetType = 'editBookList'
+    //   params.value = data
+    //   // params.currentTeamKey = this.data.teamKey
+    //   //   // alert(JSON.stringify(params.currentTeamKey))
+    //   // params.bookNameMtext = this.$changeText(this.data.cabinetNameMtext)
+    //   // params.value = data
+    //   params.teamNameMtext = this.teamName()
+    //   alert(params)
+    //   this.$emit('openBookDetail', params)
 
-    },
+    // },
     receiverClick(data){
       var params = new Object()
       params.targetType = 'editBookList'
@@ -360,16 +369,35 @@ export default {
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
 
+
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
+
+      params.teamNameMtext = this.teamName()
+
+
       this.$emit('openItem',params)
     },
     openPopup(data){
       this.$emit('openPop',data)
+    },
+    teamName () {
+      var teamName
+      if(this.propData) {
+        if(this.propData.value) {
+          teamName = this.propData.value.nameMtext || this.propData.value.teamNameMtext
+        } else {
+          if(this.propData.nameMtext) {
+            teamName = this.propData.nameMtext
+          }
+        }
+        return this.$changeText(teamName)
+      }
+
     }
   }
 }

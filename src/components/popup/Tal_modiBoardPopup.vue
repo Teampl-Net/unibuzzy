@@ -1,6 +1,6 @@
 <template>
   <div class="addNewBoardWrap pagePaddingWrap" style="">
-    <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" />
+    <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName'/>
     <div class="itemWrite" style="">
       <p class="fontBold textLeft font16 fl" style="width: 150px;">게시판 이름</p>
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
@@ -122,13 +122,13 @@
 
       </div>
     </div>
-  <div style="">
+  <div >
     <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
     <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   </div>
   <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" />
+  <selectBookList :chanInfo="this.chanInfo" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" :sessionUserdata='sessionUserdata' />
 
   <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
@@ -149,7 +149,8 @@ import receiverAccessList from './receiver/Tal_selectReceiverAccessList.vue'
 export default {
   props:{
     modiBoardDetailProps: {},
-    chanInfo: {}
+    chanInfo: {},
+    chanName: {}
   },
   created () {
     var history = this.$store.getters.hStack
@@ -238,7 +239,8 @@ export default {
       commentPermissionAllYn: true,
       permissionSelectedYn: {W: false, R: false, V: false},
       boardName:'',
-      dbSelectedList: {bookList: [], memberList: []}
+      dbSelectedList: {bookList: [], memberList: []},
+      sessionUserdata:{}
 
     }
   },
@@ -562,9 +564,25 @@ export default {
     },
     selectedListSelect(){
       this.selectBookListShowYn =true
+
     },
     showSelectBookPop () {
-        this.selectBookListShowYn = true
+      // var sessiondata = {}
+
+      // alert(JSON.parse(localStorage.getItem('sessionUser')))
+      // sessiondata.userKey = JSON.parse(localStorage.getItem('sessionUser').userKey)
+      // sessiondata.userDispMtext = JSON.parse(localStorage.getItem('sessionUser').userDispMtext)
+      // sessiondata.userNameMtext = JSON.parse(localStorage.getItem('sessionUser').userNameMtext)
+      this.sessionUserdata = JSON.parse(localStorage.getItem('sessionUser'))
+      this.sessionUserdata.menuType = "U"
+      this.sessionUserdata.cabinetKey = this.modiBoardDetailProps.cabinetKey
+      this.sessionUserdata.selectedYn = true
+
+      console.log(this.sessionUserdata);
+
+      this.selectBookListShowYn = true
+
+        // this.sessionUserdata = localStorage.setItem('sessionUser')
         // this.selectedList = null
     },
     goNo (){
@@ -612,21 +630,24 @@ export default {
         if(data.bookList.length > 0){
           text = '그룹: ' +data.bookList[0].cabinetNameMtext || data.bookList.cabinetNameMtext
           selectLength += data.bookList.length
+          dataLength += data.bookList.length
         }
+
       }
 
       if (data.memberList) {
         if(data.memberList.length > 0){
           text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList.userDispMtext)
           selectLength += data.memberList.length
+          dataLength += data.memberList.length
         }
       }
 
       if(selectLength !== 1){this.selectedReceiver = text + ' 외 ' + (selectLength - 1)+'개'}
       if(selectLength == 1){this.selectedReceiver = text }
 
-      dataLength += data.bookList.length
-      dataLength += data.memberList.length
+
+
 
 
 

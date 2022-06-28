@@ -22,16 +22,16 @@ const methods = {
           // format = 'HH시 mm분'
         } else {
           // 같은 년도, 월이 같으면
-          format = 'MM.DD'
+          format = 'MM/DD'
           // format = 'MM월 DD일'
         }
       } else {
         // 년도만 같으면
-        format = 'MM.DD'
+        format = 'MM/DD'
         // format = 'MM월 DD일'
       }
     } else {
-      format = 'YYYY.MM.DD'
+      format = 'YYYY/MM/DD'
       // if (viewType === 'detail') {
       //   return this.$dayjs(compareDate).format('yyyyMMDDHHmmss')
       // } else if (viewType === 'list') {

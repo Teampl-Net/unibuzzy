@@ -2,17 +2,19 @@
     <div style="width: 100%; min-height: 300px; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class="">
         <div class="mbottom-05" style="width: 100%; height: 30px; margin-top:1rem; margin-left:0.5rem">
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
-            <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers" v-if="btnVisible !== false" />
+            <!-- <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers" v-if="btnVisible !== false" /> -->
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
         <div style="width:100%; background-color:#6768A720; height:calc(100% - 3.5rem); padding:15px; overflow: hidden auto">
-            <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 5px; margin-bottom: 5px; backgrouhnd: #fff; border: 1px solid #000; border-radius: 5px;" >
-                <img src="../../../assets/images/common/people.svg" class="fl" alt="">
+            <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
+                <!-- <img src="../../../assets/images/common/people.svg" class="fl" alt=""> -->
+                <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
                 <p class="fl font15 commonBlack">{{team.cabinetNameMtext}}</p>
                 <!-- <p class="fl font15 commonBlack">{{'그룹: ' + team.cabinetNameMtext}}</p> -->
-                <span class="fr" @click="removeSelectedYn('book',index)">x</span>
+                <!-- <span class="fr" @click="removeSelectedYn('book',index)">x</span> -->
+                <span class="fr commonColor" @click="removeSelectedYn('book',index)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
             </div>
             <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem"  >
                 <!-- <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext || member.userNameMtext) }}</p> -->
@@ -34,7 +36,8 @@ export default {
     props:{
         listData: {},
         itemType: {},
-        btnVisible: {}
+        btnVisible: {},
+        sessionData:{}
     },
     data(){
         return{
@@ -62,6 +65,11 @@ export default {
             {userDispMtext: 'KO$^$수망고', userKey: 1}
         ]
     } */
+    if(this.sessionData){
+        // this.sessionData.sessionYn=true
+        this.teamList.memberList.push(this.sessionData)
+    }
+
     },
     watch: {
     },
@@ -94,13 +102,13 @@ export default {
                     }
                 }
             }
+
         },
         sendReceivers() {
             // this.teamList.itemType = this.itemType
             this.$emit('btnClick', this.teamList)
         },
         removeSelectedYn(type, index) {
-            // alert(index)
             if(type === 'book') {
                 this.teamList.bookList.splice(index, 1)
             } else if(type === 'member') {

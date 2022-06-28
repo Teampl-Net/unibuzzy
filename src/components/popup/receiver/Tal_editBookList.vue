@@ -33,14 +33,17 @@ import memberList from './Tal_commonBookMemberList.vue'
 export default {
     props: {
         chanInfo: {},
-        propData: {}
+        propData: {},
+        memberDetailOpen:{}
     },
     created (){
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
-        
 
+        console.log("!!!!!!!!!!!!");
+        console.log(this.propData);
         if(this.propData.value.clickData){
+            this.$emit('openDetailYn',true)
             this.selectBookDetail = this.propData.value.clickData
             var history = this.$store.getters.hStack
             this.subPopId = 'commonBookMemberList' + history.length
@@ -63,7 +66,11 @@ export default {
             this.backClick()
         },
         historyStack (value, old) {
+        },
+        memberDetailOpen(){
+            if(this.memberDetailOpen === false ) this.detailOpenYn = false
         }
+
     },
     components: { findContentsList, bookListCompo,memberList },
     data () {
@@ -98,7 +105,7 @@ export default {
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
-                
+
             } else if (this.popId === hStack[hStack.length - 1]) {
                 // alert(removePage)
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
@@ -116,6 +123,7 @@ export default {
             history.push(this.subPopId)
             this.$store.commit('updateStack', history)
             this.detailOpenYn = true
+            this.$emit('openDetailYn',true)
 
         },
         closeSearchPop (){

@@ -8,14 +8,19 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in cabinetList" :key='index'>
-                        <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" >
+                        <!-- <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" > -->
+                        <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
                             <div @click="clickList(data)" style="width: calc(100% - 100px); height: 100%;" class="fl">
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
                                 </div>
                                 <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                                <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div>
+                                <!-- <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
+                                <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
+                                    <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
+                                </div>
+
                                 <input v-if="editYn && editIndex === index" :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
                                 <p v-else class="fl font15 commonBlack  receiverTeamText" @click="changedText(data,index)" >{{data.cabinetNameMtext}}</p>
@@ -25,10 +30,12 @@
                             <div v-if="editYn" @click="deleteCabinet(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div>
-                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr" style="position: relative; height: 100%;">
-                                <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
+                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1" style="position: relative; height: 100%;">
+                                <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
                                     <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
-                                </div>
+                                </div> -->
+                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1">
+                                <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
                             </div>
                         </div>
                     </template>
@@ -68,7 +75,8 @@ export default {
             selectedBookList: [],
             selectedMemberList: [],
             editIndex:null,
-            cabinetInputText:''
+            cabinetInputText:'',
+            selectIndex:[]
         }
     },
     async created () {
@@ -202,12 +210,17 @@ export default {
         },
         //유민참고
         addSelectedList(data, index) {
-            this.cabinetList[index].selectedYn = true
-            console.log(data)
-            data.shareSeq = data.cabinetKey
-            this.selectedBookList.push(data)
 
-            this.$emit('changeSelectBookList', this.selectedBookList)
+            if(this.selectIndex.indexOf(index) === -1){
+                this.cabinetList[index].selectedYn = true
+                console.log(data)
+                data.shareSeq = data.cabinetKey
+                this.selectedBookList.push(data)
+                this.selectIndex.push(index)
+                this.$emit('changeSelectBookList', this.selectedBookList)
+            }else{
+                alert('중복선택입니다.')
+            }
         },
         async addNewBook(){
 
@@ -331,9 +344,13 @@ export default {
    transition : background-color 0.5s ease-in;
 } */
 
-.receiverTeamListCard {
-    width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px;
-    transition : background-color 0.5s ease-in !important;
+.commonBookCard {
+    /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */
+    width: 100%;
+    height:60px;
+    border-bottom:1px solid #ddd; padding: 0.7rem 0;
+
+    /* transition : background-color 0.5s ease-in !important; */
 }
 
 input {

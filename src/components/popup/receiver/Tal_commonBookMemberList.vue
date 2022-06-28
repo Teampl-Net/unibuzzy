@@ -9,7 +9,7 @@
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="(propData.managerOpenYn && data.managerKey) || propData.managerListOpen === true" class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
+                    <div v-if="(propData.managerOpenYn && data.managerKey) || propData.managerListOpen"  class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
                     <!-- <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" > -->
                         <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
@@ -18,15 +18,34 @@
                         <div v-if="(editYn || propData.managerOpenYn) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                         </div>
-                        <div @click="addSelectedList(data,index)" v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
+                        <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
                             <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)"> -->
-                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1">
-                            <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
+                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1" @click="addSelectedList(data,index)" >
+                            <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
                                 <!-- <img style="width: 30px;" src="../../../assets/images/push/plusIcon.svg" alt=""> -->
                             <!-- </div> -->
                         </div>
 
                     </div>
+                    <div v-else class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
+
+                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
+                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
+                            <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
+                        </div>
+                        <div v-if="(editYn || propData.managerOpenYn) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                        </div>
+                        <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
+
+                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1" @click="addSelectedList(data,index)" >
+                            <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
+
+                        </div>
+
+                    </div>
+
+
                 </template>
             </transition-group>
         </draggable>
@@ -86,6 +105,15 @@ export default {
             if(this.propData.managerListOpen !== null && this.propData.managerListOpen !== undefined && this.propData.managerListOpen !== ''){
                 this.propData.managerOpenYn = false
                 this.memberList= this.parentSelectList.memberList
+                for (let i = 0; i < this.memberList.length; i++) {
+                    if(this.memberList[i].managerKey){
+                        this.selectIndex.push(i)
+                    }
+
+
+
+                }
+
             }else{
                 await this.getFollowerList()
             }
@@ -223,16 +251,18 @@ export default {
             this.$emit('openAddPop',data)
         },
         addSelectedList (data,index) {
-            if(this.selectIndex.indexOf(index) === -1){
-                // this.memberList[index].selectedYn = true//
-                // data.shareSeq = ''+data.cabinetKey + data.userKey
-                data.shareSeq = data.userKey
-                this.selectedMemberList.push(data)
-                this.$emit('changeSelectMemberList', this.selectedMemberList)
-                this.selectIndex.push(index)
-            }else{
-                alert('중복선택입니다.')
-            }
+
+            // this.memberList[index].selectedYn = true//
+            // data.shareSeq = ''+data.cabinetKey + data.userKey
+            data.shareSeq = data.userKey
+            this.selectedMemberList.push(data)
+            this.$emit('changeSelectMemberList', this.selectedMemberList)
+            // this.selectIndex.push(index)
+            this.selectIndex.unshift(index)
+
+        },
+        checkClick () {
+            alert('중복선택입니다.')
         },
         deSelectList (index) {
             this.selectIndex.splice(index,1)

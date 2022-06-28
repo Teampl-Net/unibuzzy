@@ -1,13 +1,13 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
-    <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 편집" />
-    <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
-      <div style="width: 100%; min-height: 30px; margin-bottom: 10px;">
-        <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p>
-        <!-- <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" /> -->
+    <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 편집" :chanName='teamNameText' />
 
-      </div>
+    <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
+      <!-- <div style="width: 100%; min-height: 30px; margin-bottom: 10px;"> -->
+        <!-- <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p> -->
+        <!-- <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" /> -->
+      <!-- </div> -->
 
       <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
@@ -35,7 +35,7 @@
     </div> -->
 
 </div>
-  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' />
+  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' />
 
 </template>
 
@@ -53,6 +53,7 @@ export default {
     currentTeamKey: {},
     editYn: {},
     chanInfo: {},
+    teamNameText:{},
   },
   computed: {
     historyStack () {

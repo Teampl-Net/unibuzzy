@@ -1,28 +1,28 @@
 <template>
 <div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
-    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
+    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='sendReceivers' />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
 
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
+    <!-- <div class="longHeight" style="height:calc(100% - 300px); overflow: auto; margin-top:50px;" > -->
     <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
 
-        <!-- <div style="display: none">
-            <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-            <transition name="showModal">
-                <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-            </transition>
-        </div> -->
+      <!-- <div style="display: none">
+          <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
+          <transition name="showModal">
+              <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+          </transition>
+      </div> -->
 
-        <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
+      <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
 
-            <bookList :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
-            <transition name="showGroup">
-                <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
-            </transition>
-        </div>
-        <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
+        <bookList :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <transition name="showGroup">
+            <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+        </transition>
+      </div>
+      <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' :sessionData='sessionUserdata' />
 
-    </div>
+    <!-- </div> -->
 </div>
 
 </template>
@@ -38,7 +38,8 @@ export default {
     detailSelectedYn: {},
     selectedListYn: {},
     propData: {},
-    pSelectedList: {}
+    pSelectedList: {},
+    sessionUserdata: {}
   },
   created () {
     // eslint-disable-next-line vue/no-mutating-props
@@ -55,7 +56,10 @@ export default {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
+    console.log("####");
+    console.log(this.sessionUserdata);
   },
+
   computed: {
     historyStack () {
       return this.$store.getters.hRPage

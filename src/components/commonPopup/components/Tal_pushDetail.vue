@@ -10,16 +10,22 @@
             <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
 
           <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+
           <!-- </div> -->
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
+        <label for="dateAll" class="font12 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:12px;height:12px; margin-top:2px; " id="dateAll" class="fr mright-02" v-model="dateCheck">
+         <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray">{{this.changeText(alim.nameMtext)}}</p>
+            <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
             <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
-            <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
-            <p style="position:relative; top:0; right: 0;" v-if="alim.rUserCount === 1">나에게만</p>
-            <p style="position:relative; top:0; right: 0;" v-else-if="alim.rUserCount > 1">여러명에게</p>
-            <p v-else>전체에게</p>
+
+            <p class="font12 fr mleft-05 lightGray">{{dateText}}</p>
+
+            <p class="fr" v-if="alim.rUserCount === 1">한명에게</p>
+            <p class="fr" v-else-if="alim.rUserCount > 1">여러명에게</p>
+            <p v-else class="fr">전체에게</p>
+            <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
+
           </div>
         </div>
         <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
@@ -66,9 +72,19 @@ export default {
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
-      parentContentsKey: null
+      parentContentsKey: null,
+      // dateClickYn:false
+      dateCheck:true,
+      dateText:'11'
+
     }
   },
+  watch:{
+    dateCheck () {
+      this.datechange()
+    }
+  },
+
   props: {
     detailVal: {}
   },
@@ -76,9 +92,11 @@ export default {
     /* manageStickerPop */
   },
   async created () {
+    console.log(this.alimDetail);
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
+
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -87,6 +105,7 @@ export default {
       }
     } */
     console.log(this.alimDetail)
+    this.datechange()
   },
   mounted () {
     this.changeMode()
@@ -111,6 +130,17 @@ export default {
     }
   },
   methods: {
+//  dateCheck () {
+//       if(dateCheck){
+//         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, true)
+//       }else{
+//         alert(false)
+//         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, false)
+//       }
+//     }
+    datechange(){
+      this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, this.dateCheck)
+    },
     setParentContents (data) {
       if (data.parentContentsKey) {
         return true
@@ -224,10 +254,12 @@ export default {
         result = await this.$saveUserDo(param, 'save')
       }
       if (result === true) {
-        this.$emit('reloadParent')
         var resultList = await this.$getContentsList({ contentsKey: inputContentsKey })
+        console.log(resultList)
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)
+
+        // this.$emit('reloadParent')
       }
     },
     goChanDetail (alim) {
@@ -266,7 +298,7 @@ export default {
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{ margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
-.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
+.pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: left; height: 30px;}
