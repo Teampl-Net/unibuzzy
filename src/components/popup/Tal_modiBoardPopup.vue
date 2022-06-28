@@ -9,7 +9,7 @@
       <p class="fontBold textLeft font16 fl " style="width: 150px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div class="fontBlack fr font16 inputBoxThema textLeft" style="margin-top: 10px;">자유게시판</div>
+      <div class="fontBlack fr font16 inputBoxThema textLeft" style="margin-top: 10px;" >자유게시판</div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
@@ -577,7 +577,7 @@ export default {
       this.selectBoardTypeText = data.chanMenuTitle
 
       this.selectId = data.idNum
-      
+
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       // alert(removePage)

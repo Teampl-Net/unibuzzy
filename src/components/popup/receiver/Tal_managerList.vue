@@ -3,9 +3,11 @@
 
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='setManager' />
     <div class="" style="width:100%; height:calc(100% - 50px); margin-top:50px" >
-        <memberList class="fl" style="height:50%; background-color:white;" :parentSelectList="pSelectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
+        <memberList ref="memberListCompo" class="fl" style="height:50%; background-color:white;" :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
         <selectedListCompo ref="selectedListCompo" class="fl" style="height:50%;" @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='false' />
     </div>
+
+    <gConfirmPop :confirmText='confirmText' confirmType='timeout' @no='confirmPopShowYn = false' @ok='saveMember' v-if="confirmPopShowYn"/>
 
 </div>
 </template>
@@ -23,29 +25,50 @@ export default {
     data () {
         return{
             selectedList:[{memberList:[],}],
-            receiverTitle:'신청 목록'
+            pList:[{memberList:[]}],
+            receiverTitle:'신청 목록',
+            confirmPopShowYn:false,
+            confirmText : ''
+
         }
+    },
+    created () {
+        var a = {}
+        a.memberList = this.pSelectedList
+        this.propData.managerListOpen = true
+        this.pList = a
+        // alert(JSON.stringify(this.pList))
     },
     components:{memberList,selectedListCompo},
     methods : {
         changeSelectMemberList (data) {
+            // alert(JSON.stringify(data))
             this.selectedList.memberList = data
             this.$refs.selectedListCompo.upDatePage()
         },
-        changeSelectedList () {
+        changeSelectedList (data) {
+            alert(JSON.stringify(data.index))
+            this.$refs.memberListCompo.deSelectList(data.index)
 
         },
         backClick(){
             this.$emit('closeXPop')
         },
         async setManager () {
-
             var param = {}
             var mCabContents = new Object()
             console.log(this.propData)
+            console.log(this.selectedList.memberList)
             param.teamKey = this.propData.currentTeamKey
-
-             var result = await this.$commonAxiosFunction({
+            param.userKey = this.selectedList.memberList[0].userKey
+            param.followerKey = this.selectedList.memberList[0].followerKey
+            param.memberYn = this.selectedList.memberList[0].memberYn
+            // param.inUserName = this.$changeText(this.selectedList.memberList[0].userDispMtext)
+            // console.log("$$$$$$")
+            // console.log(this.selectedList)
+            // console.log("######")
+            // console.log(param)
+            var result = await this.$commonAxiosFunction({
                 url: '/tp.saveManager',
                 param: param
             })

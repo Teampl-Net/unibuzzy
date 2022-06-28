@@ -28,19 +28,17 @@ export default {
     // pSelectedList: {}
   },
   created () {
-    console.log('######!@#!@#!#@!#!@#@!########')
-    console.log(this.propData)
     // alert(JSON.stringify(this.propData.teamNameMtext))
   },
   computed: {
-
   },
   components: { memberList, selectBookList },
   data () {
     return {
       // openAddManagerPopYn:false
       selectBookListShowYn : false,
-      receiverTitle: '매니저 관리'
+      receiverTitle: '매니저 관리',
+      list:[]
     }
   },
   methods: {
@@ -60,17 +58,18 @@ export default {
     },
     async openAddManagerPop () {
       var params = new Object()
-      params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       params.teamKey = this.propData.currentTeamKey
-      params.memeberYn = true
+      params.memberYn = true
       var result = await this.$commonAxiosFunction({
         url: '/tp.getFollowerList',
         param: params
       })
 
-      console.log(result);
-      this.list = result.content
+      console.log('##############');
+      console.log(result.data.content);
+      this.list = result.data.content
       // this.list = []
+      console.log(this.list);
 
       this.selectBookListShowYn = true
 

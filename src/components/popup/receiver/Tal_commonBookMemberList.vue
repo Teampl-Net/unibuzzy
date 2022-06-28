@@ -9,19 +9,23 @@
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
-                    <div v-if="data.selectedYn !== true || (propData.managerOpenYn && data.managerKey) " class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" >
+                    <div v-if="(propData.managerOpenYn && data.managerKey) || propData.managerListOpen === true" class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
+                    <!-- <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" > -->
                         <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
-                            <p class="fl font15 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
+                            <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
                         <div v-if="(editYn || propData.managerOpenYn) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                         </div>
                         <div @click="addSelectedList(data,index)" v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
-                            <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
-                            </div>
+                            <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)"> -->
+                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1">
+                            <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
+                                <!-- <img style="width: 30px;" src="../../../assets/images/push/plusIcon.svg" alt=""> -->
+                            <!-- </div> -->
                         </div>
+
                     </div>
                 </template>
             </transition-group>
@@ -63,7 +67,12 @@ export default {
     },
     watch:{
     },
+    beforeUnmount(){
+        this.propData.managerListOpen = false
+        this.propData.managerOpenYn = true
+    },
     async created(){
+
         if(this.propData.managerOpenYn === null || this.propData.managerOpenYn === undefined || this.propData.managerOpenYn === ''){
 
             await this.getBookMemberList()
@@ -74,7 +83,12 @@ export default {
         // this.memberList = this.propData.mCabUserList
             this.setParentSelectList()
         }else{
-            await this.getFollowerList()
+            if(this.propData.managerListOpen !== null && this.propData.managerListOpen !== undefined && this.propData.managerListOpen !== ''){
+                this.propData.managerOpenYn = false
+                this.memberList= this.parentSelectList.memberList
+            }else{
+                await this.getFollowerList()
+            }
         }
         // this.memberList = this.listData
     },
@@ -109,7 +123,6 @@ export default {
                 url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
-            debugger
             this.memberList = result.data
             this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
             // debugger
@@ -200,11 +213,9 @@ export default {
             // debugger
             // data.index = index
             // this.editMember = data
-
         },
         newAddMember(){
             this.newYn = false
-            // alert(JSON.stringify(this.propData))
             var data = new Object()
             data.targetType = 'bookMemberDetail'
             data.currentCabinetKey = this.propData.cabinetKey
@@ -213,7 +224,7 @@ export default {
         },
         addSelectedList (data,index) {
             if(this.selectIndex.indexOf(index) === -1){
-                this.memberList[index].selectedYn = true
+                // this.memberList[index].selectedYn = true//
                 // data.shareSeq = ''+data.cabinetKey + data.userKey
                 data.shareSeq = data.userKey
                 this.selectedMemberList.push(data)
@@ -222,10 +233,10 @@ export default {
             }else{
                 alert('중복선택입니다.')
             }
-
-
         },
-
+        deSelectList (index) {
+            this.selectIndex.splice(index,1)
+        },
         updateData(obj){
             // obj -> prop으로 보낸 data에 수정을 직접해서 다시 $emit으로 받음
             this.addMemberPopYn = false
@@ -236,7 +247,7 @@ export default {
 </script>
 
 <style >
-
+.selectedBox{background-color:#6768A720;}
 .receiverTeamMemberArea{float: left;  width: 100%; }
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 0.7rem 0;}

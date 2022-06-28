@@ -20,7 +20,7 @@
                 <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
             </transition>
         </div>
-        <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
+        <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" />
 
     </div>
 </div>
