@@ -70,8 +70,10 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
+      // detailShowYn: true,
+      // adminYn: false,
+      adminYn: true,
       detailShowYn: true,
-      adminYn: false,
       memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',
@@ -234,17 +236,23 @@ export default {
       }
     },
     recvNoti (e) {
-      if (JSON.parse(e.data).type === 'pushmsg') {
-        var target = JSON.parse(JSON.parse(e.data).pushMessage).noti
-        if (JSON.parse(target).data.targetKind === 'TEAM') {
-          if (Number(JSON.parse(target).data.targetKey) === this.chanItem.teamKey) {
-            this.getChanDetail(true)
-          }
-        } else if (JSON.parse(target).data.targetKind === 'CONT') {
-          /* if ('chanDetail' + this.chanDetail.teamKey === ) {
-
-          } */
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
         }
+        if (message.type === 'pushmsg') {
+          var msgDetail = JSON.parse(message.pushMessage)
+          if (msgDetail.noti.data.targetKind === 'TEAM') {
+            if (Number(msgDetail.noti.data.targetKey) === this.chanItem.teamKey) {
+              this.getChanDetail(true)
+            }  
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
       }
     }
   },
