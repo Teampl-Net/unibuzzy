@@ -8,7 +8,7 @@
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
-                <img v-else class="flcursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
+                <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
               </div>
                 <div class="pushDetailHeaderTextArea">
                   <p class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
@@ -50,6 +50,7 @@
   <!-- </div> -->
 </template>
 <script>
+/* eslint-disable */
 export default {
   components: {
   },
@@ -207,7 +208,7 @@ export default {
       mainYn: false,
       chanWrap: null,
       contentsList: {},
-      currentScroll: 0
+      currentScroll: 0,
     }
   },
   props: {

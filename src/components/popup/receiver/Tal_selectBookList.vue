@@ -56,8 +56,6 @@ export default {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
-    console.log("####");
-    console.log(this.sessionUserdata);
   },
 
   computed: {

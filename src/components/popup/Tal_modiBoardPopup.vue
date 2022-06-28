@@ -2,21 +2,21 @@
   <div class="addNewBoardWrap pagePaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName'/>
     <div class="itemWrite" style="">
-      <p class="fontBold textLeft font16 fl" style="width: 150px;">게시판 이름</p>
+      <p class="fontBold textLeft font16 fl" style="width: 130px;">게시판 이름</p>
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 150px;">유형</p>
+      <p class="fontBold textLeft font16 fl " style="width: 130px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div class="fontBlack fr font16 inputBoxThema textLeft" style="margin-top: 10px;" >자유게시판</div>
+      <div class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 150px;">기능 </p>
+      <p class="fontBold textLeft font16 fl " style="width: 130px;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="width: calc(100% - 150px); text-align: left;" @click="this.functionPopShowYn = true" class="fl font16 lightGray" >{{okFunctionList}}</div>
+      <div style="width: calc(100% - 130px); text-align: left;" @click="this.functionPopShowYn = true" class="fl font16 lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
@@ -82,18 +82,18 @@
     <div class="itemWrite fl" style="border-bottom: none;">
       <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상</p>
       <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
-        <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl mleft-05" for="shareAll">전체</label>
-        <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl mleft-05" for="shareSelect">선택</label>
+        <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl mleft-05 mtop-02" for="shareAll">전체</label>
+        <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl mleft-05 mtop-02" for="shareSelect">선택</label>
       </div>
     </div>
     <div class="fl" style="width: 100%;">
-      <div v-show="this.shareType === 'select'" @click="showSelectBookPop" class="inputBoxThema textLeft fl" style="width: 100%;">{{selectedReceiver}}</div>
+      <div v-show="this.shareType === 'select'" @click="showSelectBookPop" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; ">{{selectedReceiver}}</div>
     </div>
 
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
     <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
       <div class="subItemWrite">
-        <p class="textLeft mleft-1 font16 fl" style="flex:1">작성</p>
+        <p class="textLeft mleft-15 font16 fl" style="flex:1">작성</p>
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft" style="flex:3" v-if="this.shareType == 'select'">{{writePermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2;" >
@@ -102,7 +102,7 @@
         </div>
       </div>
       <div class="subItemWrite">
-        <p class="textLeft mleft-1 font16 fl " style="flex:1">열람</p>
+        <p class="textLeft mleft-15 font16 fl " style="flex:1">열람</p>
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="flex:3;" v-if="this.shareType == 'select'">{{readPermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2">
@@ -112,7 +112,7 @@
 
       </div>
       <div class="subItemWrite" style="">
-        <p class="textLeft mleft-1 font16 fl " style="flex:1">댓글</p>
+        <p class="textLeft mleft-15 font16 fl " style="flex:1">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="flex:3" v-if="this.shareType == 'select'" >{{commentPermission}}</div>
         <div v-if="this.shareType == 'all'" class="inputBoxThema textLeft moidRadioArea" style="flex:2">
@@ -122,7 +122,7 @@
 
       </div>
     </div>
-  <div >
+  <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
     <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
     <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
@@ -646,11 +646,6 @@ export default {
       if(selectLength !== 1){this.selectedReceiver = text + ' 외 ' + (selectLength - 1)+'개'}
       if(selectLength == 1){this.selectedReceiver = text }
 
-
-
-
-
-
       if(dataLength === 0) {
         this.selectedReceiver = '0명에게 공유중'
       }
@@ -765,7 +760,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 150px); float: left; margin-bottom: 10px; line-height: 30px;white-space: nowrap}
+.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap}
 .editWrap{
   background-color: #F9F9F9;
 }
@@ -897,13 +892,12 @@ input:-internal-autofill-selected {
 .toggleLine{width: 100%; float: left;}
 .itemWrite{
   display: flex; align-items: center;
-  min-height: 50px;
+  min-height: 65px;
   border-bottom: 1px solid #ccc;
 }
 .subItemWrite{
   display: flex; align-items: flex-start;
-
-  min-height: 35px;
+  min-height: 45px;
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }
 .creChanIntroTextWrap p{font-size: 20px; }

@@ -63,6 +63,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 /* import manageStickerPop from '../../popup/Tal_manageStickerPop.vue' */
 export default {
   data () {

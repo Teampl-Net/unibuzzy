@@ -28,7 +28,7 @@
 
                     <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
                     <label class="mright-1 fl" for="allFalse">선택</label> -->
-                    <div v-if="!allRecvYn" class="inputArea recvUserArea font15" style="padding: 3px 10px; width: 100%; background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                    <div v-if="!allRecvYn" class="inputArea recvUserArea font15" style="padding: 3px 10px; width: calc(100% + 20px); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
                     </div>
                   </div>

@@ -11,7 +11,7 @@
                 <template v-for="(data, index) in memberList" :key='data'>
                     <div v-if="(propData.managerOpenYn && data.managerKey) || propData.managerListOpen"  class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
                     <!-- <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" > -->
-                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
+                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" />
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div v-else class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
 
-                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 8px;" />
+                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" />
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
@@ -44,8 +44,6 @@
                         </div>
 
                     </div>
-
-
                 </template>
             </transition-group>
         </draggable>

@@ -10,7 +10,7 @@
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
       </div>
-      <div id="pushListWrap" :style="calcHeaderHeight" class="testt" style="float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
+      <div id="pushListWrap" :style="calcHeaderHeight" class="testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -20,9 +20,11 @@
 
         </div>
       </div> -->
-        <commonList v-if="refreshYn" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
-
+        <div class="text-center">
+        </div>
+        <preLoaderCompo v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" />
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
@@ -31,16 +33,16 @@
 
 <script>
 /* eslint-disable */
-// eslint-disable-next-line
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
+import preLoaderCompo from '../../components/unit/Tal_preloader.vue'
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   name: 'pushList',
   components: {
+    preLoaderCompo,
     findContentsList
     // searchResult
-
   },
   props: {
     popYn: Boolean,
@@ -50,9 +52,6 @@ export default {
     chanDetailKey: {},
     pushListAndDetailYn: {},
     propData: {}
-  },
-
-  updated() {
   },
   async created() {
     if (this.propData) {
@@ -74,6 +73,7 @@ export default {
       this.requestSearchList(this.readySearhList)
     }
   },
+
   updated() {
     this.box = document.getElementById('pushListWrap')
   },
@@ -105,13 +105,10 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-
-    currentPage () {
-    },
-    commonListData () {
-      this.refreshYn = false
-      this.refreshYn = true
-    },
+    // commonListData () {
+    //   this.refreshYn = false
+    //   this.refreshYn = true
+    // },
     routerReloadKey () {
       this.refreshList()
     }
@@ -146,36 +143,6 @@ export default {
       return {
         '--stickerDivWidth': stickerDivWidth + 'px'
       }
-    }
-  },
-  data () {
-    return {
-      firstContOffsetY: null,
-      headerTop: 0,
-      scrollDirection: null,
-      box: null,
-      scrolledYn: false,
-      scrollPosition: 0,
-      offsetInt: 0,
-      endListYn: false,
-      loadVal: true,
-      pageHistoryName: '',
-      findPopShowYn: false,
-      subHistoryList: [],
-      stickerList: [
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
-      ],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      viewTab: 'N',
-      commonListData: [],
-      findKeyList: {},
-      resultSearchKeyList: [],
-      refreshYn: true
     }
   },
   methods: {
@@ -238,10 +205,14 @@ export default {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
-    async loadMore (pageSize) {
+    async loadMore(pageSize) {
+      this.preloadingYn = true
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
+        if (resultList) {
+          this.preloadingYn = false
+        }
         const newArr = [
           ...this.commonListData,
           ...resultList.content
@@ -265,7 +236,7 @@ export default {
       this.findPopShowYn = false
       /* this.subHistoryList.splice(-1, 1) */
     },
-    reload () {
+    reload() {
       this.getPushContentsList()
     },
     openPop (value) {
@@ -398,6 +369,12 @@ export default {
   },
   data () {
     return {
+      firstContOffsetY: null,
+      headerTop: 0,
+      scrollDirection: null,
+      box: null,
+      scrolledYn: false,
+      preloadingYn: false,
       offsetInt: 0,
       endListYn: false,
       scrollPosition: 0,
@@ -434,25 +411,6 @@ export default {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
-/* .popHeight{
-  padding-right: 0; padding-left: 0;
-  height: calc(100vh - 35px) !important;
-} */
-
-/* .pushListHeader {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-    will-change: transform;
-    transition: transform 1s linear;
-}
-.pushListHeader--pinned {
-    transform: translateY(0%);
-}
-.pushListHeader--unpinned {
-    transform: translateY(-100%);
-} */
 .pushListHeader {
     width: 100%;
     min-height: 132px;

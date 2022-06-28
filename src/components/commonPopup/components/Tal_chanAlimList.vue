@@ -70,10 +70,8 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      // detailShowYn: true,
-      // adminYn: false,
-      adminYn: true,
       detailShowYn: true,
+      adminYn: false,
       memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',
@@ -248,7 +246,7 @@ export default {
           if (msgDetail.noti.data.targetKind === 'TEAM') {
             if (Number(msgDetail.noti.data.targetKey) === this.chanItem.teamKey) {
               this.getChanDetail(true)
-            }  
+            }
           }
         }
       } catch (err) {

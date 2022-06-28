@@ -23,7 +23,7 @@
 
                                 <input v-if="editYn && editIndex === index" :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-else class="fl font15 commonBlack  receiverTeamText" @click="changedText(data,index)" >{{data.cabinetNameMtext}}</p>
+                                <p v-else class="fl font16 commonBlack  receiverTeamText" @click="changedText(data,index)" >{{data.cabinetNameMtext}}</p>
 
                                 <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data,index)" >
                             </div>

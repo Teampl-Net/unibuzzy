@@ -12,9 +12,6 @@
         <p v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; font-size: 16px; height: 100%;" class="commonBlack" >{{memo.bodyFullStr}} </p>
 
       </div>
-
-
-
       <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" >
         <!-- <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" > -->
         <div v-if="editIndex === index">
