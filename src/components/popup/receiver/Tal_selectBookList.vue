@@ -1,6 +1,6 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
-    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='sendReceivers' />
+<div style="height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0">
+    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='editPop' />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
 
     <!-- <div class="longHeight" style="height:calc(100% - 300px); overflow: auto; margin-top:50px;" > -->
@@ -20,7 +20,7 @@
             <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' :sessionData='sessionUserdata' />
+      <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' :sessionData='sessionUserdata' @btnClick='sendReceivers' />
 
     <!-- </div> -->
 </div>
@@ -94,6 +94,17 @@ export default {
     }
   },
   methods: {
+    editPop () {
+
+      var params = new Object()
+      params = this.propData
+      params.targetType = 'editBookList'
+      params.currentTeamKey = this.propData.targetKey
+      params.value = ''
+      console.log('/');
+      console.log(params);
+      this.$emit('openPop', params)
+    },
     sendReceivers () {
       // eslint-disable-next-line no-new-object
       var obj = new Object()

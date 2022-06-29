@@ -1,6 +1,6 @@
 <template>
     <div style="height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0">
-        <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.propData.teamNameMtext" /> -->
+        <!-- <popHeader @closeXPop="this.$emit('closeXPop')" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.propData.teamNameMtext" /> -->
         <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
 
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
@@ -37,6 +37,7 @@ export default {
         memberDetailOpen:{}
     },
     created (){
+
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
 

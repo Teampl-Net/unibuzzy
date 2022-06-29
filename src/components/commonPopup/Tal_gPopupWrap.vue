@@ -280,7 +280,7 @@ export default {
       } else if (this.targetType === 'editBookList') {
         this.headerTitle = '주소록 관리'
         this.chanName = this.propParams.teamNameMtext
-a      } else if (this.targetType === 'bookMemberDetail') {
+      } else if (this.targetType === 'bookMemberDetail') {
         if(target.currentCabinetKey){
           this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
         }else{

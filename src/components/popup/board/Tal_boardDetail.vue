@@ -1,9 +1,9 @@
 <template>
-  <div v-if="loadYn" class="boardDetailWrap">
+  <div v-if="loadYn" class="boardDetailWrap" >
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
-    <div class="pagePaddingWrap root mtop-1 overflowYScroll">
+    <div class="pagePaddingWrap root mtop-1 overflowYScroll"  ref="memoarea" >
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
@@ -39,8 +39,8 @@
           <div style="width: 100%; height: 50px; padding: 10px 0; border-bottom: 1.5px dashed #ccc; float: left;">
             <gBtnSmall btnTitle="댓글 쓰기" @click="this.memoShowYn = true"/>
           </div>
-          <div style="width: 100%; min-height: 100px; float: left;">
-            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' />
+          <div style="width: 100%; min-height: 100px; float: left;" >
+            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove'  />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -113,6 +113,10 @@ export default {
     }
   },
   methods: {
+    scrollMove(wich){
+      var memoArea = this.$refs.memoarea
+      memoArea.scrollTo({top:wich, behavior:'smooth'});
+    },
     writeMememo (memo) {
       console.log(memo)
       var data = {}
@@ -151,8 +155,22 @@ export default {
       })
       if(result.data.content) {
         this.memoList = result.data.content
+        await this.mememoChangeList()
+
       }
 
+    },
+    mememoChangeList() {
+      for (let i = 0; i < this.memoList.length; i++) {
+        if(this.memoList[i].parentMemoKey){
+          for (let j = 0; j < this.memoList.length; j++) {
+            if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
+              this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext)
+              this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyMinStr
+            }
+          }
+        }
+      }
     },
     async saveMemo (text) {
       var memo = new Object()

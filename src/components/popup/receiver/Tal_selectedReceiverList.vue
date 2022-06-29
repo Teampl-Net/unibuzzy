@@ -2,7 +2,7 @@
     <div style="width: 100%; min-height: 300px; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class="">
         <div class="mbottom-05" style="width: 100%; height: 30px; margin-top:1rem; margin-left:0.5rem">
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
-            <!-- <gBtnSmall class="fr" btnTitle='담기' @click="sendReceivers" v-if="btnVisible !== false" /> -->
+            <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>

@@ -16,7 +16,6 @@
 <script>
 /* eslint-disable */
 import memberList from './Tal_commonBookMemberList.vue'
-// import selectBookList from '../receiver/Tal_selectBookList.vue'
 // import selectedListCompo from './Tal_selectedReceiverList.vue'
 import selectBookList from '../receiver/Tal_managerList.vue'
 export default {

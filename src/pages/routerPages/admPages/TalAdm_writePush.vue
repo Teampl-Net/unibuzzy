@@ -91,8 +91,8 @@
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
     <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
-  <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999"  >
-      <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' />
+  <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999"  >
+      <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' @openPop='openPop' />
   </div>
 </template>
 <script>
@@ -182,8 +182,10 @@ export default {
     }
   },
   methods: {
-    test(){
-
+    openPop(param){
+      console.log('param');
+      console.log(param);
+      this.$emit('openPop',param)
     },
     changeTab (tab) {
       this.viewTab = tab
@@ -276,7 +278,7 @@ export default {
       var targetMsgDiv = null
       if(this.viewTab === 'complex') {
         param.bodyHtmlYn = true
-        
+
         /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
         /* var imgSrc = null
         var imgList = document.querySelectorAll('#msgBox img')

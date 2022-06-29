@@ -29,7 +29,7 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05">
-          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '맴버취소': '맴버신청'" />
+          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'" />
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
 
@@ -138,6 +138,7 @@ export default {
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'
+      if (this.chanDetail.userTeamInfo.memberYn) { this.memberYn = true }
 
       if (this.chanDetail.userTeamInfo.managerKey !== undefined && this.chanDetail.userTeamInfo.managerKey !== null && this.chanDetail.userTeamInfo.managerKey !== '') {
         this.adminYn = true
@@ -166,6 +167,9 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
+      if(this.chanDetail.userTeamInfo.memberYn){
+        param.memberYn = false
+      }
       console.log(param);
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',

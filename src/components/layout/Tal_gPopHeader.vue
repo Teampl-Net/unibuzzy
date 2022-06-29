@@ -16,7 +16,7 @@
 
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
-    <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="추가하기" style="position: absolute; right: 1rem" />
+    <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="관리" style="position: absolute; right: 1rem" />
   </div>
 </template>
 
@@ -39,10 +39,10 @@ export default {
     closeXPop () {
       if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
         this.$emit('memberDetailClose')
-      } else if (this.targetType === 'pushDetail') {
+      // } else if (this.targetType === 'pushDetail') {
         // this.$emit('reloadParent')
-        this.$emit('closeXPop',true)
-      } else {
+        // this.$emit('closeXPop')
+      }else {
         this.$emit('closeXPop', this.thisPopN)
       }
     },
@@ -57,12 +57,10 @@ export default {
     }
   },
   created () {
-    console.log('!!!!!')
-    console.log(this.targetType)
   },
   watch: {
     bgblack () {
-      console.log('s')
+
     }
   }
 }
@@ -71,7 +69,7 @@ export default {
 
 <style>
 .commonPopHeaderWrap > img {position: absolute; left: 1rem;}
-.commonPopHeaderWrap{ position: fixed; justify-content: center; align-items: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF;}
+.commonPopHeaderWrap{ position: fixed; justify-content: center; align-items: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; }
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; font-size: 20px;}
 .commonPopBackBtn{width: 0.8rem;}

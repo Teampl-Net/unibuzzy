@@ -1,9 +1,14 @@
 <template>
-    <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" >
+    <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" >
 
-      <div class="fl" v-if="memo.parentMemoKey" style="width:20px">
-
-          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" alt="">
+      <div class="fl" v-if="memo.parentMemoKey" style="width:100%">
+          <div class="fl w-100P" @click="scrollMove(memo.parentMemoKey)">
+            <!-- <a :href='"#memo"+memo.parentMemoKey'> -->
+            <p class="fl commonBlack " >{{memo.meMemoUserDispMtext}}</p>
+            <p class="fl commonColor mleft-05" >{{memo.meMemoBodyMinStr}}</p>
+            <!-- </a> -->
+          </div>
+          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-05 mbottom-05" alt="">
       </div>
       <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" @click="memoInfo(memo)">
 
@@ -50,32 +55,14 @@ export default {
   data () {
     return {
       userKey:'',
-      editIndex:''
+      editIndex:'',
 
     }
-  },
-  created () {
-    this.pushMememoText()
   },
   methods: {
     memoInfo(memo){
       console.log(memo)
       // this.pushMememoText()
-    },
-    pushMememoText() {
-      for (let i = 0; i < this.memoList.length; i++) {
-        // let value = {}
-        if(this.memoList[i].parentMemoKey){
-          for (let j = 0; j < this.memoList.length; j++) {
-            if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
-              this.memoList[i].meMemoText = this.$changeText(this.memoList[j].userDispMtext) + ' : ' + this.memoList[j].bodyMinStr
-
-            }
-          }
-
-
-        }
-      }
     },
     memoDeleteClick(data, index){
       var param = {}
@@ -96,7 +83,6 @@ export default {
       memo.bodyMinStr = this.inputText
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
-
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       // memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
@@ -112,6 +98,15 @@ export default {
     },
     memoMemoClick (memo) {
       this.$emit('mememo',memo)
+    },
+    scrollMove(key){
+      var location = document.getElementById(key).offsetTop;
+
+      this.$emit('scrollMove',location)
+
+      // window.location.href = ('#'+key)
+      // document.location.href = ('#'+key)
+
     }
 
   }
