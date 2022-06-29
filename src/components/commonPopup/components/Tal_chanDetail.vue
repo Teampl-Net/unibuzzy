@@ -15,11 +15,11 @@
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
-        <div @click="sendkakao" style="width: 100%;  position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
+        <!-- <div @click="sendkakao" style="width: 100%;  position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
           <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
             <p class="font14 fontBold" style="">공유하기 ></p>
           </div>
-        </div>
+        </div> -->
 
         <!-- <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="공유하기" />
          --><!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
@@ -54,6 +54,10 @@
           <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
             <td><div class="w-20P fl textLeft commonColor fontBold" > 발행자 </div><div class="w-80P fl textLeft"> 팀플<!-- {{this.$changeText(chanDetail.nameMtext)}} --></div></td>
+          </tr>
+          <tr style="border: none;">
+            <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
+            <td><div class="w-20P fl textLeft commonColor fontBold" > 공유 </div><div class="w-80P fl textLeft"> <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="카톡 공유하기" /></div></td>
           </tr>
           <!-- <tr>
             <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div>
