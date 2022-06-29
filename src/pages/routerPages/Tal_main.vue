@@ -67,10 +67,11 @@ export default {
 
     // eslint-disable-next-line no-unused-vars
     for (const param of searchParams) {
-      if (param[0] === 'code') {
-        // eslint-disable-next-line no-unused-vars
-        var naverCode = param[1]
+      console.log('targetKind: ' + param[0])
+      if (param[0] === 'chanDetail') {
+        this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
       }
+      console.log('targetKey: ' + param[1])
     }
     // <%= ${sessionName} != null %>
   },

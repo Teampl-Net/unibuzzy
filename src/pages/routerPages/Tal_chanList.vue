@@ -22,6 +22,20 @@
 import findChannelList from '../../components/popup/Tal_findChannelList.vue'
 
 export default {
+  /* metaInfo: {
+    // title 입력하기
+    title: '페이지 타이틀',
+    // link tag 입력하기
+    link: [{ rel: 'canonical', href: 'http://192.168.0.22:8080?chanDetail=1001245' }],
+    // meta tag 입력하기
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { vmid: 'description', name: 'description', content: 'description' },
+      { vmid: 'description', name: 'description', content: 'description' }
+      // vmid ↑ 메타 태그를 고유하게 만들어준다.
+    ]
+  }, */
   name: 'user',
   components: {
     findChannelList

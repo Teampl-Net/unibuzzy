@@ -405,6 +405,8 @@ export default {
                   } else {
                     this.notiDetailShowYn = true
                   }
+                } else if (this.targetType === 'writePush') {
+                  return                 
                 } else {
                   this.notiDetailShowYn = true
                 }

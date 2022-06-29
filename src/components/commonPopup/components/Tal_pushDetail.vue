@@ -206,9 +206,11 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
       // eslint-disable-next-line no-debugger
-
-      var userDoList = resultList.content[0].userDoList
-      await this.settingUserDo(userDoList)
+      if (resultList.content[0].userDoList) {
+        var userDoList = resultList.content[0].userDoList
+        await this.settingUserDo(userDoList)
+        
+      }
       // console.log(this.alimDetail)
       this.$emit('closeLoading')
     },

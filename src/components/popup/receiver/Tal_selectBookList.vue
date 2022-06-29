@@ -95,14 +95,14 @@ export default {
   },
   methods: {
     editPop () {
-
+      // eslint-disable-next-line no-new-object
       var params = new Object()
       params = this.propData
       params.targetType = 'editBookList'
       params.currentTeamKey = this.propData.targetKey
       params.value = ''
-      console.log('/');
-      console.log(params);
+      console.log('/')
+      console.log(params)
       this.$emit('openPop', params)
     },
     sendReceivers () {

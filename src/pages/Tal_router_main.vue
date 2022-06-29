@@ -159,9 +159,9 @@ export default {
     }, */
     closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
-      if (reloadYn === true) {
+      /* if (reloadYn === true) {
         this.$router.go(0)
-      }
+      } */
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       // alert(removePage)

@@ -50,10 +50,10 @@
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"></td>
             <td><div class="w-20P fl textLeft commonColor fontBold" > 산업군 </div><div class="w-80P fl textLeft"> {{teamTypeText}}<!-- <span class="fl mr-04">{{chanDetail.followerCount}}명</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="공유하기" /> --></div></td>
           </tr>
-          <tr style="border: none;">
+          <!-- <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행자 </div><div class="w-80P fl textLeft"> 팀플<!-- {{this.$changeText(chanDetail.nameMtext)}} --></div></td>
-          </tr>
+            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행자 </div><div class="w-80P fl textLeft"> {{this.$changeText(chanDetail.nameMtext)}} </div></td>
+          </tr> -->
           <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
             <td><div class="w-20P fl textLeft commonColor fontBold" > 공유 </div><div class="w-80P fl textLeft"> <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="카톡 공유하기" /></div></td>
@@ -77,6 +77,19 @@
 /* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
 export default {
+  /* metaInfo: {
+    // title 입력하기
+    title: '페이지 타이틀',
+    // link tag 입력하기
+    link: [{ rel: 'canonical', href: 'http://192.168.0.22:8080?chanDetail=1001245' }],
+    // meta tag 입력하기
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { vmid: 'description', name: 'description', content: 'description' }
+      // vmid ↑ 메타 태그를 고유하게 만들어준다.
+    ]
+  }, */
   mounted () {
     // this.$refs.chanImg.style.setProperty('--halfWidth', (window.innerWidth - 185) / 2 + 'px')
   },
@@ -93,7 +106,7 @@ export default {
       teamTypeText: '',
       sendLoadingYn: false,
       errorBoxType: false,
-      memberYn:false
+      memberYn: false
     }
   },
   props: {
@@ -128,7 +141,7 @@ export default {
     }
   },
   async created () {
-    console.log(this.chanDetail);
+    console.log(this.chanDetail)
     if (this.alimSubPopYn) {
       var history = this.$store.getters.hStack
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
@@ -171,13 +184,16 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      console.log(param);
+      if (this.chanDetail.userTeamInfo.memberYn) {
+        param.memberYn = false
+      }
+      console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
         param: param
       })
-      console.log(result.data.result);
-      if(result.data.result == true){
+      console.log(result.data.result)
+      if (result.data.result === true) {
         this.errorPopYn = false
         this.memberYn = true
       }
@@ -288,16 +304,18 @@ export default {
           description: '지금 구독신청하고, 다양한 정보를 공유해봐요!',
           imageUrl: 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png',
           link: {
-            mobileWebUrl: 'https://thealim.page.link/H3Ed',
-            webUrl: 'https://thealim.page.link/H3Ed'
+            mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey,
+            webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey
+            /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
+            webUrl: 'https://thealim.page.link/H3Ed' */
           }
         },
         buttons: [
           {
             title: '구독하러 가기',
             link: {
-              mobileWebUrl: 'https://thealim.page.link/H3Ed',
-              webUrl: 'https://thealim.page.link/H3Ed'
+              mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey,
+              webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey
             }
           }
         ]
