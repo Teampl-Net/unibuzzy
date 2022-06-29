@@ -20,11 +20,7 @@
           <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
         </div>
       </div>
-      <div style="width: 100%; padding: 0 20px; margin-top: 1rem;">
-        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
-          <p class="font14 fontBold" @click="memberClick" style="">{{memberText}}</p>
-        </div>
-      </div>
+
     </div>
     <div id="chanInfoSummary2" ref="chanImg2" style="">
       <span class="font20 fontBold mtop-05">{{changeText(chanItem.nameMtext)}}</span>
@@ -110,26 +106,6 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
-    memberClick () {
-      this.errorBoxText = '['+this.$changeText(this.chanDetail.value.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
-      this.errorBoxType = 'two'
-      this.errorBoxYn = true
-    },
-    async saveMember(){
-      var param = {}
-      param.followerKey = this.chanDetail.value.followerKey
-      param.teamKey = this.chanItem.teamKey
-      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.memberYn = true
-      console.log(param);
-      var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
-        param: param
-      })
-      this.errorBoxYn = false
-
-      console.log(result);
-    },
     closeDetailPop () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]

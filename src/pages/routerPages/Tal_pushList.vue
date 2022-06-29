@@ -150,7 +150,6 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll() {
-      // alert(true)
       var element = document.getElementsByClassName('creatorListContentBox')[0]
       // debugger
       var parentElement = element.parentElement

@@ -115,7 +115,6 @@ const isJsonString = (str) => {
           }
           var current = store.getters.hUpdate
           store.commit('updatePage', current + 1)
-          // alert(true)
           /* else {
             history = history.filter((element, index) => index < history.length - 1)
             store.commit('setRemovePage', removePage)

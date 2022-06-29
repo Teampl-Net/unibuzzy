@@ -1,6 +1,6 @@
 <template>
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'">
-  <gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false' />
+  <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn=false' @ok='saveMember' />
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
@@ -21,8 +21,16 @@
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
-        <div v-if="followYn === true && admYn === false" class="mtop-05"><gBtnSmall @click="changeRecvAlimYn" class="fl" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" /><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" /></div>
+        <div v-if="followYn === true && admYn === false" class="mtop-05">
+          <gBtnSmall @click="memberClick" class="fl" :btnTitle="recvAlimYn === true? '맴버신청': '맴버취소'" />
+          <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
+          <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
+
+        </div>
         <div v-else-if="followYn === false" class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
+
+
+
         <!-- <gBtnSmall @click="openPop" btnThema="light" class="fl mtop-05" style="border: 1px solid #A9AACD;" btnTitle="알림목록 바로가기" /> -->
         <table class="mtop-3" >
           <colgroup><col width="10%"><col width="90%"></colgroup>
@@ -74,7 +82,8 @@ export default {
       errorMsg: '',
       followTypeText: '',
       teamTypeText: '',
-      sendLoadingYn: false
+      sendLoadingYn: false,
+      errorBoxType: false
     }
   },
   props: {
@@ -134,6 +143,27 @@ export default {
     this.settingTeamType(this.chanDetail.teamType)
   },
   methods: {
+    memberClick () {
+      console.log(this.chanDetail);
+      this.errorMsg = '['+this.$changeText(this.chanDetail.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
+      this.errorBoxType = true
+      this.errorPopYn = true
+    },
+    async saveMember(){
+      var param = {}
+      param.followerKey = this.chanDetail.userTeamInfo.followerKey
+      param.teamKey = this.chanDetail.teamKey
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.memberYn = true
+      console.log(param);
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveFollower',
+        param: param
+      })
+      this.errorBoxYn = false
+
+      console.log(result);
+    },
     editChan () {
       // eslint-disable-next-line no-new-object
       var param = new Object()

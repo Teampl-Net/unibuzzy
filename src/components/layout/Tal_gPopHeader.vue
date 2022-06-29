@@ -40,8 +40,8 @@ export default {
       if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
         this.$emit('memberDetailClose')
       }else if(this.targetType === 'pushDetail') {
-        this.$emit('reloadParent')
-        // this.$emit('closeXPop',true)
+        // this.$emit('reloadParent')
+        this.$emit('closeXPop',true)
       }else{
         this.$emit('closeXPop', this.thisPopN)
       }

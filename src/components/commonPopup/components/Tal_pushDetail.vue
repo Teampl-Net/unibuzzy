@@ -42,13 +42,14 @@
             <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
             <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
             <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
-              <template v-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'ST'">
+
+              <template v-if="userDo.doType === 'ST'">
                 <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                 <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+              </template>
+              <template v-else-if="userDo.doType === 'LI'">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
           </div>
@@ -335,6 +336,10 @@ export default {
       background-color: #e1e1f2;
       bottom: 0;
       right: 0;
+  }
+  #dateAll{
+    /* accent-color:#6768A7; */
+    accent-color:#ccc;
   }
 
 </style>

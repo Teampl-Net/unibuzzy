@@ -33,7 +33,7 @@ import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
 import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
 
-import htmlParser from './assets/js/Tal_htmlParser'
+// import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import uploadFile from './assets/js/Tal_uploadFile'
@@ -65,7 +65,7 @@ app.component('gMemoPop', gMemoPop)
 app.component('gMemoList', gMemoList)
 app.use(webViewBridge)
 app.use(axiosFunction)
-app.use(htmlParser)
+// app.use(htmlParser)
 
 app.use(store)
 app.use(uploadFile)
@@ -79,7 +79,10 @@ axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
+// axios.defaults.baseURL = 'http://192.168.0.22:19090'
+axios.defaults.baseURL = 'http://192.168.0.27:19090'
+// axios.defaults.baseURL = 'http://localhost:19090'
+
 
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'

@@ -333,7 +333,6 @@ export default {
       this.editPopYn = true;
     },
     chanMenuClick(data){
-      alert(true)
       var params = new Object()
       params.targetType = 'boardMain'
       params.nameMtext = this.propData.value.nameMtext

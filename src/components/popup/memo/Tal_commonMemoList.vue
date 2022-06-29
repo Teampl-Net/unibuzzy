@@ -1,6 +1,13 @@
 <template>
     <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" >
+
+
+      <div class="fl" v-if="memo.parentMemoKey" style="width:20px">
+
+          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" alt="">
+      </div>
       <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" @click="memoInfo(memo)">
+
         <div style="min-height: 30px; width: 30px; float: left; border-radius: 100%; background-color: #aaa; margin-right: 10px;" ></div>
         <p class="grayBlack fl font14" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userNameMtext || memo.userDispMtext) }}</p>
         <!-- <div style="float: right; font-size: 16px; font-weight: bold;">X</div> -->
@@ -31,6 +38,7 @@
 </template>
 
 <script>
+// import a from '../../../assets/images/common/'
 /* eslint-disable */
 // eslint-disable-next-line
 export default {
@@ -47,9 +55,28 @@ export default {
 
     }
   },
+  created () {
+    this.pushMememoText()
+  },
   methods: {
     memoInfo(memo){
       console.log(memo)
+      // this.pushMememoText()
+    },
+    pushMememoText() {
+      for (let i = 0; i < this.memoList.length; i++) {
+        // let value = {}
+        if(this.memoList[i].parentMemoKey){
+          for (let j = 0; j < this.memoList.length; j++) {
+            if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
+              this.memoList[i].meMemoText = this.$changeText(this.memoList[j].userDispMtext) + ' : ' + this.memoList[j].bodyMinStr
+
+            }
+          }
+
+
+        }
+      }
     },
     memoDeleteClick(data, index){
       var param = {}
@@ -60,8 +87,6 @@ export default {
     editMemoClick(data, index){
       this.editIndex = index
       this.inputText = data.bodyFullStr
-      document.getElementById('memo'+index).innerText = 'ss'
-      // idsss.value = '바보'
     },
     cancelEdit(){
       this.editIndex = ''
