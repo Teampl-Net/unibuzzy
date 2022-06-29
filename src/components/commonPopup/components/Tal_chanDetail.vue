@@ -168,9 +168,14 @@ export default {
   },
   methods: {
     memberClick () {
-      this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
-      this.errorBoxType = false
-      this.errorPopYn = true
+      if (this.memberYn) {
+        this.memberYn = false
+      } else {
+        this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
+        this.errorBoxType = false
+        this.errorPopYn = true
+        this.memberYn = true
+      }
     },
     // memberClick () {
     //   console.log(this.chanDetail)

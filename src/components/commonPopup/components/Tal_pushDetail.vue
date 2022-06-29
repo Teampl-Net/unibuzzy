@@ -3,7 +3,7 @@
     <!-- <manageStickerPop :targetKey="this.alimDetail.contentsKey" :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
 
-      <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+      <div class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem"><img alt="채널 프로필이미지" style="width:80%" :src="alim.logoPathMtext"></div>
           <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
@@ -13,18 +13,18 @@
 
           <!-- </div> -->
           <div class="pushDetailHeaderTextArea">
-        <label for="dateAll" class="font12 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:12px;height:12px; margin-top:2px; " id="dateAll" class="fr mright-02" v-model="dateCheck">
-         <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
-          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
-            <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
+            <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck">
+            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
+              <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+                <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
+                <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
 
-            <p class="font12 fr mleft-05 lightGray">{{dateText}}</p>
+                <p class="font12 fr mleft-05 lightGray">{{dateText}}</p>
 
-            <p class="fr" v-if="alim.rUserCount === 1">한명에게</p>
-            <p class="fr" v-else-if="alim.rUserCount > 1">여러명에게</p>
-            <p v-else class="fr">전체에게</p>
-            <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
+                <p class="fr" v-if="alim.rUserCount === 1">한명에게</p>
+                <p class="fr" v-else-if="alim.rUserCount > 1">여러명에게</p>
+                <p v-else class="fr">전체에게</p>
+                <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
 
           </div>
         </div>
@@ -59,6 +59,7 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
+        <div class="pushDetailPaperEffect"></div>
       </div>
     </div>
   </div>
@@ -314,7 +315,7 @@ export default {
 
 .pushMbox{margin-bottom: 20px;}
 
-  .content {
+  .pushDetailPaper {
       position: relative;
       width: 100%;
       margin: auto;
@@ -329,7 +330,7 @@ export default {
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
   }
 
-  .content ::after {
+  .pushDetailPaperEffect {
       content: '';
       position: absolute;
       display: block;
