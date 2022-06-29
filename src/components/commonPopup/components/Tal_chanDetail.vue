@@ -279,16 +279,16 @@ export default {
           description: '지금 구독신청하고, 다양한 정보를 공유해봐요!',
           imageUrl: 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png',
           link: {
-            mobileWebUrl: 'http://192.168.0.22:8080',
-            webUrl: 'http://192.168.0.22:8080'
+            mobileWebUrl: 'https://thealim.page.link/H3Ed',
+            webUrl: 'https://thealim.page.link/H3Ed'
           }
         },
         buttons: [
           {
             title: '구독하러 가기',
             link: {
-              mobileWebUrl: 'http://192.168.0.22:8080',
-              webUrl: 'http://192.168.0.22:8080'
+              mobileWebUrl: 'https://thealim.page.link/H3Ed',
+              webUrl: 'https://thealim.page.link/H3Ed'
             }
           }
         ]
