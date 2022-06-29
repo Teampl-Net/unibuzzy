@@ -37,6 +37,9 @@
         </div>
       </div>
     </template>
+    <div class="w-100P fl mtop-3" style="position: relative;">
+      <gLoadingS ref="sLoadingBoard" class="fl"/>
+    </div>
     <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
 
   </div>
@@ -65,6 +68,9 @@ export default {
   computed: {
   },
   watch: {
+    commonBoardListData () {
+      this.$refs.sLoadingBoard.hide()
+    }
   },
   updated () {
     this.boardListWrap.scrollTop = this.currentScroll
@@ -146,6 +152,7 @@ export default {
       }
     }, */
     async loadMore () {
+      this.$refs.sLoadingBoard.hide()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonBoardListData,

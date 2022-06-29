@@ -43,9 +43,14 @@
               <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
               <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
             <!-- </div> -->
+
+
           <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
           </div>
       </template>
+      <div class="w-100P fl mtop-3" style="position: relative;">
+            <gLoadingS ref="sLoadingPush" class="fl"/>
+      </div>
       <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
   <!-- </div> -->
 </template>
@@ -60,7 +65,9 @@ export default {
   watch: {
     commonListData () {
       this.contentsList = this.commonListData
-    }
+      this.$refs.sLoadingPush.hide()
+    },
+
   },
   // updated () {
   //   this.chanWrap.scrollTop = this.currentScroll
@@ -184,6 +191,7 @@ export default {
       }
     },
     async loadMore () {
+      this.$refs.sLoadingPush.show()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

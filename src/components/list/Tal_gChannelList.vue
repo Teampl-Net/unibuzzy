@@ -1,5 +1,5 @@
 <template>
-    <div class="chanRow w-100P" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
+    <div class="chanRow w-100P fl" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
         <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;"></div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
@@ -17,7 +17,9 @@
         </div>
       </div>
     </div>
-
+    <div class="w-100P fl mtop-3" style="position: relative;">
+      <gLoadingS ref="sLoadingChan" class="fl"/>
+    </div>
     <myObserver @triggerIntersected="loadMore" class="fl wich" />
 </template>
 
@@ -37,7 +39,10 @@ export default {
   props: {
     chanList: {}
   },
-  updated () {
+  watch:{
+    chanList () {
+      this.$refs.sLoadingChan.hide()
+    }
   },
   methods: {
     resizeText (text) {
@@ -50,6 +55,7 @@ export default {
       this.$emit('goDetail', chanName)
     },
     async loadMore () {
+      this.$refs.sLoadingChan.show()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

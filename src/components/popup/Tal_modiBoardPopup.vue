@@ -249,11 +249,9 @@ export default {
   // emits: ['openPop', 'goPage'],
   methods: {
     openPop(param){
-      alert(true)
       console.log('param');
       console.log(param);
       this.$emit('openPop',param)
-      alert(false)
     },
     changePermission(id,type){
       switch (id) {

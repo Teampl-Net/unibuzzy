@@ -16,6 +16,11 @@
         </div>
       </div>
     </div>
+
+    <div class="w-100P fl mtop-3" style="position: relative;">
+      <gLoadingS ref="sLoadingChannel" class="fl"/>
+    </div>
+
     <myObserver @triggerIntersected="loadMore" class="fl" />
 </template>
 
@@ -28,7 +33,10 @@ export default {
   props: {
     chanList: {}
   },
-  updated () {
+  watch:{
+    chanList () {
+      this.$refs.sLoadingChannel.hide()
+    }
   },
   methods: {
     resizeText (text) {
@@ -41,6 +49,7 @@ export default {
       this.$emit('goDetail', chanName)
     },
     async loadMore () {
+      this.$refs.sLoadingChannel.show()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

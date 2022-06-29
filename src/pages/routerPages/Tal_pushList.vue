@@ -22,9 +22,8 @@
       </div> -->
         <commonList v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
-        <div class="text-center">
-        </div>
-        <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" />
+
+        <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
@@ -204,12 +203,12 @@ export default {
       }
     },
     async loadMore(pageSize) {
-      this.preloadingYn = true
+      // this.preloadingYn = true
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
         if (resultList) {
-          this.preloadingYn = false
+          // this.preloadingYn = false
         }
         const newArr = [
           ...this.commonListData,
@@ -372,7 +371,7 @@ export default {
       scrollDirection: null,
       box: null,
       scrolledYn: false,
-      preloadingYn: false,
+      // preloadingYn: false,
       offsetInt: 0,
       endListYn: false,
       scrollPosition: 0,

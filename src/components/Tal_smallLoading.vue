@@ -1,33 +1,34 @@
 <template>
-    <div class="layerPopup">
+    <!-- <div class="layerPopup"> -->
         <div class="spinner"></div>
-    </div>
+    <!-- </div> -->
 </template>
+<script>
+export default {
+    methods: {
+        show() {
+            document.getElementsByClassName('spinner')[0].style.display='block';
+        },
+        hide() {
+            document.getElementsByClassName('spinner')[0].style.display='none';
+        }
+
+    }
+}
+</script>
 
 <style>
-.layerPopup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    margin: -30px 0 0 -30px;
-}
 .spinner {
     position: absolute;
-    top: 50%;
+    /* top: 50%; */
+    top:100%;
     left: 50%;
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #6768A7;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spinner 2s linear infinite;
+    width: 40px;
+    height: 40px;
+    animation: spinner 1s linear infinite;
 }
 @keyframes spinner {
     0% {
