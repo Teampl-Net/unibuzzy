@@ -33,19 +33,18 @@ export default {
     bgblack: {},
     managerBtn: {},
     memberDetailOpen: {},
-    targetType:{}
+    targetType: {}
   },
   methods: {
     closeXPop () {
       if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
         this.$emit('memberDetailClose')
-      }else if(this.targetType === 'pushDetail') {
+      } else if (this.targetType === 'pushDetail') {
         // this.$emit('reloadParent')
         this.$emit('closeXPop',true)
-      }else{
+      } else {
         this.$emit('closeXPop', this.thisPopN)
       }
-
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {
@@ -60,8 +59,6 @@ export default {
   created () {
     console.log('!!!!!')
     console.log(this.targetType)
-
-
   },
   watch: {
     bgblack () {

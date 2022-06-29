@@ -267,6 +267,7 @@ export default {
       }
     },
     async sendMsg () {
+      var paramImgList = []
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -275,6 +276,16 @@ export default {
       var targetMsgDiv = null
       if(this.viewTab === 'complex') {
         param.bodyHtmlYn = true
+        
+        /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
+        /* var imgSrc = null
+        var imgList = document.querySelectorAll('#msgBox img')
+        for (var img=0; img < imgList.length; img ++) {
+          imgSrc = imgList[img].src
+          paramImgList.push(imgSrc)
+          imgList[img].src = 'imgTagSrc' + img
+        }
+        param.imgList = imgList */
         var formList = document.querySelectorAll('#msgBox .formCard')
         if (formList) {
           for (var f = 0; f < formList.length; f++) {

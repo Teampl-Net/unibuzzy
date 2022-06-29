@@ -15,7 +15,14 @@
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
-        <!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
+        <div @click="sendkakao" style="width: 100%;  position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
+          <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+            <p class="font14 fontBold" style="">공유하기 ></p>
+          </div>
+        </div>
+
+        <!-- <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="공유하기" />
+         --><!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
 
         <div style="width: 185px; height: 185px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
@@ -29,8 +36,6 @@
         </div>
         <div v-else-if="followYn === false" class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
 
-
-
         <!-- <gBtnSmall @click="openPop" btnThema="light" class="fl mtop-05" style="border: 1px solid #A9AACD;" btnTitle="알림목록 바로가기" /> -->
         <table class="mtop-3" >
           <colgroup><col width="10%"><col width="90%"></colgroup>
@@ -43,12 +48,12 @@
             <td><div class="w-20P fl textLeft commonColor fontBold" > 발행일 </div><div class="w-80P fl textLeft"> {{this.$changeDateFormat(chanDetail.creDate)}}</div></td>
           </tr>
           <tr>
-            <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행자 </div><div class="w-80P fl textLeft"> {{this.$changeText(chanDetail.nameMtext)}}</div></td>
-          </tr>
-          <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"></td>
             <td><div class="w-20P fl textLeft commonColor fontBold" > 산업군 </div><div class="w-80P fl textLeft"> {{teamTypeText}}<!-- <span class="fl mr-04">{{chanDetail.followerCount}}명</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="공유하기" /> --></div></td>
+          </tr>
+          <tr style="border: none;">
+            <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
+            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행자 </div><div class="w-80P fl textLeft"> 팀플<!-- {{this.$changeText(chanDetail.nameMtext)}} --></div></td>
           </tr>
           <!-- <tr>
             <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div>
@@ -144,25 +149,25 @@ export default {
   },
   methods: {
     memberClick () {
-      console.log(this.chanDetail);
-      this.errorMsg = '['+this.$changeText(this.chanDetail.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
+      console.log(this.chanDetail)
+      this.errorMsg = '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
       this.errorBoxType = true
       this.errorPopYn = true
     },
-    async saveMember(){
+    async saveMember () {
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      console.log(param);
+      console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
         param: param
       })
       this.errorBoxYn = false
 
-      console.log(result);
+      console.log(result)
     },
     editChan () {
       // eslint-disable-next-line no-new-object
@@ -252,18 +257,47 @@ export default {
         this.recvAlimYn = true
       }
       this.$changeRecvAlimYn(param)
+    },
+    sendkakao: function () {
+      try {
+        // eslint-disable-next-line no-undef
+        if (Kakao) {
+          // eslint-disable-next-line no-undef
+          Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
+        };
+      } catch (e) {};
+
+      // eslint-disable-next-line no-undef
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '"' + this.$changeText(this.chanDetail.nameMtext) + '" 채널에 함께해요~!',
+          description: '지금 구독신청하고, 다양한 정보를 공유해봐요!',
+          imageUrl: 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png',
+          link: {
+            mobileWebUrl: 'http://192.168.0.22:8080',
+            webUrl: 'http://192.168.0.22:8080'
+          }
+        },
+        buttons: [
+          {
+            title: '구독하러 가기',
+            link: {
+              mobileWebUrl: 'http://192.168.0.22:8080',
+              webUrl: 'http://192.168.0.22:8080'
+            }
+          }
+        ]
+      })
     }
-    /* editChannelClick () {
-      this.setEditValue()
-      if (this.editYn === true) {
-        this.editYn = false
-        this.editBtnTitle = '채널수정'
-      } else {
-        this.editYn = true
-        this.editBtnTitle = '수정완료'
-      }
-    } */
   }
+  /* head () {
+    return {
+      script: [
+        { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
+      ]
+    }
+  } */
 }
 </script>
 

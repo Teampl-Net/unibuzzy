@@ -1,7 +1,6 @@
 <template>
     <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" >
 
-
       <div class="fl" v-if="memo.parentMemoKey" style="width:20px">
 
           <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" alt="">

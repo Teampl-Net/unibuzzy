@@ -40,9 +40,16 @@ import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
+/* import Meta from 'vue-meta' */
+
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
+/* app.use(Meta, {
+  attribute: 'data-vue-meta'
+  // vmid를 사용하기 위한 옵션
+}) */
+
 app.use(commonjs)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
@@ -82,7 +89,6 @@ axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
 axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://localhost:19090'
-
 
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'

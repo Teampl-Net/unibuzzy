@@ -76,12 +76,12 @@ export default {
       userDoStickerList: [],
       parentContentsKey: null,
       // dateClickYn:false
-      dateCheck:true,
-      dateText:'11'
+      dateCheck: true,
+      dateText: '11'
 
     }
   },
-  watch:{
+  watch: {
     dateCheck () {
       this.datechange()
     }
@@ -94,7 +94,7 @@ export default {
     /* manageStickerPop */
   },
   async created () {
-    console.log(this.alimDetail);
+    console.log(this.alimDetail)
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
@@ -132,15 +132,15 @@ export default {
     }
   },
   methods: {
-//  dateCheck () {
-//       if(dateCheck){
-//         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, true)
-//       }else{
-//         alert(false)
-//         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, false)
-//       }
-//     }
-    datechange(){
+    //  dateCheck () {
+    //       if(dateCheck){
+    //         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, true)
+    //       }else{
+    //         alert(false)
+    //         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, false)
+    //       }
+    //     }
+    datechange () {
       this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, this.dateCheck)
     },
     setParentContents (data) {

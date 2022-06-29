@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       // openAddManagerPopYn:false
-      selectBookListShowYn : false,
+      selectBookListShowYn: false,
       receiverTitle: '매니저 관리',
       list:[]
     }
@@ -58,6 +58,7 @@ export default {
       }
     },
     async openAddManagerPop () {
+      // eslint-disable-next-line no-new-object
       var params = new Object()
       params.teamKey = this.propData.currentTeamKey
       params.memberYn = true
