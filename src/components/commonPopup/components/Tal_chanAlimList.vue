@@ -137,6 +137,9 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       this.chanItem = resultList.data.content[0]
+      console.log("#######################################");
+      console.log(this.chanItem );
+
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
           this.followYn = true

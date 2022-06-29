@@ -29,7 +29,7 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05">
-          <gBtnSmall @click="memberClick" class="fl" :btnTitle="recvAlimYn === true? '맴버신청': '맴버취소'" />
+          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '맴버취소': '맴버신청'" />
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
 
@@ -92,7 +92,8 @@ export default {
       followTypeText: '',
       teamTypeText: '',
       sendLoadingYn: false,
-      errorBoxType: false
+      errorBoxType: false,
+      memberYn:false
     }
   },
   props: {
@@ -127,6 +128,7 @@ export default {
     }
   },
   async created () {
+    console.log(this.chanDetail);
     if (this.alimSubPopYn) {
       var history = this.$store.getters.hStack
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
@@ -158,20 +160,22 @@ export default {
       this.errorBoxType = true
       this.errorPopYn = true
     },
-    async saveMember () {
+    async saveMember(){
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      console.log(param)
+      console.log(param);
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
         param: param
       })
-      this.errorBoxYn = false
-
-      console.log(result)
+      console.log(result.data.result);
+      if(result.data.result == true){
+        this.errorPopYn = false
+        this.memberYn = true
+      }
     },
     editChan () {
       // eslint-disable-next-line no-new-object
