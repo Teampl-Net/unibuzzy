@@ -11,12 +11,14 @@
                 <template v-for="(data, index) in memberList" :key='data'>
                     <div v-if="(propData.managerOpenYn && data.managerKey) || propData.managerListOpen"  class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
                     <!-- <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" > -->
-                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" />
+
+                        <img v-if="propData.value.creUserKey === data.userKey" src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" class="fl">
+                        <img src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" class="fl"/>
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
-                        <div v-if="(editYn || propData.managerOpenYn) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                        <div v-if="(editYn || propData.managerOpenYn ) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
                             <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)"> -->
@@ -25,29 +27,32 @@
                                 <!-- <img style="width: 30px;" src="../../../assets/images/push/plusIcon.svg" alt=""> -->
                             <!-- </div> -->
                         </div>
-
                     </div>
-                    <div v-else class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
+                    <div v-else-if="!propData.managerOpenYn" class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : selectIndex.indexOf(index) !== -1 }" style="width:100%; height:60px; position: relative;" >
+                    <!-- <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true }" style="width:100%; height:60px; margin-bottom:10px; position: relative;" > -->
 
-                        <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" />
+                        <img v-if="propData.value.creUserKey === data.userKey" src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" class="fl">
+                        <img src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" class="fl"/>
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
-                        <div v-if="(editYn || propData.managerOpenYn) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
+                        <div v-if="(editYn || propData.managerOpenYn ) && selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                                <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
-
+                            <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)"> -->
                             <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1" @click="addSelectedList(data,index)" >
                             <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
-
+                                <!-- <img style="width: 30px;" src="../../../assets/images/push/plusIcon.svg" alt=""> -->
+                            <!-- </div> -->
                         </div>
-
                     </div>
                 </template>
             </transition-group>
         </draggable>
     </div>
+
+
     <!-- <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' /> -->
 </div>
 
@@ -89,7 +94,9 @@ export default {
         this.propData.managerOpenYn = true
     },
     async created(){
-
+        console.log('this.propData');
+        console.log(this.propData);
+        if(!this.propData.value)this.propData.value={}
         if(this.propData.managerOpenYn === null || this.propData.managerOpenYn === undefined || this.propData.managerOpenYn === ''){
 
             await this.getBookMemberList()
@@ -107,11 +114,7 @@ export default {
                     if(this.memberList[i].managerKey){
                         this.selectIndex.push(i)
                     }
-
-
-
                 }
-
             }else{
                 await this.getFollowerList()
             }
@@ -166,7 +169,7 @@ export default {
         },
         async getFollowerList () {
             var paramMap = new Map()
-            console.log(this.propData);
+
             paramMap.set('teamKey', this.propData.currentTeamKey)
             // paramMap.set('followerType', 'M')
             var result = await this.$commonAxiosFunction({
@@ -194,31 +197,35 @@ export default {
             }
         },
         async deleteMemberClick(data, index){
-            if(this.propData.managerOpenYn) {
-                var param = {}
-                console.log(data)
-                param.userKey = data.userKey
-                param.teamKey = data.teamKey
-                var result = await this.$commonAxiosFunction({
-                    url: '/tp.deleteManager',
-                    param: param
-                })
-            } else {
-                var param = {}
-                console.log(data)
-                param.mccKey = data.mccKey
-                param.jobkindId = data.jobkindId
-                var result = await this.$commonAxiosFunction({
-                    url: '/tp.deleteMCabContents',
-                    param: param
-                })
-            }
+            if(this.propData.value.creUserKey !== data.userKey){
+                if(this.propData.managerOpenYn) {
+                    var param = {}
+                    console.log(data)
+                    param.userKey = data.userKey
+                    param.teamKey = data.teamKey
+                    var result = await this.$commonAxiosFunction({
+                        url: '/tp.deleteManager',
+                        param: param
+                    })
+                } else {
+                    var param = {}
+                    console.log(data)
+                    param.mccKey = data.mccKey
+                    param.jobkindId = data.jobkindId
+                    var result = await this.$commonAxiosFunction({
+                        url: '/tp.deleteMCabContents',
+                        param: param
+                    })
+                }
 
 
-            console.log(result)
-            if(result.data === 'true' || result.data === true){
-                this.memberList = []
-                this.getBookMemberList()
+                console.log(result)
+                if(result.data === 'true' || result.data === true){
+                    this.memberList = []
+                    this.getBookMemberList()
+                }
+            }else{
+
             }
             // param.cabinetKey = data.cabinetKey
 

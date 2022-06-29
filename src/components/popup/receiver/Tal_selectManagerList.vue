@@ -2,7 +2,7 @@
     <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.$changeText(this.propData.teamNameMtext)" /> -->
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-        <memberList ref="managerListCompo" :managerOpenYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
+        <memberList ref="managerListCompo" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
         <!-- <memberList :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/> -->
         </div>
         <!-- <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" /> -->
@@ -29,6 +29,8 @@ export default {
   },
   created () {
     // alert(JSON.stringify(this.propData.teamNameMtext))
+    console.log("#!@#!@#");
+    console.log(this.propData);
   },
   computed: {
   },
@@ -71,6 +73,7 @@ export default {
       this.list = result.data.content
       // this.list = []
       console.log(this.list);
+      this.propData.managerOpenYn=true
 
       this.selectBookListShowYn = true
 

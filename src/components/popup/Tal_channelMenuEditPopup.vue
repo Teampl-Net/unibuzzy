@@ -35,7 +35,7 @@
     </div> -->
 
 </div>
-  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' />
+  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
 
 </template>
 
@@ -110,6 +110,11 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    openPop(param){
+      console.log('param');
+      console.log(param);
+      this.$emit('openPop',param)
+    },
     closeNrefresh(){
       this.modiBoardPopShowYn =false
       this.getTeamMenuList()

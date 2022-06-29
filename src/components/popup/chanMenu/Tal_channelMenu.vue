@@ -94,6 +94,7 @@ export default {
     }
   },
   async created() {
+    console.log('propData');
     this.getFollowerList()
     console.log(this.addChanList);
     console.log(this.propData)
@@ -204,6 +205,7 @@ export default {
     },
     adminManagingClick(){
       var param = new Object()
+      param.value = this.propData.value
       param.targetType = 'editManagerList'
       var teamName
       if(this.propData) {
