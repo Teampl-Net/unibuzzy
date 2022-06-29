@@ -4,6 +4,9 @@
         <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
+        <!-- <gPreLoader v-if="cabinetList.length = 0" style="position: fixed; left: calc(50% - 4rem); top: calc(50% - 150px);" /> -->
+        <!-- <loadingCompo v-show="loadingYn" /> -->
+        <div v-show="loadingYn" style="width: 100%; height: 100%; background-color: white;"></div>
         <div v-if="cabinetList.length > 0" style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
             <!-- <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" > -->
             <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
@@ -69,6 +72,7 @@
 </template>
 
 <script>
+// import loadingCompo from '../../../components/Tal_loading.vue'
 import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 /* eslint-disable */
@@ -82,7 +86,8 @@ export default {
         selectPopYn: Boolean
     },
     data(){
-        return{
+        return {
+            loadingYn: true,
             propObject: {},
             cabinetList: [],
             editTeamName:'',
@@ -97,8 +102,6 @@ export default {
         }
     },
     async created () {
-        // console.log("#####")
-        // console.log(this.propData)
         this.propObject = this.propData
         // alert(JSON.stringify(this.propObject.teamNameMtext))
         if(this.selectPopYn){
@@ -109,9 +112,8 @@ export default {
         }
         await this.getTeamCabList()
         this.changeSelectedList()
-
+        this.loadingYn = false
         console.log(this.propData);
-
         // console.log(this.cabinetList)
         // this.cabinetList = this.listData
     },
@@ -120,7 +122,6 @@ export default {
     },
     watch: {
         parentSelectList: function () {
-
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
                     for (var i = 0; i < this.cabinetList.length; i ++) {
@@ -137,6 +138,7 @@ export default {
         }
     },
     components: {
+        // loadingCompo,
         draggable: VueDraggableNext,
         pageTopCompo
     },
@@ -229,7 +231,6 @@ export default {
         },
         //유민참고
         addSelectedList(data, index) {
-
             if(this.selectIndex.indexOf(index) === -1){
                 this.cabinetList[index].selectedYn = true
                 console.log(data)
@@ -241,8 +242,7 @@ export default {
                 alert('중복선택입니다.')
             }
         },
-        async addNewBook(){
-
+        async addNewBook() {
             var param = new Object()
             param.creMenuYn = true
             var cabinet = new Object()
@@ -256,15 +256,14 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-                this.cabinetList = []
                 this.getTeamCabList()
             }
             // this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-            // debugger
+            // // debugger
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-                // document.getElementsByClassName('foo')[0].classList.remove('foo')
+            //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
             }, 800);
         },
         async updateCabinet(data, index){
@@ -289,7 +288,7 @@ export default {
                 this.editIndex = null
 
         },
-        async changePosTeamMenu () {
+        async changePosTeamMenu() {
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()
@@ -327,8 +326,9 @@ export default {
             // console.log(result)
             // debugger
             // getTeamCabList ()
-            this.cabinetList = []
+            // this.cabinetList = []
             this.getTeamCabList()
+            index = this.cabinetList.length - 1
         }
     }
 
@@ -359,9 +359,9 @@ export default {
     margin-left: 1rem;
 }
 
-/* .foo {
+.foo {
    transition : background-color 0.5s ease-in;
-} */
+}
 
 .commonBookCard {
     /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */

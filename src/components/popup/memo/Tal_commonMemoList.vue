@@ -105,16 +105,35 @@ export default {
     scrollMove (key) {
       var location = document.getElementById(key).offsetTop;
       this.$emit('scrollMove',location)
-      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+      // document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.8)'
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = ''
+      // }, 800);
+      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
       setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.3)'
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.55)'
+      }, 100)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       }, 200)
       setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.15)'
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.45)'
+      }, 300)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.4)'
       }, 400)
       setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = ''
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.35)'
       }, 500)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.2)'
+      }, 600)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.1)'
+      }, 700)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = ''
+      }, 800)
 
       // window.location.href = ('#'+key)
       // document.location.href = ('#'+key)

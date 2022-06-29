@@ -22,17 +22,16 @@
         </div> -->
 
         <!-- <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="공유하기" />
-         --><!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
+        --><!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
 
         <div style="width: 185px; height: 185px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05">
-          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '맴버취소': '맴버신청'" />
+          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'" />
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
-
         </div>
         <div v-else-if="followYn === false" class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
 
@@ -156,11 +155,16 @@ export default {
   },
   methods: {
     memberClick () {
-      console.log(this.chanDetail)
-      this.errorMsg = '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널의 맴버로 신청하시겠습니까?'
-      this.errorBoxType = true
+      this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
+      this.errorBoxType = false
       this.errorPopYn = true
     },
+    // memberClick () {
+    //   console.log(this.chanDetail)
+    //   this.errorMsg = '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널의 멤버로 신청하시겠습니까?'
+    //   this.errorBoxType = true
+    //   this.errorPopYn = true
+    // },
     async saveMember(){
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey

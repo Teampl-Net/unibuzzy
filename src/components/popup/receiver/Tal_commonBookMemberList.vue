@@ -51,8 +51,6 @@
             </transition-group>
         </draggable>
     </div>
-
-
     <!-- <addTeamMember v-if="addMemberPopYn" :newYn="newYn" @closePop='addMemberPopYn = false' :setEditMember='editMember' @updateMember='updateData' /> -->
 </div>
 
