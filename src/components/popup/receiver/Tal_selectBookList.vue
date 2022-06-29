@@ -83,7 +83,7 @@ export default {
       detailOpenYn: false,
 
       titleText: '팀플',
-      receiverTitle: '주소록 관리',
+      receiverTitle: '주소록 선택',
       selectReceivers: [],
       teamLength: 100,
       addPopOpen: '',
@@ -183,9 +183,9 @@ export default {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
-
-        this.$emit('closeXPop')
+        // this.$emit('closeXPop')
       }
+      this.$emit('closeXPop')
     },
     openMCabUserList (data) {
       if (!this.teamEditYn) {

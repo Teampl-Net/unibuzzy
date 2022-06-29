@@ -1,8 +1,8 @@
 <template>
     <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" >
 
-      <div class="fl" v-if="memo.parentMemoKey" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: rgba(186, 187, 215, 0.5);">
-          <div class="fl w-100P" @click="scrollMove(memo.parentMemoKey)">
+      <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: rgba(186, 187, 215, 0.5);" >
+          <div class="fl w-100P" >
             <!-- <a :href='"#memo"+memo.parentMemoKey'> -->
             <p class="fl commonBlack mleft-1 mtop-05" >{{memo.meMemoUserDispMtext}}</p>
             <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p>

@@ -42,7 +42,7 @@ export default {
       // } else if (this.targetType === 'pushDetail') {
         // this.$emit('reloadParent')
         // this.$emit('closeXPop')
-      }else {
+      } else {
         this.$emit('closeXPop', this.thisPopN)
       }
     },

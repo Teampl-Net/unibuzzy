@@ -24,7 +24,7 @@
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
         <div class="text-center">
         </div>
-        <preLoaderCompo v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" />
+        <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" />
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
@@ -34,13 +34,12 @@
 <script>
 /* eslint-disable */
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
-import preLoaderCompo from '../../components/unit/Tal_preloader.vue'
+
 import findContentsList from '../../components/popup/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   name: 'pushList',
   components: {
-    preLoaderCompo,
     findContentsList
     // searchResult
   },

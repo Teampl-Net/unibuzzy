@@ -40,6 +40,9 @@ import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
+import gPreLoader from './components/unit/Tal_preloader.vue'
+import gLoadingS from './components/Tal_smallLoading.vue'
+
 /* import Meta from 'vue-meta' */
 
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
@@ -70,6 +73,10 @@ app.component('myObserver', myObserver)
 app.component('gWhiteSelect', gWhiteSelect)
 app.component('gMemoPop', gMemoPop)
 app.component('gMemoList', gMemoList)
+app.component('gPreLoader', gPreLoader)
+app.component('gLoadingS', gLoadingS)
+
+
 app.use(webViewBridge)
 app.use(axiosFunction)
 // app.use(htmlParser)

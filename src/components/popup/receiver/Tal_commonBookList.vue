@@ -11,7 +11,19 @@
                     <template  v-for="(data, index) in cabinetList" :key='index'>
                         <!-- <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" > -->
                         <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
-                            <div @click="clickList(data,index)" style="width: calc(100% - 100px); height: 100%;" class="fl">
+
+                            <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
+                                <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
+                                    <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
+                                </div>
+                                <input  :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+                                <div class="fl"  style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
+                                    <p class="fl" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
+                                    <p class="fl" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
+                                </div>
+                            </div>
+
+                            <div v-else @click="clickList(data,index)" style="width: calc(100% - 100px); height: 100%;" class="fl" >
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <!-- <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
@@ -21,18 +33,12 @@
                                 <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                                     <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
                                 </div>
-
-                                <input v-if="editIndex === index" :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-else class="fl font16 commonBlack  receiverTeamText" >{{data.cabinetNameMtext}}</p>
+                                <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText" >{{data.cabinetNameMtext}}</p>
 
                                 <!-- <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data,index)" > -->
-                                <div class="fl"  style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-                                    <p class="fl" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
-                                    <p class="fl" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
-                                </div>
-
                             </div>
+
                             <!-- <div v-if="editYn" @click="deleteCabinet(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
                             </div> -->
@@ -144,8 +150,8 @@ export default {
     methods:{
         changedText(data, index){
             // this.editYn = true
-            this.editIndex = index
             this.cabinetInputText = data.cabinetNameMtext
+            this.editIndex = index
         },
 
         changeSelectedList () {
@@ -193,9 +199,10 @@ export default {
             // debugger
         },
         clickList(data, index){
-            if(this.editIndex !== index){
+            if(this.editIndex !== index){ // if(this.editIndex === null){
                 this.$emit('openMCabUserList',data)
             }
+
         },
         async deleteCabinet(data,index){
             // console.log(data)
