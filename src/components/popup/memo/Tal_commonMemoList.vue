@@ -1,14 +1,14 @@
 <template>
     <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" >
 
-      <div class="fl" v-if="memo.parentMemoKey" style="width:100%">
+      <div class="fl" v-if="memo.parentMemoKey" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: rgba(186, 187, 215, 0.5);">
           <div class="fl w-100P" @click="scrollMove(memo.parentMemoKey)">
             <!-- <a :href='"#memo"+memo.parentMemoKey'> -->
-            <p class="fl commonBlack " >{{memo.meMemoUserDispMtext}}</p>
-            <p class="fl commonColor mleft-05" >{{memo.meMemoBodyMinStr}}</p>
+            <p class="fl commonBlack mleft-1 mtop-05" >{{memo.meMemoUserDispMtext}}</p>
+            <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p>
             <!-- </a> -->
           </div>
-          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-05 mbottom-05" alt="">
+          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt="">
       </div>
       <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" @click="memoInfo(memo)">
 
@@ -44,6 +44,9 @@
 <script>
 // import a from '../../../assets/images/common/'
 /* eslint-disable */
+
+import { looseIndexOf } from '@vue/shared'
+
 // eslint-disable-next-line
 export default {
   props: {
@@ -99,10 +102,19 @@ export default {
     memoMemoClick (memo) {
       this.$emit('mememo',memo)
     },
-    scrollMove(key){
+    scrollMove (key) {
       var location = document.getElementById(key).offsetTop;
-
       this.$emit('scrollMove',location)
+      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.3)'
+      }, 200)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.15)'
+      }, 400)
+      setTimeout(() => {
+        document.getElementById(key).style.backgroundColor = ''
+      }, 500)
 
       // window.location.href = ('#'+key)
       // document.location.href = ('#'+key)

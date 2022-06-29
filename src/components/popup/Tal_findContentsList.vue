@@ -1,6 +1,6 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="findPopupWrap pagePaddingWrap" >
+  <div class="findPopupWrap pagePaddingWrap" style="padding: 0 0.75rem !important;">
     <popHeader headerTitle="검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div class="findPopMainSearchArea">
@@ -144,7 +144,7 @@ export default {
 </script>
 
 <style scoped>
-.findPopupWrap{position: fixed; width: 100vw; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: fixed; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.3rem; right: 8px;}
 .searchInput{border: none; margin-bottom: 5px!important; font-size: 15px; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}

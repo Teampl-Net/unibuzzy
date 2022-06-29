@@ -66,14 +66,14 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      detailShowYn: true,
-      adminYn: false,
+      // detailShowYn: true,
+      // adminYn: false,
       memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
-      // adminYn: true,
-      // detailShowYn: false,
+      adminYn: true,
+      detailShowYn: false,
     }
   },
   props: {

@@ -51,7 +51,7 @@
 
       </div>
     </div>
-    <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0; " @click="this.memoShowYn = false"></div>
+    <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;" @click="this.memoShowYn = false"></div>
     <transition name="showMemoPop">
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" />
     </transition>

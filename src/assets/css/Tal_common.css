@@ -65,7 +65,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .commonBlack{color: #303030;}
 .grayBlack{color: #505050;}
 .lightGray{color: #A1A1A1;}
-.lightPurple{color: #6768a712;}
+.lightPurple{color: rgba(186, 187, 215, 0.5);}
 
 .w-10P{width: 10%;}
 .w-20P{width: 20%;}

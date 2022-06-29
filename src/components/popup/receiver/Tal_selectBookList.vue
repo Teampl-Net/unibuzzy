@@ -26,8 +26,8 @@
 </div>
 
 </template>
-
 <script>
+/* eslint-disable */
 import bookList from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
