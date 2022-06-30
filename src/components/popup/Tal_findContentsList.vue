@@ -1,6 +1,6 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="findPopupWrap pagePaddingWrap" style="padding: 0 0.75rem !important;">
+  <div class="pagePaddingWrap findPopupWrap" style="padding-top: 60px;">
     <popHeader headerTitle="검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div class="findPopMainSearchArea">
