@@ -289,7 +289,5 @@ export default {
     Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = methods.checkSameName
     Vue.config.globalProperties.$titleToBody = methods.titleToBody
-
-
   }
 }

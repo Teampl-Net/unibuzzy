@@ -46,8 +46,6 @@
       </div>
       <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
   <!-- </div> -->
-
-
 </template>
 <script>
 

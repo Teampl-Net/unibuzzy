@@ -73,7 +73,6 @@ export default {
       console.log('targetKey: ' + param[1])
     }
     // <%= ${sessionName} != null %>
-
   },
   mounted () {
   },
@@ -88,7 +87,7 @@ export default {
       renderOk: false,
 
       popYn: true,
-      userKey : null
+      userKey: null
     }
   },
   components: {
@@ -131,17 +130,6 @@ export default {
       this.$refs.topAlim.reLoad()
 
       // this.$refs.topChan.reLoad()
-
-
-
-      // await this.getMainBoard(this.userKey)
-
-
-
-
-
-
-
     },
     openCloseAppPop () {
       var history = this.$store.getters.hStack
@@ -209,14 +197,13 @@ export default {
 
       await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
-        console.log(response);
+        console.log(response)
         if (response.status === 200 || response.status === '200') {
           this.alimList = []
           this.alimList = response.data.alimList
           this.chanList = response.data.teamList
           this.renderOk = true
           this.$emit('closeLoading')
-
         }
         // response.data.userMap
       }).catch((error) => {
