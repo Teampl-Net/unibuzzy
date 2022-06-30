@@ -1,6 +1,6 @@
 <template>
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'">
-  <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn=false' @ok='saveMember' />
+  <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='saveMember'  />
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
@@ -24,12 +24,12 @@
         <!-- <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="공유하기" />
         --><!-- <div style="position: absolute; top:90px; right:50px"><gBtnSmall  :btnTitle='editBtnTitle' @click="editChannelClick"/></div> -->
 
-        <div style="width: 185px; height: 185px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
+        <div style="width: 185px; height: 185px; min-width: 180px; min-height: 180px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);">
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05">
-          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'" />
+          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'"/>
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
@@ -142,6 +142,7 @@ export default {
     }
   },
   async created () {
+    // alert(this.parentMemberYn)
     if(this.parentMemberYn) {
       this.memberYn = this.parentMemberYn
     }
@@ -173,12 +174,11 @@ export default {
   methods: {
     memberClick () {
       if (this.memberYn) {
-        this.memberYn = false
+        this.saveMember()
       } else {
         this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
         this.errorBoxType = false
         this.errorPopYn = true
-        this.memberYn = true
       }
     },
     // memberClick () {
@@ -193,7 +193,8 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      if (this.chanDetail.userTeamInfo.memberYn) {
+      // alert(this.memberYn)
+      if (this.memberYn) {
         param.memberYn = false
       }
       console.log(param)
@@ -201,11 +202,12 @@ export default {
         url: '/tp.saveFollower',
         param: param
       })
-      console.log(result.data.result)
+      console.log(result)
       if (result.data.result === true) {
         this.errorPopYn = false
-        this.memberYn = true
+        this.memberYn = param.memberYn
       }
+
     },
     editChan () {
       // eslint-disable-next-line no-new-object

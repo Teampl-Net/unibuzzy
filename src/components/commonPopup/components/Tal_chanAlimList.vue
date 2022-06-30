@@ -15,11 +15,6 @@
       <!-- <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
         <p class="font13 ">#라이프스타일</p>
       </div> -->
-      <div style="width: 100%; padding: 0 20px; margin-top: 1rem;">
-        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
-          <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
-        </div>
-      </div>
 
     </div>
     <div id="chanInfoSummary2" ref="chanImg2" style="">
@@ -34,6 +29,9 @@
         </div>
       </div>
     </div> -->
+    <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
+      <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
+    </div>
 
   </div>
 
@@ -66,14 +64,14 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      // detailShowYn: true,
-      // adminYn: false,
+      detailShowYn: true,
+      adminYn: false,
       memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
-      adminYn: false,
-      detailShowYn: false,
+      // adminYn: true,
+      // detailShowYn: false,
       memberYn: false
     }
   },
@@ -139,6 +137,7 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
       var resultList = await this.$getTeamList(paramMap)
+      console.log(resultList);
       this.chanItem = resultList.data.content[0]
       debugger
       console.log("#######################################");
@@ -276,7 +275,7 @@ export default {
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
 
-.summaryWrap{height: calc(35vh); width: 100%; float: left; position: fixed;}
+.summaryWrap{height: 350px; width: 100%; float: left; position: fixed;}
 .summaryWrap2 {height: 50px;  width: 100%; float: left;}
 
 .displayNIm{display: none!important;}
