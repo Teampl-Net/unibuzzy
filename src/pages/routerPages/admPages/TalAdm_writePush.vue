@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100vh; overflow:auto" id="testArea">
+  <div class="w-100P" style=" height: 100vh; overflow: hidden " id="testArea">
     <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
@@ -19,16 +19,16 @@
                 <div class="fl" style="margin-bottom: 15px;">
                   <p class="fontBold commonColor">수신 대상</p>
                   <div style="width: calc(100% - 115px); min-height: 2rem; padding-top: 3px; float: left;" v-if="!this.replyPopYn">
-                    <div class="fl" style="border: 1px solid #ccc; margin-bottom: 10px; margin-left: 10px;">
-                      <div class="fl" style="width: 50px; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
-                      <div class="fl" style="width: 50px; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
+                    <div class="fl" style="margin-bottom: 10px; margin-left: 10px;">
+                      <div class="fl" style="border: 1px solid #ccc;  width: 50px; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
+                      <div class="fl" style="border: 1px solid #ccc;  width: 50px; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
                     </div>
                     <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
                     <label class="mright-1 fl" for="allTrue">전체</label>
 
                     <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
                     <label class="mright-1 fl" for="allFalse">선택</label> -->
-                    <div v-if="!allRecvYn" class="inputArea recvUserArea font15" style="padding: 3px 10px; width: calc(100% + 20px); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                    <div v-if="!allRecvYn" class="inputArea recvUserArea font15" style="padding: 3px 10px; margin-left: 10px; width: calc(100% + 10px); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
                     </div>
                   </div>
@@ -66,7 +66,7 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard" @click="test" v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 85%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div id="textMsgBox" class="formCard" @click="test" v-if="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
                 <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
@@ -75,8 +75,8 @@
               </div>
 
             </div>
-
           </div>
+          <div class="whitePaperEffect" style="position: absolute;"></div>
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
                   <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
@@ -157,10 +157,20 @@ export default {
       creUserName: null,
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
       viewTab: 'text',
-      titleShowYn: false
+      titleShowYn: false,
+      // formCardHeight: 0
     }
   },
   computed: {
+    // calcFormCardHeight() {
+    //   if (this.formCardHeight) {
+    //   } else {
+    //     this.formCardHeight = 300
+    //   }
+    //   return {
+    //     '--formCardHeight': this.formCardHeight + 'px'
+    //   }
+    // },
     // toolBoxWidth () {
     //   return {
     //     '--width': this.toolWidth + 'px'
@@ -444,8 +454,9 @@ export default {
       margin: 0 auto;
       margin-top: 1rem;
       border-radius: 0.8rem;
-      height: calc(100% - 60px);
-      min-height: 500px;
+      /* height: calc(100% - 60px); */
+      height: 500px;
+      overflow: auto;
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -458,17 +469,19 @@ export default {
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%);
   }
 
-  .whitePaper:after {
+  .whitePaperEffect {
       content: '';
       position: absolute;
       display: block;
       width: 50px;
       height: 50px;
-      background-color: #e1e1f2;
-      bottom: 0;
-      right: 0;
+      border-top: 50px solid #e1e1f2;
+      border-right: 50px solid #0000005e;
+      background-color: #F9F9F9;
+      bottom: calc(3rem  - 2px);
+      right: 2rem;
   }
-  .whitePaper:before {
+  /* .whitePaper:before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -476,11 +489,11 @@ export default {
   border-bottom: 50px solid #7373734f;
   border-right: 50px solid #F9F9F9;
   width: 0;
-}
+} */
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;}
-/* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
+/* .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;} */
+.pageMsgArea{ min-height: 240px; float: left; width: 100%; }
 .pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 16px;}
 
@@ -510,7 +523,7 @@ export default {
 
 .writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 600px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.paperBackground{width: 100%; height: calc(100% - 10rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; height: calc(100% - 10rem);min-height: 600px; position: relative; margin: 0 auto; padding: calc(3rem - 2px) 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}
