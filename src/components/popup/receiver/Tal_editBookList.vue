@@ -236,7 +236,7 @@ export default {
             // this.openAddManagerPopYn = true
         },
         closeSubPop () {
-            selectBookListShowYn = false
+            this.selectBookListShowYn = false
         },
         /* async changeSearchList (type) {
             if (type === 'searchKey') {

@@ -89,7 +89,7 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-      selectBookListShowYn = false
+      this.selectBookListShowYn = false
     },
     dispNameChangeUserName(){
         if (this.memberList) { // dispName이 없을시 userName으로 대체
