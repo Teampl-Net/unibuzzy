@@ -10,7 +10,6 @@
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
     <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop' :pSelectedList='list' @sendReceivers='setSelectedList'/>
-
 </template>
 
 <script>
@@ -90,6 +89,7 @@ export default {
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
       this.selectBookListShowYn = false
+      this.getFollowerList()
     },
     dispNameChangeUserName(){
         if (this.memberList) { // dispName이 없을시 userName으로 대체
