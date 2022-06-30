@@ -64,8 +64,6 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      detailShowYn: true,
-      adminYn: false,
       memberText :'멤버 신청하기 >',
       errorBoxYn : false,
       errorBoxText : '',

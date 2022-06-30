@@ -1,16 +1,16 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div id="" style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+    <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-        <transition name="showModal">
-          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-        </transition>
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
       </div>
-      <div id="pushListWrap" :style="calcHeaderHeight" class="testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
+        <transition name="showModal">
+          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        </transition>
+      <div :style="calcHeaderHeight" class="pushListWrapWrap" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -20,7 +20,7 @@
 
         </div>
       </div> -->
-        <commonList v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px; padding-bottom: 70px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
         <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
@@ -51,7 +51,7 @@ export default {
     pushListAndDetailYn: {},
     propData: {}
   },
-  async created() {
+  async created () {
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
@@ -73,21 +73,21 @@ export default {
   },
 
   updated() {
-    this.box = document.getElementById('pushListWrap')
+    this.box = document.getElementsByClassName('pushListWrapWrap')[0]
   },
   mounted() {
-  this.box = document.getElementById('pushListWrap')
+  this.box = document.getElementsByClassName('pushListWrapWrap')[0]
   this.box.addEventListener('scroll', this.handleScroll)
 
   if (this.viewTab === 'N') {
-      this.$refs.activeBar.switchtab(0)
-    } else if (this.viewTab === 'R') {
-      this.$refs.activeBar.switchtab(1)
-    } else if (this.viewTab === 'L') {
-      this.$refs.activeBar.switchtab(2)
-    } else if (this.viewTab === 'S') {
-      this.$refs.activeBar.switchtab(3)
-    }
+    this.$refs.activeBar.switchtab(0)
+  } else if (this.viewTab === 'R') {
+    this.$refs.activeBar.switchtab(1)
+  } else if (this.viewTab === 'L') {
+    this.$refs.activeBar.switchtab(2)
+  } else if (this.viewTab === 'S') {
+    this.$refs.activeBar.switchtab(3)
+  }
 
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
@@ -250,6 +250,7 @@ export default {
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       this.findPopShowYn = false
+      // debugger
     },
     async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object

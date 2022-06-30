@@ -402,7 +402,7 @@ export default {
                     this.notiDetailShowYn = true
                   }
                 } else if (this.targetType === 'writePush') {
-                  return                 
+                  return
                 } else {
                   this.notiDetailShowYn = true
                 }

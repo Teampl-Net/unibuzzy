@@ -125,7 +125,6 @@ export default {
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
       param.value = value
-
       this.$emit('goDetail', param)
     },
 

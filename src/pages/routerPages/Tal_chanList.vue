@@ -4,11 +4,11 @@
 <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
     <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
-    <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
     <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
   </div>
+    <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div id="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: calc(100%); width: 100%; padding-bottom:70px; overflow:scroll;" @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: calc(100%); width: 100%; overflow:scroll;" @mousedown="testTwo" @mouseup="testTr">
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
