@@ -206,11 +206,7 @@ export default {
 
     // },
     BackPopClose (e) {
-      // if (e === 'headerClick') {
       this.closeXPop()
-      // } else if (JSON.parse(e.data).type === 'goback') {
-
-      // }
     },
     async settingPop (successChanYn) {
       this.chanFollowYn = false
@@ -335,7 +331,7 @@ export default {
         } else if (this.targetType === 'boardMain') {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {
-          await this.$refs.boardMainPop.refreshList()
+          await this.$refs.gPopDetail.refreshList()
         }
       }
     },
@@ -396,7 +392,7 @@ export default {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'tr') {
+            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'true') {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.targetType === 'chanDetail') {

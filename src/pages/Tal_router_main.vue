@@ -9,11 +9,6 @@
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
-
-    <!-- <transition name="show_view">
-      <chanMenu transition="show_view" @hideMenu="hideMenu" v-if="showMenuYn" />
-    </transition> -->
-
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 99"/>
     <div v-if="reloadYn === false" class="pagePaddingWrap" style="height: calc(100vh - 60px); overflow: hidden;">
       <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
@@ -61,19 +56,6 @@ export default {
     // PullToRefresh.destroyAll()
   },
   mounted () {
-    // console.log('pulltorefreshjs')
-    // PullToRefresh.init({
-    //   mainElement: '.listRefresh',
-    //   distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-    //   distMax: '100', // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-    //   distReload: '80', // 새로고침 후 갖고있는 영역의 크기
-    //   instructionsReleaseToRefresh: ' ', // 최소 새로고침에 도달 했을 때 문구
-    //   instructionsPullToRefresh: ' ', // 끌고 있을 때 문구
-    //   instructionsRefreshing: ' ', // 새로고침 중 문구
-    //   onRefresh () {
-    //     window.location.reload()
-    //   }
-    // })
   },
 
   computed: {
@@ -110,6 +92,7 @@ export default {
         }
         if (message.type === 'pushmsg') {
           this.notiDetail = JSON.parse(message.pushMessage)
+
           if (this.notiDetail.noti.data.targetKind === 'CONT') {
             if (Number(this.notiDetail.noti.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
@@ -182,6 +165,16 @@ export default {
     }
   },
   created () {
+    const searchParams = new URLSearchParams(location.search)
+    // eslint-disable-next-line no-unused-vars
+    for (const param of searchParams) {
+      console.log('targetKind: ' + param[0])
+      if (param[0] === 'chanDetail') {
+        this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
+      }
+      console.log('targetKey: ' + param[1])
+    }
+    /* alert(JSON.stringify(window.location.href || document.location.href)) */
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
   }

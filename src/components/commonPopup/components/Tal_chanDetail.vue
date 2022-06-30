@@ -56,7 +56,11 @@
           </tr> -->
           <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 공유 </div><div class="w-80P fl textLeft"> <gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right;" btnTitle="카톡 공유하기" /></div></td>
+            <td>
+              <div class="w-20P fl textLeft commonColor fontBold" > 공유 </div>
+              <div class="w-80P fl textLeft">
+                <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">
+                <!-- <gBtnSmall data-clipboard-action="copy" data-clipboard-target="#copyTextBody" @click="copyText" class="copyTextBtn" style="float: right;" btnTitle="클립보드" /> --><gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right; margin-right: 5px;" btnTitle="카카오톡" /></div></td>
           </tr>
           <!-- <tr>
             <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div>
@@ -172,6 +176,12 @@ export default {
     this.settingTeamType(this.chanDetail.teamType)
   },
   methods: {
+    copyText () {
+      var clipboard = new Clipboard('.copyTextBtn')
+      clipboard.on('success', function(e) {
+        alert('성공!')
+      })
+    },
     memberClick () {
       if (this.memberYn) {
         this.saveMember()
@@ -306,7 +316,8 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-
+      var link = 'https://thealim.page.link' + '/?link=' + 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
         objectType: 'feed',
@@ -319,7 +330,7 @@ export default {
           link: {
             /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
             /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            webUrl: 'https://thealim.page.link/H3Ed' + '?chanDetail=' + this.chanDetail.teamKey,
+            webUrl: link
             /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
             webUrl: 'https://thealim.page.link/H3Ed' */
           }
@@ -330,7 +341,7 @@ export default {
             link: {
               /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
               /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              webUrl: 'https://thealim.page.link/H3Ed' + '?chanDetail=' + this.chanDetail.teamKey,
+              webUrl: link
             }
           }
         ]
