@@ -9,7 +9,7 @@
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
-      <chanAlimList :ref="'gPopDetail'"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor'/>
+      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
       </div>
@@ -35,7 +35,7 @@
       <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
       <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
-
+      <selectManagerList ref="selectManagerCompo" :propData="this.params" v-if="this.targetType=== 'selectManager'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
     </div>
 </template>
 
@@ -68,6 +68,7 @@ import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../popup/receiver/Tal_selectManagerList.vue'
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
+import selectManagerList from '../popup/receiver/Tal_managerList.vue'
 export default {
   async created() {
     await this.settingPop()
@@ -114,7 +115,10 @@ export default {
       bgblackYn : false,
       propParams: {},
       chanName: '',
-      memberDetailOpen:false
+      memberDetailOpen:false,
+
+      refreshToken:0
+
     }
   },
   props: {
@@ -142,7 +146,8 @@ export default {
     bookMemberDetail,
     boardWrite,
     pushPop,
-    editManagerList
+    editManagerList,
+    selectManagerList
   },
   updated () {
   },
@@ -190,8 +195,14 @@ export default {
       this.openBookMenuYn = false
       this.openPop(data)
     },
-    reloadParent () {
-      this.$emit('reloadPop')
+    async reloadParent () {
+      console.log(this.params);
+      if(this.params.openActivity === "chanAlimList"){
+
+      }else{
+        this.$emit('reloadPop')
+      }
+
     },
     reloadPop (parentReloadYn) {
       if (parentReloadYn === true) {
@@ -327,11 +338,14 @@ export default {
         } else if(this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
         } else if(this.targetType === 'editManagerList') {
-          await this.$refs.editManagerListComp.refresh()
+          if (this.params.managerOpenYn)
+            await this.$refs.selectManagerCompo.refresh()
+          else
+            await this.$refs.editManagerListComp.refresh()
         } else if (this.targetType === 'boardMain') {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {
-          await this.$refs.gPopDetail.refreshList()
+          await this.$refs.gPopChanAlimList.refreshList()
         }
       }
     },
@@ -346,9 +360,10 @@ export default {
       }
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
-
+      if (this.targetType === 'pushDetail') {
+        this.$emit('closePop', true)
+      }
       this.$emit('closePop', reloadYn)
-
     },
     // sucssesCreChan(){
     //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {

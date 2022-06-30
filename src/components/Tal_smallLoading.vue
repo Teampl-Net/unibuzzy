@@ -21,8 +21,9 @@ export default {
 .spinner {
     position: absolute;
     /* top: 50%; */
-    top:100%;
-    left: 50%;
+    /* top:100%; */
+    /* transform: translate(-50%); */
+    left: calc( 50% - 20px); /* 크기 만큼 빼줘야 가운데 정렬  */
     border: 5px solid #f3f3f3; /* Light grey */
     border-top: 5px solid #6768A7;
     border-radius: 50%;

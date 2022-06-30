@@ -167,6 +167,8 @@ export default {
       // this.chanList = {}
       // this.$emit('openLoading')
 
+      this.chanList = []
+
       this.viewTab = tab
       this.offsetInt = 0
       var resultList = await this.getChannelList()

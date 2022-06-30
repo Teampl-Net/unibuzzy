@@ -1,8 +1,8 @@
 <template>
   <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
-    <gActiveBar ref="activeBar" :tabList="this.activeTabList" @changeTab= "changeTab" />
+    <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
     <div class="pushListWrap">
-      <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn"/>
+      <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn" />
     </div>
 </template>
 
@@ -53,8 +53,8 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          this.$refs.activeBar.switchtab(0)
-          this.$refs.activeBar.selectTab('N')
+          this.$refs.activeBarPushListTop5.switchtab(0)
+          this.$refs.activeBarPushListTop5.selectTab('N')
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
@@ -75,12 +75,23 @@ export default {
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {
+      // this.pushList = [] ///######
+
       this.viewTab = tabName
       var resultList = await this.getContentsList()
       this.listLeloadYn = false
       this.pushList = resultList.content
       // this.userDoList = resultList.userDo
       this.listLeloadYn = true
+    },
+    async reLoad () {
+      this.$refs.activeBarPushListTop5.switchtab(0)
+      this.$refs.activeBarPushListTop5.selectTab('N')
+      // var resultList = await this.getContentsList()
+      // this.listLeloadYn = false
+      // this.pushList = resultList.content
+      // this.listLeloadYn = true
+      console.log(this.pushList);
     },
     async getContentsList () {
       // eslint-disable-next-line no-new-object

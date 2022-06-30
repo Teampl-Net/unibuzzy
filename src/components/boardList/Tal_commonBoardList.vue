@@ -37,7 +37,7 @@
         </div>
       </div>
     </template>
-    <div class="w-100P fl mtop-3" style="position: relative;">
+    <div class="w-100P fl mtop-3" style="position: relative; width:100%; height:60px;">
       <gLoadingS ref="sLoadingBoard" class="fl"/>
     </div>
     <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
@@ -180,7 +180,9 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
-.commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);}
+.commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);
+
+}
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
@@ -210,5 +212,8 @@ export default {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 7px 3px #b7b4b440;
+    animation-name: fadein;
+    animation-duration: 0.3s;
     }
+
 </style>

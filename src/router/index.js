@@ -14,6 +14,7 @@ import chanList from '../pages/routerPages/Tal_chanList.vue'
 // import { loginCheck } from '../assets/js/Tal_common'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
+// import suminTest from '../pages/suminTest.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
 import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
@@ -168,7 +169,12 @@ const routes = [
     props: true,
     component: saveName
   },
-
+  // {
+  //   path: '/test',
+  //   name: 'test',
+  //   props: true,
+  //   component: suminTest
+  // },
   // {
   //   path: '/myChanList',
   //   name: 'myChanList',

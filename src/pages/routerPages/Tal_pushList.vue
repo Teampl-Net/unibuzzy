@@ -1,7 +1,7 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+    <div  style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
@@ -10,17 +10,22 @@
         <transition name="showModal">
           <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
-      <div :style="calcHeaderHeight" class="pushListWrapWrap" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
+        <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
+
+      <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
             <p class="font12">{{value.stickerName}}</p>
           </div>
-
         </div>
       </div> -->
-        <commonList v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px; padding-bottom: 70px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+          <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
+
+          <!-- </div> -->
+          <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
         <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
@@ -52,6 +57,7 @@ export default {
     propData: {}
   },
   async created () {
+
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
@@ -96,6 +102,7 @@ export default {
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
     }
+
   },
   unmounted () {
 
@@ -144,6 +151,7 @@ export default {
     }
   },
   methods: {
+
     getAbsoluteTop(element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -246,11 +254,30 @@ export default {
     async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
+      // this.commonListData = []
+      // this.$refs.tabLoading.show()
+      this.commonListData = []
+      this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
+
       this.offsetInt = 0
+      var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
+      if(this.tabIdx < indexOf){
+        // document.getElementById('pushListWrap').style.animationName('slide-next')
+        // this.box.style.animationName('slide-next')
+        //오른쪽으로 이동
+      }else if(this.tabIdx > indexOf){
+        // 왼쪽으로 이동
+        // this.box.style.animationName('slide-pre')
+        // document.getElementById('pushListWrap').style.animationName('slide-pre')
+      }
+      this.tabIdx = indexOf
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
+
+      this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       this.findPopShowYn = false
-      // debugger
+
+      // this.$refs.tabLoading.hide();
     },
     async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
@@ -394,7 +421,9 @@ export default {
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: [],
-      refreshYn: true
+      refreshYn: true,
+      transition: 'slide-next',
+      tabIdx:0
     }
   }
 }
@@ -427,4 +456,17 @@ export default {
 .pushListHeader--unpinned {
     transform: translateY(-100%);
 }
+
+.slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
+  transition: .3s;
+}
+.slide-next-enter, .slide-next-leave, .slide-prev-leave-to{
+  transform: translate(100%, 0);
+}
+.slide-next-leave-to, .slide-prev-enter, .slide-prev-leave{
+  transform: translate(-100%, 0);
+}
+
+
+
 </style>

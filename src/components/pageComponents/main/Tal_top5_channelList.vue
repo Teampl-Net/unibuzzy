@@ -1,6 +1,6 @@
 <template>
   <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
-  <gActiveBar :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
+  <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
@@ -89,9 +89,14 @@ export default {
       this.chanList = resultList.data.content
     },
     async changeTab (data) {
+      // this.chanList = [] ///######
       this.viewTab = data
       // console.log(data)
       await this.getContentsList()
+    },
+    async reLoad () {
+      this.$refs.activeBarChanListTop5.switchtab(0)
+      this.$refs.activeBarChanListTop5.selectTab('user')
     }
   }
 
@@ -99,7 +104,10 @@ export default {
 </script>
 
 <style scoped>
-.top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;}
+.top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;
+animation-name: fadein;
+animation-duration: 0.3s;
+}
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
 .chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}

@@ -16,8 +16,8 @@
 <script>
 /* eslint-disable */
 import managerList from './Tal_commonBookMemberList.vue'
-// import selectedListCompo from './Tal_selectedReceiverList.vue'
-import selectBookList from '../receiver/Tal_managerList.vue'
+// import selectedListCompo from './Tal_selectedReceiverList.vue'end
+
 export default {
   props: {
     // selectPopYn: {},
@@ -51,11 +51,11 @@ export default {
     historyStack (value, old) {
     }
   },
-  components: { managerList, selectBookList },
+  components: { managerList },
   data () {
     return {
       // openAddManagerPopYn:false
-      selectBookListShowYn: false,
+      selectManagerListShowYn: false,
       receiverTitle: '매니저 관리',
       list:[],
       managerList: [],
@@ -103,13 +103,13 @@ export default {
         }
     },
     async deleteManager (data) {
-       var param = {}
+      var param = {}
       param.userKey = data.userKey
       param.teamKey = data.teamKey
       var result = await this.$commonAxiosFunction({
           url: '/tp.deleteManager',
           param: param
-      })/* 
+      })/*
       if (result.data) {
         this.refresh()
       } */
@@ -133,9 +133,9 @@ export default {
 
       console.log('##############');
       console.log(result.data.content);
-      this.list = result.data.content
-      // this.list = []
-      console.log(this.list);
+      this.managerList = result.data.content
+      // this.managerList = []
+      console.log(this.managerList);
       this.propData.managerOpenYn=true
 
       var history = this.$store.getters.hStack
@@ -143,6 +143,13 @@ export default {
       history.push(this.popId)
       this.$store.commit('updateStack', history)
       this.selectBookListShowYn = true
+
+      var param = new Object()
+      param.targetType = 'selectManager'
+      param.pSelectedList = this.managerList
+      param.managerOpenYn = true
+      this.$emit('openPop', param)
+      this.selectManagerListShowYn = true
 
       // var param = {}
       // param.targetType = 'bookMemberDetail'

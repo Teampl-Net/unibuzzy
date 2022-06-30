@@ -41,16 +41,20 @@
           <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
           </div>
       </template>
-      <div class="w-100P fl mtop-3" style="position: relative;">
+      <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:60px;">
             <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
       <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
   <!-- </div> -->
+
+
 </template>
 <script>
+
 /* eslint-disable */
 export default {
   components: {
+
   },
   created () {
     this.contentsList = this.commonListData
@@ -58,8 +62,11 @@ export default {
   watch: {
     commonListData () {
       this.contentsList = this.commonListData
-      this.$refs.sLoadingPush.hide()
+      this.loadingRefHide()
     },
+
+  },
+  mounted () {
 
   },
   // updated () {
@@ -79,6 +86,12 @@ export default {
   // },
   /* emits: ['goDetail'], */
   methods: {
+    loadingRefShow(){
+      this.$refs.sLoadingPush.show()
+    },
+    loadingRefHide(){
+      this.$refs.sLoadingPush.hide()
+    },
     resizeText (text, name) {
       if (text) {
         if (text.length > 15) {
@@ -183,7 +196,7 @@ export default {
       }
     },
     async loadMore () {
-      this.$refs.sLoadingPush.show()
+      this.loadingRefShow()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,
@@ -266,9 +279,16 @@ export default {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 7px 3px #b7b4b440;
+
+    animation-name: fadein;
+    animation-duration: 0.3s;
+    /* animation-timing-function: linear; */
+    /* animation-delay: 0.5s; */
+
     }
 .creatorListContentBox{
     background-color: #6768a712 !important;
     box-shadow: 0 0 7px 3px #6768a740 !important;
     }
+
 </style>

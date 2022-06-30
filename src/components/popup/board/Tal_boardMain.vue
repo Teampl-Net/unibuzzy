@@ -266,6 +266,7 @@ export default {
     async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
+      this.mCabContentsList = []
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
     },

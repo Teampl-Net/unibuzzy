@@ -36,7 +36,7 @@
   </div>
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-    <pushList ref="pushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" />
+    <pushList ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" />
   </div>
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
@@ -73,8 +73,14 @@ export default {
       memberYn: false
     }
   },
+  watch:{
+    wrapKey(){
+      this.refreshList()
+    }
+  },
   props: {
-    chanDetail: {}
+    chanDetail: {},
+    refreshToken:0
   },
   components: {
     pushList,
@@ -111,8 +117,12 @@ export default {
       this.$store.commit('updateStack', history)
       this.detailShowYn = false
     },
-    refreshList () {
-      this.$ref.pushListCompo.refreshList()
+    async refreshList () {
+      console.log('chanAlimList // refreshList')
+      // await this.$nextTick();
+      await this.getChanDetail()
+      await this.$refs.ChanAlimListPushListCompo.refreshList()
+
     },
     btnWritePush () {
       // eslint-disable-next-line no-new-object
@@ -170,6 +180,9 @@ export default {
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
+      console.log('chanAlimList');
+      param.openActivity = 'chanAlimList'
+      console.log(param);
       this.$emit('openPop', param)
     },
     async changeFollowYn (fYn) {

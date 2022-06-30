@@ -95,7 +95,7 @@ export default {
     /* manageStickerPop */
   },
   async created () {
-    console.log(this.alimDetail)
+
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
@@ -210,7 +210,7 @@ export default {
       if (resultList.content[0].userDoList) {
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)
-        
+
       }
       // console.log(this.alimDetail)
       this.$emit('closeLoading')
@@ -263,8 +263,7 @@ export default {
         console.log(resultList)
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)
-
-        // this.$emit('reloadParent')
+        this.$emit('reloadParent')
       }
     },
     goChanDetail (alim) {

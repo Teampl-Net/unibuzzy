@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div class="w-100P fl mtop-3" style="position: relative;">
+    <div class="w-100P fl mtop-3" style="position: relative; width:100%; height:60px;">
       <gLoadingS ref="sLoadingChannel" class="fl"/>
     </div>
 

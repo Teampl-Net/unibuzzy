@@ -58,15 +58,13 @@ export default {
   mounted () {
     // console.log('pulltorefreshjs')
     // PullToRefresh.init({
-    //   mainElement: '#reloadId',
-    //   triggerElement: '#reloadId',
+    //   mainElement: 'body',
     //   distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
     //   distMax: '100', // 최대 거리 (영역이 길어질 수 있는 최대 거리)
     //   distReload: '80', // 새로고침 후 갖고있는 영역의 크기
     //   instructionsReleaseToRefresh: ' ', // 최소 새로고침에 도달 했을 때 문구
     //   instructionsPullToRefresh: ' ', // 끌고 있을 때 문구
-    //   instructionsRefreshing: 'Reloading...', // 새로고침 중 문구
-    //   distIgnore: 150,
+    //   instructionsRefreshing: ' ', // 새로고침 중 문구
     //   onRefresh () {
     //     window.location.reload()
     //   }

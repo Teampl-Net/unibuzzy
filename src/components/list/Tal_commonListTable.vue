@@ -79,7 +79,10 @@ export default {
 
 .chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
-
+.commonListTr{
+animation-name: fadein;
+animation-duration: 0.3s;
+}
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}

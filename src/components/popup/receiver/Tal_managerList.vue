@@ -20,8 +20,7 @@ import memberListCompo from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {
     props : {
-        propData:{},
-        pSelectedList:{},
+        propData:{}
     },
     data () {
         return{
@@ -39,7 +38,8 @@ export default {
         this.getFollowerList()
         a.memberList = this.pSelectedList
         this.propData.memberListOpen = true
-        this.pList = a
+        var tets = this.propData
+        debugger
         // alert(JSON.stringify(this.pList))
     },
     components:{memberListCompo,selectedListCompo},
@@ -55,7 +55,7 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data.content
-            if (this.memberList) { 
+            if (this.memberList) {
                 for (var i = this.memberList.length - 1; i >= 0; i --) {
                     if (this.memberList[i].managerKey !== undefined && this.memberList[i].managerKey !== null && this.memberList[i].managerKey !== ''){
                         this.memberList.splice(i, 1)

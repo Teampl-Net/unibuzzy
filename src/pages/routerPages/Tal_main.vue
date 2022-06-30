@@ -25,8 +25,8 @@
     </div>
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim :alimList="this.alimList"  @openPop="openPop" />
-  <top5Channel :top5ChanList="chanList" @openPop="openPop" />
+  <top5Alim :alimList="alimList"  @openPop="openPop" ref="topAlim" />
+  <top5Channel :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -73,6 +73,7 @@ export default {
       console.log('targetKey: ' + param[1])
     }
     // <%= ${sessionName} != null %>
+
   },
   mounted () {
   },
@@ -86,7 +87,8 @@ export default {
       userInfo: [],
       renderOk: false,
 
-      popYn: true
+      popYn: true,
+      userKey : null
     }
   },
   components: {
@@ -98,13 +100,48 @@ export default {
     // top5Title
   },
   methods: {
-    reloadPage () {
-      this.$emit('openLoading')
-      this.$router.go(0)
-      setTimeout(() => {
-        this.$emit('closeLoading')
-      }, 2000)
-      // this.$emit('closeLoading')
+    async reloadPage () {
+      // this.$forceUpdate()
+      // window.location.replace(window.opener.documｅnt.location.href);
+      // this.$router.push({ name: "main" })
+      // this.$router.push('/')
+
+      // this.$emit('openLoading')
+      // this.$router.go(0)
+      // setTimeout(() => {
+      //   this.$emit('closeLoading')
+      // }, 2000)
+
+      // await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
+      // ).then(response => {
+      //   if (response.status === 200 || response.status === '200') {
+      //     console.log(response);
+      //     this.alimList = response.data.alimList
+      //     this.chanList = response.data.teamList
+      //     this.renderOk = true
+      //     this.$emit('closeLoading')
+      //   }
+      //   // response.data.userMap
+      // }).catch((error) => {
+      //   console.warn('ERROR!!!!! : ', error)
+      //   // return 'error'
+      // })
+
+      this.$refs.topChan.reLoad()
+      this.$refs.topAlim.reLoad()
+
+      // this.$refs.topChan.reLoad()
+
+
+
+      // await this.getMainBoard(this.userKey)
+
+
+
+
+
+
+
     },
     openCloseAppPop () {
       var history = this.$store.getters.hStack
@@ -148,8 +185,8 @@ export default {
     },
     async getUserInform () {
       var userInfo = await this.$getUserInform()
-      var userKey = userInfo.userKey
-      this.getMainBoard(userKey)
+      this.userKey = userInfo.userKey
+      this.getMainBoard(this.userKey)
       if (userInfo !== undefined && userInfo !== null) {
         if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null); else userInfo.phoneLast = '등록된 번호가 없습니다.'
@@ -164,17 +201,22 @@ export default {
       this.$emit('closeLoading')
       return userInfo
     },
+
     async getMainBoard (userKey) {
       var paramMap = new Map()
       paramMap.set('userKey', userKey)
+      paramMap.set('jobkindId', 'ALIM')
+
       await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
+        console.log(response);
         if (response.status === 200 || response.status === '200') {
+          this.alimList = []
           this.alimList = response.data.alimList
           this.chanList = response.data.teamList
-          // return response.data
           this.renderOk = true
           this.$emit('closeLoading')
+
         }
         // response.data.userMap
       }).catch((error) => {

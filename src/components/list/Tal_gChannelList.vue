@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="w-100P fl mtop-3" style="position: relative;">
+    <div class="w-100P fl mtop-3" style="position: relative; width:100%; height:60px;">
       <gLoadingS ref="sLoadingChan" class="fl"/>
     </div>
     <myObserver @triggerIntersected="loadMore" class="fl wich" />
@@ -109,4 +109,8 @@ td {
 .chanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 40px; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
+.chanRow{
+  animation-name: fadein;
+  animation-duration: 0.3s;
+}
 </style>
