@@ -168,7 +168,7 @@ export default {
         this.errorPopYn = true
         return
       }
-      if (this.selectTypeText === '') {
+      if (this.selectTypeText === '클릭해서 산업군을 선택해주세요.') {
         this.errorMsg = '채널의 산업군을 선택해주세요'
         this.errorPopYn = true
         return
