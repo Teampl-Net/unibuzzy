@@ -2,13 +2,14 @@
     <div style="height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0">
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
             <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-                <bookListCompo :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
+                <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
-                    <memberList :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                 </transition>
-                <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook():this.$refs.memberListRef.newAddMember()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
+                <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
         </div>
+        <selectMemberList :propData="propData" v-if="selectBookListShowYn" @closeXPop='backClick' :pSelectedList='selMemberList' @sendReceivers='setSelectedList'/>
     </div>
 </template>
 
@@ -18,6 +19,7 @@
 import findContentsList from '../Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
+import selectMemberList from './Tal_selectMemberPop.vue'
 export default {
     props: {
         chanInfo: {},
@@ -41,6 +43,25 @@ export default {
         }
         this.getBookList()
     },
+     computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.closeSubPop()
+      }
+    },
+    historyStack (value, old) {
+    }
+  },
+  
     computed: {
         historyStack () {
             return this.$store.getters.hRPage
@@ -60,11 +81,12 @@ export default {
         }
 
     },
-    components: { findContentsList, bookListCompo,memberList },
+    components: { findContentsList, bookListCompo,memberList, selectMemberList },
     data () {
         return {
             editYn: false,
             bookList: [],
+            selectPopId: null,
             subPopId: null,
             popId: null,
             detailOpenYn: false,
@@ -75,7 +97,9 @@ export default {
             clickList: {},
             titleText: '',
             receiverTitle: '주소록 관리',
-            teamLength: 0
+            teamLength: 0,
+            selectBookListShowYn: false,
+            selMemberList: []
         }
     },
     methods: {
@@ -94,6 +118,14 @@ export default {
                 this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
             }
             // debugger
+        },
+        newAddMember(){
+            this.newYn = false
+            var data = new Object()
+            data.targetType = 'bookMemberDetail'
+            data.currentCabinetKey = this.propData.cabinetKey
+            data.currentTeamKey = this.propData.teamKey
+            this.$emit('openAddPop',data)
         },
         async getBookMemberList () {
             var paramMap = new Map()
@@ -123,7 +155,10 @@ export default {
         backClick () {
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
-            if (this.subPopId === hStack[hStack.length - 1]) {
+            if (this.selectPopId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            }
+            else if (this.subPopId === hStack[hStack.length - 1]) {
                 // alert(removePage)
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
@@ -142,9 +177,9 @@ export default {
         async openMCabUserList(data){
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
-            this.subPopId = 'commonBookMemberList' + history.length
+            this.selectPopId = 'selectMemeberPopup' + history.length
             // alert(this.subPopId)
-            history.push(this.subPopId)
+            history.push(this.selectPopId)
             this.$store.commit('updateStack', history)
 
             await this.getBookMemberList()
@@ -169,6 +204,39 @@ export default {
             }
             this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
             await this.getPushContentsList()
+        },
+        async openSelectMemberPop () {
+            // alert(true)
+        // eslint-disable-next-line no-new-object
+            var params = new Object()
+            params.teamKey = this.propData.currentTeamKey
+            params.memberYn = true
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getFollowerList',
+                param: params
+            })
+
+            this.selMemberList = result.data.content
+            // this.list = []
+            this.propData.managerOpenYn=true
+            this.propData.currentCabinetKey = this.selectBookDetail.cabinetKey
+            var history = this.$store.getters.hStack
+            this.popId = 'selectManagerListPop' + history.length
+            history.push(this.popId)
+            this.$store.commit('updateStack', history)
+            this.selectBookListShowYn = true
+
+            // var param = {}
+            // param.targetType = 'bookMemberDetail'
+            // // param.currentCabinetKey = this.propData.cabinetKey
+            // param.currentTeamKey = this.propData.currentTeamKey
+
+            // this.$emit('openPop', param)
+
+            // this.openAddManagerPopYn = true
+        },
+        closeSubPop () {
+            selectBookListShowYn = false
         },
         /* async changeSearchList (type) {
             if (type === 'searchKey') {

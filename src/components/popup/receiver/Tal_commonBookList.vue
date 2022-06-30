@@ -256,8 +256,8 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-                this.getTeamCabList()
             }
+            this.$emit('refreshList')
             // this.cabinetList.unshift(addBoard)
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             // // debugger
@@ -327,7 +327,7 @@ export default {
             // debugger
             // getTeamCabList ()
             // this.cabinetList = []
-            this.getTeamCabList()
+            this.$emit('getBookList')
             index = this.cabinetList.length - 1
         }
     }

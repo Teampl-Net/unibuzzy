@@ -9,7 +9,7 @@
 
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
-    <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :pSelectedList='list' @sendReceivers='setSelectedList'/>
+    <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop' :pSelectedList='list' @sendReceivers='setSelectedList'/>
 
 </template>
 
@@ -34,6 +34,22 @@ export default {
     console.log(this.propData);
   },
   computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters.hStack
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.closeSubPop()
+      }
+    },
+    historyStack (value, old) {
+    }
   },
   components: { managerList, selectBookList },
   data () {
@@ -42,7 +58,8 @@ export default {
       selectBookListShowYn: false,
       receiverTitle: '매니저 관리',
       list:[],
-      managerList: []
+      managerList: [],
+      popId: null
     }
   },
   methods: {
@@ -65,6 +82,14 @@ export default {
         var test =this.managerList
 
         this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
+    },
+    closeSubPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+      selectBookListShowYn = false
     },
     dispNameChangeUserName(){
         if (this.memberList) { // dispName이 없을시 userName으로 대체
@@ -113,6 +138,10 @@ export default {
       console.log(this.list);
       this.propData.managerOpenYn=true
 
+      var history = this.$store.getters.hStack
+      this.popId = 'selectManagerListPop' + history.length
+      history.push(this.popId)
+      this.$store.commit('updateStack', history)
       this.selectBookListShowYn = true
 
       // var param = {}

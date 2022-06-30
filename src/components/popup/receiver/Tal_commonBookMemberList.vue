@@ -84,7 +84,7 @@ export default {
             if(this.propData.managerOpenYn)
                 await this.getFollowerList()
             else
-                await this.getBookMemberList()
+                this.$emit('refreshList')
         },
         setParentSelectList() {
 
@@ -143,7 +143,7 @@ export default {
                 console.log(result)
                 if(result.data === 'true' || result.data === true){
                     this.memberList = []
-                    this.getBookMemberList()
+                    this.$emit('refreshList')
                 }
             }else{
 
@@ -167,14 +167,6 @@ export default {
             // debugger
             // data.index = index
             // this.editMember = data
-        },
-        newAddMember(){
-            this.newYn = false
-            var data = new Object()
-            data.targetType = 'bookMemberDetail'
-            data.currentCabinetKey = this.propData.cabinetKey
-            data.currentTeamKey = this.propData.teamKey
-            this.$emit('openAddPop',data)
         },
         addSelectedList (data,index) {
 
