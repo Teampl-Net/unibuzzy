@@ -7,11 +7,11 @@
         <!-- <gPreLoader v-if="cabinetList.length = 0" style="position: fixed; left: calc(50% - 4rem); top: calc(50% - 150px);" /> -->
         <!-- <loadingCompo v-show="loadingYn" /> -->
         <div v-show="loadingYn" style="width: 100%; height: 100%; background-color: white;"></div>
-        <div v-if="cabinetList.length > 0" style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
+        <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
             <!-- <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" > -->
-            <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
+            <draggable  ref="editableArea" class="ghostClass" :v-model="listData" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
-                    <template  v-for="(data, index) in cabinetList" :key='index'>
+                    <template  v-for="(data, index) in listData" :key='index'>
                         <!-- <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" > -->
                         <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
 
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
 
-                            <div v-else @click="clickList(data,index)" style="width: calc(100% - 100px); height: 100%;" class="fl" >
+                            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >
                             <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
                                 <!-- <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
                                     <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
@@ -54,7 +54,7 @@
                                 <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
                                     <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
                                 </div> -->
-                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="selectIndex.indexOf(index) === -1">
+                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
                                 <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
                             </div>
                         </div>
@@ -79,7 +79,7 @@ import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 export default {
     props:{
-        // listData:{},
+        listData:{},
         propData: {},
         chanAlimListTeamKey: {},
         parentSelectList: {},

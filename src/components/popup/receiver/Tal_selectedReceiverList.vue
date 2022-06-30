@@ -133,27 +133,8 @@ export default {
             // this.teamList.splice(index, 1)
         },
         editClick(data, index){
-            // var editTeamName = document.getElementById(index)
-            // if(this.editNameYn === index){
-            //     this.editNameYn = null
-            //     data.reveiverTeamName = editTeamName.value
-            // }else{
-            //     this.editNameYn = index
-            //     editTeamName.value = data.reveiverTeamName
-            // }
         },
         newAddTeam(){
-            // this.editNameYn = null
-            // var addlistData = []
-
-            // const newList = [
-            //     ...addlistData,
-            //     ...this.teamList
-            // ]
-            // this.memberList.team.unshift({ name: '새로운 구성원', grade: '구성원', creDate: undefined, email: '', phone: '' })
-            // this.teamList.unshift({receiverTeamColor:'#ff9999', reveiverTeamName: '새로운 그룹',team:[]})
-            // this.editNameYn = 0
-            // document.getElementById(0).focus()
         }
     }
 

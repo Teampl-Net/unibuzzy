@@ -39,7 +39,7 @@ export default {
   props: {
     chanList: {}
   },
-  watch:{
+  watch: {
     chanList () {
       this.$refs.sLoadingChan.hide()
     }

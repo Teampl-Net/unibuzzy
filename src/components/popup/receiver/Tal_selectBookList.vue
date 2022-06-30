@@ -14,10 +14,9 @@
       </div> -->
 
       <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
-
-        <bookList :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
-            <memberList :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+            <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
       <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' :sessionData='sessionUserdata' @btnClick='sendReceivers' />
@@ -42,7 +41,6 @@ export default {
     sessionUserdata: {}
   },
   created () {
-    // eslint-disable-next-line vue/no-mutating-props
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
@@ -51,11 +49,12 @@ export default {
     this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
     history.push(this.popId)
     this.$store.commit('updateStack', history)
-
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
+    this.getBookList()
+    
   },
 
   computed: {
@@ -76,6 +75,8 @@ export default {
   components: { bookList, memberList, selectedListCompo },
   data () {
     return {
+      memberList: [],
+      bookList:[],
       popId: null,
       subPopId: null,
       selectedYn: false,
@@ -94,6 +95,44 @@ export default {
     }
   },
   methods: {
+    async getBookList () {
+        var paramMap = new Map()
+        paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+        paramMap.set('sysCabinetCode', 'USER')
+        paramMap.set('adminYn', true)
+        var result = await this.$commonAxiosFunction({
+            url: '/tp.getTeamMenuList',
+            param: Object.fromEntries(paramMap)
+        })
+        this.bookList = result.data
+        for(var i = 0; i < this.bookList.length; i ++) {
+            var changeT = this.bookList[i].cabinetNameMtext
+            this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
+        }
+        this.editBookSelectedList()
+        // debugger
+    },
+    async getBookMemberList () {
+        var paramMap = new Map()
+        paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
+        paramMap.set('jobkindId', 'USER')
+        var result = await this.$commonAxiosFunction({
+            url: '/tp.getMCabContentsList',
+            param: Object.fromEntries(paramMap)
+        })
+        this.memberList = result.data
+          if (this.memberList) { // dispName이 없을시 userName으로 대체
+        for (var i =0; i < this.memberList.length; i ++) {
+            if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+                } else {
+                    this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+                }
+            }
+        }
+        this.editMemberSelectedList()
+        // debugger
+    },
     editPop () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -125,7 +164,30 @@ export default {
     },
     changeSelectedList (selectedListData) {
       this.selectedList = selectedListData
+      this.editMemberSelectedList()
       this.$refs.selectedListCompo.upDatePage()
+    },
+    editMemberSelectedList () {
+      var changeList = this.selectedList.memberList
+      for(var m = 0; m < this.memberList.length; m ++) {
+        this.memberList[m].selectedYn = false
+        for(var c = 0; c < changeList.length; c++) {
+          if (changeList[c].userKey === this.memberList[m].userKey) {
+            this.memberList[m].selectedYn = true
+          }
+        }
+      }
+    },
+    editBookSelectedList () {
+      var changeList = this.selectedList.bookList
+      for(var m = 0; m < this.bookList.length; m ++) {
+        this.bookList[m].selectedYn = false
+        for(var c = 0; c < changeList.length; c++) {
+          if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
+            this.bookList[m].selectedYn = true
+          }
+        }
+      }
     },
     setResult () {
       // eslint-disable-next-line no-new-object
@@ -159,23 +221,13 @@ export default {
     backClick () {
       var hStack = this.$store.getters.hStack
       var removePage = history[hStack.length - 1]
+      
       if (this.subPopId === hStack[hStack.length - 1]) {
         // alert(removePage)
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
         this.detailOpenYn = false
-        this.receiverTitle = '주소록 관리'
-        if (this.selectPopYn) {
-          this.receiverTitle = '대상 선택'
-        }
-
-        if (this.selectPopYn) {
-          this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
-        } else {
-          this.titleText = '팀플'
-        }
-
         this.teamLength = 100
         this.memberEditYn = false
       } else if (this.popId === hStack[hStack.length - 1]) {
@@ -183,13 +235,13 @@ export default {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
-        // this.$emit('closeXPop')
+        this.$emit('closeXPop')
       }
-      this.$emit('closeXPop')
     },
-    openMCabUserList (data) {
+    async openMCabUserList (data) {
       if (!this.teamEditYn) {
         this.selectBookDetail = data
+        await this.getBookMemberList()
         this.detailOpenYn = true
 
         this.selectBookDetail = data

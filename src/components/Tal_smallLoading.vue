@@ -5,15 +5,15 @@
 </template>
 <script>
 export default {
-    methods: {
-        show() {
-            document.getElementsByClassName('spinner')[0].style.display='block';
-        },
-        hide() {
-            document.getElementsByClassName('spinner')[0].style.display='none';
-        }
-
+  methods: {
+    show () {
+      document.getElementsByClassName('spinner')[0].style.display = 'block'
+    },
+    hide () {
+      document.getElementsByClassName('spinner')[0].style.display = 'none'
     }
+
+  }
 }
 </script>
 

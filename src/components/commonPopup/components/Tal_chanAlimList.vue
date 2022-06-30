@@ -43,7 +43,7 @@
   <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <div v-if="detailShowYn" >
     <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
-    <chanDetailComp :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
  <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
@@ -72,8 +72,9 @@ export default {
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
-      adminYn: true,
+      adminYn: false,
       detailShowYn: false,
+      memberYn: false
     }
   },
   props: {
@@ -126,6 +127,8 @@ export default {
       this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {
+      this.memberYn = false
+      this.adminYn = false
       var paramMap = new Map()
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {
         paramMap.set('teamKey', this.chanDetail.targetKey)
@@ -137,11 +140,15 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       this.chanItem = resultList.data.content[0]
+      debugger
       console.log("#######################################");
       console.log(this.chanItem );
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
+          if(this.chanItem.userTeamInfo.memberYn === 1) {
+            this.memberYn = true
+          }
           this.followYn = true
           this.detailShowYn = false
           this.adminYn = false

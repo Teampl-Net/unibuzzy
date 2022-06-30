@@ -1,27 +1,15 @@
 <template>
     <div style="height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0">
-        <!-- <popHeader @closeXPop="this.$emit('closeXPop')" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.propData.teamNameMtext" /> -->
-        <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
-
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
-        <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-
-            <!-- <div style="display: none">
-                <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-                <transition name="showModal">
-                    <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-                </transition>
-            </div> -->
             <div style="width: 100%; height: calc(100% - 10px); position: relative;">
-                <bookListCompo  :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
+                <bookListCompo :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
-                    <memberList :parentSelectList="[]" :teamInfo="propData.value.value" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <memberList :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                 </transition>
                 <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook():this.$refs.memberListRef.newAddMember()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -37,12 +25,9 @@ export default {
         memberDetailOpen:{}
     },
     created (){
-
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
 
-        console.log("!!!!!!!!!!!!");
-        console.log(this.propData);
         if(this.propData.value.clickData){
             this.$emit('openDetailYn',true)
             this.selectBookDetail = this.propData.value.clickData
@@ -51,8 +36,10 @@ export default {
             // alert(this.subPopId)
             history.push(this.subPopId)
             this.$store.commit('updateStack', history)
+            this.this.getBookMemberList()
             this.detailOpenYn = true
         }
+        this.getBookList()
     },
     computed: {
         historyStack () {
@@ -77,6 +64,7 @@ export default {
     data () {
         return {
             editYn: false,
+            bookList: [],
             subPopId: null,
             popId: null,
             detailOpenYn: false,
@@ -91,6 +79,41 @@ export default {
         }
     },
     methods: {
+        async getBookList () {
+            var paramMap = new Map()
+            paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+            paramMap.set('sysCabinetCode', 'USER')
+            paramMap.set('adminYn', true)
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getTeamMenuList',
+                param: Object.fromEntries(paramMap)
+            })
+            this.bookList = result.data
+            for(var i = 0; i < this.bookList.length; i ++) {
+                var changeT = this.bookList[i].cabinetNameMtext
+                this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
+            }
+            // debugger
+        },
+        async getBookMemberList () {
+            var paramMap = new Map()
+            paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
+            paramMap.set('jobkindId', 'USER')
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getMCabContentsList',
+                param: Object.fromEntries(paramMap)
+            })
+            this.memberList = result.data
+             if (this.memberList) { // dispName이 없을시 userName으로 대체
+            for (var i =0; i < this.memberList.length; i ++) {
+                if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+                    } else {
+                        this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+                    }
+                }
+            }
+        },
         async refresh () {
             await this.$refs.memberListRef.refresh()
         },
@@ -116,13 +139,15 @@ export default {
                 this.$emit('closeXPop')
             }
         },
-        openMCabUserList(data){
+        async openMCabUserList(data){
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
             this.subPopId = 'commonBookMemberList' + history.length
             // alert(this.subPopId)
             history.push(this.subPopId)
             this.$store.commit('updateStack', history)
+
+            await this.getBookMemberList()
             this.detailOpenYn = true
             this.$emit('openDetailYn',true)
 

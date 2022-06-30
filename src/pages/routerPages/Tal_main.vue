@@ -64,7 +64,6 @@ export default {
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
     const searchParams = new URLSearchParams(location.search)
-
     // eslint-disable-next-line no-unused-vars
     for (const param of searchParams) {
       console.log('targetKind: ' + param[0])

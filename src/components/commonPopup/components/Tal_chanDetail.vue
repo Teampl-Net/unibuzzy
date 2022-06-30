@@ -111,7 +111,8 @@ export default {
   },
   props: {
     chanDetail: {},
-    alimSubPopYn: {} // 구독자일 경우, 채널메인을통해 open되는 풀팝업
+    parentMemberYn: {},
+    alimSubPopYn: {} // 구독자일 경우, 채널메인을통해 open되는 풀팝업,
   },
   components: {
     /* followerList */
@@ -141,6 +142,9 @@ export default {
     }
   },
   async created () {
+    if(this.parentMemberYn) {
+      this.memberYn = this.parentMemberYn
+    }
     console.log(this.chanDetail)
     if (this.alimSubPopYn) {
       var history = this.$store.getters.hStack
@@ -312,7 +316,8 @@ export default {
           imageHeight: 630,
           link: {
             /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey
+            /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+            webUrl: 'https://thealim.page.link/H3Ed' + '?chanDetail=' + this.chanDetail.teamKey,
             /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
             webUrl: 'https://thealim.page.link/H3Ed' */
           }
@@ -322,7 +327,8 @@ export default {
             title: '구독하러 가기',
             link: {
               /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey
+              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              webUrl: 'https://thealim.page.link/H3Ed' + '?chanDetail=' + this.chanDetail.teamKey,
             }
           }
         ]

@@ -38,13 +38,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
-            <!-- <div> -->
-              <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
-              <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
-            <!-- </div> -->
-
-
           <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
           </div>
       </template>

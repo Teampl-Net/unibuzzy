@@ -2,8 +2,8 @@
     <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.$changeText(this.propData.teamNameMtext)" /> -->
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-        <memberList ref="managerListCompo" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
-        <!-- <memberList :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/> -->
+          <managerList @deleteManager="deleteManager" :listData="managerList" ref="managerListCompo" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
+        <!-- <managerList :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/> -->
         </div>
         <!-- <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" /> -->
 
@@ -15,7 +15,7 @@
 
 <script>
 /* eslint-disable */
-import memberList from './Tal_commonBookMemberList.vue'
+import managerList from './Tal_commonBookMemberList.vue'
 // import selectedListCompo from './Tal_selectedReceiverList.vue'
 import selectBookList from '../receiver/Tal_managerList.vue'
 export default {
@@ -30,33 +30,71 @@ export default {
   created () {
     // alert(JSON.stringify(this.propData.teamNameMtext))
     console.log("#!@#!@#");
+    this.getFollowerList()
     console.log(this.propData);
   },
   computed: {
   },
-  components: { memberList, selectBookList },
+  components: { managerList, selectBookList },
   data () {
     return {
       // openAddManagerPopYn:false
       selectBookListShowYn: false,
       receiverTitle: '매니저 관리',
-      list:[]
+      list:[],
+      managerList: []
     }
   },
   methods: {
+    async getFollowerList () {
+        var paramMap = new Map()
+
+        paramMap.set('teamKey', this.propData.currentTeamKey)
+        paramMap.set('managerYn', true)
+        // paramMap.set('followerType', 'M')
+        var result = await this.$commonAxiosFunction({
+            url: '/tp.getFollowerList',
+            param: Object.fromEntries(paramMap)
+        })
+        console.log(result)
+        debugger
+        this.managerList = result.data.content
+        for (var i = 0; i < this.managerList.length; i ++) {
+            this.managerList[i].selectedYn = false
+        }
+        var test =this.managerList
+
+        this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
+    },
+    dispNameChangeUserName(){
+        if (this.memberList) { // dispName이 없을시 userName으로 대체
+        for (var i =0; i < this.memberList.length; i ++) {
+            if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+                } else {
+                    this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+                }
+            }
+        }
+    },
+    async deleteManager (data) {
+       var param = {}
+      param.userKey = data.userKey
+      param.teamKey = data.teamKey
+      var result = await this.$commonAxiosFunction({
+          url: '/tp.deleteManager',
+          param: param
+      })/* 
+      if (result.data) {
+        this.refresh()
+      } */
+      this.refresh()
+    },
     refresh () {
-      this.$refs.managerListCompo.refresh()
+      this.getFollowerList()
     },
     backClick () {
       this.$emit('closeXPop')
-    },
-    openMCabUserList (data) {
-      this.selectBookDetail = data
-      if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
-        this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
-      } else {
-        this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
-      }
     },
     async openAddManagerPop () {
       // eslint-disable-next-line no-new-object
