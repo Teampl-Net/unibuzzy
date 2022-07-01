@@ -30,15 +30,16 @@
       </div>
     </div>
 
-    <div class="" id="boardItemBox" style=" padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
-      <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-
-      <transition name="showModal">
-        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-      </transition>
-
-      <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
-      <div class=" " id=""  style="margin-top: 0.8rem; height: calc(100% - 20px)">
+    <div class="" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+      <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll">
+        <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+        <transition name="showModal">
+          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        </transition>
+        <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
+      </div>
+      <div class=" " id="boardListWrap"  style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
+        <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
         <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
       </div>
     </div>
@@ -48,7 +49,7 @@
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
 <script>
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable */
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '../../boardList/Tal_commonBoardList.vue'
 import findContentsList from '../Tal_findContentsList.vue'
@@ -71,6 +72,8 @@ export default {
     // cothis.mCabContentsList
   },
   mounted () {
+    this.newBox = document.getElementById('boardListWrap')
+    this.newBox.addEventListener('scroll', this.handleScroll)
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -79,9 +82,17 @@ export default {
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
+    this.newBox = document.getElementById('boardListWrap')
   },
   data () {
     return {
+// 작은 스크롤
+      newScrollPosition: 0,
+      headerTop: 0,
+      firstContOffsetY: null,
+      newBox: null,
+      scrolledYn: false,
+// 전체 스크롤
       errorBoxYn: false,
       errorBoxText: '',
       box: null,
@@ -121,11 +132,31 @@ export default {
     }
   },
   methods: {
+    getAbsoluteTop (element) {
+      return window.pageYOffset + element.getBoundingClientRect().top
+    },
+    handleScroll () {
+      var element = document.getElementsByClassName('boardRow')[0]
+      var parentElement = element.parentElement
+      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+
+      var test = document.getElementById('commonBoardListHeader')
+      parentElement = element.parentElement
+      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+      if (this.firstContOffsetY < 0) {
+        if (this.newBox.scrollTop > this.newScrollPosition) {
+          this.scrolledYn = true
+        } else if (this.box.scrollTop <= this.newScrollPosition) {
+          this.scrolledYn = false
+        }
+      }
+      this.newScrollPosition = this.newBox.scrollTop
+    },
     async refresh () {
       var result = await this.getContentsList()
       this.mCabContentsList = result.content
     },
-    updateScroll () {
+    updateScroll() {
       // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryHeader')
       if (this.box.scrollTop > this.scrollPosition) {
@@ -177,7 +208,7 @@ export default {
       //   this.shareAuth.W = true
       //   this.shareAuth.V = true
       // } else {
-        this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
+        // this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
 
       console.log(this.shareAuth)
@@ -185,7 +216,7 @@ export default {
         this.$emit('closeXPop')
       } */
       // eslint-disable-next-line no-debugger
-      this.actorList = this.mCabinetContentsDetail.mShareItemList
+      // this.actorList = this.mCabinetContentsDetail.mShareItemList
       this.findPopShowYn = false
       // eslint-disable-next-line no-debugger
       this.$emit('closeLoading')
@@ -387,6 +418,24 @@ export default {
 </script>
 
 <style scoped>
+.boardListHeader {
+  width: calc(100% - 3rem);
+  min-height: 132px;
+  position: absolute;
+  background-color: #FFF;
+  top: 0;
+  /* left: 0; */
+  z-index: 9;
+  will-change: transform;
+  transition: transform 0.3s linear;
+}
+.boardListHeader--pinned {
+    transform: translateY(0%);
+}
+.boardListHeader--unpinned {
+    transform: translateY(-100%);
+}
+
 #boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
 .boardDetailWrap{
   height: 100vh;

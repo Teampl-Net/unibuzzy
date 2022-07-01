@@ -1,8 +1,8 @@
 
 <template>
-  <div id="boardListWrap" class="commonBoardListWrap">
-    <template v-for="(board, index) in commonBoardListData" :key="index">
-      <div class="commonListContentBox pushMbox" v-if="board.bodyFullStr" >
+  <div class="commonBoardListWrap">
+    <template id="boardRow" v-for="(board, index) in commonBoardListData" :key="index">
+      <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" >
         <div @click="goDetail(board)" class="pushDetailTopArea">
             <div class="">
               <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
@@ -37,9 +37,7 @@
         </div>
       </div>
     </template>
-    <div class="w-100P fl mtop-3" style="position: relative; width:100%; height:60px;">
-      <gLoadingS ref="sLoadingBoard" class="fl"/>
-    </div>
+    <gLoadingS ref="sLoadingBoard" class="fl"/>
     <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
 
   </div>
@@ -180,9 +178,9 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
-.commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);
+/* .commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);
 
-}
+} */
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
@@ -199,7 +197,7 @@ export default {
 .pushMbox{margin-bottom: 20px;}
 .userDoWrap img {width: 1rem;}
 
-.commonListContentBox{
+.commonBoardListContentBox{
     position: relative;
     width: calc(100% - 1rem);
     margin: 0.5rem 0.5rem;
