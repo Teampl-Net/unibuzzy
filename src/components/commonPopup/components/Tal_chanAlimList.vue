@@ -69,10 +69,11 @@ export default {
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
-      adminYn: true,
-      detailShowYn: false,
-      // adminYn: false,
-      // detailShowYn: true,
+      // adminYn: true, //유민
+      // detailShowYn: false, //유민
+
+      adminYn: false, //Wls
+      detailShowYn: true, //Wls
       memberYn: false
     }
   },

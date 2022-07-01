@@ -187,7 +187,13 @@ export default {
     },
     openChannelItem (data) {
       // this.itemTitle = item
-      this.openChanMenuYn = false
+      // alert(JSON.stringify(data))
+
+      if(data.targetType === 'boardMain'){
+        this.openChanMenuYn = false
+      }else{
+        this.openChanMenuYn = true
+      }
       this.openPop(data)
     },
     openBookItem (data) {

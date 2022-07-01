@@ -30,6 +30,10 @@ export default {
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
 
+
+        this.getBookList()
+    },
+    async mounted () {
         if(this.propData.value.clickData){
             this.$emit('openDetailYn',true)
             this.selectBookDetail = this.propData.value.clickData
@@ -38,17 +42,16 @@ export default {
             // alert(this.subPopId)
             history.push(this.subPopId)
             this.$store.commit('updateStack', history)
-            this.this.getBookMemberList()
+            await this.getBookMemberList()
             this.detailOpenYn = true
         }
-        this.getBookList()
     },
-     computed: {
+    computed: {
     historyStack () {
-      return this.$store.getters.hRPage
+        return this.$store.getters.hRPage
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+        return this.$store.getters.hUpdate
     }
   },
   watch: {
@@ -136,6 +139,8 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
+            console.log('result');
+            console.log(result);
              if (this.memberList) { // dispName이 없을시 userName으로 대체
             for (var i =0; i < this.memberList.length; i ++) {
                 if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {

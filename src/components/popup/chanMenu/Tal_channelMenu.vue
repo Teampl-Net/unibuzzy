@@ -55,7 +55,7 @@
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
-
+<!-- <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='editPopYn = false' :editList='myBoardList' :teamNameText='teamNameText'/> -->
 
 <!-- <selectBookList :chanInfo="propData" :propData="propData" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" /> -->
 <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' />
@@ -228,7 +228,7 @@ export default {
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
 
-      this.$emit('openPop', param)
+      this.$emit('openItem', param)
     },
     closeEditPop () {
       this.editPopYn = false
