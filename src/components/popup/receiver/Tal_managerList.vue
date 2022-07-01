@@ -34,12 +34,17 @@ export default {
         }
     },
     created () {
-        var a = {}
-        this.getFollowerList()
-        a.memberList = this.pSelectedList
-        this.propData.memberListOpen = true
-        var tets = this.propData
-        debugger
+        // console.log(this.propData);
+        this.memberList = this.propData.pSelectedList
+        // var a = {}
+        // if (this.propData.pSelectedList) {
+
+        // }
+        // this.getFollowerList()
+        // a.memberList = this.pSelectedList
+        // this.propData.memberListOpen = true
+        // var tets = this.propData
+
         // alert(JSON.stringify(this.pList))
     },
     components:{memberListCompo,selectedListCompo},
@@ -93,6 +98,7 @@ export default {
 			ownerYn,
 			grantDate */
         async saveManager () {
+            console.log(this.propData)
             var param = new Object()
             var userKeyList = []
             for (var i =0; i < this.memberList.length; i ++) {
@@ -100,14 +106,15 @@ export default {
                     userKeyList.push(this.memberList[i].userKey)
                 }
             }
-            param.teamKey = this.propData.currentTeamKey
+            param.teamKey = this.propData.teamKey
             param.userKeyList = userKeyList
             var result = await this.$commonAxiosFunction({
                 url: '/tp.saveManager',
                 param: param
             })
+            console.log(result);
             if (result.data.result === true && result.data.message === 'OK') {
-                this.$emit('closeXPop', true)
+                this.$emit('closeXPop')
             }
         },
         backClick(){

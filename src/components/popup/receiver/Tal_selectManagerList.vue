@@ -9,7 +9,7 @@
 
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
-    <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop' :pSelectedList='list' @sendReceivers='setSelectedList'/>
+    <!-- <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop'  @sendReceivers='setSelectedList'/> -->
 </template>
 
 <script>
@@ -30,7 +30,7 @@ export default {
     // alert(JSON.stringify(this.propData.teamNameMtext))
     console.log("#!@#!@#");
     this.getFollowerList()
-    console.log(this.propData);
+
   },
   computed: {
     historyStack () {
@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       // openAddManagerPopYn:false
-      selectManagerListShowYn: false,
+      // selectManagerListShowYn: false,
       receiverTitle: '매니저 관리',
       list:[],
       managerList: [],
@@ -72,6 +72,7 @@ export default {
             url: '/tp.getFollowerList',
             param: Object.fromEntries(paramMap)
         })
+        console.log('@@@result@@@')
         console.log(result)
         this.managerList = result.data.content
         for (var i = 0; i < this.managerList.length; i ++) {
@@ -87,7 +88,7 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-      this.selectBookListShowYn = false
+      // this.selectBookListShowYn = false
       this.getFollowerList()
     },
     dispNameChangeUserName(){
@@ -125,30 +126,47 @@ export default {
       var params = new Object()
       params.teamKey = this.propData.currentTeamKey
       params.memberYn = true
+      // params.managerKey = null MemberYn이 true이면서 매니저키가 없는 리스트가 필요
       var result = await this.$commonAxiosFunction({
         url: '/tp.getFollowerList',
         param: params
       })
 
+
       console.log('##############');
-      console.log(result.data.content);
-      this.managerList = result.data.content
+      // console.log(result.data.content);
+      var tempList = []
+      var managerofferList = []
+      for (let i = 0; i < result.data.content.length; i++) {
+        if(!result.data.content[i].managerKey){
+          managerofferList.push(result.data.content[i])
+        }
+
+      }
+      // var managerofferList = result.data.content
+      // this.managerList = result.data.content
       // this.managerList = []
-      console.log(this.managerList);
+      console.log('managerofferList');
+      console.log(managerofferList);
+
       this.propData.managerOpenYn=true
 
       var history = this.$store.getters.hStack
       this.popId = 'selectManagerListPop' + history.length
       history.push(this.popId)
       this.$store.commit('updateStack', history)
-      this.selectBookListShowYn = true
 
+      // this.selectBookListShowYn = true
       var param = new Object()
       param.targetType = 'selectManager'
-      param.pSelectedList = this.managerList
+      param.pSelectedList = managerofferList
       param.managerOpenYn = true
+      param.teamKey = this.propData.currentTeamKey
+      console.log('@@@@@@@@@@@@@')
+      console.log(param)
       this.$emit('openPop', param)
-      this.selectManagerListShowYn = true
+
+      // this.selectManagerListShowYn = true
 
       // var param = {}
       // param.targetType = 'bookMemberDetail'
