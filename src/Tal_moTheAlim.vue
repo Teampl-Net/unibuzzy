@@ -94,21 +94,4 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-
-@media screen and (max-width: 300px) {
-
-
-.font18{font-size: 16px}
-.font16{font-size: 14px}
-.font15{font-size: 13px}
-.font14{font-size: 12px}
-.font13{font-size: 11px}
-.font12{font-size: 10px}
-.font11{font-size: 9px}
-.font10{font-size: 8px}
-
-
-}
-
-
 </style>

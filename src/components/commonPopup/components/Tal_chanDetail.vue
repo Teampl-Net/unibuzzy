@@ -1,7 +1,5 @@
 <template>
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'" :class="{zindex1000:alimSubPopYn === true }">
-
-
   <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <!-- <div>{{pushKey}}</div> -->

@@ -254,7 +254,7 @@ export default {
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
-.pushDetailChanLogo{width: 30px;height: 30px; margin-right: 1px;}
+.pushDetailChanLogo{width: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
 .alimCheckContents{width: 100%;float: right; min-height: 20px;}

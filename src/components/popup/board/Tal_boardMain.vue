@@ -10,8 +10,8 @@
           <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{mCabContentsList? mCabContentsList.length : 0}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
-          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white">
-            <p class="cBlack fl font16" style="text-align: left;width: 50px; height: 100%;">관리자</p>
+          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px;">
+            <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
             <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
             <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
           </div>

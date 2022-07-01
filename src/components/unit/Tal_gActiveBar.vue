@@ -63,7 +63,6 @@ export default {
         this.tabwidth = 3.5
       }
     }
-
   }
 }
 </script>
@@ -128,6 +127,4 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
-
 </style>

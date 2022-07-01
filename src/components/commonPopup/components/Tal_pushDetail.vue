@@ -15,17 +15,20 @@
 
           <!-- </div> -->
           <div class="pushDetailHeaderTextArea">
-            <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck">
-            <p class=" font18 fontBold commonColor" style="margin-bottom: 0.1rem; word-break: break-all;">{{resizeText(alim.title)}}</p>
+            <!-- <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck"> -->
+            <p class=" font18 fontBold commonColor fl" style="margin-bottom: 0.1rem; word-break: break-all; width: 100%;">{{resizeText(alim.title)}}</p>
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
                 <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
 
-                <p class="font12 fr mleft-05 lightGray">{{dateText}}</p>
-
-                <p class="fr" v-if="alim.rUserCount === 1">한명에게</p>
-                <p class="fr" v-else-if="alim.rUserCount > 1">여러명에게</p>
-                <p v-else class="fr">전체에게</p>
+                <div style="height: 18px; float: right;">
+                  <img src="../../../assets/images/push/icon_clock.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                  <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                  <p class="font11 fr mleft-03 lightGray">{{dateText}}</p>
+                  <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
+                  <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
+                  <p v-else class="fr font11 mleft-1">전체에게</p>
+                </div>
                 <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
 
           </div>
@@ -72,6 +75,7 @@
 export default {
   data () {
     return {
+      clockClickYn: false,
       creatorYn: false,
       alimDetail: {},
       /* manageStickerPopShowYn: false, */
@@ -87,6 +91,7 @@ export default {
   watch: {
     dateCheck () {
       this.datechange()
+      this.clockClickYn = !this.clockClickYn
     }
   },
 
@@ -96,7 +101,7 @@ export default {
   components: {
     /* manageStickerPop */
   },
-  async created () {
+  async created() {
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
