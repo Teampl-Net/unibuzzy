@@ -61,6 +61,8 @@ import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {
   created () {
+    console.log('this.chanDetail')
+    console.log(this.chanDetail)
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
       if (this.chanDetail.modiYn === true) {
         this.pageType = '수정'
@@ -101,12 +103,17 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanDetail.targetKey)
       this.modiTeamData = await this.$getTeamList(paramMap)
-      this.inputChannelName = this.$changeText(this.modiTeamData.content[0].nameMtext)
-      this.inputChannelMemo = this.$changeText(this.modiTeamData.content[0].memoMtext)
-      this.selectBg.selectedId = this.modiTeamData.content[0].picMfilekey
-      this.selectBg.selectPath = this.modiTeamData.content[0].bgPathMtext
-      this.selectIcon.selectedId = this.modiTeamData.content[0].logoFilekey
-      this.selectIcon.selectPath = this.modiTeamData.content[0].logoPathMtext
+      console.log('this.modiTeamData');
+      console.log(this.modiTeamData);
+      this.inputChannelName = this.$changeText(this.modiTeamData.data.content[0].nameMtext)
+      this.inputChannelMemo = this.$changeText(this.modiTeamData.data.content[0].memoMtext)
+      this.selectBg.selectedId = this.modiTeamData.data.content[0].picMfilekey
+      this.selectBg.selectPath = this.modiTeamData.data.content[0].bgPathMtext
+      this.selectIcon.selectedId = this.modiTeamData.data.content[0].logoFilekey
+      this.selectIcon.selectPath = this.modiTeamData.data.content[0].logoPathMtext
+      var param = {}
+      param.teamType = this.modiTeamData.data.content[0].teamType
+      this.setTypeData(param)
     },
     channelTypeClick () {
       if (this.typePopYn === false) {
@@ -134,6 +141,8 @@ export default {
       } else if (param.teamType === 'A') {
         this.selectTypeText = '매장'
       } else if (param.teamType === 'E') {
+        this.selectTypeText = '기타'
+      }else {
         this.selectTypeText = '기타'
       }
       this.typePopYn = false

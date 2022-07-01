@@ -14,6 +14,10 @@
       </div> -->
 
       <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
+
+        <!-- <div v-if=""> -->
+
+        <!-- </div> -->
         <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
             <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
@@ -41,6 +45,9 @@ export default {
     sessionUserdata: {}
   },
   created () {
+    console.log('this.sessionUserdata')
+    console.log(this.sessionUserdata)
+
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
@@ -54,7 +61,7 @@ export default {
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
     this.getBookList()
-    
+
   },
 
   computed: {
@@ -168,23 +175,27 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
-      var changeList = this.selectedList.memberList
-      for(var m = 0; m < this.memberList.length; m ++) {
-        this.memberList[m].selectedYn = false
-        for(var c = 0; c < changeList.length; c++) {
-          if (changeList[c].userKey === this.memberList[m].userKey) {
-            this.memberList[m].selectedYn = true
+      if(this.selectedList.memberList){
+        var changeList = this.selectedList.memberList
+        for(var m = 0; m < this.memberList.length; m ++) {
+          this.memberList[m].selectedYn = false
+          for(var c = 0; c < changeList.length; c++) {
+            if (changeList[c].userKey === this.memberList[m].userKey) {
+              this.memberList[m].selectedYn = true
+            }
           }
         }
       }
     },
     editBookSelectedList () {
-      var changeList = this.selectedList.bookList
-      for(var m = 0; m < this.bookList.length; m ++) {
-        this.bookList[m].selectedYn = false
-        for(var c = 0; c < changeList.length; c++) {
-          if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
-            this.bookList[m].selectedYn = true
+      if(this.selectedList.memberList){
+        var changeList = this.selectedList.bookList
+        for(var m = 0; m < this.bookList.length; m ++) {
+          this.bookList[m].selectedYn = false
+          for(var c = 0; c < changeList.length; c++) {
+            if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
+              this.bookList[m].selectedYn = true
+            }
           }
         }
       }
@@ -221,7 +232,7 @@ export default {
     backClick () {
       var hStack = this.$store.getters.hStack
       var removePage = history[hStack.length - 1]
-      
+
       if (this.subPopId === hStack[hStack.length - 1]) {
         // alert(removePage)
         hStack = hStack.filter((element, index) => index < hStack.length - 1)

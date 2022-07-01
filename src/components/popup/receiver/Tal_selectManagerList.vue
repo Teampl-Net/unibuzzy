@@ -73,7 +73,6 @@ export default {
             param: Object.fromEntries(paramMap)
         })
         console.log(result)
-        debugger
         this.managerList = result.data.content
         for (var i = 0; i < this.managerList.length; i ++) {
             this.managerList[i].selectedYn = false

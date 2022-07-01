@@ -61,7 +61,7 @@ export default {
     historyStack (value, old) {
     }
   },
-  
+
     computed: {
         historyStack () {
             return this.$store.getters.hRPage

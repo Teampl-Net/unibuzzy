@@ -146,7 +146,6 @@ export default {
     }
   },
   async created () {
-    // alert(this.parentMemberYn)
     if(this.parentMemberYn) {
       this.memberYn = this.parentMemberYn
     }
@@ -225,6 +224,7 @@ export default {
       param.targetType = 'createChannel'
       param.targetKey = this.chanDetail.teamKey
       param.modiYn = true
+
       this.$emit('openPop', param)
     },
     settingTeamType (teamType) {
@@ -247,6 +247,8 @@ export default {
       } else if (teamType === 'A') {
         this.teamTypeText = '매장'
       } else if (teamType === 'E') {
+        this.teamTypeText = '기타'
+      }else {
         this.teamTypeText = '기타'
       }
     },
@@ -317,7 +319,7 @@ export default {
         };
       } catch (e) {};
       var link = 'https://thealim.page.link' + '/?link=' + 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      
+
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
         objectType: 'feed',

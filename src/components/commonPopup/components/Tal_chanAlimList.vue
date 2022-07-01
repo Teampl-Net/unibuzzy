@@ -147,7 +147,6 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       console.log(resultList);
       this.chanItem = resultList.data.content[0]
-      debugger
       console.log("#######################################");
       console.log(this.chanItem );
 

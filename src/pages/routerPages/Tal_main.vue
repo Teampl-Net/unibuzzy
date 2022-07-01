@@ -126,8 +126,12 @@ export default {
       //   // return 'error'
       // })
 
+      this.$emit('openLoading')
       this.$refs.topChan.reLoad()
       this.$refs.topAlim.reLoad()
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 500)
 
       // this.$refs.topChan.reLoad()
     },

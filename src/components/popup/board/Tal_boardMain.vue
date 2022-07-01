@@ -171,11 +171,11 @@ export default {
       this.mCabinetContentsDetail = resultList.mCabinet
 
       // eslint-disable-next-line no-unused-vars
-      if (this.propData.ownerYn === 1) {
-        this.shareAuth.R = true
-        this.shareAuth.W = true
-        this.shareAuth.V = true
-      } else {
+      if (this.propData.ownerYn !== 1) {
+      //   this.shareAuth.R = true
+      //   this.shareAuth.W = true
+      //   this.shareAuth.V = true
+      // } else {
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
 

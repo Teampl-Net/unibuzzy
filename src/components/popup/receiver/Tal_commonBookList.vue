@@ -221,7 +221,7 @@ export default {
 
                 if(result.data === 'true' || result.data === true){
                     console.log(result)
-                    this.cabinetList.splice(index, 1)
+                    this.listData.splice(index, 1)
                 }
             }catch(e){
                 console.log(e)
