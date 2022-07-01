@@ -226,6 +226,9 @@ export default {
           this.endListYn = true
         }
         this.commonListData = newArr
+      }else{
+
+        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
     },
     /* addSubHistory (pageName) {
@@ -275,7 +278,9 @@ export default {
       this.commonListData = resultList.content
 
       this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+
       this.findPopShowYn = false
+      this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
 
       // this.$refs.tabLoading.hide();
     },
@@ -326,7 +331,10 @@ export default {
       }
 
       var result = await this.$getContentsList(param)
-      // console.log(result)
+      console.log(result)
+      if(result.empty){
+        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+      }
       var resultList =result
       return resultList
     },

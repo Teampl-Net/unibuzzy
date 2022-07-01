@@ -348,10 +348,11 @@ export default {
 
         }
       }else {
+        // 처음 만들었으면 // mShareList.length === 0
         this.changeShareType('all')
-        this.writePermissionAllYn = false
-        this.readPermissionAllYn = false
-        this.commentPermissionAllYn = false
+        this.writePermissionAllYn = true
+        this.readPermissionAllYn = true
+        this.commentPermissionAllYn = true
       }
 
 

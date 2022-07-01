@@ -1,10 +1,12 @@
 <template>
-    <div class="" ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%;">
-        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab">
-            <p :style="activebarWidth" class="tabItem font16 fontBold commonColor" style="margin: 0 auto;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
-        </div>
-        <div class="activeBar"  ref="activeBar" :style="activebarWidth"   style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+<!-- :class="{ssss: tabList.length > 3}" -->
+    <div ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%; " >
+      <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
+          <p :style="activebarWidth" class="tabItem font16 fontBold commonColor" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
       </div>
+      <div class="activeBar"  ref="activeBar" :style="activebarWidth"   style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+    </div>
+
 </template>
 <script>
 export default {
@@ -16,6 +18,7 @@ export default {
     return {
       transition: 'slide-next',
       activetab: 0,
+      // tabwidth: 4.8,
       tabwidth: 4.8,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null }
     }
@@ -54,6 +57,13 @@ export default {
         }
       }
     }
+    if (window.innerWidth < 360) {
+      this.tabwidth = 4
+      if (window.innerWidth < 290) {
+        this.tabwidth = 3.5
+      }
+    }
+
   }
 }
 </script>
@@ -66,7 +76,7 @@ export default {
   transform: var(--transform);
 }
 .tabTitleBox{
-  min-width: 4rem;
+  /* min-width: 4rem; */
 }
 .tabs {
   display: inline-table;
@@ -84,6 +94,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
   /* justify-content: flex-start; */
   cursor: pointer;
   text-transform: uppercase;
@@ -117,5 +128,6 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 
 </style>

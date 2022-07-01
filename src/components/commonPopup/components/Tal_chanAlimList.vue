@@ -41,8 +41,8 @@
   <div class="btnPlus" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
-    <popHeader :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/>
-    <chanDetailComp :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <!-- <popHeader  :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
+    <chanDetailComp @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
@@ -112,6 +112,9 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    changeMemberYn(data){
+      this.memberYn = data
+    },
     closeDetailPop () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]

@@ -32,7 +32,6 @@ export default {
     getUserInform () {
       var userInfo = this.$getUserInform()
       if (userInfo.userEmail); else userInfo.userEmail = '등록된 이메일이 없습니다.'
-      userInfo.phoneLast = null
       if (userInfo.phoneLast) {
         userInfo.phoneLast = '010-****-' + userInfo.phoneLast
       } else {

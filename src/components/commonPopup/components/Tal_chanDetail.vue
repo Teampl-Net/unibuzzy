@@ -1,11 +1,15 @@
 <template>
-<div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'">
+<div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'" :class="{zindex1000:alimSubPopYn === true }">
+
+
   <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
     <div style="width: 100%; height: 100%; position: relative;">
+      <!-- <popHeader v-if="alimSubPopYn === true" :bgblack="true" style="background: white;" :headerTitle="changeText(chanDetail.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
+      <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
@@ -96,6 +100,8 @@ export default {
     ]
   }, */
   mounted () {
+    console.log('this.chanDetail');
+    console.log(this.chanDetail);
     // this.$refs.chanImg.style.setProperty('--halfWidth', (window.innerWidth - 185) / 2 + 'px')
   },
   data () {
@@ -201,9 +207,6 @@ export default {
     //   this.errorPopYn = true
     // },
     async saveMember () {
-      this.smallPopYn = true
-      this.confirmMsg = '멤버 신청이 완료되었습니다.'
-      this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
@@ -220,8 +223,16 @@ export default {
       })
       console.log(result)
       if (result.data.result === true) {
-        this.errorPopYn = false
-        this.memberYn = param.memberYn
+        // this.errorPopYn = false
+        if (param.memberYn) {
+          this.smallPopYn = true
+          this.confirmMsg = '멤버 신청이 완료되었습니다.'
+          this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
+        }
+      this.memberYn = param.memberYn
+      // param = {}
+
+      this.$emit('changeMemberYn', this.memberYn)
       }
 
     },
@@ -375,10 +386,17 @@ export default {
 .gBtnSmall{
   float: left!important; margin-top: 0.7rem
 }
-
+.zindex1000{
+  z-index: 1000;
+}
 .chanDetailWrap{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
   background-size: cover;
+
 }
 
 .chanDetailWrap tr, .chanDetailWrap td{

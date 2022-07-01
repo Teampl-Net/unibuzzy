@@ -11,7 +11,7 @@
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
               </div>
                 <div class="pushDetailHeaderTextArea">
-                  <p class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                  <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
                 <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                   <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
                   <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -38,17 +38,17 @@
                 </div>
               </div>
             </div>
-          <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+          <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
           </div>
       </template>
-      <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:60px;">
+      <myObserver  @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+      <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
             <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
       <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
   <!-- </div> -->
 </template>
 <script>
-
 /* eslint-disable */
 export default {
   components: {
@@ -85,17 +85,19 @@ export default {
   /* emits: ['goDetail'], */
   methods: {
     loadingRefShow(){
+      console.log('show');
       this.$refs.sLoadingPush.show()
     },
     loadingRefHide(){
+      console.log('hide');
       this.$refs.sLoadingPush.hide()
     },
     resizeText (text, name) {
       if (text) {
-        if (text.length > 15) {
-          text = text.substr(0, 15)
-          text += '...'
-        }
+        // if (text.length > 15) {
+        //   text = text.substr(0, 15)
+        //   text += '...'
+        // }
       } else {
         text = '[' + this.$changeText(name) + '] 제목없는 알림'
       }

@@ -6,7 +6,7 @@
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
         <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
-            <p class="font15 fl fontBold mNone commonBlack" style="width: 180px;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
+            <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
             <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
                 <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColo font12" >{{value.followerCount}}</span>
@@ -48,10 +48,10 @@ export default {
   },
   methods: {
     resizeText (text) {
-      if (text.length > 15) {
-        text = text.substr(0, 15)
-        text += '...'
-      }
+      // if (text.length > 15) {
+      //   text = text.substr(0, 15)
+      //   text += '...'
+      // }
       return text
     },
     openPop (value) {
@@ -109,7 +109,7 @@ animation-name: fadein;
 animation-duration: 0.3s;
 }
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
-.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
+.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 /* .chanMsgWrap{line-height: 0.9rem; padding: 0.5rem; text-align: left; background-color: #6768A71A; border-radius: 6px; opacity: 1; min-height: 39px; box-sizing: border-box} */

@@ -13,7 +13,6 @@
     <gBtnSmall v-else-if="this.headerTitle === '게시판 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" />
     <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="this.$emit('openMenu')">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
-
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
     <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="관리" style="position: absolute; right: 1rem" />

@@ -14,8 +14,8 @@
                 <!-- <img v-if="value.readYn === true" src="../../assets/images/main/icon_notice1.png" style="width:1.5rem">
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             <!-- </td> -->
-            <td>
-                <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 180px;" />
+            <td >
+                <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <div>
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>
                     <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
@@ -35,10 +35,10 @@ export default {
   methods: {
     resizeText (text, name) {
       if (text) {
-        if (text.length > 15) {
-          text = text.substr(0, 15)
-          text += '...'
-        }
+        // if (text.length > 15) {
+        //   text = text.substr(0, 15)
+        //   text += '...'
+        // }
       } else {
         text = '[' + this.$changeText(name) + '] 제목없는 알림'
       }
