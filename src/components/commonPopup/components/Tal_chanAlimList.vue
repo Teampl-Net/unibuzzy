@@ -29,7 +29,7 @@
         </div>
       </div>
     </div> -->
-    <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
+    <div id="chanInfoArea" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
       <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
     </div>
 
@@ -219,9 +219,12 @@ export default {
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         document.getElementById('chanInfoSummary2').classList.add('displayBIm')
+        document.getElementById('chanInfoArea').classList.add('displayNIm')
+
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
+        document.getElementById('chanInfoArea').classList.remove('displayNIm')
         blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
