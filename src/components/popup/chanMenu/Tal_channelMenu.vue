@@ -56,6 +56,7 @@
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
 
+
 <!-- <selectBookList :chanInfo="propData" :propData="propData" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" /> -->
 <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' />
 </template>
@@ -230,8 +231,8 @@ export default {
       this.$emit('openPop', param)
     },
     closeEditPop () {
-      // this.editPopYn = false
-      this.goNo()
+      this.editPopYn = false
+      // this.goNo()
     },
     openTeamDetailPop(data){
       // console.log(data)

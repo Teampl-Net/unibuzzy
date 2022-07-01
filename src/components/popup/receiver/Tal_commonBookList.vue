@@ -19,8 +19,8 @@
                                 <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                                     <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
                                 </div>
-                                <input  :id="index" v-model="cabinetInputText"  style="border:none; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
-                                <div class="fl"  style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
+                                <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+                                <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
                                     <p class="fl" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
                                     <p class="fl" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
                                 </div>
@@ -33,11 +33,11 @@
                                 </div> -->
                                 <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
                                 <!-- <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                                <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                                    <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
-                                </div>
+                                <!-- <div style="width:25px; height:100%; line-height:40px" class="fl "> -->
+                                    <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
+                                <!-- </div> -->
                                 <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
-                                <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText" >{{data.cabinetNameMtext}}</p>
+                                <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
 
                                 <!-- <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data,index)" > -->
                             </div>
@@ -246,7 +246,7 @@ export default {
             var param = new Object()
             param.creMenuYn = true
             var cabinet = new Object()
-            var defaultAddBoardName = this.$checkSameName(this.cabinetList, '주소록')
+            var defaultAddBoardName = await this.$checkSameName(this.listData, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
             cabinet.currentTeamKey = this.propObject.currentTeamKey
             cabinet.sysCabinetCode = 'USER'
@@ -256,11 +256,23 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+                // this.cabinetList.unshift(addBoard)
+                this.$emit('refreshList')
+                if(!document.getElementsByClassName('foo')[0]){
+                    setTimeout(() => {
+                        this.anima()
+                    },200)
+                }else{
+                    this.anima()
+                }
             }
-            this.$emit('refreshList')
-            // this.cabinetList.unshift(addBoard)
-            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+
+
             // // debugger
+
+        },
+        anima(){
+            document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
             setTimeout(() => {
                 document.getElementsByClassName('foo')[0].style.backgroundColor = ''
             //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
@@ -369,6 +381,8 @@ export default {
     height:60px;
     border-bottom:1px solid #ddd; padding: 0.7rem 0;
     position: relative;
+    min-width: 280px;
+    overflow: auto;
     /* transition : background-color 0.5s ease-in !important; */
 }
 
