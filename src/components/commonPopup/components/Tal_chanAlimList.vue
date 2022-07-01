@@ -68,6 +68,8 @@ export default {
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
+      // adminYn: true,
+      // detailShowYn: false,
       adminYn: false,
       detailShowYn: true,
       memberYn: false

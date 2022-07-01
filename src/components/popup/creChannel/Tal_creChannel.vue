@@ -57,6 +57,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {

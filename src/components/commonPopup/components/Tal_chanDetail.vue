@@ -1,6 +1,7 @@
 <template>
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'">
-  <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='saveMember'  />
+  <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  />
+  <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
@@ -29,7 +30,7 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && admYn === false" class="mtop-05">
-          <gBtnSmall @click="memberClick" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'"/>
+          <gBtnSmall @click="saveMember" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'"/>
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
@@ -99,6 +100,9 @@ export default {
   },
   data () {
     return {
+      smallPopYn: false,
+      addSmallMsg: '',
+      confirmMsg: '',
       errorPopYn: false,
       chanBgBlackYn: false,
       admYn: false,
@@ -181,22 +185,25 @@ export default {
         alert('성공!')
       })
     },
-    memberClick () {
-      if (this.memberYn) {
-        this.saveMember()
-      } else {
-        this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
-        this.errorBoxType = false
-        this.errorPopYn = true
-      }
-    },
+    // memberClick() {
+    //   if (this.memberYn) {
+    //     this.saveMember()
+    //   } else {
+    //     this.errorMsg = '멤버의 경우, 관리자에 한해<br>프로필 정보를 조회할 수 있습니다.'
+    //     this.errorBoxType = false
+    //     this.errorPopYn = true
+    //   }
+    // },
     // memberClick () {
     //   console.log(this.chanDetail)
     //   this.errorMsg = '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널의 멤버로 신청하시겠습니까?'
     //   this.errorBoxType = true
     //   this.errorPopYn = true
     // },
-    async saveMember(){
+    async saveMember () {
+      this.smallPopYn = true
+      this.confirmMsg = '멤버 신청이 완료되었습니다.'
+      this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
