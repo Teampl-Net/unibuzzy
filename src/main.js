@@ -28,6 +28,7 @@ import gSearchBox from './components/unit/Tal_searchBox.vue'
 import gColorPicker from './components/unit/Tal_colorPicker.vue'
 
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
+import smallPop from './components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'
 
 import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
@@ -69,6 +70,7 @@ app.component('commonList', commonList)
 app.component('gChannelList', gChannelList)
 app.directive('longclick', longClickInstance)
 app.component('gConfirmPop', gConfirmPop)
+app.component('smallPop', smallPop)
 app.component('myObserver', myObserver)
 app.component('gWhiteSelect', gWhiteSelect)
 app.component('gMemoPop', gMemoPop)
@@ -91,11 +93,9 @@ axios.defaults.timeout = 100000
 
 axios.defaults.withCredentials = true
 
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
-// axios.defaults.baseURL = 'http://192.168.0.27:19090'
-// axios.defaults.baseURL = 'http://localhost:19090'
-
+// axios.defaults.baseURL = 'http://192.168.0.22:19090'
+axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'

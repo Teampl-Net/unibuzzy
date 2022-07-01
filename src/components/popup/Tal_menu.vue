@@ -24,7 +24,7 @@ export default {
       menuList: [
         { iconUrl: 'http://placehold.it/25', menuText: '홈', link: '', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '알림', link: 'pushList', type: 'page' },
-        { iconUrl: 'http://placehold.it/25', menuText: '구독', link: 'chanList', type: 'page' },
+        { iconUrl: 'http://placehold.it/25', menuText: '채널', link: 'chanList', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '설정', link: 'setMypage', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '더알림이란?', link: 'theAlimInfo', type: 'pop' },
         { iconUrl: 'http://placehold.it/25', menuText: '자주 찾는 질문', link: 'question', type: 'pop' }
