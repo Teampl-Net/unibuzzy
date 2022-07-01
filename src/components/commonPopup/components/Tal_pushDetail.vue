@@ -3,9 +3,11 @@
     <!-- <manageStickerPop :targetKey="this.alimDetail.contentsKey" :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
 
-      <div class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+      <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
-          <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem"><img alt="채널 프로필이미지" style="width:80%" :src="alim.logoPathMtext"></div>
+          <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem"><img alt="채널 프로필이미지" style="width:80%" :src="alim.logoPathMtext">
+            <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="this.creatorYn" style="width: 20px; height: 25px; position: absolute; top: 10px;" />
+          </div>
           <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
             <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
 
@@ -49,7 +51,7 @@
               </template>
               <template v-else-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
           </div>
@@ -95,7 +97,6 @@ export default {
     /* manageStickerPop */
   },
   async created () {
-
     this.$emit('openLoading')
     await this.getContentsList()
     this.checkCreator()
@@ -292,6 +293,7 @@ export default {
 }
 </script>
 <style scoped>
+.alimCreatorColor {background-color: #f4f4f9 !important;}
 .pagePaddingWrap {
     padding: 60px 1.5rem;
     box-sizing: border-box;
@@ -304,7 +306,7 @@ export default {
 .pushDetailChanLogo{width: 50px;height: 50px;}
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
-#alimCheckArea{min-height: 35px;}
+#alimCheckArea{min-height: 50px;}
 .alimCheckContents{width: 100%;float: left; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 

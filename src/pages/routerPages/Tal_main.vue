@@ -20,7 +20,7 @@
       <div>
         <img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
         <span @click="test" class="profileTitle" ref="userEmail">휴대폰</span>
-        <span class="grayBlack font14" ref="userMobile">010-****-{{userInfo.phoneLast}}</span>
+        <span class="grayBlack font14" ref="userMobile">{{userInfo.phoneLast}}</span>
       </div>
     </div>
   </div>
@@ -181,7 +181,12 @@ export default {
       this.getMainBoard(this.userKey)
       if (userInfo !== undefined && userInfo !== null) {
         if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'
-        if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null); else userInfo.phoneLast = '등록된 번호가 없습니다.'
+        if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null) {
+          userInfo.phoneLast = '010-****-' + userInfo.phoneLast
+        } else {
+          userInfo.phoneLast = '등록된 번호 없음'
+        }
+
         if (userInfo.userDispMtext !== undefined && userInfo.userDispMtext !== null); else {
           if (userInfo.userNameMtext !== undefined && userInfo.userNameMtext !== null) { userInfo.userDispMtext = userInfo.userNameMtext } else { userInfo.userDispMtext = '등록된 이름이 없습니다.' }
         }

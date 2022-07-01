@@ -6,13 +6,14 @@
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
-          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-right: 1px solid white">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
-          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-right: 1px solid white">게시글 {{mCabContentsList? mCabContentsList.length : 0}}개</p>
+          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
+          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{mCabContentsList? mCabContentsList.length : 0}}개</p>
           <!-- 관리자 여부 확인 -->
-          <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;"> -->
-          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;">
-            <p class="cBlack fl font16" style="width: 60px; height: 100%;">관리자</p>
-            <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div>
+          <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
+          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white">
+            <p class="cBlack fl font16" style="text-align: left;width: 50px; height: 100%;">관리자</p>
+            <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
+            <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
           </div>
         </div>
         <!-- 게시판 이름 , 소속 채널 -->
@@ -397,7 +398,7 @@ export default {
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
 .summaryWrap{height: calc(35vh); width: 100%; float: left; position: fixed;}
-.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 5px; display: flex; justify-content: space-around;}
+.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 10px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}
 .summaryBottom p {color: #fff;}

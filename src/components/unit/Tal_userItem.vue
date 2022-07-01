@@ -7,7 +7,7 @@
         </div>
         <div class="" style="height: 40%;" >
             <span v-if="this.uItem === '이메일'" class="fl">{{getUserInform.userEmail}}</span>
-            <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">010-****-{{getUserInform.phoneLast}}</span>
+            <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{getUserInform.phoneLast}}</span>
             <!-- <gBtnSmall style="float: right;" btnTitle="변경" v-on:click="openChangePop(uItem)" /> -->
         </div>
     </div>
@@ -32,7 +32,12 @@ export default {
     getUserInform () {
       var userInfo = this.$getUserInform()
       if (userInfo.userEmail); else userInfo.userEmail = '등록된 이메일이 없습니다.'
-      if (userInfo.phoneLast); else userInfo.phoneLast = '등록된 번호가 없습니다.'
+      userInfo.phoneLast = null
+      if (userInfo.phoneLast) {
+        userInfo.phoneLast = '010-****-' + userInfo.phoneLast
+      } else {
+        userInfo.phoneLast = '등록된 번호 없음'
+      }
       return userInfo
     }
   },
