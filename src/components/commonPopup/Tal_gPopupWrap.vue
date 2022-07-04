@@ -334,14 +334,7 @@ export default {
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
-    // async changePop(params){
-    //   // console.log('change Pop')
-    //   // console.log(params)
-    //   // this.replyYn = true
 
-    //   this.openPop(params)
-
-    // },
     openPop (params) {
       this.popParams = params
       this.popShowYn = true
@@ -389,6 +382,7 @@ export default {
       }
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
+    // alert(this.targetType)
       if (this.targetType === 'pushDetail') {
         this.pushListAndDetailYn = false
         this.$emit('closePop', true)

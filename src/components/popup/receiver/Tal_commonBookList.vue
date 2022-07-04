@@ -102,6 +102,7 @@ export default {
         }
     },
     async created () {
+
         this.propObject = this.propData
         if(this.selectPopYn){
             this.selectedBookList = []
@@ -112,6 +113,7 @@ export default {
         await this.getTeamCabList()
         this.changeSelectedList()
         this.loadingYn = false
+        this.settingParentList()
     },
     updated () {
         this.changeSelectedList()
@@ -146,6 +148,49 @@ export default {
         }
     },
     methods:{
+        settingParentList(){
+
+            // this.cabinetList[index].selectedYn = true
+            // console.log(data)
+//             data.shareSeq = data.cabinetKey
+//             this.selectedBookList.push(data)
+                // this.selectIndex.push(index)
+//             this.$emit('changeSelectBookList', this.selectedBookList)
+// listData
+            console.log('@###!@#!#!@#!#!@#!@#');
+            console.log(this.listData)
+
+            if(this.parentSelectList.bookList){
+            var indexOf = null
+                for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
+                    // this.parentSelectList.bookList.data.cabinetKey
+                    // this.selectIndex.push(i)
+                    // data.shareSeq = data.cabinetKey
+                    // console.log(this.parentSelectList.bookList[i].cabinetKey);
+                    // for (let index = 0; index < this.listData.length; index++) {
+                        // this.listData[index].
+                    indexOf = this.listData.findIndex(data => data.cabinetKey === this.parentSelectList.bookList[i].cabinetKey); // 변경된 인덱스 ** map에서 index찾기 **
+                    console.log(this.parentSelectList.bookList[i].cabinetKey)
+
+                    console.log(indexOf)
+
+                    // }
+                }
+                        // this.listData[indexOf].shareSeq = this.listData[indexOf].cabinetKey
+                    // this.selectIndex.push(i)
+
+            }
+            // if (this.parentSelectList.memberList) {
+            //     for (let i = 0; i < this.parentSelectList.memberList.length; i++) {
+            //         this.selectIndex.push(i)
+            //     }
+
+            // }
+
+        // this.cabinetList[i].shareSeq = this.cabinetList[i].cabinetKey
+        //                         this.selectedBookList.push(this.cabinetList[i])
+        //                         this.selectIndex.push(i)
+        },
         changedText(data, index){
             // this.editYn = true
             this.cabinetInputText = data.cabinetNameMtext
@@ -160,6 +205,7 @@ export default {
                         for (var s = 0; s < this.parentSelectList.bookList.length; s ++) {
                             if (this.parentSelectList.bookList[s].cabinetKey === this.cabinetList[i].cabinetKey) {
                                 this.cabinetList[i].selectedYn = true
+
                                 break
                             }
                         }
@@ -227,6 +273,7 @@ export default {
         },
         //유민참고
         addSelectedList(data, index) {
+            // console.log(data);
             if(this.selectIndex.indexOf(index) === -1){
                 this.cabinetList[index].selectedYn = true
                 data.shareSeq = data.cabinetKey

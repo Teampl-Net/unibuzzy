@@ -14,7 +14,7 @@
   </div>
 
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
-  <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
+  <div style="margin-top:calc(50px + 20px); width:100%;  " class="fl" >
 
     <!-- <div v-if="ownerYn" class="fl w-100P mtop-05 mbottom-2"  @click="adminManagingClick">
       <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
@@ -31,6 +31,7 @@
         <teamList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
+
 
   </div>
 
@@ -93,6 +94,7 @@ export default {
     }
   },
   async created() {
+    console.log(this.adminYn);
     console.log('propData');
     this.getFollowerList()
     console.log(this.addChanList);
@@ -125,9 +127,9 @@ export default {
       addChanMenuList:{},
       editPopYn : false,
       cabinetList:[],
-      menuHeight: null,
+      menuHeight: 0,
       boardDropDownYn:true,
-      groupDropDownYn:null,
+      groupDropDownYn:false,
       selectManagerListYn:false,
 
       selectedList : [],
@@ -149,7 +151,9 @@ export default {
         this.book = true
       }
 
-      if(this.myBoardList.length === 0){ this.board = false }else {
+      if(this.myBoardList.length === 0){
+        this.board = false
+        }else {
         this.board = true
        }
 
@@ -163,11 +167,15 @@ export default {
         param: params
       })
       if (result.data) {
-        if(result.data.content[0].managerKey !== undefined && result.data.content[0].managerKey !== null && result.data.content[0].managerKey !== '') {
-          this.adminYn = true
+        if(result.data.content.length > 0){
+          if(result.data.content[0].managerKey !== undefined && result.data.content[0].managerKey !== null && result.data.content[0].managerKey !== '') {
+            this.adminYn = true
+          }
+          if(result.data.content[0].ownerYn)
+            this.ownerYn = true
+
         }
-        if(result.data.content[0].ownerYn)
-          this.ownerYn = true
+
       }
     },
     setSelectedList(datas){
@@ -283,8 +291,12 @@ export default {
       this.myBoardList = result
     },
     groupListlength () {
-       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length=== 0 ? 1 : this.cabinetList.length) * 50 + 10 + 'px')
+      this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
+      return{
+        '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
+      }
       //  this.menuHeight = this.cabinetList.length * 70 + 20 + 'px'
+
     },
     boardListLength () {
       this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
@@ -295,7 +307,6 @@ export default {
     },
     boardDropDown () {
 
-      this.setDrop()
       if(this.board === true){
         this.boardListLength()
         if(this.boardDropDownYn){
@@ -306,14 +317,16 @@ export default {
       }
     },
     groupDropDown () {
-      this.setDrop()
+
       if(this.book === true){
         this.groupListlength()
-        if(this.groupDropDownYn){
+
+        if(this.groupDropDownYn){// 이미지 변경
           this.groupDropDownYn = false
         }else{
           this.groupDropDownYn = true
         }
+
       }
     },
     goPage (link) {

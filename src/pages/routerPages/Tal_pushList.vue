@@ -104,7 +104,7 @@ export default {
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
       // this.pushListAndDetailYn = false
-      
+
     }
 
   },
