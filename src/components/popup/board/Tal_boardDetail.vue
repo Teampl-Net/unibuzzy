@@ -175,7 +175,6 @@ export default {
     },
     async saveMemo (text) {
       var memo = new Object()
-      debugger
       var t = this.memeoValue
       if(this.memeoValue !== undefined && this.memeoValue !== null && this.memeoValue !== {} ){
         memo = this.mememoValue
