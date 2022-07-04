@@ -71,6 +71,8 @@ export default {
                             this.memberList.splice(i, 1)
                         }
                     } else if (this.propData.selectMemberType === 'member') {
+                        var tttt = this.pSelectedList 
+                        debugger
                         if (this.pSelectedList && this.pSelectedList.length > 0) {
                             for (var p = 0; p < this.pSelectedList.length; p ++) {
                                 if(this.pSelectedList[p].userKey === this.memberList[i].userKey) {

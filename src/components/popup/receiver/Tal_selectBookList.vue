@@ -16,7 +16,6 @@
       <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
 
         <!-- <div v-if=""> -->
-
         <!-- </div> -->
         <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">

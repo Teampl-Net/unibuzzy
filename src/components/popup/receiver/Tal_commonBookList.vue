@@ -103,7 +103,6 @@ export default {
     },
     async created () {
         this.propObject = this.propData
-        // alert(JSON.stringify(this.propObject.teamNameMtext))
         if(this.selectPopYn){
             this.selectedBookList = []
             if(this.parentSelectList.bookList) {
@@ -248,7 +247,7 @@ export default {
             var cabinet = new Object()
             var defaultAddBoardName = await this.$checkSameName(this.listData, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-            cabinet.currentTeamKey = this.propObject.currentTeamK
+            cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey
             cabinet.sysCabinetCode = 'USER'
             // cabinet.creTeamKey = this.propObject.currentTeamKey
             cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey

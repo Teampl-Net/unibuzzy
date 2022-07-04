@@ -363,19 +363,6 @@ export default {
       this.$store.commit('updateStack', history)
       this.$emit('openItem',params)
     },
-    // bookMenuClick(data) {
-    //   var params = new Object()
-    //   params.targetType = 'editBookList'
-    //   params.value = data
-    //   // params.currentTeamKey = this.data.teamKey
-    //   //   // alert(JSON.stringify(params.currentTeamKey))
-    //   // params.bookNameMtext = this.$changeText(this.data.cabinetNameMtext)
-    //   // params.value = data
-    //   params.teamNameMtext = this.teamName()
-    //   alert(params)
-    //   this.$emit('openBookDetail', params)
-
-    // },
     receiverClick(data){
       var params = new Object()
       params.targetType = 'editBookList'

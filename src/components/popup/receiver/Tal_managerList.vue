@@ -36,16 +36,6 @@ export default {
     created () {
         // console.log(this.propData);
         this.memberList = this.propData.pSelectedList
-        // var a = {}
-        // if (this.propData.pSelectedList) {
-
-        // }
-        // this.getFollowerList()
-        // a.memberList = this.pSelectedList
-        // this.propData.memberListOpen = true
-        // var tets = this.propData
-
-        // alert(JSON.stringify(this.pList))
     },
     components:{memberListCompo,selectedListCompo},
     methods : {

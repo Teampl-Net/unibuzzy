@@ -195,7 +195,6 @@ export default {
     },
     openChannelItem (data) {
       // this.itemTitle = item
-      // alert(JSON.stringify(data))
       if(data.targetType === 'boardMain'){
         this.openChanMenuYn = false
       }else{

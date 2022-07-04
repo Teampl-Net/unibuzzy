@@ -575,10 +575,6 @@ export default {
     showSelectBookPop () {
       // var sessiondata = {}
 
-      // alert(JSON.parse(localStorage.getItem('sessionUser')))
-      // sessiondata.userKey = JSON.parse(localStorage.getItem('sessionUser').userKey)
-      // sessiondata.userDispMtext = JSON.parse(localStorage.getItem('sessionUser').userDispMtext)
-      // sessiondata.userNameMtext = JSON.parse(localStorage.getItem('sessionUser').userNameMtext)
       this.sessionUserdata = JSON.parse(localStorage.getItem('sessionUser'))
       this.sessionUserdata.menuType = "U"
       this.sessionUserdata.cabinetKey = this.modiBoardDetailProps.cabinetKey
