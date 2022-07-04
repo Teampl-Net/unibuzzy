@@ -90,7 +90,7 @@ export default {
     pushList,
     chanDetailComp
   },
-  async created () {
+  async created() {
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))

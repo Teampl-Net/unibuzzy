@@ -5,16 +5,16 @@
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
+        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index"  >
             <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;" >
-              <div class="chanLogoImgWrap fl"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+              <div class="chanLogoImgWrap fl" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->
                 <!-- <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
                 <!-- <img v-if="value.readYn === true" src="../../assets/images/main/icon_notice1.png" style="width:1.5rem">
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             <!-- </td> -->
-            <td >
+            <td v-on:click="goDetail(value)">
                 <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <div>
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>

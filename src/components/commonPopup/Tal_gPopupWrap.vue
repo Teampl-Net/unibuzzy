@@ -182,7 +182,7 @@ export default {
       if(this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
       } else {
-          await this.$refs.selectManagerCompo.changeDirectMemList(param)  
+          await this.$refs.selectManagerCompo.changeDirectMemList(param)
           this.closePop()
       }
     },
@@ -304,7 +304,7 @@ export default {
         if(target.currentCabinetKey){
           if(target.newMemYn)
             this.headerTitle ='구성원 등록'
-          else 
+          else
             this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
         }else{
           this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)

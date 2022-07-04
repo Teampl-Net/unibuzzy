@@ -66,10 +66,10 @@ export default {
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
         if (value.targetType === 'chanDetail') {
           params.targetType = value.targetType
-          params.creTeamKey = value.teamKey
+          params.teamKey = value.teamKey
           params.chanName = value.nameMtext
           params.nameMtext = value.nameMtext
-          params.creTargetKey = value.targetKey
+          params.targetKey = value.targetKey
         } else {
           params.targetType = value.targetType
           params.alimTabType = this.viewTab
@@ -79,7 +79,7 @@ export default {
         params.value = value
       }
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      // if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.chanName }
+      if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.nameMtext }
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {
