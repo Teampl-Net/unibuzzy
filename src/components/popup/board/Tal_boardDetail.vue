@@ -128,6 +128,7 @@ export default {
       // data.toMemoKey = memo.memoKey //대댓글때 사용하는것임
       // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      this.memeoValue = new Object()
       this.mememoValue = data
       this.memoShowYn = true
       console.log(this.mememoValue)
@@ -178,6 +179,8 @@ export default {
       var t = this.memeoValue
       if(this.memeoValue !== undefined && this.memeoValue !== null && this.memeoValue !== {} ){
         memo = this.mememoValue
+      } else {
+        this.memeoValue = null
       }
       memo.bodyFullStr = text
       /* memo.bodyFilekey  */
