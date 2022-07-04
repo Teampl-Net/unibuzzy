@@ -276,8 +276,10 @@ export default {
     async getTeamMenuList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanAlimListTeamKey)
+      paramMap.set('currentTeamKey', this.chanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      console.log(paramMap)
       var result = await this.$getTeamMenuList(paramMap)
       this.myBoardList = result
     },

@@ -192,12 +192,14 @@ export default {
       var defaultAddBoardName = this.$checkSameName(this.boardList, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
+      cabinet.creTeamKey = this.currentTeamKey
       cabinet.sysCabinetCode = 'BOAR'
       cabinet.menuType = 'C'
       cabinet.blindYn = false
       cabinet.fileYn = true
       cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
       param.cabinet = cabinet
+      console.log(param);
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}

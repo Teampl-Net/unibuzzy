@@ -248,11 +248,14 @@ export default {
             var cabinet = new Object()
             var defaultAddBoardName = await this.$checkSameName(this.listData, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-            cabinet.currentTeamKey = this.propObject.currentTeamKey
+            cabinet.currentTeamKey = this.propObject.currentTeamK
             cabinet.sysCabinetCode = 'USER'
-            cabinet.creTeamKey = this.propObject.currentTeamKey
+            // cabinet.creTeamKey = this.propObject.currentTeamKey
+            cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey
             cabinet.menuType = 'G'
             param.cabinet = cabinet
+
+            console.log(param)
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}

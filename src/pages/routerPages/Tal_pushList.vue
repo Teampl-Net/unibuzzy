@@ -57,7 +57,6 @@ export default {
     propData: {}
   },
   async created () {
-
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
@@ -97,7 +96,9 @@ export default {
 
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    if (this.pushListAndDetailYn) {
+
+    if (this.pushListAndDetailYn === true) {
+      this.pushListAndDetailYn = false
       var propObj = this.propData
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
@@ -151,7 +152,6 @@ export default {
     }
   },
   methods: {
-
     getAbsoluteTop(element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -402,6 +402,7 @@ export default {
   },
   data () {
     return {
+      tempCount:0,
       firstContOffsetY: null,
       headerTop: 0,
       scrollDirection: null,

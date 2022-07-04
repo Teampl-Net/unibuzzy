@@ -38,7 +38,7 @@
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
     <pushList ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" />
   </div>
-  <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
+  <div class="btnPlus" v-show="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="btnWritePush" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
     <!-- <popHeader  :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
@@ -108,6 +108,7 @@ export default {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
+
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
@@ -140,8 +141,8 @@ export default {
       this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {
-      this.memberYn = false
-      this.adminYn = false
+      // this.memberYn = false
+      // this.adminYn = false
       var paramMap = new Map()
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {
         paramMap.set('teamKey', this.chanDetail.targetKey)
@@ -164,16 +165,15 @@ export default {
           }
           this.followYn = true
           this.detailShowYn = false
-          this.adminYn = false
           this.followTypeText = '구독자'
 
           if (this.chanItem.userTeamInfo.managerKey !== undefined && this.chanItem.userTeamInfo.managerKey !== null && this.chanItem.userTeamInfo.managerKey !== '') {
-            this.adminYn = true
             if (this.chanItem.userTeamInfo.ownerYn === true || this.chanItem.userTeamInfo.ownerYn === 'true') {
               this.followTypeText = '소유자'
             } else {
               this.followTypeText = '관리자'
             }
+            this.adminYn = true
           }
         }
         var bgblackYn = true // chanItem.blackYn

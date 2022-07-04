@@ -11,7 +11,7 @@
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop"/>
       <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
       <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
-        <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop" />
+        <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop="openPop" />
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 35px; position: relative;" v-if="this.targetType === 'chanList'">
@@ -188,7 +188,6 @@ export default {
     openChannelItem (data) {
       // this.itemTitle = item
       // alert(JSON.stringify(data))
-
       if(data.targetType === 'boardMain'){
         this.openChanMenuYn = false
       }else{
@@ -253,6 +252,7 @@ export default {
         this.pushListAndDetailYn = true
         this.targetType = 'pushList'
         this.headerTitle = '알림'
+
       } else if (this.targetType === 'pushList') {
         this.headerTitle = '알림'
         if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {
