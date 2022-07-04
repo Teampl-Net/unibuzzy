@@ -23,7 +23,7 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
-      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop'  />
+      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
 
       <chanMenu :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
@@ -321,6 +321,13 @@ export default {
       history.push(this.popId)
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
+    },
+    async changePop(params){
+
+      console.log('change Pop')
+      console.log(params)
+
+      await this.openPop(params)
     },
     openPop (params) {
       this.popParams = params

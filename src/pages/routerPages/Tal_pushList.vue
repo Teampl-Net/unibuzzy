@@ -70,6 +70,8 @@ export default {
     this.$emit('changePageHeader', '알림')
     var resultList = await this.getPushContentsList()
     this.commonListData = resultList.content
+    console.log('this.commonListData');
+    console.log(this.commonListData);
     this.$emit('closeLoading')
     this.findPopShowYn = false
     if (this.readySearhList) {

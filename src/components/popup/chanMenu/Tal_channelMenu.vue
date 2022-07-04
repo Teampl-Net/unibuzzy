@@ -339,12 +339,22 @@ export default {
     },
     chanMenuClick(data){
       var params = new Object()
+      console.log(this.addChanList)
+      console.log(this.propData)
+      console.log(this.chanAlimListTeamKey)
+      console.log(data)
       params.targetType = 'boardMain'
-      params.nameMtext = this.propData.value.nameMtext
+      if(this.propData.value){
+        params.nameMtext = this.propData.value.nameMtext
+        params.ownerYn = this.propData.value.ownerYn
+      }else{
+        params.nameMtext = this.propData.nameMtext
+        // params.ownerYn = this.propData.value.ownerYn
+      }
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-      params.ownerYn = this.propData.value.ownerYn
+
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)

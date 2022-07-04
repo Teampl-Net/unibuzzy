@@ -91,6 +91,9 @@ export default {
     chanDetailComp
   },
   async created () {
+    console.log('#############!!!##############')
+    console.log(this.chanDetail)
+
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))

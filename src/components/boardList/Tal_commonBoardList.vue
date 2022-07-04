@@ -1,6 +1,6 @@
 
 <template>
-  <div class="commonBoardListWrap">
+  <div class="commonBoardListWrap" style="width:100%">
     <template id="boardRow" v-for="(board, index) in commonBoardListData" :key="index">
       <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" >
         <div @click="goDetail(board)" class="pushDetailTopArea">

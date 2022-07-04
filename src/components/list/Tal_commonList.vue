@@ -8,7 +8,7 @@
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
-                <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
+                <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
               </div>
                 <div class="pushDetailHeaderTextArea">
                   <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
@@ -107,14 +107,21 @@ export default {
       this.currentScroll = this.chanWrap.scrollTop
       this.$emit('currentScroll', this.currentScroll)
     },
-    goChanDetail (teamKey, nameMtext) {
+    goChanDetail (data) {
       // eslint-disable-next-line no-new-object
+      console.log(data)
       var param = new Object()
       param.targetType = 'chanDetail'
-      param.teamKey = teamKey
-      param.targetKey = teamKey
-      param.nameMtext = nameMtext
-      param.chanName = nameMtext
+      param.teamKey = data.creTeamKey
+      param.targetKey = data.creTeamKey
+      param.nameMtext = data.nameMtext
+      param.chanName = data.nameMtext
+
+      // 세션에서 유저키 받아오기
+      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (data.creUserKey === userKey) {
+        param.ownerYn =  true
+      }
       this.$emit('goDetail', param)
     },
     // creatorBox (value) {

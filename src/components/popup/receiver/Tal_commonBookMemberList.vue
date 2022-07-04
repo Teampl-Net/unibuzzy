@@ -10,8 +10,8 @@
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
-                        <div v-if=" !propData.managerOpenYn || selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                            <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
+                        <div v-if="propData.managerOpenYn === true || selectPopYn !== true " @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <img v-if="propData.value.creUserKey !== data.userKey " src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
@@ -64,6 +64,8 @@ export default {
         this.propData.managerOpenYn = true
     },
     async created(){
+        console.log('this.selectPopYn');
+        console.log(this.selectPopYn);
         console.log('this.propData');
         console.log(this.propData);
         if(!this.propData.value)this.propData.value={}

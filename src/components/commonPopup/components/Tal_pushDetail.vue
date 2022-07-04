@@ -2,70 +2,75 @@
   <div class="pushDetailWrap">
     <!-- <manageStickerPop :targetKey="this.alimDetail.contentsKey" :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
-
-      <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
-        <div class="pushDetailTopArea">
-          <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem"><img alt="채널 프로필이미지" style="width:80%" :src="alim.logoPathMtext">
-            <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="this.creatorYn" style="width: 20px; height: 25px; position: absolute; top: 10px;" />
-          </div>
-          <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
-            <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
-
-          <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
-
-          <!-- </div> -->
-          <div class="pushDetailHeaderTextArea">
-            <!-- <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck"> -->
-            <p class=" font18 fontBold commonColor fl" style="margin-bottom: 0.1rem; word-break: break-all; width: 100%;">{{resizeText(alim.title)}}</p>
-              <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
-                <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
-
-                <div style="height: 18px; float: right;">
-                  <img src="../../../assets/images/push/icon_clock.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
-                  <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
-                  <p class="font11 fr mleft-03 lightGray">{{dateText}}</p>
-                  <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
-                  <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
-                  <p v-else class="fr font11 mleft-1">전체에게</p>
-                </div>
-                <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
-
-          </div>
-        </div>
-        <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
-
-        <div id="alimCheckArea">
-          <div class="alimCheckContents">
-            <!-- <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
-            <div class="pushDetailStickerWrap">
-              <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
-                <span class="font15">{{value.stickerName}}</span>
-                <img :src="value.picPath" alt="">
+      <!-- <div class="whiteArea"> -->
+        <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+          <div class="pushDetailTopArea">
+            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: relative;"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
+              <!-- <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="this.creatorYn" style="width: 20px; height: 25px; position: absolute; top: 10px;" /> -->
+              <div style="width:100%; position: absolute; bottom:-10px; padding:0 2px; background-color:#cccccc90; border-radius: 5px; " v-if="creatorYn">
+                <p class="font10" style="text-align:center; color:black">보낸이</p>
               </div>
-            </div> -->
-            <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
-            <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
-            <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
 
-              <template v-if="userDo.doType === 'ST'">
-                <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
-              </template>
+            </div>
+            <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
+              <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
+
+            <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+
+            <!-- </div> -->
+            <div class="pushDetailHeaderTextArea">
+              <!-- <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck"> -->
+              <p class=" font18 fontBold commonColor fl" style="margin-bottom: 0.1rem; word-break: break-all; width: 100%;">{{resizeText(alim.title)}}</p>
+                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+                  <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
+                  <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
+
+                  <div style="height: 18px; float: right;">
+                    <img src="../../../assets/images/push/icon_clock.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                    <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                    <p class="font11 fr mleft-03 lightGray">{{dateText}}</p>
+                    <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
+                    <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
+                    <p v-else class="fr font11 mleft-1">전체에게</p>
+                  </div>
+                  <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
+
             </div>
           </div>
+          <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
+
+          <div id="alimCheckArea">
+            <div class="alimCheckContents">
+              <!-- <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
+              <div class="pushDetailStickerWrap">
+                <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
+                  <span class="font15">{{value.stickerName}}</span>
+                  <img :src="value.picPath" alt="">
+                </div>
+              </div> -->
+              <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
+              <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
+              <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
+
+                <template v-if="userDo.doType === 'ST'">
+                  <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                  <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+                </template>
+                <template v-else-if="userDo.doType === 'LI'">
+                  <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                  <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                </template>
+              </div>
+            </div>
+          </div>
+          <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
+          <!-- <div> -->
+            <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
+            <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
+          <!-- </div> -->
+          <div class="pushDetailPaperEffect"></div>
         </div>
-        <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
-        <!-- <div> -->
-          <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
-          <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
-        <!-- </div> -->
-        <div class="pushDetailPaperEffect"></div>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -298,6 +303,8 @@ export default {
 }
 </script>
 <style scoped>
+
+/* .alimCreatorColor {background-color: #6768a7 !important} */
 .alimCreatorColor {background-color: #f4f4f9 !important;}
 .pagePaddingWrap {
     padding: 60px 1.5rem;
@@ -318,6 +325,13 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
+
+/* .whiteArea{
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 0.8rem;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+} */
 
 .pushMbox{margin-bottom: 20px;}
 

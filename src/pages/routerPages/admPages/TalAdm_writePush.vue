@@ -183,6 +183,7 @@ export default {
     }
   },
   created () {
+
     if (this.params.replyPopYn) {
       this.replyPopYn = true
       this.allRecvYn = false
@@ -202,7 +203,6 @@ export default {
     },
     selectRecvType (allRecvYnInput) {
       this.allRecvYn = allRecvYnInput
-
       this.receiverClickYn = allRecvYnInput
     },
     // setReceiverText(){
@@ -352,10 +352,27 @@ export default {
       param.canReplyYn = this.canReplyYn
       //debugger
       var result = await this.$saveContents(param)
-      debugger
+
+
       if (result === true) {
         this.sendLoadingYn = false
-        this.$emit('closeXPop', true)
+
+        if (this.params.replyPopYn) {
+          var param = {}
+          param = this.params
+          param.targetType = 'chanDetail'
+
+          console.log('답장 후 ');
+          console.log(param);
+          this.$emit('changePop', param)
+
+
+        }else{
+        this.closeXpop(true)
+
+        }
+
+
       }
 
     },
