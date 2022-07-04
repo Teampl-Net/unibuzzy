@@ -160,8 +160,15 @@ export default {
 
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
-    this.chanProps = this.chanInfo.value
-    this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
+
+    if (this.chanInfo.value) {
+      this.chanProps = this.chanInfo.value
+      this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
+    }else{
+      this.chanProps = this.chanInfo
+      this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
+    }
+
     // console.log(this.boardDetail)
     // console.log(this.chanInfo)
 
@@ -528,7 +535,12 @@ export default {
 
       }
       cabinet.creteamkey =this.chanInfo.targetKey
-      cabinet.creuserkey =this.chanInfo.value.creUserKey
+      if(this.chanInfo.value){
+        cabinet.creuserkey =this.chanInfo.value.creUserKey
+      }else{
+        cabinet.creuserkey =this.chanInfo.creUserKey
+      }
+
 
       /*
       // cabinet.shareList = shareList

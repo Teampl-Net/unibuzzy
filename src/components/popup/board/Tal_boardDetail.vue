@@ -118,7 +118,6 @@ export default {
       memoArea.scrollTo({top:wich, behavior:'smooth'});
     },
     writeMememo (memo) {
-      console.log(memo)
       var data = {}
       // data.targetKey = memo.memoKey
       // data.targetKind = 'M' //
@@ -131,7 +130,6 @@ export default {
       this.memeoValue = new Object()
       this.mememoValue = data
       this.memoShowYn = true
-      console.log(this.mememoValue)
     },
     async deleteMemo (param) {
       console.log(param);
@@ -175,7 +173,7 @@ export default {
     },
     async saveMemo (text) {
       var memo = new Object()
-      var t = this.memeoValue
+
       if(this.memeoValue !== undefined && this.memeoValue !== null && this.memeoValue !== {} ){
         memo = this.mememoValue
       } else {

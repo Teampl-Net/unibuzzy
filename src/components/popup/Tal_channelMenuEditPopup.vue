@@ -180,8 +180,18 @@ export default {
     }, */
 
     openModiBoardPop (data) {
+    console.log(data);
+    console.log(this.addChanList);
+    console.log(this.chanInfo);
+    console.log(this.teamNameText);
       this.modiBoardDetailProps = data
-      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
+      if(this.chanInfo.value){
+        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
+      }else{
+        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
+      }
+
+
       this.modiBoardPopShowYn = true
     },
 

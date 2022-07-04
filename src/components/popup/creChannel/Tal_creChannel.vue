@@ -205,6 +205,7 @@ export default {
         // eslint-disable-next-line no-new-object
         var params = new Object()
         params.targetType = 'chanDetail'
+        params.nameMtext = 'KO$^$' + this.inputChannelName
         if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
           params.targetKey = this.chanDetail.targetKey
           params.modiYn = true

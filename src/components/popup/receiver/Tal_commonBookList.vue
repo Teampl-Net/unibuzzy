@@ -161,7 +161,7 @@ export default {
             console.log(this.listData)
 
             if(this.parentSelectList.bookList){
-            var indexOf = null
+                var indexOf = null
                 for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
                     // this.parentSelectList.bookList.data.cabinetKey
                     // this.selectIndex.push(i)
