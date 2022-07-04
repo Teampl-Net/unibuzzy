@@ -206,7 +206,6 @@ export default {
         this.boardList = []
         await this.getTeamMenuList()
       }
-      // this.boardList.unshift(addBoard)
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''

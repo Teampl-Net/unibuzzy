@@ -21,7 +21,7 @@
             <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">전화번호</p>
             <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr"  v-model="memPhone" >
         </div>
-        <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addNewMem" />
+        <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
@@ -50,7 +50,7 @@
         </div>
 
     </div>
-    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="saveBookMember" />
+    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
 </div>
 <popUp v-if="confirmPopShowYn" @no='confirmPopShowYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -114,30 +114,28 @@ export default {
                 return false
             }
         },
-        addNewMem() {
-            // if(this.saveBookMember()){
-                // const testList = new Object();
-                // testList.name = this.memName
-                // testList.phoneNum = this.memPhone
-                // testList.email = this.memEmail
-
-                // this.memberList.unshift(testList)
-                // this.memName = ''
-                // this.memPhone = ''
-                // this.memEmail = ''
-
-            // }
-        },
         deleteMem(data,index) {
             this.memberList.splice(index, 1);
         },
         ok(){
             this.confirmPopShowYn = false
         },
-        async saveBookMember(){
+        async addDirectAddMemList () {
             var checkYn = await this.checkParam()
-            console.log( this.propData);
             if(checkYn) {
+                if(this.propData.mccKey) {
+
+                } else {
+                    var param = new Object()
+                    param.userDispMtext = 'KO$^$' + this.memName
+                    param.userEmail = this.memEmail
+                    param.userPhone = this.memPhone
+                    this.$emit('addDirectAddMemList', param)
+                }
+                
+            }
+        },
+        async saveBookMember(){
                 if(this.propData.currentCabinetKey){
                     var param = new Object()
                     var mCabContents = new Object()
@@ -165,7 +163,6 @@ export default {
                 }else{
                     await this.saveFollower()
                 }
-            }
         },
         async saveFollower(){
             var param = {}

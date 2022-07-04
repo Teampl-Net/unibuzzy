@@ -109,20 +109,12 @@ export default {
       this.$refs.testCompo.upDatePage(data)
     },
     delectClick (data, index) {
-      if (data.reveiverTeamName) {
-        // this.dummyList.unshift(data.data)
-      } else if (data.name) {
-        // var record = this.dummyList.findIndex(function(item, index, arr){return item.reveiverTeamName === data.group});
-        // this.dummyList[record].team.unshift(data.data)
-      }
       this.selectReceivers.splice(index, 1)
     },
     addTeamList (obj) {
-      // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
     },
     addMemberList (obj) {
-      // this.selectedMemberList.unshift(obj)
       this.selectReceivers.unshift(obj)
     },
 

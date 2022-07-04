@@ -221,6 +221,7 @@ export default {
       param.teamNameMtext = this.$changeText(teamName)
       param.currentTeamKey = this.chanAlimListTeamKey
       param.managerOpenYn = true
+      param.selectMemberType = 'manager'
 
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]

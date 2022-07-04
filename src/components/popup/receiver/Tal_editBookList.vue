@@ -9,7 +9,6 @@
                 <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
         </div>
-        <selectMemberList :propData="propData" v-if="selectBookListShowYn" @closeXPop='backClick' :pSelectedList='selMemberList' @sendReceivers='setSelectedList'/>
     </div>
 </template>
 
@@ -19,7 +18,6 @@
 import findContentsList from '../Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
-import selectMemberList from './Tal_selectMemberPop.vue'
 export default {
     props: {
         chanInfo: {},
@@ -84,7 +82,7 @@ export default {
         }
 
     },
-    components: { findContentsList, bookListCompo,memberList, selectMemberList },
+    components: { findContentsList, bookListCompo,memberList },
     data () {
         return {
             editYn: false,
@@ -101,7 +99,6 @@ export default {
             titleText: '',
             receiverTitle: '주소록 관리',
             teamLength: 0,
-            selectBookListShowYn: false,
             selMemberList: []
         }
     },
@@ -131,6 +128,7 @@ export default {
             this.$emit('openAddPop',data)
         },
         async getBookMemberList () {
+            this.detailOpenYn = false
             var paramMap = new Map()
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
@@ -141,18 +139,19 @@ export default {
             this.memberList = result.data
             console.log('result');
             console.log(result);
-             if (this.memberList) { // dispName이 없을시 userName으로 대체
-            for (var i =0; i < this.memberList.length; i ++) {
-                if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+            if (this.memberList) { // dispName이 없을시 userName으로 대체
+                for (var i =0; i < this.memberList.length; i ++) {
+                    if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
 
                     } else {
                         this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
                     }
                 }
+                this.detailOpenYn = true
             }
         },
         async refresh () {
-            await this.$refs.memberListRef.refresh()
+            await this.getBookMemberList()
         },
         editYnCheck(data) {
             this.editYn = data
@@ -211,7 +210,6 @@ export default {
             await this.getPushContentsList()
         },
         async openSelectMemberPop () {
-            // alert(true)
         // eslint-disable-next-line no-new-object
             var params = new Object()
             params.teamKey = this.propData.currentTeamKey
@@ -223,13 +221,16 @@ export default {
 
             this.selMemberList = result.data.content
             // this.list = []
-            this.propData.managerOpenYn=true
             this.propData.currentCabinetKey = this.selectBookDetail.cabinetKey
-            var history = this.$store.getters.hStack
-            this.popId = 'selectManagerListPop' + history.length
-            history.push(this.popId)
-            this.$store.commit('updateStack', history)
-            this.selectBookListShowYn = true
+            var param = new Object()
+            param.targetType = 'selectMemberPop'
+            param.pSelectedList = this.memberList
+            // alert(JSON.stringify(this.propData))
+            param.cabinetKey = this.propData.currentCabinetKey
+            param.selectMemberType = 'member'
+            param.currentTeamKey = this.propData.currentTeamKey
+            
+            this.$emit('openPop', param)
 
             // var param = {}
             // param.targetType = 'bookMemberDetail'
@@ -239,9 +240,6 @@ export default {
             // this.$emit('openPop', param)
 
             // this.openAddManagerPopYn = true
-        },
-        closeSubPop () {
-            this.selectBookListShowYn = false
         },
         /* async changeSearchList (type) {
             if (type === 'searchKey') {

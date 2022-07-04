@@ -10,8 +10,8 @@
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
-                        <div v-if="propData.managerOpenYn === true || selectPopYn !== true " @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                            <img v-if="propData.value.creUserKey !== data.userKey " src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
+                        <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
+                            <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
@@ -57,8 +57,6 @@ export default {
             selectIndex:[]
         }
     },
-    watch:{
-    },
     beforeUnmount(){
         this.propData.managerListOpen = false
         this.propData.managerOpenYn = true
@@ -83,7 +81,7 @@ export default {
     },
     methods:{
         async refresh () {
-            if(this.propData.managerOpenYn)
+            if(this.propData.selectMemberType === 'manager')
                 await this.getFollowerList()
             else
                 this.$emit('refreshList')
@@ -128,7 +126,7 @@ export default {
         },
         async deleteMemberClick(data, index){
             if(this.propData.value.creUserKey !== data.userKey){
-                if(this.propData.managerOpenYn) {
+                if(this.propData.selectMemberType === 'manager') {
                    this.$emit('deleteManager', data)
                 } else {
                     var param = {}
@@ -175,9 +173,7 @@ export default {
             data.shareSeq = data.userKey
             this.selectedMemberList.push(data)
             this.$emit('changeSelectMemberList', this.selectedMemberList)
-            // this.selectIndex.push(index)
-            var tt = this.listData
-            debugger
+
             this.listData[index].selectedYn = true
 
         },

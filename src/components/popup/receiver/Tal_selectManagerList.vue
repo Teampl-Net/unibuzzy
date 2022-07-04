@@ -2,11 +2,8 @@
     <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.$changeText(this.propData.teamNameMtext)" /> -->
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
         <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-          <managerList @deleteManager="deleteManager" :listData="managerList" ref="managerListCompo" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
-        <!-- <managerList :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/> -->
+          <managerList @deleteManager="deleteManager" :listData="managerList" ref="managerListCompo" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
         </div>
-        <!-- <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left;" transition="showGroup" :listData='selectedList' @btnClick="sendReceivers" /> -->
-
     </div>
     <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
     <!-- <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop'  @sendReceivers='setSelectedList'/> -->
@@ -109,10 +106,7 @@ export default {
       var result = await this.$commonAxiosFunction({
           url: '/tp.deleteManager',
           param: param
-      })/*
-      if (result.data) {
-        this.refresh()
-      } */
+      })
       this.refresh()
     },
     refresh () {
@@ -132,50 +126,24 @@ export default {
         param: params
       })
 
-
-      console.log('##############');
-      // console.log(result.data.content);
-      var tempList = []
       var managerofferList = []
+
       for (let i = 0; i < result.data.content.length; i++) {
         if(!result.data.content[i].managerKey){
           managerofferList.push(result.data.content[i])
         }
 
       }
-      // var managerofferList = result.data.content
-      // this.managerList = result.data.content
-      // this.managerList = []
-      console.log('managerofferList');
-      console.log(managerofferList);
-
-      this.propData.managerOpenYn=true
-
-      var history = this.$store.getters.hStack
-      this.popId = 'selectManagerListPop' + history.length
-      history.push(this.popId)
-      this.$store.commit('updateStack', history)
-
+      this.propData.managerOpenYn = true
+      this.propData.selectMemberType = 'manager'
       // this.selectBookListShowYn = true
       var param = new Object()
-      param.targetType = 'selectManager'
+      param.targetType = 'selectMemberPop'
       param.pSelectedList = managerofferList
       param.managerOpenYn = true
-      param.teamKey = this.propData.currentTeamKey
-      console.log('@@@@@@@@@@@@@')
-      console.log(param)
+      param.selectMemberType = 'manager'
+      param.currentTeamKey = this.propData.currentTeamKey
       this.$emit('openPop', param)
-
-      // this.selectManagerListShowYn = true
-
-      // var param = {}
-      // param.targetType = 'bookMemberDetail'
-      // // param.currentCabinetKey = this.propData.cabinetKey
-      // param.currentTeamKey = this.propData.currentTeamKey
-
-      // this.$emit('openPop', param)
-
-      // this.openAddManagerPopYn = true
     }
 
   }

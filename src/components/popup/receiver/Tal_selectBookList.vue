@@ -23,7 +23,7 @@
             <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList' :sessionData='sessionUserdata' @btnClick='sendReceivers' />
+      <selectedListCompo :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
 
     <!-- </div> -->
 </div>
@@ -41,13 +41,9 @@ export default {
     detailSelectedYn: {},
     selectedListYn: {},
     propData: {},
-    pSelectedList: {},
-    sessionUserdata: {}
+    pSelectedList: {}
   },
   created () {
-    console.log('this.sessionUserdata')
-    console.log(this.sessionUserdata)
-
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
@@ -151,6 +147,9 @@ export default {
       console.log(params)
       this.$emit('openPop', params)
     },
+    /* oepnPop (param) {
+      this.$emit('openPop', param)
+    }, */
     sendReceivers () {
       // eslint-disable-next-line no-new-object
       var obj = new Object()
@@ -164,6 +163,11 @@ export default {
       this.selectedList.memberList = data
       this.$refs.selectedListCompo.upDatePage()
     },
+    addMe (data) {
+      this.selectedList.memberList.unshift(data)
+      this.changeSelectMemberList(this.selectedList.memberList)
+    },
+
     changeSelectBookList (data) {
       // eslint-disable-next-line vue/no-mutating-props
       this.selectedList.bookList = data
@@ -212,20 +216,12 @@ export default {
       // this.$emit('selectedReceiver', this.selectReceivers)
     },
     delectClick (data, index) {
-      if (data.reveiverTeamName) {
-        // this.dummyList.unshift(data.data)
-      } else if (data.name) {
-        // var record = this.dummyList.findIndex(function(item, index, arr){return item.reveiverTeamName === data.group});
-        // this.dummyList[record].team.unshift(data.data)
-      }
       this.selectReceivers.splice(index, 1)
     },
     addTeamList (obj) {
-      // this.selectedTeamList.unshift(obj)
       this.selectReceivers.unshift(obj)
     },
     addMemberList (obj) {
-      // this.selectedMemberList.unshift(obj)
       this.selectReceivers.unshift(obj)
     },
 

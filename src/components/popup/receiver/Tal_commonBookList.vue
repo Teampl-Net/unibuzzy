@@ -259,7 +259,6 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-                // this.cabinetList.unshift(addBoard)
                 this.$emit('refreshList')
                 if(!document.getElementsByClassName('foo')[0]){
                     setTimeout(() => {
@@ -271,7 +270,6 @@ export default {
             }
 
 
-            // // debugger
 
         },
         anima(){

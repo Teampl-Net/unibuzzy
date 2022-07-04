@@ -3,6 +3,8 @@
         <div class="mbottom-05" style="width: 100%; height: 30px; margin-top:1rem; margin-left:0.5rem">
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
             <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
+            <gBtnSmall v-if="selectShareTargetYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
+            <gBtnSmall v-if="selectMemberPopYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
@@ -16,7 +18,7 @@
                 <!-- <span class="fr" @click="removeSelectedYn('book',index)">x</span> -->
                 <span class="fr commonColor" @click="removeSelectedYn('book',index)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
             </div>
-            <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem"  >
+            <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"   style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem"  >
                 <!-- <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext || member.userNameMtext) }}</p> -->
 
                 <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; " />
@@ -24,6 +26,7 @@
                 <span class="fr commonColor" @click="removeSelectedYn('member',index)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
             </div>
         </div>
+        <gConfirmPop  confirmText='이미 선택되었습니다' confirmType='timeout' v-if="showErrorPopYn" @no='this.showErrorPopYn = false' />
                 <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
     </div>
 </template>
@@ -37,38 +40,25 @@ export default {
         listData: {},
         itemType: {},
         btnVisible: {},
-        sessionData:{}
+        currentTeamKey: {},
+        selectMemberPopYn: {},
+        selectShareTargetYn: {}
     },
     data(){
         return{
+            sessionUserInfo: null,
             upTxt:'>',
             downTxt:'<',
             editTeamName:'',
             editNameYn:null,
             teamList: {bookList: [], memberList: []},
-            dragging: false
+            dragging: false,
+            showErrorPopYn: false
         }
     },
     created() {
         this.upDatePage()
-    /* this.teamList = {
-        bookList: [
-            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
-            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
-            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200},
-            {cabinetNameMtext: '팀플 주소록', cabinetKey: 10, creTeamKey: 200}
-        ],
-        memeberList: [
-            {userDispMtext: 'KO$^$수망고', userKey: 1},
-            {userDispMtext: 'KO$^$수망고', userKey: 1},
-            {userDispMtext: 'KO$^$수망고', userKey: 1},
-            {userDispMtext: 'KO$^$수망고', userKey: 1}
-        ]
-    } */
-    if(this.sessionData){
-        // this.sessionData.sessionYn=true
-        this.teamList.memberList.push(this.sessionData)
-    }
+        this.sessionUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
 
     },
     watch: {
@@ -83,6 +73,32 @@ export default {
     //     }
     // },
     methods: {
+        addMe (){
+            if(this.teamList.memberList) {
+                var checkYn = true
+                for (var i = 0; i < this.teamList.memberList.length; i ++) {
+                    if (this.teamList.memberList[i].userKey === this.sessionUserInfo.userKey) {
+                        checkYn = false
+                        this.showErrorPopYn = true
+                        break
+                    }
+                }
+                if (checkYn) {
+                    this.$emit('addMemberList', this.sessionUserInfo)    
+                }
+
+            }
+            /* if(!this.checkMeYn) {
+                this.$emit('addMemberList', this.sessionUserInfo)
+                this.checkMeYn = true    
+            } else {
+                this.showErrorPopYn = true
+            } */
+        },
+        addNewMember(){
+            this.$emit('openAddPop')
+
+        },
         //유민참고
         upDatePage(data) {
             if (data) {
@@ -113,6 +129,7 @@ export default {
                 this.teamList.bookList.splice(index, 1)
             } else if(type === 'member') {
                 this.teamList.memberList.splice(index, 1)
+                
             }
             this.teamList.index = index
             this.$emit('changeSelectedList', this.teamList)

@@ -2,7 +2,7 @@
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
       <transition name="showModal">
-        <fullModal @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
@@ -32,10 +32,10 @@
       <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params'/>
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
-      <bookMemberDetail @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
+      <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
       <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
-      <selectManagerList ref="selectManagerCompo" :propData="this.params" v-if="this.targetType=== 'selectManager'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
+      <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
     </div>
 </template>
 
@@ -68,7 +68,7 @@ import editBookList from '../popup/receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../popup/receiver/Tal_selectManagerList.vue'
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
-import selectManagerList from '../popup/receiver/Tal_managerList.vue'
+import selectMemberPop from '../popup/receiver/Tal_selectMemberPop.vue'
 export default {
   async created() {
     await this.settingPop()
@@ -147,7 +147,7 @@ export default {
     boardWrite,
     pushPop,
     editManagerList,
-    selectManagerList
+    selectMemberPop
   },
   updated () {
   },
@@ -178,6 +178,14 @@ export default {
     }
   },
   methods: {
+    async addDirectAddMemList (param) {
+      if(this.targetType === 'bookMemberDetail') {
+        this.$emit('addDirectAddMemList', param)
+      } else {
+          await this.$refs.selectManagerCompo.changeDirectMemList(param)  
+          this.closePop()
+      }
+    },
     openDetailYn (bool) {
       this.memberDetailOpen = bool
     },
@@ -295,7 +303,10 @@ export default {
         this.chanName = this.propParams.teamNameMtext
       } else if (this.targetType === 'bookMemberDetail') {
         if(target.currentCabinetKey){
-          this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
+          if(target.newMemYn)
+            this.headerTitle ='구성원 등록'
+          else 
+            this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
         }else{
           this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
         }
@@ -307,6 +318,8 @@ export default {
         this.headerTitle = '매니저 관리'
         this.chanName = this.propParams.teamNameMtext
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
+      } else if (this.targetType === 'selectMemberPop') {
+        this.headerTitle = '멤버선택'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -343,6 +356,7 @@ export default {
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
         if (this.targetType === 'pushList' || this.targetType === 'chanList') {
+          this.pushListAndDetailYn = false
           this.reloadYn = true
           setTimeout(() => {
             this.reloadYn = false
@@ -351,14 +365,16 @@ export default {
         } else if(this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
         } else if(this.targetType === 'editManagerList') {
-          if (this.params.managerOpenYn)
+          /* if (this.params.selectMemberType = 'manager')
             await this.$refs.selectManagerCompo.refresh()
-          else
+          else */
             await this.$refs.editManagerListComp.refresh()
         } else if (this.targetType === 'boardMain') {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {
           await this.$refs.gPopChanAlimList.refreshList()
+        } if (this.targetType === 'pushListAndDetail') {
+        this.pushListAndDetailYn = false
         }
       }
     },
@@ -374,6 +390,7 @@ export default {
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
       if (this.targetType === 'pushDetail') {
+        this.pushListAndDetailYn = false
         this.$emit('closePop', true)
       }
       this.$emit('closePop', reloadYn)
