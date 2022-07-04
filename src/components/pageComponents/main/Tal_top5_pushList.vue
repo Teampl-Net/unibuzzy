@@ -64,8 +64,16 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-        params.targetType = value.targetType
-        params.alimTabType = this.viewTab
+        if (value.targetType === 'chanDetail') {
+          params.targetType = value.targetType
+          params.creTeamKey = value.teamKey
+          params.chanName = value.nameMtext
+          params.nameMtext = value.nameMtext
+          params.creTargetKey = value.targetKey
+        } else {
+          params.targetType = value.targetType
+          params.alimTabType = this.viewTab
+        }
       } else {
         params.targetType = 'pushDetail'
         params.value = value

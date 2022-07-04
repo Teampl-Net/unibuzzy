@@ -7,7 +7,7 @@
           <!-- <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div> -->
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
-                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" :src="alim.logoPathMtext">
+                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
               </div>
                 <div class="pushDetailHeaderTextArea">

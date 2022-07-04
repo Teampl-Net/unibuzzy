@@ -46,17 +46,17 @@ export default {
     this.box = document.getElementById('chanListWrap')
   },
   computed: {
-    calcHeaderHeight () {
-      if (this.headerTop) {
-      } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.headerTop = 140
-      }
-      // debugger
-      return {
-        '--headerHeight': this.headerTop + 'px'
-      }
-    },
+    // calcHeaderHeight () {
+    //   if (this.headerTop) {
+    //   } else {
+    //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    //     this.headerTop = 140
+    //   }
+    //   // debugger
+    //   return {
+    //     '--headerHeight': this.headerTop + 'px'
+    //   }
+    // },
     historyStack () {
       return this.$store.state.historyStack
     }
@@ -141,8 +141,12 @@ export default {
           ...this.chanList,
           ...resultList.content
         ]
-        if (this.totalElements === this.chanList.length) { this.endListYn = true }
+        if (this.totalElements === this.chanList.length) {
+          this.endListYn = true
+        }
         this.chanList = newArr
+      } else {
+        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
     },
 

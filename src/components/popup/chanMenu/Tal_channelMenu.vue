@@ -236,7 +236,7 @@ export default {
       this.editPopYn = false
       // this.goNo()
     },
-    openTeamDetailPop(data){
+    openTeamDetailPop(data) {
       // console.log(data)
       var params = {}
       params.targetType = 'editBookList'
@@ -339,7 +339,7 @@ export default {
       this.teamNameText = this.teamName()
       this.editPopYn = true;
     },
-    chanMenuClick(data){
+    chanMenuClick(data) {
       var params = new Object()
       console.log(this.addChanList)
       console.log(this.propData)
@@ -356,13 +356,12 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-      this.$emit('openItem',params)
+      this.$emit('openItem', params)
     },
     receiverClick(data){
       var params = new Object()

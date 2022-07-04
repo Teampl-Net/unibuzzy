@@ -6,8 +6,8 @@
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
-            <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;">
-              <div class="chanLogoImgWrap fl" style=""><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+            <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;" >
+              <div class="chanLogoImgWrap fl"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->
                 <!-- <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
@@ -27,12 +27,31 @@
 </template>
 <script>
 export default {
-
+  created () {
+    console.log('hello')
+    console.log(this.commonListData)
+  },
   mounted () {
     if (this.mainYnProp === true) { this.mainYn = true }
   },
   emits: ['goDetail'],
   methods: {
+    goChanDetail (data) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'chanDetail'
+      param.teamKey = data.creTeamKey
+      param.targetKey = data.creTeamKey
+      param.nameMtext = data.nameMtext
+      param.chanName = data.nameMtext
+
+      // 세션에서 유저키 받아오기
+      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (data.creUserKey === userKey) {
+        param.ownerYn = true
+      }
+      this.$emit('goDetail', param)
+    },
     resizeText (text, name) {
       if (text) {
         // if (text.length > 15) {

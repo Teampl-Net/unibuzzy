@@ -178,9 +178,8 @@ export default {
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
-/* .commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: calc(100% - 150px);
-
-} */
+.commonBoardListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden;
+}
 
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}

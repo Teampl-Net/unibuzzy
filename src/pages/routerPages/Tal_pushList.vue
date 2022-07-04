@@ -12,7 +12,8 @@
         </transition>
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
 
-      <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); ">
+      <!-- <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); "> -->
+      <div class="pushListWrapWrap" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -122,18 +123,18 @@ export default {
     }
   },
   computed: {
-    calcHeaderHeight () {
-      // var pageHeader = document.querySelector('#pageHeader')
-      // var pageHeader = this.$refs.pushListHeader
-      if (this.headerTop) {
-      } else {
-        this.headerTop = 150
-      }
-      // debugger
-      return {
-        '--headerHeight' : this.headerTop  + 'px'
-      }
-    },
+    // calcHeaderHeight () {
+    //   // var pageHeader = document.querySelector('#pageHeader')
+    //   // var pageHeader = this.$refs.pushListHeader
+    //   if (this.headerTop) {
+    //   } else {
+    //     this.headerTop = 150
+    //   }
+    //   // debugger
+    //   return {
+    //     '--headerHeight' : this.headerTop  + 'px'
+    //   }
+    // },
     historyStack () {
       return this.$store.state.historyStack
     },
@@ -180,6 +181,7 @@ export default {
 
     },
     async refreshList () {
+      // this.scrolledYn = true
       var pSize = 10
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
         pSize = Number(this.offsetInt) * 10
@@ -217,9 +219,9 @@ export default {
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList(pageSize)
-        if (resultList) {
-          // this.preloadingYn = false
-        }
+        // if (resultList) {
+        //   // this.preloadingYn = false
+        // }
         const newArr = [
           ...this.commonListData,
           ...resultList.content
@@ -228,8 +230,7 @@ export default {
           this.endListYn = true
         }
         this.commonListData = newArr
-      }else{
-
+      } else{
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
     },

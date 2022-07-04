@@ -26,11 +26,6 @@
 <script>
 export default {
   created () {
-    for (var i = 0; i < this.chanList.length; i++) {
-      if (this.chanList[i].ownerYn) {
-
-      }
-    }
   },
   data () {
     return {

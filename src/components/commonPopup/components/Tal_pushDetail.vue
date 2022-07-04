@@ -13,8 +13,7 @@
 
             </div>
             <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
-              <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
-
+            <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
             <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
 
             <!-- </div> -->
