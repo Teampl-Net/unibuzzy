@@ -171,8 +171,13 @@ export default {
                 
             } else {
                 var mCabContents = null 
-
-                if(userKeyList && userKeyList.length > 0) {
+                if (userKeyList && userKeyList.length > 0) {
+                    param.userKeyList = userKeyList
+                    param.cabinetKey = this.propData.cabinetKey
+                    param.targetKey = this.propData.currentTeamKey
+                    await this.$saveMCabContents(param)
+                }
+                /* if(userKeyList && userKeyList.length > 0) {
                     for (var i = 0; i < userKeyList.length; i++) {
                         param = new Object()
                 
@@ -184,7 +189,7 @@ export default {
                         param.mCabContents = mCabContents
                         result = await this.$saveMCabContents(param)
                     }
-                }
+                } */
                 if(this.directAddMemList && this.directAddMemList.length > 0) {
                     for (var u = 0; u < this.directAddMemList.length; u ++) {
                         mCabContents = new Object()
