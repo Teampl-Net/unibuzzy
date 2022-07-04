@@ -99,12 +99,12 @@ export default {
 
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-
     if (this.pushListAndDetailYn === true) {
-      this.pushListAndDetailYn = false
       var propObj = this.propData
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
+      // this.pushListAndDetailYn = false
+      
     }
 
   },

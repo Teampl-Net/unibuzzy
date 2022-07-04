@@ -143,7 +143,7 @@ export default {
                     mCabContents.cabinetKey = this.propData.currentCabinetKey
                     if (this.propData.mccKey) {
                         mCabContents.mccKey = this.propData.mccKey
-                        mCabContents.targetKey = this.propData.targetKey //update
+                        mCabContents.ownUserKey = this.propData.ownUserKey //update
                     }
                     mCabContents.inEmail = this.memEmail
                     mCabContents.inPhone = this.memPhone

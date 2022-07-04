@@ -76,7 +76,15 @@ export default {
       // this.timeOut()
     },
     openPushDetailPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      // alert(removePage)
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+
       var currentPage = this.$store.getters.hCPage
+
       if ((currentPage === 0 || currentPage === undefined)) {
         this.$emit('openDetailPop', { contentsKey: this.detailVal.data.contentsKey, targetKey: this.detailVal.data.contentsKey, targetType: 'pushDetail', value: this.pushDetail })
       } else {

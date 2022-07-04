@@ -5,7 +5,7 @@
         <selectedListCompo @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" class="fl" style="height:50%;" @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     </div> <!-- this.propData.selectMemberType==='member'? true:false -->
 
-    <gConfirmPop confirmText='구성원을 추가하시겠습니까?' confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
+    <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? '구성원을 추가하시겠습니까?': '매니저를 추가하시겠습니까?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
 
 </div>
 </template>
@@ -179,7 +179,8 @@ export default {
                         mCabContents = new Object()
                         mCabContents.jobkindId = 'USER'
                         mCabContents.cabinetKey = this.propData.cabinetKey
-                        mCabContents.targetKey = userKeyList[i]
+                        mCabContents.targetKey = this.propData.currentTeamKey
+                        mCabContents.ownUserKey = userKeyList[i]
                         param.mCabContents = mCabContents
                         result = await this.$saveMCabContents(param)
                     }
@@ -190,6 +191,7 @@ export default {
                         param = new Object()
                         mCabContents.jobkindId = 'USER'
                         mCabContents.cabinetKey = this.propData.cabinetKey
+                        mCabContents.targetKey = this.propData.currentTeamKey
 
                         mCabContents.inEmail = this.directAddMemList[u].userEmail
                         mCabContents.inPhone = this.directAddMemList[u].userPhone

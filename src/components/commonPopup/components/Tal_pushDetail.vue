@@ -142,14 +142,6 @@ export default {
     }
   },
   methods: {
-    //  dateCheck () {
-    //       if(dateCheck){
-    //         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, true)
-    //       }else{
-    //         alert(false)
-    //         this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, false)
-    //       }
-    //     }
     datechange () {
       this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, this.dateCheck)
     },
