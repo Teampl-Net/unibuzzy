@@ -163,7 +163,12 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     addMe (data) {
-      this.selectedList.memberList.unshift(data)
+      if(this.selectedList.memberList) {
+        this.selectedList.memberList.unshift(data)
+      } else {
+        this.selectedList.memberList = []
+        this.selectedList.memberList.unshift(data)
+      }
       this.changeSelectMemberList(this.selectedList.memberList)
     },
 
