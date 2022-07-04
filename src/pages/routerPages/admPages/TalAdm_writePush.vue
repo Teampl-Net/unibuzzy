@@ -352,27 +352,20 @@ export default {
       param.canReplyYn = this.canReplyYn
       //debugger
       var result = await this.$saveContents(param)
-
-
       if (result === true) {
         this.sendLoadingYn = false
+        // if (this.params.replyPopYn) {
+        //   var param = {}
+        //   param = this.params
+        //   param.targetType = 'chanDetail'
 
-        if (this.params.replyPopYn) {
-          var param = {}
-          param = this.params
-          param.targetType = 'chanDetail'
+        //   console.log('답장 후 ');
+        //   console.log(param);
+        //   this.$emit('changePop', param)
 
-          console.log('답장 후 ');
-          console.log(param);
-          this.$emit('changePop', param)
-
-
-        }else{
-        this.closeXpop(true)
-
-        }
-
-
+        // }else{
+          this.$emit('closeXPop',true)
+        // }
       }
 
     },

@@ -97,11 +97,10 @@ export default {
     dateCheck () {
       this.datechange()
       this.clockClickYn = !this.clockClickYn
-    }
+    },
   },
-
   props: {
-    detailVal: {}
+    detailVal: {},
   },
   components: {
     /* manageStickerPop */

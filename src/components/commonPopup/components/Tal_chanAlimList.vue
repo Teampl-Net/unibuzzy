@@ -91,15 +91,10 @@ export default {
     chanDetailComp
   },
   async created () {
-    console.log('#############!!!##############')
-    console.log(this.chanDetail)
-
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
-    console.log('this.chanItem');
-    console.log(this.chanItem);
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -129,7 +124,6 @@ export default {
       this.detailShowYn = false
     },
     async refreshList () {
-      console.log('chanAlimList // refreshList')
       // await this.$nextTick();
       await this.getChanDetail()
       await this.$refs.ChanAlimListPushListCompo.refreshList()
@@ -156,10 +150,9 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
       var resultList = await this.$getTeamList(paramMap)
-      console.log(resultList);
+
       this.chanItem = resultList.data.content[0]
-      console.log("#######################################");
-      console.log(this.chanItem );
+
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
@@ -189,9 +182,7 @@ export default {
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
-      console.log('chanAlimList');
       param.openActivity = 'chanAlimList'
-      console.log(param);
       this.$emit('openPop', param)
     },
     async changeFollowYn (fYn) {

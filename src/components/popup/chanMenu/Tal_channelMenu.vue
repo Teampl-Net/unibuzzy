@@ -31,26 +31,27 @@
       <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" @click="groupDropDown">주소록 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
     </div>
-    <div  class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
+
+    <div v-else class="boardBox fl" style="overflow: hidden; " ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
       <teamList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
     </div>
   </div>
 
   <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div>
 
-  <div style="width:100%; margin-top:calc(20px); " :class="{editmTop:editYn !== true}" class="fl">
-    <div class="fl" style="width:100%; height: 2rem;">
-      <div class="fl" style="width:20px; height: 100%; " @click="boardDropDown" >
-        <img v-show="boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
-        <img v-show="boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
+    <div style="width:100%; margin-top:calc(20px); " :class="{editmTop:editYn !== true}" class="fl">
+      <div class="fl" style="width:100%; height: 2rem;">
+        <div class="fl" style="width:20px; height: 100%; " @click="boardDropDown" >
+          <img v-show="boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
+          <img v-show="boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
+        </div>
+        <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
+        <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
       </div>
-      <p style="color:black; text-align:left; margin-left:2rem;" class="fl fontBold font16" :class="{editWhiteColor:editYn !== true}" @click="boardDropDown" >게시판</p>
-      <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
+      <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+        <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+      </div>
     </div>
-    <div class="boardBox" style="overflow: hidden; padding-top:1rem;"  ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-      <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
-    </div>
-  </div>
 
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
