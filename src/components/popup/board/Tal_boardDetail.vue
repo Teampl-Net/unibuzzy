@@ -83,7 +83,7 @@ export default {
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
 
-      memeoValue:{}
+      memeoValue: null
 
     }
   },
@@ -174,7 +174,9 @@ export default {
     },
     async saveMemo (text) {
       var memo = new Object()
-      if(this.memeoValue !== null && this.memeoValue !== '' && this.memeoValue !== undefined ){
+      debugger
+      var t = this.memeoValue
+      if(this.memeoValue !== undefined && this.memeoValue !== null && this.memeoValue !== {} ){
         memo = this.mememoValue
       }
       memo.bodyFullStr = text
