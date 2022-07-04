@@ -13,7 +13,7 @@
     </div>
 
 </div>
-<div v-else><p>생성된 그룹이 없습니다.</p></div>
+<div v-else class="textLeft" style="margin-left: calc(2rem + 20px);"><p>생성된 그룹이 없습니다.</p></div>
 
 </template>
 

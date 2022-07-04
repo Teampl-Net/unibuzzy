@@ -63,7 +63,7 @@
             </draggable>
         </div>
         <div v-else>
-            <p class="textLeft font15 ">{{'주소록이 없습니다.'}}</p>
+            <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
         </div>
     </div>
     <!-- <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
@@ -112,9 +112,6 @@ export default {
         await this.getTeamCabList()
         this.changeSelectedList()
         this.loadingYn = false
-        console.log(this.propData);
-        // console.log(this.cabinetList)
-        // this.cabinetList = this.listData
     },
     updated () {
         this.changeSelectedList()
@@ -206,7 +203,6 @@ export default {
 
         },
         async deleteCabinet(data,index){
-            // console.log(data)
             var param = {}
             param.cabinetKey = data.cabinetKey
             param.currentTeamKey = this.propData.currentTeamKey
@@ -217,10 +213,11 @@ export default {
                     url: '/tp.deleteCabinet',
                     param: param
                 })
-
                 if(result.data === 'true' || result.data === true){
-                    console.log(result)
                     this.listData.splice(index, 1)
+                    if (this.listData.length === 0) {
+                        this.cabinetList.length = 0
+                    }
                 }
             }catch(e){
                 console.log(e)
@@ -232,7 +229,6 @@ export default {
         addSelectedList(data, index) {
             if(this.selectIndex.indexOf(index) === -1){
                 this.cabinetList[index].selectedYn = true
-                console.log(data)
                 data.shareSeq = data.cabinetKey
                 this.selectedBookList.push(data)
                 this.selectIndex.push(index)
@@ -241,24 +237,23 @@ export default {
                 alert('중복선택입니다.')
             }
         },
-        async addNewBook() {
+        async addNewBook () {
             var param = new Object()
             param.creMenuYn = true
             var cabinet = new Object()
             var defaultAddBoardName = await this.$checkSameName(this.listData, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-            cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey
+            cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
             cabinet.sysCabinetCode = 'USER'
             // cabinet.creTeamKey = this.propObject.currentTeamKey
-            cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey
+            cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
             cabinet.menuType = 'G'
             param.cabinet = cabinet
-
-            console.log(param)
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
                 this.$emit('refreshList')
+                await this.getTeamCabList()
                 if(!document.getElementsByClassName('foo')[0]){
                     setTimeout(() => {
                         this.anima()
@@ -267,9 +262,6 @@ export default {
                     this.anima()
                 }
             }
-
-
-
         },
         anima(){
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
@@ -296,7 +288,6 @@ export default {
                 })
                 result = response.data
                 data.cabinetNameMtext =this.cabinetInputText
-                // console.log(result)
                 this.editIndex = null
 
         },
@@ -306,7 +297,6 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('receiverTeamListCard')
             var index = null
-            // console.log(this.cabinetList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
                 for (var i = 0; i < this.cabinetList.length; i ++) {
@@ -335,8 +325,6 @@ export default {
                 param: paramSet
                 }
             )
-            // console.log(result)
-            // debugger
             // getTeamCabList ()
             // this.cabinetList = []
             this.$emit('getBookList')

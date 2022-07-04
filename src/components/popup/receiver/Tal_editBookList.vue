@@ -27,8 +27,8 @@ export default {
     created (){
         var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length
-
-
+        console.log('propData')
+        console.log(this.propData)
         this.getBookList()
     },
     async mounted () {
@@ -227,7 +227,7 @@ export default {
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'
             param.currentTeamKey = this.propData.currentTeamKey
-            
+
             this.$emit('openPop', param)
 
             // var param = {}
