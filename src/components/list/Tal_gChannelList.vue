@@ -1,7 +1,7 @@
 <template>
     <div class="chanRow w-100P fl" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
-        <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;"></div>
+        <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" /></div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
             <p class="font16 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>

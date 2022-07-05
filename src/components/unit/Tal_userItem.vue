@@ -1,8 +1,8 @@
 <template>
     <div style="width: 100%; height: 4rem;">
         <div style="text-align: left; width: 100%; height: 40%;">
-            <img v-if="this.uItem === '휴대폰 번호'" style="width: 1.2rem;" class="mr-04 mbottom-01" src="../../assets/images/main/main_email.png"/>
-            <img v-if="this.uItem === '이메일'" style="width: 1.2rem;" class="mr-04 mbottom-01" src="../../assets/images/main/main_phone.png"/>
+            <img v-if="this.uItem === '휴대폰 번호'" style="width: 1rem;" class="mr-04 mbottom-01" src="../../assets/images/main/main_phone.png"/>
+            <img v-if="this.uItem === '이메일'" style="width: 1.2rem;" class="mr-04 mbottom-01" src="../../assets/images/main/main_email.png"/>
             <span class="fontBold commonColor">{{uItem}}</span>
         </div>
         <div class="" style="height: 40%;" >

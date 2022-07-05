@@ -204,7 +204,10 @@ export default {
     //   this.errorBoxType = true
     //   this.errorPopYn = true
     // },
-    async saveMember () {
+    async saveMember() {
+      this.smallPopYn = true
+      this.confirmMsg = '멤버 신청이 완료되었습니다.'
+      this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
@@ -221,15 +224,8 @@ export default {
       })
       console.log(result)
       if (result.data.result === true) {
-        // this.errorPopYn = false
-        if (param.memberYn) {
-          this.smallPopYn = true
-          this.confirmMsg = '멤버 신청이 완료되었습니다.'
-          this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
-        }
       this.memberYn = param.memberYn
       // param = {}
-
       this.$emit('changeMemberYn', this.memberYn)
       }
 

@@ -3,7 +3,7 @@
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
-    <div class="pagePaddingWrap root mtop-1 overflowYScroll"  ref="memoarea" >
+    <div class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
@@ -26,19 +26,17 @@
 
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="mright-05 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="mright-05 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
                 <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
-
+            <gBtnSmall btnTitle="댓글 쓰기" class="fr" style="background-color: #fff !important; border: 1px solid #A9AACD; color: #3E3F6A;" @click="this.memoShowYn = true"/>
           </div>
-          <div style="width: 100%; height: 50px; padding: 10px 0; border-bottom: 1.5px dashed #ccc; float: left;">
-            <gBtnSmall btnTitle="댓글 쓰기" @click="this.memoShowYn = true"/>
-          </div>
+          <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
           <div style="width: 100%; min-height: 100px; float: left;" >
             <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove'  />
           </div>
@@ -48,7 +46,6 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
-
       </div>
     </div>
     <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;" @click="this.memoShowYn = false"></div>
@@ -297,6 +294,7 @@ export default {
     width: 100%;
     height: 100%;
     padding-top: 0;
+    padding-bottom: 50px;
 }
 .boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 70px; width: 100vw; background: rgb(236, 230, 204); height: calc(100vh);}
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
@@ -334,6 +332,8 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+      min-height: 22rem;
+      padding-bottom: 3rem;
   }
 
   .content ::after {

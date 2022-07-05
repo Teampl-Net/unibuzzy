@@ -2,8 +2,8 @@
   <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
   <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
-    <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
-      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+    <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}">
+      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: 0;" /></div>
         <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
             <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
@@ -30,12 +30,14 @@ export default {
   },
   created () {
     this.chanList = this.top5ChanList
+    this.checkOwnerYn()
   },
   props: {
     top5ChanList: {}
   },
   data () {
     return {
+      ownerYn: false,
       moreLink: 'subs',
       // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
@@ -47,6 +49,13 @@ export default {
     listTitle
   },
   methods: {
+    checkOwnerYn () {
+      for (var i = 0; i < this.chanList.length; i++) {
+        if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanList[i].creUserKey) {
+          this.chanList[i].ownerYn = true
+        }
+      }
+    },
     resizeText (text) {
       // if (text.length > 15) {
       //   text = text.substr(0, 15)
@@ -93,6 +102,7 @@ export default {
       this.viewTab = data
       // console.log(data)
       await this.getContentsList()
+      this.checkOwnerYn()
     },
     async reLoad () {
       this.$refs.activeBarChanListTop5.switchtab(0)
@@ -104,10 +114,8 @@ export default {
 </script>
 
 <style scoped>
-.top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;
-animation-name: fadein;
-animation-duration: 0.3s;
-}
+.top5MyChanColor { background-color: #6768a712;}
+.top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4; animation-name: fadein; animation-duration: 0.3s; position: relative;}
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
 .chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}

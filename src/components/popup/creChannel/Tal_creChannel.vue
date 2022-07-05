@@ -143,8 +143,6 @@ export default {
         this.selectTypeText = '매장'
       } else if (param.teamType === 'E') {
         this.selectTypeText = '기타'
-      }else {
-        this.selectTypeText = '기타'
       }
       this.typePopYn = false
     },

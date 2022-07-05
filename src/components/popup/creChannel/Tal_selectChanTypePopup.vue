@@ -22,7 +22,7 @@
       <div :class="{activeTypeBox: selectedType === 'E'}" @click="selectChanType('E')" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px; float: left; height:3rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; ">
           <p style="font-size: 1rem">기타</p>
       </div>
-      <input type="text" v-model="inputTypeTeam" name="" :style="getChanBoxSize" class="fl" style="border: 1px solid rgb(204, 204, 204); border-radius: 5px; height: 46px; box-sizing: border-box; padding: 0 10px; margin-top: 1px; width: calc(100% - var(--chanBoxSize) - 20px)" placeholder="채널 종류를 입력해주세요" id="">
+      <!-- <input type="text" v-model="inputTypeTeam" name="" :style="getChanBoxSize" class="fl" style="border: 1px solid rgb(204, 204, 204); border-radius: 5px; height: 46px; box-sizing: border-box; padding: 0 10px; margin-top: 1px; width: calc(100% - var(--chanBoxSize) - 20px)" placeholder="채널 종류를 입력해주세요" id=""> -->
       <!-- <p style="font-size: 1rem; float: left; width: 100px; height: 35px; line-height: 35px; text-align: left; padding: 0 5px;">직접 입력</p>
        -->
       <!-- <div style="width: 100%; height: 80px; background: rgb(103 104 167 / 22%); float: left;"> </div> -->
@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       selectedType: '',
-      inputTypeTeam: '',
+      // inputTypeTeam: '',
       failPopYn: false,
       businessTypeList: [
         { teamNameMtext: '기업', teamType: 'C' },
@@ -61,16 +61,16 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       if (this.selectedType !== '') {
-        if (this.selectedType === 'inputType') {
-          if (this.inputTypeTeam === '') {
-            this.failPopYn = true
-            return
-          } else {
-            param.teamType = this.inputTypeTeam
-          }
-        } else {
-          param.teamType = this.selectedType
-        }
+      //   if (this.selectedType === 'inputType') {
+      //     if (this.inputTypeTeam === '') {
+      //       this.failPopYn = true
+      //       return
+      //     } else {
+      //       param.teamType = this.inputTypeTeam
+      //     }
+      //   } else {
+        param.teamType = this.selectedType
+        // }
         this.$emit('makeParam', param)
       } else {
         this.failPopYn = true

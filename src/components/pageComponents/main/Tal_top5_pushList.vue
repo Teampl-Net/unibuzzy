@@ -15,6 +15,7 @@ export default {
   name: 'top5PushList',
   created () {
     this.pushList = this.alimList
+    this.checkSenderYn()
     // // eslint-disable-next-line no-debugger
     // debugger
   },
@@ -44,6 +45,13 @@ export default {
     commonListTable
   },
   methods: {
+    checkSenderYn () {
+      for (var i = 0; i < this.pushList.length; i++) {
+        if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.pushList[i].creUserKey) {
+          this.pushList[i].ownerYn = true
+        }
+      }
+    },
     async recvNoti (e) {
       var message
       try {
@@ -84,13 +92,13 @@ export default {
     },
     async changeTab (tabName) {
       // this.pushList = [] ///######
-
       this.viewTab = tabName
       var resultList = await this.getContentsList()
       this.listLeloadYn = false
       this.pushList = resultList.content
       // this.userDoList = resultList.userDo
       this.listLeloadYn = true
+      this.checkSenderYn()
     },
     async reLoad () {
       this.$refs.activeBarPushListTop5.switchtab(0)

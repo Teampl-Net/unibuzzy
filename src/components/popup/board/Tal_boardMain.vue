@@ -31,7 +31,8 @@
     </div>
 
     <div class="" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
-      <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll">
+      <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
+      <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader">
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <transition name="showModal">
           <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -73,8 +74,6 @@ export default {
     // cothis.mCabContentsList
   },
   mounted () {
-    this.newBox = document.getElementById('boardListWrap')
-    this.newBox.addEventListener('scroll', this.handleScroll)
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -83,7 +82,6 @@ export default {
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
-    this.newBox = document.getElementById('boardListWrap')
   },
   data () {
     return {
@@ -134,26 +132,26 @@ export default {
     }
   },
   methods: {
-    getAbsoluteTop (element) {
-      return window.pageYOffset + element.getBoundingClientRect().top
-    },
-    handleScroll () {
-      var element = document.getElementsByClassName('boardRow')[0]
-      var parentElement = element.parentElement
-      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+    // getAbsoluteTop (element) {
+    //   return window.pageYOffset + element.getBoundingClientRect().top
+    // },
+    // handleScroll () {
+    //   var element = document.getElementsByClassName('boardRow')[0]
+    //   var parentElement = element.parentElement
+    //   this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
-      var test = document.getElementById('commonBoardListHeader')
-      parentElement = element.parentElement
-      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-      if (this.firstContOffsetY < 0) {
-        if (this.newBox.scrollTop > this.newScrollPosition) {
-          this.scrolledYn = true
-        } else if (this.box.scrollTop <= this.newScrollPosition) {
-          this.scrolledYn = false
-        }
-      }
-      this.newScrollPosition = this.newBox.scrollTop
-    },
+    //   var test = document.getElementById('commonBoardListHeader')
+    //   parentElement = element.parentElement
+    //   this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+    //   if (this.firstContOffsetY < 0) {
+    //     if (this.newBox.scrollTop > this.newScrollPosition) {
+    //       this.scrolledYn = true
+    //     } else if (this.box.scrollTop <= this.newScrollPosition) {
+    //       this.scrolledYn = false
+    //     }
+    //   }
+    //   this.newScrollPosition = this.newBox.scrollTop
+    // },
     async refresh () {
       var result = await this.getContentsList()
       this.mCabContentsList = result.content

@@ -25,8 +25,8 @@
                   <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
 
                   <div style="height: 18px; float: right;">
-                    <img src="../../../assets/images/push/icon_clock.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
-                    <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                    <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
+                    <img src="../../../assets/images/push/icon_clock.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
                     <p class="font11 fr mleft-03 lightGray">{{dateText}}</p>
                     <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
                     <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
@@ -143,7 +143,7 @@ export default {
   },
   methods: {
     datechange () {
-      this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, this.dateCheck)
+      this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, !this.dateCheck)
     },
     setParentContents (data) {
       if (data.parentContentsKey) {
