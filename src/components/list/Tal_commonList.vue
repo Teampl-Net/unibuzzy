@@ -2,8 +2,14 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
-      <template v-for="(alim, index) in this.contentsList" :key="index" >
-        <div :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" v-if="alim.bodyFullStr">
+
+      <div v-if="this.contentsList.length === 0" style="width: 100%; height: 100%;">
+        <!-- pushList.vue 에서 introPushPageTab() 참고 -->
+        <img :src="this.imgUrl" style="float: left;" />
+      </div>
+
+      <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
+        <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox">
           <!-- <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div> -->
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
@@ -61,6 +67,15 @@
 <script>
 /* eslint-disable */
 export default {
+    data: function () {
+    return { // 데이터 정의
+      commonListCreUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+      mainYn: false,
+      chanWrap: null,
+      contentsList: {},
+      currentScroll: 0,
+    }
+  },
   components: {
 
   },
@@ -232,16 +247,8 @@ export default {
       return str
     }
   },
-  data: function () {
-    return { // 데이터 정의
-      commonListCreUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
-      mainYn: false,
-      chanWrap: null,
-      contentsList: {},
-      currentScroll: 0,
-    }
-  },
   props: {
+    imgUrl: {},
     clickEvnt: {},
     alimListYn: Boolean,
     mainYnProp: Boolean,

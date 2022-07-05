@@ -10,11 +10,11 @@
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
       <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
-      <div class="pagePaddingWrap" style="padding-top: 35px;" v-if="this.targetType === 'pushList'">
+      <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop="openPop" />
       </div>
       <pushBox @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <div class="pagePaddingWrap" style="padding-top: 35px; position: relative;" v-if="this.targetType === 'chanList'">
+      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'chanList'">
         <chanList :propData="this.params" :popYn="true" @closeLoading="this.$emit('closeLoading')" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.$emit('closeLoading')" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />

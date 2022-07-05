@@ -10,7 +10,7 @@
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
   <div id="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
-    <gChannelList @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
+    <gChannelList :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
@@ -95,8 +95,18 @@ export default {
     var resultList = await this.getChannelList()
     this.chanList = resultList.content
     this.$emit('closeLoading')
+    this.introChanPageTab()
   },
   methods: {
+    introChanPageTab () {
+      if (this.viewTab === 'user') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'all') {
+        this.imgUrl = '/resource/common/uplaceholder_white.png'
+      } else if (this.viewTab === 'mychannel') {
+        this.imgUrl = '/resource/common/userName.png'
+      }
+    },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -170,9 +180,7 @@ export default {
     async changeTab (tab) {
       // this.chanList = {}
       // this.$emit('openLoading')
-
-      this.chanList = []
-
+      // this.chanList = []
       this.viewTab = tab
       this.offsetInt = 0
       var resultList = await this.getChannelList()
@@ -184,6 +192,7 @@ export default {
       } else {
         this.myChanListPopYn = false
       }
+      this.introChanPageTab()
     },
     goDetail (value) {
       // eslint-disable-next-line no-new-object
@@ -263,6 +272,7 @@ export default {
   },
   data () {
     return {
+      imgUrl: '',
       box: null,
       scrollPosition: 0,
       scrollDirection: null,

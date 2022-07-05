@@ -45,6 +45,17 @@ export default {
     commonListTable
   },
   methods: {
+    introTop5PushPageTab () {
+      if (this.viewTab === 'N') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'M') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'L') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'S') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      }
+    },
     checkSenderYn () {
       for (var i = 0; i < this.pushList.length; i++) {
         if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.pushList[i].creUserKey) {
@@ -158,6 +169,5 @@ export default {
 <style scoped>
 .alimeListTr{border-bottom: 0.5px solid #6768A73D}
 .alimeListTr :last-child{border-bottom: none}
-
-.pushListWrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem;}
+.pushListWrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
 </style>

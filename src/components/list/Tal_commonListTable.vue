@@ -1,6 +1,10 @@
 
 <template>
-    <table class="w-100P">
+    <div v-if="this.commonListData.length === 0">
+      <!-- 다른 이미지로 대체하면 된다 -->
+      <img src="/resource/common/placeholder_white.png" style="height: 150px; width: 150px;" />
+    </div>
+    <table v-else class="w-100P">
         <colgroup>
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">

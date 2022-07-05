@@ -2,6 +2,10 @@
   <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
   <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
+    <div v-if="this.chanList.length === 0" class="w-100P">
+      <!-- 다른 이미지로 대체하면 된다 -->
+      <img src="/resource/common/placeholder_white.png" />
+    </div>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}">
       <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: 0;" /></div>
         <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
@@ -49,6 +53,13 @@ export default {
     listTitle
   },
   methods: {
+    introTop5ChanPageTab () {
+      if (this.viewTab === 'user') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'mychannel') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      }
+    },
     checkOwnerYn () {
       for (var i = 0; i < this.chanList.length; i++) {
         if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanList[i].creUserKey) {
@@ -116,7 +127,7 @@ export default {
 <style scoped>
 .top5MyChanColor { background-color: #6768a712;}
 .top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4; animation-name: fadein; animation-duration: 0.3s; position: relative;}
-.chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
+.chanTop5Wrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
 .chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}

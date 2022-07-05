@@ -1,11 +1,11 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div  style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+    <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab" />
+        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" />
       </div>
         <transition name="showModal">
           <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -25,7 +25,7 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
-          <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+          <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
 
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
@@ -78,6 +78,7 @@ export default {
     if (this.readySearhList) {
       this.requestSearchList(this.readySearhList)
     }
+    this.introPushPageTab()
   },
 
   updated() {
@@ -155,6 +156,17 @@ export default {
     }
   },
   methods: {
+    introPushPageTab () {
+      if (this.viewTab === 'N') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'M') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'L') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      } else if (this.viewTab === 'S') {
+        this.imgUrl = '/resource/common/placeholder_white.png'
+      }
+    },
     getAbsoluteTop(element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -262,7 +274,7 @@ export default {
       this.viewTab = tabName
       // this.commonListData = []
       // this.$refs.tabLoading.show()
-      this.commonListData = []
+      // this.commonListData = []
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
 
       this.offsetInt = 0
@@ -284,7 +296,7 @@ export default {
 
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
-
+      this.introPushPageTab ()
       // this.$refs.tabLoading.hide();
     },
     async getPushContentsList (pageSize, offsetInput) {
@@ -405,6 +417,7 @@ export default {
   },
   data () {
     return {
+      imgUrl: '',
       tempCount:0,
       firstContOffsetY: null,
       headerTop: 0,

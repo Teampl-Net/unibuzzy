@@ -34,7 +34,9 @@
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
-            <gBtnSmall btnTitle="댓글 쓰기" class="fr" @click="this.memoShowYn = true"/>
+            <!-- <gBtnSmall btnTitle="댓글 쓰기" class="fr"  @click="this.memoShowYn = true"/> -->
+            <div class="commentBtn fr" @click="this.memoShowYn = true">댓글 쓰기</div>
+
           </div>
           <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
           <div style="width: 100%; min-height: 100px; float: left;" >
@@ -289,6 +291,20 @@ export default {
 }
 </script>
 <style scoped>
+.commentBtn {
+  width: fit-content;
+  font-size: 14px;
+  line-height: 30px;
+  border-radius: 5px;
+  min-width: 3rem;
+  float: right;
+  height: 30px;
+  padding: 0 20px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #A9AACD;
+  color: #3E3F6A;
+}
 .pagePaddingWrap {
     box-sizing: border-box;
     width: 100%;
