@@ -204,7 +204,7 @@ export default {
       gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       if(delYn === true && this.chanDetail.modiYn === true){
-        alert(true)
+
         gParam.deleteYn = true || 1
 
       }

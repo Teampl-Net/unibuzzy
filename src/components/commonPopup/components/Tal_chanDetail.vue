@@ -212,7 +212,7 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      // alert(this.memberYn)
+
       if (this.memberYn) {
         param.memberYn = false
       }

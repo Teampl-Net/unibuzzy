@@ -2,7 +2,7 @@
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
       <transition name="showModal">
-        <fullModal @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
@@ -169,7 +169,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      alert(this.$store.getters.hStack)
+
       var hStack = this.$store.getters.hStack
       if (hStack[hStack.length - 1] === this.popId) {
         this.closeXPop()
@@ -185,7 +185,7 @@ export default {
           var param = new Object()
           param.targetType = target.targetKind
           param.targetKey = target.targetKey
-          // alert(JSON.stringify(param))
+
           /* target.splice(0, 1)
           this.$store.commit('addDeepLinkQueue', target) */
           this.$store.commit('addDeepLinkQueue', [])
@@ -355,12 +355,17 @@ export default {
       history.push(this.popId)
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
-      // alert(JSON.stringify(history))
+
     },
 
     openPop (params) {
       this.popParams = params
       this.popShowYn = true
+    },
+    async parentClose () {
+      await this.closePop()
+      await this.closeXPop(true)
+
     },
     async closePop (reloadYn) { // 자식 팝업닫기
       this.popShowYn = false
@@ -397,10 +402,9 @@ export default {
     successCreChan (params) {
       if(params.deleteYn === true && params.modiYn === true){
 
-        this.$emit('closeLoading')
-        // this.$emit('reloadPop', true) // 부모페이지까지 리로드?
-        this.$emit('closePop')
-        this.closeXPop()
+
+        this.$emit('parentClose')
+        // this.closeXPop()
         return
       }
 
@@ -414,7 +418,7 @@ export default {
       }
     },
     closeXPop (reloadYn) { // 내 팝업 닫기
-    // alert(this.targetType)
+
       if (this.targetType === 'pushDetail') {
         this.pushListAndDetailYn = false
         this.$emit('closePop', true)
