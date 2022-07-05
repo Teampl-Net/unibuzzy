@@ -32,7 +32,7 @@
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
-    <div style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: #ccc; padding: 10px; bottom: calc(2rem + 60px); right: 3rem;" @click="refreshAll">
+    <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
       <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
     </div>
   <!-- </div> -->
@@ -111,9 +111,7 @@ export default {
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
       // this.pushListAndDetailYn = false
-
     }
-
   },
   unmounted () {
 
@@ -167,13 +165,7 @@ export default {
       this.$emit('openLoading')
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
-
-      this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
-
       this.findPopShowYn = false
-      this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
-      this.scrolledYn = false
-      this.introPushPageTab ()
 
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({top:0});
@@ -181,7 +173,6 @@ export default {
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)
-
     },
     introPushPageTab () {
       if (this.viewTab === 'N') {
@@ -378,7 +369,6 @@ export default {
       }
 
       var result = await this.$getContentsList(param)
-      debugger
       console.log(result)
       if(result.empty){
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
@@ -514,6 +504,14 @@ export default {
 .pushListHeader--unpinned {
     transform: translateY(-100%);
 }
+.reload--pinned {
+    transform: translateY(0%);
+    transition: .3s;
+}
+.reload--unpinned {
+    transform: translateY(5rem);
+    transition: .3s;
+}
 
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
   transition: .3s;
@@ -524,7 +522,5 @@ export default {
 .slide-next-leave-to, .slide-prev-enter, .slide-prev-leave{
   transform: translate(-100%, 0);
 }
-
-
 
 </style>

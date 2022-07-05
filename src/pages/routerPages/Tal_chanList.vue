@@ -15,6 +15,9 @@
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
+  <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
+    <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
+  </div>
 </div>
 </template>
 
@@ -98,6 +101,13 @@ export default {
     this.introChanPageTab()
   },
   methods: {
+    async refreshAll () {
+      // 새로고침
+      this.$emit('openLoading')
+      var resultList = await this.getChannelList()
+      this.chanList = resultList.content
+      this.$emit('closeLoading')
+    },
     scrollMove () {
       var chanListWrap = this.$refs.chanListWrap
       chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
@@ -310,6 +320,14 @@ export default {
 </script>
 
 <style scoped>
+.reload--pinned {
+    transform: translateY(0%);
+    transition: .3s;
+}
+.reload--unpinned {
+    transform: translateY(5rem);
+    transition: .3s;
+}
 .chanListHeader {
     width: 100%;
     min-height: 132px;
