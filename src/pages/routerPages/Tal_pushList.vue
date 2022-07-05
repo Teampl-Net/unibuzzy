@@ -5,7 +5,7 @@
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" />
+        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
       </div>
         <transition name="showModal">
           <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -26,12 +26,14 @@
 
           <!-- </div> -->
           <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
-
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
 
         <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
+    </div>
+    <div style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: #ccc; padding: 10px; bottom: calc(2rem + 60px); right: 3rem;" @click="refreshAll">
+      <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
     </div>
   <!-- </div> -->
 </template>
@@ -156,6 +158,22 @@ export default {
     }
   },
   methods: {
+    async refreshAll() {
+      // 새로고침
+      this.$emit('openLoading')
+      var resultList = await this.getPushContentsList()
+      this.commonListData = resultList.content
+
+      this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+
+      this.findPopShowYn = false
+      this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
+      this.introPushPageTab ()
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 500)
+
+    },
     introPushPageTab () {
       if (this.viewTab === 'N') {
         this.imgUrl = '/resource/common/placeholder_white.png'
