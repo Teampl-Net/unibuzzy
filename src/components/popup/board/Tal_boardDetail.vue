@@ -34,7 +34,7 @@
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
-            <gBtnSmall btnTitle="댓글 쓰기" class="fr" style="background-color: #fff !important; border: 1px solid #A9AACD; color: #3E3F6A;" @click="this.memoShowYn = true"/>
+            <gBtnSmall btnTitle="댓글 쓰기" class="fr" @click="this.memoShowYn = true"/>
           </div>
           <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
           <div style="width: 100%; min-height: 100px; float: left;" >
