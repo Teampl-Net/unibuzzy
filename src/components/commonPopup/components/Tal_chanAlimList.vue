@@ -93,8 +93,8 @@ export default {
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
-    console.log('this.chanItem');
-    console.log(this.chanItem);
+    console.log('this.chanItem')
+    console.log(this.chanItem)
   },
   updated () {
     // eslint-disable-next-line no-unused-vars

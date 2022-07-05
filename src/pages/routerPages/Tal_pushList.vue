@@ -32,7 +32,7 @@
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
-    <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
+    <div v-if="this.targetType !== 'chanDetail'" :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
       <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
     </div>
   <!-- </div> -->
@@ -163,13 +163,14 @@ export default {
     async refreshAll() {
       // 새로고침
       this.$emit('openLoading')
-      var resultList = await this.getPushContentsList()
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
+        pSize = Number(this.offsetInt) * 10
+      }
+      var resultList = await this.getPushContentsList(pSize, 0)
       this.commonListData = resultList.content
-      this.findPopShowYn = false
-
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({top:0});
-
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)

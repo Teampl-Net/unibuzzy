@@ -104,8 +104,14 @@ export default {
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
-      var resultList = await this.getChannelList()
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
+        pSize = Number(this.offsetInt) * 10
+      }
+      this.endList = true
+      var resultList = await this.getChannelList(pSize, 0)
       this.chanList = resultList.content
+      this.endList = false
       this.$emit('closeLoading')
     },
     scrollMove () {
