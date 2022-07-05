@@ -82,11 +82,11 @@ const methods = {
     // testYn = false
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
       // 수망고
-      paramMap.set('fcmKey', '123456789')
-      paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      // paramMap.set('fcmKey', '123456789')
+      // paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       // 정재준테스트
-      // paramMap.set('fcmKey', '22222222')
-      // paramMap.set('soAccessToken', 'BBAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      paramMap.set('fcmKey', '22222222')
+      paramMap.set('soAccessToken', 'BBAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       // // 최유민테스트
       // paramMap.set('fcmKey', '11111111')
       // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
@@ -404,7 +404,22 @@ const methods = {
     // console.log("##")
     // result = response
     return response
-  }
+  },
+  async changeDispName (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    if (inputParam) {
+      param = inputParam
+    }
+    var result = null
+    var response = await commonAxiosFunction({
+      url: '/tp.saveUser',
+      param: param
+    })
+    debugger
+    result = response
+    return result
+  },
 }
 
 export default {
@@ -428,5 +443,6 @@ export default {
     Vue.config.globalProperties.$deleteCabinet = methods.deleteCabinet
     Vue.config.globalProperties.$getCabinetDetail = methods.getCabinetDetail
     Vue.config.globalProperties.$saveMCabContents = methods.saveMCabContents
+    Vue.config.globalProperties.$changeDispName = methods.changeDispName
   }
 }

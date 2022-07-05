@@ -42,7 +42,10 @@ export default {
   },
   methods: {
     openTeamplHome () {
-      window.open('http://www.pushmsg.net', '_blank')
+      // window.location.replace('http://www.pushmsg.net')
+      // window.open('http://www.pushmsg.net', '_blank')
+      // window.open('http://www.pushmsg.net','_parent')
+      window.open('http://www.pushmsg.net', '네이버팝업', 'scrollbars=yes')
     }
   }
 }

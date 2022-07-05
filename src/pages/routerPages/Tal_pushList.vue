@@ -13,7 +13,7 @@
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
 
       <!-- <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); "> -->
-      <div class="pushListWrapWrap" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
+      <div class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -73,8 +73,12 @@ export default {
     this.$emit('changePageHeader', '알림')
     var resultList = await this.getPushContentsList()
     this.commonListData = resultList.content
-    console.log('this.commonListData');
-    console.log(this.commonListData);
+    // console.log('!@!@!@!@!@!@!@!@!');
+    // console.log(resultList);
+    this.$emit('numberOfElements', resultList.totalElements)
+
+    // console.log('this.commonListData');
+    // console.log(this.commonListData);
     this.$emit('closeLoading')
     this.findPopShowYn = false
     if (this.readySearhList) {
@@ -168,7 +172,12 @@ export default {
 
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
+      this.scrolledYn = false
       this.introPushPageTab ()
+
+      var ScrollWrap = this.$refs.pushListWrapWrapCompo
+      ScrollWrap.scrollTo({top:0});
+
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)
@@ -315,7 +324,12 @@ export default {
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
       this.introPushPageTab ()
+      this.scrollMove()
       // this.$refs.tabLoading.hide();
+    },
+    scrollMove(){
+      var ScrollWrap = this.$refs.pushListWrapWrapCompo
+      ScrollWrap.scrollTo({top:0, behavior:'smooth'});
     },
     async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object

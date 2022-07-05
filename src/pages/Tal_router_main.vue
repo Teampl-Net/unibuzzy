@@ -2,18 +2,19 @@
   <div class="w-100P h-100P listRefresh"> <!-- v-if="notiDetailShowYn" -->
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
     <loadingCompo v-show="loadingYn" />
+    <loadingIndexCompo v-show="loadingIndexYn" />
     <transition name="showModal">
-      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
+      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams"  @openZLoading="this.loadingIndexYn = true" @closeZLoading="this.loadingIndexYn = false"/>
     </transition>
     <div @click="showMenuYn = false" v-show="showMenuYn" class="menuBtn"></div>
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
-    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 99"/>
+    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 999"/>
     <div  v-if="reloadYn === false" class="pagePaddingWrap" style="height: calc(100vh - 60px); overflow: hidden;">
       <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
     </div>
-    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: fixed; bottom: 0; z-index: 99"/>
+    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: fixed; bottom: 0; z-index: 999"/>
   </div>
 </template>
 
@@ -24,6 +25,7 @@
 import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/Tal_menu.vue'
 import loadingCompo from '../components/Tal_loading.vue'
+import loadingIndexCompo from '../components/Tal_loadingindex.vue'
 // import PullToRefresh from 'pulltorefreshjs'
 
 export default {
@@ -37,6 +39,7 @@ export default {
       popParams: '',
       headerTitle: '',
       loadingYn: true,
+      loadingIndexYn: false,
       routerReloadKey: 0,
       notiDetail: '',
       notiDetailShowYn: false,
@@ -49,7 +52,8 @@ export default {
   components: {
     TalMenu,
     loadingCompo,
-    pushPop
+    pushPop,
+    loadingIndexCompo
     // chanMenu
   },
   beforeUnmount () {

@@ -1,6 +1,6 @@
 <template>
-    <div class="loadingWrap">
-        <div class="loadingcontainer">
+    <div class="loadingZWrap">
+        <div class="loadingZcontainer">
             <img class="boombox" src="../assets/images/common/message_logo.png" alt="">
             <div class="shadow"></div>
             <p class="waitingText">Wait a moment...</p>
@@ -162,7 +162,7 @@ export default {
   }
 }
 
-.loadingWrap{
+.loadingZWrap{
   background-color: #FFFFFF;
   -moz-animation-delay: 2s;
   -webkit-animation-delay: 2s;
@@ -172,10 +172,10 @@ export default {
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 999;
+  z-index: 99999;
 }
 
-.loadingcontainer {
+.loadingZcontainer {
   position: relative;
   top: 40%;
   left: 85%;

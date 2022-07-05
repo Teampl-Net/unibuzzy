@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     async getFollowerList () {
+
         var paramMap = new Map()
 
         paramMap.set('teamKey', this.propData.currentTeamKey)
@@ -71,6 +72,7 @@ export default {
         })
         console.log('@@@result@@@')
         console.log(result)
+
         this.managerList = result.data.content
         for (var i = 0; i < this.managerList.length; i ++) {
             this.managerList[i].selectedYn = false

@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:9999999999999;" @click="goNo"></div>
+  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:99999999999999;" @click="goNo"></div>
   <div class="pushPopUpWrap" >
     <div class="pushPopContent pushMbox">
       <div class="pushDetailTopArea">

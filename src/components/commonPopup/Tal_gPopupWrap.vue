@@ -9,7 +9,7 @@
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
        -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.$emit('closeLoading')"  @openLoading="this.$emit('openLoading')"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
-      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
+      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' @closeZLoading="this.$emit('closeZLoading')" @openZLoading="this.$emit('openZLoading')" />
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @closeLoading="this.$emit('closeLoading')" @openPop="openPop" />
       </div>
@@ -372,10 +372,19 @@ export default {
       }
     },
     successCreChan (params) {
+      if(params.deleteYn === true && params.modiYn === true){
+
+        this.$emit('closeLoading')
+        // this.$emit('reloadPop', true) // 부모페이지까지 리로드?
+        this.$emit('closePop')
+        this.closeXPop()
+        return
+      }
+
       if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)
-      } else {
+      }else {
         this.$emit('reloadPop')
         this.successChanParam = params
         this.settingPop(true)
@@ -469,7 +478,7 @@ export default {
 
 <style scoped>
 
-.commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 9999; background: #FFFFFF;}
 .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;}
 /* .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;} */
 

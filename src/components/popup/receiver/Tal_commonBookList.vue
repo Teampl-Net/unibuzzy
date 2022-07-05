@@ -106,7 +106,7 @@ export default {
         this.propObject = this.propData
         if(this.selectPopYn){
             this.selectedBookList = []
-            if(this.parentSelectList.bookList) {
+            if(this.parentSelectList) {
                 this.selectedBookList = this.parentSelectList.bookList
             }
         }
@@ -160,7 +160,7 @@ export default {
             console.log('@###!@#!#!@#!#!@#!@#');
             console.log(this.listData)
 
-            if(this.parentSelectList.bookList){
+            if(this.parentSelectList){
                 var indexOf = null
                 for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
                     // this.parentSelectList.bookList.data.cabinetKey

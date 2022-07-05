@@ -10,8 +10,22 @@
         <div class="profileWrap ">
           <div class="roundDiv imgSize">
             <img src="../../assets/images/main/main_profile.png" style="width: 100px;"/>
+
           </div>
-          <span class="font20 fontBold" >{{this.$makeMtextMap(this.userInfo.userDispMtext, 'KO')}}</span>
+          <span class="font20 fontBold" style="width:100%; float:left; transform: translate(10px);" v-show="!changeYn" >
+            {{this.$makeMtextMap(this.userInfo.userDispMtext, 'KO')}}
+            <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px;" class="r" @click="changeUserDispMtext()" >
+          </span>
+
+          <div class="fl" style="transform: translate(30px);" v-show="changeYn">
+            <input class="fl" type="text" v-model="tempUserDispName" />
+            <p class="fl mleft-1" style="line-height:30px" @click="setDispName" >확인</p>
+            <p class="fl mleft-1" style="line-height:30px" @click="changeYn = false">취소</p>
+          </div>
+
+
+
+
         </div>
         <div class="" style="text-align: left; ">
           <userItem class="w-100P mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop" />
@@ -78,7 +92,9 @@ export default {
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
-      settingAlimPopYn: false
+      settingAlimPopYn: false,
+      tempUserDispName:'',
+      changeYn:false
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -97,6 +113,30 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    async setDispName(){
+
+      //KO$^$수망고$#$EN$^$sumango
+      var param = {}
+      param.user = this.userInfo
+      param.user.userDispMtext = 'KO$^$'+this.tempUserDispName
+      param.updateYn = true
+      console.log(param)
+
+      var result = await this.$changeDispName(param)
+      console.log(result)
+
+      if(result.data === 'OK'){
+        // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
+        this.$router.push('/')
+        this.changeYn = false
+        // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
+      }
+
+    },
+    changeUserDispMtext(){
+      this.changeYn = true
+      this.tempUserDispName = this.$changeText(this.userInfo.userDispMtext)
+    },
     openPop (target) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -139,7 +179,7 @@ export default {
 </script>
 
 <style scoped>
-.profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px }
+.profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .imgSize{ width: 6rem; height: 6rem; border-radius: 6rem; margin-bottom: 0.5rem;}
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
 .roundDiv{box-sizing: border-box; overflow: hidden;}
@@ -147,6 +187,7 @@ table{text-align: left; width: 100%;}
 tr, td, th {
   height: 4rem;
   margin-bottom: 1rem
+
 }
 td {
   border-bottom: none !important

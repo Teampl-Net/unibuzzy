@@ -5,7 +5,7 @@
 
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
       <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
-        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건</p>
+        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건 | 받은 알림 {{myContentsCount}}건</p>
         <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
       </div>
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
@@ -36,7 +36,7 @@
   </div>
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-    <pushList ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" />
+    <pushList ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -69,12 +69,10 @@ export default {
       errorBoxYn : false,
       errorBoxText : '',
       errorBoxType :'two',
-      // adminYn: true, //유민
-      // detailShowYn: false, //유민
-
-      adminYn: false, //Wls
-      detailShowYn: true, //Wls
-      memberYn: false
+      adminYn: false,
+      detailShowYn: true,
+      memberYn: false,
+      myContentsCount:0
     }
   },
   watch:{
@@ -91,10 +89,12 @@ export default {
     chanDetailComp
   },
   async created() {
-    this.$emit('openLoading')
+    this.$emit('openZLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
+    console.log('this.chanItem');
+    console.log(this.chanItem);
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -112,6 +112,9 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    numberOfElements(num){
+      this.myContentsCount = num
+    },
     changeMemberYn(data){
       this.memberYn = data
     },
@@ -150,8 +153,10 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
       var resultList = await this.$getTeamList(paramMap)
+      console.log('resultListresultListresultListresultListresultListresultListresultListresultListresultList');
+      console.log(resultList);
       this.chanItem = resultList.data.content[0]
-
+      this.chanItem.totalElements = resultList.data.totalElements
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
@@ -178,18 +183,18 @@ export default {
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
       //   this.adminYn = true
       // }
-      this.$emit('closeLoading')
+      this.$emit('closeZLoading')
     },
     openPushDetailPop (param) {
       param.openActivity = 'chanAlimList'
       this.$emit('openPop', param)
     },
     async changeFollowYn (fYn) {
-      this.$emit('openLoading')
+      this.$emit('openZLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false
       await this.getChanDetail(false)
-      this.$emit('closeLoading')
+      this.$emit('closeZLoading')
       // this.detailShowYn = false
     },
     changeText (text) {

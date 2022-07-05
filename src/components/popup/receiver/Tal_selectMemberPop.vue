@@ -63,7 +63,7 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data.content
-            if (this.memberList) { 
+            if (this.memberList) {
                 for (var i = this.memberList.length - 1; i >= 0; i --) {
                     var tttt = this.memberList[i]
                     if(this.propData.selectMemberType === 'manager') {
@@ -71,8 +71,8 @@ export default {
                             this.memberList.splice(i, 1)
                         }
                     } else if (this.propData.selectMemberType === 'member') {
-                        var tttt = this.pSelectedList 
-                        debugger
+                        var tttt = this.pSelectedList
+
                         if (this.pSelectedList && this.pSelectedList.length > 0) {
                             for (var p = 0; p < this.pSelectedList.length; p ++) {
                                 if(this.pSelectedList[p].userKey === this.memberList[i].userKey) {
@@ -96,7 +96,6 @@ export default {
             this.newYn = true
             var param = {}
             param.targetType = 'bookMemberDetail'
-
             param.currentCabinetKey = this.propData.cabinetKey
             param.currentTeamKey = this.propData.currentTeamKey
             param.newMemYn = true
@@ -129,7 +128,7 @@ export default {
         refresh () {
             this.getFollowerList()
         },
-        
+
         async saveMember () {
             var userKeyList = []
             var param = new Object()
@@ -139,7 +138,7 @@ export default {
                     userKeyList.push(this.memberList[i].userKey)
                 }
             }
-        
+
             if (this.propData.selectMemberType === 'manager') {
                 param.teamKey = this.propData.currentTeamKey
                 if (userKeyList && userKeyList.length > 0) {
@@ -150,6 +149,7 @@ export default {
                     })
                 }
                 if(this.directAddMemList && this.directAddMemList.length > 0) {
+
                     var follower = null
                     for (var u = 0; u < this.directAddMemList.length; u ++) {
                         follower = new Object()
@@ -167,20 +167,21 @@ export default {
                         })
                     }
                 }
-                
-                
+
+
             } else {
-                var mCabContents = null 
+                var mCabContents = null
                 if (userKeyList && userKeyList.length > 0) {
                     param.userKeyList = userKeyList
                     param.cabinetKey = this.propData.cabinetKey
                     param.targetKey = this.propData.currentTeamKey
+
                     await this.$saveMCabContents(param)
                 }
                 /* if(userKeyList && userKeyList.length > 0) {
                     for (var i = 0; i < userKeyList.length; i++) {
                         param = new Object()
-                
+
                         mCabContents = new Object()
                         mCabContents.jobkindId = 'USER'
                         mCabContents.cabinetKey = this.propData.cabinetKey
@@ -206,11 +207,12 @@ export default {
                         var result = await this.$saveMCabContents(param)
                     }
                 }
-                
+
             }
-            
+
             this.confirmPopShowYn = false
             this.$emit('closeXPop', true)
+
             /* if (result.data.result === true && result.data.message === 'OK') {
                 this.$emit('closeXPop', true)
             } */

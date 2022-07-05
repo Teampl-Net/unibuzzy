@@ -45,6 +45,11 @@
             <input class="categoryBox" style="border: 1px solid #ccc; flex:1" v-model="keyWord2" />
           </div>
         </div> -->
+
+        <!-- <div v-if="chanDetail.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:3em; bottom:80px;"> -->
+          <div v-if="chanDetail.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:2em; top:1rem;">
+          <p style="color:white; font-weight:bold"> 채널 삭제 </p>
+        </div>
         <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
@@ -100,6 +105,9 @@ export default {
     }
   },
   methods: {
+    chanDelete () {
+      this.setParam(true)
+    },
     async getTeamList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanDetail.targetKey)
@@ -183,7 +191,7 @@ export default {
       }
       this.checkPopYn = true
     },
-    async setParam () {
+    async setParam (delYn) {
       // eslint-disable-next-line no-new-object
       var gParam = new Object()
       if (this.chanDetail !== {}) {
@@ -195,6 +203,11 @@ export default {
       gParam.logoFilekey = this.selectIcon.selectedId
       gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
+      if(delYn === true && this.chanDetail.modiYn === true){
+        alert(true)
+        gParam.deleteYn = true || 1
+
+      }
 
       var result = await this.$requestCreChan(gParam)
       if (result.result === true || result.result === 'true') {
@@ -208,9 +221,13 @@ export default {
           params.targetKey = this.chanDetail.targetKey
           params.modiYn = true
           params.teamKey = this.chanDetail.targetKey
-        } else {
+        }else{
           params.targetKey = result.teamKey
           params.teamKey = result.teamKey
+        }
+
+        if(delYn === true && this.chanDetail.modiYn === true) {
+          params.deleteYn = delYn
         }
         this.$emit('successCreChan', params)
       }

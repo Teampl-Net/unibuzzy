@@ -105,7 +105,6 @@ const methods = {
     var resultMap = '등록된 이름이 없습니다.'
     if (localStorage.getItem('sessionUser') !== 'undefined' && localStorage.getItem('sessionUser') !== undefined && localStorage.getItem('sessionUser') !== null && localStorage.getItem('sessionUser') !== '') {
       var userInfo = (JSON.parse(localStorage.getItem('sessionUser')))
-
       resultMap = userInfo
       return resultMap
     } else {

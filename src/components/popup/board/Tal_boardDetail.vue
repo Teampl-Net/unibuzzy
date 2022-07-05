@@ -113,6 +113,7 @@ export default {
   },
   methods: {
     scrollMove(wich){
+
       var memoArea = this.$refs.memoarea
       memoArea.scrollTo({top:wich, behavior:'smooth'});
     },

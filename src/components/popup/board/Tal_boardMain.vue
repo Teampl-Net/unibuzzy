@@ -39,7 +39,7 @@
         </transition>
         <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
       </div>
-      <div class=" " id="boardListWrap"  style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
+      <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
         <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
       </div>
@@ -70,7 +70,7 @@ export default {
     await this.getCabinetDetail()
     console.log(this.mCabContentsList)
     // eslint-disable-next-line no-
-    // 
+    //
     // cothis.mCabContentsList
   },
   mounted () {
@@ -266,7 +266,7 @@ export default {
       // console.log(param);
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-
-      
+
       return resultList
     },
     closeSearchPop () {
@@ -302,6 +302,11 @@ export default {
       this.mCabContentsList = []
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
+      this.scrollMove()
+    },
+    scrollMove(){
+      var ScrollWrap = this.$refs.boardListWrapCompo
+      ScrollWrap.scrollTo({top:0, behavior:'smooth'});
     },
     async requestSearchList (param) {
       console.log(param)

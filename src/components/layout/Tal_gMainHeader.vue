@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style>
-.mainHeaderWrap{box-sizing: border-box; display: list-item; padding: 0.5rem 0.7rem; padding-right: 1rem; text-align: left; width: 100%; height: 50px;}
+.mainHeaderWrap{box-sizing: border-box; display: list-item; padding: 0.5rem 0.7rem; padding-right: 1rem; text-align: left; width: 100%; height: 50px; }
 .menuBtn{float: right;}
 .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;}
 .mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}

@@ -31,8 +31,11 @@
 export default {
   props: { opentype: {} },
   created () {
+
     this.getCodeList()
     this.setDefaultData()
+
+
   },
   data () {
     return {
@@ -56,6 +59,8 @@ export default {
       }
       resultList = await this.$getCodeList(param)
       this.teamImgList = resultList
+      // var a = this.teamImgList
+      // debugger
     },
     setDefaultData () {
       if (this.opentype === 'iconPop') {

@@ -8,9 +8,9 @@
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div id="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
-    <gChannelList :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist'/>
+    <gChannelList ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
@@ -98,6 +98,10 @@ export default {
     this.introChanPageTab()
   },
   methods: {
+    scrollMove(){
+      var chanListWrap = this.$refs.chanListWrap
+      chanListWrap.scrollTo({top:0, behavior:'smooth'});
+    },
     introChanPageTab () {
       if (this.viewTab === 'user') {
         this.imgUrl = '/resource/common/placeholder_white.png'
@@ -192,6 +196,7 @@ export default {
       } else {
         this.myChanListPopYn = false
       }
+      this.scrollMove()
       this.introChanPageTab()
     },
     goDetail (value) {

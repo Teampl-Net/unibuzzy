@@ -3,7 +3,7 @@
       <!-- chanList.vue 에서 introChanPageTab() 수정 -->
       <img :src="this.imgUrl" style="float: left;" />
     </div>
-    <div v-else class="chanRow w-100P fl" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
+    <div v-else class="chanRow w-100P fl" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
         <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" /></div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
@@ -29,8 +29,7 @@
 
 <script>
 export default {
-  created () {
-  },
+
   data () {
     return {
     }
@@ -45,6 +44,7 @@ export default {
     }
   },
   methods: {
+
     resizeText (text) {
       if (text.length > 20) {
         text = text.substr(0, 20) + '...'

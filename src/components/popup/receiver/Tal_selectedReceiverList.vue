@@ -57,6 +57,9 @@ export default {
         }
     },
     created() {
+        console.log('this.listData')
+        console.log(this.listData)
+
         this.upDatePage()
         this.sessionUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
 
@@ -84,13 +87,13 @@ export default {
                     }
                 }
                 if (checkYn) {
-                    this.$emit('addMemberList', this.sessionUserInfo)    
+                    this.$emit('addMemberList', this.sessionUserInfo)
                 }
 
             }
             /* if(!this.checkMeYn) {
                 this.$emit('addMemberList', this.sessionUserInfo)
-                this.checkMeYn = true    
+                this.checkMeYn = true
             } else {
                 this.showErrorPopYn = true
             } */
@@ -99,6 +102,7 @@ export default {
             this.$emit('openAddPop')
 
         },
+
         //유민참고
         upDatePage(data) {
             if (data) {
@@ -112,6 +116,7 @@ export default {
                 if (this.listData !== undefined && this.listData !== null) {
                     if (this.listData.bookList !== undefined && this.listData.bookList !== null) {
                         this.teamList.bookList = this.listData.bookList
+                        console.log(this.teamList)
                     }
                     if (this.listData.memberList !== undefined && this.listData.memberList !== null && this.listData.memberList.length > 0) {
                         this.teamList.memberList = this.listData.memberList
@@ -129,7 +134,7 @@ export default {
                 this.teamList.bookList.splice(index, 1)
             } else if(type === 'member') {
                 this.teamList.memberList.splice(index, 1)
-                
+
             }
             this.teamList.index = index
             this.$emit('changeSelectedList', this.teamList)

@@ -87,7 +87,6 @@ export default {
                 this.$emit('refreshList')
         },
         setParentSelectList() {
-
             if(this.parentSelectList) {
                 if (this.parentSelectList.memberList) {
                     for (var i = 0; i < this.memberList.length; i ++) {
@@ -127,7 +126,7 @@ export default {
         async deleteMemberClick(data, index){
             if(this.propData.value.creUserKey !== data.userKey){
                 if(this.propData.selectMemberType === 'manager') {
-                   this.$emit('deleteManager', data)
+                    this.$emit('deleteManager', data)
                 } else {
                     var param = {}
                     console.log(data)
@@ -137,14 +136,15 @@ export default {
                         url: '/tp.deleteMCabContents',
                         param: param
                     })
+                    console.log(result)
+                    if(result.data === 'true' || result.data === true){
+                        this.memberList = []
+                        this.$emit('refreshList')
+                    }
                 }
 
 
-                console.log(result)
-                if(result.data === 'true' || result.data === true){
-                    this.memberList = []
-                    this.$emit('refreshList')
-                }
+
             }else{
 
             }
@@ -173,8 +173,9 @@ export default {
             data.shareSeq = data.userKey
             this.selectedMemberList.push(data)
             this.$emit('changeSelectMemberList', this.selectedMemberList)
-
             this.listData[index].selectedYn = true
+            var tt = this.listData
+            debugger
 
         },
         checkClick () {
