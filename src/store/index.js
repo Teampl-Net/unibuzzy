@@ -6,7 +6,8 @@ export default createStore({
     currentPage: null,
     removePage: 0,
     pageUpdate: 0,
-    recvPushQueue: []
+    recvPushQueue: [],
+    deepLinkQueue: []
   },
   mutations: {
     updateStack (state, stack) {
@@ -23,6 +24,9 @@ export default createStore({
     },
     addPushQueue (state, page) {
       state.recvPushQueue = page
+    },
+    addDeepLinkQueue (state, page) {
+      state.deepLinkQueue = page
     }
   },
   actions: {
@@ -44,6 +48,9 @@ export default createStore({
     },
     pushQueue (state) { // 현재 로그인 상태인지 확인 (true/false)
       return state.recvPushQueue
+    },
+    deepLinkQueue (state) { // 현재 로그인 상태인지 확인 (true/false)
+      return state.deepLinkQueue
     }
   }
 })

@@ -158,6 +158,9 @@ export default {
     pageUpdate () {
       return this.$store.getters.hUpdate
     },
+    deepLinkQueue () {
+      return this.$store.getters.deepLinkQueue
+    },
     getWindowSize () {
       return {
         '--widndowWidth': window.innerWidth + 'px'
@@ -166,9 +169,28 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
+      alert(this.$store.getters.hStack)
       var hStack = this.$store.getters.hStack
       if (hStack[hStack.length - 1] === this.popId) {
         this.closeXPop()
+      }
+    },
+    deepLinkQueue (value, old) {
+      var history = this.$store.getters.hStack
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+      } else {
+        if (value.length > 0) {
+          var target = value[value.length - 1]
+          // eslint-disable-next-line no-new-object
+          var param = new Object()
+          param.targetType = target.targetKind
+          param.targetKey = target.targetKey
+          // alert(JSON.stringify(param))
+          /* target.splice(0, 1)
+          this.$store.commit('addDeepLinkQueue', target) */
+          this.$store.commit('addDeepLinkQueue', [])
+          this.openPop(param)
+        }
       }
     },
     historyStack (value, old) {
@@ -333,6 +355,7 @@ export default {
       history.push(this.popId)
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
+      // alert(JSON.stringify(history))
     },
 
     openPop (params) {

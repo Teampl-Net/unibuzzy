@@ -107,12 +107,26 @@ const isJsonString = (str) => {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('systemName', message.systemNameData)
+        } else if (message.type === 'deepLinkUrl') {
+          store.commit('addDeepLinkQueue', message.url)
+          var urlString = message.url.toString()
+          const params = new URLSearchParams(urlString.replace('http://mo.d-alim.com:18080', ''))
+          var queList = []
+          for (const param of params) {
+            console.log('targetKind: ' + param[0])
+            console.log('targetKey: ' + param[1])
+            queList.push({ targetKind: param[0], targetKey: param[1] })
+          }
+
+          store.commit('addDeepLinkQueue', queList)
+          // alert(JSON.stringify(message))
         } else if (message.type === 'goback') {
           var history = store.getters.hStack
           var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           }
+          // alert(JSON.stringify(history))
           var current = store.getters.hUpdate
           store.commit('updatePage', current + 1)
           /* else {

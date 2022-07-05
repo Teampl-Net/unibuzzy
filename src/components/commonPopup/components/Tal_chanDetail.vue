@@ -157,7 +157,6 @@ export default {
     if(this.parentMemberYn) {
       this.memberYn = this.parentMemberYn
     }
-    console.log(this.chanDetail)
     if (this.alimSubPopYn) {
       var history = this.$store.getters.hStack
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
@@ -330,7 +329,7 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link' + '/?link=' + 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
 
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
@@ -344,7 +343,8 @@ export default {
           link: {
             /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
             /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            webUrl: link
+            webUrl: link,
+            mobileWebUrl: link
             /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
             webUrl: 'https://thealim.page.link/H3Ed' */
           }
@@ -355,7 +355,8 @@ export default {
             link: {
               /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
               /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              webUrl: link
+              webUrl: link,
+              mobileWebUrl: link
             }
           }
         ]

@@ -31,11 +31,8 @@
 export default {
   props: { opentype: {} },
   created () {
-
     this.getCodeList()
     this.setDefaultData()
-
-
   },
   data () {
     return {

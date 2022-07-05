@@ -378,6 +378,7 @@ export default {
       }
 
       var result = await this.$getContentsList(param)
+      debugger
       console.log(result)
       if(result.empty){
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()

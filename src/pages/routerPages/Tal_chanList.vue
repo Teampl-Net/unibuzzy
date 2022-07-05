@@ -98,9 +98,9 @@ export default {
     this.introChanPageTab()
   },
   methods: {
-    scrollMove(){
+    scrollMove () {
       var chanListWrap = this.$refs.chanListWrap
-      chanListWrap.scrollTo({top:0, behavior:'smooth'});
+      chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     introChanPageTab () {
       if (this.viewTab === 'user') {

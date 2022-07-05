@@ -416,10 +416,9 @@ const methods = {
       url: '/tp.saveUser',
       param: param
     })
-    debugger
     result = response
     return result
-  },
+  }
 }
 
 export default {

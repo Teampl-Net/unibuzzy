@@ -23,9 +23,6 @@
             <p class="fl mleft-1" style="line-height:30px" @click="changeYn = false">취소</p>
           </div>
 
-
-
-
         </div>
         <div class="" style="text-align: left; ">
           <userItem class="w-100P mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop" />
@@ -93,8 +90,8 @@ export default {
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
       settingAlimPopYn: false,
-      tempUserDispName:'',
-      changeYn:false
+      tempUserDispName: '',
+      changeYn: false
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -113,27 +110,25 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
-    async setDispName(){
-
-      //KO$^$수망고$#$EN$^$sumango
+    async setDispName () {
+      // KO$^$수망고$#$EN$^$sumango
       var param = {}
       param.user = this.userInfo
-      param.user.userDispMtext = 'KO$^$'+this.tempUserDispName
+      param.user.userDispMtext = 'KO$^$' + this.tempUserDispName
       param.updateYn = true
       console.log(param)
 
       var result = await this.$changeDispName(param)
       console.log(result)
 
-      if(result.data === 'OK'){
+      if (result.data === 'OK') {
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
         this.$router.push('/')
         this.changeYn = false
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
       }
-
     },
-    changeUserDispMtext(){
+    changeUserDispMtext () {
       this.changeYn = true
       this.tempUserDispName = this.$changeText(this.userInfo.userDispMtext)
     },

@@ -60,6 +60,7 @@ export default {
     // PullToRefresh.destroyAll()
   },
   mounted () {
+    /* this.checkDeepLinkQueue() */
     // console.log('pulltorefreshjs')
     // PullToRefresh.init({
     //   mainElement: 'body',
@@ -74,15 +75,54 @@ export default {
     //   }
     // })
   },
-
   computed: {
     getWindowSize () {
       return {
         '--widndowWidth': window.innerWidth + 'px'
       }
+    },
+    deepLinkQueue () {
+      return this.$store.getters.deepLinkQueue
+    }
+  },
+  watch: {
+    deepLinkQueue (value, old) {
+      var history = this.$store.getters.hStack
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+        if (value.length > 0) {
+          var target = value[value.length - 1]
+          // eslint-disable-next-line no-new-object
+          var param = new Object()
+          param.targetType = target.targetKind
+          param.targetKey = target.targetKey
+          // alert(JSON.stringify(param))
+          /* target.splice(0, 1)
+          this.$store.commit('addDeepLinkQueue', target) */
+          this.$store.commit('addDeepLinkQueue', [])
+          // alert('ㅇㅇㅇㅇ')
+          this.openPop(param)
+        }
+        // alert(JSON.stringify(value))
+      }
     }
   },
   methods: {
+    /* checkDeepLinkQueue () {
+      // const searchParams = new URLSearchParams(location.search)
+      // alert(location.search)
+
+      var queue = this.$store.getters.deepLinkQueue
+      if (queue.length > 0) {
+        var target = queue[queue.length - 1]
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        param.targetType = target.targetKind
+        param.targetKey = target.targetKey
+        // alert(JSON.stringify(param))
+        this.$store.commit('addDeepLinkQueue', [])
+        this.openPop(param)
+      }
+    }, */
     reloadPop () {
       this.routerReloadKey += 1
     },

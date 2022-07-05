@@ -63,15 +63,6 @@ export default {
     await this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
-    const searchParams = new URLSearchParams(location.search)
-    // eslint-disable-next-line no-unused-vars
-    for (const param of searchParams) {
-      console.log('targetKind: ' + param[0])
-      if (param[0] === 'chanDetail') {
-        this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
-      }
-      console.log('targetKey: ' + param[1])
-    }
     // <%= ${sessionName} != null %>
   },
   mounted () {
