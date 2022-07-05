@@ -149,7 +149,6 @@ export default {
                         param: param
                     })
                 }
-                debugger
                 if(this.directAddMemList && this.directAddMemList.length > 0) {
                     var follower = null
                     for (var u = 0; u < this.directAddMemList.length; u ++) {

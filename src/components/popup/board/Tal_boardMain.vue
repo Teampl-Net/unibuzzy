@@ -7,7 +7,7 @@
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
           <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
-          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{mCabContentsList? mCabContentsList.length : 0}}개</p>
+          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
           <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px;">
@@ -65,10 +65,11 @@ export default {
     this.$emit('openLoading')
     var result = await this.getContentsList()
     this.mCabContentsList = result.content
+    this.totalElements = result.totalElements
     await this.getCabinetDetail()
     console.log(this.mCabContentsList)
-    // eslint-disable-next-line no-debugger
-    // debugger
+    // eslint-disable-next-line no-
+    // 
     // cothis.mCabContentsList
   },
   mounted () {
@@ -96,6 +97,7 @@ export default {
       errorBoxYn: false,
       errorBoxText: '',
       box: null,
+      totalElements: 0,
       scrollDirection: null,
       scrollPosition: null,
       shareAuth: { R: true, W: true, V: true },
@@ -155,6 +157,7 @@ export default {
     async refresh () {
       var result = await this.getContentsList()
       this.mCabContentsList = result.content
+      this.totalElements = result.totalElements
     },
     updateScroll() {
       // console.log(this.scrollPosition)
@@ -215,10 +218,10 @@ export default {
       /* if (this.shareAuth.V === false) {
         this.$emit('closeXPop')
       } */
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       // this.actorList = this.mCabinetContentsDetail.mShareItemList
       this.findPopShowYn = false
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       this.$emit('closeLoading')
     },
     async getContentsList (pageSize, offsetInput) {
@@ -264,8 +267,8 @@ export default {
       // console.log("@@@@@@@@@@@@@@@@@@@");
       // console.log(param);
       var resultList = await this.$getContentsList(param)
-      // eslint-disable-next-line no-debugger
-
+      // eslint-disable-next-line no-
+      
       return resultList
     },
     closeSearchPop () {
@@ -319,6 +322,7 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       var result = await this.getContentsList()
       this.mCabContentsList = result.content
+      this.totalElements = result.totalElements
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
