@@ -171,9 +171,15 @@ export default {
     pageUpdate (value, old) {
 
       var hStack = this.$store.getters.hStack
-      if (hStack[hStack.length - 1] === this.popId) {
-        this.closeXPop()
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+        this.closeXPop() //혹시 모르니 일단 삭제
       }
+      else {
+        if (hStack[hStack.length - 1] === this.popId) {
+          this.closeXPop()
+        }
+      }
+      
     },
     deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
