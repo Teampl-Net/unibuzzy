@@ -26,11 +26,11 @@
 
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey !== 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                 <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey !== 0" src="../../../assets/images/common/likeIcon.svg" alt="">
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
@@ -40,7 +40,7 @@
           </div>
           <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
           <div style="width: 100%; min-height: 100px; float: left;" >
-            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove'  />
+            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -52,9 +52,9 @@
     </div>
     <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;" @click="this.memoShowYn = false"></div>
     <transition name="showMemoPop">
-      <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" />
+      <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     </transition>
-    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false' />
+    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
   </div>
 </template>
 <script>
@@ -69,7 +69,8 @@ export default {
       confirmPopShowYn: false,
       memoShowYn: false,
       loadYn: true,
-      alimDetail: [{ title: '', nameMtext: '', bodyFullStr: '', creDate: '' }],
+      alimDetail: [],
+      // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
       tempAlimList: {
         readYn: false,
@@ -82,7 +83,7 @@ export default {
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
 
-      memeoValue: null
+      mememoValue: null
 
     }
   },
@@ -114,32 +115,36 @@ export default {
     }
   },
   methods: {
+    mememoCancel(){
+      this.mememoValue = {}
+    },
     scrollMove(wich){
-
       var memoArea = this.$refs.memoarea
-      memoArea.scrollTo({top:wich, behavior:'smooth'});
+      memoArea.scrollTo({top:(wich - 25), behavior:'smooth'});
     },
     writeMemo(){
-      if (this.detailVal.shareAuth.W) {
+      if (this.detailVal.shareAuth.R === true && this.detailVal.replyYn === true) {
         this.memoShowYn = true
+        this.mememoValue = null
       }else{
-        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmText = '댓글 쓰기 권한이 없거나 댓글 사용이 중지되었습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
     },
     writeMememo (memo) {
-      if (this.detailVal.shareAuth.W) {
+      if (this.detailVal.shareAuth.R === true && this.detailVal.replyYn === true) {
         var data = {}
         // data.targetKey = memo.memoKey
         // data.targetKind = 'M' //
         data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
         // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
-        this.memeoValue = new Object()
+        data.memo = memo
+        this.mememoValue = new Object()
         this.mememoValue = data
         this.memoShowYn = true
       }else{
-        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmText = '댓글 쓰기 권한이 없거나 댓글 사용이 중지되었습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
 
@@ -186,12 +191,11 @@ export default {
     },
     async saveMemo (text) {
       var memo = new Object()
-
-      if(this.memeoValue !== undefined && this.memeoValue !== null && this.memeoValue !== {} ){
-        memo = this.mememoValue
-      } else {
-        this.memeoValue = null
+      memo.parentMemoKey = null
+      if(this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {} ){
+        memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
+
       memo.bodyFullStr = text
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
@@ -220,19 +224,29 @@ export default {
     },
     async getContentsList () {
       // eslint-disable-next-line no-new-object
+
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
       param.contentsKey = this.detailVal.targetKey
       param.jobkindId = 'BOAR'
       var resultList = await this.$getContentsList(param)
+      // console.log('console.log(resultList);console.log(resultList);console.log(resultList);');
+      // console.log(resultList);
       this.alimDetail = resultList.content
+      console.log('this.alimDetail');
+      console.log(this.alimDetail);
+
+      // var tempuserDoList = resultList.content[0].userDoList
+
       var userDoList = resultList.content[0].userDoList
       await this.settingUserDo(userDoList)
+      // await this.settingUserDo(tempuserDoList)
+
       // console.log(this.alimDetail)
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
-      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
+      this.userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
@@ -273,10 +287,16 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
       }
+      console.log("resultresult");
+      console.log(result);
       if (result === true) {
         await this.getContentsList()
-        this.loadYn = false
-        this.loadYn = true
+        // this.$emit('reloadParent')
+        // this.loadYn = false
+        // setTimeout(()=>{
+        //   this.loadYn = true
+        // },200)
+
       }
     },
     goChanDetail (alim) {

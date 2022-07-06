@@ -29,7 +29,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
-      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params'/>
+      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params' @reloadParent='reloadParent'/>
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
@@ -179,7 +179,7 @@ export default {
           this.closeXPop()
         }
       }
-      
+
     },
     deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
@@ -238,7 +238,6 @@ export default {
     async reloadParent () {
       console.log(this.params);
       if(this.params.openActivity === "chanAlimList"){
-
       }else{
         this.$emit('reloadPop')
       }
@@ -376,6 +375,7 @@ export default {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
+      if(this.targetType === 'boardMain') reloadYn = true
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
@@ -399,6 +399,7 @@ export default {
           else */
             await this.$refs.editManagerListComp.refresh()
         } else if (this.targetType === 'boardMain') {
+          this.$refs.boardMainPop.getContentsList()
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {
           await this.$refs.gPopChanAlimList.refreshList()
@@ -425,7 +426,7 @@ export default {
         this.settingPop(true)
       }
     },
-    closeXPop (reloadYn) { // 내 팝업 닫기
+    async closeXPop (reloadYn) { // 내 팝업 닫기
 
       if (this.targetType === 'pushDetail') {
         this.pushListAndDetailYn = false
@@ -480,7 +481,7 @@ export default {
               } else {
                 if (this.targetType === 'chanDetail') {
                   if(this.chanAlimListTeamKey === Number(this.notiDetail.noti.data.creTeamKey)) {
-                    this.$refs.boardMainPop.refreshList()
+                    this.$refs.boardMainPop.refresh()
                   } else {
                     this.notiDetailShowYn = true
                   }

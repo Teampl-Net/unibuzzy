@@ -8,13 +8,13 @@
             <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p>
             <!-- </a> -->
           </div>
-          <img src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt="">
+          <img  src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt="">
       </div>
       <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" @click="memoInfo(memo)">
+        <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
 
-        <!-- <div style="min-height: 30px; width: 30px; float: left; border-radius: 100%; background-color: #aaa; margin-right: 10px;" ></div> -->
         <img src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-        <p class="grayBlack fl font14" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userNameMtext || memo.userDispMtext) }}</p>
+        <p class="grayBlack fl font14" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
         <!-- <div style="float: right; font-size: 16px; font-weight: bold;">X</div> -->
         <p style="float: right; font-size: 14px; margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
       </div>
@@ -117,9 +117,9 @@ export default {
       this.anima(key)
     },
     anima(key){
-      var a = document.getElementById(key)
-      a.style.backgroundColor = 'white'
+      // var a = document.getElementById(key)
       // a.style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
+      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
       // setTimeout(() => {
       //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.55)'
       // }, 100)

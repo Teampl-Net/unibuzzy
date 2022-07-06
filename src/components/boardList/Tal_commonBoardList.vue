@@ -22,17 +22,17 @@
               </div>
             </div> -->
 
-            <!-- <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-            <div @click="changeAct(userDo, board.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
+            <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+            <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -62,6 +62,8 @@ export default {
   },
   created () {
     // this.boardList = this.commonBoardListData
+    console.log(this.commonBoardListData);
+
   },
   computed: {
   },
@@ -125,7 +127,9 @@ export default {
       }
       return userDoList
     },
-    /* async changeAct (act, contentsKey) {
+    async changeAct (act, contentsKey) {
+      console.log(act);
+      console.log(contentsKey);
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -148,7 +152,7 @@ export default {
       if (result === true) {
         await this.$emit('refresh')
       }
-    }, */
+    },
     async loadMore () {
       this.$refs.sLoadingBoard.hide()
       this.$emit('moreList', 10)
@@ -186,7 +190,7 @@ export default {
 .pushDetailChanLogo{width: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
-.alimCheckContents{width: 100%;float: right; min-height: 20px;}
+.alimCheckContents{width: 100%;float: left; min-height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}

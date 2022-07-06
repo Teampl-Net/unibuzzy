@@ -41,7 +41,7 @@
       </div>
       <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
-        <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;"/>
+        <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;" @refresh='refresh' />
       </div>
     </div>
 
@@ -203,6 +203,8 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
+      // console.log('this.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propData');
+      // console.log(this.propData);
       // eslint-disable-next-line no-unused-vars
       if (this.propData.ownerYn === 1) {
         this.shareAuth.R = true
@@ -211,6 +213,9 @@ export default {
       } else {
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
+      console.log('this.mCabinetContentsDetail.mShareItemList')
+      console.log(this.mCabinetContentsDetail.mShareItemList)
+
       console.log('this.shareAuth')
       console.log(this.shareAuth)
       /* if (this.shareAuth.V === false) {
@@ -278,7 +283,7 @@ export default {
         this.errorBoxText = '권한이 없습니다.'
         this.errorBoxYn = true
       } else {
-        value.functions = [{replyYn:this.propData.value.replyYn},{fileYn:this.propData.value.fileYn},{blindYn:this.propData.value.blindYn}]
+        // value.functions = [{replyYn:this.propData.value.replyYn},{fileYn:this.propData.value.fileYn},{blindYn:this.propData.value.blindYn}]
         value.replyYn = this.propData.value.replyYn
         value.fileYn = this.propData.value.fileYn
         value.blindYn = this.propData.value.blindYn

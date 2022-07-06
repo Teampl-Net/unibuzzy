@@ -205,7 +205,7 @@ const methods = {
   // },
   checkUserAuth (data) {
     //
-    var authList = { R: true, W: false, V: false }
+    var authList = { R: false, W: false, V: false }
     for (var i = 0; i < data.length; i++) {
       if (data[i].shareType === 'W' && authList.W === false) {
         authList.W = true
