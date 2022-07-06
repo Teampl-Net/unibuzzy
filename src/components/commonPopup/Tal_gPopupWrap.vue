@@ -293,7 +293,7 @@ export default {
           this.readySearchList = target.readySearchList
         }
       } else if (this.targetType === 'chanList') {
-        this.headerTitle = '구독'
+        this.headerTitle = '채널'
       } else if (this.targetType === 'pushBox') {
         this.headerTitle = '알림함'
       } else if (this.targetType === 'leaveTheAlim') {
@@ -337,7 +337,7 @@ export default {
           this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
         }
       } else if (this.targetType === 'writeBoard') {
-        this.headerTitle = '게시판 작성'
+        this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       } else if (this.targetType === 'editManagerList') {

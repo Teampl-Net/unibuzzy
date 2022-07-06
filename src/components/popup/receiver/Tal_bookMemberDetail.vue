@@ -19,7 +19,7 @@
 
         <div style="width:100%; height: 30px; " class="mtop-2 fl">
             <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">전화번호</p>
-            <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr"  v-model="memPhone" >
+            <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
     </div>
@@ -132,7 +132,7 @@ export default {
                     param.userPhone = this.memPhone
                     this.$emit('addDirectAddMemList', param)
                 }
-                
+
             }
         },
         async saveBookMember(){

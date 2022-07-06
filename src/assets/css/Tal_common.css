@@ -18,11 +18,9 @@
   .font10{font-size: 8px}
   }
 
-
 ::-webkit-scrollbar {
   display: none;
 }
-
 
 @font-face {
   font-family: 'KoPubDotumMedium';
@@ -192,6 +190,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mx-table-date .today{
   color: #ff9f32!important;
 }
+.mx-calendar-panel-date{width: 100% !important; border-bottom: 1px solid #ccc;}
 .mx-calendar-content .cell.active{
   background-color: #6768A7!important;
 }

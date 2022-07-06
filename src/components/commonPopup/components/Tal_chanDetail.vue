@@ -241,7 +241,6 @@ export default {
       param.targetKey = this.chanDetail.teamKey
       param.modiYn = true
       param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanDetail.creUserKey)
-      alert(JSON.stringify(param))
       this.$emit('openPop', param)
     },
     settingTeamType (teamType) {

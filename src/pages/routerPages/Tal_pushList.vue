@@ -8,7 +8,7 @@
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
       </div>
         <transition name="showModal">
-          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+          <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
 
@@ -25,16 +25,16 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
-          <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
-
         <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
+      <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 4.5rem; right: calc(50% - 25px);" @click="refreshAll">
+        <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
+      </div>
     </div>
-    <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
-      <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
-    </div>
+
   <!-- </div> -->
 </template>
 
@@ -51,6 +51,8 @@ export default {
     // searchResult
   },
   props: {
+    chanAlimTargetType: {},
+    reloadShowYn: {},
     popYn: Boolean,
     alimListYn: Boolean,
     routerReloadKey: {},
@@ -59,11 +61,17 @@ export default {
     pushListAndDetailYn: {},
     propData: {}
   },
-  async created () {
+  async created() {
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
       }
+    }
+    // if (this.reloadShowYn === undefined || this.reloadShowYn === null || this.reloadShowYn === '') {
+    if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
+      this.pushListReloadShowYn = this.reloadShowYn
+    } else {
+      this.pushListReloadShowYn = true
     }
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
@@ -91,18 +99,18 @@ export default {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
   },
   mounted() {
-  this.box = document.getElementsByClassName('pushListWrapWrap')[0]
-  this.box.addEventListener('scroll', this.handleScroll)
+    this.box = document.getElementsByClassName('pushListWrapWrap')[0]
+    this.box.addEventListener('scroll', this.handleScroll)
 
-  if (this.viewTab === 'N') {
-    this.$refs.activeBar.switchtab(0)
-  } else if (this.viewTab === 'R') {
-    this.$refs.activeBar.switchtab(1)
-  } else if (this.viewTab === 'L') {
-    this.$refs.activeBar.switchtab(2)
-  } else if (this.viewTab === 'S') {
-    this.$refs.activeBar.switchtab(3)
-  }
+    if (this.viewTab === 'N') {
+      this.$refs.activeBar.switchtab(0)
+    } else if (this.viewTab === 'R') {
+      this.$refs.activeBar.switchtab(1)
+    } else if (this.viewTab === 'L') {
+      this.$refs.activeBar.switchtab(2)
+    } else if (this.viewTab === 'S') {
+      this.$refs.activeBar.switchtab(3)
+    }
 
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
@@ -124,6 +132,9 @@ export default {
     // },
     routerReloadKey () {
       this.refreshList()
+    },
+    reloadShowYn() {
+      this.checkShowReload()
     }
   },
   computed: {
@@ -159,6 +170,13 @@ export default {
     }
   },
   methods: {
+    checkShowReload () {
+      if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
+        this.pushListReloadShowYn = this.reloadShowYn
+      } else {
+        this.pushListReloadShowYn = true
+      }
+    },
     async refreshAll() {
       // 새로고침
       this.$emit('openLoading')
@@ -188,7 +206,7 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll() {
-      var element = document.getElementsByClassName('creatorListContentBox')[0]
+      var element = document.getElementsByClassName('commonListContentBox')[0]
       // debugger
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
@@ -439,6 +457,7 @@ export default {
   },
   data () {
     return {
+      pushListReloadShowYn: false,
       imgUrl: '',
       tempCount:0,
       firstContOffsetY: null,

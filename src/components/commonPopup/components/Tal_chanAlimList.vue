@@ -1,8 +1,7 @@
 <template>
-<div  id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
+<div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <!-- <div>{{pushKey}}</div> -->
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
-
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
       <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
         <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건 | 받은 알림 {{myContentsCount}}건</p>
@@ -36,7 +35,7 @@
   </div>
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
-    <pushList ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
+    <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -56,6 +55,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
   data () {
     return {
+      reloadShowYn: false,
       alimListToDetail: false,
       box: null,
       scrollDirection: null,
@@ -219,14 +219,14 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
+      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         document.getElementById('chanInfoSummary2').classList.add('displayBIm')
         document.getElementById('chanInfoArea').classList.add('displayNIm')
-
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
+        this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         document.getElementById('chanInfoArea').classList.remove('displayNIm')
@@ -234,6 +234,7 @@ export default {
         this.box.style.height = ''
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
+        this.reloadShowYn = false
       }
     },
     recvNoti (e) {
