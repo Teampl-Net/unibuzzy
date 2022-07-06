@@ -35,7 +35,7 @@
               </template>
             </div>
             <!-- <gBtnSmall btnTitle="댓글 쓰기" class="fr"  @click="this.memoShowYn = true"/> -->
-            <div class="commentBtn fr" @click="this.memoShowYn = true">댓글 쓰기</div>
+            <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div>
 
           </div>
           <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
@@ -93,6 +93,8 @@ export default {
     manageStickerPop
   },
   async created() {
+    console.log('this.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailVal');
+    console.log(this.detailVal);
     // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
@@ -117,19 +119,30 @@ export default {
       var memoArea = this.$refs.memoarea
       memoArea.scrollTo({top:wich, behavior:'smooth'});
     },
+    writeMemo(){
+      if (this.detailVal.shareAuth.W) {
+        this.memoShowYn = true
+      }else{
+        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmPopShowYn = true
+      }
+    },
     writeMememo (memo) {
-      var data = {}
-      // data.targetKey = memo.memoKey
-      // data.targetKind = 'M' //
-      // data.toUserKey = memo.memoKey //대댓글때 사용하는것임
-      data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
-      // data.creMemoKey = memo.memoKey //대댓글때 사용하는것임
-      // data.toMemoKey = memo.memoKey //대댓글때 사용하는것임
-      // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
-      this.memeoValue = new Object()
-      this.mememoValue = data
-      this.memoShowYn = true
+      if (this.detailVal.shareAuth.W) {
+        var data = {}
+        // data.targetKey = memo.memoKey
+        // data.targetKind = 'M' //
+        data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
+        // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+        this.memeoValue = new Object()
+        this.mememoValue = data
+        this.memoShowYn = true
+      }else{
+        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmPopShowYn = true
+      }
+
     },
     async deleteMemo (param) {
       console.log(param);

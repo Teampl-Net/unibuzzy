@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" >
+    <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" >
 
       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" >
           <div class="fl w-100P" >
@@ -100,42 +100,47 @@ export default {
         this.$emit('editTrue')
       }
     },
+    // hoverAnima(key){
+    //   var target = document.getElementById(key)
+    //   target.style.position = 'absolute'
+    //   target.style.top = '50%'
+    //   target.style.zIndex = 99999999999
+    //   target.style.backgroundColor = 'white'
+    // },
     memoMemoClick (memo) {
       this.$emit('mememo', memo)
+      // this.hoverAnima(memo.memoKey)
     },
     scrollMove (key) {
       var location = document.getElementById(key).offsetTop;
       this.$emit('scrollMove',location)
-      // document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.8)'
+      this.anima(key)
+    },
+    anima(key){
+      var a = document.getElementById(key)
+      a.style.backgroundColor = 'white'
+      // a.style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
       // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = ''
-      // }, 800);
-      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.55)'
-      }, 100)
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-      }, 200)
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.45)'
-      }, 300)
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.4)'
-      }, 400)
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.3)'
-      }, 500)
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.1)'
-      }, 600)
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.55)'
+      // }, 100)
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+      // }, 200)
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.45)'
+      // }, 300)
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.4)'
+      // }, 400)
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.3)'
+      // }, 500)
+      // setTimeout(() => {
+      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.1)'
+      // }, 600)
       setTimeout(() => {
         document.getElementById(key).style.backgroundColor = ''
       }, 700)
-
-      // window.location.href = ('#'+key)
-      // document.location.href = ('#'+key)
-
     }
 
   }
@@ -143,5 +148,10 @@ export default {
 </script>
 
 <style scoped>
+.memoCard{
+  width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;
+  background-color: white;
+  transition : background-color 0.5s ease-in;
+}
 
 </style>

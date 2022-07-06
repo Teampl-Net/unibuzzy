@@ -369,9 +369,11 @@ export default {
       this.popShowYn = true
     },
     async parentClose () {
-      await this.closePop()
+      await this.closePop(true)
       await this.closeXPop(true)
-
+    },
+    changePop(params){
+      this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
       this.popShowYn = false

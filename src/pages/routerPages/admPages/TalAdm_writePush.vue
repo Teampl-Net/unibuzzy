@@ -66,8 +66,8 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard" @click="test" v-if="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-                <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                <div id="textMsgBox" class="formCard" @click="test" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;  width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff;" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
@@ -87,7 +87,7 @@
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
-  <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
+  <div v-show="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
     <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
@@ -398,12 +398,13 @@ export default {
       } else if (this.viewTab === 'text') {
         msgData = document.getElementById('textMsgBox').innerHTML
       }
-      if (msgData !== undefined && msgData !== null && msgData !== '') {
+      if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
       } else {
         this.errorText = '알림 내용을 입력해주세요'
         this.failPopYn = true
         return
       }
+
       this.checkPopYn = true
     },
     onReady (editor) {

@@ -174,8 +174,8 @@ export default {
             this.selectedMemberList.push(data)
             this.$emit('changeSelectMemberList', this.selectedMemberList)
             this.listData[index].selectedYn = true
-            var tt = this.listData
-            debugger
+            // var tt = this.listData
+            // debugger
 
         },
         checkClick () {

@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:99999999999999;" @click="goNo"></div>
+  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999999999999999999;" @click="goNo"></div>
   <div class="pushPopUpWrap" >
     <div class="pushPopContent pushMbox">
       <div class="pushDetailTopArea">
@@ -15,7 +15,7 @@
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto;"></div>
+      <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto; "></div>
       <div class="detailPopUpBtnArea">
         <gBtnSmall btnTitle="바로가기" class="mright-05" style="height: 30px;" @click="goOk"/>
         <gBtnSmall btnTitle="닫기" class="mleft-05" style="height: 30px;" @click="goNo"/>
@@ -125,7 +125,7 @@ export default {
 
 <style scoped>
 
-.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 99999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
+.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 99999999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 

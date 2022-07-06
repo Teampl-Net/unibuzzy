@@ -59,7 +59,7 @@
       <div class="itemWrite">
         <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
-          <input type="checkbox" v-model="replyYnInput" id="toggle1" :checked="replyYnInput === true" hidden>
+          <input type="checkbox" v-model="replyYnInput" id="toggle1"  @click="replyYnChange"  hidden>
           <label for="toggle1" class="toggleSwitch">
             <span class="toggleButton"></span>
           </label>
@@ -292,7 +292,7 @@ export default {
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
-      if(data.mCabinet.replyYn === 1){this.okFunctionList += '댓글지원O/'; this.replyYnInput = true}else{this.okFunctionList += '댓글지원X/'; this.replyYnInput = true}
+      if(data.mCabinet.replyYn === 1){this.replyYnInput = true; this.okFunctionList += '댓글 지원O/'; }else{this.okFunctionList += '댓글 지원X/'; this.replyYnInput = false}
       // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
       if(data.mCabinet.mShareItemList.length > 0) {
         if(data.mCabinet.mShareItemList[0].accessKind === 'T'){
@@ -618,11 +618,19 @@ export default {
       this.selectTypePopShowYn = false
 
     },
+    replyYnChange () {
+      if (!this.replyYnInput){
+        this.okFunctionList = '댓글 지원O/'
+      }else{
+        this.okFunctionList = '댓글 지원X/'
+      }
+    },
     click () {
       var toggle0 = document.getElementById('toggle0')
       this.show = !toggle0.checked
       if(!toggle0.checked){
         this.statusSelectShowYn = true
+
       }else{
         this.statusSelectShowYn = false
       }

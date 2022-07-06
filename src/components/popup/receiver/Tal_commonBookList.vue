@@ -274,15 +274,20 @@ export default {
         //유민참고
         addSelectedList(data, index) {
             // console.log(data);
-            if(this.selectIndex.indexOf(index) === -1){
-                this.cabinetList[index].selectedYn = true
-                data.shareSeq = data.cabinetKey
-                this.selectedBookList.push(data)
-                this.selectIndex.push(index)
-                this.$emit('changeSelectBookList', this.selectedBookList)
-            }else{
-                alert('중복선택입니다.')
-            }
+            // if(this.selectIndex.indexOf(index) === -1){
+            //     this.cabinetList[index].selectedYn = true
+            //     data.shareSeq = data.cabinetKey
+            //     this.selectedBookList.push(data)
+            //     this.selectIndex.push(index)
+            //     this.$emit('changeSelectBookList', this.selectedBookList)
+            // }else{
+            //     alert('중복선택입니다.')
+            // }
+            this.selectedBookList = []
+            data.shareSeq = data.cabinetKey
+            this.selectedBookList.push(data)
+            this.$emit('changeSelectBookList', this.selectedBookList)
+            this.listData[index].selectedYn = true
         },
         async addNewBook () {
             var param = new Object()

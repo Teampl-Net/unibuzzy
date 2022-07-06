@@ -10,7 +10,7 @@
           <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
-          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px;">
+          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px; margin-right: calc(5% - 10px)">
             <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
             <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
             <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
@@ -63,6 +63,7 @@ export default {
     propData: {}
   },
   async created () {
+    // console.log(this.propData);
     this.$emit('openLoading')
     var result = await this.getContentsList()
     this.mCabContentsList = result.content
@@ -278,21 +279,26 @@ export default {
         this.errorBoxText = '권한이 없습니다.'
         this.errorBoxYn = true
       } else {
+        value.functions = [{replyYn:this.propData.value.replyYn},{fileYn:this.propData.value.fileYn},{blindYn:this.propData.value.blindYn}]
+        value.replyYn = this.propData.value.replyYn
+        value.fileYn = this.propData.value.fileYn
+        value.blindYn = this.propData.value.blindYn
+        value.shareAuth = this.shareAuth
         this.openPop(value)
       }
     },
     openPop (value) {
       // eslint-disable-next-line no-new-object
-      var params = new Object()
+      // var params = new Object()
       // if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
       //   params.targetType = value.targetType
       // } else {
       //   params.targetType = 'pushDetail'
       // }
-      params = value
+      // params = value
       // if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
-      this.$emit('openPop', params)
+      this.$emit('openPop', value)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
 
