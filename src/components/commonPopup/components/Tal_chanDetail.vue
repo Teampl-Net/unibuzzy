@@ -60,10 +60,13 @@
           <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
             <td>
-              <div class="w-20P fl textLeft commonColor fontBold" > 공유 </div>
+              <div class="w-20P fl textLeft commonColor fontBold" @click="kakaoLink" > 공유 </div>
               <div class="w-80P fl textLeft">
-                <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">
-                <!-- <gBtnSmall data-clipboard-action="copy" data-clipboard-target="#copyTextBody" @click="copyText" class="copyTextBtn" style="float: right;" btnTitle="클립보드" /> --><gBtnSmall  @click="sendkakao" class="plusMarginBtn" style="float: right; margin-right: 5px;" btnTitle="카카오톡" /></div></td>
+                <!-- <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
+                <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 27px;" alt="카카오톡 공유하기">
+                <!-- <gBtnSmall data-clipboard-action="copy" data-clipboard-target="#copyTextBody" @click="copyText" class="copyTextBtn" style="float: right;" btnTitle="클립보드" /> -->
+              </div>
+              </td>
           </tr>
           <!-- <tr>
             <td colspan="2"><div v-for="(value,index) in chanKeywordList" :key="index" style="padding: 0 10px; float: left; background:#6768A7; color: #FFF; border-radius: 10px;" class="fl mr-04" >#{{value}}</div>
@@ -81,6 +84,8 @@
 </template>
 
 <script>
+import { Fetch } from 'vue-fetch'
+
 /* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
 export default {
@@ -322,6 +327,35 @@ export default {
       }
       this.$changeRecvAlimYn(param)
     },
+    shareMessage() {
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '오늘의 디저트',
+          description: '아메리카노, 빵, 케익',
+          imageUrl:
+            'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            // androidExecutionParams: 'test',
+          },
+        },
+        buttons: [
+          {
+            title: '웹으로 이동',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+            },
+          },
+          {
+            title: '앱으로 이동',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+            },
+          },
+        ]
+      });
+    },
     sendkakao: function () {
       try {
         // eslint-disable-next-line no-undef
@@ -330,7 +364,10 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey 
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' 
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
 
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
@@ -344,7 +381,7 @@ export default {
           link: {
             /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
             /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            webUrl: link,
+            // webUrl: link,
             mobileWebUrl: link
             /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
             webUrl: 'https://thealim.page.link/H3Ed' */
@@ -352,16 +389,61 @@ export default {
         },
         buttons: [
           {
+            title: '더알림 방문하기',
+            link: {
+              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              // webUrl: link,
+              mobileWebUrl: mainLink
+            }
+          },
+          {
             title: '구독하러 가기',
             link: {
               /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
               /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              webUrl: link,
+              // webUrl: link,
               mobileWebUrl: link
             }
           }
         ]
       })
+    },
+    async kakaoLink () {
+      const $fet = Fetch({
+      // fetch,
+      // Headers,
+      logging: true
+    })
+      var params = {
+        "dynamicLinkInfo" : {
+            "dynamicLinkDomain" : 'thealim.page.link',
+              "link" : '?chanDetail=' + this.chanDetail.teamKey 
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+          },
+          "suffix" : {"option" : "SHORT"}
+      }
+      $fet.post("https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=ad73ad189dfce70f1a9c3b77c9924c45", params, { 'Access-Control-Allow-Origin': '*', credentials: 'include', withCredentials : true })
+        .then(function (response) {
+
+                    debugger
+
+                });
+
+          /* $.post({
+                url: "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=[api_key]",
+                dataType: "json",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(params),
+                success: function(response, textStatus, jqXHR) {
+                    alert(response.shortLink);
+                    // shortLink 예) https://sangsangss.page.link/vjzah71EfG9m5mTB6 또는 https://sangsangss.com/vjzah71EfG9m5mTB6
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                }
+            });  */
     }
   }
   /* head () {

@@ -61,6 +61,8 @@
                 </template>
               </div>
             </div>
+            <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 27px;" alt="카카오톡 공유하기">
+
           </div>
           <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
           <!-- <div> -->
@@ -239,6 +241,65 @@ export default {
         }
       }
     },
+    sendkakao: function () {
+      try {
+        // eslint-disable-next-line no-undef
+        if (Kakao) {
+          // eslint-disable-next-line no-undef
+          Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
+        };
+      } catch (e) {};
+      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + this.alimDetail[0].contentsKey
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' 
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var titleText = this.alimDetail[0].title
+      var newText = null
+      if (titleText.length > 20) {
+        newText = titleText.substring(0, 20) + '...'
+      } else {
+        newText = titleText
+      }
+      // eslint-disable-next-line no-undef
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '"' + newText + ' "',
+          description: '알림이 공유되었습니다. 지금바로 확인하러 가볼까요?',
+          imageUrl: 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png',
+          imageWidth: 1200,
+          imageHeight: 750,
+          link: {
+            /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+            /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+            // webUrl: link,
+            mobileWebUrl: link
+            /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
+            webUrl: 'https://thealim.page.link/H3Ed' */
+          }
+        },
+        buttons: [
+          {
+            title: '더알림 방문하기',
+            link: {
+              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              // webUrl: link,
+              mobileWebUrl: mainLink
+            }
+          },
+          {
+            title: '확인하러 가기',
+            link: {
+              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              // webUrl: link,
+              mobileWebUrl: link
+            }
+          }
+        ]
+      })
+    },
     async changeAct (act, inputContentsKey) {
       var result = null
       var saveYn = true
@@ -308,8 +369,8 @@ export default {
 .pushDetailChanLogo{width: 50px;height: 50px;}
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
-#alimCheckArea{min-height: 50px;}
-.alimCheckContents{width: 100%;float: left; height: 30px;}
+#alimCheckArea{min-height: 20px; width: calc(100%); float: left;}
+.alimCheckContents{width: calc(100% - 30px);float: left; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
@@ -336,6 +397,7 @@ export default {
       text-align: left;
       display: flex;
       flex-direction: column;
+      padding-bottom: 30px;
       justify-content: space-between;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
   }

@@ -62,8 +62,7 @@ export default {
   },
   created () {
     // this.boardList = this.commonBoardListData
-    console.log(this.commonBoardListData);
-
+    console.log(this.commonBoardListData)
   },
   computed: {
   },
@@ -128,8 +127,8 @@ export default {
       return userDoList
     },
     async changeAct (act, contentsKey) {
-      console.log(act);
-      console.log(contentsKey);
+      console.log(act)
+      console.log(contentsKey)
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data

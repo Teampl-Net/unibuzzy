@@ -55,6 +55,7 @@ const app = createApp(moTheAlim).use(router)
 }) */
 
 app.use(commonjs)
+
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
