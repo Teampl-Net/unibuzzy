@@ -32,7 +32,7 @@
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
     </div>
-    <div v-if="this.targetType !== 'chanDetail'" :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
+    <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 5rem; right: calc(50% - 25px);" @click="refreshAll">
       <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
     </div>
   <!-- </div> -->
@@ -114,7 +114,6 @@ export default {
     }
   },
   unmounted () {
-
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
   },
@@ -163,14 +162,13 @@ export default {
     async refreshAll() {
       // 새로고침
       this.$emit('openLoading')
-      var pSize = 10
-      if (this.offsetInt !== 0 && this.offsetInt !== '0') {
-        pSize = Number(this.offsetInt) * 10
-      }
-      var resultList = await this.getPushContentsList(pSize, 0)
-      this.commonListData = resultList.content
-      var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      ScrollWrap.scrollTo({top:0});
+      this.findKeyList.searchKey = null
+      this.findKeyList.creTeamNameMtext = null
+      this.findKeyList.toCreDateStr = null
+      this.findKeyList.fromCreDateStr = null
+      this.resultSearchKeyList = []
+      this.changeTab('N')
+      this.$refs.activeBar.switchtab(0)
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)
@@ -510,8 +508,8 @@ export default {
     transition: .3s;
 }
 .reload--unpinned {
-    transform: translateY(5rem);
-    transition: .3s;
+    transform: translateY(10rem);
+    transition: .5s;
 }
 
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {

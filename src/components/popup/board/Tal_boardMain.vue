@@ -32,11 +32,11 @@
 
     <div class="" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
+      <transition name="showModal">
+        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+      </transition>
       <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader">
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-        <transition name="showModal">
-          <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-        </transition>
         <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
       </div>
       <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
@@ -203,7 +203,6 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
-
       // eslint-disable-next-line no-unused-vars
       if (this.propData.ownerYn === 1) {
         this.shareAuth.R = true
@@ -362,7 +361,8 @@ export default {
       }
       return resultArray
     },
-    async changeSearchList (type) {
+    async changeSearchList(type) {
+      // alert(JSON.stringify(this.findKeyList))
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
@@ -370,7 +370,11 @@ export default {
         delete this.findKeyList.fromCreDateStr
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
+      // await this.getCabinetDetail()
+      // var resultList = await this.getCabinetDetail()
       await this.getCabinetDetail()
+      // debugger
+      // this.findPopShowYn = false
     },
     async loadMore () {
       // console.log('옵저버 실행'+(this.offsetInt++))

@@ -21,7 +21,7 @@
           <input type="text" v-model="userId" placeholder="아이디 입력" name="" id="" >
         </div>
         <div class="inputWrap mtop-1">
-          <input type="password" v-model="userPw" placeholder="비밀번호 입력" name="" id="" >
+          <input type="password" @keyup.enter="saveUser" v-model="userPw" placeholder="비밀번호 입력" name="" id="" >
         </div>
         <div class="startBigBtn" @click="saveUser"><p>시작하기</p></div>
       <!--   <div class="inputWrap">

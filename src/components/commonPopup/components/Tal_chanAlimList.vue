@@ -186,9 +186,6 @@ export default {
       this.$emit('closeZLoading')
     },
     openPushDetailPop (param) {
-      console.log('paramparamparamparamparamparamparamparamparamparamparamparamparamparamparam');
-      console.log(param);
-      param.teamKey =param.value.creTeamKey
       param.openActivity = 'chanAlimList'
       this.$emit('openPop', param)
     },

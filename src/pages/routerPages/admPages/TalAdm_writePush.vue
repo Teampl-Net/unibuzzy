@@ -66,8 +66,8 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard" @click="test" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-                <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;  width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                <div id="textMsgBox" class="formCard" @click="test" v-if="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
                   {{msgData}}
@@ -88,7 +88,7 @@
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
   <div v-show="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
-    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="알림작성" />
+    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="복합 알림 작성" />
     <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
   <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999"  >
@@ -508,7 +508,7 @@ export default {
 /* .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;} */
 .pageMsgArea{ min-height: 240px; float: left; width: 100%; }
 .pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 16px;}
+.pageMsgArea .msgArea{ padding:7px; overflow: hidden scroll; margin-bottom: 60px; width: 100%; min-height: 240px; border-radius: 5px; background: #fff; border:1px solid #BFBFDA; font-size: 16px; text-align: left;}
 
 .pageTopArea{
   width: 100%; min-height: 3.5rem;

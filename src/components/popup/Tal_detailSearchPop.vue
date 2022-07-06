@@ -1,7 +1,7 @@
 <template>
 <div class="searchBalloon box" >
   <div class="searchRow fl"><input placeholder="제목 또는 내용을 입력해주세요" type="text" name=""  class="commonInput" id=""></div>
-  <div class="searchRow fl"><input type="text" name=""  placeholder="보낸사람을 입력해주세요" class="commonInput" id=""></div>
+  <div class="searchRow fl"><input type="text" name=""  placeholder="채널명을 입력해주세요" class="commonInput" id=""></div>
   <div class="searchRow fl"><input type="text" name=""  placeholder="파일이름을 입력해주세요" class="commonInput" id=""></div>
   <div class="searchRow fl box">
     <section class="">

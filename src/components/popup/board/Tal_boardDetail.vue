@@ -69,7 +69,7 @@ export default {
       confirmPopShowYn: false,
       memoShowYn: false,
       loadYn: true,
-      alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
+      alimDetail: [{ title: '', nameMtext: '', bodyFullStr: '', creDate: '' }],
       manageStickerPopShowYn: false,
       tempAlimList: {
         readYn: false,

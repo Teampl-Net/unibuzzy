@@ -22,6 +22,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import findChannelList from '../../components/popup/Tal_findChannelList.vue'
 
 export default {
@@ -104,15 +105,12 @@ export default {
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
-      var pSize = 10
-      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
-        pSize = Number(this.offsetInt) * 10
-      }
-      this.endList = true
-      var resultList = await this.getChannelList(pSize, 0)
-      this.chanList = resultList.content
-      this.endList = false
-      this.$emit('closeLoading')
+      this.resultSearchKeyList = []
+      this.changeTab('user')
+      this.$refs.activeBar.switchtab(0)
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 500)
     },
     scrollMove () {
       var chanListWrap = this.$refs.chanListWrap
@@ -205,7 +203,6 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
-      this.$emit('closeLoading')
 
       if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true

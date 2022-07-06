@@ -4,11 +4,11 @@
     <popHeader headerTitle="검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div class="findPopMainSearchArea">
-            <input class="searchInput" ref="channelsearchKeyword" v-model="searchKey" placeholder="제목 및 본문 내용을 입력해주세요" />
+            <input class="searchInput" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목 및 본문 내용을 입력해주세요" />
             <img class="searchIcon mtop-03" @click="requestSearchPushList" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
         <!-- <input class="searchInput" placeholder="제목 또는 내용을 입력해주세요" type="text" name=""  id=""> -->
-        <input class="searchInput" type="text" name="" v-model="creTeam"  placeholder="보낸사람을 입력해주세요" id="">
+        <input class="searchInput" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
         <div class="box">
             <section class="">

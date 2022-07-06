@@ -19,16 +19,13 @@
 
           <div class="fl" style=" width:100%; position: relative;" v-show="changeYn">
             <div class="" style="position: absolute; left:50%; transform: translate(-50%); width:80%; max-width:250px; min-width:50px;">
-              <input class="fl" type="text" v-model="tempUserDispName" style="width:calc(100% - 75px);"/>
+              <input class="fl" type="text" v-model="tempUserDispName" style="width:calc(100% - 75px);" @keyup.enter="setDispName" />
               <div class="fl" style="width:75px">
                 <p class="fl mleft-1" style="line-height:30px" @click="setDispName" >확인</p>
                 <p class="fl mleft-1" style="line-height:30px" @click="changeYn = false">취소</p>
               </div>
 
             </div>
-
-
-
           </div>
 
         </div>
