@@ -6,12 +6,10 @@
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
 
-
       <div class="" >
         <div class="profileWrap ">
           <div class="roundDiv imgSize">
             <img src="../../assets/images/main/main_profile.png" style="width: 100px;"/>
-
           </div>
           <span class="font20 fontBold" style="width:100%; float:left; transform: translate(10px);" v-show="!changeYn" >
             {{this.$makeMtextMap(this.userInfo.userDispMtext, 'KO')}}
@@ -25,10 +23,8 @@
                 <p class="fl mleft-1" style="line-height:30px" @click="setDispName" >확인</p>
                 <p class="fl mleft-1" style="line-height:30px" @click="changeYn = false">취소</p>
               </div>
-
             </div>
           </div>
-
         </div>
         <div class="" style="text-align: left; ">
           <userItem class="w-100P mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop" />
@@ -70,6 +66,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import userItem from '../../components/unit/Tal_userItem.vue'
 import logoutPop from '../../components/pageComponents/myPage/Tal_logoutPop.vue'
 import policyPop from '../../components/pageComponents/myPage/Tal_policyPop.vue'

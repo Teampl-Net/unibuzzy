@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import selectBookNMemberList from './Tal_selectBookAndMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {
