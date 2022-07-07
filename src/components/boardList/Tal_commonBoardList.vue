@@ -83,6 +83,12 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
+    loadingShow(){
+      this.$refs.sLoadingBoard.show()
+    },
+    loadingHide(){
+      this.$refs.sLoadingBoard.hide()
+    },
     resizeText (text) {
       if (text.length > 20) {
         text = text.substr(0, 20)
@@ -153,7 +159,7 @@ export default {
       }
     },
     async loadMore () {
-      this.$refs.sLoadingBoard.hide()
+      this.$refs.sLoadingBoard.show()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonBoardListData,
