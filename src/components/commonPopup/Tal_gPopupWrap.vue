@@ -25,7 +25,7 @@
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
       <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
 
-      <chanMenu :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
+      <chanMenu ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop" />
 
@@ -375,7 +375,9 @@ export default {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
-      if(this.targetType === 'boardMain') reloadYn = true
+
+      if(this.targetType === 'boardMain' || this.targetType === 'chanDetail') reloadYn = true
+
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
@@ -392,6 +394,7 @@ export default {
           }, 100)
           // this.reloadYn = false
         } else if(this.targetType === 'editBookList') {
+
           await this.$refs.editBookListComp.refresh()
         } else if(this.targetType === 'editManagerList') {
           /* if (this.params.selectMemberType = 'manager')
@@ -403,10 +406,15 @@ export default {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail') {
           await this.$refs.gPopChanAlimList.refreshList()
-        } if (this.targetType === 'pushListAndDetail') {
-        this.pushListAndDetailYn = false
+          await this.$refs.chanMenuCompo.refresh()
+        } else if (this.targetType === 'pushListAndDetail') {
+          this.pushListAndDetailYn = false
+        }else if(this.targetType === 'pushListAndDetail'){
+
         }
+
       }
+
     },
     successCreChan (params) {
       if(params.deleteYn === true && params.modiYn === true){

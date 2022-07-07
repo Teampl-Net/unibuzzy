@@ -13,15 +13,15 @@
           <!-- <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div> -->
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
-                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext">
+                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
               </div>
-                <div class="pushDetailHeaderTextArea">
-                  <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
-                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                  <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-                  <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
-                </div>
+              <div class="pushDetailHeaderTextArea"> <!-- 여기에 goDetail를 넣으면 알림리스트에서 로고 클릭시 반응 X / But 이벤트가 2번 발생은 하지 않음 -->
+                <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+              <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+                <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+              </div>
             </div>
             <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
             <div id="alimCheckArea">
@@ -32,15 +32,6 @@
                   </div>
                 </div> -->
                 <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-                <!-- <div @click="changeAct(userDo, alim.contentsKey)"  class="fr userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index"> -->
-                  <!-- <template v-if="userDo.doType === 'ST'">
-                    <img class="fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                    <img class="fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-                  </template>
-                  <template v-else-if="userDo.doType === 'LI'">
-                    <img class="mright-05 fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                    <img class="mright-05 fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                  </template> -->
                 <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                   <template v-if="userDo.doType === 'LI'">
                     <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
@@ -50,7 +41,6 @@
                     <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
                     <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
                   </template>
-
                 </div>
               </div>
             </div>
@@ -134,7 +124,8 @@ export default {
     },
     goChanDetail (data) {
       // eslint-disable-next-line no-new-object
-      console.log(data)
+      // console.log(data)
+
       var param = new Object()
       param.targetType = 'chanDetail'
       param.teamKey = data.creTeamKey
@@ -143,10 +134,12 @@ export default {
       param.chanName = data.nameMtext
 
       // 세션에서 유저키 받아오기
+
       var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (data.creUserKey === userKey) {
         param.ownerYn =  true
       }
+      // console.log(param);
       this.$emit('goDetail', param)
     },
     // creatorBox (value) {

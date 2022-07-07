@@ -41,7 +41,7 @@
       </div>
       <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
-        <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;" @refresh='refresh' />
+        <boardList ref="boardListCompo" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList" @moreList='loadMore'   style="margin-top: 5px; float: left;" @refresh='refresh' />
       </div>
     </div>
 
@@ -109,6 +109,7 @@ export default {
       },
       mCabContentsList: [],
       offsetInt: 0,
+      endListYn: false,
       // mCabContentsList: [
       //   { title: 'test', bodyFullStr: 'testtesttesttest' },
       //   { title: 'test', bodyFullStr: 'testtesttesttest' },
@@ -126,7 +127,8 @@ export default {
       findPopShowYn: false,
       actorList: [],
       /* subHistoryList: [], */
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 쓴', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       findKeyList: {},
       resultSearchKeyList: []
@@ -154,9 +156,18 @@ export default {
     //   this.newScrollPosition = this.newBox.scrollTop
     // },
     async refresh () {
-      var result = await this.getContentsList()
-      this.mCabContentsList = result.content
-      this.totalElements = result.totalElements
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
+        pSize = Number(this.offsetInt) * 10
+      }
+      this.endList = true
+      var resultList = await this.getContentsList(pSize, 0)
+      this.mCabContentsList = resultList.content
+      this.endList = false
+      this.$refs.boardListCompo.loadingHide()
+      // var result = await this.getContentsList()
+      // this.mCabContentsList = result.content
+      // this.totalElements = result.totalElements
     },
     updateScroll() {
       // console.log(this.scrollPosition)
@@ -258,14 +269,18 @@ export default {
       }
       param.jobkindId = 'BOAR'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+
       if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
       } else if (this.viewTab === 'S') {
         param.findActYn = true
         param.findActStarYn = true
-      } else if (this.viewTab === 'R') {
-        param.findLogReadYn = false
+      // } else if (this.viewTab === 'R') {
+      //   param.findLogReadYn = false
+      // }
+      } else if (this.viewTab === 'M') {
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       // console.log("@@@@@@@@@@@@@@@@@@@");
       // console.log(param);
@@ -309,8 +324,9 @@ export default {
     async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
-      this.mCabContentsList = []
-      var resultList = await this.getContentsList()
+      this.offsetInt = 0
+      // this.mCabContentsList = []
+      var resultList = await this.getContentsList(10)
       this.mCabContentsList = resultList.content
       this.scrollMove()
     },
@@ -382,50 +398,21 @@ export default {
       // this.findPopShowYn = false
     },
     async loadMore () {
-      // console.log('옵저버 실행'+(this.offsetInt++))
-      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
+    if (this.endListYn === false || this.totalElements > this.mCabContentsList.length) {
+      this.offsetInt += 1
+      var result = await this.getContentsList(10)
+      const newArr = [
+        ...this.mCabContentsList,
+        ...result.content
+      ]
+      if (this.totalElements === this.mCabContentsList.length) {
+        this.endListYn = true
       }
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        }
-      }
-      param.findLogReadYn = null
-      param.findActYn = false
-      param.findActLikeYn = false
-      param.findActStarYn = false
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (this.viewTab === 'L') {
-        param.findActYn = true
-        param.findActLikeYn = true
-      } else if (this.viewTab === 'S') {
-        param.findActYn = true
-        param.findActStarYn = true
-      } else if (this.viewTab === 'R') {
-        param.findLogReadYn = false
-      }
+      this.mCabContentsList = newArr
+    } else {
+      this.$refs.boardListCompo.loadingHide()
+    }
 
-      // param.offsetInt = this.offsetInt++
-      param.offsetInt = (this.offsetInt + 1)
-      param.pageSize = 10
-
-      // var resultList = await this.$getContentsList(param)
-
-      // const newArr = [
-      //   ...this.commonListData,
-      //   ...resultList.content
-      // ]
-      // this.commonListData = newArr
       this.findPopShowYn = false
     }
   },

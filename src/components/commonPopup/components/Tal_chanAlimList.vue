@@ -186,8 +186,17 @@ export default {
       this.$emit('closeZLoading')
     },
     openPushDetailPop (param) {
-      param.openActivity = 'chanAlimList'
-      this.$emit('openPop', param)
+      console.log('this.chanDetail');
+      console.log(this.chanDetail);
+      console.log('paramparamparamparamparamparamparamparamparamparamparamparam');
+      console.log(param);
+
+      // 같으면
+      if (param.targetType === 'pushDetail'){
+        //  && param.targetKey !== this.chanDetail.teamKey
+        param.openActivity = 'chanAlimList'
+        this.$emit('openPop', param)
+      }
     },
     async changeFollowYn (fYn) {
       this.$emit('openZLoading')

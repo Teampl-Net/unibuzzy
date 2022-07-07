@@ -28,7 +28,7 @@
       <p style="color:black; text-align:left; margin-left: calc(2rem + 20px);" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && groupDropDownYn === true) || (groupDropDownYn !== true) }" class="fl fontBold font16" @click="groupDropDown">주소록 </p>
       <gBtnSmall class="fr"   @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
       <div class="boardBox fl" style="overflow: hidden;" ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-        <teamList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+        <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
 // eslint-disable-next-line
 // eslint-disable-next-line no-new-object
 import editChanMenu from '../Tal_channelMenuEditPopup.vue'
-import teamList from '../chanMenu/Tal_menuBookList.vue'
+import addressBookList from '../chanMenu/Tal_menuBookList.vue'
 import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
 import selectManagerList from '../receiver/Tal_selectManagerList.vue'
 
@@ -132,15 +132,20 @@ export default {
 
       selectedList : [],
       selectAdminList : [],
-      book:true,
-      board:true,
+      book:false,
+      board:false,
       teamNameText:''
     }
   },
-  components: {editChanMenu,teamList,menuBoardList,selectManagerList
+  components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    refresh (){
+      this.getTeamCabList()
+      this.getTeamMenuList()
+      this.setDrop()
+    },
     setDrop () {
       if(this.cabinetList.length === 0){
         this.book = false
@@ -148,7 +153,6 @@ export default {
       }else {
         this.book = true
       }
-
       if(this.myBoardList.length === 0){
         this.board = false
         }else {
@@ -236,6 +240,7 @@ export default {
       this.$emit('openItem', param)
     },
     closeEditPop () {
+      this.refresh()
       this.editPopYn = false
       // this.goNo()
     },
@@ -290,9 +295,9 @@ export default {
     },
     groupListlength () {
       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
-      return{
-        '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
-      }
+      // return{
+      //   '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
+      // }
       //  this.menuHeight = this.cabinetList.length * 70 + 20 + 'px'
 
     },
