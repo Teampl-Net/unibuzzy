@@ -442,16 +442,22 @@ export default {
     async changeSearchList(type) {
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
-      } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
+      } else if (type === 'creDate') {
         delete this.findKeyList.toCreDateStr
         delete this.findKeyList.fromCreDateStr
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // await this.getCabinetDetail()
-      // var resultList = await this.getCabinetDetail()
-      await this.getCabinetDetail()
+      var resultList = await this.getContentsList()
+      this.mCabContentsList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
+      // await this.getCabinetDetail()
       // debugger
-      // this.findPopShowYn = false
+      this.findPopShowYn = false
     },
     async loadMore(pageSize) {
       if (this.endListYn === false || this.totalElements > pageSize) {
