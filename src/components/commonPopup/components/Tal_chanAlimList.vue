@@ -298,7 +298,7 @@ export default {
 }
 .chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
 .channelItemBoxHeight{height: calc(100% - 50px)!important;}
-.channelItemBox{background-color: #fff; min-height: 600px; position: relative; width: 100%;float: left; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}

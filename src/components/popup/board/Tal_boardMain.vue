@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 250px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
       <div class="" id="boardListWrap" ref="boardListWrapCompo" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%; ">
         <transition name="showModal">

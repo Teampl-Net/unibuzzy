@@ -75,8 +75,9 @@
               </div>
 
             </div>
+            <div class="whitePaperEffect" style="position: absolute;"></div>
           </div>
-          <div class="whitePaperEffect" style="position: absolute;"></div>
+
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
                   <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
@@ -488,11 +489,9 @@ export default {
       display: block;
       width: 50px;
       height: 50px;
-      border-top: 50px solid #e1e1f2;
-      border-right: 50px solid #0000005e;
-      background-color: #F9F9F9;
-      bottom: calc(3rem  - 2px);
-      right: 2rem;
+      background-color: #e1e1f2;
+      bottom: 0;
+      right: 0;
   }
   /* .whitePaper:before {
   content: '';
