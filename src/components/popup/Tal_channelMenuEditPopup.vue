@@ -190,7 +190,7 @@ export default {
       }else{
         this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
       }
-
+    debugger
 
       this.modiBoardPopShowYn = true
     },
@@ -212,7 +212,7 @@ export default {
       console.log(param);
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+        // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
         this.boardList = []
         await this.getTeamMenuList()
       }

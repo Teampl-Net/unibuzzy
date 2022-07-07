@@ -14,9 +14,10 @@
         <div class="box">
             <section class="">
             <Datepicker
+
                 v-model:value="creDate"
                 type="date"
-                range
+                range=false
                 placeholder="날짜를 선택해주세요"
                 titleFormat="YYYY-MM-DD"
             ></Datepicker>

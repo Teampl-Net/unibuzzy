@@ -282,19 +282,20 @@ export default {
       param.currentTeamKey = this.modiBoardDetailProps.teamKey
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
+
       var resultList = await this.$getCabinetDetail(param)
 
       this.settingCabDetail(resultList)
     },
-    settingCabDetail (data) {
+    async settingCabDetail (data) {
       console.log('setting')
       console.log(data.mCabinet)
 
-      this.boardName = this.$changeText(data.mCabinet.cabinetNameMtext)
+      this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
-      if(data.mCabinet.replyYn === 1){this.replyYnInput = true; this.okFunctionList += '댓글 지원O/'; }else{this.okFunctionList += '댓글 지원X/'; this.replyYnInput = false}
+      if(data.mCabinet.replyYn === 1){this.replyYnInput = true; this.okFunctionList += '댓글 지원O'; }else{this.okFunctionList += '댓글 지원X'; this.replyYnInput = false}
       // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
       if(data.mCabinet.mShareItemList.length > 0) {
         if(data.mCabinet.mShareItemList[0].accessKind === 'T'){
@@ -656,9 +657,9 @@ export default {
     },
     replyYnChange () {
       if (!this.replyYnInput){
-        this.okFunctionList = '댓글 지원O/'
+        this.okFunctionList = '댓글 지원O'
       }else{
-        this.okFunctionList = '댓글 지원X/'
+        this.okFunctionList = '댓글 지원X'
       }
     },
     click () {
