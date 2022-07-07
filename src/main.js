@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+
 import moTheAlim from './Tal_moTheAlim.vue'
 import router from './router'
 import store from './store'
@@ -43,7 +44,6 @@ import 'vue-datepicker-next/index.css'
 
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
-
 /* import Meta from 'vue-meta' */
 
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
@@ -53,6 +53,8 @@ const app = createApp(moTheAlim).use(router)
   attribute: 'data-vue-meta'
   // vmid를 사용하기 위한 옵션
 }) */
+// Vue.config.silent = true
+// createApp.config.silent = true
 
 app.use(commonjs)
 app.component('Datepicker', Datepicker)
@@ -97,6 +99,7 @@ axios.defaults.withCredentials = true */
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
+// axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
@@ -105,6 +108,8 @@ axios.defaults.withCredentials = true */
 // axios.defaults.headers.get.Pragma = 'no-cache'
 
 // Vue.prototype.$http = axios
+
+app.config.silent = true;
 
 app.config.globalProperties.$axios = axios
 

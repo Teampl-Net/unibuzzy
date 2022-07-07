@@ -176,7 +176,7 @@ const methods = {
     var result = null
 
     var response = await commonAxiosFunction({
-      url: urlSet,
+      url: '/api/'+urlSet,
       param: param
     })
     result = response.data
