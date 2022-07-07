@@ -38,10 +38,14 @@
             <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div>
             <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 27px;" alt="카카오톡 공유하기">
 
+
+          </div>
+          <div v-if='!detailVal.replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
+            <p class="w-100P commonBlack" style="text-align:center;">관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
           <div style="width: 100%; min-height: 100px; float: left;" >
-            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' />
+            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -84,7 +88,8 @@ export default {
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
 
-      mememoValue: null
+      mememoValue: null,
+      replyYn:false
 
     }
   },
@@ -97,6 +102,10 @@ export default {
   async created() {
     console.log('this.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailVal');
     console.log(this.detailVal);
+    console.log(this.detailVal.replyYn);
+    if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
+      this.replyYn = true
+    }
     // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
@@ -124,16 +133,16 @@ export default {
       memoArea.scrollTo({top:(wich - 25), behavior:'smooth'});
     },
     writeMemo(){
-      if (this.detailVal.shareAuth.R === true && this.detailVal.replyYn === true) {
+      if (this.detailVal.shareAuth.R === true) {
         this.memoShowYn = true
         this.mememoValue = null
       }else{
-        this.confirmText = '댓글 쓰기 권한이 없거나 댓글 사용이 중지되었습니다. \n 관리자에게 문의하세요.'
+        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
     },
     writeMememo (memo) {
-      if (this.detailVal.shareAuth.R === true && this.detailVal.replyYn === true) {
+      if (this.detailVal.shareAuth.R === true ) {
         var data = {}
         // data.targetKey = memo.memoKey
         // data.targetKind = 'M' //
@@ -145,7 +154,7 @@ export default {
         this.mememoValue = data
         this.memoShowYn = true
       }else{
-        this.confirmText = '댓글 쓰기 권한이 없거나 댓글 사용이 중지되었습니다. \n 관리자에게 문의하세요.'
+        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
 

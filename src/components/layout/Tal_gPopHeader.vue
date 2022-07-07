@@ -6,7 +6,7 @@
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
-    <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시글 작성')}">{{headerTitle}}</span>
+    <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
     <div class="commonColor font16" style="height: 25px; line-height: 25px; max-width:30% ; text-align: right; right: 1rem; position: absolute; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;"
           v-if="this.headerTitle === '주소록 관리' || this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'">
       {{chanName}}
@@ -59,6 +59,8 @@ export default {
     }
   },
   created () {
+    console.log(this.targetType);
+
   },
   watch: {
     bgblack () {

@@ -1,8 +1,8 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div id="boardWrap" style="overflow: scroll; background-color: #ece6cc;" class="boardListWrap">
-    <div id="summaryHeader" class="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
+  <div id="boardWrap" style=" height: 100vh; width:100vw; overflow: scroll; background-color: #ece6cc;" class="boardDetailWrap">
+    <div id="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
@@ -24,21 +24,24 @@
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
-      <div id="boardInfoSummary2" class="summaryHeader2" style="">
+      <div id="boardInfoSummary2" style="">
         <span class="font20 fontBold">{{ this.$changeText(this.propData.value.cabinetNameMtext)}}</span>
         <span class="font13 mbottom-05 fl">{{ this.$changeText(this.propData.nameMtext) }}</span>
       </div>
     </div>
 
-    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+    <div class="" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
+      <transition name="showModal">
+        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+      </transition>
       <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader">
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
         <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
       </div>
-      <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%; ">
-        <boardList :resultSearchKeyList="this.resultSearchKeyList" :findPopShowYn="this.findPopShowYn" :reloadShowYn="this.reloadShowYn" :activeTabList="this.activeTabList" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"/>
+      <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
+        <boardList @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style="margin-top: 5px; float: left;" @refresh='refresh' />
       </div>
     </div>
 
@@ -83,7 +86,13 @@ export default {
   },
   data () {
     return {
-      reloadShowYn: false,
+// 작은 스크롤
+      newScrollPosition: 0,
+      headerTop: 0,
+      firstContOffsetY: null,
+      newBox: null,
+      scrolledYn: false,
+// 전체 스크롤
       errorBoxYn: false,
       errorBoxText: '',
       box: null,
@@ -160,20 +169,18 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
+      if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
         document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
-        this.reloadShowYn = true
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
         blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
-        this.reloadShowYn = false
       }
     },
     openWriteBoard () {
@@ -360,6 +367,7 @@ export default {
       return resultArray
     },
     async changeSearchList(type) {
+      // alert(JSON.stringify(this.findKeyList))
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
@@ -432,8 +440,6 @@ export default {
 </script>
 
 <style scoped>
-.summaryHeader{height: 350px; width: 100%; float: left; position: fixed;}
-.summaryHeader2 {height: 50px;  width: 100%; float: left;}
 .boardListHeader {
   width: calc(100% - 3rem);
   min-height: 132px;
@@ -453,7 +459,7 @@ export default {
 }
 
 #boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
-.boardListWrap{
+.boardDetailWrap{
   height: 100vh;
   background-size: cover;
 }

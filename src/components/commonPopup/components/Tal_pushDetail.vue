@@ -4,25 +4,24 @@
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
       <!-- <div class="whiteArea"> -->
         <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
-          <div class="pushDetailTopArea">
-            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: relative;"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <!-- <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="this.creatorYn" style="width: 20px; height: 25px; position: absolute; top: 10px;" /> -->
-              <div style="width:100%; position: absolute; bottom:-10px; padding:0 2px; background-color:#cccccc90; border-radius: 5px; " v-if="creatorYn">
-                <p class="font10" style="text-align:center; color:black">보낸이</p>
-              </div>
+          <div class="pushDetailTopArea" style="position: relative;">
 
+            <!-- <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem; position: relative;"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
+              <div style="width:100%; position: absolute; bottom:-10px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
+            </div> -->
+
+            <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
+            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
+              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
             </div>
-            <!-- <div class="chanLogoImgWrap" style="width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;"> -->
-            <!-- <img v-if="alim.logoPathMtext" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim.creTeamKey, alim.nameMtext)" :src="alim.logoPathMtext"> -->
             <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
 
-            <!-- </div> -->
             <div class="pushDetailHeaderTextArea">
-              <!-- <label for="dateAll" class="font14 fr lightGray" @click="dateClick">시간 자세히</label><input type="checkbox" style="width:14px;height:14px; margin-top:3px; " id="dateAll" class="fr mright-02" v-model="dateCheck"> -->
               <p class=" font18 fontBold commonColor fl" style="margin-bottom: 0.1rem; word-break: break-all; width: 100%;">{{resizeText(alim.title)}}</p>
-                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                  <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p>
-                  <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p>
+
+                  <!-- <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p> -->
+                  <!-- <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p> -->
+                  <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{this.changeText(alim.creUserName)}}</p>
 
                   <div style="height: 18px; float: right;">
                     <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
@@ -400,6 +399,9 @@ export default {
       padding-bottom: 30px;
       justify-content: space-between;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+  }
+  .creYnTrans{
+    transform: translate(0, -70%) !important;
   }
 
   .pushDetailPaperEffect {
