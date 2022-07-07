@@ -6,6 +6,7 @@
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
 
+
       <div class="" >
         <div class="profileWrap ">
           <div class="roundDiv imgSize">
@@ -63,8 +64,9 @@
         </div>
         <p class="leaveText">더알림을 탈퇴하려면 <span v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
-    </div>
 
+      <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+    </div>
 </template>
 
 <script>
@@ -96,7 +98,9 @@ export default {
       policyType: 'useTheAlim',
       settingAlimPopYn: false,
       tempUserDispName: '',
-      changeYn: false
+      changeYn: false,
+      errorBoxYn:false,
+      errorBoxText : '관리자에게 문의하세요.'
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -118,8 +122,14 @@ export default {
     async setDispName () {
       // KO$^$수망고$#$EN$^$sumango
       var param = {}
-      param.user = this.userInfo
-      param.user.userDispMtext = 'KO$^$' + this.tempUserDispName
+      var user = {}
+      console.log('this.userInfo');
+      console.log(this.userInfo);
+      // param.user = this.userInfo
+      user.userKey = this.userInfo.userKey
+      user.userNameMtext = this.userInfo.userNameMtext
+      user.userDispMtext = 'KO$^$' + this.tempUserDispName
+      param.user = user
       param.updateYn = true
       console.log(param)
 
@@ -128,9 +138,14 @@ export default {
 
       if (result.data === 'OK') {
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
-        this.$router.push('/')
+        this.getUserInform()
         this.changeYn = false
+        this.$router.push('/')
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
+      }else{
+        this.errorBoxText = '이름 변경 중 서버에 오류'
+        this.errorBoxYn = true
+
       }
     },
     changeUserDispMtext () {
@@ -163,6 +178,9 @@ export default {
     },
     async getUserInform () {
       this.userInfo = await this.$getUserInform()
+      this.userInfo.userDispMtext = null
+      console.log(this.userInfo.userDispMtext);
+
       if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
       if (this.userInfo.phoneLast); else this.userInfo.phoneLast = '등록된 번호가 없습니다.'
       if (this.userInfo.userDispMtext); else {

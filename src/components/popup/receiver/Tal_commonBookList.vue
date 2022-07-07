@@ -108,6 +108,7 @@ export default {
             this.selectedBookList = []
             if(this.parentSelectList) {
                 this.selectedBookList = this.parentSelectList.bookList
+
             }
         }
         await this.getTeamCabList()
@@ -149,37 +150,29 @@ export default {
     },
     methods:{
         settingParentList(){
-
-            // this.cabinetList[index].selectedYn = true
-            // console.log(data)
-//             data.shareSeq = data.cabinetKey
-//             this.selectedBookList.push(data)
-                // this.selectIndex.push(index)
-//             this.$emit('changeSelectBookList', this.selectedBookList)
-// listData
             console.log('@###!@#!#!@#!#!@#!@#');
             console.log(this.listData)
 
-            if(this.parentSelectList){
-                var indexOf = null
-                for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
-                    // this.parentSelectList.bookList.data.cabinetKey
-                    // this.selectIndex.push(i)
-                    // data.shareSeq = data.cabinetKey
-                    // console.log(this.parentSelectList.bookList[i].cabinetKey);
-                    // for (let index = 0; index < this.listData.length; index++) {
-                        // this.listData[index].
-                    indexOf = this.listData.findIndex(data => data.cabinetKey === this.parentSelectList.bookList[i].cabinetKey); // 변경된 인덱스 ** map에서 index찾기 **
-                    console.log(this.parentSelectList.bookList[i].cabinetKey)
+            // if(this.parentSelectList){
+            //     var indexOf = null
+            //     for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
+            //         // this.parentSelectList.bookList.data.cabinetKey
+            //         // this.selectIndex.push(i)
+            //         // data.shareSeq = data.cabinetKey
+            //         // console.log(this.parentSelectList.bookList[i].cabinetKey);
+            //         // for (let index = 0; index < this.listData.length; index++) {
+            //             // this.listData[index].
+            //         indexOf = this.listData.findIndex(data => data.cabinetKey === this.parentSelectList.bookList[i].cabinetKey); // 변경된 인덱스 ** map에서 index찾기 **
+            //         console.log(this.parentSelectList.bookList[i].cabinetKey)
 
-                    console.log(indexOf)
+            //         console.log(indexOf)
 
-                    // }
-                }
-                        // this.listData[indexOf].shareSeq = this.listData[indexOf].cabinetKey
-                    // this.selectIndex.push(i)
+            //         // }
+            //     }
+            //             // this.listData[indexOf].shareSeq = this.listData[indexOf].cabinetKey
+            //         // this.selectIndex.push(i)
 
-            }
+            // }
             // if (this.parentSelectList.memberList) {
             //     for (let i = 0; i < this.parentSelectList.memberList.length; i++) {
             //         this.selectIndex.push(i)
@@ -283,11 +276,27 @@ export default {
             // }else{
             //     alert('중복선택입니다.')
             // }
-            this.selectedBookList = []
+            // this.selectedBookList = []
+
+            if(!this.selectedBookList){
+                this.selectedBookList = []
+            }
+
             data.shareSeq = data.cabinetKey
-            this.selectedBookList.push(data)
-            this.$emit('changeSelectBookList', this.selectedBookList)
-            this.listData[index].selectedYn = true
+
+            var indexOf = this.selectedBookList.findIndex(i => i.cabinetKey === data.cabinetKey);
+            if (indexOf === -1) {
+                this.selectedBookList.push(data)
+                this.listData[index].selectedYn = true
+                this.$emit('changeSelectBookList', this.selectedBookList)
+            }else{
+                alert('중복선택')
+            }
+
+
+            // this.selectedBookList.push(data)
+
+
         },
         async addNewBook () {
             var param = new Object()
@@ -347,38 +356,39 @@ export default {
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()
-            var cardList = document.getElementsByClassName('receiverTeamListCard')
+            var cardList = document.getElementsByClassName('commonBookCard')
             var index = null
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
-                for (var i = 0; i < this.cabinetList.length; i ++) {
+                for (var i = 0; i < this.listData.length; i ++) {
                 if(index === i) {
                     menu = {}
-                    var tt = this.cabinetList[i]
-                    if(this.cabinetList[i].menuType)
-                        menu.menuType = this.cabinetList[i].menuType
+                    var tt = this.listData[i]
+                    if(this.listData[i].menuType)
+                        menu.menuType = this.listData[i].menuType
                     menu.teamKey = this.propObject.currentTeamKey
-                    if(this.cabinetList[i].parentMenuKey)
-                        menu.parentMenuKey = this.cabinetList[i].parentMenuKey
-                    if(this.cabinetList[i].cabinetKey)
-                        menu.cabinetKey = this.cabinetList[i].cabinetKey
-                    if(this.cabinetList[i].cabinetNameMtext)
-                        menu.cabinetNameMtext = this.cabinetList[i].cabinetNameMtext
+                    if(this.listData[i].parentMenuKey)
+                        menu.parentMenuKey = this.listData[i].parentMenuKey
+                    if(this.listData[i].cabinetKey)
+                        menu.cabinetKey = this.listData[i].cabinetKey
+                    if(this.listData[i].cabinetNameMtext)
+                        menu.cabinetNameMtext = this.listData[i].cabinetNameMtext
                     teamMenuList.push(menu)
                     break
                 }
                 }
             }
             paramSet.teamMenuList = teamMenuList
-
+            console.log(paramSet);
             var result = await this.$commonAxiosFunction(
                 {
-                url: 'tp.changePosTeamMenu',
+                url: '/api/tp.changePosTeamMenu',
                 param: paramSet
                 }
             )
             // getTeamCabList ()
             // this.cabinetList = []
+            console.log(result)
             this.$emit('getBookList')
             index = this.cabinetList.length - 1
         }

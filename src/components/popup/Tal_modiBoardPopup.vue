@@ -247,7 +247,8 @@ export default {
       permissionSelectedYn: {W: false, R: false, V: false},
       boardName:'',
       dbSelectedList: {bookList: [], memberList: []},
-      sessionUserdata:{}
+      sessionUserdata:{},
+      currentPermissionType: ''
 
     }
   },
@@ -288,6 +289,7 @@ export default {
     settingCabDetail (data) {
       console.log('setting')
       console.log(data.mCabinet)
+
       this.boardName = this.$changeText(data.mCabinet.cabinetNameMtext)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList =''
@@ -366,19 +368,39 @@ export default {
 
     },
     setOk (data) {
-      // console.log(data)
+      console.log(data)
+      console.log("modiBoarddatamodiBoarddatamodiBoarddatamodiBoarddatamodiBoarddata")
+      var text = ''
+      var selectLength = 0
+      if(data.bookList.length > 0){
+        // itemList 중복 제거
+        var indexOf = this.selectItemList.findIndex(i => i.shareType === data.bookList[0].shareType);
+        while (indexOf !== -1) {
+          this.selectItemList.splice(indexOf, 1)
+          indexOf = this.selectItemList.findIndex(i => i.shareType === data.bookList[0].shareType);
+        }
 
-      if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {
           var teampItemList ={}
          // if(teampItemList.shareType !== data.bookList[i].shareType ){
           teampItemList.shareType = data.bookList[i].shareType
           teampItemList.shareSeq = data.bookList[i].shareSeq
+
           this.selectItemList.push(teampItemList)
+
         }
+        text = '그룹: ' +data.bookList[0].cabinetNameMtext
+        selectLength += data.bookList.length
       }
 
-      if(data.memberList){
+      if(data.memberList.length > 0){
+        // itemList 중복 제거
+        var indexOf = this.selectItemList.findIndex(i => i.shareType === data.memberList[0].shareType);
+        while (indexOf !== -1) {
+          this.selectItemList.splice(indexOf, 1)
+          indexOf = this.selectItemList.findIndex(i => i.shareType === data.memberList[0].shareType);
+        }
+
         for (let i = 0; i < data.memberList.length; i++) {
           var teampItemList ={}
 
@@ -386,17 +408,31 @@ export default {
           teampItemList.shareSeq = data.memberList[i].shareSeq
           this.selectItemList.push(teampItemList)
         }
+        text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList[0].userNameMtext)
+        selectLength += data.memberList.length
       }
       console.log('##ShareList##')
       console.log(this.selectShareList)
       console.log('##ItemList##')
       console.log(this.selectItemList)
 
+      if((selectLength - 1) > 0){
+        text += '외 '+ (selectLength - 1)+'명'
+      }else if ((selectLength - 1) === 0){
+        text += ''
+      }else{
+        text = '권한 대상자가 없습니다.'
+      }
 
-      this.receiverAccessListYn =false
+      if(this.currentPermissionType === 'W') this.writePermission = text
+      if(this.currentPermissionType === 'V') this.readPermission = text
+      if(this.currentPermissionType === 'R') this.commentPermission = text
+
+      this.receiverAccessListYn = false
     },
 
     selectShareActorItem (itemType) {
+      this.currentPermissionType = itemType
       if(itemType === 'V')
         this.permissionSelectedYn.V = true
       else if(itemType === 'R')

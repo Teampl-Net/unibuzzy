@@ -67,7 +67,7 @@ export default {
     propData: {}
   },
   async created () {
-    this.$emit('openLoading')
+    this.$emit('openZLoading')
     var resultList = await this.getContentsList()
     this.mCabContentsList = resultList.content
     if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {

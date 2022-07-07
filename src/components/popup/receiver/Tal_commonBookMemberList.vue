@@ -185,7 +185,7 @@ export default {
             this.listData[index].selectedYn = false
         },
         updateData(obj){
-            // obj -> prop으로 보낸 data에 수정을 직접해서 다시 $emit으로 받음
+
             this.addMemberPopYn = false
         }
 

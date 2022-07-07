@@ -92,6 +92,7 @@ export default {
     }
   },
   async created() {
+
     console.log(this.adminYn);
     console.log('propData');
     this.getFollowerList()
@@ -106,7 +107,7 @@ export default {
     await this.getTeamMenuList()
 
     this.setDrop()
-
+    this.groupListlength()
     // alert(this.cabinetList)
 
     // this. myBoardList =
@@ -127,7 +128,7 @@ export default {
       cabinetList:[],
       menuHeight: 0,
       boardDropDownYn:true,
-      groupDropDownYn:false,
+      groupDropDownYn:null,
       selectManagerListYn:false,
 
       selectedList : [],

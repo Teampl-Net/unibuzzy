@@ -2,22 +2,13 @@
 <div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
+    <div class="longHeight w-100P" style="position:absolute; top:50px; h overflow: auto;" >
 
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
-    <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-
-        <!-- <div style="display: none">
-            <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-            <transition name="showModal">
-                <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-            </transition>
-        </div> -->
-
-        <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-          <selectBookNMemberList :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
-          <!-- <selectBookNMemberList :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='selectedList'  /> -->
+        <div style="width: 100%; position: relative; float: left;">
+          <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
         </div>
-        <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="float: left;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
+
+        <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="height: 310px; position: absolute; bottom: 50px; left: 0px;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
 
@@ -89,6 +80,24 @@ export default {
       // } else if (data.itemType === 'R') {
       //   this.setSelectedList.R = data.itemList
       // }
+      console.log('this.setSelectedListconsole.log(this.setSelectedList);console.log(this.setSelectedList);');
+      console.log(this.setSelectedList);
+      // if(data.type === 'U'){
+      //   var changeList = data.memberList
+      //   for(var m = 0; m < this.memberList.length; m ++) {
+      //     this.memberList[m].selectedYn = false
+      //     for(var c = 0; c < changeList.length; c++) {
+      //       if (changeList[c].userKey === this.memberList[m].userKey) {
+      //         this.memberList[m].selectedYn = true
+      //       }
+      //     }
+      //   }
+
+      // }else if(data.type === 'C'){
+
+
+      // }
+      console.log(data);
 
       if (this.itemType === 'V') {
         this.setSelectedList.V = data.itemList
@@ -97,18 +106,43 @@ export default {
       } else if (this.itemType === 'R') {
         this.setSelectedList.R = data.itemList
       }
+
+      this.$refs.selectBookNMemberListCompo.delSelectList(data.delKey, data.type)
+      console.log(this.setSelectedList);
+
     },
     sendReceivers (data) {
-      for (var i = 0; i < data.length; i++) {
-        data.shareType = this.itemType
+      if(data.bookList){
+        if (data.bookList.length > 0 ) {
+          for (var i = 0; i < data.bookList.length; i++) {
+            data.bookList[i].shareType = this.itemType
+          }
+
+        }
       }
+
+      if(data.memberList){
+        if (data.memberList.length > 0 ) {
+          for (var i = 0; i < data.memberList.length; i++) {
+            data.memberList[i].shareType = this.itemType
+          }
+        }
+      }
+      console.log('this.itemTypethis.itemTypethis.itemTypethis.itemTypethis.itemType');
+      console.log()
+
+
+      console.log('datadatadatadatadatadatadatadatadatadatadatadata');
+      console.log(data);
       this.$emit('sendReceivers', data)
     },
     addSelectList (data) {
       this.setSelectedList = data
       this.$refs.testCompo.upDatePage(data)
     },
+
     delectClick (data, index) {
+      alert(true)
       this.selectReceivers.splice(index, 1)
     },
     addTeamList (obj) {

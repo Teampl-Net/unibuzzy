@@ -192,7 +192,7 @@ export default {
       console.log(param);
 
       // 같으면
-      if (param.targetType === 'pushDetail'){
+      if (param.targetType === 'pushDetail' || param.targetType === "createChannel"){
         //  && param.targetKey !== this.chanDetail.teamKey
         param.openActivity = 'chanAlimList'
         this.$emit('openPop', param)

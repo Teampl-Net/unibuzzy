@@ -180,6 +180,7 @@ export default {
     changeSelectedList (selectedListData) {
       this.selectedList = selectedListData
       this.editMemberSelectedList()
+      this.editBookSelectedList()
       this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
@@ -196,7 +197,7 @@ export default {
       }
     },
     editBookSelectedList () {
-      if(this.selectedList.memberList){
+      if(this.selectedList.bookList){
         var changeList = this.selectedList.bookList
         for(var m = 0; m < this.bookList.length; m ++) {
           this.bookList[m].selectedYn = false
