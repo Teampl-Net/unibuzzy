@@ -21,10 +21,10 @@
         </div>
       </div>
     </div>
-    <div class="w-100P fl mtop-3" style="position: relative; width:100%; height:60px;">
+    <myObserver @triggerIntersected="loadMore" class="fl wich" />
+    <div class="w-100P fl mtop-1" style="position: relative; width:100%; height: 30px;">
       <gLoadingS ref="sLoadingChan" class="fl"/>
     </div>
-    <myObserver @triggerIntersected="loadMore" class="fl wich" />
 </template>
 
 <script>
@@ -40,11 +40,18 @@ export default {
   },
   watch: {
     chanList () {
-      this.$refs.sLoadingChan.hide()
+      this.loadingRefHide()
     }
   },
   methods: {
-
+    loadingRefShow () {
+      console.log('show')
+      this.$refs.sLoadingChan.show()
+    },
+    loadingRefHide () {
+      console.log('hide')
+      this.$refs.sLoadingChan.hide()
+    },
     resizeText (text) {
       if (text.length > 20) {
         text = text.substr(0, 20) + '...'
@@ -55,7 +62,7 @@ export default {
       this.$emit('goDetail', chanName)
     },
     async loadMore () {
-      this.$refs.sLoadingChan.show()
+      this.loadingRefShow()
       this.$emit('moreList', 10)
       /* const newArr = [
         ...this.commonListData,

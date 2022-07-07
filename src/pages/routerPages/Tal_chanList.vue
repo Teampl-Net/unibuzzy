@@ -98,6 +98,11 @@ export default {
     this.$emit('changePageHeader', '채널')
     var resultList = await this.getChannelList()
     this.chanList = resultList.content
+    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      this.endListYn = true
+    } else {
+      this.endListYn = false
+    }
     this.$emit('closeLoading')
     this.introChanPageTab()
   },
@@ -108,6 +113,8 @@ export default {
       this.resultSearchKeyList = []
       this.changeTab('user')
       this.$refs.activeBar.switchtab(0)
+      var chanListWrap = this.$refs.chanListWrap
+      chanListWrap.scrollTo({ top: 0 })
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)
@@ -158,23 +165,30 @@ export default {
       this.endList = true
       var resultList = await this.getChannelList(pSize, 0)
       this.chanList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.endList = false
     },
 
     async loadMore (pageSize) {
       if (this.endListYn === false || this.totalElements > this.chanList.length) {
         this.offsetInt += 1
-        var resultList = await this.getChannelList(pageSize)
+        var resultList = await this.getChannelList()
         const newArr = [
           ...this.chanList,
           ...resultList.content
         ]
-        if (this.totalElements === this.chanList.length) {
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
           this.endListYn = true
+        } else {
+          this.endListYn = false
         }
         this.chanList = newArr
       } else {
-        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+        this.$refs.gChannelListCompo.loadingRefHide()
       }
     },
 
@@ -203,7 +217,11 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
-
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true
       } else {
@@ -251,18 +269,27 @@ export default {
       } else {
         paramMap.set('pageSize', 10)
       }
-      var resultList = await this.$getTeamList(paramMap)
+      var result = await this.$getTeamList(paramMap)
       // var pageable = resultList.pageable
       // eslint-disable-next-line no-debugger
-      this.totalPages = resultList.totalPages
-      this.totalElements = resultList.totalElements
-      return resultList.data
+      // this.totalPages = resultList.totalPages
+      // this.totalElements = resultList.totalElements
+      if(result.empty){
+        this.$refs.gChannelListCompo.loadingRefHide()
+      }
+      var resultList = result.data
+      return resultList
     },
 
     async requestSearchList (paramMap) {
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.viewTab = 'all'
       this.$refs.activeBar.switchtab(1)// 전체
       this.$refs.activeBar.selectTab('all')// 전체
@@ -285,6 +312,11 @@ export default {
       this.resultSearchKeyList.splice(idx, 1)
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
     }
 
   },

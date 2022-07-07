@@ -49,7 +49,7 @@
       </template>
       <myObserver  @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
       <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
-            <gLoadingS ref="sLoadingPush" class="fl"/>
+        <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
       <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
   <!-- </div> -->
@@ -73,7 +73,7 @@ export default {
     this.contentsList = this.commonListData
   },
   watch: {
-    commonListData () {
+    commonListData() {
       this.contentsList = this.commonListData
       this.loadingRefHide()
     },
@@ -220,7 +220,7 @@ export default {
         await this.$emit('refresh')
       }
     },
-    async loadMore () {
+    async loadMore() {
       this.loadingRefShow()
       this.$emit('moreList', 10)
       /* const newArr = [

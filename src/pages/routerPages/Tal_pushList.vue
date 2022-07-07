@@ -81,6 +81,11 @@ export default {
     this.$emit('changePageHeader', '알림')
     var resultList = await this.getPushContentsList()
     this.commonListData = resultList.content
+    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      this.endListYn = true
+    } else {
+      this.endListYn = false
+    }
     // console.log('!@!@!@!@!@!@!@!@!');
     // console.log(resultList);
     this.$emit('numberOfElements', resultList.totalElements)
@@ -145,7 +150,6 @@ export default {
     //   } else {
     //     this.headerTop = 150
     //   }
-    //   // debugger
     //   return {
     //     '--headerHeight' : this.headerTop  + 'px'
     //   }
@@ -186,6 +190,8 @@ export default {
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
       this.changeTab('N')
+      var ScrollWrap = this.$refs.pushListWrapWrapCompo
+      ScrollWrap.scrollTo({top:0});
       this.$refs.activeBar.switchtab(0)
       setTimeout(() => {
         this.$emit('closeLoading')
@@ -207,7 +213,6 @@ export default {
     },
     handleScroll() {
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      // debugger
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
@@ -236,12 +241,22 @@ export default {
       this.endList = true
       var resultList = await this.getPushContentsList(pSize, 0)
       this.commonListData = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.endList = false
     },
     async refreshPage () {
       this.endList = true
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.endList = false
     },
     async recvNoti (e) {
@@ -265,7 +280,7 @@ export default {
       // this.preloadingYn = true
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
-        var resultList = await this.getPushContentsList(pageSize)
+        var resultList = await this.getPushContentsList()
         // if (resultList) {
         //   // this.preloadingYn = false
         // }
@@ -273,13 +288,18 @@ export default {
           ...this.commonListData,
           ...resultList.content
         ]
-        if (resultList.content.length < pageSize) {
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
           this.endListYn = true
+        } else {
+          this.endListYn = false
         }
         this.commonListData = newArr
-      } else{
+      }
+      else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
+      // var a = this.endListYn
+      // debugger
     },
     /* addSubHistory (pageName) {
       // eslint-disable-next-line no-array-constructor
@@ -313,21 +333,25 @@ export default {
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
 
       this.offsetInt = 0
-      var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
-      if(this.tabIdx < indexOf){
-        // document.getElementById('pushListWrap').style.animationName('slide-next')
-        // this.box.style.animationName('slide-next')
-        //오른쪽으로 이동
-      }else if(this.tabIdx > indexOf){
-        // 왼쪽으로 이동
-        // this.box.style.animationName('slide-pre')
-        // document.getElementById('pushListWrap').style.animationName('slide-pre')
-      }
-      this.tabIdx = indexOf
+      // var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
+      // if(this.tabIdx < indexOf){
+      //   // document.getElementById('pushListWrap').style.animationName('slide-next')
+      //   // this.box.style.animationName('slide-next')
+      //   //오른쪽으로 이동
+      // }else if(this.tabIdx > indexOf){
+      //   // 왼쪽으로 이동
+      //   // this.box.style.animationName('slide-pre')
+      //   // document.getElementById('pushListWrap').style.animationName('slide-pre')
+      // }
+      // this.tabIdx = indexOf
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
-
-      this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
+      // this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
 
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
@@ -367,7 +391,7 @@ export default {
         }
       }
       param.findLogReadYn = null
-      param.findActYn = false
+      // param.findActYn = false
       param.findActLikeYn = false
       param.findActStarYn = false
       param.jobkindId = 'ALIM'
@@ -409,6 +433,11 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -452,6 +481,11 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       this.commonListData = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.findPopShowYn = false
     }
   },

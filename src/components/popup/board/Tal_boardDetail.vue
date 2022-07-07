@@ -38,7 +38,6 @@
             <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div>
             <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 27px;" alt="카카오톡 공유하기">
 
-
           </div>
           <div v-if='!detailVal.replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack" style="text-align:center;">관리자가 댓글 사용을 중지하였습니다.</p>
@@ -209,7 +208,7 @@ export default {
       } catch (e) {};
       var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' 
+      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080'
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null

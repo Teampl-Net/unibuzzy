@@ -1,8 +1,8 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div id="boardWrap" style=" height: 100vh; width:100vw; overflow: scroll; background-color: #ece6cc;" class="boardDetailWrap">
-    <div id="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
+  <div id="boardWrap" style="overflow: scroll; background-color: #ece6cc;" class="boardListWrap">
+    <div id="summaryHeader" class="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
@@ -24,27 +24,31 @@
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
-      <div id="boardInfoSummary2" style="">
+      <div id="boardInfoSummary2" class="summaryHeader2" style="">
         <span class="font20 fontBold">{{ this.$changeText(this.propData.value.cabinetNameMtext)}}</span>
         <span class="font13 mbottom-05 fl">{{ this.$changeText(this.propData.nameMtext) }}</span>
       </div>
     </div>
 
-    <div class="" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px);padding-top: 10px; width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 350px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
-      <transition name="showModal">
-        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-      </transition>
-      <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader">
-        <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-        <gActiveBar :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
-      </div>
-      <div class=" " id="boardListWrap" ref="boardListWrapCompo" style="padding-top: 140px; overflow: hidden scroll; margin-top: 0.8rem; height: calc(100% - 80px); width: 100%;">
+      <div class="" id="boardListWrap" ref="boardListWrapCompo" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%; ">
+        <transition name="showModal">
+          <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        </transition>
+        <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
+          <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+          <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
+        </div>
+        <div class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+          <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
+        </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
-        <boardList ref="boardListCompo" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList" @moreList='loadMore'   style="margin-top: 5px; float: left;" @refresh='refresh' />
       </div>
     </div>
-
+    <div :class="this.scrolledYn || !this.reloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);" @click="refreshAll">
+      <img src="../../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
+    </div>
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
@@ -63,20 +67,30 @@ export default {
     propData: {}
   },
   async created () {
-    // console.log(this.propData);
     this.$emit('openLoading')
-    var result = await this.getContentsList()
-    this.mCabContentsList = result.content
-    this.totalElements = result.totalElements
+    var resultList = await this.getContentsList()
+    this.mCabContentsList = resultList.content
+    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      this.endListYn = true
+    } else {
+      this.endListYn = false
+    }
     await this.getCabinetDetail()
-    console.log(this.mCabContentsList)
+    // console.log(this.mCabContentsList)
     // eslint-disable-next-line no-
     //
     // cothis.mCabContentsList
   },
-  mounted () {
+  mounted() {
+    this.boardListWrap = document.getElementById('boardListWrap')
+    this.boardListWrap.addEventListener('scroll', this.saveScroll)
+    this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
+    this.listBox.addEventListener('scroll', this.handleScroll)
   },
-  updated () {
+  updated() {
+    this.boardListWrap.scrollTop = this.currentScroll
+    this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
+
     // eslint-disable-next-line no-unused-vars
     this.box = document.getElementById('boardWrap') // 이 dom scroll 이벤트를 모니터링합니다
     this.box.addEventListener('scroll', this.updateScroll)
@@ -86,13 +100,13 @@ export default {
   },
   data () {
     return {
-// 작은 스크롤
-      newScrollPosition: 0,
-      headerTop: 0,
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 쓴', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      listBox: null,
       firstContOffsetY: null,
-      newBox: null,
       scrolledYn: false,
-// 전체 스크롤
+      offsetInt: 0,
+      endListYn: false,
+      reloadShowYn: false,
       errorBoxYn: false,
       errorBoxText: '',
       box: null,
@@ -127,17 +141,50 @@ export default {
       findPopShowYn: false,
       actorList: [],
       /* subHistoryList: [], */
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 쓴', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       findKeyList: {},
       resultSearchKeyList: []
     }
   },
   methods: {
-    // getAbsoluteTop (element) {
-    //   return window.pageYOffset + element.getBoundingClientRect().top
-    // },
+    async refreshAll () {
+      // 새로고침
+      this.$emit('openLoading')
+      this.findKeyList.searchKey = null
+      this.findKeyList.toCreDateStr = null
+      this.findKeyList.fromCreDateStr = null
+      this.resultSearchKeyList = []
+      this.changeTab('N')
+      var ScrollWrap = this.$refs.commonBoardListWrapCompo
+      ScrollWrap.scrollTo({top: 0});
+      this.$refs.activeBar.switchtab(0)
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 500)
+    },
+    getAbsoluteTop (element) {
+      return window.pageYOffset + element.getBoundingClientRect().top
+    },
+    handleScroll() {
+      var element = document.getElementsByClassName('commonBoardListContentBox')[0]
+      var parentElement = element.parentElement
+      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+
+      // var test = document.getElementById('boardPageHeader')
+      // parentElement = element.parentElement
+      // this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+      // var test = this.firstContOffsetY
+      if (this.firstContOffsetY < 0) {
+        if (this.listBox.scrollTop > this.scrollPosition) {
+          this.scrollDirection = 'down'
+          this.scrolledYn = true
+        } else if (this.listBox.scrollTop <= this.scrollPosition) {
+          this.scrollDirection = 'up'
+          this.scrolledYn = false
+        }
+      }
+      this.scrollPosition = this.listBox.scrollTop
+    },
     // handleScroll () {
     //   var element = document.getElementsByClassName('boardRow')[0]
     //   var parentElement = element.parentElement
@@ -164,13 +211,12 @@ export default {
       var resultList = await this.getContentsList(pSize, 0)
       this.mCabContentsList = resultList.content
       this.endList = false
-      this.$refs.boardListCompo.loadingHide()
+      this.$refs.boardListCompo.loadingRefHide()
       // var result = await this.getContentsList()
       // this.mCabContentsList = result.content
       // this.totalElements = result.totalElements
     },
     updateScroll() {
-      // console.log(this.scrollPosition)
       var blockBox = document.getElementById('summaryHeader')
       if (this.box.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
@@ -180,18 +226,20 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition >= 250) {
+      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
         document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
+        this.reloadShowYn = true
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
+        this.reloadShowYn = false
       }
     },
     openWriteBoard () {
@@ -214,8 +262,6 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
-      // console.log('this.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propDatathis.propData');
-      // console.log(this.propData);
       // eslint-disable-next-line no-unused-vars
       if (this.propData.ownerYn === 1) {
         this.shareAuth.R = true
@@ -324,14 +370,21 @@ export default {
     async changeTab (tabName) {
       // this.$emit('openLoading')
       this.viewTab = tabName
+      this.$refs.boardListCompo.loadingRefShow()
       this.offsetInt = 0
       // this.mCabContentsList = []
-      var resultList = await this.getContentsList(10)
+      var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
+      // this.$refs.boardListCompo.loadingRefHide()
       this.scrollMove()
     },
     scrollMove(){
-      var ScrollWrap = this.$refs.boardListWrapCompo
+      var ScrollWrap = this.$refs.commonBoardListWrapCompo
       ScrollWrap.scrollTo({top:0, behavior:'smooth'});
     },
     async requestSearchList (param) {
@@ -349,9 +402,13 @@ export default {
       }
 
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      var result = await this.getContentsList()
-      this.mCabContentsList = result.content
-      this.totalElements = result.totalElements
+      var resultList = await this.getContentsList()
+      this.mCabContentsList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -383,7 +440,6 @@ export default {
       return resultArray
     },
     async changeSearchList(type) {
-      // alert(JSON.stringify(this.findKeyList))
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
@@ -397,22 +453,23 @@ export default {
       // debugger
       // this.findPopShowYn = false
     },
-    async loadMore () {
-    if (this.endListYn === false || this.totalElements > this.mCabContentsList.length) {
-      this.offsetInt += 1
-      var result = await this.getContentsList(10)
-      const newArr = [
-        ...this.mCabContentsList,
-        ...result.content
-      ]
-      if (this.totalElements === this.mCabContentsList.length) {
-        this.endListYn = true
+    async loadMore(pageSize) {
+      if (this.endListYn === false || this.totalElements > pageSize) {
+        this.offsetInt += 1
+        var resultList = await this.getContentsList()
+        const newArr = [
+          ...this.mCabContentsList,
+          ...resultList.content
+        ]
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.endListYn = true
+        } else {
+          this.endListYn = false
+        }
+        this.mCabContentsList = newArr
+      } else {
+        this.$refs.boardListCompo.loadingRefHide()
       }
-      this.mCabContentsList = newArr
-    } else {
-      this.$refs.boardListCompo.loadingHide()
-    }
-
       this.findPopShowYn = false
     }
   },
@@ -427,8 +484,19 @@ export default {
 </script>
 
 <style scoped>
+.commonBoardListWrap{width: 100%; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%;}
+.reload--pinned {
+    transform: translateY(0%);
+    transition: .3s;
+}
+.reload--unpinned {
+    transform: translateY(10rem);
+    transition: .5s;
+}
+.summaryHeader{height: 350px; width: 100%; float: left; position: fixed;}
+.summaryHeader2 {height: 50px;  width: 100%; float: left;}
 .boardListHeader {
-  width: calc(100% - 3rem);
+  width: 100%;
   min-height: 132px;
   position: absolute;
   background-color: #FFF;
@@ -446,7 +514,7 @@ export default {
 }
 
 #boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
-.boardDetailWrap{
+.boardListWrap{
   height: 100vh;
   background-size: cover;
 }

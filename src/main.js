@@ -109,7 +109,7 @@ axios.defaults.withCredentials = true */
 
 // Vue.prototype.$http = axios
 
-app.config.silent = true;
+app.config.silent = true
 
 app.config.globalProperties.$axios = axios
 

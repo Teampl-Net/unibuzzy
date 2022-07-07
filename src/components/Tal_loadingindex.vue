@@ -172,7 +172,7 @@ export default {
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 99999;
+  z-index: 9999999;
 }
 
 .loadingZcontainer {
