@@ -155,7 +155,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: '/api/tp.deleteMemo',
         param: memo
       })
       if(result.data.result == true){
@@ -168,7 +168,7 @@ export default {
       memo.targetKind = 'C'
       memo.targetKey = this.alimDetail[0].contentsKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: '/api/tp.getMemoList',
         param: memo
       })
       if(result.data.content) {
@@ -267,7 +267,7 @@ export default {
       console.log(memo);
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: '/api/tp.saveMemo',
         param: {memo: memo}
       })
       if(result.data.result === true || result.data.result === 'true') {

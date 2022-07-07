@@ -109,7 +109,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getTeamMenuList',
+                url: '/api/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -133,7 +133,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getMCabContentsList',
+                url: '/api/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -213,7 +213,7 @@ export default {
             params.teamKey = this.propData.currentTeamKey
             params.memberYn = true
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getFollowerList',
+                url: '/api/tp.getFollowerList',
                 param: params
             })
 

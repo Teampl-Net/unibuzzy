@@ -55,7 +55,6 @@ const app = createApp(moTheAlim).use(router)
 }) */
 
 app.use(commonjs)
-
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
@@ -86,16 +85,16 @@ app.use(axiosFunction)
 app.use(store)
 app.use(uploadFile)
 // app.use(massage)
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://mo.d-alim.com:19090, http://192.168.0.22:8080, http://localhost:8080, http://61.97.186.14:18080'
+/* axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://mo.d-alim.com:19090, http://192.168.0.22:8080, http://localhost:8080, http://61.97.186.14:18080'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.common['Content-Type'] = 'application/json;'
 axios.defaults.timeout = 100000
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+axios.defaults.withCredentials = true */
 
-axios.defaults.withCredentials = true
-
+// axios.defaults.baseURL = 'api'
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
@@ -108,6 +107,7 @@ axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // Vue.prototype.$http = axios
 
 app.config.globalProperties.$axios = axios
+
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)

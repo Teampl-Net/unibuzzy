@@ -84,8 +84,6 @@
 </template>
 
 <script>
-import { Fetch } from 'vue-fetch'
-
 /* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
 export default {
@@ -223,7 +221,7 @@ export default {
       }
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: '/api/api/tp.saveFollower',
         param: param
       })
       console.log(result)
@@ -355,7 +353,7 @@ export default {
         ]
       });
     },
-    sendkakao: function () {
+    async sendkakao () {
       try {
         // eslint-disable-next-line no-undef
         if (Kakao) {
@@ -363,11 +361,8 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey 
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' 
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-
+      var kakaoLinkUrl = await this.kakaoLink()
+      
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
         objectType: 'feed',
@@ -378,80 +373,37 @@ export default {
           imageWidth: 1200,
           imageHeight: 630,
           link: {
-            /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            // webUrl: link,
-            mobileWebUrl: link
-            /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
-            webUrl: 'https://thealim.page.link/H3Ed' */
+            mobileWebUrl:  kakaoLinkUrl
           }
         },
         buttons: [
           {
-            title: '더알림 방문하기',
-            link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              // webUrl: link,
-              mobileWebUrl: mainLink
-            }
-          },
-          {
             title: '구독하러 가기',
             link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              // webUrl: link,
-              mobileWebUrl: link
+              mobileWebUrl: kakaoLinkUrl
             }
           }
         ]
       })
     },
     async kakaoLink () {
-      const $fet = Fetch({
-      // fetch,
-      // Headers,
-      logging: true
-    })
+      var result = null
       var params = {
         "dynamicLinkInfo" : {
             "dynamicLinkDomain" : 'thealim.page.link',
-              "link" : '?chanDetail=' + this.chanDetail.teamKey 
+              "link" : 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey 
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
           },
           "suffix" : {"option" : "SHORT"}
       }
-      $fet.post("https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=ad73ad189dfce70f1a9c3b77c9924c45", params, { 'Access-Control-Allow-Origin': '*', credentials: 'include', withCredentials : true })
+      await this.$axios.post("/firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE", params, { withCredentials : true })
         .then(function (response) {
-
-                    debugger
-
-                });
-
-          /* $.post({
-                url: "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=[api_key]",
-                dataType: "json",
-                type: "post",
-                contentType: "application/json",
-                data: JSON.stringify(params),
-                success: function(response, textStatus, jqXHR) {
-                    alert(response.shortLink);
-                    // shortLink 예) https://sangsangss.page.link/vjzah71EfG9m5mTB6 또는 https://sangsangss.com/vjzah71EfG9m5mTB6
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR, textStatus, errorThrown);
-                }
-            });  */
+          result = response.data.shortLink
+          // alert(result)
+        });
+      return result
     }
   }
-  /* head () {
-    return {
-      script: [
-        { src: '//developers.kakao.com/sdk/js/kakao.min.js' }
-      ]
-    }
-  } */
 }
 </script>
 
