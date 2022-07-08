@@ -67,7 +67,7 @@ export async function saveUser (userProfile) {
   user.areaName = deviceInfo.timeZome
   setParam.user = user
   var result = await commonAxiosFunction({
-    url: '/api/tp.saveUser',
+    url: '/tp.saveUser',
     param: setParam
   })
   if (result.data === 'OK') {
@@ -104,7 +104,7 @@ const methods = {
       if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
     }
     var result = await commonAxiosFunction({
-      url: '/api/tp.loginCheck',
+      url: '/tp.loginCheck',
       param: Object.fromEntries(paramMap)
     })
     if (result.data.resultCode === 'OK') {
@@ -121,7 +121,7 @@ const methods = {
   async getTeamList (paramMap) {
     var resultList = null
     var result = await commonAxiosFunction({
-      url: '/api/tp.getUserTeamList',
+      url: '/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
     })
     resultList = result
@@ -143,7 +143,7 @@ const methods = {
   //       return percentage;
   //     },
   //   };
-  //   var response = await axios.post('/api/tp.getContentsList', paramSet, config)
+  //   var response = await axios.post('/tp.getContentsList', paramSet, config)
 
   //   resultList = response.data
   //   return resultList
@@ -158,7 +158,7 @@ const methods = {
     var resultList = null
 
     var result = await commonAxiosFunction({
-      url: '/api/tp.getContentsList',
+      url: '/tp.getContentsList',
       param: paramSet
     })
     resultList = result.data
@@ -171,12 +171,12 @@ const methods = {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = 'tp.deleteUserDo' } else if (type === 'save') { urlSet = 'tp.saveUserDo' }
+    if (type === 'delete') { urlSet = '/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/tp.saveUserDo' }
     param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
 
     var response = await commonAxiosFunction({
-      url: '/api/'+urlSet,
+      url: urlSet,
       param: param
     })
     result = response.data
@@ -191,7 +191,7 @@ const methods = {
     param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveSticker',
+      url: '/tp.saveSticker',
       param: param
     })
     result = response.data
@@ -207,7 +207,7 @@ const methods = {
     param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.getStickerList',
+      url: '/tp.getStickerList',
       param: param
     })
     result = response.data
@@ -219,8 +219,8 @@ const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    var urlSet = '/api/tp.saveFollower'
-    if (type === 'del') { urlSet = '/api/tp.deleteFollower' } else if (type === 'save') {
+    var urlSet = '/tp.saveFollower'
+    if (type === 'del') { urlSet = '/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -236,7 +236,7 @@ const methods = {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveTeamRequest',
+      url: '/tp.saveTeamRequest',
       param: { teamRequest: teamRequest }
     })
     result = response.data
@@ -251,7 +251,7 @@ const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.createTeamForReq',
+      url: '/tp.createTeamForReq',
       param: paramSet
     })
     result = response.data
@@ -265,7 +265,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.getTeamReqList',
+      url: '/tp.getTeamReqList',
       param: paramSet
     })
     result = response.data
@@ -286,7 +286,7 @@ const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveContents',
+      url: '/tp.saveContents',
       param: paramSet
     })
     result = response.data
@@ -300,7 +300,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.getCodeList',
+      url: '/tp.getCodeList',
       param: paramSet
     })
     result = response.data
@@ -314,7 +314,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.updateUserDoList',
+      url: '/tp.updateUserDoList',
       param: paramSet
     })
     result = response.data
@@ -329,7 +329,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.updateFollower',
+      url: '/tp.updateFollower',
       param: paramSet
     })
     result = response.data
@@ -345,7 +345,7 @@ const methods = {
     console.log(paramSet)
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveCabinet',
+      url: '/tp.saveCabinet',
       param: paramSet
     })
     result = response.data
@@ -359,7 +359,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.deleteCabinet',
+      url: '/tp.deleteCabinet',
       param: paramSet
     })
     result = response.data
@@ -373,7 +373,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.getTeamMenuList',
+      url: '/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     result = response.data
@@ -387,7 +387,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.getCabinetDetail',
+      url: '/tp.getCabinetDetail',
       param: paramSet
     })
     result = response.data
@@ -396,7 +396,7 @@ const methods = {
   async saveMCabContents (paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveMCabContents',
+      url: '/tp.saveMCabContents',
       param: paramSet
     })
     // console.log("## axios saveMCabContents")
@@ -413,7 +413,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/api/tp.saveUser',
+      url: '/tp.saveUser',
       param: param
     })
     result = response

@@ -63,8 +63,13 @@
               <div class="w-20P fl textLeft commonColor fontBold" @click="kakaoLink" > 공유 </div>
               <div class="w-80P fl textLeft">
                 <!-- <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
-                <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 27px;" alt="카카오톡 공유하기">
-                <!-- <gBtnSmall data-clipboard-action="copy" data-clipboard-target="#copyTextBody" @click="copyText" class="copyTextBtn" style="float: right;" btnTitle="클립보드" /> -->
+                <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기">
+                <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+                    :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey
+                      + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                      style="background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
+                  <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
+                </div>
               </div>
               </td>
           </tr>
@@ -84,7 +89,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
 export default {
   /* metaInfo: {
@@ -101,8 +105,8 @@ export default {
     ]
   }, */
   mounted () {
-    console.log('this.chanDetail');
-    console.log(this.chanDetail);
+    console.log('this.chanDetail')
+    console.log(this.chanDetail)
     // this.$refs.chanImg.style.setProperty('--halfWidth', (window.innerWidth - 185) / 2 + 'px')
   },
   data () {
@@ -157,7 +161,7 @@ export default {
     }
   },
   async created () {
-    if(this.parentMemberYn) {
+    if (this.parentMemberYn) {
       this.memberYn = this.parentMemberYn
     }
     if (this.alimSubPopYn) {
@@ -185,12 +189,6 @@ export default {
     this.settingTeamType(this.chanDetail.teamType)
   },
   methods: {
-    copyText () {
-      var clipboard = new Clipboard('.copyTextBtn')
-      clipboard.on('success', function(e) {
-        alert('성공!')
-      })
-    },
     // memberClick() {
     //   if (this.memberYn) {
     //     this.saveMember()
@@ -206,7 +204,7 @@ export default {
     //   this.errorBoxType = true
     //   this.errorPopYn = true
     // },
-    async saveMember() {
+    async saveMember () {
       this.smallPopYn = true
       this.confirmMsg = '멤버 신청이 완료되었습니다.'
       this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
@@ -221,16 +219,15 @@ export default {
       }
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/api/api/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: param
       })
       console.log(result)
       if (result.data.result === true) {
-      this.memberYn = param.memberYn
-      // param = {}
-      this.$emit('changeMemberYn', this.memberYn)
+        this.memberYn = param.memberYn
+        // param = {}
+        this.$emit('changeMemberYn', this.memberYn)
       }
-
     },
     editChan () {
       // eslint-disable-next-line no-new-object
@@ -263,7 +260,7 @@ export default {
         this.teamTypeText = '매장'
       } else if (teamType === 'E') {
         this.teamTypeText = '기타'
-      }else {
+      } else {
         this.teamTypeText = '기타'
       }
     },
@@ -325,7 +322,8 @@ export default {
       }
       this.$changeRecvAlimYn(param)
     },
-    shareMessage() {
+    shareMessage () {
+      // eslint-disable-next-line no-undef
       Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
@@ -334,25 +332,36 @@ export default {
           imageUrl:
             'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
           link: {
-            mobileWebUrl: 'https://developers.kakao.com',
+            mobileWebUrl: 'https://developers.kakao.com'
             // androidExecutionParams: 'test',
-          },
+          }
         },
         buttons: [
           {
             title: '웹으로 이동',
             link: {
-              mobileWebUrl: 'https://developers.kakao.com',
-            },
+              mobileWebUrl: 'https://developers.kakao.com'
+            }
           },
           {
             title: '앱으로 이동',
             link: {
-              mobileWebUrl: 'https://developers.kakao.com',
-            },
-          },
+              mobileWebUrl: 'https://developers.kakao.com'
+            }
+          }
         ]
-      });
+      })
+    },
+    async copyText () {
+      // eslint-disable-next-line no-undef
+      var clip = new ClipboardJS('#copyTextBody')
+      var _this = this
+      clip.on('success', function (e) {
+        // console.log(e)
+        _this.errorMsg = '복사되었습니다!'
+        _this.errorType = '복사되었습니다!'
+        _this.errorPopYn = true
+      })
     },
     async sendkakao () {
       try {
@@ -362,7 +371,14 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var kakaoLinkUrl = await this.kakaoLink()
+      var kakaoLinkUrl = 'https://thealim.page.link/' +
+
+      '?link=' + 'http// mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey +
+            '&apn=' + 'com.tal_project' +
+            '&ibn=' + 'name' +
+            '&st=' + '더알림' +
+            '&sd=' + '더편한구독알림' +
+            '&si=' + 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
 
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
@@ -374,7 +390,7 @@ export default {
           imageWidth: 1200,
           imageHeight: 630,
           link: {
-            mobileWebUrl:  kakaoLinkUrl
+            mobileWebUrl: kakaoLinkUrl
           }
         },
         buttons: [
@@ -390,18 +406,18 @@ export default {
     async kakaoLink () {
       var result = null
       var params = {
-        "dynamicLinkInfo" : {
-            "dynamicLinkDomain" : 'thealim.page.link',
-              "link" : 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-          },
-          "suffix" : {"option" : "SHORT"}
+        dynamicLinkInfo: {
+          dynamicLinkDomain: 'thealim.page.link',
+          link: 'http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey +
+                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+        },
+        suffix: { option: 'SHORT' }
       }
-      await this.$axios.post("/firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE", params, { withCredentials : true })
+      await this.$axios.post('/firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
         .then(function (response) {
           result = response.data.shortLink
           // alert(result)
-        });
+        })
       return result
     }
   }

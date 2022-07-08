@@ -60,8 +60,13 @@
                 </template>
               </div>
             </div>
-            <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 27px;" alt="카카오톡 공유하기">
-
+            <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 35px;" alt="카카오톡 공유하기">
+            <div data-clipboard-action="copy" id="pushDetailCopyBody" @click="copyText"
+                :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + this.alimDetail[0].contentsKey
+                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                  style="background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
+              <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
+            </div>
           </div>
           <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
           <!-- <div> -->
@@ -72,6 +77,7 @@
         </div>
       <!-- </div> -->
     </div>
+    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
   </div>
 </template>
 <script>
@@ -89,7 +95,9 @@ export default {
       parentContentsKey: null,
       // dateClickYn:false
       dateCheck: true,
-      dateText: '11'
+      dateText: '11',
+      confirmPopShowYn: false,
+      confirmText: ''
 
     }
   },
@@ -240,6 +248,16 @@ export default {
         }
       }
     },
+    async copyText () {
+      // eslint-disable-next-line no-undef
+      var clip = new ClipboardJS('#pushDetailCopyBody')
+      var _this = this
+      clip.on('success', function (e) {
+        // console.log(e)
+        _this.confirmText = '복사되었습니다!'
+        _this.confirmPopShowYn = true
+      })
+    },
     sendkakao: function () {
       try {
         // eslint-disable-next-line no-undef
@@ -369,7 +387,7 @@ export default {
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
 #alimCheckArea{min-height: 20px; width: calc(100%); float: left;}
-.alimCheckContents{width: calc(100% - 30px);float: left; height: 30px;}
+.alimCheckContents{width: calc(100% - 100px);float: left; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}

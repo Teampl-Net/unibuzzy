@@ -67,7 +67,7 @@ export default {
         paramMap.set('managerYn', true)
         // paramMap.set('followerType', 'M')
         var result = await this.$commonAxiosFunction({
-            url: '/api/tp.getFollowerList',
+            url: '/tp.getFollowerList',
             param: Object.fromEntries(paramMap)
         })
         console.log('@@@result@@@')
@@ -106,7 +106,7 @@ export default {
       param.userKey = data.userKey
       param.teamKey = data.teamKey
       var result = await this.$commonAxiosFunction({
-          url: '/api/tp.deleteManager',
+          url: '/tp.deleteManager',
           param: param
       })
       this.refresh()
@@ -124,7 +124,7 @@ export default {
       params.memberYn = true
       // params.managerKey = null MemberYn이 true이면서 매니저키가 없는 리스트가 필요
       var result = await this.$commonAxiosFunction({
-        url: '/api/tp.getFollowerList',
+        url: '/tp.getFollowerList',
         param: params
       })
 

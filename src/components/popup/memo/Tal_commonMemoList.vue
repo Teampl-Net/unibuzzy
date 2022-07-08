@@ -93,7 +93,7 @@ export default {
       // memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
       var result = await this.$commonAxiosFunction({
-        url: '/api/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: {memo: memo}
       })
       // console.log(result)

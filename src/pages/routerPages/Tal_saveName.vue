@@ -52,8 +52,8 @@ export default {
         }
         // #@@@@@@@@@@@@@@@@@@@@ 이름 저장이 안된다면 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 에러가 난다면 @@@@@@@@@@@@@@@@@@@@@@@@@
         // if (this.tempUser.phoneEnc !== undefined && this.tempUser.phoneEnc !== null && this.tempUser.phoneEnc !== '') {
-          await saveUser(this.tempUser) // 서버에 save요청
-          this.$router.replace({ path: '/' })
+        await saveUser(this.tempUser) // 서버에 save요청
+        this.$router.replace({ path: '/' })
         // } else { this.$router.replace({ name: 'savePhone', params: { user: JSON.stringify(this.tempUser) } }) }
       } else {
         this.errorText = '이름을 입력해주세요'

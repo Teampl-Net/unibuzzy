@@ -133,7 +133,7 @@ export default {
                     param.mccKey = data.mccKey
                     param.jobkindId = data.jobkindId
                     var result = await this.$commonAxiosFunction({
-                        url: '/api/tp.deleteMCabContents',
+                        url: '/tp.deleteMCabContents',
                         param: param
                     })
                     console.log(result)

@@ -102,7 +102,7 @@ export default {
       //   this.$emit('closeLoading')
       // }, 2000)
 
-      // await this.$axios.post('/api/tp.getMainBoard', Object.fromEntries(paramMap)
+      // await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       // ).then(response => {
       //   if (response.status === 200 || response.status === '200') {
       //     console.log(response);
@@ -130,7 +130,7 @@ export default {
       var history = this.$store.getters.hStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (this.$route.path === '/') {
-          this.appCloseYn = true
+          /*  this.appCloseYn = true */
         }
       }
     },
@@ -195,7 +195,7 @@ export default {
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
 
-      await this.$axios.post('/api/tp.getMainBoard', Object.fromEntries(paramMap)
+      await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         console.log(response)
         if (response.status === 200 || response.status === '200') {

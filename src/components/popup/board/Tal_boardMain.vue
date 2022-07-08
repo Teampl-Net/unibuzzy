@@ -6,7 +6,7 @@
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
-          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.shareCnt}}명</p>
+          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
           <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
@@ -260,6 +260,7 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
+      debugger
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-unused-vars
@@ -332,7 +333,6 @@ export default {
       // console.log(param);
       var resultList = await this.$getContentsList(param)
       // eslint-disable-next-line no-
-
       return resultList
     },
     closeSearchPop () {

@@ -36,8 +36,13 @@
             </div>
             <!-- <gBtnSmall btnTitle="댓글 쓰기" class="fr"  @click="this.memoShowYn = true"/> -->
             <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div>
-            <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 27px;" alt="카카오톡 공유하기">
-
+            <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기">
+            <div data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+                :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
+                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                  style="background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
+              <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
+            </div>
           </div>
           <div v-if='!detailVal.replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack" style="text-align:center;">관리자가 댓글 사용을 중지하였습니다.</p>
@@ -163,7 +168,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/api/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if(result.data.result == true){
@@ -176,7 +181,7 @@ export default {
       memo.targetKind = 'C'
       memo.targetKey = this.alimDetail[0].contentsKey
       var result = await this.$commonAxiosFunction({
-        url: '/api/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       if(result.data.content) {
@@ -197,6 +202,16 @@ export default {
           }
         }
       }
+    },
+    async copyText () {
+      // eslint-disable-next-line no-undef
+      var clip = new ClipboardJS('#boardDetailCopyBody')
+      var _this = this
+      clip.on('success', function (e) {
+        // console.log(e)
+        _this.confirmText = '복사되었습니다!'
+        _this.confirmPopShowYn = true
+      })
     },
     sendkakao: function () {
       try {
@@ -275,7 +290,7 @@ export default {
       console.log(memo);
 
       var result = await this.$commonAxiosFunction({
-        url: '/api/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: {memo: memo}
       })
       if(result.data.result === true || result.data.result === 'true') {
@@ -422,7 +437,6 @@ export default {
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; height: 30px;}
-.alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}

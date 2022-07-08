@@ -178,7 +178,7 @@ export default {
             param.inUserName = this.memName
 
              var result = await this.$commonAxiosFunction({
-                url: '/api/tp.saveManager',
+                url: '/tp.saveManager',
                 param: param
             })
             if (result.data.result === true) {
