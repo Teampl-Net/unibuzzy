@@ -1,7 +1,11 @@
 <template>
 <div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
-    <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' />
+    <div class="w-100P h-100P" style="overflow:hidden auto">
+      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' />
+    </div>
+
+
 </div>
 
 </template>

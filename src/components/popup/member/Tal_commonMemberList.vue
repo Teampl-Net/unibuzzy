@@ -1,8 +1,8 @@
 <template>
-    <div class="memberCard" v-for="(member, index) in managingList" :key="index" @click="memberInfo(member)">
+    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" @click="memberInfo(member)">
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)">
         <img src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
-        <div v-if="member.managerKey > 0" style="width: 30px;background-color:#CCCCCC; border-radius:0.5rem; position: absolute; bottom:-0.4rem;" class="fl">
+        <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">
           <p class="font8 commonBlack fontBold" style="">관리자</p>
         </div>
         <p class="fl font16 commonBlack" style="text-align:left; padding-left:10px; width:calc(100% - 30px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
@@ -68,51 +68,28 @@ export default {
       this.$emit('openPop',param)
     },
     setManager(param){
+
       console.log(param);
       var params = {}
       params.userKey = param.toggleId
       params.manager = param.toggleYn
+
+      // if(param.toggleYn === false){
+        // this.animation('mamberCard'+param.toggleId, true)
+      // }
       this.$emit('setManager',params)
+
 
     },
     memberInfo(member){
       console.log(member);
     },
-    memoDeleteClick(data, index){
-      var param = {}
-      param = data
-      param.clickIndex = index
-      this.$emit('deleteMemo', param)
-    },
-    cancelEdit(){
-      this.editIndex = ''
-    },
-    // async editEnd(data){
-    //   var memo = new Object()
-    //   memo.bodyFullStr = this.inputText
-    //   memo.bodyMinStr = this.inputText
-    //   memo.memoKey = data.memoKey
-    //   var result = await this.$commonAxiosFunction({
-    //     url: '/api/tp.saveMemo',
-    //     param: {memo: memo}
-    //   })
-    //   // console.log(result)
-    //   if(result.data.result === true || result.data.result === 'true') {
-    //     this.editIndex = ''
-    //     this.$emit('editTrue')
-    //   }
-    // },
-    scrollMove (key) {
-      var location = document.getElementById(key).offsetTop;
-      this.$emit('scrollMove',location)
-      this.anima(key)
-    },
-    anima(key){
-      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
+    animation(key){
+      // document.getElementById(key).style.display = 'none'
+      document.getElementById(key).className = 'noneCard'
 
-      setTimeout(() => {
-        document.getElementById(key).style.backgroundColor = ''
-      }, 700)
+
+
     }
 
   }
@@ -126,18 +103,40 @@ export default {
   display: flex; flex-direction: row; align-items: center; justify-content: flex-end; align-content: center; height: 30px;
 }
 .memberCard{
-  float: left;
-  /* display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center; */
 
-  width: 100%; min-height: 30px; padding: 0.5rem; border-bottom: 0.8px solid #ccc; float: left;
+  float: left;
+  width: 100%; height: 50px; padding: 0.5rem; border-bottom: 0.8px solid #ccc; float: left;
   background-color: white;
   transition : background-color 0.5s ease-in;
   animation-name: fadein; animation-duration: 0.3s;
+  white-space: nowrap;
   /* transition : height 0.5s ease-in; */
+}
+.adminTag{
+  width: 30px;background-color:#CCCCCC; border-radius:0.5rem; position: absolute; bottom:-0.4rem;
+  animation-name: fadein; animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+}
+.nonTag{
+  animation-name: fadeout; animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+
+}
+.noneCard{
+  animation-name: listout; animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+
+}
+@keyframes listout {
+  0% {
+    /* padding: 0.5rem; */
+    opacity: 1;
+  }
+
+  100% {
+    /* margin-right: 100%; */
+    opacity: 0;
+  }
 }
 
 </style>

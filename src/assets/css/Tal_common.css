@@ -287,6 +287,20 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   from {opacity:0;} to {opacity: 1;}
 }
 
+@keyframes fadeout {
+  from {opacity:1;} to {opacity:0;}
+}
+@-moz-keyframes fadeout { /* Firefox */
+  from {opacity:1;} to {opacity:0; }
+}
+@-webkit-keyframes fadeout { /* Safari and Chrome */
+  from {opacity:1;} to {opacity:0;}
+}
+@-o-keyframes fadeout { /* Opera */
+  from {opacity:1;} to {opacity: 0;}
+}
+
+
 /*채널상세/채널메인*/
 .blackTextBox p {color: #fff;}
 .blackTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgb(0 0 0 / 50%); }
