@@ -82,7 +82,7 @@ app.component('gMemoPop', gMemoPop)
 app.component('gMemoList', gMemoList)
 app.component('gPreLoader', gPreLoader)
 app.component('gLoadingS', gLoadingS)
-app.component('gToggle',gToggle)
+app.component('gToggle', gToggle)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

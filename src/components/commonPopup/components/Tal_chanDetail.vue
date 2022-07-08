@@ -8,12 +8,13 @@
     <div style="width: 100%; height: 100%; position: relative;">
       <!-- <popHeader v-if="alimSubPopYn === true" :bgblack="true" style="background: white;" :headerTitle="changeText(chanDetail.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
       <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
+      <welcomePopUp v-if="openWelcomePopYn" @goChanMain="changeFollowTrue" @applyMember="okMember" />
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
-        <div v-if="adminYn" style="width: 100%; position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
+        <div v-if="admYn" style="width: 100%; position: absolute; top: 70px;padding: 0 20px; margin-top: 0.8rem; ">
           <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
@@ -31,7 +32,7 @@
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
-        <div v-if="followYn === true && admYn === false" class="mtop-05">
+        <div v-if="followYn === true && this.followTypeText !== '소유자'" class="mtop-05">
           <gBtnSmall @click="saveMember" class="fl" :btnTitle="memberYn? '멤버취소': '멤버신청'"/>
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
@@ -89,7 +90,10 @@
 </template>
 
 <script>
+/* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
+import welcomePopUp from '../../../components/commonPopup/components/Tal_firstFollowWelcomePopUp.vue'
+
 export default {
   /* metaInfo: {
     // title 입력하기
@@ -111,6 +115,7 @@ export default {
   },
   data () {
     return {
+      openWelcomePopYn: false,
       smallPopYn: false,
       addSmallMsg: '',
       confirmMsg: '',
@@ -125,7 +130,8 @@ export default {
       teamTypeText: '',
       sendLoadingYn: false,
       errorBoxType: false,
-      memberYn: false
+      memberYn: false,
+      followParam: null
     }
   },
   props: {
@@ -134,6 +140,7 @@ export default {
     alimSubPopYn: {} // 구독자일 경우, 채널메인을통해 open되는 풀팝업,
   },
   components: {
+    welcomePopUp
     /* followerList */
   },
   computed: {
@@ -169,14 +176,12 @@ export default {
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
       this.$store.commit('updateStack', history)
     }
-
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'
-
       if (this.chanDetail.userTeamInfo.managerKey !== undefined && this.chanDetail.userTeamInfo.managerKey !== null && this.chanDetail.userTeamInfo.managerKey !== '') {
-        this.adminYn = true
-        if (this.chanDetail.userTeamInfo.ownerYn === true || this.chanDetail.userTeamInfo.ownerYn === 'true') {
+        this.admYn = true
+        if (this.chanDetail.userTeamInfo.ownerYn !== undefined && this.chanDetail.userTeamInfo.ownerYn !== null && this.chanDetail.userTeamInfo.ownerYn !== '') {
           this.followTypeText = '소유자'
         } else {
           this.followTypeText = '관리자'
@@ -204,7 +209,7 @@ export default {
     //   this.errorBoxType = true
     //   this.errorPopYn = true
     // },
-    async saveMember () {
+    async saveMember() {
       this.smallPopYn = true
       this.confirmMsg = '멤버 신청이 완료되었습니다.'
       this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
@@ -213,7 +218,6 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-
       if (this.memberYn) {
         param.memberYn = false
       }
@@ -222,9 +226,8 @@ export default {
         url: '/tp.saveFollower',
         param: param
       })
-      console.log(result)
       if (result.data.result === true) {
-        this.memberYn = param.memberYn
+        this.memberYn = true
         // param = {}
         this.$emit('changeMemberYn', this.memberYn)
       }
@@ -264,45 +267,66 @@ export default {
         this.teamTypeText = '기타'
       }
     },
+    changeFollowTrue () {
+      this.openWelcomePopYn = false
+      this.$emit('changeFollowYn', this.followYn)
+    },
     async changeFollowYn () {
       if (this.admYn === true) {
         this.errorMsg = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
         this.errorPopYn = true
-      }
+      } else {
       var fStatus = this.followYn
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.teamKey = this.chanDetail.teamKey
-      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      this.followParam = new Object()
+      this.followParam.teamKey = this.chanDetail.teamKey
+      this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       var result = false
       this.sendLoadingYn = true
       if (fStatus) {
-        result = await this.$changeFollower(param, 'del')
+        result = await this.$changeFollower(this.followParam, 'del')
         this.followYn = false
+
+        if (result.result || result) {
+          this.sendLoadingYn = false
+          this.$emit('pageReload')
+        }else {
+          this.sendLoadingYn = false
+          this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
+          this.errorPopYn = true
+        }
         // this.$emit('changeFollowYn', this.followYn)
       } else {
-        result = await this.$changeFollower(param, 'save')
-
-        this.followYn = true
+        this.sendLoadingYn = false
+        this.openWelcomePopYn = true
       }
+
+      }
+    },
+    async okMember() {
+      this.followParam.memberYn = true
+      var result = await this.$changeFollower(this.followParam, 'save')
+
       if (result.result || result) {
         this.sendLoadingYn = false
-        if (fStatus) {
-          this.$emit('pageReload')
-        } else {
-          if (result.message === 'OK') {
+
+          debugger
+        if (result.message === 'OK') {
+          this.openWelcomePopYn = false
+            this.followYn = true
             this.$emit('changeFollowYn', this.followYn)
           } else {
             this.errorMsg = result.message
             this.errorPopYn = true
           }
-        }
         //         this.getChanDetail()
       } else {
         this.sendLoadingYn = false
         this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
         this.errorPopYn = true
       }
+
+      this.followYn = true
     },
     changeRecvAlimYn () {
       // eslint-disable-next-line no-new-object

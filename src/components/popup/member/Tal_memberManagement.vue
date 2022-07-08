@@ -4,12 +4,11 @@
     <div class="w-100P h-100P" style="overflow:hidden auto">
       <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' />
     </div>
-
-
 </div>
 
 </template>
 <script>
+/* eslint-disable */
 import commonMemberList from './Tal_commonMemberList.vue'
 export default {
   props: {

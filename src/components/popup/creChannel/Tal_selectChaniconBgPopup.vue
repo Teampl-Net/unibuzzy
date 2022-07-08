@@ -61,7 +61,7 @@ export default {
     },
     setDefaultData () {
       if (this.opentype === 'iconPop') {
-        this.msgTitle = '채널를 대표할 아이콘을 선택해주세요.'
+        this.msgTitle = '채널을 대표할 아이콘을 선택해주세요.'
         this.msgError = '대표 아이콘을 선택해주세요!'
       } else if (this.opentype === 'bgPop') {
         this.msgTitle = '채널의 배경 사진을 선택해주세요.'

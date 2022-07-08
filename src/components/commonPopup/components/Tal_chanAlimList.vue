@@ -1,6 +1,7 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <!-- <div>{{pushKey}}</div> -->
+
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
       <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
@@ -198,7 +199,7 @@ export default {
         this.$emit('openPop', param)
       }
     },
-    async changeFollowYn (fYn) {
+    async changeFollowYn(fYn) {
       this.$emit('openZLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false
