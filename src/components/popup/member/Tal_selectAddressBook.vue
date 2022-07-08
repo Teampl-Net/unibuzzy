@@ -11,49 +11,48 @@
 import bookList from '../receiver/Tal_commonBookList.vue'
 import selectedListCompo from '../receiver/Tal_selectedReceiverList.vue'
 export default {
-  components:{bookList,selectedListCompo},
+  components: { bookList, selectedListCompo },
   data () {
-    return{
-      bookList:[],
-      selectedList: {},
+    return {
+      bookList: [],
+      selectedList: {}
     }
-
   },
-  props:{
-    propData:{}
+  props: {
+    propData: {}
   },
   created () {
-  this.getBookList()
-  console.log('this data select Address ');
-  console.log(this.propData);
+    this.getBookList()
+    console.log('this data select Address ')
+    console.log(this.propData)
   },
-  methods:{
+  methods: {
     async getBookList () {
-        var paramMap = new Map()
-        paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
-        paramMap.set('sysCabinetCode', 'USER')
-        paramMap.set('adminYn', true)
-        var result = await this.$commonAxiosFunction({
-            url: '/tp.getTeamMenuList',
-            param: Object.fromEntries(paramMap)
-        })
-        this.bookList = result.data
-        if(this.bookList)
-        for(var i = 0; i < this.bookList.length; i ++) {
-            var changeT = this.bookList[i].cabinetNameMtext
-            this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+      paramMap.set('sysCabinetCode', 'USER')
+      paramMap.set('adminYn', true)
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getTeamMenuList',
+        param: Object.fromEntries(paramMap)
+      })
+      this.bookList = result.data
+      if (this.bookList) {
+        for (var i = 0; i < this.bookList.length; i++) {
+          var changeT = this.bookList[i].cabinetNameMtext
+          this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
         }
-        this.editBookSelectedList()
-        // debugger
+      }
+      this.editBookSelectedList()
+      // debugger
     },
-    async addressPushData(list) {
+    async addressPushData (list) {
       // eslint-disable-next-line no-new-object
 
-      console.log('addressPush');
-      console.log(list);
+      console.log('addressPush')
+      console.log(list)
 
-
-
+      // eslint-disable-next-line no-new-object
       var mCabContents = new Object()
       var param = {}
       mCabContents.jobkindId = 'USER'
@@ -62,19 +61,17 @@ export default {
       mCabContents.targetKey = this.propData.teamKey
 
       console.log(param)
-      if(list.bookList){
+      if (list.bookList) {
         for (let i = 0; i < list.bookList.length; i++) {
           mCabContents.cabinetKey = list.bookList[i].cabinetKey
           param.mCabContents = mCabContents
           var result = await this.$saveMCabContents(param)
         }
       }
-      console.log(result);
-      if(result.data.result === true){
+      console.log(result)
+      if (result.data.result === true) {
         this.$emit('closeXPop', true)
       }
-
-
     },
     changeSelectBookList (data) {
       // eslint-disable-next-line vue/no-mutating-props
@@ -87,18 +84,18 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     editBookSelectedList () {
-      if(this.selectedList.bookList){
+      if (this.selectedList.bookList) {
         var changeList = this.selectedList.bookList
-        for(var m = 0; m < this.bookList.length; m ++) {
+        for (var m = 0; m < this.bookList.length; m++) {
           this.bookList[m].selectedYn = false
-          for(var c = 0; c < changeList.length; c++) {
+          for (var c = 0; c < changeList.length; c++) {
             if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
               this.bookList[m].selectedYn = true
             }
           }
         }
       }
-    },
+    }
   }
 }
 </script>
