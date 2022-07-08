@@ -143,6 +143,7 @@ export default {
     },
 
     delectClick (data, index) {
+      // alert(true)
       this.selectReceivers.splice(index, 1)
     },
     addTeamList (obj) {

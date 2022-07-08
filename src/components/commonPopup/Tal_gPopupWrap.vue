@@ -36,6 +36,8 @@
 
       <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
+      <memberManagement :propData="this.params" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
+      <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
     </div>
 </template>
 
@@ -69,6 +71,10 @@ import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../popup/receiver/Tal_selectManagerList.vue'
 import boardWrite from '../popup/board/Tal_boardWrite.vue'
 import selectMemberPop from '../popup/receiver/Tal_selectMemberPop.vue'
+
+import memberManagement from '../popup/member/Tal_memberManagement.vue'
+import selectAddressBookList from '../popup/member/Tal_selectAddressBook.vue'
+
 export default {
   async created() {
     await this.settingPop()
@@ -147,7 +153,9 @@ export default {
     boardWrite,
     pushPop,
     editManagerList,
-    selectMemberPop
+    selectMemberPop,
+    memberManagement,
+    selectAddressBookList
   },
   updated () {
   },
@@ -346,6 +354,8 @@ export default {
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
         this.headerTitle = '멤버선택'
+      }else if (this.targetType === 'memberManagement'){
+        this.headerTitle = '멤버 관리'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

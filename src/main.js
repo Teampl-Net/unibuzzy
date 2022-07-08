@@ -44,6 +44,9 @@ import 'vue-datepicker-next/index.css'
 
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
+
+import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
+// import gToggle from 'vue-toggle-btn';
 /* import Meta from 'vue-meta' */
 
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
@@ -79,6 +82,7 @@ app.component('gMemoPop', gMemoPop)
 app.component('gMemoList', gMemoList)
 app.component('gPreLoader', gPreLoader)
 app.component('gLoadingS', gLoadingS)
+app.component('gToggle',gToggle)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

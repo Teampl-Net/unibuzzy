@@ -8,7 +8,8 @@
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
       <img v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1"  src="../../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold fl" >{{menuHeaderTitle}}</p>
-      <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick" />
+      <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
+      <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
       <div v-else />
 
   </div>
@@ -48,6 +49,10 @@
         <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
+  <!-- <div class='w-100P fl mtop-05' style='padding:10px; border:1px solid #CCC;' @click="memberSetting" >
+    <p>맴버 관리</p>
+  </div> -->
+
 
 </div>
 <!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
@@ -142,6 +147,17 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    memberSetting(){
+      var param = {}
+      // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.targetType = 'memberManagement'
+      param.teamKey = this.propData.teamKey || this.propData.targetKey
+      param.currentTeamKey = this.chanAlimListTeamKey
+      param.teamNameMtext = this.teamName()
+      param.ownerYn = this.ownerYn
+      // param
+      this.$emit('openItem', param)
+    },
     refresh (){
       this.getTeamCabList()
       this.getTeamMenuList()

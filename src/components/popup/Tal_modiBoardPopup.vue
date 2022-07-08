@@ -282,12 +282,14 @@ export default {
       param.currentTeamKey = this.modiBoardDetailProps.teamKey
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
-
+      console.log('paramparamparamparamparamparam')
+      console.log(param)
       var resultList = await this.$getCabinetDetail(param)
-
       this.settingCabDetail(resultList)
     },
     async settingCabDetail (data) {
+      console.log('settingsettingsettingsetting')
+      console.log(data)
       console.log('setting')
       console.log(data.mCabinet)
 
