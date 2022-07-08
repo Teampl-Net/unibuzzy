@@ -358,8 +358,7 @@ export default {
       var _this = this
       clip.on('success', function (e) {
         // console.log(e)
-        _this.errorMsg = '복사되었습니다!'
-        _this.errorType = '복사되었습니다!'
+        _this.errorMsg = '채널링크가 복사되었습니다!'
         _this.errorPopYn = true
       })
     },

@@ -209,7 +209,7 @@ export default {
       var _this = this
       clip.on('success', function (e) {
         // console.log(e)
-        _this.confirmText = '복사되었습니다!'
+        _this.confirmText = '게시글 링크가 복사되었습니다!'
         _this.confirmPopShowYn = true
       })
     },
