@@ -10,7 +10,12 @@
       </div>
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
         <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
-        <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div>
+        <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
+          <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
+          <p class="fl commonBlack" style="line-height: 24px;" v-if="memberYn">(멤버)</p>
+          <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->
+        </div>
+
       </div>
       <!-- <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
         <p class="font13 ">#라이프스타일</p>

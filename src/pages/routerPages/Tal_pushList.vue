@@ -13,7 +13,7 @@
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
 
       <!-- <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); "> -->
-      <div class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
+      <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -305,6 +305,35 @@ export default {
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
 
       this.offsetInt = 0
+
+      document.getElementById('pushListWrap').className='fadeOutAnimation'
+      setTimeout(()=>{
+        document.getElementById('pushListWrap').className='fadeInAnimation'
+      },200)
+
+      // var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
+      // if(this.tabIdx < indexOf){
+      //   //오른쪽으로 이동
+      //   // alert('오른쪽')
+      //   document.getElementById('pushListWrap').className='newRight'
+      //   setTimeout(()=>{
+      //     document.getElementById('pushListWrap').className='newCenter'
+      //   },1000)
+      //   // document.getElementById('pushListWrap').style.animationName('slide-next')
+      //   // this.box.style.animationName('slide-next')
+
+      // }else if(this.tabIdx > indexOf){
+      //   // 왼쪽으로 이동
+      //   // alert('왼쪽')
+      //   document.getElementById('pushListWrap').className='newLeft'
+      //   setTimeout(()=>{
+      //     document.getElementById('pushListWrap').className='newCenter'
+      //   },1000)
+
+      //   // this.box.style.animationName('slide-pre')
+      //   // document.getElementById('pushListWrap').style.animationName('slide-pre')
+      // }
+      this.tabIdx = indexOf
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -519,10 +548,58 @@ export default {
   transition: .3s;
 }
 .slide-next-enter, .slide-next-leave, .slide-prev-leave-to{
-  transform: translate(100%, 0);
+
 }
 .slide-next-leave-to, .slide-prev-enter, .slide-prev-leave{
-  transform: translate(-100%, 0);
+
 }
+
+
+.fadeInAnimation{
+  animation-name: fadein; animation-duration: 0.2s;
+  animation-fill-mode: none;
+
+}
+.fadeOutAnimation{
+  animation-name: fadeout; animation-duration: 0.2s;
+  animation-fill-mode: none;
+}
+
+
+.newRight{
+  animation-name: slideRight; animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+.newLeft{
+  animation-name: slideRight; animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+.newCenter{
+  animation-name: none;
+}
+@keyframes slideRight {
+  0% {
+    /* padding: 0.5rem; */
+    transform: translate(0, 0);
+  }
+
+  100% {
+    /* margin-right: 100%; */
+    transform: translate(-100%, 0);
+  }
+}
+@keyframes slideLeft {
+  0% {
+    /* padding: 0.5rem; */
+    transform: translate(0, 0);
+  }
+
+  100% {
+    /* margin-right: 100%; */
+    transform: translate(100%, 0);
+  }
+}
+
+
 
 </style>

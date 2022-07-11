@@ -8,10 +8,15 @@
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
+            <div class="fr">
+              <p class="fl mright-05" v-if="ownerYn" @click="boardFuncClick('BOAR')">삭제</p>
+              <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p>
+            </div>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
-            <p class="font12 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+            <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
           </div>
+
         </div>
         <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
 
@@ -63,7 +68,7 @@
     <transition name="showMemoPop">
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     </transition>
-    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
+    <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, confirmType = false' @ok='confirmOk' />
   </div>
 </template>
 <script>
@@ -93,7 +98,10 @@ export default {
       userDoStickerList: [],
 
       mememoValue: null,
-      replyYn:false
+      replyYn:false,
+      confirmType:false,
+      boardFuncType:'',
+      ownerYn : false
 
     }
   },
@@ -109,6 +117,9 @@ export default {
     console.log(this.detailVal.replyYn);
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
+    }
+    if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+      this.ownerYn =  true
     }
     // this.alimDetail = this.detailVal
     await this.getContentsList()
@@ -129,6 +140,53 @@ export default {
     }
   },
   methods: {
+    boardFuncClick(type){
+      this.confirmPopShowYn = true
+      this.confirmType = true
+      this.boardFuncType = type
+      if(type === "BOAR"){
+        this.confirmText='게시글을 삭제 하시겠습니까?'
+      }else if(type === "REPORT"){
+        this.confirmText='해당 게시글을 신고 하시겠습니까?'
+      }
+    },
+    async confirmOk(){
+      this.confirmPopShowYn = false
+      this.confirmType = false
+      var param = {}
+      console.log(this.alimDetail);
+      param.contentsKey = this.alimDetail[0].contentsKey
+      param.jobkindId = "BOAR"
+      param.teamKey = this.alimDetail[0].creTeamKey
+      if(this.boardFuncType === "BOAR" ){
+
+        param.deleteYn = true
+
+        // var result = await this.$commonAxiosFunction({
+        //   url: '/tp.deleteContent',
+        //   param: param
+        // })
+        console.log("Delete Content Result");
+        // console.log(result);
+
+        this.$emit("closeXPop",true)
+
+      }else if(this.boardFuncType  === "REPORT"){
+
+        param.reportYn = true
+
+        // var result = await this.$commonAxiosFunction({
+        //   url: '/tp.reportContent',
+        //   param: param
+        // })
+        console.log("Report Content Result");
+        // console.log(result);
+
+        this.confirmPopShowYn = true
+        this.confirmText='신고되었습니다.'
+      }
+
+    },
     mememoCancel(){
       this.mememoValue = {}
     },

@@ -29,7 +29,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')"/>
 
-      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params' @reloadParent='reloadParent'/>
+      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
@@ -384,7 +384,7 @@ export default {
       this.$store.commit('updateStack', history)
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
-        if (this.targetType === 'pushList' || this.targetType === 'chanList') {
+        if (this.targetType === 'pushList' || this.targetType === 'chanList' ) {
           this.pushListAndDetailYn = false
           this.reloadYn = true
           setTimeout(() => {
@@ -429,8 +429,8 @@ export default {
     },
     async closeXPop (reloadYn) { // 내 팝업 닫기
       if (this.targetType === 'pushDetail') {
-        this.pushListAndDetailYn = false
-        this.$emit('closePop', true)
+      //   this.pushListAndDetailYn = false
+        reloadYn = true
       }
       this.$emit('closePop', reloadYn)
     },

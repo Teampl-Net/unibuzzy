@@ -10,7 +10,7 @@
 
       <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
         <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox">
-          <div v-if="alim.readYn === 0" style="background-color: #6768A7; border-radius: 100%; height: 12px; width: 12px; float: left; position: absolute; top: 0; left: 0; margin: -6px; box-shadow: 0 0 5px #6768A7;  "></div>
+          <div v-if="alim.readYn === 0" class="readYnArea" />
             <div @click="goDetail(alim)" class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">

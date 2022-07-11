@@ -65,6 +65,9 @@ export default {
   },
   created () {
     console.log(this.targetType);
+    if(this.targetType === ''){
+
+    }
 
   },
   watch: {

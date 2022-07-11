@@ -30,17 +30,20 @@
                 </div>
               </div> -->
 
-            <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-            <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
-              <template v-if="userDo.doType === 'ST'">
-                <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'LI'">
-                <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-              </template>
-            </div>
+              <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+              <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
+                <template v-if="userDo.doType === 'ST'">
+                  <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                  <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                </template>
+                <template v-else-if="userDo.doType === 'LI'">
+                  <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                  <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                </template>
+              </div>
+              <div class="fr">
+                  <p class="commonBlack font12" style="position: absolute; right:0; bottom:0;">댓글 {{board.rUserCount}}개</p>
+              </div>
 
             </div>
           </div>
@@ -295,7 +298,7 @@ export default {
 .pushDetailChanLogo{width: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
-.alimCheckContents{width: 100%;float: left; min-height: 30px;}
+.alimCheckContents{width: 100%;float: left; min-height: 30px;     position: relative}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}

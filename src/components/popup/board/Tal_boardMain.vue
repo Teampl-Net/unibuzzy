@@ -10,7 +10,7 @@
           <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
-          <div class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px; margin-right: calc(5% - 10px)">
+          <div class="fl boardMainAdminArea" v-if="this.propData.value.adminYn" style="">
             <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
             <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
             <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
@@ -465,6 +465,9 @@ export default {
 </script>
 
 <style scoped>
+.boardMainAdminArea{
+  width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px; margin-right: calc(5% - 10px)
+}
 .commonBoardListWrap{width: 100%; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%;}
 .reload--pinned {
     transform: translateY(0%);
