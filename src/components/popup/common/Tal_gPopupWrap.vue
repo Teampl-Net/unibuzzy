@@ -36,7 +36,7 @@
 
       <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
-      <memberManagement :propData="this.params" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
+      <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
     </div>
 </template>
@@ -213,7 +213,9 @@ export default {
       if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
       } else {
-        await this.$refs.selectManagerCompo.changeDirectMemList(param)
+        // await this.$refs.selectManagerCompo.changeDirectMemList(param)
+        this.$refs.mamberManagementCompo.addDirectly(param)
+
         this.closePop()
       }
     },

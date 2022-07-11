@@ -14,9 +14,14 @@
         <!-- <div v-if="currentTab == 'Admin'"> -->
         <div v-if="currentOwner">
           <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px; margin:0.6rem 0.8rem; " class="fl">
-          <div v-if="!member.ownerYn" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
+          <div v-if="!member.ownerYn && member.managerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
             <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0)" class="fl" />
             <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >관리자</label>
+          </div>
+          <div v-if="!member.ownerYn && !member.managerKey" style="margin: 0 0.6rem;" class="fl" @click="this.$emit('match')">
+            <!-- <p class="commonBlack font10">팔로우</p> -->
+            <match :color="'#6768a7'" size='5px' style="width:10px;" />
+            <p class="commonBlack font10">대기중</p>
           </div>
         </div>
 
@@ -28,9 +33,10 @@
 </template>
 
 <script>
-
+import match from './Tal_matching.vue'
 // eslint-disable-next-line
 export default {
+  components:{match},
   props: {
     managingList: {},
     currentOwner: {}
@@ -41,6 +47,7 @@ export default {
     }
   },
   methods: {
+
     openPop (targetType, member) {
       var param = {}
       param.targetType = targetType

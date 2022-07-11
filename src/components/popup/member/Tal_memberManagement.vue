@@ -2,11 +2,12 @@
 <div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
     <div class="w-100P h-100P" style="overflow:hidden auto">
-      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' />
+      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' />
     </div>
     <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
 
     <gConfirmPop v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false" style="z-index:9999999" />
+    <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
 
 </div>
 
@@ -25,7 +26,10 @@ export default {
       activeTabList: [{ display: '멤버', name: 'Mem' }, { display: '관리자', name: 'Admin' }],
       // tab:'Mem',
       tab: 'Mem',
-      managingList: []
+      managingList: [],
+      smallPopYn:false,
+      confirmMsg:'',
+      addSmallMsg:''
     }
   },
   created () {
@@ -43,6 +47,12 @@ export default {
     }
   },
   methods: {
+    matchInfo(){
+      this.smallPopYn = true
+      this.confirmMsg = '상대방이 구독하기를 기다리는 중 입니다. '
+      this.addSmallMsg = '구독 시 자동으로 관리자로 등록됩니다.'
+
+    },
     openPop (param) {
       this.$emit('openPop', param)
     },
