@@ -9,7 +9,7 @@
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
             <div class="fr">
-              <p class="fl mright-05" v-if="ownerYn" @click="boardFuncClick('BOAR')">삭제</p>
+              <p class="fl mright-05"  @click="boardFuncClick('BOAR')">삭제</p>
               <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p>
             </div>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
@@ -124,6 +124,7 @@ export default {
     // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
+    await this.getLikeCount()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -247,7 +248,18 @@ export default {
         await this.mememoChangeList()
 
       }
-
+    },
+    async getLikeCount () {
+      var param = new Object()
+      param.actYn = true
+      param.targetKind = 'C'
+      param.targetKey = this.alimDetail[0].contentsKey
+      param.doType = 'LI'
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getUserDoListPage',
+        param: param
+      })
+      debugger
     },
     mememoChangeList() {
       for (let i = 0; i < this.memoList.length; i++) {

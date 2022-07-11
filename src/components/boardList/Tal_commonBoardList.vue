@@ -42,7 +42,8 @@
                 </template>
               </div>
               <div class="fr">
-                  <p class="commonBlack font12" style="position: absolute; right:0; bottom:0;">댓글 {{board.rUserCount}}개</p>
+                  <p class="commonBlack font12" style="float: right;">좋아요 {{board.likeCount}}개</p>
+                  <p class="commonBlack font12" style="float: right; margin-right: 10px;'">댓글 {{board.memoCount}}개</p>
               </div>
 
             </div>

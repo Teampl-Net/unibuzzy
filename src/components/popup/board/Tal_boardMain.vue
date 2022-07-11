@@ -308,6 +308,8 @@ export default {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       var resultList = await this.$getContentsList(param)
+      // eslint-disable-next-line no-debugger
+      debugger
       return resultList
     },
     closeSearchPop () {

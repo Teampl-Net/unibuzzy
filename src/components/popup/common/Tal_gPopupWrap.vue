@@ -384,7 +384,7 @@ export default {
       this.$store.commit('updateStack', history)
       if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
         // eslint-disable-next-line no-unused-vars
-        if (this.targetType === 'pushList' || this.targetType === 'chanList' ) {
+        if (this.targetType === 'pushList' || this.targetType === 'chanList') {
           this.pushListAndDetailYn = false
           this.reloadYn = true
           setTimeout(() => {
