@@ -292,7 +292,7 @@
 
 <script>
 
-import leaveResultPop from '../components/Tal_leaveTheAlimResultPop.vue'
+import leaveResultPop from '../info/Tal_leaveTheAlimResultPop.vue'
 export default {
   data () {
     return {

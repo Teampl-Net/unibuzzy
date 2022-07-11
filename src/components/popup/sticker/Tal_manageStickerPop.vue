@@ -9,7 +9,7 @@
               <div :style="'background-color:' + value.picBgPath +'; width:' + this.iconSize + 'px'" style="<!-- box-shadow: inset rgb(0 0 0 / 30%) 0 0 0 9999px; --> ;display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in selectedStickerList " :key="index" >
                   <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
                   <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
-                  <img  @click="removeStickerList(index)" src="../../assets/images/push/minusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
+                  <img  @click="removeStickerList(index)" src="../../../assets/images/push/minusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
               </div>
           </div>
       </div>
@@ -24,7 +24,7 @@
               <div :class="value.showYn === false ? 'dispN' : '' " :style="'background-color:' + value.picBgPath +'; width:' + this.iconSize + 'px'" style="display: flex;  margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" v-for="(value, index) in setMyStickerList " :key="index" >
                   <img :src="value.picPath" style="width: 20px; margin-right: 5px; margin-top: 2px; float: left; " alt="">
                   <span class="font13" style="margin-top: 3.5px; margin-right: 0.5rem;">{{this.$makeMtextMap(value.nameMtext, 'KO')}} </span>
-                  <img  @click="addStickerList(index)" src="../../assets/images/push/plusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
+                  <img  @click="addStickerList(index)" src="../../../assets/images/push/plusIcon.svg" style="position: absolute; right: -7px; top: -7px; width: 20px;" alt="">
               </div>
           </div>
       </div>
@@ -35,7 +35,7 @@
   </div> <!--@closeXPop="closeXPop" -->
   <div v-if="this.createStickerPopShowYn" class="createStickerPopWrap ">
       <div class="createStickerPop">
-          <p class="font15 w-100p textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
+          <p class="font15 w-100p textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
           <div style="width: 100%; height: 25px; display: flex; justify-content: center; align-items: center;">
               <gBtnSmall @click="this.colorPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF;" btnTitle="색상"/>
               <gBtnSmall @click="this.stickerPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF; margin-left: 10px" btnTitle="아이콘"/>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import iconPicker from '../unit/Tal_stickerPicker.vue'
+import iconPicker from '../../unit/Tal_stickerPicker.vue'
 export default {
   components: {
     iconPicker

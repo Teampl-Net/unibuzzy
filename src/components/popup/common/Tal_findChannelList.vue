@@ -4,7 +4,7 @@
     <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
-          <img @click="findChannel" class="searchIcon" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img @click="findChannel" class="searchIcon" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
           <input class="searchInput" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
       </div>
 

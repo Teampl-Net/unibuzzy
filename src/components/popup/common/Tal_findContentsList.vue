@@ -6,7 +6,7 @@
     <div class="findPopBody  mtop-05">
         <div class="findPopMainSearchArea">
             <input class="searchInput" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
-            <img class="searchIcon mtop-03" @click="requestSearchPushList" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="searchIcon mtop-03" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
         <!-- <input class="searchInput" placeholder="제목 또는 내용을 입력해주세요" type="text" name=""  id=""> -->
         <input v-if="contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain'" class="searchInput" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">

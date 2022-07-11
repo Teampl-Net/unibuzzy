@@ -1,7 +1,7 @@
 <template>
   <div class="pagePaddingWrap" >
       <div class="menuHeader" >
-          <img v-on:click="this.$emit('hideMenu')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../assets/images/main/icon_back_white.png"/>
+          <img v-on:click="this.$emit('hideMenu')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
           <p >메뉴</p>
       </div>
       <div style="margin-top: 50px;">

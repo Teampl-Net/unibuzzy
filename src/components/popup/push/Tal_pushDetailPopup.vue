@@ -1,9 +1,9 @@
 <template>
-  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999999999999999999;" @click="goNo"></div>
+  <div class="pushBackground" @click="goNo"></div>
   <div class="pushPopUpWrap" >
     <div class="pushPopContent pushMbox">
       <div class="pushDetailTopArea">
-        <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../assets/images/channel/tempChanImg.png">
+        <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
         <div class="pushDetailHeaderTextArea">
           <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
@@ -163,4 +163,6 @@ export default {
   -webkit-animation: fadein 0.3s; /* Safari and Chrome */
   -o-animation: fadein 0.3s; /* Opera */
 }
+
+.pushBackground{width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999999999999999999;}
 </style>

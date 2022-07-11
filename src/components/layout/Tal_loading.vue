@@ -1,7 +1,7 @@
 <template>
     <div class="loadingWrap">
         <div class="loadingcontainer">
-            <img class="boombox" src="../assets/images/common/message_logo.png" alt="">
+            <img class="boombox" src="../../assets/images/common/message_logo.png" alt="">
             <div class="shadow"></div>
             <p class="waitingText">Wait a moment...</p>
         </div>

@@ -42,38 +42,38 @@
 </template>
 
 <script>
-import pushPop from '../../components/popup/Tal_pushDetailPopup.vue'
+import pushPop from '../push/Tal_pushDetailPopup.vue'
 /* eslint-disable */
 // eslint-disable-next-line
-import pushDetail from './components/Tal_pushDetail.vue'
-import changeInfo from './components/Tal_changeInfo.vue'
-import pushList from '../../pages/routerPages/Tal_pushList.vue'
-import pushBox from './components/Tal_pushBox.vue'
-import chanList from '../../pages/routerPages/Tal_chanList.vue'
-import chanAlimList from './components/Tal_chanAlimList.vue'
-import askTal from './components/Tal_askTheAlim.vue'
-import talInfo from './components/Tal_theAlimInfo.vue'
-import question from './components/Tal_question.vue'
-import leaveTal from './components/Tal_leaveTheAlim.vue'
+import pushDetail from '../../pageComponents/push/Tal_pushDetail.vue'
+import changeInfo from '../info/Tal_changeInfo.vue'
+import pushList from '../../../pages/routerPages/Tal_pushList.vue'
+import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
+import chanList from '../../../pages/routerPages/Tal_chanList.vue'
+import chanAlimList from '../../pageComponents/channel/Tal_chanAlimList.vue'
+import askTal from '../info/Tal_askTheAlim.vue'
+import talInfo from '../info/Tal_theAlimInfo.vue'
+import question from '../info/Tal_question.vue'
+import leaveTal from '../info/Tal_leaveTheAlim.vue'
 
 // import selectChanType from './Tal_creChannelStep00.vue'
-import createChannel from '../popup/creChannel/Tal_creChannel.vue'
-import writePush from '../../pages/routerPages/admPages/TalAdm_writePush.vue'
+import createChannel from '../creChannel/Tal_creChannel.vue'
+import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
 
-import chanMenu from '../popup/chanMenu/Tal_channelMenu.vue'
+import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
-import boardMain from '../popup/board/Tal_boardMain.vue'
-import boardDetail from '../popup/board/Tal_boardDetail.vue'
-import editBookList from '../popup/receiver/Tal_editBookList.vue'
-import bookMemberDetail from '../popup/receiver/Tal_bookMemberDetail.vue'
-import editManagerList from '../popup/receiver/Tal_selectManagerList.vue'
-import boardWrite from '../popup/board/Tal_boardWrite.vue'
-import selectMemberPop from '../popup/receiver/Tal_selectMemberPop.vue'
+import boardMain from '../board/Tal_boardMain.vue'
+import boardDetail from '../board/Tal_boardDetail.vue'
+import editBookList from '../receiver/Tal_editBookList.vue'
+import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
+import editManagerList from '../receiver/Tal_selectManagerList.vue'
+import boardWrite from '../board/Tal_boardWrite.vue'
+import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 
-import memberManagement from '../popup/member/Tal_memberManagement.vue'
-import selectAddressBookList from '../popup/member/Tal_selectAddressBook.vue'
+import memberManagement from '../member/Tal_memberManagement.vue'
+import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 
 export default {
   async created() {
