@@ -100,6 +100,7 @@ overflow: auto;
 /* height: 70%; */
 max-height: 600px;
 box-shadow: 2px 3px 6px 3px #ccc;
+transform: translateY(-50%);
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }
 .creChanIntroTextWrap p{font-size: 18px; }

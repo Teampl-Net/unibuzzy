@@ -45,6 +45,9 @@ import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
 
 import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
+
+import gSvg from './components/Tal_svgCollection.vue'
+import Iconwink from './components/Tal_winkAlimLogo.vue'
 // import gToggle from 'vue-toggle-btn';
 /* import Meta from 'vue-meta' */
 
@@ -75,6 +78,8 @@ app.component('gMemoList', gMemoList)
 app.component('gPreLoader', gPreLoader)
 app.component('gLoadingS', gLoadingS)
 app.component('gToggle', gToggle)
+app.component('gSvg', gSvg)
+app.component('iconWink', Iconwink)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

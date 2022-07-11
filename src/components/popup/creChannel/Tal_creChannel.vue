@@ -222,6 +222,7 @@ export default {
         }else{
           params.targetKey = result.teamKey
           params.teamKey = result.teamKey
+          params.newChan = true
         }
 
         if(delYn === true && this.chanDetail.modiYn === true) {

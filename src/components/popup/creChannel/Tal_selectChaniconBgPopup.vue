@@ -102,6 +102,7 @@ export default {
   /* height: 70%; */
   max-height:700px ;
   box-shadow: 2px 3px 6px 3px #ccc;
+  transform: translateY(-50%);
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
 .creChanIntroTextWrap p{font-size: 18px; }

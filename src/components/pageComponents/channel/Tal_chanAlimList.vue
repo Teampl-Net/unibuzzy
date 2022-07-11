@@ -42,6 +42,9 @@
 
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
     <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
+    <followInfo  v-if="this.myContentsCount === 0" @closePop="chanFollowInfoYn = false" :chanInfo='chanItem' :adminYn='adminYn' />
+
+
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -57,9 +60,11 @@
 <script>
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
+import followInfo from '../channel/Tal_chanFollowInfo.vue'
 export default {
   data () {
     return {
+      chanFollowInfoYn:true,
       reloadShowYn: false,
       alimListToDetail: false,
       box: null,
@@ -77,7 +82,8 @@ export default {
       adminYn: false,
       detailShowYn: true,
       memberYn: false,
-      myContentsCount: 0
+      myContentsCount: null
+
     }
   },
   watch: {
@@ -90,7 +96,8 @@ export default {
   },
   components: {
     pushList,
-    chanDetailComp
+    chanDetailComp,
+    followInfo
   },
   async created () {
     this.$emit('openZLoading')
@@ -99,6 +106,7 @@ export default {
     await this.getChanDetail(false)
     console.log('this.chanItem')
     console.log(this.chanItem)
+
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -292,7 +300,8 @@ export default {
 }
 .chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
 .channelItemBoxHeight{height: calc(100% - 50px)!important;}
-.channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;}
+/* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
+.channelItemBox{background-color: #fff;  height: 700px; position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
@@ -309,7 +318,7 @@ export default {
 .btnPlus{
   width:4rem; height:4rem;
   color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
-
+  z-index: 9;
   border-radius:50%; position:absolute; bottom: 5%; right: 10%;
   box-shadow: 2px 2px 7px 3px #ccc;
   }

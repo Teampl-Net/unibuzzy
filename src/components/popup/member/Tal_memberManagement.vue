@@ -62,19 +62,33 @@ export default {
     },
     async getManagingList (typeName, actionType) {
       if (actionType === 'tab') this.managingList = []
+      var result= {}
+      if (typeName === 'Mem') {
+        var paramMap = new Map()
+        paramMap.set('memberYn', true)
+        paramMap.set('teamKey', this.propData.currentTeamKey)
+        result = await this.$commonAxiosFunction({
+          url: '/tp.getFollowerList',
+          param: Object.fromEntries(paramMap)
+        })
+        this.managingList = await result.data.content
 
-      var paramMap = new Map()
-      paramMap.set('teamKey', this.propData.currentTeamKey)
-      if (typeName === 'Mem') { paramMap.set('memberYn', true) }
-      if (typeName === 'Admin') { paramMap.set('managerYn', true) }
+      }else if (typeName === 'Admin') {
+        var param = {}
+        param.teamKey = this.propData.currentTeamKey
+
+        result = await this.$commonAxiosFunction({
+          url : '/tp.getManagerList',
+          param: param
+        })
+        console.log();
+        this.managingList =await result.data.managerList
+      }
       // paramMap.set('followerType', 'M')
-      var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
-        param: Object.fromEntries(paramMap)
-      })
-
       console.log(result)
-      this.managingList = await result.data.content
+
+
+
     },
 
     async setManager (param) {
