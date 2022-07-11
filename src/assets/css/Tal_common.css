@@ -301,6 +301,25 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 
 
+.zoomInOutPop {
+  transform: scaleY(0.01) scaleX(0);
+  animation: zoomIn 0.3s cubic-bezier(0.81, 0.05, 0, 1.78) forwards;
+}
+
+.zoomInOutPop.out {
+  transform: scale(1);
+  animation: zoomOut 0.3s cubic-bezier(0.81, 0.05, 0, 1.78) forwards;
+}
+
+@keyframes zoomIn{
+  0% {transform: scaleY(0) scaleX(0);}
+  100% {transform: scaleY(1) scaleX(1);}
+}
+@keyframes zoomOut{
+  0% {transform: scaleY(1) scaleX(1);}
+  100% {transform: scaleY(0) scaleX(0);}
+}
+
 /*채널상세/채널메인*/
 .blackTextBox p {color: #fff;}
 .blackTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgb(0 0 0 / 50%); }

@@ -1,15 +1,9 @@
 <template>
   <div class="pushDetailWrap">
-    <!-- <manageStickerPop :targetKey="this.alimDetail.contentsKey" :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/> -->
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
       <!-- <div class="whiteArea"> -->
         <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
           <div class="pushDetailTopArea" style="position: relative;">
-
-            <!-- <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem; position: relative;"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: absolute; bottom:-10px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
-            </div> -->
-
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
             <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
               <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
@@ -18,9 +12,6 @@
 
             <div class="pushDetailHeaderTextArea">
               <p class=" font18 fontBold commonColor fl" style="margin-bottom: 0.1rem; word-break: break-all; width: 100%;">{{resizeText(alim.title)}}</p>
-
-                  <!-- <p class="font12 fl lightGray" >{{this.changeText(alim.nameMtext)}}</p> -->
-                  <!-- <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{' (' + this.changeText(alim.creUserName) + ')'}}</p> -->
                   <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{this.changeText(alim.creUserName)}}</p>
 
                   <div style="height: 18px; float: right;">
@@ -31,21 +22,12 @@
                     <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
                     <p v-else class="fr font11 mleft-1">전체에게</p>
                   </div>
-                  <!-- <p class="font12 fr mright-05 lightGray">{{this.$changeDateFormat(alim.creDate,dateClickYn)}}</p> -->
-
             </div>
           </div>
           <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
 
           <div id="alimCheckArea">
             <div class="alimCheckContents">
-              <!-- <img class="fl" src="../../../assets/images/push/attatchStickerIcon.svg" alt=""  @click="this.manageStickerPopShowYn = true">
-              <div class="pushDetailStickerWrap">
-                <div  v-longclick="() => changeStickerEditMode()" class="stickerDiv" :style="'background-color:' + value.picBgPath" v-for="(value, index) in this.userDoStickerList " :key="index" >
-                  <span class="font15">{{value.stickerName}}</span>
-                  <img :src="value.picPath" alt="">
-                </div>
-              </div> -->
               <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
               <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
               <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
@@ -68,14 +50,8 @@
               <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
             </div>
           </div>
-          <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
-          <!-- <div> -->
-            <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
-            <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
-          <!-- </div> -->
           <div class="pushDetailPaperEffect"></div>
         </div>
-      <!-- </div> -->
     </div>
     <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
   </div>

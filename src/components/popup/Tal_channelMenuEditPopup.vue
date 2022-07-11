@@ -2,13 +2,7 @@
 <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
     <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 편집" :chanName='teamNameText' />
-
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
-      <!-- <div style="width: 100%; min-height: 30px; margin-bottom: 10px;"> -->
-        <!-- <p class="font16 fl textLeft" style="line-height: 40px;">게시판 목록</p> -->
-        <!-- <gBtnSmall @click="addBoardRow" class="fr" btnTitle="추가" /> -->
-      <!-- </div> -->
-
       <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
           <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
@@ -27,33 +21,23 @@
       </draggable>
       <div class="btnPlus" btnTitle="추가" @click="addBoardRow"><p style="font-size:40px;">+</p></div>
     </div>
-
-    <!-- <div style="position:absolute; bottom:2rem; left:50%; transform:translateX(-50%)"> -->
-    <!-- <div style="position:absolute; bottom:1.5rem; right:2rem; ">
-      <gBtnSmall class="btnBig" v-on:click="this.$emit('closePop')" btnTitle="닫기" style="margin-left:10px"/>
-      <gBtnSmall class="btnBig" v-on:click="editYn = false" btnTitle="적용" style="margin-right:10px"/>
-    </div> -->
-
 </div>
   <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
 
 </template>
 
 <script>
-/* eslint-disable */
-// import { VueDirectiveLongPress } from 'vue-directive-long-press'
 import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
-import addChanMenu from './Tal_addChannelMenu.vue'
 import modiBoardPop from './Tal_modiBoardPopup.vue'
 export default {
-  props:{
+  props: {
     // editList: {},
     addChanList: {},
     currentTeamKey: {},
     editYn: {},
     chanInfo: {},
-    teamNameText:{},
+    teamNameText: {}
   },
   computed: {
     historyStack () {
@@ -73,50 +57,32 @@ export default {
     historyStack (value, old) {
     }
   },
-  created() {
+  created () {
     var history = this.$store.getters.hStack
     this.popId = 'manageBoardPop' + this.currentTeamKey
     history.push(this.popId)
     this.$store.commit('updateStack', history)
 
     this.getTeamMenuList()
-    /* if (this.editList) {
-      this.boardList = this.editList
-      for (var i = 0; i < this.boardList.length; i ++) {
-        this.boardList[i].num = i
-        this.lastBoardKey = i
-      }
-    } */
   },
   data () {
     return {
       popId: null,
       boardList: [],
       modiBoardDetailProps: null,
-      editTeamName:'',
-      editBtnYn: false,
-      clickIndex: null,
-      lastBoardKey: null,
       dragging: false,
       modiBoardPopShowYn: false,
-      enabled:false
+      enabled: false
     }
   },
   components: {
-    addChanMenu,
     modiBoardPop,
-    draggable: VueDraggableNext,
+    draggable: VueDraggableNext
     // longPress: VueDirectiveLongPress
   },
-  // emits: ['openPop', 'goPage'],
   methods: {
-    openPop(param){
-      console.log('param');
-      console.log(param);
-      this.$emit('openPop',param)
-    },
-    closeNrefresh(){
-      this.modiBoardPopShowYn =false
+    closeNrefresh () {
+      this.modiBoardPopShowYn = false
       this.getTeamMenuList()
     },
     async getTeamMenuList () {
@@ -129,22 +95,20 @@ export default {
       this.boardList = result
 
       // console.log(this.boardList)
-      for (var i = 0; i < this.boardList.length; i ++) {
+      for (var i = 0; i < this.boardList.length; i++) {
         var changeText = this.boardList[i].cabinetNameMtext
         this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
       }
-
     },
     goPage (link) {
       this.$emit('goPage', link)
     },
-    openPop (link) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetType = link
-      this.$emit('openPop', params)
+    openPop (param) {
+      console.log('param')
+      console.log(param)
+      this.$emit('openPop', param)
     },
-    goNo (){
+    goNo () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -152,50 +116,36 @@ export default {
       this.$store.commit('updateStack', history)
       this.$emit('closeXPop')
     },
-    async deleteCabinet(data,index){
-        var param = new Object()
-        param.currentTeamKey = this.currentTeamKey
-        param.cabinetKey = data.cabinetKey
-        param.menuType = data.menuType
-        var result = await this.$deleteCabinet(param)
-        if(result === true || result ==='true') {
-          this.boardList.splice(index, 1)
-        }
-
+    async deleteCabinet (data, index) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.currentTeamKey = this.currentTeamKey
+      param.cabinetKey = data.cabinetKey
+      param.menuType = data.menuType
+      var result = await this.$deleteCabinet(param)
+      if (result === true || result === 'true') {
+        this.boardList.splice(index, 1)
+      }
     },
-    /* addChanClick(){
-      this.openAddChanMenuYn = true
-    }, */
-    /* addChanMenuFinish(obj){
-      this.myChanMenuList.push(obj)
-
-      this.openAddChanMenuYn = false
-      //   this.addChanMenuList = data
-    }, */
-    /* chanMenuClick (chanMenuTitle) {
-      this.$emit('openItem',chanMenuTitle)
-    }, */
-   /*  receiverClick () {
-      this.$emit('receiverManagerClick');
-    }, */
-
     openModiBoardPop (data) {
-    console.log(data);
-    console.log(this.addChanList);
-    console.log(this.chanInfo);
-    console.log(this.teamNameText);
-    this.modiBoardDetailProps = data
-    if(this.chanInfo.value){
-      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
-    }else{
-      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
-    }
+      console.log(data)
+      console.log(this.addChanList)
+      console.log(this.chanInfo)
+      console.log(this.teamNameText)
+      this.modiBoardDetailProps = data
+      if (this.chanInfo.value) {
+        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
+      } else {
+        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
+      }
       this.modiBoardPopShowYn = true
     },
 
     async addBoardRow () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       param.creMenuYn = true
+      // eslint-disable-next-line no-new-object
       var cabinet = new Object()
       var defaultAddBoardName = this.$checkSameName(this.boardList, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
@@ -207,7 +157,7 @@ export default {
       cabinet.fileYn = true
       cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
       param.cabinet = cabinet
-      console.log(param);
+      console.log(param)
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
@@ -217,38 +167,36 @@ export default {
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
-      }, 800);
+      }, 800)
     },
     async changePosTeamMenu () {
+      // eslint-disable-next-line no-new-object
       var paramSet = new Object()
+      // eslint-disable-next-line no-array-constructor
       var teamMenuList = new Array()
+      // eslint-disable-next-line no-new-object
       var menu = new Object()
       var cardList = document.getElementsByClassName('receiverTeamListCard')
       var index = null
       // debugger
       console.log(this.boardList)
-      for (var s = cardList.length - 1 ; s >=0; s--) {
+      for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
-        for (var i = 0; i < this.boardList.length; i ++) {
-          if(index === i) {
+        for (var i = 0; i < this.boardList.length; i++) {
+          if (index === i) {
             menu = {}
-            if(this.boardList[i].menuType)
-              menu.MenuType = this.boardList[i].menuType
-            if(this.boardList[i].teamKey)
-              menu.teamKey = this.boardList[i].teamKey
-            if(this.boardList[i].parentMenuKey)
-              menu.parentMenuKey = this.boardList[i].parentMenuKey
-            if(this.boardList[i].cabinetKey)
-              menu.cabinetKey = this.boardList[i].cabinetKey
-            if(this.boardList[i].cabinetNameMtext)
-              menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext
+            if (this.boardList[i].menuType) { menu.MenuType = this.boardList[i].menuType }
+            if (this.boardList[i].teamKey) { menu.teamKey = this.boardList[i].teamKey }
+            if (this.boardList[i].parentMenuKey) { menu.parentMenuKey = this.boardList[i].parentMenuKey }
+            if (this.boardList[i].cabinetKey) { menu.cabinetKey = this.boardList[i].cabinetKey }
+            if (this.boardList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext }
             teamMenuList.push(menu)
             break
           }
         }
       }
       paramSet.teamMenuList = teamMenuList
-      var result = await this.$commonAxiosFunction(
+      await this.$commonAxiosFunction(
         {
           url: '/tp.changePosTeamMenu',
           param: paramSet
@@ -258,7 +206,7 @@ export default {
       this.getTeamMenuList()
       // debugger
     }
-      // this.boardList.push()
+    // this.boardList.push()
   }
 }
 

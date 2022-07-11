@@ -10,7 +10,7 @@
           </div>
           <img  src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt="">
       </div>
-      <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" @click="memoInfo(memo)">
+      <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
         <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
 
         <img src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
@@ -44,11 +44,6 @@
 </template>
 
 <script>
-// import a from '../../../assets/images/common/'
-/* eslint-disable */
-
-import { looseIndexOf } from '@vue/shared'
-
 // eslint-disable-next-line
 export default {
   props: {
@@ -60,86 +55,52 @@ export default {
   },
   data () {
     return {
-      userKey:'',
-      editIndex:'',
+      userKey: '',
+      editIndex: ''
 
     }
   },
   methods: {
-    memoInfo(memo){
-      console.log(memo)
-      // this.pushMememoText()
-    },
-    memoDeleteClick(data, index){
+    memoDeleteClick (data, index) {
       var param = {}
       param = data
       param.clickIndex = index
       this.$emit('deleteMemo', param)
     },
-    editMemoClick(data, index){
+    editMemoClick (data, index) {
       this.editIndex = index
       this.inputText = data.bodyFullStr
     },
-    cancelEdit(){
+    cancelEdit () {
       this.editIndex = ''
     },
-    async editEnd(data){
+    async editEnd (data) {
+      // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.bodyFullStr = this.inputText
       memo.bodyMinStr = this.inputText
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
-      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
-      // memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
-        param: {memo: memo}
+        param: { memo: memo }
       })
-      // console.log(result)
-      if(result.data.result === true || result.data.result === 'true') {
+      if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
         this.$emit('editTrue')
       }
     },
-    // hoverAnima(key){
-    //   var target = document.getElementById(key)
-    //   target.style.position = 'absolute'
-    //   target.style.top = '50%'
-    //   target.style.zIndex = 99999999999
-    //   target.style.backgroundColor = 'white'
-    // },
     memoMemoClick (memo) {
       this.$emit('mememo', memo)
       // this.hoverAnima(memo.memoKey)
     },
     scrollMove (key) {
-      var location = document.getElementById(key).offsetTop;
-      this.$emit('scrollMove',location)
+      var location = document.getElementById(key).offsetTop
+      this.$emit('scrollMove', location)
       this.anima(key)
     },
-    anima(key){
-      // var a = document.getElementById(key)
-      // a.style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
+    anima (key) {
       document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.55)'
-      // }, 100)
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-      // }, 200)
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.45)'
-      // }, 300)
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.4)'
-      // }, 400)
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.3)'
-      // }, 500)
-      // setTimeout(() => {
-      //   document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.1)'
-      // }, 600)
       setTimeout(() => {
         document.getElementById(key).style.backgroundColor = ''
       }, 700)
@@ -155,5 +116,4 @@ export default {
   background-color: white;
   transition : background-color 0.5s ease-in;
 }
-
 </style>

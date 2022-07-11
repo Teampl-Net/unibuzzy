@@ -25,7 +25,7 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
-        <commonList ref='pushListChangeTabLoadingComp' v-if="refreshYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
         <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
       <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
@@ -75,8 +75,6 @@ export default {
     }
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
-      /* var history = localStorage.getItem('popHistoryStack').split('$#$')
-      this.pageHistoryName = 'page' + (history.length - 1) */
     }
     this.$emit('changePageHeader', '알림')
     var resultList = await this.getPushContentsList()
@@ -131,10 +129,6 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    // commonListData () {
-    //   this.refreshYn = false
-    //   this.refreshYn = true
-    // },
     routerReloadKey () {
       this.refreshList()
     },
@@ -143,17 +137,6 @@ export default {
     }
   },
   computed: {
-    // calcHeaderHeight () {
-    //   // var pageHeader = document.querySelector('#pageHeader')
-    //   // var pageHeader = this.$refs.pushListHeader
-    //   if (this.headerTop) {
-    //   } else {
-    //     this.headerTop = 150
-    //   }
-    //   return {
-    //     '--headerHeight' : this.headerTop  + 'px'
-    //   }
-    // },
     historyStack () {
       return this.$store.state.historyStack
     },
@@ -298,18 +281,7 @@ export default {
       else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
-      // var a = this.endListYn
-      // debugger
     },
-    /* addSubHistory (pageName) {
-      // eslint-disable-next-line no-array-constructor
-      var sHistory = new Array()
-      if (this.subHistoryList) {
-        sHistory = this.subHistoryList
-      }
-      sHistory.push(pageName)
-      this.subHistoryList = sHistory
-    }, */
     closeSearchPop () {
       this.findPopShowYn = false
       /* this.subHistoryList.splice(-1, 1) */
@@ -333,17 +305,6 @@ export default {
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
 
       this.offsetInt = 0
-      // var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
-      // if(this.tabIdx < indexOf){
-      //   // document.getElementById('pushListWrap').style.animationName('slide-next')
-      //   // this.box.style.animationName('slide-next')
-      //   //오른쪽으로 이동
-      // }else if(this.tabIdx > indexOf){
-      //   // 왼쪽으로 이동
-      //   // this.box.style.animationName('slide-pre')
-      //   // document.getElementById('pushListWrap').style.animationName('slide-pre')
-      // }
-      // this.tabIdx = indexOf
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -493,7 +454,6 @@ export default {
     return {
       pushListReloadShowYn: false,
       imgUrl: '',
-      tempCount:0,
       firstContOffsetY: null,
       headerTop: 0,
       scrollDirection: null,
@@ -503,27 +463,17 @@ export default {
       offsetInt: 0,
       endListYn: false,
       scrollPosition: 0,
-      loadVal: true,
-      pageHistoryName: '',
       findPopShowYn: false,
       subHistoryList: [],
-      stickerList: [
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#0dcaf05e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#6c7d185e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#ad6cdb5e' },
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#dbb76c5e' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '0', stickerColor: '#cfdb6c5e' }
-      ],
+      stickerList: [],
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: [],
-      refreshYn: true,
       transition: 'slide-next',
-      tabIdx:0
+      tabIdx: 0
     }
   }
 }

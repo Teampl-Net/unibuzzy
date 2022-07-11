@@ -43,10 +43,6 @@ export default {
   z-index: 99999;
   margin-left: 10%;
   margin-right: 10%;
-  animation: fadein 0.3s;
-  -moz-animation: fadein 0.3s; /* Firefox */
-  -webkit-animation: fadein 0.3s; /* Safari and Chrome */
-  -o-animation: fadein 0.3s; /* Opera */
 }
 .smallConfirmText {font-size: 18px; color: black; width: 100%; word-break: keep-all; float: left; text-align: center; }
 .addSmallText {font-size: 16px; color: #505050; width: 100%; word-break: keep-all; float: left; text-align: center;}

@@ -43,7 +43,6 @@
 
 <script>
 import pushPop from '../push/Tal_pushDetailPopup.vue'
-/* eslint-disable */
 // eslint-disable-next-line
 import pushDetail from '../../pageComponents/push/Tal_pushDetail.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
@@ -60,7 +59,6 @@ import leaveTal from '../info/Tal_leaveTheAlim.vue'
 import createChannel from '../creChannel/Tal_creChannel.vue'
 import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
 
-
 import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
@@ -76,14 +74,14 @@ import memberManagement from '../member/Tal_memberManagement.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 
 export default {
-  async created() {
+  async created () {
     await this.settingPop()
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
   },
-  unmounted() {
+  unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
   },
@@ -118,12 +116,12 @@ export default {
       // itemTitle: '',
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
       receiverList: {},
-      bgblackYn : false,
+      bgblackYn: false,
       propParams: {},
       chanName: '',
-      memberDetailOpen:false,
+      memberDetailOpen: false,
 
-      refreshToken:0,
+      refreshToken: 0
 
     }
   },
@@ -177,17 +175,14 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-
       var hStack = this.$store.getters.hStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
-        this.closeXPop() //혹시 모르니 일단 삭제
-      }
-      else {
+        this.closeXPop() // 혹시 모르니 일단 삭제
+      } else {
         if (hStack[hStack.length - 1] === this.popId) {
           this.closeXPop()
         }
       }
-
     },
     deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
@@ -215,25 +210,25 @@ export default {
   },
   methods: {
     async addDirectAddMemList (param) {
-      if(this.targetType === 'bookMemberDetail') {
+      if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
       } else {
-          await this.$refs.selectManagerCompo.changeDirectMemList(param)
-          this.closePop()
+        await this.$refs.selectManagerCompo.changeDirectMemList(param)
+        this.closePop()
       }
     },
     openDetailYn (bool) {
       this.memberDetailOpen = bool
     },
-    bgcolor(data){
-      console.log(data);
+    bgcolor (data) {
+      console.log(data)
       this.bgblackYn = data
     },
     openChannelItem (data) {
       // this.itemTitle = item
-      if(data.targetType === 'boardMain'){
+      if (data.targetType === 'boardMain') {
         this.openChanMenuYn = false
-      }else{
+      } else {
         this.openChanMenuYn = true
       }
       this.openPop(data)
@@ -244,12 +239,11 @@ export default {
       this.openPop(data)
     },
     async reloadParent () {
-      console.log(this.params);
-      if(this.params.openActivity === "chanAlimList"){
-      }else{
+      console.log(this.params)
+      if (this.params.openActivity === 'chanAlimList') {
+      } else {
         this.$emit('reloadPop')
       }
-
     },
     reloadPop (parentReloadYn) {
       if (parentReloadYn === true) {
@@ -294,7 +288,6 @@ export default {
         this.pushListAndDetailYn = true
         this.targetType = 'pushList'
         this.headerTitle = '알림'
-
       } else if (this.targetType === 'pushList') {
         this.headerTitle = '알림'
         if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {
@@ -336,12 +329,9 @@ export default {
         this.headerTitle = '주소록 관리'
         this.chanName = this.propParams.teamNameMtext
       } else if (this.targetType === 'bookMemberDetail') {
-        if(target.currentCabinetKey){
-          if(target.newMemYn)
-            this.headerTitle ='구성원 등록'
-          else
-            this.headerTitle = '구성원 상세' // this.$changeText(this.params.value.userDispMtext)
-        }else{
+        if (target.currentCabinetKey) {
+          if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
+        } else {
           this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
         }
       } else if (this.targetType === 'writeBoard') {
@@ -354,7 +344,7 @@ export default {
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
         this.headerTitle = '멤버선택'
-      }else if (this.targetType === 'memberManagement'){
+      } else if (this.targetType === 'memberManagement') {
         this.headerTitle = '멤버 관리'
       }
 
@@ -370,7 +360,6 @@ export default {
       history.push(this.popId)
       this.$store.commit('updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
-
     },
 
     openPop (params) {
@@ -381,12 +370,11 @@ export default {
       await this.closePop(true)
       await this.closeXPop(true)
     },
-    changePop(params){
+    changePop (params) {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
-
-      if(this.targetType === 'boardMain' || this.targetType === 'chanDetail') reloadYn = true
+      if (this.targetType === 'boardMain' || this.targetType === 'chanDetail') reloadYn = true
 
       this.popShowYn = false
       var history = this.$store.getters.hStack
@@ -403,14 +391,13 @@ export default {
             this.reloadYn = false
           }, 100)
           // this.reloadYn = false
-        } else if(this.targetType === 'editBookList') {
-
+        } else if (this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
-        } else if(this.targetType === 'editManagerList') {
+        } else if (this.targetType === 'editManagerList') {
           /* if (this.params.selectMemberType = 'manager')
             await this.$refs.selectManagerCompo.refresh()
           else */
-            await this.$refs.editManagerListComp.refresh()
+          await this.$refs.editManagerListComp.refresh()
         } else if (this.targetType === 'boardMain') {
           this.$refs.boardMainPop.getContentsList()
           await this.$refs.boardMainPop.refresh()
@@ -419,17 +406,13 @@ export default {
           await this.$refs.chanMenuCompo.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
           this.pushListAndDetailYn = false
-        }else if(this.targetType === 'pushListAndDetail'){
+        } else if (this.targetType === 'pushListAndDetail') {
 
         }
-
       }
-
     },
     successCreChan (params) {
-      if(params.deleteYn === true && params.modiYn === true){
-
-
+      if (params.deleteYn === true && params.modiYn === true) {
         this.$emit('parentClose')
         // this.closeXPop()
         return
@@ -438,14 +421,13 @@ export default {
       if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)
-      }else {
+      } else {
         this.$emit('reloadPop')
         this.successChanParam = params
         this.settingPop(true)
       }
     },
     async closeXPop (reloadYn) { // 내 팝업 닫기
-
       if (this.targetType === 'pushDetail') {
         this.pushListAndDetailYn = false
         this.$emit('closePop', true)
@@ -476,7 +458,7 @@ export default {
       this.openPop(params)
       this.notiDetailShowYn = false
     },
-    closePushPop ( ){
+    closePushPop () {
       this.notiDetailShowYn = false
     },
     recvNoti (e) {
@@ -498,7 +480,7 @@ export default {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.targetType === 'chanDetail') {
-                  if(this.chanAlimListTeamKey === Number(this.notiDetail.noti.data.creTeamKey)) {
+                  if (this.chanAlimListTeamKey === Number(this.notiDetail.noti.data.creTeamKey)) {
                     this.$refs.boardMainPop.refresh()
                   } else {
                     this.notiDetailShowYn = true
@@ -510,7 +492,7 @@ export default {
                 }
               }
             } else {
-              var currentPage = this.$store.getters.hCPage
+              currentPage = this.$store.getters.hCPage
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.targetType === 'pushList') {

@@ -18,14 +18,13 @@
 </template>
 
 <script>
-/* eslint-disable */
 // eslint-disable-next-line
 export default {
   props: {
-    mememo:{}
+    mememo: {}
   },
-  created (){
-    if(this.mememo) this.setMememo()
+  created () {
+    if (this.mememo) this.setMememo()
   },
   data () {
     return {
@@ -34,10 +33,10 @@ export default {
     }
   },
   methods: {
-    setMememo(){
+    setMememo () {
       this.meMemoData = this.mememo
     },
-    cancel(){
+    cancel () {
       this.meMemoData = null
       this.$emit('mememoCancel')
     },

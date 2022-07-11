@@ -61,7 +61,7 @@
         <p class="leaveText">더알림을 탈퇴하려면 <span v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
 
-      <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+      <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
     </div>
 </template>
 

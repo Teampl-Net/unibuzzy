@@ -50,7 +50,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
@@ -66,30 +65,29 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      memberText :'멤버 신청하기 >',
-      errorBoxYn : false,
-      errorBoxText : '',
-      errorBoxType :'two',
+      memberText: '멤버 신청하기 >',
+      errorBoxYn: false,
+      errorBoxText: '',
+      errorBoxType: 'two',
       adminYn: false,
       detailShowYn: true,
       memberYn: false,
-      myContentsCount:0
+      myContentsCount: 0
     }
   },
-  watch:{
-    wrapKey(){
+  watch: {
+    wrapKey () {
       this.refreshList()
     }
   },
   props: {
-    chanDetail: {},
-    refreshToken:0
+    chanDetail: {}
   },
   components: {
     pushList,
     chanDetailComp
   },
-  async created() {
+  async created () {
     this.$emit('openZLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
@@ -107,16 +105,15 @@ export default {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
-
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
-    numberOfElements(num){
+    numberOfElements (num) {
       this.myContentsCount = num
     },
-    changeMemberYn(data){
+    changeMemberYn (data) {
       this.memberYn = data
     },
     closeDetailPop () {
@@ -131,7 +128,6 @@ export default {
       // await this.$nextTick();
       await this.getChanDetail()
       await this.$refs.ChanAlimListPushListCompo.refreshList()
-
     },
     openWritePushPop () {
       // eslint-disable-next-line no-new-object
@@ -154,14 +150,12 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
       var resultList = await this.$getTeamList(paramMap)
-      console.log('resultListresultListresultListresultListresultListresultListresultListresultListresultList');
-      console.log(resultList);
       this.chanItem = resultList.data.content[0]
       this.chanItem.totalElements = resultList.data.totalElements
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
-          if(this.chanItem.userTeamInfo.memberYn === 1) {
+          if (this.chanItem.userTeamInfo.memberYn === 1) {
             this.memberYn = true
           }
           this.followYn = true
@@ -187,19 +181,13 @@ export default {
       this.$emit('closeZLoading')
     },
     openPushDetailPop (param) {
-      console.log('this.chanDetail');
-      console.log(this.chanDetail);
-      console.log('paramparamparamparamparamparamparamparamparamparamparamparam');
-      console.log(param);
-
-      // 같으면
-      if (param.targetType === 'pushDetail' || param.targetType === "createChannel"){
+      if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
         //  && param.targetKey !== this.chanDetail.teamKey
         param.openActivity = 'chanAlimList'
         this.$emit('openPop', param)
       }
     },
-    async changeFollowYn(fYn) {
+    async changeFollowYn (fYn) {
       this.$emit('openZLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false

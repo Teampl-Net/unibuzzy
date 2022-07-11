@@ -1,30 +1,13 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0">
+<div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='editPop' />
-    <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
-
-    <!-- <div class="longHeight" style="height:calc(100% - 300px); overflow: auto; margin-top:50px;" > -->
-    <!-- <div style="margin:3rem 2rem; height:100%; overflow: auto;" > -->
-
-      <!-- <div style="display: none">
-          <gSearchBox style="" @changeSearchList="changeSearchList" @openFindPop="test" :resultSearchKeyList="this.resultSearchKeyList" />
-          <transition name="showModal">
-              <findContentsList @addSubHistory="addSubHistory" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-          </transition>
-      </div> -->
-
-      <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
-
-        <!-- <div v-if=""> -->
-        <!-- </div> -->
-        <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+      <div class="selectBookListContents">
+        <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
-            <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+            <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="float: left; wdith:100vw; height:310px; position: absolute; bottom:0px; left:0px" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
-
-    <!-- </div> -->
+      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
 </div>
 
 </template>
@@ -84,12 +67,10 @@ export default {
       selectedYn: false,
       setSelectedList: [],
       detailOpenYn: false,
-
       titleText: '팀플',
       receiverTitle: '주소록 선택',
       selectReceivers: [],
       teamLength: 100,
-      addPopOpen: '',
       selectedTeamList: [],
       selectedMemberList: [],
       selectedList: {},
@@ -235,7 +216,6 @@ export default {
       var removePage = history[hStack.length - 1]
 
       if (this.subPopId === hStack[hStack.length - 1]) {
-        // alert(removePage)
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
@@ -243,7 +223,6 @@ export default {
         this.teamLength = 100
         this.memberEditYn = false
       } else if (this.popId === hStack[hStack.length - 1]) {
-        // alert(removePage)
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
@@ -305,37 +284,9 @@ export default {
 </script>
 
 <style >
-.btnPlus{
-    width:4rem; height:4rem; display: flex;
-    padding-top: 5px;
-    justify-content: center; align-items: center;
-    color:#6768a7; border:3px solid #6768a7; background-color:white ;
-
-    border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
-    box-shadow: 2px 2px 7px 3px #ccc;
-
-}
-
-.menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
-
-.longHeight{
-height:100% !important;
-}
-.selectedReceiverBox{
-    height: calc(100% - 100px);
-    width: 100%;
-    margin-top: 5px;
-    overflow-y: scroll;
-    padding: 10px;
-    background-color:white;
-    text-align: left;
-}
-[contenteditable=true] {
-  outline: none;
-}
-input:focus{
-  outline: none;
-}
+.selectBookListWrap{height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
+.selectBookListContents{width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;}
+.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;}
+.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;}
+.selectedListStyle{float: left; width:100vw; height:310px; position: absolute; bottom:0px; left:0px}
 </style>

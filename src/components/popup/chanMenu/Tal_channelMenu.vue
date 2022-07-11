@@ -111,7 +111,6 @@ export default {
 
     this.setDrop()
     this.groupListlength()
-    // alert(this.cabinetList)
 
     // this. myBoardList =
   },
@@ -402,7 +401,6 @@ export default {
 
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
@@ -494,8 +492,8 @@ export default {
   animation: dropup 300ms ease;
   animation-fill-mode: both;
 }
-@-webkit-keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
-@-webkit-keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }
+@keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
+@keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }
 .dropdownBtn{
   width:16px;
   /* transform: rotate( 270deg ); */

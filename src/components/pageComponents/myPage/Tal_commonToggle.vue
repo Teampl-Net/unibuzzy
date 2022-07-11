@@ -24,7 +24,6 @@ export default ({
     this.toggle = this.isChecked
   },
   mounted () {
-    // alert(this.isChecked)
     if (this.isChecked) {
       document.getElementById(this.toggleId).checked = true
       // var a =

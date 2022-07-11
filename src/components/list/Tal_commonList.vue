@@ -26,11 +26,6 @@
             <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
             <div id="alimCheckArea">
               <div class="alimCheckContents">
-                <!-- <div class="pushDetailStickerWrap">
-                  <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in tempAlimList.stickerList " :key="index" >
-                    <img :src="value.stickerIcon" alt="">
-                  </div>
-                </div> -->
                 <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
                 <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                   <template v-if="userDo.doType === 'LI'">
@@ -51,8 +46,6 @@
       <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
-      <!-- <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
-  <!-- </div> -->
 </template>
 <script>
 /* eslint-disable */
@@ -80,24 +73,7 @@ export default {
 
   },
   mounted () {
-
   },
-  // updated () {
-  //   this.chanWrap.scrollTop = this.currentScroll
-  // },
-  // mounted () {
-  //   this.chanWrap = document.getElementById('chanWrap')
-  //   this.chanWrap.addEventListener('scroll', this.saveScroll)
-  //   if (this.mainYnProp === true) { this.mainYn = true }
-  //   var imgList = document.querySelectorAll('.bodyFullStr img')
-  //   for (var i = 0; i < imgList.length; i++) {
-  //     imgList[i].setAttribute('style', 'display: none')
-  //   }
-  // },
-  // unmounted () {
-  //   this.chanWrap.removeEventListener('scroll', this.saveScroll)
-  // },
-  /* emits: ['goDetail'], */
   methods: {
     loadingRefShow(){
       console.log('show');
@@ -142,21 +118,6 @@ export default {
       // console.log(param);
       this.$emit('goDetail', param)
     },
-    // creatorBox (value) {
-    //   // eslint-disable-next-line no-new-object
-    //   var param = new Object()
-    //   param.targetType = 'pushDetail'
-    //   param.contentsKey = value.contentsKey
-    //   param.value = value
-
-    //   var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-    //   // var userKey = 1
-    //   if (userKey === value.creUserKey) {
-    //     this.creatorYn = true
-    //   } else {
-    //     this.creatorYn = false
-    //   }
-    // },
     goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -248,11 +209,7 @@ export default {
     commonListData: {},
     tempAlimList: {
       readYn: false,
-      stickerList: [
-        { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-        { stickerName: '온라인 쇼핑몰', stickerKey: '1', stickerColor: '#0dcaf05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-        { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
-      ]
+      stickerList: [ ]
     }
   },
   computed: {

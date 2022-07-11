@@ -95,7 +95,7 @@ export default {
 </script>
 <style scoped>
 
-.confirmPopWrap{width: 90%; position: fixed; z-index: 9999; top: 50%; border-radius: 10px; background: #FFFFFF; transform: translate(0,-50%);
+.confirmPopWrap{width: 90%; position: fixed; z-index: 9999; top: 50%; border-radius: 10px; background: #FFFFFF;
   padding: 1rem 2rem;
   overflow: auto;
   left: 5%;

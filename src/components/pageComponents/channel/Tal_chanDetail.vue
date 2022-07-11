@@ -66,7 +66,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 /* import followerList from './Tal_chanFollowerList.vue' */
 import welcomePopUp from '../../popup/info/Tal_firstFollowWelcomePopUp.vue'
 
@@ -153,16 +152,21 @@ export default {
     this.settingTeamType(this.chanDetail.teamType)
   },
   methods: {
-    async saveMember() {
+    async saveMember () {
       this.smallPopYn = true
-      this.confirmMsg = '멤버 신청이 완료되었습니다.'
-      this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
+      if (this.memberYn || this.memberYn === 1) {
+        this.confirmMsg = '멤버 취소가 완료되었습니다.'
+        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanDetail.nameMtext) + '의 멤버가 될 수 있습니다.)'
+      } else {
+        this.confirmMsg = '멤버 신청이 완료되었습니다.'
+        this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
+      }
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
-      if (this.memberYn) {
+      if (this.memberYn || this.memberYn === 1) {
         param.memberYn = false
       }
       console.log(param)
@@ -171,7 +175,11 @@ export default {
         param: param
       })
       if (result.data.result === true) {
-        this.memberYn = true
+        if (this.memberYn || this.memberYn === 1) {
+          this.memberYn = false
+        } else {
+          this.memberYn = true
+        }
         // param = {}
         this.$emit('changeMemberYn', this.memberYn)
       }
@@ -183,21 +191,10 @@ export default {
       param.targetKey = this.chanDetail.teamKey
       param.modiYn = true
       param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanDetail.creUserKey)
-      // alert(JSON.stringify(param))
       this.$emit('openPop', param)
     },
     settingTeamType (teamType) {
-      if (teamType === 'C') { this.teamTypeText = '기업' } 
-      else if (teamType === 'G') { this.teamTypeText = '정부' }
-      else if (teamType === 'S') { this.teamTypeText = '학교' } 
-      else if (teamType === 'H') { this.teamTypeText = '종교' }
-      else if (teamType === 'D') { this.teamTypeText = '동호회' }
-      else if (teamType === 'Q') { this.teamTypeText = '병원' }
-      else if (teamType === 'V') { this.teamTypeText = '약국'}
-      else if (teamType === 'P') { this.teamTypeText = '식당' } 
-      else if (teamType === 'A') { this.teamTypeText = '매장' }
-      else if (teamType === 'E') { this.teamTypeText = '기타' }
-      else { this.teamTypeText = '기타' }
+      if (teamType === 'C') { this.teamTypeText = '기업' } else if (teamType === 'G') { this.teamTypeText = '정부' } else if (teamType === 'S') { this.teamTypeText = '학교' } else if (teamType === 'H') { this.teamTypeText = '종교' } else if (teamType === 'D') { this.teamTypeText = '동호회' } else if (teamType === 'Q') { this.teamTypeText = '병원' } else if (teamType === 'V') { this.teamTypeText = '약국' } else if (teamType === 'P') { this.teamTypeText = '식당' } else if (teamType === 'A') { this.teamTypeText = '매장' } else if (teamType === 'E') { this.teamTypeText = '기타' } else { this.teamTypeText = '기타' }
     },
     changeFollowTrue () {
       this.openWelcomePopYn = false
@@ -208,33 +205,32 @@ export default {
         this.errorMsg = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
         this.errorPopYn = true
       } else {
-      var fStatus = this.followYn
-      // eslint-disable-next-line no-new-object
-      this.followParam = new Object()
-      this.followParam.teamKey = this.chanDetail.teamKey
-      this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      var result = false
-      this.sendLoadingYn = true
-      if (fStatus) {
-        result = await this.$changeFollower(this.followParam, 'del')
-        this.followYn = false
+        var fStatus = this.followYn
+        // eslint-disable-next-line no-new-object
+        this.followParam = new Object()
+        this.followParam.teamKey = this.chanDetail.teamKey
+        this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        var result = false
+        this.sendLoadingYn = true
+        if (fStatus) {
+          result = await this.$changeFollower(this.followParam, 'del')
+          this.followYn = false
 
-        if (result.result || result) {
+          if (result.result || result) {
+            this.sendLoadingYn = false
+            this.$emit('pageReload')
+          } else {
+            this.sendLoadingYn = false
+            this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
+            this.errorPopYn = true
+          }
+        } else {
           this.sendLoadingYn = false
-          this.$emit('pageReload')
-        }else {
-          this.sendLoadingYn = false
-          this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
-          this.errorPopYn = true
+          this.openWelcomePopYn = true
         }
-      } else {
-        this.sendLoadingYn = false
-        this.openWelcomePopYn = true
-      }
-
       }
     },
-    async okMember() {
+    async okMember () {
       this.followParam.memberYn = true
       var result = await this.$changeFollower(this.followParam, 'save')
 
@@ -242,12 +238,12 @@ export default {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
           this.openWelcomePopYn = false
-            this.followYn = true
-            this.$emit('changeFollowYn', this.followYn)
-          } else {
-            this.errorMsg = result.message
-            this.errorPopYn = true
-          }
+          this.followYn = true
+          this.$emit('changeFollowYn', this.followYn)
+        } else {
+          this.errorMsg = result.message
+          this.errorPopYn = true
+        }
       } else {
         this.sendLoadingYn = false
         this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
@@ -330,7 +326,6 @@ export default {
       await this.$axios.post('/firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
         .then(function (response) {
           result = response.data.shortLink
-          // alert(result)
         })
       return result
     } */

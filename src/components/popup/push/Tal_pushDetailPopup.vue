@@ -1,6 +1,6 @@
 <template>
   <div class="pushBackground" @click="goNo"></div>
-  <div class="pushPopUpWrap" >
+  <div class="pushPopUpWrap zoomInOutPop" >
     <div class="pushPopContent pushMbox">
       <div class="pushDetailTopArea">
         <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
@@ -68,17 +68,14 @@ export default {
     goNo () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
       this.$emit('closePushPop')
-      // this.timeOut()
     },
     openPushDetailPop () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
@@ -157,12 +154,6 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-.pushPopUpWrap {
-  animation: fadein 0.3s;
-  -moz-animation: fadein 0.3s; /* Firefox */
-  -webkit-animation: fadein 0.3s; /* Safari and Chrome */
-  -o-animation: fadein 0.3s; /* Opera */
-}
 
 .pushBackground{width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999999999999999999;}
 </style>

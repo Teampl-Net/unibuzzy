@@ -104,7 +104,6 @@ export default {
             if (this.popId === hStack[hStack.length - 1]) {
             var history = this.$store.getters.hStack
             var removePage = history[history.length - 1]
-            // alert(removePage)
             history = history.filter((element, index) => index < history.length - 1)
             this.$store.commit('setRemovePage', removePage)
             this.$store.commit('updateStack', history)
@@ -160,7 +159,6 @@ export default {
             this.$emit('addSelectList', this.setSelectedList)
         },
         delSelectList (key, type) {
-            // alert('type : ' + type + ' key : ' + key)
             if (type === 'U') {
                 var indexOf = this.memberList.findIndex(i => i.userKey === key);
                 if (indexOf !== -1) {

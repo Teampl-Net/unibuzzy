@@ -37,7 +37,6 @@ export default {
             this.selectBookDetail = this.propData.value.clickData
             var history = this.$store.getters.hStack
             this.subPopId = 'commonBookMemberList' + history.length
-            // alert(this.subPopId)
             history.push(this.subPopId)
             this.$store.commit('updateStack', history)
             await this.getBookMemberList()
@@ -145,14 +144,12 @@ export default {
                 this.detailOpenYn = false
             }
             else if (this.subPopId === hStack[hStack.length - 1]) {
-                // alert(removePage)
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
 
             } else if (this.popId === hStack[hStack.length - 1]) {
-                // alert(removePage)
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
@@ -164,7 +161,6 @@ export default {
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
             this.selectPopId = 'selectMemeberPopup' + history.length
-            // alert(this.subPopId)
             history.push(this.selectPopId)
             this.$store.commit('updateStack', history)
 
@@ -207,7 +203,6 @@ export default {
             var param = new Object()
             param.targetType = 'selectMemberPop'
             param.pSelectedList = this.memberList
-            // alert(JSON.stringify(this.propData))
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'
             param.currentTeamKey = this.propData.currentTeamKey

@@ -54,7 +54,6 @@
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
 <script>
-/* eslint-disable */
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '../../boardList/Tal_commonBoardList.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
@@ -77,17 +76,16 @@ export default {
     }
     await this.getCabinetDetail()
     // console.log(this.mCabContentsList)
-    // eslint-disable-next-line no-
     //
     // cothis.mCabContentsList
   },
-  mounted() {
+  mounted () {
     this.boardListWrap = document.getElementById('boardListWrap')
     this.boardListWrap.addEventListener('scroll', this.saveScroll)
     this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
     this.listBox.addEventListener('scroll', this.handleScroll)
   },
-  updated() {
+  updated () {
     this.boardListWrap.scrollTop = this.currentScroll
     this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
 
@@ -104,8 +102,6 @@ export default {
       listBox: null,
       firstContOffsetY: null,
       scrolledYn: false,
-      offsetInt: 0,
-      endListYn: false,
       reloadShowYn: false,
       errorBoxYn: false,
       errorBoxText: '',
@@ -124,18 +120,6 @@ export default {
       mCabContentsList: [],
       offsetInt: 0,
       endListYn: false,
-      // mCabContentsList: [
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' },
-      //   { title: 'test', bodyFullStr: 'testtesttesttest' }
-      // ],
       loadVal: true,
       pageHistoryName: '',
       findPopShowYn: false,
@@ -156,7 +140,7 @@ export default {
       this.resultSearchKeyList = []
       this.changeTab('N')
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
-      ScrollWrap.scrollTo({top: 0});
+      ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
       setTimeout(() => {
         this.$emit('closeLoading')
@@ -165,7 +149,7 @@ export default {
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
-    handleScroll() {
+    handleScroll () {
       var element = document.getElementsByClassName('commonBoardListContentBox')[0]
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
@@ -212,11 +196,8 @@ export default {
       this.mCabContentsList = resultList.content
       this.endList = false
       this.$refs.boardListCompo.loadingRefHide()
-      // var result = await this.getContentsList()
-      // this.mCabContentsList = result.content
-      // this.totalElements = result.totalElements
     },
-    updateScroll() {
+    updateScroll () {
       var blockBox = document.getElementById('summaryHeader')
       if (this.box.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
@@ -260,7 +241,6 @@ export default {
       param.currentTeamKey = this.propData.currentTeamKey
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      debugger
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-unused-vars
@@ -279,10 +259,8 @@ export default {
       /* if (this.shareAuth.V === false) {
         this.$emit('closeXPop')
       } */
-      // eslint-disable-next-line no-
       // this.actorList = this.mCabinetContentsDetail.mShareItemList
       this.findPopShowYn = false
-      // eslint-disable-next-line no-
       this.$emit('closeLoading')
     },
     async getContentsList (pageSize, offsetInput) {
@@ -329,10 +307,7 @@ export default {
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-      // console.log("@@@@@@@@@@@@@@@@@@@");
-      // console.log(param);
       var resultList = await this.$getContentsList(param)
-      // eslint-disable-next-line no-
       return resultList
     },
     closeSearchPop () {
@@ -383,9 +358,9 @@ export default {
       // this.$refs.boardListCompo.loadingRefHide()
       this.scrollMove()
     },
-    scrollMove(){
+    scrollMove () {
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
-      ScrollWrap.scrollTo({top:0, behavior:'smooth'});
+      ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async requestSearchList (param) {
       console.log(param)
@@ -439,7 +414,7 @@ export default {
       }
       return resultArray
     },
-    async changeSearchList(type) {
+    async changeSearchList (type) {
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creDate') {
@@ -459,7 +434,7 @@ export default {
       // debugger
       this.findPopShowYn = false
     },
-    async loadMore(pageSize) {
+    async loadMore (pageSize) {
       if (this.endListYn === false || this.totalElements > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getContentsList()

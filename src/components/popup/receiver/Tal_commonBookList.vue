@@ -1,20 +1,11 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propData.teamNameMtext || propData.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-        <!-- <div v-if="editYn" @click="addNewBook"  class="fl receiverTeamMemberCard" style="width:100%; height:60px; line-height: 40px;margin-bottom: 10px;">
-            <p class="font15 commonBlack">+</p>
-        </div> -->
-        <!-- <gPreLoader v-if="cabinetList.length = 0" style="position: fixed; left: calc(50% - 4rem); top: calc(50% - 150px);" /> -->
-        <!-- <loadingCompo v-show="loadingYn" /> -->
         <div v-show="loadingYn" style="width: 100%; height: 100%; background-color: white;"></div>
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
-            <!-- <draggable  ref="editableArea" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled="!editYn" delay="200" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" > -->
             <draggable  ref="editableArea" class="ghostClass" :v-model="listData" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
                     <template  v-for="(data, index) in listData" :key='index'>
-                        <!-- <div :class="{foo:index === 0}" v-if="data.selectedYn!== true" :id="'book'+ index" class="receiverTeamListCard fl" :index="index" > -->
                         <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
-
                             <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
                                 <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                                     <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
@@ -25,35 +16,15 @@
                                     <p class="fl" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
                                 </div>
                             </div>
-
                             <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >
-                            <!-- <div v-for="(data, index) in listData" :key='index' class="receiverTeamListCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-                                <!-- <div class="fl movePointerArea" style="width:30px; height: 100%; position: absolute; top: 0; left: 0; display: flex; algin-items: center; background-color: rgb(242, 242, 242);" v-if="editYn">
-                                    <img src="../../../assets/images/formEditor/scroll.svg" style="width: 100%;"  alt="">
-                                </div> -->
-                                <!-- <div :style="{background:data.receiverTeamColor}"  :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                                <!-- <div :class="{editmLeft:editYn === true}" class="fl receiverTeamColor"></div> -->
-                                <!-- <div style="width:25px; height:100%; line-height:40px" class="fl "> -->
-                                    <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
-                                <!-- </div> -->
-                                <!-- <p v-else class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext + ' (' + data.team.length + ')'}}</p> -->
+                                <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
                                 <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
-
-                                <!-- <img class="fl" style="width:40px; height: 100%;  display: flex; justify-content: center; algin-items: center;" v-if="editYn && editIndex === index" src="../../../assets/images/common/check.svg" @click="updateCabinet(data,index)" > -->
                             </div>
-
-                            <!-- <div v-if="editYn" @click="deleteCabinet(data,index)" class="fl " style="background-color: rgb(242, 242, 242);  width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px;" alt="">
-                            </div> -->
                             <div v-if="!selectPopYn" class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
                                 <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >
                                 <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="deleteCabinet(data,index)" >
                             </div>
-
                             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1" style="position: relative; height: 100%;">
-                                <!-- <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
-                                    <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="">
-                                </div> -->
                                 <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
                                 <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
                             </div>
@@ -66,9 +37,6 @@
             <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
         </div>
     </div>
-    <!-- <div class="btnPlus" btnTitle="추가" @click="this.addNewBook" v-if="editYn">
-        <p style="font-size:40px;">+</p>
-    </div> -->
 </template>
 
 <script>
@@ -90,19 +58,16 @@ export default {
             loadingYn: true,
             propObject: {},
             cabinetList: [],
-            editTeamName:'',
             dragging: false,
             editYn : false,
             pageTopBtnTitle: '편집',
             selectedBookList: [],
             selectedMemberList: [],
             editIndex:null,
-            cabinetInputText:'',
-            selectIndex:[]
+            cabinetInputText:''
         }
     },
     async created () {
-
         this.propObject = this.propData
         if(this.selectPopYn){
             this.selectedBookList = []
@@ -114,7 +79,6 @@ export default {
         await this.getTeamCabList()
         this.changeSelectedList()
         this.loadingYn = false
-        this.settingParentList()
     },
     updated () {
         this.changeSelectedList()
@@ -149,41 +113,6 @@ export default {
         }
     },
     methods:{
-        settingParentList(){
-            console.log('@###!@#!#!@#!#!@#!@#');
-            console.log(this.listData)
-
-            // if(this.parentSelectList){
-            //     var indexOf = null
-            //     for (let i = 0; i < this.parentSelectList.bookList.length; i++) {
-            //         // this.parentSelectList.bookList.data.cabinetKey
-            //         // this.selectIndex.push(i)
-            //         // data.shareSeq = data.cabinetKey
-            //         // console.log(this.parentSelectList.bookList[i].cabinetKey);
-            //         // for (let index = 0; index < this.listData.length; index++) {
-            //             // this.listData[index].
-            //         indexOf = this.listData.findIndex(data => data.cabinetKey === this.parentSelectList.bookList[i].cabinetKey); // 변경된 인덱스 ** map에서 index찾기 **
-            //         console.log(this.parentSelectList.bookList[i].cabinetKey)
-
-            //         console.log(indexOf)
-
-            //         // }
-            //     }
-            //             // this.listData[indexOf].shareSeq = this.listData[indexOf].cabinetKey
-            //         // this.selectIndex.push(i)
-
-            // }
-            // if (this.parentSelectList.memberList) {
-            //     for (let i = 0; i < this.parentSelectList.memberList.length; i++) {
-            //         this.selectIndex.push(i)
-            //     }
-
-            // }
-
-        // this.cabinetList[i].shareSeq = this.cabinetList[i].cabinetKey
-        //                         this.selectedBookList.push(this.cabinetList[i])
-        //                         this.selectIndex.push(i)
-        },
         changedText(data, index){
             // this.editYn = true
             this.cabinetInputText = data.cabinetNameMtext
@@ -233,7 +162,6 @@ export default {
                 var changeT = this.cabinetList[i].cabinetNameMtext
                 this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
             }
-            // debugger
         },
         clickList(data, index){
             if(this.editIndex !== index){ // if(this.editIndex === null){
@@ -261,29 +189,13 @@ export default {
             }catch(e){
                 console.log(e)
             }
-
-
         },
-        //유민참고
         addSelectedList(data, index) {
-            // console.log(data);
-            // if(this.selectIndex.indexOf(index) === -1){
-            //     this.cabinetList[index].selectedYn = true
-            //     data.shareSeq = data.cabinetKey
-            //     this.selectedBookList.push(data)
-            //     this.selectIndex.push(index)
-            //     this.$emit('changeSelectBookList', this.selectedBookList)
-            // }else{
-            //     alert('중복선택입니다.')
-            // }
-            // this.selectedBookList = []
 
             if(!this.selectedBookList){
                 this.selectedBookList = []
             }
-
             data.shareSeq = data.cabinetKey
-
             var indexOf = this.selectedBookList.findIndex(i => i.cabinetKey === data.cabinetKey);
             if (indexOf === -1) {
                 this.selectedBookList.push(data)
@@ -292,11 +204,6 @@ export default {
             }else{
                 alert('중복선택')
             }
-
-
-            // this.selectedBookList.push(data)
-
-
         },
         async addNewBook () {
             var param = new Object()
@@ -386,8 +293,6 @@ export default {
                 param: paramSet
                 }
             )
-            // getTeamCabList ()
-            // this.cabinetList = []
             console.log(result)
             this.$emit('getBookList')
             index = this.cabinetList.length - 1
@@ -402,29 +307,9 @@ export default {
 
 .receiverTeamText{ height:40px; line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
-
-.fontBold{font-weight: bold;}
-.trans90{transform:rotate(270deg)}
-/* .movePointerArea{
-    transform: scaleY(1.7);
-        margin-top: 0.1rem;
-} */
-
-/* .widthPop{
-    width:80% !important;
-} */
-.editmLeft{
-    margin-left: 30px;
-}
-.selPopFl{
-    float:left;
-    margin-left: 1rem;
-}
-
 .foo {
    transition : background-color 0.5s ease-in;
 }
-
 .commonBookCard {
     /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */
     width: 100%;

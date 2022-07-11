@@ -51,12 +51,6 @@ import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
-/* app.use(Meta, {
-  attribute: 'data-vue-meta'
-  // vmid를 사용하기 위한 옵션
-}) */
-// Vue.config.silent = true
-// createApp.config.silent = true
 
 app.use(commonjs)
 app.component('Datepicker', Datepicker)

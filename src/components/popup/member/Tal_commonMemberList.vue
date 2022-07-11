@@ -29,67 +29,54 @@
 
 <script>
 
-/* eslint-disable */
 // eslint-disable-next-line
 export default {
   props: {
     managingList: {},
     currentOwner: {}
   },
-  // watch: {
-  //   tab(){
-  //     alert(true)
-  //     this.currentTab = this.tab
-  //   }
-  // },
   data () {
     return {
       // currentTab:''
     }
   },
   methods: {
-    openPop(targetType, member){
+    openPop (targetType, member) {
       var param = {}
       param.targetType = targetType
       param.teamKey = member.teamKey
       param.userKey = member.userKey
-      if(member.userDispMtext) {param.userDispMtext = member.userDispMtext} else {param.userNameMtext = member.userNameMtext}
+      if (member.userDispMtext) { param.userDispMtext = member.userDispMtext } else { param.userNameMtext = member.userNameMtext }
 
-      if(targetType === 'writePush'){
+      if (targetType === 'writePush') {
         // param.targetKey = this.detailVal.value.creTeamKey
         param.targetKey = member.teamKey
         param.replyPopYn = true
         // param.creUserName = this.alimDetail[0].creUserName
-        if(member.userDispMtext) {param.creUserName = member.userDispMtext} else {param.creUserName = member.userNameMtext}
+        if (member.userDispMtext) { param.creUserName = member.userDispMtext } else { param.creUserName = member.userNameMtext }
 
         param.creUserKey = member.userKey
         // this.$emit('openPop', params)
       }
-      this.$emit('openPop',param)
+      this.$emit('openPop', param)
     },
-    setManager(param){
-
-      console.log(param);
+    setManager (param) {
+      console.log(param)
       var params = {}
       params.userKey = param.toggleId
       params.manager = param.toggleYn
 
       // if(param.toggleYn === false){
-        // this.animation('mamberCard'+param.toggleId, true)
+      // this.animation('mamberCard'+param.toggleId, true)
       // }
-      this.$emit('setManager',params)
-
-
+      this.$emit('setManager', params)
     },
-    memberInfo(member){
-      console.log(member);
+    memberInfo (member) {
+      console.log(member)
     },
-    animation(key){
+    animation (key) {
       // document.getElementById(key).style.display = 'none'
       document.getElementById(key).className = 'noneCard'
-
-
-
     }
 
   }

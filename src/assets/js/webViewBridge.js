@@ -92,12 +92,6 @@ const isJsonString = (str) => {
               await saveUser(userProfile) // 서버에 save요청
               router.replace({ path: '/' })
             }
-            /* localStorage.setItem('userMobile', userProfile.mobile)
-            localStorage.setItem('fcmKey', userProfile.deviceInfo.fcmKey)
-            localStorage.setItem('userName', userProfile.name)
-            localStorage.setItem('userImg', userProfile.userImg)
-            localStorage.setItem('userEmail', userProfile.email)
-            localStorage.setItem('userAtoken', userProfile.aToken) */
           } else {
             router.replace({ path: 'policies' })
           }
@@ -119,26 +113,14 @@ const isJsonString = (str) => {
           }
 
           store.commit('addDeepLinkQueue', queList)
-          // alert(JSON.stringify(message))
         } else if (message.type === 'goback') {
           var history = store.getters.hStack
           var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           }
-          // alert(JSON.stringify(history))
           var current = store.getters.hUpdate
           store.commit('updatePage', current + 1)
-          /* else {
-            history = history.filter((element, index) => index < history.length - 1)
-            store.commit('setRemovePage', removePage)
-            store.commit('updateStack', history)
-          } */
-          /* if (localStorage.getItem('popHistoryStack')) {
-            ;
-          } else {
-            router.go(-1)
-          } */
         } else if (message.type === 'pushmsg') {
 
         }

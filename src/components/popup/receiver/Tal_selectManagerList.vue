@@ -24,7 +24,7 @@ export default {
     // pSelectedList: {}
   },
   created () {
-    // alert(JSON.stringify(this.propData.teamNameMtext))
+    // (JSON.stringify(this.propData.teamNameMtext))
     console.log("#!@#!@#");
     this.getFollowerList()
 

@@ -62,7 +62,6 @@ export default {
         params, { withCredentials: true })
         .then(function (response) {
           result = response.data.shortLink
-          // alert(result)
         })
       return result
     }

@@ -6,7 +6,6 @@
     <transition name="showModal">
       <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams"  @openZLoading="this.loadingIndexYn = true" @closeZLoading="this.loadingIndexYn = false"/>
     </transition>
-    <div @click="showMenuYn = false" v-show="showMenuYn" class="menuBtn"></div>
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
@@ -31,6 +30,7 @@ import loadingIndexCompo from '../components/layout/Tal_loadingindex.vue'
 export default {
   data () {
     return {
+      showText: false,
       popShowYn: false,
       parentPopN: 0,
       showMenuYn: false,
@@ -95,21 +95,15 @@ export default {
           var param = new Object()
           param.targetType = target.targetKind
           param.targetKey = target.targetKey
-          // alert(JSON.stringify(param))
-          /* target.splice(0, 1)
-          this.$store.commit('addDeepLinkQueue', target) */
           this.$store.commit('addDeepLinkQueue', [])
-          // alert('ㅇㅇㅇㅇ')
           this.openPop(param)
         }
-        // alert(JSON.stringify(value))
       }
     }
   },
   methods: {
     /* checkDeepLinkQueue () {
       // const searchParams = new URLSearchParams(location.search)
-      // alert(location.search)
 
       var queue = this.$store.getters.deepLinkQueue
       if (queue.length > 0) {
@@ -118,7 +112,6 @@ export default {
         var param = new Object()
         param.targetType = target.targetKind
         param.targetKey = target.targetKey
-        // alert(JSON.stringify(param))
         this.$store.commit('addDeepLinkQueue', [])
         this.openPop(param)
       }
@@ -204,7 +197,6 @@ export default {
       } */
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
-      // alert(removePage)
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
@@ -231,7 +223,6 @@ export default {
       }
       console.log('targetKey: ' + param[1])
     }
-    /* alert(JSON.stringify(window.location.href || document.location.href)) */
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
   }
@@ -299,4 +290,5 @@ export default {
     transform: translateX(500px);
   }
 }
+
 </style>
