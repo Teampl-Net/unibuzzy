@@ -5,7 +5,8 @@
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
     <div style="width: 100%; height: 100%; position: relative;">
-      <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
+      <!-- <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/> -->
+      <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " headerTitle="알림 상세" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
       <welcomePopUp v-if="openWelcomePopYn" @goChanMain="changeFollowTrue" @applyMember="okMember" />
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
