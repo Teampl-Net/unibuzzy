@@ -23,7 +23,7 @@
 
 <script>
 /* eslint-disable */
-import findChannelList from '../../components/popup/Tal_findChannelList.vue'
+import findChannelList from '../../components/popup/common/Tal_findChannelList.vue'
 
 export default {
   /* metaInfo: {

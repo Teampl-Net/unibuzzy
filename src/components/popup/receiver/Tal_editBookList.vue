@@ -1,7 +1,7 @@
 <template>
-    <div style="height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0">
+    <div class="editBookListWrap">
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
-            <div style="width: 100%; height: calc(100% - 10px); position: relative;">
+            <div class="bookAndMemListWrap">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
                     <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
@@ -15,7 +15,7 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import findContentsList from '../Tal_findContentsList.vue'
+import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 export default {
@@ -45,25 +45,6 @@ export default {
         }
     },
     computed: {
-    historyStack () {
-        return this.$store.getters.hRPage
-    },
-    pageUpdate () {
-        return this.$store.getters.hUpdate
-    }
-  },
-  watch: {
-    pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
-      if (this.popId === hStack[hStack.length - 1]) {
-        this.closeSubPop()
-      }
-    },
-    historyStack (value, old) {
-    }
-  },
-
-    computed: {
         historyStack () {
             return this.$store.getters.hRPage
         },
@@ -71,16 +52,16 @@ export default {
             return this.$store.getters.hUpdate
         }
     },
-    watch: {
-        pageUpdate (value, old) {
+        watch: {
+            pageUpdate (value, old) {
+            var hStack = this.$store.getters.hStack
             this.backClick()
+            /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
         },
         historyStack (value, old) {
-        },
-        memberDetailOpen(){
-            if(this.memberDetailOpen === false ) this.detailOpenYn = false
         }
-
     },
     components: { findContentsList, bookListCompo,memberList },
     data () {
@@ -158,7 +139,10 @@ export default {
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
             if (this.selectPopId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
+                this.detailOpenYn = false
             }
             else if (this.subPopId === hStack[hStack.length - 1]) {
                 // alert(removePage)
@@ -277,7 +261,8 @@ export default {
     box-shadow: 2px 2px 7px 3px #ccc;
 
 }
-
+.bookAndMemListWrap{width: 100%; height: calc(100% - 10px); position: relative;}
+.editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0}
 .menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
 .menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
 .menuHeader img{ width: 0.8rem; line-height: 50px;}

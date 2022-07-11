@@ -14,8 +14,8 @@
 
 <script>
 import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
-import chanDetailComp from '../../../components/commonPopup/components/Tal_chanDetail.vue'
-import chanAlimList from '../../../components/commonPopup/components/Tal_chanAlimList.vue'
+import chanDetailComp from '../../../components/pageComponents/channel/Tal_chanDetail.vue'
+import chanAlimList from '../../../components/pageComponents/channel/Tal_chanAlimList.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
   components: {

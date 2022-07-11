@@ -40,15 +40,15 @@
             <div data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
                 :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
                     + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                  style="background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
-              <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
+                  class="copyTextWrap">
+              <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt="">
             </div>
           </div>
           <div v-if='!detailVal.replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
-            <p class="w-100P commonBlack" style="text-align:center;">관리자가 댓글 사용을 중지하였습니다.</p>
+            <p class="w-100P commonBlack textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
-          <div style="width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;"></div>
-          <div style="width: 100%; min-height: 100px; float: left;" >
+          <div class="boardBorder"></div>
+          <div class="w-100P fl" style=" min-height: 100px;" >
             <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
           </div>
         </div>
@@ -59,7 +59,7 @@
         <!-- </div> -->
       </div>
     </div>
-    <div v-if="memoShowYn" style="width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;" @click="this.memoShowYn = false"></div>
+    <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div>
     <transition name="showMemoPop">
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     </transition>
@@ -69,7 +69,7 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import manageStickerPop from '../Tal_manageStickerPop.vue'
+import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
     return {
@@ -429,6 +429,7 @@ export default {
     padding-top: 0;
     padding-bottom: 50px;
 }
+.boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
 .boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 70px; width: 100vw; background: rgb(236, 230, 204); height: calc(100vh);}
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
@@ -492,5 +493,6 @@ export default {
     0% {transform: translateY(0);}
     100% { transform: translateY(var(--widndowHeight));}
 }
-
+.memoBoxBackground{width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;}
+.copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
 </style>

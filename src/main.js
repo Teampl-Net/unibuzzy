@@ -18,8 +18,7 @@ import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
 
 import gButtonS from './components/button/Tal_gButtonS.vue'
 import gButtonL from './components/button/Tal_gButtonL.vue'
-import fullModal from './components/commonPopup/Tal_gPopupWrap.vue'
-import pushModal from './components/popup/Tal_gPushPopWrap.vue'
+import fullModal from './components/popup/common/Tal_gPopupWrap.vue'
 import TalHeader from './components/layout/Tal_gMainHeader.vue'
 import popHeader from './components/layout/Tal_gPopHeader.vue'
 import TalFooter from './components/layout/Tal_gFooter.vue'
@@ -67,7 +66,6 @@ app.component('gBtnSmall', gButtonS)
 app.component('gBtnLarge', gButtonL)
 app.component('gActiveBar', gActiveBar)
 app.component('fullModal', fullModal)
-app.component('pushModal', pushModal)
 app.component('TalHeader', TalHeader)
 app.component('TalFooter', TalFooter)
 app.component('popHeader', popHeader)
@@ -102,7 +100,7 @@ axios.defaults.withCredentials = true */
 // axios.defaults.baseURL = 'api'
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
-axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
+// axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'

@@ -57,7 +57,7 @@
 /* eslint-disable */
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '../../boardList/Tal_commonBoardList.vue'
-import findContentsList from '../Tal_findContentsList.vue'
+import findContentsList from '../common/Tal_findContentsList.vue'
 export default {
   components: {
     findContentsList,

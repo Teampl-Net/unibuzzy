@@ -42,7 +42,7 @@
 /* eslint-disable */
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
 
-import findContentsList from '../../components/popup/Tal_findContentsList.vue'
+import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   name: 'pushList',

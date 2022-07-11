@@ -25,7 +25,7 @@
 
 <script>
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
-import pushDetail from '../../../components/commonPopup/components/Tal_pushDetail.vue'
+import pushDetail from '../../../components/pageComponents/push/Tal_pushDetail.vue'
 import subLeftMenu from '../../../components/unit/admUnit/TalAdm_subLeftMenu.vue'
 export default {
   components: {

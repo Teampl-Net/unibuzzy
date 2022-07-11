@@ -1,6 +1,5 @@
 <template>
   <div id="moTheAlimWrap">
-    <pushModal id="pushPopWrap" ref="pushPopWrap" :headerTitle="this.headerTitle" @closeXPushPop="closeXPushPop" v-if="this.pushPopShowYn"/>
     <fullModal id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
@@ -39,9 +38,6 @@ export default {
     },
     closePop () {
       this.popShowYn = false
-    },
-    closeXPushPop () {
-      this.pushPopShowYn = false
     }
   },
   beforeUnmount () {

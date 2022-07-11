@@ -60,7 +60,7 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import manageStickerPop from './Tal_manageStickerPop.vue'
+import manageStickerPop from './sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
     return {

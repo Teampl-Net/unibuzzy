@@ -22,10 +22,10 @@
 // import index from '../../router/index'
 // import { onMessage } from '../assets/js/webviewInterface.js'
 // import chanMenu from '../components/popup/chanMenu/Tal_channelMenu.vue'
-import pushPop from '../components/popup/Tal_pushDetailPopup.vue'
-import TalMenu from '../components/popup/Tal_menu.vue'
-import loadingCompo from '../components/Tal_loading.vue'
-import loadingIndexCompo from '../components/Tal_loadingindex.vue'
+import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue'
+import TalMenu from '../components/popup/common/Tal_menu.vue'
+import loadingCompo from '../components/layout/Tal_loading.vue'
+import loadingIndexCompo from '../components/layout/Tal_loadingindex.vue'
 // import PullToRefresh from 'pulltorefreshjs'
 
 export default {
