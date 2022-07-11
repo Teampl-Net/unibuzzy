@@ -10,9 +10,6 @@
         <transition name="showModal">
           <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
-        <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-
-      <!-- <div :style="calcHeaderHeight" class="pushListWrapWrap testt" style="position: relative; float: left; width: 100%; padding-top: var(--headerHeight); overflow: hidden scroll; height: calc(100%); "> -->
       <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
@@ -26,9 +23,6 @@
 
           <!-- </div> -->
         <commonList ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
-      <!-- <commonList  :commonListData="commonListData" @goDetail="openPop" style="" @listMore='loadMore' id='test'/> -->
-        <!-- <gPreLoader v-if="preloadingYn" style="position: fixed; left: calc(50% - 4rem); bottom: calc(50% - 150px)" /> -->
-      <!-- <infinite-loading @infinite="infiniteHandler" ></infinite-loading> -->
       </div>
       <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 4.5rem; right: calc(50% - 25px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
@@ -39,11 +33,7 @@
 </template>
 
 <script>
-/* eslint-disable */
-// import myObserver from '../../components/Tal_ScrollObserver.vue'
-
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
-// import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
   name: 'pushList',
   components: {
@@ -61,13 +51,12 @@ export default {
     pushListAndDetailYn: {},
     propData: {}
   },
-  async created() {
+  async created () {
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
       }
     }
-    // if (this.reloadShowYn === undefined || this.reloadShowYn === null || this.reloadShowYn === '') {
     if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
       this.pushListReloadShowYn = this.reloadShowYn
     } else {
@@ -84,12 +73,7 @@ export default {
     } else {
       this.endListYn = false
     }
-    // console.log('!@!@!@!@!@!@!@!@!');
-    // console.log(resultList);
     this.$emit('numberOfElements', resultList.totalElements)
-
-    // console.log('this.commonListData');
-    // console.log(this.commonListData);
     this.$emit('closeLoading')
     this.findPopShowYn = false
     if (this.readySearhList) {
@@ -98,10 +82,10 @@ export default {
     this.introPushPageTab()
   },
 
-  updated() {
+  updated () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
   },
-  mounted() {
+  mounted () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
     this.box.addEventListener('scroll', this.handleScroll)
 
@@ -121,7 +105,6 @@ export default {
       var propObj = this.propData
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
-      // this.pushListAndDetailYn = false
     }
   },
   unmounted () {
@@ -132,7 +115,7 @@ export default {
     routerReloadKey () {
       this.refreshList()
     },
-    reloadShowYn() {
+    reloadShowYn () {
       this.checkShowReload()
     }
   },
@@ -150,7 +133,6 @@ export default {
       for (var i = 0; i < stickerCnt; i++) {
         stickerDivWidth += this.stickerList[i].stickerName.length * textWidth + 10
       }
-      // var stickerDivList = document.getElementsByClassName('stickerDiv')
       return {
         '--stickerDivWidth': stickerDivWidth + 'px'
       }
@@ -164,7 +146,7 @@ export default {
         this.pushListReloadShowYn = true
       }
     },
-    async refreshAll() {
+    async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
       this.findKeyList.searchKey = null
@@ -174,7 +156,7 @@ export default {
       this.resultSearchKeyList = []
       this.changeTab('N')
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      ScrollWrap.scrollTo({top:0});
+      ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
       setTimeout(() => {
         this.$emit('closeLoading')
@@ -191,19 +173,17 @@ export default {
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
-    getAbsoluteTop(element) {
+    getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
-    handleScroll() {
+    handleScroll () {
       var element = document.getElementsByClassName('commonListContentBox')[0]
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-
       var test = document.getElementById('pageHeader')
       parentElement = element.parentElement
       this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-
-      if(this.firstContOffsetY < 0) {
+      if (this.firstContOffsetY < 0) {
         if (this.box.scrollTop > this.scrollPosition) {
           this.scrollDirection = 'down'
           this.scrolledYn = true
@@ -213,10 +193,8 @@ export default {
         }
       }
       this.scrollPosition = this.box.scrollTop
-
     },
     async refreshList () {
-      // this.scrolledYn = true
       var pSize = 10
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
         pSize = Number(this.offsetInt) * 10
@@ -259,14 +237,10 @@ export default {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
-    async loadMore(pageSize) {
-      // this.preloadingYn = true
+    async loadMore (pageSize) {
       if (this.endListYn === false || this.commonListData.length > pageSize) {
         this.offsetInt += 1
         var resultList = await this.getPushContentsList()
-        // if (resultList) {
-        //   // this.preloadingYn = false
-        // }
         const newArr = [
           ...this.commonListData,
           ...resultList.content
@@ -277,63 +251,30 @@ export default {
           this.endListYn = false
         }
         this.commonListData = newArr
-      }
-      else {
+      } else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
     },
     closeSearchPop () {
       this.findPopShowYn = false
-      /* this.subHistoryList.splice(-1, 1) */
     },
-    reload() {
+    reload () {
       this.getPushContentsList()
     },
     openPop (value) {
       this.$emit('openPop', value)
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     subHeaderEvent (request) {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
     async changeTab (tabName) {
-      // this.$emit('openLoading')
       this.viewTab = tabName
-      // this.commonListData = []
-      // this.$refs.tabLoading.show()
-      // this.commonListData = []
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
-
       this.offsetInt = 0
-
-      document.getElementById('pushListWrap').className='fadeOutAnimation'
-      setTimeout(()=>{
-        document.getElementById('pushListWrap').className='fadeInAnimation'
-      },200)
-
-      // var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // 변경된 인덱스 ** map에서 index찾기 **
-      // if(this.tabIdx < indexOf){
-      //   //오른쪽으로 이동
-      //   // alert('오른쪽')
-      //   document.getElementById('pushListWrap').className='newRight'
-      //   setTimeout(()=>{
-      //     document.getElementById('pushListWrap').className='newCenter'
-      //   },1000)
-      //   // document.getElementById('pushListWrap').style.animationName('slide-next')
-      //   // this.box.style.animationName('slide-next')
-
-      // }else if(this.tabIdx > indexOf){
-      //   // 왼쪽으로 이동
-      //   // alert('왼쪽')
-      //   document.getElementById('pushListWrap').className='newLeft'
-      //   setTimeout(()=>{
-      //     document.getElementById('pushListWrap').className='newCenter'
-      //   },1000)
-
-      //   // this.box.style.animationName('slide-pre')
-      //   // document.getElementById('pushListWrap').style.animationName('slide-pre')
-      // }
-      this.tabIdx = indexOf
+      document.getElementById('pushListWrap').className = 'fadeOutAnimation'
+      setTimeout(() => {
+        document.getElementById('pushListWrap').className = 'fadeInAnimation'
+      }, 200)
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -341,17 +282,14 @@ export default {
       } else {
         this.endListYn = false
       }
-      // this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
-
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
-      this.introPushPageTab ()
+      this.introPushPageTab()
       this.scrollMove()
-      // this.$refs.tabLoading.hide();
     },
-    scrollMove(){
+    scrollMove () {
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      ScrollWrap.scrollTo({top:0, behavior:'smooth'});
+      ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
@@ -392,19 +330,16 @@ export default {
       } else if (this.viewTab === 'S') {
         param.findActYn = true
         param.findActStarYn = true
-      // } else if (this.viewTab === 'R') {
-      //   param.findLogReadYn = false
-      // }
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
 
       var result = await this.$getContentsList(param)
       console.log(result)
-      if(result.empty){
+      if (result.empty) {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
-      var resultList =result
+      var resultList = result
       return resultList
     },
     async requestSearchList (param) {
@@ -434,7 +369,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var searchObj = new Object()
       var resultArray = []
-      // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
         searchObj.typeName = '제목'
         searchObj.type = 'searchKey'
@@ -488,14 +422,12 @@ export default {
       scrollDirection: null,
       box: null,
       scrolledYn: false,
-      // preloadingYn: false,
       offsetInt: 0,
       endListYn: false,
       scrollPosition: 0,
       findPopShowYn: false,
       subHistoryList: [],
       stickerList: [],
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
@@ -507,9 +439,7 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-
 .stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
 .stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
 .stickerDiv p {line-height: 20px;}
@@ -528,7 +458,6 @@ export default {
     will-change: transform;
     transition: transform 0.3s linear;
 }
-
 .pushListHeader--pinned {
     transform: translateY(0%);
 }
@@ -543,29 +472,17 @@ export default {
     transform: translateY(10rem);
     transition: .5s;
 }
-
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
   transition: .3s;
 }
-.slide-next-enter, .slide-next-leave, .slide-prev-leave-to{
-
-}
-.slide-next-leave-to, .slide-prev-enter, .slide-prev-leave{
-
-}
-
-
 .fadeInAnimation{
   animation-name: fadein; animation-duration: 0.2s;
   animation-fill-mode: none;
-
 }
 .fadeOutAnimation{
   animation-name: fadeout; animation-duration: 0.2s;
   animation-fill-mode: none;
 }
-
-
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;
@@ -579,27 +496,18 @@ export default {
 }
 @keyframes slideRight {
   0% {
-    /* padding: 0.5rem; */
     transform: translate(0, 0);
   }
-
   100% {
-    /* margin-right: 100%; */
     transform: translate(-100%, 0);
   }
 }
 @keyframes slideLeft {
   0% {
-    /* padding: 0.5rem; */
     transform: translate(0, 0);
   }
-
   100% {
-    /* margin-right: 100%; */
     transform: translate(100%, 0);
   }
 }
-
-
-
 </style>

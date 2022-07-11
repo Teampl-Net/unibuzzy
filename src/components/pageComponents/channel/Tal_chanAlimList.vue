@@ -193,6 +193,7 @@ export default {
       }
     },
     async changeFollowYn (fYn) {
+      alert(fYn)
       this.$emit('openZLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false

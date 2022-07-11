@@ -231,6 +231,7 @@ export default {
       }
     },
     async okMember () {
+      // eslint-disable-next-line no-debugger
       this.followParam.memberYn = true
       var result = await this.$changeFollower(this.followParam, 'save')
 

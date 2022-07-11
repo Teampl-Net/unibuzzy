@@ -96,7 +96,6 @@ export default {
       },
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
-
       mememoValue: null,
       replyYn:false,
       confirmType:false,
@@ -121,17 +120,9 @@ export default {
     if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
       this.ownerYn =  true
     }
-    // this.alimDetail = this.detailVal
     await this.getContentsList()
     await this.getMemoList()
     await this.getLikeCount()
-    /* if (this.alimDetail) {} else {
-      this.alimDetail = {
-        teamName: '',
-        creDate: '0',
-        bodyFullStr: '오류입니다.'
-      }
-    } */
   },
   computed: {
     getWindowSize () {
@@ -160,33 +151,14 @@ export default {
       param.jobkindId = "BOAR"
       param.teamKey = this.alimDetail[0].creTeamKey
       if(this.boardFuncType === "BOAR" ){
-
         param.deleteYn = true
-
-        // var result = await this.$commonAxiosFunction({
-        //   url: '/tp.deleteContent',
-        //   param: param
-        // })
         console.log("Delete Content Result");
-        // console.log(result);
-
         this.$emit("closeXPop",true)
-
       }else if(this.boardFuncType  === "REPORT"){
-
         param.reportYn = true
-
-        // var result = await this.$commonAxiosFunction({
-        //   url: '/tp.reportContent',
-        //   param: param
-        // })
-        console.log("Report Content Result");
-        // console.log(result);
-
         this.confirmPopShowYn = true
         this.confirmText='신고되었습니다.'
       }
-
     },
     mememoCancel(){
       this.mememoValue = {}
@@ -207,11 +179,7 @@ export default {
     writeMememo (memo) {
       if (this.detailVal.shareAuth.R === true ) {
         var data = {}
-        // data.targetKey = memo.memoKey
-        // data.targetKind = 'M' //
         data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
-        // data.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        // data.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
         data.memo = memo
         this.mememoValue = new Object()
         this.mememoValue = data
@@ -259,7 +227,6 @@ export default {
         url: '/tp.getUserDoListPage',
         param: param
       })
-      debugger
     },
     mememoChangeList() {
       for (let i = 0; i < this.memoList.length; i++) {
@@ -312,21 +279,13 @@ export default {
           imageWidth: 1200,
           imageHeight: 750,
           link: {
-            /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            // webUrl: link,
             mobileWebUrl: link
-            /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
-            webUrl: 'https://thealim.page.link/H3Ed' */
           }
         },
         buttons: [
           {
             title: '더알림 방문하기',
             link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
-              // webUrl: link,
               mobileWebUrl: mainLink
             }
           },
