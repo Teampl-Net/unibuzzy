@@ -1,3 +1,4 @@
+
 <template>
 <div class="v-spinner" v-show="loading">
     <div class="v-pulse v-pulse1" v-bind:style="[spinnerStyle,spinnerDelay1]">
@@ -8,6 +9,7 @@
 </template>
 
 <script>
+
 export default {
 
   name: 'PulseLoader',
@@ -36,11 +38,11 @@ export default {
   data () {
     return {
       spinnerStyle: {
-      	backgroundColor: this.color,
-      	width: this.size,
+        backgroundColor: this.color,
+        width: this.size,
         height: this.size,
-      	margin: this.margin,
-      	borderRadius: this.radius,
+        margin: this.margin,
+        borderRadius: this.radius,
         display: 'inline-block',
         animationName: 'v-pulseStretchDelay',
         animationDuration: '0.75s',

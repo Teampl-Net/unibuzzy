@@ -36,7 +36,7 @@
 import match from './Tal_matching.vue'
 // eslint-disable-next-line
 export default {
-  components:{match},
+  components: { match },
   props: {
     managingList: {},
     currentOwner: {}

@@ -161,18 +161,24 @@ export default {
         this.confirmMsg = '멤버 신청이 완료되었습니다.'
         this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
       }
+      var params = null
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
+      param.teamName = this.$changeText(this.chanDetail.nameMtext)
       if (this.memberYn || this.memberYn === 1) {
         param.memberYn = false
+        params = { follower: param }
+      } else {
+        params = { follower: param, targetType: 'ME' }
       }
       console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
-        param: param
+        param: params
       })
       if (result.data.result === true) {
         if (this.memberYn || this.memberYn === 1) {
@@ -209,11 +215,13 @@ export default {
         // eslint-disable-next-line no-new-object
         this.followParam = new Object()
         this.followParam.teamKey = this.chanDetail.teamKey
+        this.followParam.teamName = this.$changeText(this.chanDetail.nameMtext)
         this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
         var result = false
         this.sendLoadingYn = true
         if (fStatus) {
-          result = await this.$changeFollower(this.followParam, 'del')
+          result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'del')
           this.followYn = false
 
           if (result.result || result) {
@@ -230,11 +238,11 @@ export default {
         }
       }
     },
-    async okMember () {
+    async okMember (inMemberYn) {
       // eslint-disable-next-line no-debugger
-      this.followParam.memberYn = true
-      var result = await this.$changeFollower(this.followParam, 'save')
-
+      this.followParam.memberYn = inMemberYn
+      var result = null
+      if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'save') }
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {

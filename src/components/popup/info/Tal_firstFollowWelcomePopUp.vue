@@ -19,7 +19,7 @@
 export default {
   methods: {
     goChanMain() {
-      this.$emit('goChanMain', true)
+      this.$emit('applyMember', false)
     },
     applyMember() {
       this.$emit('applyMember', true)

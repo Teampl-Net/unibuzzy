@@ -504,6 +504,22 @@ export default {
                 }
               }
             }
+          } else if (this.notiDetail.noti.bigText.data.targetKind === 'TEAM') {
+            if (Number(this.notiDetail.noti.bigText.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+              return
+            }
+            currentPage = this.$store.getters.hCPage
+            if ((currentPage === 0 || currentPage === undefined)) {
+            } else {
+              this.$router.replace({ path: '/' })
+              if (this.notiDetail.noti.bigText.data.actType === 'FL') {
+                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
+              } else if (this.notiDetail.noti.bigText.data.actType === 'ME' || this.notiDetail.noti.data.actType === 'FM') {
+                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
+              } else if (this.notiDetail.noti.bigText.data.actType === 'MA') {
+                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
+              }
+            }
           }
         }
       } catch (err) {
