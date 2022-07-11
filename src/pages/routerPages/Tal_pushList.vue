@@ -272,9 +272,7 @@ export default {
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
       this.offsetInt = 0
       document.getElementById('pushListWrap').className = 'fadeOutAnimation'
-      setTimeout(() => {
-        document.getElementById('pushListWrap').className = 'fadeInAnimation'
-      }, 200)
+
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -282,6 +280,7 @@ export default {
       } else {
         this.endListYn = false
       }
+      document.getElementById('pushListWrap').className = 'fadeInAnimation'
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
       this.introPushPageTab()
@@ -477,11 +476,11 @@ export default {
 }
 .fadeInAnimation{
   animation-name: fadein; animation-duration: 0.2s;
-  animation-fill-mode: none;
+  animation-fill-mode: forwards;
 }
 .fadeOutAnimation{
   animation-name: fadeout; animation-duration: 0.2s;
-  animation-fill-mode: none;
+  animation-fill-mode: forwards;
 }
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
