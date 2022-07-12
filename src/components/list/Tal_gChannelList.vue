@@ -8,14 +8,12 @@
         <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" /></div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
-            <p class="font16 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
-            <div style="line-height: 0.05rem; float: left; margin-top: 6px; margin-left: 8px;">
+            <p class="font16 commonBlack fl fontBold mNone" style="line-height: 30px;" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+            <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
                 <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColor font14" >{{value.followerCount}}</span>
             </div>
-            <div v-if="value.officialYn" class="fl" style="width:20px;">
-              <img src="../../assets/images/channel/icon_official.svg" style="width:20px;" alt="">
-            </div>
+            <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt="">
             <span class="lightGray font14 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
           </div>
           <div style="width: 100%; margin-top: 4px; position: relative;">

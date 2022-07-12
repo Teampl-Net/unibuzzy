@@ -72,7 +72,7 @@ export async function saveUser (userProfile) {
   })
   if (result.data.message === 'OK') {
     if (result.data.userInfo) {
-      localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
+      localStorage.setItem('user', JSON.stringify(result.data.userInfo))
       localStorage.setItem('testYn', false)
     }
   }

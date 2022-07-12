@@ -110,8 +110,13 @@ export default {
     console.log('this.chanItem')
     console.log(this.chanItem)
     if (this.chanDetail.newChan === true) {
-      this.greetingInfoYn = true
       this.greetingType = 'admin'
+      this.greetingInfoYn = true
+      /* // eslint-disable-next-line no-debugger
+      debugger
+      setTimeout(() => {
+        this.greetingInfoYn = false
+      }, 4000) */
     }
   },
   updated () {
@@ -217,8 +222,11 @@ export default {
       this.$emit('closeZLoading')
       // this.detailShowYn = false
 
-      this.greetingInfoYn = true
       this.greetingType = 'follow'
+      this.greetingInfoYn = true
+      /* setTimeout(() => {
+        this.greetingInfoYn = false
+      }, 4000) */
     },
     changeText (text) {
       var changeTxt = ''
