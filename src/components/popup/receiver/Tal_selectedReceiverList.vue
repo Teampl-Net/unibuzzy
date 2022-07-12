@@ -3,7 +3,7 @@
         <div class="mbottom-05" style="width: 100%; height: 30px; margin-top:1rem; margin-left:0.5rem">
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
             <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
-            <gBtnSmall v-if="selectShareTargetYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
+            <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
             <gBtnSmall v-if="selectMemberPopYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
@@ -77,6 +77,7 @@ export default {
     // },
     methods: {
         addMe (){
+            
             if(this.teamList.memberList) {
                 var checkYn = true
                 for (var i = 0; i < this.teamList.memberList.length; i ++) {

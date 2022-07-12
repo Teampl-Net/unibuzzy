@@ -59,7 +59,7 @@ export default {
     /* decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       return changeText
     }, */
     goOk () {

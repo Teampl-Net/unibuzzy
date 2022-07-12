@@ -152,8 +152,8 @@ export default {
     },
     changeMode () {
       var formList = document.querySelectorAll('#bodyArea .formCard')
-      // eslint-disable-next-line no-debugger
-      // debugger
+      // eslint-disable-next-line no-
+      // 
       for (var i = 0; i < formList.length; i++) {
         formList[i].contentEditable = false
       }
@@ -174,7 +174,7 @@ export default {
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       return changeText
     },
     async getContentsList () {
@@ -192,7 +192,7 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       if (resultList.content[0].userDoList) {
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)

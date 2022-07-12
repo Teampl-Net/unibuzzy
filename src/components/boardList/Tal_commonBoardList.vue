@@ -122,7 +122,7 @@ export default {
     },
     handleScroll () {
       var element = document.getElementsByClassName('commonBoardListContentBox')[0]
-      // debugger
+      // 
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
@@ -152,7 +152,7 @@ export default {
       // await this.getCabinetDetail()
       // var resultList = await this.getCabinetDetail()
       await this.getCabinetDetail()
-      // debugger
+      // 
       // this.findPopShowYn = false
     },
     async changeTab(tabName) {

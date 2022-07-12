@@ -93,7 +93,7 @@ export default {
             this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
         }
         this.editBookSelectedList()
-        // debugger
+        // 
     },
     async getBookMemberList () {
         var paramMap = new Map()
@@ -114,7 +114,7 @@ export default {
             }
         }
         this.editMemberSelectedList()
-        // debugger
+        // 
     },
     editPop () {
       // eslint-disable-next-line no-new-object

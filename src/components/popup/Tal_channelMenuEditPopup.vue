@@ -178,7 +178,6 @@ export default {
       var menu = new Object()
       var cardList = document.getElementsByClassName('receiverTeamListCard')
       var index = null
-      // debugger
       console.log('this.boardList 여기를 보세요!!!')
       console.log(this.boardList)
       for (var s = cardList.length - 1; s >= 0; s--) {
@@ -207,7 +206,6 @@ export default {
       )
       this.boardList = []
       this.getTeamMenuList()
-      // debugger
     }
     // this.boardList.push()
   }

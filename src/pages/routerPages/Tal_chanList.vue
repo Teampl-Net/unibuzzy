@@ -56,7 +56,7 @@ export default {
     //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     //     this.headerTop = 140
     //   }
-    //   // debugger
+    //   // 
     //   return {
     //     '--headerHeight': this.headerTop + 'px'
     //   }
@@ -137,8 +137,8 @@ export default {
     },
     handleScroll () {
       var element = document.getElementsByClassName('chanRow')[0]
-      // eslint-disable-next-line no-debugger
-      // debugger
+      // eslint-disable-next-line no-
+      // 
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
@@ -273,7 +273,7 @@ export default {
       }
       var result = await this.$getTeamList(paramMap)
       // var pageable = resultList.pageable
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
       // this.totalPages = resultList.totalPages
       // this.totalElements = resultList.totalElements
       if(result.empty){

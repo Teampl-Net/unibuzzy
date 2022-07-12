@@ -1,5 +1,6 @@
 <template>
     <div class="editBookListWrap">
+        <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
             <div class="bookAndMemListWrap">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
@@ -22,26 +23,19 @@ export default {
     props: {
         chanInfo: {},
         propData: {},
-        memberDetailOpen:{}
     },
     created (){
-        var history = this.$store.getters.hStack
-        this.popId = 'editBookList' + history.length
+        /* var history = this.$store.getters.hStack
+        this.popId = 'editBookList' + history.length */
         console.log('propData')
         console.log(this.propData)
         this.getBookList()
+        this.chanName = this.propData.teamNameMtext || ''
 
     },
     async mounted () {
         if(this.propData.value.clickData){
-            this.$emit('openDetailYn',true)
-            this.selectBookDetail = this.propData.value.clickData
-            var history = this.$store.getters.hStack
-            this.subPopId = 'commonBookMemberList' + history.length
-            history.push(this.subPopId)
-            this.$store.commit('updateStack', history)
-            await this.getBookMemberList()
-            this.detailOpenYn = true
+            this.openMCabUserList(this.propData.value.clickData)
         }
     },
     computed: {
@@ -80,7 +74,8 @@ export default {
             titleText: '',
             receiverTitle: '주소록 관리',
             teamLength: 0,
-            selMemberList: []
+            selMemberList: [],
+            channelName: null,
         }
     },
     methods: {
@@ -98,7 +93,7 @@ export default {
                 var changeT = this.bookList[i].cabinetNameMtext
                 this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
             }
-            // debugger
+            // 
         },
         newAddMember(){
             this.newYn = false
@@ -143,22 +138,20 @@ export default {
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
+                this.receiverTitle = '주소록 관리'
             }
             else if (this.subPopId === hStack[hStack.length - 1]) {
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
-
-            } else if (this.popId === hStack[hStack.length - 1]) {
-                hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
-
+                this.receiverTitle = '주소록 관리'
+            } else {
                 this.$emit('closeXPop')
             }
         },
         async openMCabUserList(data){
+            this.receiverTitle = '구성원 관리'
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
             this.selectPopId = 'selectMemeberPopup' + history.length
@@ -166,8 +159,6 @@ export default {
             this.$store.commit('updateStack', history)
 
             await this.getBookMemberList()
-            this.detailOpenYn = true
-            this.$emit('openDetailYn',true)
 
         },
         closeSearchPop (){
@@ -258,7 +249,7 @@ export default {
 
 }
 .bookAndMemListWrap{width: 100%; height: calc(100% - 10px); position: relative;}
-.editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:99; position:absolute; top:0; left:0}
+.editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
 .menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
 .menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
 .menuHeader img{ width: 0.8rem; line-height: 50px;}

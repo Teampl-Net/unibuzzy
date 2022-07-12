@@ -211,7 +211,7 @@ export default {
     // },
     setSelectedList (obj) {
       this.receiverPopYn = false
-      // debugger
+      // 
       this.receiverList = obj.data
       this.list = []
       this.selectedReceiverList = []
@@ -310,7 +310,7 @@ export default {
       } else if (this.viewTab === 'text') {
         // param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        // debugger
+        // 
         targetMsgDiv = document.getElementById('textMsgBox')
 
       }
@@ -345,13 +345,13 @@ export default {
       } else {
         param.title = this.$titleToBody(targetMsgDiv)
       }
-      // debugger
+      // 
       param.jobkindId = 'ALIM'
       param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
 
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
-      //debugger
+      //
       var result = await this.$saveContents(param)
 
       if (result === true) {

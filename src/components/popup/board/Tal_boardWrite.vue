@@ -155,7 +155,6 @@ export default {
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
       }
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')

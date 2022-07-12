@@ -63,7 +63,6 @@ const methods = {
       image.src = readerEvent.target.result
     }
     reader.readAsDataURL(new File([u8arr], 'editor' + '.png', { type: mime }))
-    // eslint-disable-next-line no-debugger
   }
   /* settingSrc (tempImg, url) {
     // tempImg.src = url

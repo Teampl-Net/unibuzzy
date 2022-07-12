@@ -122,7 +122,7 @@ export default {
       memberDetailOpen: false,
 
       refreshToken: 0,
-      delyn:false
+      delyn: false
 
     }
   },
@@ -211,22 +211,17 @@ export default {
   },
   methods: {
     async addDirectAddMemList (param) {
-      console.log('paramparamparamparamparam')
-      console.log(param)
       if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
       } else {
-        if(param.cabinetKey === undefined || param.cabinetKey === null || param.cabinetKey === ""){
+        if (param.cabinetKey === undefined || param.cabinetKey === null || param.cabinetKey === '') {
           await this.$refs.mamberManagementCompo.addDirectly(param)
-        }else{
+        } else {
           await this.$refs.selectManagerCompo.changeDirectMemList(param)
         }
 
-//           addDirectAddMemList
-// changeDirectMemList
-
-
-
+        //           addDirectAddMemList
+        // changeDirectMemList
 
         this.closePop()
       }
@@ -428,10 +423,10 @@ export default {
       }
     },
     successCreChan (params) {
-      console.log('successCreChan params!!!');
-      console.log(params);
+      console.log('successCreChan params!!!')
+      console.log(params)
       if (params.deleteYn === true && params.modiYn === true) {
-        this.$emit('parentClose',true)
+        this.$emit('parentClose', true)
 
         // this.closeXPop()
         return

@@ -14,7 +14,6 @@
 
     </div>
 
-
     <!-- <textarea class="askBoxWrap askCommonFont mtop-1 ptop-1" v-model="askBody" style="padding-top: 0.5rem;" name="" id="" cols="30" rows="10" placeholder="내용을 입력해 주세요."></textarea> -->
     <!-- <div style="background-color: #A9AACD; width: 80px; height: 80px; margin-top: 0.5rem; padding: 0.7rem 0; border-radius: 5px; position: relative; text-align: center;">
       <img style="width: 2.5rem;" src="../../../assets/images/common/icon_attach.png" alt="">
@@ -43,11 +42,11 @@ export default {
       completeBtnTitle: '완료',
       askTitle: '',
       askBody: '',
-      checkPopYn:false,
-      sendLoadingYn:false,
-      failPopYn:false,
-      errorText:'',
-      formEditorShowYn:false,
+      checkPopYn: false,
+      sendLoadingYn: false,
+      failPopYn: false,
+      errorText: '',
+      formEditorShowYn: false,
 
       viewTab: 'text',
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }]
@@ -141,7 +140,6 @@ export default {
       var result = await this.$saveContents(param)
 
       if (result === true) {
-
         // this.$emit('successSave')
         this.$emit('closeXPop', true)
       }

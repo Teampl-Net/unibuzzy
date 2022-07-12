@@ -44,31 +44,41 @@
 <script>
 /* eslint-disable */
 export default {
-    props:{
-        chanInfo:{},
-        type:{},
+  props: {
+  chanInfo: {},
+      type:{}
+  },
+  data (){
+      return{
+          step:0,
 
-    },
-    data (){
-        return{
-            step:0,
-
-        }
-    },
-    created (){
-        this.startStep()
-    },
-    methods:{
-        startStep(){
-            setTimeout(()=>{
-                this.step += 1
-            },2000)
-        },
-        closePop(){
-          this.$emit('closePop')
-        }
+      }
+  },
+  created (){
+      this.startStep()
+  },
+  methods:{
+      startStep(){
+          setTimeout(()=>{
+              this.step += 1
+          },2000)
+      },
+      closePop(){
+        this.$emit('closePop')
+      }
+  },
+  created () {
+    console.log(this.chanInfo)
+    if (this.chanInfo.userTeamInfo.ownerYn) this.ownerYn = true
+    this.startStep()
+  },
+  methods: {
+    startStep () {
+      setTimeout(() => {
+        this.step += 1
+      }, 2000)
     }
-
+  }
 }
 </script>
 <style>

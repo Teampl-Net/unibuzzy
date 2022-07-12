@@ -32,9 +32,6 @@
 
 <script>
 export default {
-  created(){
-    console.log(this.chanList)
-  },
   data () {
     return {
     }

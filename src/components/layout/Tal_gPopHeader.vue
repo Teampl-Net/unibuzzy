@@ -7,8 +7,8 @@
       <img :src="value.icon" />
     </div>
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
-    <div class="commonColor font16 headerTitleWrap" style=""
-          v-if="this.headerTitle === '주소록 관리' || this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'">
+    <div class="commonColor font16 headerTitleWrap" style="">
+          <!--v-if="this.headerTitle === '주소록 관리'|| this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'"> -->
       {{chanName}}
       </div>
 

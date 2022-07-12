@@ -81,7 +81,7 @@ export default {
       detailShowYn: true,
       memberYn: false,
       myContentsCount: null,
-      greetingType : 'follow'
+      greetingType: 'follow'
 
     }
   },
@@ -109,11 +109,10 @@ export default {
     await this.getChanDetail(false)
     console.log('this.chanItem')
     console.log(this.chanItem)
-    if(this.chanDetail.newChan === true){
+    if (this.chanDetail.newChan === true) {
       this.greetingInfoYn = true
       this.greetingType = 'admin'
     }
-
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -172,10 +171,9 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       this.chanItem = resultList.data.content[0]
 
-      if(this.chanItem){
+      if (this.chanItem) {
         this.chanItem.totalElements = resultList.data.totalElements
       }
-
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
@@ -221,8 +219,6 @@ export default {
 
       this.greetingInfoYn = true
       this.greetingType = 'follow'
-
-
     },
     changeText (text) {
       var changeTxt = ''

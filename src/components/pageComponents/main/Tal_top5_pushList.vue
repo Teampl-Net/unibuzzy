@@ -16,8 +16,8 @@ export default {
   created () {
     this.pushList = this.alimList
     this.checkSenderYn()
-    // // eslint-disable-next-line no-debugger
-    // debugger
+    // // eslint-disable-next-line no-
+    // 
   },
   data () {
     return {

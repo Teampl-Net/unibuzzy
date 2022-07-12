@@ -192,7 +192,7 @@ export default {
                 access = { accessKey: data.cabinetKey, accessKind: type, shareType: this.itemType, shareSeq: data.shareSeq }
             }
             this.itemList.push(access)
-            // eslint-disable-next-line no-debugger
+            // eslint-disable-next-line no-
 
             this.$emit('changeSelectedItem', { itemList: this.itemList, itemType: this.itemType })
         } */

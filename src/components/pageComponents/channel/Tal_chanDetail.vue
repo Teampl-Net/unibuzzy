@@ -215,6 +215,8 @@ export default {
         var fStatus = this.followYn
         // eslint-disable-next-line no-new-object
         this.followParam = new Object()
+        // eslint-disable-next-line no-unused-vars
+        var tt = this.chanDetail
         this.followParam.teamKey = this.chanDetail.teamKey
         this.followParam.teamName = this.$changeText(this.chanDetail.nameMtext)
         this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -240,7 +242,6 @@ export default {
       }
     },
     async okMember (inMemberYn) {
-      // eslint-disable-next-line no-debugger
       this.followParam.memberYn = inMemberYn
       var result = null
       if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'save') }

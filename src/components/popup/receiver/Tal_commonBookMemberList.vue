@@ -128,7 +128,6 @@ export default {
         data.currentTeamKey = this.teamInfo.teamKey
         this.$emit('openAddPop', data)
       }
-      // debugger
       // data.index = index
       // this.editMember = data
     },
@@ -139,7 +138,6 @@ export default {
       // eslint-disable-next-line vue/no-mutating-props
       this.listData[index].selectedYn = true
       // var tt = this.listData
-      // debugger
     },
     checkClick () {
       alert('중복선택입니다.')

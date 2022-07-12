@@ -166,7 +166,7 @@ export default {
     // console.log(this.boardDetail)
     // console.log(this.chanInfo)
 
-    // debugger
+    //
   },
   computed: {
     historyStack () {
@@ -311,7 +311,7 @@ export default {
           this.commentPermission = '전체에게 권한 부여'
         } else {
           this.changeShareType('select')
-          // debugger
+          //
           if (data.mCabinet.cabShareList) {
             var tempList = []
             var tempList2 = []
@@ -328,7 +328,7 @@ export default {
               }
             }
             var listData = { bookList: tempList, memberList: tempList2 }
-            // debugger
+            //
             this.selectedList.data = listData
           }
           this.selectedReceiver = data.mCabinet.cabShareList.length + '명에게 공유 중'

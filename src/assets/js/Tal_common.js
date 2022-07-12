@@ -215,7 +215,6 @@ const methods = {
         authList.V = true
       }
     }
-    // eslint-disable-next-line no-debugger
     return authList
   },
   checkSameName (checkList, checkText) {

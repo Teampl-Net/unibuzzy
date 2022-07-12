@@ -3,11 +3,9 @@
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
     <div class="longHeight w-100P" style="position:absolute; top:50px; h overflow: auto;" >
-
         <div style="width: 100%; position: relative; float: left;">
           <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
         </div>
-
         <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="height: 310px; position: absolute; bottom: 50px; left: 0px;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
@@ -72,7 +70,7 @@ export default {
     changeSelectedItem (data) {
       // data = {itemList: [], itemType: 'W'}
       // setSelectedList = {R: [], V: [], W: []}
-      // eslint-disable-next-line no-debugger
+      // eslint-disable-next-line no-
 
       // if (this.itemType === 'V') {
       //   this.setSelectedList.V = data.itemList

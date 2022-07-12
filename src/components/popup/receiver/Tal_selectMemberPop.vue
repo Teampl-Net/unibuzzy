@@ -2,9 +2,8 @@
 <div style="height: 100%; width:100%;">
     <div class="" style="width:100%; height:calc(100% - 50px); margin-top:50px" >
         <memberListCompo :listData="memberList" ref="memberListCompo" class="fl" style="height:50%; background-color:white;" :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
-        <selectedListCompo @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" class="fl" style="height:50%;" @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
+        <selectedListCompo @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" class="fl" style="height:50%;" @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     </div> <!-- this.propData.selectMemberType==='member'? true:false -->
-
     <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? '구성원을 추가하시겠습니까?': '매니저를 추가하시겠습니까?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
 
 </div>
@@ -41,14 +40,21 @@ export default {
   },
   components: { memberListCompo, selectedListCompo },
   methods: {
-    changeDirectMemList (data) {
+    async changeDirectMemList (data) {
+      // eslint-disable-next-line no-debugger
       this.directAddMemList.push(data)
       if (this.selectedList.memberList) {
       } else {
         this.selectedList.memberList = []
       }
-      this.selectedList.memberList.push(data)
-      this.$refs.selectedListCompo.upDatePage()
+      const newArr = [
+        ...this.selectedList.memberList,
+        data
+      ]
+      this.selectedList.memberList = newArr
+      // this.$refs.selectedListCompo.upDatePage()
+
+      await this.changeSelectMemberList(this.selectedList.memberList)
     },
     async getFollowerList () {
       var paramMap = new Map()
@@ -98,13 +104,7 @@ export default {
     },
     changeSelectMemberList (data) {
       this.selectedList.memberList = data
-      if (this.directAddMemList && this.directAddMemList.length > 0) {
-        const newArr = [
-          ...this.selectedList.memberList,
-          ...this.directAddMemList
-        ]
-        this.selectedList.memberList = newArr
-      }
+
       this.$refs.selectedListCompo.upDatePage()
     },
     changeSelectedList (data) {
@@ -144,7 +144,7 @@ export default {
             param: param
           })
         }
-        if (this.directAddMemList && this.directAddMemList.length > 0) {
+        if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
           var follower = null
           for (var u = 0; u < this.directAddMemList.length; u++) {
             // eslint-disable-next-line no-new-object
@@ -167,28 +167,19 @@ export default {
           }
         }
       } else {
-        var mCabContents = null
-        if (userKeyList && userKeyList.length > 0) {
+        // eslint-disable-next-line no-new-object
+        if (userKeyList !== undefined && userKeyList !== null && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           param.cabinetKey = this.propData.cabinetKey
           param.targetKey = this.propData.currentTeamKey
 
-          await this.$saveMCabContents(param)
+          this.$saveMCabContents(param)
         }
-        /* if(userKeyList && userKeyList.length > 0) {
-                    for (var i = 0; i < userKeyList.length; i++) {
-                        param = new Object()
+        console.log(this.directAddMemList)
 
-                        mCabContents = new Object()
-                        mCabContents.jobkindId = 'USER'
-                        mCabContents.cabinetKey = this.propData.cabinetKey
-                        mCabContents.targetKey = this.propData.currentTeamKey
-                        mCabContents.ownUserKey = userKeyList[i]
-                        param.mCabContents = mCabContents
-                        result = await this.$saveMCabContents(param)
-                    }
-                } */
-        if (this.directAddMemList && this.directAddMemList.length > 0) {
+        if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
+          // eslint-disable-next-line no-new-object
+          var mCabContents = new Object()
           for (var d = 0; d < this.directAddMemList.length; d++) {
             // eslint-disable-next-line no-new-object
             mCabContents = new Object()

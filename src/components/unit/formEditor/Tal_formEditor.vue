@@ -199,7 +199,6 @@ export default {
       }
       var formList = document.getElementsByClassName('formDiv')
 
-      debugger
       this.selectFromScrollH = formList[Number(formElement.targetKey) - 1].offsetTop + formList[Number(formElement.targetKey) - 1].scrollHeight
     }, */
     resizeFormArea () {
@@ -248,8 +247,6 @@ export default {
       // window.getSelection().removeAllRanges()
       var spanWrap = document.createElement('span')
       /* if (this.lastFocus === range1) {
-        // eslint-disable-next-line no-debugger
-        debugger
       } */
       spanWrap.appendChild(range1.extractContents())
       // spanWrap.setAttribute('style', 'float: left;')
@@ -395,8 +392,6 @@ export default {
               this.addFormCard('image', e.target.result)
               // this.previewImgUrl = e.target.result
               /* this.addFormCard('image', e.target.result)
-
-              debugger
               var sel = window.getSelection()
               var range = sel.getRangeAt(0)
 
