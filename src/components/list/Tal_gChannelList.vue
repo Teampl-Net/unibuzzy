@@ -13,6 +13,9 @@
                 <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColor font14" >{{value.followerCount}}</span>
             </div>
+            <div v-if="value.officialYn" class="fl" style="width:20px;">
+              <img src="../../assets/images/channel/icon_official.svg" style="width:20px;" alt="">
+            </div>
             <span class="lightGray font14 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
           </div>
           <div style="width: 100%; margin-top: 4px; position: relative;">
@@ -29,7 +32,9 @@
 
 <script>
 export default {
-
+  created(){
+    console.log(this.chanList)
+  },
   data () {
     return {
     }

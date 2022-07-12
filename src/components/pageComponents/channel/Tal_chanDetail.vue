@@ -23,9 +23,9 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && this.followTypeText !== '소유자'" class="mtop-05">
-          <gBtnSmall @click="saveMember" class="fl" :btnTitle="this.memberYn === 1 || this.memberYn? '멤버취소': '멤버신청'"/>
+          <gBtnSmall v-if="chanDetail.teamKey !== 377" @click="saveMember" class="fl" :btnTitle="this.memberYn === 1 || this.memberYn? '멤버취소': '멤버신청'"/>
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
-          <gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
+          <gBtnSmall v-if="chanDetail.teamKey !== 377" @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
         <div v-else-if="followYn === false" class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
         <table class="mtop-3" >
