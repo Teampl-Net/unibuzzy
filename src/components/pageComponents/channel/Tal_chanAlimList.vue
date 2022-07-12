@@ -48,7 +48,7 @@
     <chanDetailComp @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
-  <div class="zoomInOutPop" style="position: fixed; width:100%; height:100%; z-index:9; left:0; top:0; ">
+  <div class="zoomInOutPop" style="position: fixed; width:100%; height:100%; z-index:9; left:0; top:0;" v-if="greetingInfoYn">
     <greetingInfo  v-if="greetingInfoYn" @closePop="greetingInfoYn = false" :chanInfo='chanItem' :type='greetingType' />
   </div>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
