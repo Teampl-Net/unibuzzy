@@ -33,6 +33,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 export default {
   name: 'pushList',

@@ -28,6 +28,7 @@
 </div>
 </template>
 <script>
+/* eslint-disable */
 export default {
     props:{
         chanInfo:{},

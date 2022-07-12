@@ -37,14 +37,10 @@
     <div id="chanInfoArea" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
       <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
     </div>
-
   </div>
-
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
     <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
     <followInfo  v-if="this.myContentsCount === 0" @closePop="chanFollowInfoYn = false" :chanInfo='chanItem' :adminYn='adminYn' />
-
-
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -64,7 +60,7 @@ import followInfo from '../channel/Tal_chanFollowInfo.vue'
 export default {
   data () {
     return {
-      chanFollowInfoYn:true,
+      chanFollowInfoYn: true,
       reloadShowYn: false,
       alimListToDetail: false,
       box: null,
@@ -106,7 +102,6 @@ export default {
     await this.getChanDetail(false)
     console.log('this.chanItem')
     console.log(this.chanItem)
-
   },
   updated () {
     // eslint-disable-next-line no-unused-vars

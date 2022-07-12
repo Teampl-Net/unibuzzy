@@ -10,13 +10,13 @@
 
       <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
         <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox">
-          <div v-if="alim.readYn === 0" class="readYnArea" />
-            <div @click="goDetail(alim)" class="pushDetailTopArea">
+          <div v-if="alim.readYn === 0" class="readYnArea"></div>
+            <div class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
               </div>
-              <div class="pushDetailHeaderTextArea"> <!-- 여기에 goDetail를 넣으면 알림리스트에서 로고 클릭시 반응 X / But 이벤트가 2번 발생은 하지 않음 -->
+              <div @click="goDetail(alim)" class="pushDetailHeaderTextArea">
                 <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
@@ -42,7 +42,7 @@
           <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
           </div>
       </template>
-      <myObserver  @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
       <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
@@ -101,16 +101,14 @@ export default {
     goChanDetail (data) {
       // eslint-disable-next-line no-new-object
       // console.log(data)
-
       var param = new Object()
       param.targetType = 'chanDetail'
       param.teamKey = data.creTeamKey
       param.targetKey = data.creTeamKey
       param.nameMtext = data.nameMtext
       param.chanName = data.nameMtext
-
+      param.readYn = data.readYn
       // 세션에서 유저키 받아오기
-
       var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (data.creUserKey === userKey) {
         param.ownerYn =  true
@@ -124,6 +122,8 @@ export default {
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
       param.value = value
+      value.readYn = 1
+      param.readYn = value.readYn
       this.$emit('goDetail', param)
     },
 
