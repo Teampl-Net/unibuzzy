@@ -127,9 +127,9 @@ export default {
       if (this.viewTab === 'user') {
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'all') {
-        this.imgUrl = '/resource/common/uplaceholder_white.png'
+        this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'mychannel') {
-        this.imgUrl = '/resource/common/userName.png'
+        this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
     getAbsoluteTop (element) {
@@ -215,8 +215,10 @@ export default {
       // this.chanList = []
       this.viewTab = tab
       this.offsetInt = 0
+      document.getElementById('chanListWrap').className = 'fadeOutAnimation'
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      document.getElementById('chanListWrap').className = 'fadeInAnimation'
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {

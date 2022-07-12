@@ -69,8 +69,9 @@ export default {
         excelPopYn:{}
     },
     created(){
-        // console.log('##memberDetail##')
+        console.log('##memberDetail##')
         // console.log(this.propData)
+        console.log(this.propData);
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             this.memName = this.$changeText(this.propData.userDispMtext)
             this.memEmail= this.propData.userEmail
@@ -130,6 +131,9 @@ export default {
                     param.userDispMtext = 'KO$^$' + this.memName
                     param.userEmail = this.memEmail
                     param.userPhone = this.memPhone
+
+                    param.cabinetKey = this.propData.currentCabinetKey
+                    param.teamKey = this.propData.currentTeamKey
                     this.$emit('addDirectAddMemList', param)
                 }
 

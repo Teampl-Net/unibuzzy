@@ -2,14 +2,14 @@
 <!-- <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
 <div style="width: 100vw; height: 100vh; position: fixed;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
 
-<div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true }" >
+<div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
       <!-- <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
-      <img v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1"  src="../../../assets/images/common/icon_back.png"/>
+      <img @click="goNo" class="mtop-05 mleft-1"  src="../../../assets/images/common/icon_back.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold fl" >{{menuHeaderTitle}}</p>
       <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
-      <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
+      <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
       <div v-else />
 
   </div>
@@ -137,7 +137,8 @@ export default {
       selectAdminList : [],
       book:false,
       board:false,
-      teamNameText:''
+      teamNameText:'',
+      closeYn:false
     }
   },
   components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
@@ -171,7 +172,7 @@ export default {
         this.board = false
         }else {
         this.board = true
-       }
+      }
 
     },
     async getFollowerList () {
@@ -355,12 +356,17 @@ export default {
       this.$emit('openPop', params)
     },
     goNo (){
+      this.closeYn = true
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-      this.$emit('closePop')
+
+      setTimeout(() => {
+        this.$emit('closePop')
+      }, 200);
+
     },
     editChanMenu (){
       this.teamNameText = this.teamName()

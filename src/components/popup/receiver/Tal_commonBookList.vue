@@ -265,6 +265,8 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('commonBookCard')
             var index = null
+            console.log('this.listData 여기요@@')
+            console.log(this.listData)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
                 for (var i = 0; i < this.listData.length; i ++) {
@@ -272,7 +274,7 @@ export default {
                     menu = {}
                     var tt = this.listData[i]
                     if(this.listData[i].menuType)
-                        menu.menuType = this.listData[i].menuType
+                        menu.menuType = 'G'
                     menu.teamKey = this.propObject.currentTeamKey
                     if(this.listData[i].parentMenuKey)
                         menu.parentMenuKey = this.listData[i].parentMenuKey
@@ -280,6 +282,10 @@ export default {
                         menu.cabinetKey = this.listData[i].cabinetKey
                     if(this.listData[i].cabinetNameMtext)
                         menu.cabinetNameMtext = this.listData[i].cabinetNameMtext
+
+                    if(this.listData[i].sysCabinetCode)
+                        menu.sysCabinetCode = this.listData[i].sysCabinetCode
+
                     teamMenuList.push(menu)
                     break
                 }

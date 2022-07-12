@@ -185,8 +185,8 @@ export default {
 }
 
 .boombox {
-    top: -100px;
-    left: 16px;
+  top: -100px;
+  left: 16px;
   position: absolute;
   width: 88px;
   height: 100px;

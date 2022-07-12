@@ -126,6 +126,7 @@ export default {
       console.log(result)
     },
     async addDirectly(params){
+
       var follower = new Object()
       var param = new Object()
 
@@ -152,6 +153,8 @@ export default {
           this.getManagingList(this.tab)
         }
       }
+
+      this.changeTab('Admin')
 
 
     },

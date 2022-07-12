@@ -199,7 +199,7 @@ export default {
       boardDetail: {},
       selectBoardTypeText: '게시판의 유형을 선택해주세요',
       selectId: '',
-      shareType: 'all', // 공유 대상자 (팔로워 전체: all, 대상 선택: select)
+      shareType: 'select', // 공유 대상자 (팔로워 전체: all, 대상 선택: select)
       selectTypePopShowYn: false,
       blindYn: false, // 익명게시판
       fileYnInput: false, // 파일업로드 게시판

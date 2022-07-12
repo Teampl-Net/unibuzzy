@@ -179,17 +179,20 @@ export default {
       var cardList = document.getElementsByClassName('receiverTeamListCard')
       var index = null
       // debugger
+      console.log('this.boardList 여기를 보세요!!!')
       console.log(this.boardList)
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
         for (var i = 0; i < this.boardList.length; i++) {
           if (index === i) {
             menu = {}
+            menu.menuType = 'C'
             if (this.boardList[i].menuType) { menu.MenuType = this.boardList[i].menuType }
             if (this.boardList[i].teamKey) { menu.teamKey = this.boardList[i].teamKey }
             if (this.boardList[i].parentMenuKey) { menu.parentMenuKey = this.boardList[i].parentMenuKey }
             if (this.boardList[i].cabinetKey) { menu.cabinetKey = this.boardList[i].cabinetKey }
             if (this.boardList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext }
+            if (this.boardList[i].sysCabinetCode) { menu.sysCabinetCode = this.boardList[i].sysCabinetCode }
             teamMenuList.push(menu)
             break
           }

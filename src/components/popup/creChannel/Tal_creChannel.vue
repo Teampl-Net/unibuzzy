@@ -201,8 +201,9 @@ export default {
       gParam.logoFilekey = this.selectIcon.selectedId
       gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
+      var params = new Object()
       if(delYn === true && this.chanDetail.modiYn === true){
-
+        params.deleteYn = true
         gParam.deleteYn = true || 1
 
       }
@@ -212,7 +213,7 @@ export default {
         this.checkPopYn = false
         this.okPopYn = true
         // eslint-disable-next-line no-new-object
-        var params = new Object()
+
         params.targetType = 'chanDetail'
         params.nameMtext = 'KO$^$' + this.inputChannelName
         if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
@@ -225,9 +226,9 @@ export default {
           params.newChan = true
         }
 
-        if(delYn === true && this.chanDetail.modiYn === true) {
-          params.deleteYn = delYn
-        }
+        // if(delYn === true && this.chanDetail.modiYn === true) {
+        //   params.deleteYn = delYn
+        // }
         this.$emit('successCreChan', params)
       }
     },

@@ -6,6 +6,7 @@
     <transition name="showModal">
       <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams"  @openZLoading="this.loadingIndexYn = true" @closeZLoading="this.loadingIndexYn = false"/>
     </transition>
+    <div style="background-color:#00000050; width:100vw; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>

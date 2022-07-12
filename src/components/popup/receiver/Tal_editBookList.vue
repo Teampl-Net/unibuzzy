@@ -30,6 +30,7 @@ export default {
         console.log('propData')
         console.log(this.propData)
         this.getBookList()
+
     },
     async mounted () {
         if(this.propData.value.clickData){
@@ -53,8 +54,8 @@ export default {
     },
         watch: {
             pageUpdate (value, old) {
-            var hStack = this.$store.getters.hStack
-            this.backClick()
+                var hStack = this.$store.getters.hStack
+                this.backClick()
             /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */

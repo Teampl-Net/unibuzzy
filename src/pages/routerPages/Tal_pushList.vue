@@ -273,7 +273,6 @@ export default {
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
       this.offsetInt = 0
       document.getElementById('pushListWrap').className = 'fadeOutAnimation'
-
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -475,14 +474,8 @@ export default {
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
   transition: .3s;
 }
-.fadeInAnimation{
-  animation-name: fadein; animation-duration: 0.2s;
-  animation-fill-mode: forwards;
-}
-.fadeOutAnimation{
-  animation-name: fadeout; animation-duration: 0.2s;
-  animation-fill-mode: forwards;
-}
+
+
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;

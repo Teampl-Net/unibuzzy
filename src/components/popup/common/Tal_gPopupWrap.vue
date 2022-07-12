@@ -121,7 +121,8 @@ export default {
       chanName: '',
       memberDetailOpen: false,
 
-      refreshToken: 0
+      refreshToken: 0,
+      delyn:false
 
     }
   },
@@ -210,17 +211,29 @@ export default {
   },
   methods: {
     async addDirectAddMemList (param) {
+      console.log('paramparamparamparamparam')
+      console.log(param)
       if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
       } else {
-        // await this.$refs.selectManagerCompo.changeDirectMemList(param)
-        this.$refs.mamberManagementCompo.addDirectly(param)
+        if(param.cabinetKey === undefined || param.cabinetKey === null || param.cabinetKey === ""){
+          await this.$refs.mamberManagementCompo.addDirectly(param)
+        }else{
+          await this.$refs.selectManagerCompo.changeDirectMemList(param)
+        }
+
+//           addDirectAddMemList
+// changeDirectMemList
+
+
+
 
         this.closePop()
       }
     },
     openDetailYn (bool) {
       this.memberDetailOpen = bool
+      alert(this.memberDetailOpen)
     },
     bgcolor (data) {
       console.log(data)
@@ -368,7 +381,8 @@ export default {
       this.popParams = params
       this.popShowYn = true
     },
-    async parentClose () {
+    async parentClose (delyn) {
+      this.delyn = delyn
       await this.closePop(true)
       await this.closeXPop(true)
     },
@@ -403,7 +417,7 @@ export default {
         } else if (this.targetType === 'boardMain') {
           this.$refs.boardMainPop.getContentsList()
           await this.$refs.boardMainPop.refresh()
-        } else if (this.targetType === 'chanDetail') {
+        } else if (this.targetType === 'chanDetail' && this.delyn !== true) {
           await this.$refs.gPopChanAlimList.refreshList()
           await this.$refs.chanMenuCompo.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
@@ -414,8 +428,11 @@ export default {
       }
     },
     successCreChan (params) {
+      console.log('successCreChan params!!!');
+      console.log(params);
       if (params.deleteYn === true && params.modiYn === true) {
-        this.$emit('parentClose')
+        this.$emit('parentClose',true)
+
         // this.closeXPop()
         return
       }

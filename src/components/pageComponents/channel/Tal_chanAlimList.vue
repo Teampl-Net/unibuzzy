@@ -40,7 +40,6 @@
   </div>
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
     <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
-    <followInfo  v-if="this.myContentsCount === 0" @closePop="chanFollowInfoYn = false" :chanInfo='chanItem' :adminYn='adminYn' />
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -49,6 +48,9 @@
     <chanDetailComp @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
+  <div class="zoomInOutPop" style="position: fixed; width:100%; height:100%; z-index:9; left:0; top:0; ">
+    <greetingInfo  v-if="greetingInfoYn" @closePop="greetingInfoYn = false" :chanInfo='chanItem' :type='greetingType' />
+  </div>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 </div>
 </template>
@@ -56,11 +58,11 @@
 <script>
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
-import followInfo from '../channel/Tal_chanFollowInfo.vue'
+import greetingInfo from '../channel/Tal_chanFollowInfo.vue'
 export default {
   data () {
     return {
-      chanFollowInfoYn: true,
+      greetingInfoYn: false,
       reloadShowYn: false,
       alimListToDetail: false,
       box: null,
@@ -78,7 +80,8 @@ export default {
       adminYn: false,
       detailShowYn: true,
       memberYn: false,
-      myContentsCount: null
+      myContentsCount: null,
+      greetingType : 'follow'
 
     }
   },
@@ -89,19 +92,28 @@ export default {
   },
   props: {
     chanDetail: {}
+
   },
   components: {
     pushList,
     chanDetailComp,
-    followInfo
+    greetingInfo
   },
   async created () {
+    console.log('this.chanDetail')
+    console.log(this.chanDetail)
+
     this.$emit('openZLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
     console.log('this.chanItem')
     console.log(this.chanItem)
+    if(this.chanDetail.newChan === true){
+      this.greetingInfoYn = true
+      this.greetingType = 'admin'
+    }
+
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -159,7 +171,11 @@ export default {
       }
       var resultList = await this.$getTeamList(paramMap)
       this.chanItem = resultList.data.content[0]
-      this.chanItem.totalElements = resultList.data.totalElements
+
+      if(this.chanItem){
+        this.chanItem.totalElements = resultList.data.totalElements
+      }
+
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
@@ -202,6 +218,11 @@ export default {
       await this.getChanDetail(false)
       this.$emit('closeZLoading')
       // this.detailShowYn = false
+
+      this.greetingInfoYn = true
+      this.greetingType = 'follow'
+
+
     },
     changeText (text) {
       var changeTxt = ''
