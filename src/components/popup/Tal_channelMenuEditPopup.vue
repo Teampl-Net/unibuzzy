@@ -161,12 +161,16 @@ export default {
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-        this.boardList = []
+        // this.boardList = []
         await this.getTeamMenuList()
       }
+      this.anima()
+    },
+    anima () {
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
+      //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
       }, 800)
     },
     async changePosTeamMenu () {

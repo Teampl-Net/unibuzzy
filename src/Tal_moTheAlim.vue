@@ -1,5 +1,5 @@
 <template>
-  <div id="moTheAlimWrap">
+  <div id="moTheAlimWrap" style="height: 100vh; width: 100vw;">
     <fullModal id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
