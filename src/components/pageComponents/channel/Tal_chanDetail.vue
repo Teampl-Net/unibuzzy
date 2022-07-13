@@ -13,13 +13,14 @@
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
-        <div v-if="admYn" style="editChanBtnWrap">
+        <div v-if="admYn" class="editChanBtnWrap">
           <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
         <div class="chanLogoWrap">
           <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
+          <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanDetail.officialYn" style="position: absolute; width:50px; bottom:-1.6rem; left: 50%; transform: translateX(-50%);" alt="">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && this.followTypeText !== '소유자'" class="mtop-05">

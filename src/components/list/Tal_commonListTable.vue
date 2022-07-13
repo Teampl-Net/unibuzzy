@@ -11,7 +11,11 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
             <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: value.ownerYn === true}">
-              <div class="chanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+              <div class="chanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+              <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style=" width:30px; position:absolute;bottom:-1rem " alt="">
+
+              </div>
+
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->
                 <!-- <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
@@ -21,7 +25,11 @@
             <td v-on:click="goDetail(value)" :class="{top5MyPushColor: value.ownerYn}">
                 <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <div>
+                <!-- <div style="display: flex; align-items: center; justify-content: space-between;"> -->
+                  <!-- <div style="display: flex; align-items: center; "> -->
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>
+
+                  <!-- </div> -->
                     <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
                     <!-- <div :style="'background-color:' + value2.stickerColor" v-for="(value2, index2) in value.stickerList" :key="index2" style="width: 15px; margin-top: 8px; margin-right: 5px; height: 15px;float: right;border-radius: 10px; font-size: 12px; text-align: center;">{{cutStickerName(value2.stickerName)}}</div> -->
                 </div>
@@ -102,7 +110,7 @@ export default {
 <style scoped>
 /* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
 .top5MyPushColor { background-color: #6768a712;}
-.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
+.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
 .chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .commonListTr{
 animation-name: fadein;

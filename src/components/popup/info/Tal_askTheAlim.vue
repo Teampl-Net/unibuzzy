@@ -1,9 +1,9 @@
 <template>
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100vh;">
   <div style="width: 100%; height: 80%; margin-bottom: 3rem;">
-    <select class="askBoxWrap">
+    <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
-    </select>
+    </select> -->
     <input type="text" class="askBoxWrap askCommonFont mtop-1" v-model="askTitle" placeholder="제목"/>
 
     <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
@@ -49,7 +49,7 @@ export default {
       formEditorShowYn: false,
 
       viewTab: 'text',
-      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }]
+      activeTabList: [{ display: '기본 문의', name: 'text' }, { display: '복합 문의', name: 'complex' }]
 
     }
   },

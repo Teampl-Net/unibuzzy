@@ -379,6 +379,7 @@ export default {
     async parentClose (delyn) {
       this.delyn = delyn
       await this.closePop(true)
+      this.$emit('reloadPop', true)
       await this.closeXPop(true)
     },
     changePop (params) {

@@ -30,9 +30,7 @@ export default {
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
     }
-    var history = this.$store.getters.hStack
-    this.popId = 'selectBookPop' + this.propData.cabinetKey || this.propData.targetKey
-    history.push(this.popId)
+
     this.$store.commit('updateStack', history)
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
@@ -93,7 +91,7 @@ export default {
             this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
         }
         this.editBookSelectedList()
-        // 
+        //
     },
     async getBookMemberList () {
         var paramMap = new Map()
@@ -114,7 +112,7 @@ export default {
             }
         }
         this.editMemberSelectedList()
-        // 
+        //
     },
     editPop () {
       // eslint-disable-next-line no-new-object
@@ -226,8 +224,9 @@ export default {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
-        this.$emit('closeXPop')
+
       }
+      this.$emit('closeXPop')
     },
     async openMCabUserList (data) {
       if (!this.teamEditYn) {

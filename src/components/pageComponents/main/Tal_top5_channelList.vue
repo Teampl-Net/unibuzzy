@@ -7,10 +7,16 @@
       <img src="/resource/common/placeholder_white.png" />
     </div>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}">
-      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"><img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: 0;" /></div>
+      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+      <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: 0;" />
+      <img src="../../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px;  position: absolute; bottom: -0.3rem; " class='fl ' alt="">
+      </div>
         <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
-            <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
+            <!-- <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p> -->
+            <p class="font15 fl fontBold mNone commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
+
+
             <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
                 <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColo font12" >{{value.followerCount}}</span>

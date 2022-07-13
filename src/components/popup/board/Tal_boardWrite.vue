@@ -55,7 +55,6 @@
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
-
 export default {
   props: {
     propData: {},
@@ -95,7 +94,7 @@ export default {
       pushDetailPopShowYn: true,
       progressShowYn: false,
       viewTab: 'text',
-      activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }]
+      activeTabList: [{ display: '기본 글', name: 'text' }, { display: '복합 글', name: 'complex' }]
     }
   },
   computed: {
@@ -155,6 +154,7 @@ export default {
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+        // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
       }
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')

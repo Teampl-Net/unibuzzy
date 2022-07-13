@@ -18,6 +18,7 @@
               </div>
               <div @click="goDetail(alim)" class="pushDetailHeaderTextArea">
                 <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                <img src="../../assets/images/channel/icon_official.svg" v-if="alim.officialYn" style="width: 15px; transform: scale(2); margin-top: 0.2rem;" class='fl mleft-03' alt="">
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
                 <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -73,6 +74,7 @@ export default {
 
   },
   mounted () {
+    console.log(this.contentsList)
   },
   methods: {
     loadingRefShow(){

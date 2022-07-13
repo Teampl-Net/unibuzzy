@@ -244,11 +244,13 @@ export default {
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-unused-vars
+      console.log(this.mCabinetContentsDetail)
       if (this.propData.ownerYn === 1) {
         this.shareAuth.R = true
         this.shareAuth.W = true
         this.shareAuth.V = true
       } else {
+
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
       console.log('this.mCabinetContentsDetail.mShareItemList')

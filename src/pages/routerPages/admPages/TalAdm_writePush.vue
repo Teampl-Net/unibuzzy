@@ -18,7 +18,7 @@
                 <!-- {{receiverList}} -->
                 <div class="fl" style="margin-bottom: 15px;">
                   <p class="fontBold commonColor">수신 대상</p>
-                  <div style="width: calc(100% - 115px); min-height: 2rem; padding-top: 3px; float: left;" v-if="!this.replyPopYn">
+                  <div style=" min-height: 2rem; padding-top: 3px; float: left;" v-if="!this.replyPopYn">
                     <div class="fl" style="margin-bottom: 10px; margin-left: 10px;">
                       <div class="fl" style="border: 1px solid #ccc;  width: 50px; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
                       <div class="fl" style="border: 1px solid #ccc;  width: 50px; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
@@ -28,11 +28,12 @@
 
                     <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
                     <label class="mright-1 fl" for="allFalse">선택</label> -->
-                    <div v-if="!allRecvYn" class="inputArea recvUserArea font15" style="padding: 3px 10px; margin-left: 10px; width: calc(100% + 10px); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
-                      {{receiverText}}
-                    </div>
+
                   </div>
-                  <div style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" v-else>
+                  <div v-if="!allRecvYn" class="inputArea recvUserArea font15 fl" style="padding: 3px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                      {{receiverText}}
+                  </div>
+                  <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
                     <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
                 </div>
@@ -58,7 +59,7 @@
 
               <div style="width: 100%;float: left; min-height: 50px; position: relative;">
                 <gActiveBar :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
-                <div style="width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: -20px; position: absolute; margin-top: 7px; ">
+                <div class="titleAddArea" >
                   <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
                   <label class="fl" for="titleShow">제목 추가</label>
                 </div>
@@ -211,7 +212,7 @@ export default {
     // },
     setSelectedList (obj) {
       this.receiverPopYn = false
-      // 
+      //
       this.receiverList = obj.data
       this.list = []
       this.selectedReceiverList = []
@@ -228,12 +229,14 @@ export default {
           shareItemBookObject.accessKey = selectedBookList.cabinetKey
 
           /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-          this.receiverText += ', ' + selectedBookList.cabinetNameMtext
-          this.list.push(shareItemBookObject)
+          // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
+          // this.list.push(shareItemBookObject)
+          this.receiverText += selectedBookList.cabinetNameMtext + ', '
+          this.selectedReceiverList.push(shareItemBookObject)
         }
         /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-        this.receiverText += selectedBookList.cabinetNameMtext + ', '
-        this.selectedReceiverList.push(shareItemBookObject)
+
+
       }
 
       // var shareItemMemberList = []
@@ -252,8 +255,7 @@ export default {
           this.selectedReceiverList.push(shareItemMemberObject)
         }
       }
-
-
+      this.receiverText = this.receiverText.slice(0,-2);
       console.log(obj)
     },
     openPushReceiverSelect () {
@@ -310,7 +312,7 @@ export default {
       } else if (this.viewTab === 'text') {
         // param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        // 
+        //
         targetMsgDiv = document.getElementById('textMsgBox')
 
       }
@@ -345,7 +347,7 @@ export default {
       } else {
         param.title = this.$titleToBody(targetMsgDiv)
       }
-      // 
+      //
       param.jobkindId = 'ALIM'
       param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
 
@@ -515,7 +517,7 @@ export default {
 .pageTopArea >div{
   width: 100%; min-height: 2rem;
 }
-.pageTopArea p{width: 80px; font-size: 16px; float: left; line-height: 30px; margin-left: 5px; margin-right: 10px; }
+.pageTopArea p{ font-size: 16px; float: left; line-height: 30px; margin-left: 5px; margin-right: 10px; }
 /* .pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;} */
 .pageTopArea input{font-size: 16px;}
 .pageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
@@ -558,5 +560,13 @@ export default {
 .formText {padding: 0;}
 
 .msgArea span {padding: 0;}
+.titleAddArea{
+  width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: -20px; position: absolute; margin-top: 7px;
+}
+@media screen and (max-width:330px) {
+  .titleAddArea{
+    top: -1.5rem;
+  }
 
+}
 </style>
