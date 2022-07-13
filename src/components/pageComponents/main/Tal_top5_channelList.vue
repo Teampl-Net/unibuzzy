@@ -16,7 +16,6 @@
             <!-- <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p> -->
             <p class="font15 fl fontBold mNone commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
 
-
             <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
                 <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColo font12" >{{value.followerCount}}</span>

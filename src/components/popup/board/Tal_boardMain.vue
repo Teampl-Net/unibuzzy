@@ -250,7 +250,6 @@ export default {
         this.shareAuth.W = true
         this.shareAuth.V = true
       } else {
-
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
       console.log('this.mCabinetContentsDetail.mShareItemList')

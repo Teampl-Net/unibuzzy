@@ -129,6 +129,10 @@ export default {
       var param = new Object()
       // eslint-disable-next-line no-unused-vars
       var result = null
+      // eslint-disable-next-line no-unused-vars
+      var tt = this.memberList
+      // eslint-disable-next-line no-debugger
+      debugger
       for (var i = 0; i < this.memberList.length; i++) {
         if (this.memberList[i].selectedYn) {
           userKeyList.push(this.memberList[i].userKey)
@@ -175,7 +179,7 @@ export default {
 
           this.$saveMCabContents(param)
         }
-        console.log(this.directAddMemList)
+        console.log(this.userKeyList)
 
         if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
           // eslint-disable-next-line no-new-object

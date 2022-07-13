@@ -274,7 +274,7 @@ export default {
           break
       }
     },
-    selectPermission(id){
+    selectPermission (id) {
       switch (id) {
         case 'write':
           this.writePermissionSelectYn = true
@@ -286,7 +286,6 @@ export default {
           this.commentPermissionSelectYn = true
           break
       }
-
     },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
@@ -305,7 +304,7 @@ export default {
       console.log(data)
       console.log('setting')
       console.log(data.mCabinet)
-      if(data.mCabinet){
+      if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }
 
@@ -315,14 +314,10 @@ export default {
       if (data.mCabinet.replyYn === 1) { this.replyYnInput = true; this.okFunctionList += '댓글 지원O' } else { this.okFunctionList += '댓글 지원X'; this.replyYnInput = false }
       // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
 
-
-
-
-
       if (data.mCabinet.mShareItemList.length > 0) {
         var indexOf = data.mCabinet.cabShareList.findIndex(i => i.accessKind === 'T')
-        console.log('T가 있나요? '+indexOf);
-        if ( indexOf !== -1 ) {
+        console.log('T가 있나요? ' + indexOf)
+        if (indexOf !== -1) {
           this.changeShareType('all')
           this.writePermissionAllYn = false
           this.readPermissionAllYn = false
@@ -338,56 +333,52 @@ export default {
           this.readPermission = '전체에게 권한 부여'
           this.commentPermission = '전체에게 권한 부여'
 
-          if(findPermissionW !== -1){
+          if (findPermissionW !== -1) {
             var permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if(data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'W'  ){
+              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'W') {
                 permiAll = true
               }
             }
-            if(permiAll){
+            if (permiAll) {
               this.writePermissionAllYn = true
-            }else{
+            } else {
               this.writePermissionSelectYn = true
-              let count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'W').length;
-              this.writePermission = count+'명/그룹에게 권한 부여'
+              const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'W').length
+              this.writePermission = count + '명/그룹에게 권한 부여'
             }
           }
-          if(findPermissionV !== -1){
-            var permiAll = false
+          if (findPermissionV !== -1) {
+            permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if(data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'V'  ){
+              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'V') {
                 permiAll = true
               }
             }
 
-            if(permiAll){
+            if (permiAll) {
               this.readPermissionAllYn = true
-            }else{
+            } else {
               this.readPermissionSelectYn = true
-              let count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'V').length;
-              this.readPermission = count+'명/그룹에게 권한 부여'
+              const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'V').length
+              this.readPermission = count + '명/그룹에게 권한 부여'
             }
           }
-          if(findPermissionR !== -1){
-            var permiAll = false
+          if (findPermissionR !== -1) {
+            permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if(data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'R'  ){
+              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'R') {
                 permiAll = true
               }
             }
-            if(permiAll){
+            if (permiAll) {
               this.commentPermissionAllYn = true
-            }else{
+            } else {
               this.commentPermissionSelectYn = true
-              let count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'R').length;
-              this.commentPermission = count+'명/그룹에게 권한 부여'
+              const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'R').length
+              this.commentPermission = count + '명/그룹에게 권한 부여'
             }
           }
-
-
-
-
 
           // for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
           //   switch (data.mCabinet.mShareItemList[i].shareType) {
@@ -402,9 +393,6 @@ export default {
           //       break
           //   }
           // }
-
-
-
         } else {
           this.changeShareType('select')
           //
@@ -451,7 +439,7 @@ export default {
       console.log('modiBoarddatamodiBoarddatamodiBoarddatamodiBoarddatamodiBoarddata')
       var text = ''
       var selectLength = 0
-      if (data.bookList){
+      if (data.bookList) {
         if (data.bookList.length > 0) {
           // itemList 중복 제거
           var indexOf = this.selectItemList.findIndex(i => i.shareType === data.bookList[0].shareType)
@@ -473,7 +461,7 @@ export default {
         }
       }
 
-      if(data.memberList){
+      if (data.memberList) {
         if (data.memberList.length > 0) {
           // itemList 중복 제거
           indexOf = this.selectItemList.findIndex(i => i.shareType === data.memberList[0].shareType)
@@ -546,7 +534,7 @@ export default {
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
       // console.log(this.shareType)
       if (this.shareType === 'all') {
-        if(this.selectShareList){
+        if (this.selectShareList) {
           shareList = this.selectShareList
           itemList = this.selectItemList
         }
@@ -581,7 +569,6 @@ export default {
 
         cabinet.shareList = shareList
         cabinet.itemList = itemList
-
       } else if (this.shareType === 'select') {
         if (!this.permissionSelectedYn.W) {
           // 공유대상 선택 시 작성 알림 댓글 itemlist 만들어주기
@@ -759,26 +746,20 @@ export default {
         this.selectedReceiver = '0명에게 공유중'
       }
 
-
-
-      var shaerAllPermissionList = datas
       // var shareType = ''
       // if(this.currentSelectBookType === 'write'){this.writePermission = this.selectedReceiver; shareType }
       // if(this.currentSelectBookType === 'read'){this.readPermission = this.selectedReceiver}
       // if(this.currentSelectBookType === 'comment'){this.commentPermission = this.selectedReceiver}
 
-    if (data.bookList) {
-
-
+      if (data.bookList) {
         for (let i = 0; i < data.bookList.length; i++) {
-
           var indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.bookList[i].shareSeq)
           while (indexOf !== -1) {
             this.selectShareList.splice(indexOf, 1)
             indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.bookList[i].shareSeq)
           }
 
-          if(indexOf === -1){
+          if (indexOf === -1) {
             var tempList = {}
             tempList.accessKey = data.bookList[i].cabinetKey
             tempList.accessKind = 'C'
@@ -790,35 +771,33 @@ export default {
       }
 
       if (data.memberList) {
-
         for (let i = 0; i < data.memberList.length; i++) {
-          var indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.memberList[0].shareSeq)
+          indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.memberList[0].shareSeq)
           while (indexOf !== -1) {
             this.selectShareList.splice(indexOf, 1)
             indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.memberList[0].shareSeq)
           }
-          if(indexOf === -1){
-            var tempList = {}
+          if (indexOf === -1) {
+            tempList = {}
             tempList.accessKey = data.memberList[i].userKey
             tempList.accessKind = 'U'
             tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             tempList.shareSeq = data.memberList[i].shareSeq
             this.selectShareList.push(tempList)
           }
-
         }
       }
       console.log('selectShareList')
       console.log(this.selectShareList)
 
-      if(this.currentSelectBookType === 'select'){
-        this.writePermission = this.selectedReceiver; this.readPermission = this.selectedReceiver; this.commentPermission = this.selectedReceiver;
+      if (this.currentSelectBookType === 'select') {
+        this.writePermission = this.selectedReceiver; this.readPermission = this.selectedReceiver; this.commentPermission = this.selectedReceiver
         this.selectedList = datas
-      }else{
+      } else {
         var shareType = ''
-        if(this.currentSelectBookType === 'write') shareType = 'W' ;
-        if(this.currentSelectBookType === 'read') shareType = 'V' ;
-        if(this.currentSelectBookType === 'comment') shareType = 'R' ;
+        if (this.currentSelectBookType === 'write') shareType = 'W'
+        if (this.currentSelectBookType === 'read') shareType = 'V'
+        if (this.currentSelectBookType === 'comment') shareType = 'R'
 
         this.currentPermissionType = shareType
 
@@ -834,13 +813,8 @@ export default {
           }
         }
 
-        this.setOk(data);
+        this.setOk(data)
       }
-
-
-
-
-
     },
 
     changeShareType (type) {
@@ -922,7 +896,7 @@ export default {
   height: 2rem;
 }
 .inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap; width:80%;}
-.inputBoxThema2{}
+
 .editWrap{
   background-color: #F9F9F9;
 }
