@@ -41,7 +41,7 @@
       <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
     </div>
   </div>
-  <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; ">
+  <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; overflow: hidden;">
     <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
@@ -322,9 +322,9 @@ export default {
   text-align: left;
 }
 .chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
-.channelItemBoxHeight{height: calc(100% - 50px)!important;}
+.channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
-.channelItemBox{background-color: #fff;  height: 700px; position: relative; width: 100%;float: left; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}

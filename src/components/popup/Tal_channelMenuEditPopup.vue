@@ -218,6 +218,7 @@ export default {
 </script>
 
 <style scoped>
+.addNewEffect {transition : background-color 0.5s ease-in;}
 .btnPlus{
   width:4rem; height:4rem; display: flex;
   padding-top: 5px;

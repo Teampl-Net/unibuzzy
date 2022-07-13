@@ -314,7 +314,7 @@ export default {
 .receiverTeamText{ height:40px; line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
 .foo {
-   transition : background-color 0.5s ease-in;
+    transition : background-color 0.5s ease-in;
 }
 .commonBookCard {
     /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */

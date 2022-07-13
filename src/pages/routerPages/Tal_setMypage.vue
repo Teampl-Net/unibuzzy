@@ -34,7 +34,7 @@
       </div>
       <div class="subPaddingWrap">
         <table>
-          <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr>
+          <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
           <!-- <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr> -->
           <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
           <!-- <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat('2021-06-22 14:22')}}</td></tr> -->

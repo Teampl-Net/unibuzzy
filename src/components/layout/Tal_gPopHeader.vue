@@ -1,16 +1,19 @@
 <template>
   <div class="commonPopHeaderWrap headerShadow">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
-    <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
-    <img v-else src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn" >
+    <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class="fl commonPopBackBtn commonPopHeaderWrapImg" >
+    <img v-else src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn commonPopHeaderWrapImg" >
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
+    <!-- 멤버 도우미 버튼 -->
+    <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 편집'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
+    <helpButtonPop v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 편집'" :helpButtonType="this.helpButtonType" />
     <div class="commonColor font16 headerTitleWrap" style="">
           <!--v-if="this.headerTitle === '주소록 관리'|| this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'"> -->
       {{chanName}}
-      </div>
+    </div>
 
     <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
     <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" />
@@ -23,7 +26,7 @@
 </template>
 
 <script>
-/* eslint-disable */
+import helpButtonPop from '../popup/info/Tal_helpButtonPop.vue'
 export default {
   name: 'talHeader',
   props: {
@@ -38,7 +41,16 @@ export default {
     targetType: {}
   },
   methods: {
-    openMenu(){
+    clickHelp () {
+      if (this.headerTitle === '멤버 관리') {
+        this.helpButtonType = 'member'
+      } else if (this.headerTitle === '주소록 관리') {
+        this.helpButtonType = 'book'
+      } else if (this.headerTitle === '게시판 관리') {
+        this.helpButtonType = 'board'
+      }
+    },
+    openMenu () {
       // var param = {}
       // param.targetType = 'chanMenu'
       this.$emit('openMenu')
@@ -61,14 +73,17 @@ export default {
   },
   data () {
     return {
+      helpButtonType: ''
     }
   },
+  components: {
+    helpButtonPop
+  },
   created () {
-    console.log(this.targetType);
-    if(this.targetType === ''){
+    console.log(this.targetType)
+    if (this.targetType === '') {
 
     }
-
   },
   watch: {
     bgblack () {
@@ -80,7 +95,7 @@ export default {
 </script>
 
 <style>
-.commonPopHeaderWrap > img {position: absolute; left: 1rem;}
+.commonPopHeaderWrapImg {position: absolute; left: 1rem;}
 .commonPopHeaderWrap{ position: fixed; justify-content: center; align-items: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; }
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; font-size: 20px;}

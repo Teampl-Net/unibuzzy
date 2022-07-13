@@ -8,6 +8,7 @@
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
+  <!-- <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
   <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
@@ -50,13 +51,21 @@ export default {
     this.box = document.getElementById('chanListWrap')
   },
   computed: {
+    // calcPaddingTop () {
+    //   var element = document.getElementById('searchResultWrapLength')
+    //   debugger
+    //   this.paddingTop = element.clientHeight
+    //   return {
+    //     '--paddingTopLength' : (this.paddingTop)  + 'px'
+    //   }
+    // },
     // calcHeaderHeight () {
     //   if (this.headerTop) {
     //   } else {
     //     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     //     this.headerTop = 140
     //   }
-    //   // 
+    //   //
     //   return {
     //     '--headerHeight': this.headerTop + 'px'
     //   }
@@ -138,7 +147,7 @@ export default {
     handleScroll () {
       var element = document.getElementsByClassName('chanRow')[0]
       // eslint-disable-next-line no-
-      // 
+      //
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
@@ -324,6 +333,7 @@ export default {
   },
   data () {
     return {
+      paddingTop: 0,
       imgUrl: '',
       box: null,
       scrollPosition: 0,

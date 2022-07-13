@@ -26,6 +26,12 @@ import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
 
 import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
+import howToUse from '../components/popup/info/Tal_howToUse.vue'
+
+import helpMemberPop from '../components/popup/info/Tal_helpMemberPop.vue'
+import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
+import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
+
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -206,6 +212,26 @@ const routes = [
   {
     path: '/testReceiver',
     component: manaReceiver
+  },
+  {
+    path: '/howToUse',
+    component: howToUse
+  },
+  {
+    path: '/helpMemberPop',
+    component: helpMemberPop
+  },
+  {
+    path: '/helpMemberPop',
+    component: helpMemberPop
+  },
+  {
+    path: '/helpBookPop',
+    component: helpBookPop
+  },
+  {
+    path: '/helpBoardPop',
+    component: helpBoardPop
   }
 ]
 

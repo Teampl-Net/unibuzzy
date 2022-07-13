@@ -1,5 +1,5 @@
 <template>
-    <div class="searchResultWrap">
+    <div class="searchResultWrap" id="searchResultWrapLength">
         <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox ">
           <span>{{value.typeName}}: </span>
           {{changeSearchBox(value.typeName, value.keyword)}}

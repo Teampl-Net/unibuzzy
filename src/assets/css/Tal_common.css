@@ -6,6 +6,22 @@
     -webkit-user-select: none;
     user-select: none; */
 /* } */
+/*
+body {
+  -webkit-text-size-adjust:none;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input {
+  -webkit-user-select:all !important;
+  -moz-user-select:all !important;
+  -ms-user-select:all !important;
+  user-select:all !important;
+} */
 
 @media screen and (max-width: 300px) {
   .font18{font-size: 16px}

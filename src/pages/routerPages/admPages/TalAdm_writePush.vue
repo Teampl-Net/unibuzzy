@@ -455,6 +455,12 @@ export default {
 }
 </script>
 <style scoped>
+/* .formCard {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: all !important;
+  user-select: all !important;
+} */
 .receiverClickColor {
   background-color: #6768A7 !important;
   color: white !important;
