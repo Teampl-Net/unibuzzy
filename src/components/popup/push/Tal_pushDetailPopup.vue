@@ -83,9 +83,9 @@ export default {
       var currentPage = this.$store.getters.hCPage
 
       if ((currentPage === 0 || currentPage === undefined)) {
-        this.$emit('openDetailPop', { contentsKey: this.detailVal.data.contentsKey, targetKey: this.detailVal.data.contentsKey, targetType: 'pushDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { contentsKey: this.detailVal.contentsKey, targetKey: this.detailVal.contentsKey, targetType: 'pushDetail', value: this.pushDetail })
       } else {
-        this.$emit('openDetailPop', { contentsKey: this.detailVal.data.contentsKey, targetKey: this.detailVal.data.contentsKey, targetType: 'pushListAndDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { contentsKey: this.detailVal.contentsKey, targetKey: this.detailVal.contentsKey, targetType: 'pushListAndDetail', value: this.pushDetail })
       }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
@@ -101,15 +101,15 @@ export default {
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
       param.contentsKey = 1001172
-      /* param.contentsKey = this.detailVal.data.targetKey */
-      param.contentsKey = this.detailVal.data.contentsKey
+      /* param.contentsKey = this.detailVal.targetKey */
+      param.contentsKey = this.detailVal.contentsKey
       var resultList = await this.$getContentsList(param)
       return resultList
     }
 
   },
   async created () {
-    this.body = this.detailVal.data.body
+    this.body = this.detailVal.body
     var resultList = await this.getContentsList()
     this.pushDetail = resultList.content[0]
     var history = this.$store.getters.hStack

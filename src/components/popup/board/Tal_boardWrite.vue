@@ -25,11 +25,11 @@
                 <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
                 <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답글허용</label></div> -->
               </div>
-              <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+              <gActiveBar :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-                <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+                <div id="textMsgBox" class=""  v-show="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div id="msgBox" @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 
               </div>
             </div>
@@ -46,7 +46,7 @@
   </div>
   <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
-    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
   </div>
 </template>
 <script>
@@ -63,6 +63,50 @@ export default {
   watch: {
     sendOk: function () {
       this.clickPageTopBtn()
+    }
+  },
+  mounted () {
+    var temp = document.createElement('div')
+    temp.innerHTML = this.bodyString
+    if (temp.getElementsByClassName('formCard').length > 0) {
+      this.$refs.activeBar.switchtab(1)
+      var innerHtml = ''
+      var newArr = []
+      var formC = temp.getElementsByClassName('formCard')
+      // eslint-disable-next-line no-new-object
+      var jsonObj = new Object()
+      var imgYn = true
+      for (var i = 0; i < formC.length; i++) {
+        // eslint-disable-next-line no-new-object
+        jsonObj = new Object()
+        imgYn = true
+        innerHtml += formC[i].outerHTML
+        jsonObj.innerHtml = formC[i].innerHTML
+        jsonObj.type = 'image'
+        jsonObj.targetKey = i
+        for (var c = 0; c < formC[i].classList.length; c++) {
+          if (formC[i].classList[c] === 'formText') {
+            jsonObj.type = 'text'
+            imgYn = false
+            break
+          }
+        }
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (imgYn) {
+          jsonObj.pSrc = formC[i].querySelector('img').src
+        }
+        newArr.push(jsonObj)
+      }
+      this.propFormData = newArr
+      document.getElementById('msgBox').innerHTML = ''
+      document.getElementById('msgBox').innerHTML = innerHtml
+      this.viewTab = 'complex'
+      // this.formEditorShowYn = true
+    } else {
+      // eslint-disable-next-line no-debugger
+      // debugger
+      document.getElementById('textMsgBox').innerHTML = this.bodyString
     }
   },
   data () {
@@ -94,7 +138,9 @@ export default {
       pushDetailPopShowYn: true,
       progressShowYn: false,
       viewTab: 'text',
-      activeTabList: [{ display: '기본 글', name: 'text' }, { display: '복합 글', name: 'complex' }]
+      activeTabList: [{ display: '기본 작성', name: 'text' }, { display: '복합 작성', name: 'complex' }],
+      bodyString: '',
+      modiYn: false
     }
   },
   computed: {
@@ -110,10 +156,21 @@ export default {
     }
   },
   created () {
-    console.log(this.propData
-    )
+    if (this.propData.bodyFullStr) {
+      this.bodyString = this.decodeContents(this.propData.bodyFullStr)
+      this.modiYn = true
+      console.log('WOW!!!!' + this.decodeContents(this.propData.bodyFullStr))
+    }
+    if (this.propData.titleStr) {
+      this.writePushTitle = this.propData.titleStr
+    }
   },
   methods: {
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      var changeText = Base64.decode(data)
+      return changeText
+    },
     changeTab (tab) {
       this.viewTab = tab
     },
@@ -171,10 +228,16 @@ export default {
       param.showCreNameYn = true
 
       var result = await this.$saveContents(param)
-      if (result === true) {
+      if (result.result === true) {
         this.sendLoadingYn = false
+        // eslint-disable-next-line no-new-object
+        var newP = new Object()
+        newP.targetKey = result.contentsKey
+        newP.targetType = 'boardDetail'
+        newP.cabinetNameMtext = this.propData.value.cabinetNameMtext
+        newP.value = this.propData
         // this.$emit('successSave')
-        this.$emit('closeXPop', true)
+        this.$emit('successWrite', newP)
       }
     },
     messageAreaClick () {

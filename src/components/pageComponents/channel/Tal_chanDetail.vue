@@ -167,7 +167,7 @@ export default {
       var param = {}
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
       param.teamKey = this.chanDetail.teamKey
-      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) || this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.memberYn = true
       param.teamName = this.$changeText(this.chanDetail.nameMtext)

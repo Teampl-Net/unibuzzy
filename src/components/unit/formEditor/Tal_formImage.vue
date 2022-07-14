@@ -1,5 +1,18 @@
 <template>
-        <form :style="settingCardHeight" :class="selectFileList.length === 0 ? 'imageBorder': ''" @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
+        <div v-if="pSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
+            <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px); height: var(--cardHeight)">
+              <div class="fl mright-05" style="width:100%;">
+                  <img  class="editorImg" style="width:100%;" :src="pSrc" />
+                  <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
+              </div>
+          </div>
+            <!-- <button  class="whiteBtn mright-1" type="submit" :disabled="isUploading">업로드</button> -->
+        <!-- <div>
+            <hr />
+            selectFileList : {{ selectFileList }}
+        </div> -->
+        </div>
+        <form v-else :style="settingCardHeight" :class="selectFileList.length === 0 ? 'imageBorder': ''" @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
@@ -23,6 +36,10 @@ export default {
   name: 'FormValidation',
   components: {},
   mounted () {
+    // eslint-disable-next-line no-unused-vars
+    var test = this.$refs.imageBox
+    // eslint-disable-next-line no-debugger
+    debugger
     this.cardHeight = this.$refs.imageBox.scrollHeight
     // this.$refs.selectFile.click()
   },
@@ -33,7 +50,8 @@ export default {
   },
   props: {
     selectFileListProp: {},
-    targetKey: {}
+    targetKey: {},
+    pSrc: {}
   },
   data () {
     return {
@@ -54,8 +72,14 @@ export default {
       }
     },
     settingCardHeight () {
-      return {
-        '--cardHeight': this.cardHeight + 'px'
+      if (this.pSrc) {
+        return {
+          '--cardHeight': this.$refs.i + 'px'
+        }
+      } else {
+        return {
+          '--cardHeight': this.cardHeight + 'px'
+        }
       }
     }
   },

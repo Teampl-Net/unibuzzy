@@ -9,6 +9,7 @@
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
             <div class="fr">
+              <p class="fl mright-05"  @click="openUpdateContentsPop">수정</p>
               <p class="fl mright-05"  @click="boardFuncClick('BOAR')">삭제</p>
               <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p>
             </div>
@@ -111,9 +112,6 @@ export default {
     manageStickerPop
   },
   async created() {
-    console.log('this.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailValthis.detailVal');
-    console.log(this.detailVal);
-    console.log(this.detailVal.replyYn);
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
     }
@@ -132,6 +130,16 @@ export default {
     }
   },
   methods: {
+    openUpdateContentsPop () {
+      // alert(true)
+      var param = new Object()
+      param.targetKey = this.alimDetail[0].contentsKey
+      param.targetType = 'writeBoard'
+      param.creTeamKey = this.alimDetail[0].creTeamKey
+      param.bodyFullStr = this.alimDetail[0].bodyFullStr
+      param.titleStr = this.alimDetail[0].title
+      this.$emit('openPop', param)
+    },
     boardFuncClick(type){
       this.confirmPopShowYn = true
       this.confirmType = true
@@ -145,17 +153,21 @@ export default {
     async confirmOk(){
       this.confirmPopShowYn = false
       this.confirmType = false
-      var param = {}
+      var inParam = {}
       console.log(this.alimDetail);
-      param.contentsKey = this.alimDetail[0].contentsKey
-      param.jobkindId = "BOAR"
-      param.teamKey = this.alimDetail[0].creTeamKey
+      inParam.contentsKey = this.alimDetail[0].contentsKey
+      inParam.jobkindId = "BOAR"
+      inParam.teamKey = this.alimDetail[0].creTeamKey
       if(this.boardFuncType === "BOAR" ){
-        param.deleteYn = true
-        console.log("Delete Content Result");
+        inParam.deleteYn = true
+        var result = await this.$commonAxiosFunction({
+          url: '/tp.saveContents',
+          param: inParam
+        })
         this.$emit("closeXPop",true)
+        // console.log("Delete Content Result");
       }else if(this.boardFuncType  === "REPORT"){
-        param.reportYn = true
+        inParam.reportYn = true
         this.confirmPopShowYn = true
         this.confirmText='신고되었습니다.'
       }

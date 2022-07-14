@@ -130,10 +130,18 @@ const methods = {
   },
 
   changeText (text) {
-    var changeTxt = ''
+    if (text) {
+      var changeTxt = ''
+      var indexOf = text.indexOf('KO$^$')
+      if (indexOf === -1) {
+        return text
+      } else {
+        changeTxt = this.$makeMtextMap(text, 'KO')
+        if (changeTxt) { return changeTxt }
+      }
+    }
+
     // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
-    changeTxt = this.$makeMtextMap(text, 'KO')
-    if (changeTxt) { return changeTxt }
     // if (changeTxt !== undefined) { return changeTxt }
   },
 

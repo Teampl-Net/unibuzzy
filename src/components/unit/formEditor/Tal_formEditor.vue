@@ -34,7 +34,7 @@
                         --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->
                         <div v-for="(value, index) in formCardList" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
                             <formText v-if="value.type === 'text'" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable= true  />
-                            <formImage :selectFileListProp="value.selectFileList" :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'"   @click="clickImg(index)"  :src="value.src" contenteditable= true />
+                            <formImage :selectFileListProp="value.selectFileList" :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc"   @click="clickImg(index)"  :src="value.src" contenteditable= true />
                             <div style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div>
                         </div>
                         <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
@@ -66,6 +66,7 @@ export default {
     // this.$refs.activeBar.switchtab(1)
     this.formCardList = [{ type: 'text', targetKey: 0 }]
     if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
+      console.log('zzzzzzzzzzzzzzzz' + this.propFormData)
       this.formCardList = this.propFormData
     }
   },

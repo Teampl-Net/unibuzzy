@@ -1,6 +1,6 @@
 <template>
   <div class="w-100P h-100P listRefresh"> <!-- v-if="notiDetailShowYn" -->
-    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
+    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
     <loadingIndexCompo v-show="loadingIndexYn" />
     <transition name="showModal">
@@ -45,7 +45,8 @@ export default {
       notiDetail: '',
       notiDetailShowYn: false,
       reloadYn: false,
-      testData: { contentsKey: 1001172, creUserKey: 1 }
+      testData: { contentsKey: 1001172, creUserKey: 1 },
+      systemName: 'iOS'
     }
   },
   props: {},
@@ -141,38 +142,46 @@ export default {
         } else {
           message = e.data
         }
+
         if (message.type === 'pushmsg') {
-          this.notiDetail = JSON.parse(message.pushMessage)
-          if (this.notiDetail.noti.data.targetKind === 'CONT') {
-            if (Number(this.notiDetail.noti.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+          if (this.notiDetail.targetKind === 'CONT') {
+            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'true') {
+            if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               if ((currentPage === 0 || currentPage === undefined)) {
                 this.notiDetailShowYn = true
               }
             } else {
               if ((currentPage === 0 || currentPage === undefined)) {
                 this.$router.replace({ path: '/pushList' })
-                this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushDetail', value: this.notiDetail.noti.data })
+                this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
               } else {
-                this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushListAndDetail', value: this.notiDetail.noti.data })
+                this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
               }
             }
-          } else if (this.notiDetail.noti.bigText.data.targetKind === 'TEAM') {
-            if (Number(this.notiDetail.noti.bigText.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+          } else if (this.notiDetail.targetKind === 'TEAM') {
+            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
             currentPage = this.$store.getters.hCPage
             if ((currentPage === 0 || currentPage === undefined)) {
               this.$router.replace({ path: '/' })
-              if (this.notiDetail.noti.bigText.data.actType === 'FL') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
-              } else if (this.notiDetail.noti.bigText.data.actType === 'ME' || this.notiDetail.noti.data.actType === 'FM') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
-              } else if (this.notiDetail.noti.bigText.data.actType === 'MA') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
+              if (this.notiDetail.actType === 'FL') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+              } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+              } else if (this.notiDetail.actType === 'MA') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
               }
             } else {
             }

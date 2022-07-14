@@ -232,6 +232,7 @@ export default {
       params.actorList = this.actorList
       params.targetNameMtext = this.propData.nameMtext
       params.currentTeamKey = this.propData.currentTeamKey
+      params.cabinetNameMtext = this.$changeText(this.propData.value.cabinetNameMtext)
       params.cabinetKey = this.propData.targetKey
       params.value = this.mCabinetContentsDetail
       this.$emit('openPop', params)

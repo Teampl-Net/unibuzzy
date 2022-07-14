@@ -1,8 +1,8 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
-      <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
+      <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
-        <fullModal @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+        <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
@@ -31,13 +31,13 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.$emit('closeLoading')" @openLoading="this.$emit('openLoading')"/>
 
-      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
+      <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" @openPop="openPop" style="" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
-      <boardWrite @closeXPop="closeXPop" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
+      <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
       <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
@@ -282,6 +282,14 @@ export default {
     // sendOk(){
 
     // },
+    async successWriteBoard (inParam) {
+      if (this.targetType === 'writeBoard') {
+        this.$emit('successWrite', inParam)
+      } else {
+        await this.closePop()
+        this.openPop(inParam)
+      }
+    },
     BackPopClose (e) {
       this.closeXPop()
     },
@@ -362,6 +370,10 @@ export default {
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
+        // eslint-disable-next-line no-unused-vars
+        var t = this.params.value
+        // eslint-disable-next-line no-debugger
+        debugger
         this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       } else if (this.targetType === 'editManagerList') {
         this.headerTitle = '매니저 관리'
@@ -501,17 +513,24 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          this.notiDetail = JSON.parse(message.pushMessage)
-          if (this.notiDetail.noti.data.targetKind === 'CONT') {
-            if (Number(this.notiDetail.noti.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+          if (this.notiDetail.targetKind === 'CONT') {
+            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.arrivedYn === true || this.notiDetail.arrivedYn === 'true') {
+            if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.targetType === 'chanDetail') {
-                  if (this.chanAlimListTeamKey === Number(this.notiDetail.noti.data.creTeamKey)) {
+                  if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
                     this.$refs.boardMainPop.refresh()
                   } else {
                     this.notiDetailShowYn = true
@@ -527,26 +546,26 @@ export default {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.targetType === 'pushList') {
-                  this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushDetail', value: this.notiDetail.noti.data })
+                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
                 } else {
-                  this.openPop({ contentsKey: this.notiDetail.noti.data.contentsKey, targetKey: this.notiDetail.noti.data.contentsKey, targetType: 'pushListAndDetail', value: this.notiDetail.noti.data })
+                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
                 }
               }
             }
-          } else if (this.notiDetail.noti.bigText.data.targetKind === 'TEAM') {
-            if (Number(this.notiDetail.noti.bigText.data.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+          } else if (this.notiDetail.targetKind === 'TEAM') {
+            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
               return
             }
             currentPage = this.$store.getters.hCPage
             if ((currentPage === 0 || currentPage === undefined)) {
             } else {
               this.$router.replace({ path: '/' })
-              if (this.notiDetail.noti.bigText.data.actType === 'FL') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
-              } else if (this.notiDetail.noti.bigText.data.actType === 'ME' || this.notiDetail.noti.data.actType === 'FM') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
-              } else if (this.notiDetail.noti.bigText.data.actType === 'MA') {
-                this.openPop({ targetKey: this.notiDetail.noti.bigText.data.targetKey, targetType: 'chanDetail', value: this.notiDetail.noti.bigText.data, pushOpenYn: true })
+              if (this.notiDetail.actType === 'FL') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+              } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+              } else if (this.notiDetail.actType === 'MA') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
               }
             }
           }

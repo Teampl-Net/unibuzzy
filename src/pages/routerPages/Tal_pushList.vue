@@ -192,22 +192,28 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
-      var element = document.getElementsByClassName('commonListContentBox')[0]
-      var parentElement = element.parentElement
-      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-      var test = document.getElementById('pageHeader')
-      parentElement = element.parentElement
-      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-      if (this.firstContOffsetY < 0) {
-        if (this.box.scrollTop > this.scrollPosition) {
-          this.scrollDirection = 'down'
-          this.scrolledYn = true
-        } else if (this.box.scrollTop <= this.scrollPosition) {
-          this.scrollDirection = 'up'
-          this.scrolledYn = false
+      var currentTime = new Date()
+      var time = currentTime - this.scrollCheckSec
+      if (time / 1000 > 1) {
+        var element = document.getElementsByClassName('commonListContentBox')[0]
+        var parentElement = element.parentElement
+        this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+        var test = document.getElementById('pageHeader')
+        parentElement = element.parentElement
+        this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+        this.scrollCheckSec = currentTime
+
+        if (this.firstContOffsetY < 0) {
+          if (this.box.scrollTop > this.scrollPosition) {
+            this.scrollDirection = 'down'
+            this.scrolledYn = true
+          } else if (this.box.scrollTop <= this.scrollPosition) {
+            this.scrollDirection = 'up'
+            this.scrolledYn = false
+          }
         }
+        this.scrollPosition = this.box.scrollTop
       }
-      this.scrollPosition = this.box.scrollTop
     },
     async refreshList () {
       var pSize = 10
@@ -449,7 +455,8 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
       transition: 'slide-next',
-      tabIdx: 0
+      tabIdx: 0,
+      scrollCheckSec: 0
     }
   }
 }

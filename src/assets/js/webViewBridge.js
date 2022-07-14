@@ -104,6 +104,7 @@ const isJsonString = (str) => {
         } else if (message.type === 'deepLinkUrl') {
           store.commit('addDeepLinkQueue', message.url)
           var urlString = message.url.toString()
+          // alert(message.url)
           const params = new URLSearchParams(urlString.replace('http://mo.d-alim.com:18080', ''))
           var queList = []
           for (const param of params) {

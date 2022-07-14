@@ -150,26 +150,31 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
-      var element = document.getElementsByClassName('chanRow')[0]
-      // eslint-disable-next-line no-
-      //
-      var parentElement = element.parentElement
-      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      var currentTime = new Date()
+      var time = currentTime - this.scrollCheckSec
+      if (time / 1000 > 1 ) {
+        var element = document.getElementsByClassName('chanRow')[0]
+        // eslint-disable-next-line no-
+        // 
+        var parentElement = element.parentElement
+        this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
 
-      var test = document.getElementById('chanListPageHeader')
-      parentElement = element.parentElement
-      this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-
-      if (this.firstContOffsetY < 0) {
-        if (this.box.scrollTop > this.scrollPosition) {
-          this.scrollDirection = 'down'
-          this.scrolledYn = true
-        } else if (this.box.scrollTop <= this.scrollPosition) {
-          this.scrollDirection = 'up'
-          this.scrolledYn = false
+        var test = document.getElementById('chanListPageHeader')
+        parentElement = element.parentElement
+        this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+        this.scrollCheckSec = currentTime
+        if (this.firstContOffsetY < 0) {
+          if (this.box.scrollTop > this.scrollPosition) {
+            this.scrollDirection = 'down'
+            this.scrolledYn = true
+          } else if (this.box.scrollTop <= this.scrollPosition) {
+            this.scrollDirection = 'up'
+            this.scrolledYn = false
+          }
         }
+        this.scrollPosition = this.box.scrollTop
       }
-      this.scrollPosition = this.box.scrollTop
+      
     },
     async refreshList () {
       var pSize = 10
@@ -364,7 +369,8 @@ export default {
 
       myChanListPopYn: false,
       totalElements: 0,
-      totalPages: 0
+      totalPages: 0,
+      scrollCheckSec: 0
     }
   },
   props: {

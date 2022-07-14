@@ -139,7 +139,7 @@ export default {
 
       var result = await this.$saveContents(param)
 
-      if (result === true) {
+      if (result.result === true) {
         // this.$emit('successSave')
         this.$emit('closeXPop', true)
       }
