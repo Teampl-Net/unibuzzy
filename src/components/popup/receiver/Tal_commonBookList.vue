@@ -1,6 +1,10 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
-        <div v-show="loadingYn" style="width: 100%; height: 100%; background-color: white;"></div>
+        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
+        <div style="border-bottom: 1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
+            <p class="fl mright-05 font18 h-100P colorBlack">{{this.$changeText(this.propData.value.value.nameMtext)}}</p>
+        </div>
+        <div v-show="loadingYn" style="width: 100%; height: calc(100% - 40px); background-color: white;"></div>
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
             <draggable  ref="editableArea" class="ghostClass" :v-model="listData" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
                 <transition-group>
@@ -41,7 +45,7 @@
 
 <script>
 // import loadingCompo from '../../../components/Tal_loading.vue'
-import pageTopCompo from './Tal_commonBookTitle.vue'
+// import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 /* eslint-disable */
 // eslint-disable-next-line
@@ -73,7 +77,6 @@ export default {
             this.selectedBookList = []
             if(this.parentSelectList) {
                 this.selectedBookList = this.parentSelectList.bookList
-
             }
         }
         await this.getTeamCabList()
@@ -103,7 +106,7 @@ export default {
     components: {
         // loadingCompo,
         draggable: VueDraggableNext,
-        pageTopCompo
+        // pageTopCompo
     },
     computed: {
         setTotalHeight () {
@@ -118,7 +121,6 @@ export default {
             this.cabinetInputText = data.cabinetNameMtext
             this.editIndex = index
         },
-
         changeSelectedList () {
             if(this.parentSelectList) {
                 if (this.parentSelectList.bookList) {
@@ -310,7 +312,6 @@ export default {
 
 <style >
 /* .receiverTeamListCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
-
 .receiverTeamText{ height:40px; line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
 .foo {

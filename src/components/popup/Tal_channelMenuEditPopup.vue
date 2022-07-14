@@ -1,7 +1,7 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
-    <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 편집" :chanName='teamNameText' />
+    <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' />
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
@@ -14,7 +14,7 @@
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
             <div  @click="deleteCabinet(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
-              <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer; z-index: 999" alt="">
+              <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer;" alt="">
             </div>
           </div>
         </transition-group>

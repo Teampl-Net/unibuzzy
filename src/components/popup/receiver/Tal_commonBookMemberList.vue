@@ -1,6 +1,11 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <div style="width: 100%; height: calc(100% - 30px); margin-top: 10px; overflow: hidden scroll;">
+    <div style="border-bottom: 1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
+      <p class="fl mright-05 font18 h-100P colorBlack">{{this.teamName}}   >   </p>
+      <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
+      <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p>
+    </div>
+    <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;">
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
@@ -38,6 +43,7 @@ export default {
   },
   data () {
     return {
+      teamName: '',
       popId: null,
       memberList: [],
       editYn: false,
@@ -57,6 +63,8 @@ export default {
   async created () {
     // eslint-disable-next-line vue/no-mutating-props
     if (!this.propData.value) this.propData.value = {}
+    // alert(JSON.stringify(this.teamInfo.nameMtext))
+    this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
   },
   methods: {
     async refresh () {

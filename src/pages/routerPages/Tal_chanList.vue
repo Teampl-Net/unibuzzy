@@ -3,13 +3,13 @@
 
 <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
-    <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList"/>
+    <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/>
     <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <!-- <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
-  <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100% + var(--paddingTopLength)); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
@@ -49,16 +49,16 @@ export default {
   },
   updated () {
     this.box = document.getElementById('chanListWrap')
+    if (this.chanFindPopShowYn) {
+      this.findPaddingTopChan()
+    }
   },
   computed: {
-    // calcPaddingTop () {
-    //   var element = document.getElementById('searchResultWrapLength')
-    //   debugger
-    //   this.paddingTop = element.clientHeight
-    //   return {
-    //     '--paddingTopLength' : (this.paddingTop)  + 'px'
-    //   }
-    // },
+    calcPaddingTop () {
+      return {
+        '--paddingTopLength' : this.paddingTop + 'px'
+      }
+    },
     // calcHeaderHeight () {
     //   if (this.headerTop) {
     //   } else {
@@ -84,7 +84,6 @@ export default {
   mounted () {
     this.box = document.getElementById('chanListWrap')
     this.box.addEventListener('scroll', this.handleScroll)
-
     if (this.viewTab === 'user') {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'all') {
@@ -114,8 +113,14 @@ export default {
     }
     this.$emit('closeLoading')
     this.introChanPageTab()
+    this.scrolledYn = false
+    this.findPaddingTopChan()
   },
   methods: {
+    findPaddingTopChan () {
+      var element = document.getElementById('searchResultWrapLength')
+      this.paddingTop = element.clientHeight
+    },
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
@@ -240,6 +245,7 @@ export default {
       }
       this.scrollMove()
       this.introChanPageTab()
+
     },
     goDetail (value) {
       // eslint-disable-next-line no-new-object
@@ -261,6 +267,9 @@ export default {
     async getChannelList (pageSize, offsetInput) {
       var paramMap = new Map()
       if (this.viewTab === 'user') {
+        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        paramMap.set('userKey', userKey)
+      } else if (this.viewTab === 'all') {
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'mychannel') {
@@ -319,10 +328,11 @@ export default {
       }
       return resultArray
     },
-    async changeSearchList (idx) {
+    async changeSearchList(idx) {
       this.resultSearchKeyList.splice(idx, 1)
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      this.findPaddingTopChan()
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {

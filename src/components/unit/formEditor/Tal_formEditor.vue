@@ -31,12 +31,12 @@
             <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
-                         --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->
-                         <div v-for="(value, index) in formCardList" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
+                        --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->
+                        <div v-for="(value, index) in formCardList" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
                             <formText v-if="value.type === 'text'" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable= true  />
                             <formImage :selectFileListProp="value.selectFileList" :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'"   @click="clickImg(index)"  :src="value.src" contenteditable= true />
                             <div style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div>
-                         </div>
+                        </div>
                         <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
                         <formLink v-else-if="value.type === 'link'" @click="selectCard(value.targetKey)"/> -->
                     <!-- </div> -->

@@ -75,6 +75,8 @@ export default {
       this.endListYn = false
     }
     await this.getCabinetDetail()
+    console.log('this.propData')
+    console.log(this.propData)
     // console.log(this.mCabContentsList)
     //
     // cothis.mCabContentsList

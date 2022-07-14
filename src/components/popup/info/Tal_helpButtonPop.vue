@@ -1,10 +1,9 @@
 <template>
-  <!-- <div style="width: 100vh; height: 100vh; background-color: #000000cc;"> -->
-    <helpMemberPop v-if="this.helpButtonType === 'a'" />
-    <helpBookPop v-if="this.helpButtonType === 'baook'" />
-    <helpBoardPop v-if="this.helpButtonType === 'boaard'" />
-    <img src="" />
-  <!-- </div> -->
+<div style="width: 100vw; height: 100vh; position: fixed; top: 50px; bottom: 0; background-color: #000000cc; z-index: 999999;" @click="closeHelpPop">
+  <helpMemberPop v-if="this.helpButtonType === 'member'" />
+  <helpBookPop v-if="this.helpButtonType === 'book'" />
+  <helpBoardPop v-if="this.helpButtonType === 'board'" />
+</div>
 </template>
 <script>
 import helpMemberPop from './Tal_helpMemberPop.vue'
@@ -18,6 +17,25 @@ export default {
   },
   props: {
     helpButtonType: {}
+  },
+  data () {
+    return {
+      buttonType: ''
+    }
+  },
+  created () {
+    // alert(true)
+    this.buttonType = this.helpButtonType
+    // alert(JSON.stringify(this.buttonType))
+  },
+  updated () {
+    this.closeHelpPop()
+  },
+  methods: {
+    closeHelpPop () {
+      // this.buttonType = ''
+      this.$emit('closePop')
+    }
   }
 }
 </script>

@@ -67,7 +67,7 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="formCard" @click="test" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div contenteditable id="textMsgBox" class="formCard editableContent" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff;"></div>
                 <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
@@ -195,6 +195,7 @@ export default {
     }
   },
   methods: {
+
     openPop(param){
       console.log('param');
       console.log(param);
@@ -467,12 +468,12 @@ export default {
 }
 </script>
 <style scoped>
-/* .formCard {
-  -webkit-user-select: all !important;
-  -moz-user-select: all !important;
-  -ms-user-select: all !important;
-  user-select: all !important;
-} */
+.editableContent {
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
 .receiverClickColor {
   background-color: #6768A7 !important;
   color: white !important;

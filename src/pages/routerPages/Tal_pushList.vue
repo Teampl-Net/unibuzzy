@@ -10,7 +10,8 @@
         <transition name="showModal">
           <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
-      <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; ">
+      <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; "> -->
+        <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100% + var(--paddingTopLength)); ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -33,7 +34,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 export default {
   name: 'pushList',
@@ -81,10 +81,15 @@ export default {
       this.requestSearchList(this.readySearhList)
     }
     this.introPushPageTab()
+    this.scrolledYn = false
+    this.findPaddingTopPush()
   },
 
   updated () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
+    if (this.findPopShowYn) {
+      this.findPaddingTopPush()
+    }
   },
   mounted () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
@@ -121,6 +126,11 @@ export default {
     }
   },
   computed: {
+    calcPaddingTop () {
+      return {
+        '--paddingTopLength': (this.paddingTop) + 'px'
+      }
+    },
     historyStack () {
       return this.$store.state.historyStack
     },
@@ -140,6 +150,10 @@ export default {
     }
   },
   methods: {
+    findPaddingTopPush () {
+      var element = document.getElementById('searchResultWrapLength')
+      this.paddingTop = element.clientHeight
+    },
     checkShowReload () {
       if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
         this.pushListReloadShowYn = this.reloadShowYn
@@ -404,16 +418,18 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       this.commonListData = resultList.content
+      this.findPaddingTopPush()
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
         this.endListYn = false
       }
-      this.findPopShowYn = false
+      // this.findPopShowYn = false
     }
   },
   data () {
     return {
+      paddingTop: 0,
       pushListReloadShowYn: false,
       imgUrl: '',
       firstContOffsetY: null,
@@ -474,8 +490,6 @@ export default {
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
   transition: .3s;
 }
-
-
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;

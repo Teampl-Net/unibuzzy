@@ -8,12 +8,12 @@
     </div>
     <span class="popHeaderTitleSpan" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
     <!-- 멤버 도우미 버튼 -->
-    <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 편집'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
-    <helpButtonPop v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 편집'" :helpButtonType="this.helpButtonType" />
-    <div class="commonColor font16 headerTitleWrap" style="">
+    <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
+    <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />
+    <!-- <div class="commonColor font16 headerTitleWrap" style=""> -->
           <!--v-if="this.headerTitle === '주소록 관리'|| this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'"> -->
-      {{chanName}}
-    </div>
+      <!-- {{chanName}} -->
+    <!-- </div> -->
 
     <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
     <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" />
@@ -49,6 +49,7 @@ export default {
       } else if (this.headerTitle === '게시판 관리') {
         this.helpButtonType = 'board'
       }
+      this.clickHelpYn = true
     },
     openMenu () {
       // var param = {}
@@ -73,7 +74,8 @@ export default {
   },
   data () {
     return {
-      helpButtonType: ''
+      helpButtonType: '',
+      clickHelpYn: false
     }
   },
   components: {

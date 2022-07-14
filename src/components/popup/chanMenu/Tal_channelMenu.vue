@@ -378,6 +378,7 @@ export default {
       console.log(this.propData)
       console.log(this.chanAlimListTeamKey)
       console.log(data)
+      alert(JSON.stringify(this.propData))
       params.targetType = 'boardMain'
       if(this.propData.value){
         params.nameMtext = this.propData.value.nameMtext
@@ -404,7 +405,6 @@ export default {
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
 
-
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -412,8 +412,6 @@ export default {
       this.$store.commit('updateStack', history)
 
       params.teamNameMtext = this.teamName()
-
-
       this.$emit('openItem',params)
     },
     openPopup(data){
