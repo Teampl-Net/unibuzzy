@@ -17,14 +17,14 @@ export default {
     this.pushList = this.alimList
     this.checkSenderYn()
     // // eslint-disable-next-line no-
-    // 
+    //
   },
   data () {
     return {
       mainYn: true,
       moreLink: 'push',
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
       listLeloadYn: true
     }

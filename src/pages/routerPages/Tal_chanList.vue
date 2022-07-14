@@ -394,14 +394,5 @@ export default {
     transform: translateY(-100%);
 }
 .moveBox{transition: 0.5s ease;}
-.btnPlus{
-  width:4rem; height:4rem; display: flex;
-  padding-top: 5px;
-  justify-content: center; align-items: center;
-  color:#6768a7; border:3px solid #6768a7; background-color:white ;
-
-  border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
-  box-shadow: 2px 2px 7px 3px #ccc;
-
-}
+/* btnPlus common.css로 옮김 */
 </style>

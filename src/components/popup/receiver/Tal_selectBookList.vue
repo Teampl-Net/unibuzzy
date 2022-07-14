@@ -31,7 +31,6 @@ export default {
       this.selectedList = this.pSelectedList
     }
 
-    this.$store.commit('updateStack', history)
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
@@ -210,23 +209,26 @@ export default {
     },
 
     backClick () {
-      var hStack = this.$store.getters.hStack
-      var removePage = history[hStack.length - 1]
 
-      if (this.subPopId === hStack[hStack.length - 1]) {
+      var hStack = this.$store.getters.hStack
+
+      var removePage = hStack[hStack.length - 1]
+
+      if (this.subPopId === hStack[hStack.length - 1] ) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', hStack)
-        this.detailOpenYn = false
+        // this.detailOpenYn = false
         this.teamLength = 100
         this.memberEditYn = false
-      } else if (this.popId === hStack[hStack.length - 1]) {
-        hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
-
+        this.receiverTitle = '주소록 선택'
+        this.detailOpenYn = false
+      } else {
+        // hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        // this.$store.commit('setRemovePage', removePage)
+        // this.$store.commit('updateStack', hStack)
+        this.$emit('closeXPop')
       }
-      this.$emit('closeXPop')
     },
     async openMCabUserList (data) {
       if (!this.teamEditYn) {
@@ -241,15 +243,17 @@ export default {
         this.$store.commit('updateStack', history)
 
         this.receiverTitle = '구성원 관리'
+         if (this.selectPopYn) {
+          this.receiverTitle = '대상 선택'
+          // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
+        }
+
         if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
         } else {
           this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
         }
-        if (this.selectPopYn) {
-          this.receiverTitle = '대상 선택'
-          // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
-        }
+
       }
     },
     addAllClick () {

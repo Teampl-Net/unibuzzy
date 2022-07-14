@@ -11,9 +11,12 @@
         <!-- <input class="searchInput" placeholder="제목 또는 내용을 입력해주세요" type="text" name=""  id=""> -->
         <input v-if="contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain'" class="searchInput" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
+        ss
         <div class="box">
             <section class="">
+
             <Datepicker
+              editable=false
               inputmode="none"
               v-model:value="creDate"
               type="date"
@@ -63,10 +66,14 @@ export default {
     }
   },
   created () {
+
     var history = this.$store.getters.hStack
     this.popId = 'searchPop' + history.length
     history.push(this.popId)
     this.$store.commit('updateStack', history)
+  },
+  mounted () {
+      // document.getElementById('findContentListConfo').setAttribute('readonly', 'readonly')
   },
   computed: {
     historyStack () {
@@ -157,4 +164,7 @@ export default {
 /* .newestFindWrap{width: 100%; min-height: 200px; float: left; margin-top: 10px; padding-top: 20px
 }
 .newestfindContentsListWrap{width: 100%; padding: 10px; height: 35px; border-bottom : 1px solid #ccc;} */
+
+
+
 </style>

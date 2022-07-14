@@ -13,12 +13,12 @@
           <div v-if="alim.readYn === 0" class="readYnArea"></div>
             <div class="pushDetailTopArea">
               <div class="chanLogoImgWrap">
-                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo;" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                <img src="../../assets/images/channel/icon_official.svg" v-if="alim.officialYn" style="width: 30px; position:absolute; bottom:-1rem;" class='' alt="">
               </div>
               <div @click="goDetail(alim)" class="pushDetailHeaderTextArea">
                 <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
-                <img src="../../assets/images/channel/icon_official.svg" v-if="alim.officialYn" style="width: 15px; transform: scale(2); margin-top: 0.2rem;" class='fl mleft-03' alt="">
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
                 <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -239,7 +239,7 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-.chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;}
+.chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 .pushMbox{margin-bottom: 20px;}
 .userDoWrap img {width: 1rem;}
 .commonListContentBox{

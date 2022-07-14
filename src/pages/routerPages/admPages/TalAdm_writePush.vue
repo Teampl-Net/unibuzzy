@@ -93,9 +93,9 @@
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="복합 알림 작성" />
     <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
-  <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999"  >
+  <!-- <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999"  >
       <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' @openPop='openPop' />
-  </div>
+  </div> -->
 </template>
 <script>
 /* eslint-disable */
@@ -110,12 +110,12 @@ export default {
   props: {
     params: {},
     sendOk: {},
-    replyData: {}
+    replyData: {},
   },
   watch: {
     sendOk: function () {
       this.clickPageTopBtn()
-    }
+    },
   },
   data () {
     return {
@@ -210,10 +210,10 @@ export default {
     // setReceiverText(){
     // this.$changeText(this.params.targetNameMtext)
     // },
-    setSelectedList (obj) {
-      this.receiverPopYn = false
-      //
-      this.receiverList = obj.data
+    setSelectedList(obj) {
+      // alert(this.selectedBookNMemberList)
+
+      this.receiverList = obj
       this.list = []
       this.selectedReceiverList = []
       this.receiverText = ''
@@ -256,10 +256,22 @@ export default {
         }
       }
       this.receiverText = this.receiverText.slice(0,-2);
-      console.log(obj)
+
+
     },
     openPushReceiverSelect () {
-      this.receiverPopYn = true
+      var param = {}
+      param.targetType = 'selectBookList'
+      param.targetKey = this.params.targetKey
+      param.teamKey = this.params.targetKey
+      param.teamNameMtext = this.params.teamNameMtext
+      console.log(this.params);
+
+
+      this.$emit('openPop',param)
+
+      // this.receiverPopYn = true
+
     },
     setParamInnerHtml (formCard) {
       var innerHtml = ''

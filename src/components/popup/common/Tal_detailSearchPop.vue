@@ -6,6 +6,7 @@
   <div class="searchRow fl box">
     <section class="">
       <Datepicker
+        ref="datePickerLib"
         inputmode="none"
         type="date"
         range
@@ -34,6 +35,9 @@ export default {
     closePop () {
       this.$emit('closePop')
     }
+  },
+  created (){
+    // this.$refs.datePickerLib.setAttribute('readonly', 'readonly')
   }
 }
 </script>

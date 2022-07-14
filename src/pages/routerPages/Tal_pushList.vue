@@ -427,7 +427,7 @@ export default {
       findPopShowYn: false,
       subHistoryList: [],
       stickerList: [],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 보낸', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},

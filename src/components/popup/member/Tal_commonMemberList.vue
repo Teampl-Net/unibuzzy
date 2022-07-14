@@ -3,7 +3,8 @@
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)">
         <img src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
         <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">
-          <p class="font8 commonBlack fontBold" style="">관리자</p>
+          <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
+          <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
         </div>
         <p class="fl font16 commonBlack" style="text-align:left; padding-left:10px; width:calc(100% - 30px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
       </div>
@@ -16,7 +17,8 @@
           <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px; margin:0.6rem 0.8rem; " class="fl">
           <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
             <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0)" class="fl" />
-            <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >관리자</label>
+            <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >매니저</label>
+
           </div>
           <div v-if="!member.ownerYn && !member.followerKey" style="margin: 0 0.6rem;" class="fl" @click="this.$emit('match')">
             <!-- <p class="commonBlack font10">팔로우</p> -->
@@ -79,7 +81,8 @@ export default {
       this.$emit('setManager', params)
     },
     memberInfo (member) {
-      console.log(member)
+      // console.log(member)
+      this.$emit('memberInfo', member)
     },
     animation (key) {
       // document.getElementById(key).style.display = 'none'

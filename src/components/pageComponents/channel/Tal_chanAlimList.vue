@@ -338,13 +338,7 @@ export default {
 .blockBox{width: 100%; height: 320px;float: left; height: var(--height); min-height: 50px;}
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
 
-.btnPlus{
-  width:4rem; height:4rem;
-  color:#6768a7; border:0.2rem solid #6768a7; background-color:white ;
-  z-index: 9;
-  border-radius:50%; position:absolute; bottom: 5%; right: 10%;
-  box-shadow: 2px 2px 7px 3px #ccc;
-  }
+/* btnPlus common.css로 옮김 */
 
   span {color: white;}
 </style>

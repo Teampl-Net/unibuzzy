@@ -2,7 +2,7 @@
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail.noti" />
       <transition name="showModal">
-        <fullModal @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT"
+        <fullModal @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
@@ -23,7 +23,9 @@
       <question @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.$emit('closeLoading')" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.$emit('closeLoading')" @successCreChan='successCreChan'/>
-      <writePush v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
+      <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
+
+      <selectBookList v-if="this.targetType === 'selectBookList'" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
       <chanMenu ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
@@ -31,6 +33,7 @@
 
       <boardDetail :propData="this.params"  v-if="this.targetType === 'boardDetail'" style="" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
+
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
@@ -69,6 +72,8 @@ import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
 import boardWrite from '../board/Tal_boardWrite.vue'
 import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
+
+import selectBookList from '../receiver/Tal_selectBookList.vue'
 
 import memberManagement from '../member/Tal_memberManagement.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
@@ -112,7 +117,6 @@ export default {
       readySearchList: {}, // chanDetail -> pushList 열때 필요
       successChanParam: {},
       sendOkYn: 0,
-
       // itemTitle: '',
       chanAlimListTeamKey: null, // 채널메인에서 header로 넘기는 teamKey  > 채널 게시판 매뉴 구현
       receiverList: {},
@@ -120,9 +124,9 @@ export default {
       propParams: {},
       chanName: '',
       memberDetailOpen: false,
-
       refreshToken: 0,
-      delyn: false
+      delyn: false,
+      selectedBookNMemberList: {}
 
     }
   },
@@ -154,7 +158,8 @@ export default {
     editManagerList,
     selectMemberPop,
     memberManagement,
-    selectAddressBookList
+    selectAddressBookList,
+    selectBookList
   },
   updated () {
   },
@@ -210,6 +215,16 @@ export default {
     }
   },
   methods: {
+    selectedReceiverBookNMemberList (param) {
+      if (!param.emit) {
+        param.emit = true
+        this.$emit('selectedReceiverBookNMemberList', param)
+        this.closeXPop()
+      } else {
+        this.$refs.writePushCompo.setSelectedList(param.data)
+      }
+      // alert(JSON.stringify(this.selectedBookNMemberList))
+    },
     async addDirectAddMemList (param) {
       if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
@@ -228,7 +243,7 @@ export default {
     },
     openDetailYn (bool) {
       this.memberDetailOpen = bool
-      alert(this.memberDetailOpen)
+      // alert(this.memberDetailOpen)
     },
     bgcolor (data) {
       console.log(data)

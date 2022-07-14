@@ -1,8 +1,8 @@
 <template>
 <div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
-    <div class="w-100P h-100P" style="overflow:hidden auto">
-      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' />
+    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
+      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' />
     </div>
     <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
 
@@ -50,8 +50,20 @@ export default {
     matchInfo(){
       this.smallPopYn = true
       this.confirmMsg = '상대방이 구독하기를 기다리는 중 입니다. '
-      this.addSmallMsg = '구독 시 자동으로 관리자로 등록됩니다.'
-
+      this.addSmallMsg = '구독 시 자동으로 매니저로 등록됩니다.'
+    },
+    memberInfo(member){
+      // if(this.tab === 'Mem' && member.memberYn){
+        var param = {}
+        param = member
+        param.targetType = 'bookMemberDetail'
+        param.userKey = member.userKey
+        param.readOnlyYn = true
+        this.$emit('openPop',param)
+      // } else {
+      //   this.errorText = '멤버로 신청한 관리자가 아닙니다.'
+      //   this.errorPopYn = true
+      // }
     },
     openPop (param) {
       this.$emit('openPop', param)
@@ -81,7 +93,7 @@ export default {
           url : '/tp.getManagerList',
           param: param
         })
-        console.log();
+        console.log('매니저리스트');
         this.managingList =await result.data.managerList
       }
       // paramMap.set('followerType', 'M')
@@ -174,9 +186,6 @@ export default {
 }
 </script>
 <style>
-.btnPlus{
-  animation-name: fadein; animation-duration: 0.5s;
-  animation-fill-mode: forwards;
-}
+
 
 </style>

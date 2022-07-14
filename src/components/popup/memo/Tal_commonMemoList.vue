@@ -5,10 +5,13 @@
           <div class="fl w-100P" >
             <!-- <a :href='"#memo"+memo.parentMemoKey'> -->
             <p class="fl commonBlack mleft-1 mtop-05" >{{memo.meMemoUserDispMtext}}</p>
-            <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p>
+            <!-- <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p> -->
+            <div  class="fl commonColor mleft-05 mtop-05" v-html="memo.meMemoBodyMinStr"></div>
+
             <!-- </a> -->
           </div>
           <img  src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt="">
+          <p class="fl mleft-05" v-if="!memo.meMemoUserDispMtext">삭제된 댓글입니다.</p>
       </div>
       <div class="commentTop" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
         <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
@@ -21,7 +24,7 @@
       <div class="commentMiddle" style="display: flex; min-height: 30px; float: left; width: 100%; ">
         <!-- <img src="" style="height: 30px; width: 30px; " /> -->
         <input type="text" style="margin-left: 5px; width: 70%;float: left; font-size: 15px; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-model="inputText"  >
-        <p v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; font-size: 15px; height: 100%;" class="commonBlack" >{{memo.bodyFullStr}} </p>
+        <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; font-size: 15px; height: 100%;" class="commonBlack" v-html="memo.bodyFullStr" ></div>
 
       </div>
       <div class="commentBottom" style="height: 20px; line-height: 20px; font-size: 14px; width: 100%; float: left; color: #666;" >
@@ -104,6 +107,11 @@ export default {
       setTimeout(() => {
         document.getElementById(key).style.backgroundColor = ''
       }, 700)
+    },
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      var changeText = Base64.decode(data)
+      return changeText
     }
 
   }

@@ -7,19 +7,25 @@
     </div> -->
 
     <div class="addMemberTextArea">
-        <div style="width:100%; height: 30px;" class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;" @click="testInput">이름</p>
-            <input type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+        <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
+            <p class="textLeft font16 fl cBlack tB " style="width:10%; min-width:4rem; line-height: 30px;" @click="testInput">이름</p>
+            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memName}}</p>
+            <input v-else type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+
         </div>
 
-        <div style="width:100%; height: 30px;" class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">이메일</p>
-            <input type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+        <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
+            <p class="textLeft font16 fl cBlack tB" style="width:10%; min-width:4rem; line-height: 30px;">이메일</p>
+
+            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail}}</p>
+            <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+
         </div>
 
-        <div style="width:100%; height: 30px; " class="mtop-2 fl">
-            <p class="textLeft font16 fl cBlack tB" style="line-height: 30px;">전화번호</p>
-            <input type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
+        <div style="width:100%; height: 30px; " class="mtop-2 fl memberItemRow">
+            <p class="textLeft font16 fl cBlack tB" style="width:10%; min-width:4rem; line-height: 30px;">전화번호</p>
+            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone}}</p>
+            <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
     </div>
@@ -50,7 +56,7 @@
         </div>
 
     </div>
-    <gBtnSmall btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
+    <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
 </div>
 <popUp v-if="confirmPopShowYn" @no='confirmPopShowYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -73,23 +79,32 @@ export default {
         // console.log(this.propData)
         console.log(this.propData);
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
-            this.memName = this.$changeText(this.propData.userDispMtext)
-            this.memEmail= this.propData.userEmail
-            this.memPhone = this.propData.phoneEnc
-        } else {
+            if(this.propData.userDispMtext){
+                this.memName = this.$changeText(this.propData.userDispMtext)
+            }else{
+                this.memName = this.$changeText(this.propData.userNameMtext)
+            }
+            if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
+
+            if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
+
+            if(this.propData.readOnlyYn){this.readOnlyYn = true}
+
+
 
         }
     },
     data () {
         return {
-        memName: '',
-        memEmail: '',
-        memPhone: '',
-        memberList:[],
-        addMemYn: false,
-        confirmPopShowYn: false,
-        tempIndex: null,
-        confirmText: ''
+            memName: '',
+            memEmail: '',
+            memPhone: '',
+            memberList:[],
+            addMemYn: false,
+            confirmPopShowYn: false,
+            tempIndex: null,
+            confirmText: '',
+            readOnlyYn:false
         }
     },
     methods:{
@@ -182,9 +197,20 @@ table {
 .addMemberTextArea{
     /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
 
-    font-size:14px; width: 100%; height: 35%; background: #FFF; padding: 0 3rem; opacity:0.9;
+    font-size:14px; width: 100%; height: 35%; background: #FFF; padding: 0 10%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+.memberItemRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
 
 .memberLogoArea{
 border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto;  background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
@@ -198,8 +224,11 @@ margin-bottom: 2rem;
 
 .creChanInput{
     width:70%;
-    min-width: 170px;
-    border: 1px solid #ccc;
+    min-width: 140px;
+    border : none;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;
+    overflow: scroll hidden;
 }
 
 .addTeamMemberArea{

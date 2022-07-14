@@ -98,7 +98,7 @@ export default {
   },
   data () {
     return {
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '내가 쓴', name: 'M' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       listBox: null,
       firstContOffsetY: null,
       scrolledYn: false,

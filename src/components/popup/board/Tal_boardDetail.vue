@@ -199,7 +199,7 @@ export default {
         param: memo
       })
       if(result.data.result == true){
-        this.memoList = []
+        // this.memoList = []
         await this.getMemoList()
       }
     },

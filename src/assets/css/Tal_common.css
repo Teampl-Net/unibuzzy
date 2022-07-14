@@ -198,7 +198,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
       filter: drop-shadow(0 0 6px #0000002E);
   }
   .chanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; -webkit-user-drag: none;}
-  .chanLogoImgWrap img{width: 40px; margin-right: 0.05rem; -webkit-user-drag: none;}
+  .chanLogoImgWrap img{width: 30px; margin-right: 0.05rem; -webkit-user-drag: none;}
 
 
 .popHeaderWrap > img {position: absolute; left: 1rem; -webkit-user-drag: none;}
@@ -404,4 +404,21 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   border-top-color: #6768A7;
   border-bottom-color: #6768A7;
   animation: spinner .8s ease infinite;
+}
+
+.btnPlus{
+  width:4rem; height:4rem;display: flex;
+  padding-top: 5px;
+  justify-content: center; align-items: center;
+  color:#6768a7; border:3px solid #6768a7; background-color:white ;
+
+  z-index: 9;
+
+  border-radius:4rem; position:fixed; bottom: 80px; right: 10%;
+  box-shadow: 2px 2px 7px 3px #ccc;
+
+  animation-name: fadein; animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+
+
 }

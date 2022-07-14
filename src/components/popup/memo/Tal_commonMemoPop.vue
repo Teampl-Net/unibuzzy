@@ -4,7 +4,8 @@
       <div v-if="meMemoData !== null"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
         <!-- <div class="w-100P fl"> -->
           <p class="fl commonBlack" >{{this.$changeText(meMemoData.memo.userDispMtext)}}</p>
-          <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p>
+          <!-- <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p> -->
+          <div class="fl mleft-05 mright-05 font14 commonColor" style="text-align: left;" v-html="meMemoData.memo.bodyMinStr"></div>
         <!-- </div> -->
         <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
           <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
@@ -12,9 +13,11 @@
       </div>
 
       <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
-      <textarea  class="fl" :class="{width65: meMemoData !== null}" style="width: calc(100% - 45px); height: 100%; float: left; border: 1px solid #ccc; resize: none;" v-model="memoText" name="" id="" cols="30" ></textarea>
+      <!-- <textarea id="memoTextTag" class="fl" :class="{width65: meMemoData !== null}" style="width: calc(100% - 45px); height: 100%; float: left; border: 1px solid #ccc; resize: none;" v-model="memoText" name="" cols="30" ></textarea> -->
+      <div id="memoTextTag" class="fl" :class="{width65: meMemoData !== null}" style="width: calc(100% - 45px); min-height:3rem; text-align:left; float: left; border: 1px solid #ccc; resize: none;"  contenteditable=true ></div>
       <img @click="saveMemo" src="../../../assets/images/formEditor/addComment.svg" style="width: 40px; float: right; margin-top: 5px;" alt="" class="fl">
     </div>
+
 </template>
 
 <script>
@@ -41,7 +44,10 @@ export default {
       this.$emit('mememoCancel')
     },
     saveMemo () {
-      this.$emit('saveMemoText', this.memoText)
+      // document.getElementById('memoTextTag').contentEditable = false
+      var html = document.getElementById('memoTextTag').innerHTML
+      console.log(html)
+      this.$emit('saveMemoText', html)
     }
   }
 }
