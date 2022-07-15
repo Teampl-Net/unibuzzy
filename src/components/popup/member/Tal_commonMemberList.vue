@@ -1,6 +1,6 @@
 <template>
-    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" @click="memberInfo(member)">
-      <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)">
+    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
+      <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <img src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
         <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">
           <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
