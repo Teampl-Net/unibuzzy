@@ -152,17 +152,18 @@ export default {
     handleScroll () {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
-      if (time / 1000 > 1 ) {
-        var element = document.getElementsByClassName('chanRow')[0]
-        // eslint-disable-next-line no-
-        // 
-        var parentElement = element.parentElement
-        this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-
+      var element = document.getElementsByClassName('chanRow')[0]
+      var parentElement = element.parentElement
+      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      if (this.firstContOffsetY > 0) {
+        this.scrollDirection = 'up'
+        this.scrolledYn = false
+      }
+      if (time / 1000 > 1 && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
         var test = document.getElementById('chanListPageHeader')
-        parentElement = element.parentElement
         this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.scrollCheckSec = currentTime
+
         if (this.firstContOffsetY < 0) {
           if (this.box.scrollTop > this.scrollPosition) {
             this.scrollDirection = 'down'

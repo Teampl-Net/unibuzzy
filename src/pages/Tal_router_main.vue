@@ -2,9 +2,8 @@
   <div class="w-100P h-100P listRefresh"> <!-- v-if="notiDetailShowYn" -->
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
-    <loadingIndexCompo v-show="loadingIndexYn" />
     <transition name="showModal">
-      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams"  @openZLoading="this.loadingIndexYn = true" @closeZLoading="this.loadingIndexYn = false"/>
+      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
     <div style="background-color:#00000050; width:100vw; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
@@ -25,7 +24,6 @@
 import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/common/Tal_menu.vue'
 import loadingCompo from '../components/layout/Tal_loading.vue'
-import loadingIndexCompo from '../components/layout/Tal_loadingindex.vue'
 // import PullToRefresh from 'pulltorefreshjs'
 
 export default {
@@ -40,7 +38,6 @@ export default {
       popParams: '',
       headerTitle: '',
       loadingYn: true,
-      loadingIndexYn: false,
       routerReloadKey: 0,
       notiDetail: '',
       notiDetailShowYn: false,
@@ -54,8 +51,7 @@ export default {
   components: {
     TalMenu,
     loadingCompo,
-    pushPop,
-    loadingIndexCompo
+    pushPop
     // chanMenu
   },
   beforeUnmount () {

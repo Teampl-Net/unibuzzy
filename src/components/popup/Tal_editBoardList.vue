@@ -11,6 +11,7 @@
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
             <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
+                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left;" :style="'background: ' + data.picBgPath + ';'"></div>
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
             <div  @click="deleteCabinet(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">

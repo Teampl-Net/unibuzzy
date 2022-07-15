@@ -64,7 +64,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 // eslint-disable-next-line no-new-object
-import editChanMenu from '../Tal_channelMenuEditPopup.vue'
+import editChanMenu from '../Tal_editBoardList.vue'
 import addressBookList from '../chanMenu/Tal_menuBookList.vue'
 import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
 import selectManagerList from '../receiver/Tal_selectManagerList.vue'

@@ -131,8 +131,6 @@ export default {
       var result = null
       // eslint-disable-next-line no-unused-vars
       var tt = this.memberList
-      // eslint-disable-next-line no-debugger
-      debugger
       for (var i = 0; i < this.memberList.length; i++) {
         if (this.memberList[i].selectedYn) {
           userKeyList.push(this.memberList[i].userKey)
@@ -177,7 +175,7 @@ export default {
           param.cabinetKey = this.propData.cabinetKey
           param.targetKey = this.propData.currentTeamKey
 
-          this.$saveMCabContents(param)
+          await this.$saveMCabContents(param)
         }
         console.log(this.userKeyList)
 

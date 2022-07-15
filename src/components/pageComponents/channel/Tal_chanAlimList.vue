@@ -106,7 +106,7 @@ export default {
     console.log('this.chanDetail')
     console.log(this.chanDetail)
 
-    this.$emit('openZLoading')
+    this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
@@ -208,7 +208,7 @@ export default {
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
       //   this.adminYn = true
       // }
-      this.$emit('closeZLoading')
+      this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
       if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
@@ -218,11 +218,11 @@ export default {
       }
     },
     async changeFollowYn (fYn) {
-      this.$emit('openZLoading')
+      this.$emit('openLoading')
       this.detailShowYn = false
       this.detailHeaderShowYn = false
       await this.getChanDetail(false)
-      this.$emit('closeZLoading')
+      this.$emit('closeLoading')
       // this.detailShowYn = false
 
       this.greetingType = 'follow'

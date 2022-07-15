@@ -68,10 +68,13 @@ export default {
         if (this.tempUser) {
           this.tempUser.phoneEnc = mobileN
         }
-        if (this.tempUser.name !== undefined && this.tempUser.name !== null && this.tempUser.name !== '' && this.tempUser.name !== '0' && this.tempUser.name !== 0) {
-          await saveUser(this.tempUser) // 서버에 save요청
-          this.$router.replace({ path: '/' })
-        } else { this.$router.replace({ name: 'saveName', params: { user: JSON.stringify(this.tempUser) } }) }
+        /* if (this.tempUser.name !== undefined && this.tempUser.name !== null && this.tempUser.name !== '' && this.tempUser.name !== '0' && this.tempUser.name !== 0) { */
+        await saveUser(this.tempUser) // 서버에 save요청
+        this.$router.replace({ path: '/' })
+        /* } else {
+          this.$router.replace({ name: 'saveName', params: { user: JSON.stringify(this.tempUser) } }
+          )
+        } */
         // this.$router.replace({ path: '/' })
       } else {
         this.failPopYn = true

@@ -1,9 +1,6 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
         <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-        <div style="border-bottom: 1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
-            <p class="fl mright-05 font18 h-100P colorBlack">{{this.$changeText(this.propData.value.value.nameMtext)}}</p>
-        </div>
         <div v-show="loadingYn" style="width: 100%; height: calc(100% - 40px); background-color: white;"></div>
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
             <draggable  ref="editableArea" class="ghostClass" :v-model="listData" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >

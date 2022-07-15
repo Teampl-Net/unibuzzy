@@ -5,7 +5,7 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
-      <gConfirmPop confirmText='게시글을 저장하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -227,6 +227,9 @@ export default {
       param.title = this.writePushTitle
       param.showCreNameYn = true
 
+      if (this.modiYn) {
+        param.contentsKey = this.propData.modiContentsKey
+      }
       var result = await this.$saveContents(param)
       if (result.result === true) {
         this.sendLoadingYn = false
@@ -234,10 +237,14 @@ export default {
         var newP = new Object()
         newP.targetKey = result.contentsKey
         newP.targetType = 'boardDetail'
-        newP.cabinetNameMtext = this.propData.value.cabinetNameMtext
+        newP.cabinetNameMtext = this.propData.cabinetNameMtext
         newP.value = this.propData
         // this.$emit('successSave')
-        this.$emit('successWrite', newP)
+        if (!this.modiYn) {
+          this.$emit('successWrite', newP)
+        } else {
+          this.$emit('closeXPop', true)
+        }
       }
     },
     messageAreaClick () {

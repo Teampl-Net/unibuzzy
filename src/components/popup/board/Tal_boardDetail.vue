@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadYn" class="boardDetailWrap" >
+  <div v-if="loadYn" class="boardDetailWrap" :style="detailVal.value.picBgPath? 'background: ' + detailVal.value.picBgPath + ';' : 'background: #ece6cc;'">
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -16,6 +16,7 @@
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
             <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
+            <p class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(alim.updDate) + ')'}}</p>
           </div>
 
         </div>
@@ -29,7 +30,10 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-
+            <div class="w-100P fl mbottom-05">
+                <p class="commonBlack font12" style="float: right;">좋아요 {{alim.likeCount}}개</p>
+                <p class="commonBlack font12" style="float: right; margin-right: 10px;'">댓글 {{alim.memoCount}}개</p>
+            </div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
                 <img class="mright-05 mtop-01 fl" v-if="userDo.doKey !== 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
@@ -137,6 +141,7 @@ export default {
       param.targetType = 'writeBoard'
       param.creTeamKey = this.alimDetail[0].creTeamKey
       param.bodyFullStr = this.alimDetail[0].bodyFullStr
+      param.modiContentsKey = this.alimDetail[0].contentsKey
       param.titleStr = this.alimDetail[0].title
       this.$emit('openPop', param)
     },
@@ -212,6 +217,7 @@ export default {
       })
       if(result.data.result == true){
         // this.memoList = []
+        await this.getContentsList()
         await this.getMemoList()
       }
     },
@@ -340,6 +346,7 @@ export default {
         /* this.confirmText = '댓글 저장 성공'
         this.confirmPopShowYn = true */
         this.memoShowYn = false
+        await this.getContentsList()
         await this.getMemoList()
       }
     },
@@ -363,9 +370,10 @@ export default {
       console.log(this.alimDetail);
 
       // var tempuserDoList = resultList.content[0].userDoList
-
-      var userDoList = resultList.content[0].userDoList
-      await this.settingUserDo(userDoList)
+      if (resultList.content[0].userDoList) {
+        var userDoList = resultList.content[0].userDoList
+        await this.settingUserDo(userDoList)        
+      }
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)
@@ -480,7 +488,7 @@ export default {
 .pushDetailHeaderTextArea{width: 100%; cursor: pointer; float: left;margin-top: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
-.alimCheckContents{width: 100%;float: right; height: 30px;}
+.alimCheckContents{width: 100%;float: right; min-height: 30px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}

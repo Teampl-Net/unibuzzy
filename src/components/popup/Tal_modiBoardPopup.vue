@@ -6,6 +6,14 @@
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
+      <p class="fontBold textLeft font16 fl " style="width: 130px;">컬러</p>
+      <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
+      <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
+          <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
+      </div>
+      <div @click="this.colorPickerShowYn = true" class="inputBoxThema textLeft" style=" border: none;" :style="'background:' + this.selectedColor + ';'" >선택</div>
+    </div>
+    <div class="itemWrite">
       <p class="fontBold textLeft font16 fl " style="width: 130px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
@@ -198,6 +206,8 @@ export default {
   },
   data () {
     return {
+      selectedColor: '#FFCDD2',
+      colorPickerShowYn: false,
       chanProps: {},
       okPopYn: false,
       popId: null,
@@ -287,6 +297,13 @@ export default {
           break
       }
     },
+    closeColorPickerPop (value) {
+      if (value === '0') {
+      } else {
+        this.selectedColor = value
+      }
+      this.colorPickerShowYn = false
+    },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -313,10 +330,32 @@ export default {
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
       if (data.mCabinet.replyYn === 1) { this.replyYnInput = true; this.okFunctionList += '댓글 지원O' } else { this.okFunctionList += '댓글 지원X'; this.replyYnInput = false }
       // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
-
+      if (data.mCabinet.picBgPath) {
+        this.selectedColor = data.mCabinet.picBgPath
+      }
       if (data.mCabinet.mShareItemList.length > 0) {
         var indexOf = data.mCabinet.cabShareList.findIndex(i => i.accessKind === 'T')
         console.log('T가 있나요? ' + indexOf)
+
+        if (data.mCabinet.cabShareList) {
+          var tempList = []
+          var tempList2 = []
+          for (var s = 0; s < data.mCabinet.cabShareList.length; s++) {
+            if (data.mCabinet.cabShareList[s].accessKind === 'C') {
+              tempList.push({ cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext) })
+            } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
+              var uName = data.mCabinet.cabShareList[s].userDispMtext
+              if (!uName) {
+                uName = data.mCabinet.cabShareList[s].userNameMtext
+              }
+
+              tempList2.push({ userKey: data.mCabinet.cabShareList[s].accessKey, userDispMtext: uName })
+            }
+          }
+          var listData = { bookList: tempList, memberList: tempList2 }
+          //
+          this.selectedList.data = listData
+        }
         if (indexOf !== -1) {
           this.changeShareType('all')
           this.writePermissionAllYn = false
@@ -336,8 +375,14 @@ export default {
           if (findPermissionW !== -1) {
             var permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'W') {
-                permiAll = true
+              if (data.mCabinet.mShareItemList[i].shareType === 'W') {
+                if (data.mCabinet.mShareItemList[i].accessKind === 'T') {
+                  permiAll = true
+                } else {
+                  this.writePermissionSelectYn = true
+                  const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'W').length
+                  this.writePermission = count + '명(그룹)에게 권한 부여'
+                }
               }
             }
             if (permiAll) {
@@ -345,14 +390,20 @@ export default {
             } else {
               this.writePermissionSelectYn = true
               const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'W').length
-              this.writePermission = count + '명/그룹에게 권한 부여'
+              this.writePermission = count + '명(그룹)에게 권한 부여'
             }
           }
           if (findPermissionV !== -1) {
             permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'V') {
-                permiAll = true
+              if (data.mCabinet.mShareItemList[i].shareType === 'V') {
+                if (data.mCabinet.mShareItemList[i].accessKind === 'T') {
+                  permiAll = true
+                } else {
+                  this.writePermissionSelectYn = true
+                  const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'V').length
+                  this.writePermission = count + '명(그룹)에게 권한 부여'
+                }
               }
             }
 
@@ -361,14 +412,20 @@ export default {
             } else {
               this.readPermissionSelectYn = true
               const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'V').length
-              this.readPermission = count + '명/그룹에게 권한 부여'
+              this.readPermission = count + '명(그룹)에게 권한 부여'
             }
           }
           if (findPermissionR !== -1) {
             permiAll = false
             for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-              if (data.mCabinet.mShareItemList[i].accessKind === 'T' && data.mCabinet.mShareItemList[i].shareType === 'R') {
-                permiAll = true
+              if (data.mCabinet.mShareItemList[i].shareType === 'R') {
+                if (data.mCabinet.mShareItemList[i].accessKind === 'T') {
+                  permiAll = true
+                } else {
+                  this.writePermissionSelectYn = true
+                  const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'R').length
+                  this.writePermission = count + '명(그룹)에게 권한 부여'
+                }
               }
             }
             if (permiAll) {
@@ -376,7 +433,7 @@ export default {
             } else {
               this.commentPermissionSelectYn = true
               const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'R').length
-              this.commentPermission = count + '명/그룹에게 권한 부여'
+              this.commentPermission = count + '명(그룹)에게 권한 부여'
             }
           }
 
@@ -395,36 +452,16 @@ export default {
           // }
         } else {
           this.changeShareType('select')
-          //
-          if (data.mCabinet.cabShareList) {
-            var tempList = []
-            var tempList2 = []
-            for (var s = 0; s < data.mCabinet.cabShareList.length; s++) {
-              if (data.mCabinet.cabShareList[s].accessKind === 'C') {
-                tempList.push({ cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext) })
-              } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
-                var uName = data.mCabinet.cabShareList[s].userDispMtext
-                if (!uName) {
-                  uName = data.mCabinet.cabShareList[s].userNameMtext
-                }
-
-                tempList2.push({ userKey: data.mCabinet.cabShareList[s].accessKey, userDispMtext: uName })
-              }
-            }
-            var listData = { bookList: tempList, memberList: tempList2 }
-            //
-            this.selectedList.data = listData
-          }
-          this.selectedReceiver = data.mCabinet.cabShareList.length + '명에게 공유 중'
+          this.selectedReceiver = data.mCabinet.cabShareList.length + '명(그룹)에게 공유 중'
           var W = 0; var R = 0; var V = 0
           for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
             if (data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
             if (data.mCabinet.mShareItemList[i].shareType === 'V') V += 1
             if (data.mCabinet.mShareItemList[i].shareType === 'R') R += 1
           }
-          this.writePermission = W + '명에게 권한 부여함'
-          this.readPermission = V + '명에게 권한 부여함'
-          this.commentPermission = R + '명에게 권한 부여함'
+          this.writePermission = W + '명(그룹)에게 권한 부여'
+          this.readPermission = V + '명(그룹)에게 권한 부여'
+          this.commentPermission = R + '명(그룹)에게 권한 부여'
         }
       } else {
         // 처음 만들었으면 // mShareList.length === 0
@@ -435,8 +472,6 @@ export default {
       }
     },
     setOk (data) {
-      console.log(data)
-      console.log('modiBoarddatamodiBoarddatamodiBoarddatamodiBoarddatamodiBoarddata')
       var text = ''
       var selectLength = 0
       if (data.bookList) {
@@ -642,6 +677,7 @@ export default {
       } else {
         cabinet.creuserkey = this.chanInfo.creUserKey
       }
+      cabinet.picBgPath = this.selectedColor
 
       /*
       // cabinet.shareList = shareList
@@ -895,7 +931,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap; width:80%;}
+.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
 
 .editWrap{
   background-color: #F9F9F9;

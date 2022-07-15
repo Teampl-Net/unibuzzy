@@ -2,6 +2,11 @@
     <div class="editBookListWrap">
         <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: auto;" >
+            <div style="border-bottom: 1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
+                <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span>
+                <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
+                <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
+            </div>
             <div class="bookAndMemListWrap">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
@@ -75,7 +80,7 @@ export default {
             receiverTitle: '주소록 관리',
             teamLength: 0,
             selMemberList: [],
-            channelName: null,
+            cabinetName: '',
         }
     },
     methods: {
@@ -121,14 +126,35 @@ export default {
                         this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
                     }
                 }
+                this.cabinetName = this.$changeText(this.selectBookDetail.cabinetNameMtext)
                 this.detailOpenYn = true
             }
         },
         async refresh () {
-            await this.getBookMemberList()
+            var hStack = this.$store.getters.hStack
+            // alert(true)
+            if (this.selectPopId === hStack[hStack.length - 1]) {
+                await this.getBookMemberList()
+            } else {
+                await this.getBookList()
+            }
         },
         editYnCheck(data) {
             this.editYn = data
+        },
+        goCabinetList () {
+            var hStack = this.$store.getters.hStack
+            var removePage = hStack[hStack.length - 1]
+            if (this.selectPopId === hStack[hStack.length - 1]) {
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
+                this.detailOpenYn = false
+                this.cabinetName = ''
+                this.receiverTitle = '주소록 관리'
+            } else {
+                return
+            }
         },
         backClick () {
             var hStack = this.$store.getters.hStack
@@ -138,6 +164,7 @@ export default {
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
+                this.cabinetName = ''
                 this.receiverTitle = '주소록 관리'
             }
             else if (this.subPopId === hStack[hStack.length - 1]) {
@@ -145,6 +172,7 @@ export default {
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
                 this.detailOpenYn = false
+                this.cabinetName = ''
                 this.receiverTitle = '주소록 관리'
             } else {
                 this.$emit('closeXPop')

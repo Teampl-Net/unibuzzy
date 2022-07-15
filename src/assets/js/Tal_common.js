@@ -145,6 +145,10 @@ const methods = {
     // if (changeTxt !== undefined) { return changeTxt }
   },
 
+  diffInt (a, b) {
+    return Math.abs(a - b)
+  },
+
   addHistoryStack (n) {
     // eslint-disable-next-line no-array-constructor
     /* var historyS = ''
@@ -295,5 +299,6 @@ export default {
     Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = methods.checkSameName
     Vue.config.globalProperties.$titleToBody = methods.titleToBody
+    Vue.config.globalProperties.$diffInt = methods.diffInt
   }
 }

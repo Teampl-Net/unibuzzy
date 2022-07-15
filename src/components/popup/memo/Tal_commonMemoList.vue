@@ -34,11 +34,11 @@
             <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa;" @click="cancelEdit(memo, index)" >취소</div>
         </div>
         <div v-if="editIndex !== index && memo.creUserKey == this.userKey">
-          <div style="float: right; width: 40px; height: 100%; text-align: center; font-size: 13px;" @click="memoDeleteClick(memo, index)" >삭제</div>
+          <div style="float: right; width: 40px; height: 100%; text-align: center; border-left: 1px solid #aaa; font-size: 13px;" @click="memoDeleteClick(memo, index)" >삭제</div>
           <!-- <div style="float: right; width: 40px; height: 100%; text-align: center; border-left: 1px solid #aaa;  border-right: 1px solid #aaa; font-size: 13px;" @click="editMemoClick(memo, index)"  >수정</div> -->
-          <div style="float: right; width: 40px; height: 100%; text-align: center; border-right: 1px solid #aaa; font-size: 13px;" @click="editMemoClick(memo, index)"  >수정</div>
+          <div style="float: right; width: 40px; height: 100%; text-align: center; border-left: 1px solid #aaa; font-size: 13px;" @click="editMemoClick(memo, index)"  >수정</div>
         </div>
-        <div style="float: right; width: 40px; height: 100%; text-align: center; font-size: 13px;border-right: 1px solid #aaa; " @click="memoMemoClick(memo)" v-if="replyYn === true && editIndex !== index">답글</div>
+        <div style="float: right; width: 40px; height: 100%; text-align: center; font-size: 13px; " @click="memoMemoClick(memo)" v-if="replyYn === true && editIndex !== index">답글</div>
       </div>
       <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
         <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
@@ -120,7 +120,7 @@ export default {
 
 <style scoped>
 .memoCard{
-  width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left;
+  width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left; margin: 5px 0;
   background-color: white;
   transition : background-color 0.5s ease-in;
 }

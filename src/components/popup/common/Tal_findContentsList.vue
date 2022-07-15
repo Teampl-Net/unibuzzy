@@ -125,7 +125,9 @@ export default {
       if (this.creDate !== '') {
         if (this.creDate.length > 1) {
           param.fromCreDateStr = this.$dayjs(this.creDate[0]).format('YYYY-MM-DD')
-          param.toCreDateStr = this.$dayjs(this.creDate[1]).format('YYYY-MM-DD')
+          // eslint-disable-next-line no-unused-vars
+          var setToDate = this.creDate[1]
+          param.toCreDateStr = this.$dayjs(setToDate.setDate(setToDate.getDate() + 1)).format('YYYY-MM-DD')
         }
       }
       this.$emit('searchList', param)
@@ -141,7 +143,8 @@ export default {
       if (this.creDate !== '') {
         if (this.creDate.length > 1) {
           param.set('fromCreDateStr', this.$dayjs(this.creDate[0]).format('YYYY-MM-DD'))
-          param.set('toCreDateStr', this.$dayjs(this.creDate[1]).format('YYYY-MM-DD'))
+          var setToDate = this.creDate[1]
+          param.set('toCreDateStr', this.$dayjs(setToDate.setDate(setToDate.getDate() + 1)).format('YYYY-MM-DD'))
         }
       }
       this.$emit('searchList', param)
