@@ -54,7 +54,7 @@
               <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt="">
             </div>
           </div>
-          <div v-if='!detailVal.replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
+          <div v-if='!replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div class="boardBorder"></div>
@@ -117,8 +117,18 @@ export default {
     manageStickerPop
   },
   async created() {
+    console.log('#########################################')
+    console.log(this.detailVal.value.value)
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
+    } else {
+      if (this.detailVal.value) {
+        if (this.detailVal.value.value !== undefined &&  this.detailVal.value.value !== null 
+              && (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
+                alert(true)
+          this.replyYn = true
+        }
+      }
     }
     if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
       this.ownerYn =  true
@@ -253,7 +263,7 @@ export default {
         if(this.memoList[i].parentMemoKey){
           for (let j = 0; j < this.memoList.length; j++) {
             if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
-              this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext)
+              this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext || this.memoList[j].userDispMtext)
               this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyMinStr
             }
           }

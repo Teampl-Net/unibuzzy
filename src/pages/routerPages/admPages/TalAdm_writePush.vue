@@ -251,7 +251,7 @@ export default {
           shareItemMemberObject.accessKey = selectedMemberList.userKey
 
           /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-          this.receiverText += this.$changeText(selectedMemberList.userDispMtext) + ', '
+          this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
           this.selectedReceiverList.push(shareItemMemberObject)
         }
       }

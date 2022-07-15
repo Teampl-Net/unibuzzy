@@ -91,8 +91,6 @@ export default {
             break
           }
         }
-        // eslint-disable-next-line no-debugger
-        debugger
         if (imgYn) {
           jsonObj.pSrc = formC[i].querySelector('img').src
         }

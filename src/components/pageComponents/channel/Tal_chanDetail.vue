@@ -7,7 +7,7 @@
     <div style="width: 100%; height: 100%; position: relative;">
       <!-- <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/> -->
       <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " headerTitle="알림 상세" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
-      <welcomePopUp v-if="openWelcomePopYn" @goChanMain="changeFollowTrue" @applyMember="okMember" />
+      <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanDetail" @copyText="copyText" @goChanMain="changeFollowTrue" @closePop="okMember" @applyMember="okMember" />
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
@@ -69,8 +69,7 @@
 
 <script>
 /* import followerList from './Tal_chanFollowerList.vue' */
-import welcomePopUp from '../../popup/info/Tal_firstFollowWelcomePopUp.vue'
-
+import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
 export default {
   mounted () {
     console.log('this.chanDetail')
@@ -79,7 +78,6 @@ export default {
   },
   data () {
     return {
-      openWelcomePopYn: false,
       smallPopYn: false,
       addSmallMsg: '',
       confirmMsg: '',
@@ -216,12 +214,10 @@ export default {
         var fStatus = this.followYn
         // eslint-disable-next-line no-new-object
         this.followParam = new Object()
-        // eslint-disable-next-line no-unused-vars
-        var tt = this.chanDetail
         this.followParam.teamKey = this.chanDetail.teamKey
         this.followParam.teamName = this.$changeText(this.chanDetail.nameMtext)
         this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+        this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         var result = false
         this.sendLoadingYn = true
         if (fStatus) {
@@ -243,7 +239,7 @@ export default {
       }
     },
     async okMember (inMemberYn) {
-      this.followParam.memberYn = inMemberYn
+      // this.followParam.memberYn = inMemberYn
       var result = null
       if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'save') }
       if (result.result || result) {

@@ -447,7 +447,6 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.endListYn === false || this.totalElements > pageSize) {
-        this.offsetInt += 1
         var resultList = await this.getContentsList()
         const newArr = [
           ...this.mCabContentsList,

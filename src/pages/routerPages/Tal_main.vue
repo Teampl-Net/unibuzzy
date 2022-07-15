@@ -10,7 +10,7 @@
       <img v-else src="../../assets/images/main/main_profile.png"  style="width: 85px; height: 85px;"/>
     </div>
     <div class="userProfileTextWrap">
-      <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext)}}</p>
+      <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
       <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
         <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />

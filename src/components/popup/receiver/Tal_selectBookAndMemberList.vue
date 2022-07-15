@@ -36,7 +36,7 @@
                         <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                             <img src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 10px;" class="fl"/>
                         </div>
-                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.userDispMtext)}}</p>
+                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.userDispMtext || data.userDispMtext)}}</p>
                     </div>
 
                     <div @click="addSelectedList(data, index, 'U')" class="fr mright-1" style="position: relative; height: 100%;">

@@ -12,7 +12,7 @@
             <img src="../../assets/images/main/main_profile.png" style="width: 100px;"/>
           </div>
           <span class="font20 fontBold" style="width:100%; float:left; transform: translate(10px);" v-show="!changeYn" >
-            {{this.$makeMtextMap(this.userInfo.userDispMtext, 'KO')}}
+            {{this.$changeText(this.userInfo.userDispMtext)}}
             <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px;" class="r" @click="changeUserDispMtext()" >
           </span>
 

@@ -51,9 +51,6 @@
     <chanDetailComp @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
-  <div class="zoomInOutPop" style="position: fixed; width:100%; height:100%; z-index:9; left:0; top:0;" v-if="greetingInfoYn">
-    <greetingInfo  v-if="greetingInfoYn" @closePop="greetingInfoYn = false" :chanInfo='chanItem' :type='greetingType' />
-  </div>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 </div>
 </template>
@@ -61,7 +58,6 @@
 <script>
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
-import greetingInfo from '../channel/Tal_chanFollowInfo.vue'
 export default {
   data () {
     return {
@@ -99,8 +95,7 @@ export default {
   },
   components: {
     pushList,
-    chanDetailComp,
-    greetingInfo
+    chanDetailComp
   },
   async created () {
     console.log('this.chanDetail')
@@ -112,15 +107,6 @@ export default {
     await this.getChanDetail(false)
     console.log('this.chanItem')
     console.log(this.chanItem)
-    if (this.chanDetail.newChan === true) {
-      this.greetingType = 'admin'
-      this.greetingInfoYn = true
-      /* // eslint-disable-next-line no-debugger
-      debugger
-      setTimeout(() => {
-        this.greetingInfoYn = false
-      }, 4000) */
-    }
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -224,9 +210,6 @@ export default {
       await this.getChanDetail(false)
       this.$emit('closeLoading')
       // this.detailShowYn = false
-
-      this.greetingType = 'follow'
-      this.greetingInfoYn = true
       /* setTimeout(() => {
         this.greetingInfoYn = false
       }, 4000) */

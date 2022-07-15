@@ -158,8 +158,8 @@ export default {
             follower.inEmail = this.directAddMemList[u].userEmail
             follower.inPhone = this.directAddMemList[u].userPhone
             follower.teamName = this.propData.teamNameMtext || this.propData.nameMtext
-            follower.inUserName = this.$changeText(this.directAddMemList[u].userDispMtext)
-            follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext)
+            follower.inUserName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
+            follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
             console.log(param)
             result = await this.$commonAxiosFunction({
@@ -193,7 +193,7 @@ export default {
 
             mCabContents.inEmail = this.directAddMemList[d].userEmail
             mCabContents.inPhone = this.directAddMemList[d].userPhone
-            mCabContents.inUserName = this.$changeText(this.directAddMemList[d].userDispMtext)
+            mCabContents.inUserName = this.$changeText(this.directAddMemList[d].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.mCabContents = mCabContents
             console.log(param)
             result = await this.$saveMCabContents(param)
