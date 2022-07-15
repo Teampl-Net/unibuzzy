@@ -378,7 +378,6 @@ export default {
       console.log(this.propData)
       console.log(this.chanAlimListTeamKey)
       console.log(data)
-      alert(JSON.stringify(this.propData))
       params.targetType = 'boardMain'
       if(this.propData.value){
         params.nameMtext = this.propData.value.nameMtext

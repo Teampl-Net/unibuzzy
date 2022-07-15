@@ -223,7 +223,6 @@ export default {
       } else {
         this.$refs.writePushCompo.setSelectedList(param.data)
       }
-      // alert(JSON.stringify(this.selectedBookNMemberList))
     },
     async addDirectAddMemList (param) {
       if (this.targetType === 'bookMemberDetail') {
@@ -243,7 +242,6 @@ export default {
     },
     openDetailYn (bool) {
       this.memberDetailOpen = bool
-      // alert(this.memberDetailOpen)
     },
     bgcolor (data) {
       console.log(data)

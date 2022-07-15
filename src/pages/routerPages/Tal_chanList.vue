@@ -271,14 +271,12 @@ export default {
 
     async getChannelList (pageSize, offsetInput) {
       var paramMap = new Map()
+      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (this.viewTab === 'user') {
-        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'all') {
-        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'mychannel') {
-        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        paramMap.set('userKey', userKey)
         paramMap.set('managerYn', true)
       }
       if (this.resultSearchKeyList.length > 0) {

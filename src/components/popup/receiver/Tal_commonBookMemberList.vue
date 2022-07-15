@@ -63,7 +63,6 @@ export default {
   async created () {
     // eslint-disable-next-line vue/no-mutating-props
     if (!this.propData.value) this.propData.value = {}
-    // alert(JSON.stringify(this.teamInfo.nameMtext))
     this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
   },
   methods: {

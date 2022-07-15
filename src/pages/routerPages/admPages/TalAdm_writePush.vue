@@ -212,7 +212,6 @@ export default {
     // this.$changeText(this.params.targetNameMtext)
     // },
     setSelectedList(obj) {
-      // alert(this.selectedBookNMemberList)
 
       this.receiverList = obj
       this.list = []
@@ -468,12 +467,7 @@ export default {
 }
 </script>
 <style scoped>
-.editableContent {
-  -webkit-user-select: auto !important;
-  -moz-user-select: auto !important;
-  -ms-user-select: auto !important;
-  user-select: auto !important;
-}
+
 .receiverClickColor {
   background-color: #6768A7 !important;
   color: white !important;

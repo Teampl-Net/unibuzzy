@@ -24,9 +24,7 @@ export default {
     }
   },
   created () {
-    // alert(true)
     this.buttonType = this.helpButtonType
-    // alert(JSON.stringify(this.buttonType))
   },
   updated () {
     this.closeHelpPop()

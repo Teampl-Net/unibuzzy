@@ -8,10 +8,10 @@
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-            <div class="fr">
+            <div class="fr" v-if="creUser === alim.creUserKey">
               <p class="fl mright-05"  @click="openUpdateContentsPop">수정</p>
               <p class="fl mright-05"  @click="boardFuncClick('BOAR')">삭제</p>
-              <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p>
+              <!-- <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p> -->
             </div>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
@@ -40,10 +40,10 @@
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
-            <!-- <gBtnSmall btnTitle="댓글 쓰기" class="fr"  @click="this.memoShowYn = true"/> -->
-            <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div>
+            <gBtnSmall btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="this.memoShowYn = true"/>
+            <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
-            <div data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+            <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
                 :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
                     + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                   class="copyTextWrap">
@@ -79,6 +79,7 @@ import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
     return {
+      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       memoList: [],
       confirmText: '',
       confirmPopShowYn: false,
@@ -131,7 +132,6 @@ export default {
   },
   methods: {
     openUpdateContentsPop () {
-      // alert(true)
       var param = new Object()
       param.targetKey = this.alimDetail[0].contentsKey
       param.targetType = 'writeBoard'
@@ -219,6 +219,8 @@ export default {
       var memo = new Object()
       memo.targetKind = 'C'
       memo.targetKey = this.alimDetail[0].contentsKey
+      memo.pageSize = 100
+      memo.offsetInt = 0
       var result = await this.$commonAxiosFunction({
         url: '/tp.getMemoList',
         param: memo
