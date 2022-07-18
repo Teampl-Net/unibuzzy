@@ -5,7 +5,7 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
           <div class="imgSize">
@@ -208,7 +208,7 @@ export default {
 <style scoped>
 .profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
-.roundDiv{box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; margin-bottom: 0.5rem; width: 6rem; height: 6rem;} 
+.roundDiv{box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;} 
 table{text-align: left; width: 100%;}
 tr, td, th {
   height: 4rem;
