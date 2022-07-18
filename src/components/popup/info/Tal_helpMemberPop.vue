@@ -31,10 +31,11 @@ export default {
     }
   },
   methods: {
-    // getWhiteHeight () {
-    //   var element = document.getElementById('helpMemberText')
-    //   this.whiteHeight = element.clientHeight
-    // }
+    getWhiteHeight () {
+      var element = document.getElementById('helpMemberText')
+      this.whiteHeight = element.clientHeight
+      alert(this.whiteHeight)
+    }
   }
 }
 </script>
