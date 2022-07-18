@@ -9,6 +9,27 @@ const methods = {
     t.innerHTML = html
     return t.content.cloneNode(true)
   },
+  decodeHTML (str) {
+    str = str.replace('&amp;', '&')
+    str = str.replace('&lt;', '<')
+    str = str.replace('&gt;', '>')
+    str = str.replace('&#39;', "'")
+    str = str.replace('&quot;', '"')
+    return str
+  },
+
+  // decodeHTMLEntitles (str) {
+  //   if (str !== undefined && str !== null && str !== '') {
+  //     str = String(str)
+  //     str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
+  //     str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '')
+  //     var element = document.createElement('div')
+  //     element.innerHTML = str
+  //     str = element.textContent
+  //     element.textContent = ''
+  //   }
+  //   return str
+  // },
   changeDateFormat (date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
@@ -300,5 +321,6 @@ export default {
     Vue.config.globalProperties.$checkSameName = methods.checkSameName
     Vue.config.globalProperties.$titleToBody = methods.titleToBody
     Vue.config.globalProperties.$diffInt = methods.diffInt
+    Vue.config.globalProperties.$decodeHTML = methods.decodeHTML
   }
 }

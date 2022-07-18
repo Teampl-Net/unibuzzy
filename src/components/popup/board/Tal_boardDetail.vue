@@ -123,9 +123,9 @@ export default {
       this.replyYn = true
     } else {
       if (this.detailVal.value) {
-        if (this.detailVal.value.value !== undefined &&  this.detailVal.value.value !== null 
+        if (this.detailVal.value.value !== undefined &&  this.detailVal.value.value !== null
               && (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
-                alert(true)
+                // alert(true)
           this.replyYn = true
         }
       }
@@ -198,7 +198,7 @@ export default {
       if (this.detailVal.shareAuth.R === true) {
         this.memoShowYn = true
         this.mememoValue = null
-      }else{
+      } else{
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
@@ -382,7 +382,7 @@ export default {
       // var tempuserDoList = resultList.content[0].userDoList
       if (resultList.content[0].userDoList) {
         var userDoList = resultList.content[0].userDoList
-        await this.settingUserDo(userDoList)        
+        await this.settingUserDo(userDoList)
       }
       // await this.settingUserDo(tempuserDoList)
 

@@ -175,7 +175,7 @@ export default {
         }
         this.scrollPosition = this.box.scrollTop
       }
-      
+
     },
     async refreshList () {
       var pSize = 10
@@ -207,6 +207,7 @@ export default {
           this.endListYn = false
         }
         this.chanList = newArr
+        this.allChannelInfo()
       } else {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
@@ -229,6 +230,16 @@ export default {
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
     },
+    allChannelInfo() {
+      for (var i = 0; i < this.chanList.length; i++) {
+        if (this.chanList[i].userTeamInfo) {
+          this.chanList[i].ownerYn = this.chanList[i].userTeamInfo.ownerYn
+          if (this.chanList[i].userTeamInfo.managerKey) {
+            this.chanList[i].managerKey = this.chanList[i].userTeamInfo.managerKey
+          }
+        }
+      }
+    },
     async changeTab (tab) {
       // this.chanList = {}
       // this.$emit('openLoading')
@@ -238,11 +249,17 @@ export default {
       document.getElementById('chanListWrap').className = 'fadeOutAnimation'
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      console.log(this.chanList)
       document.getElementById('chanListWrap').className = 'fadeInAnimation'
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
         this.endListYn = false
+      }
+      if (this.viewTab === 'all') {
+
+        this.allChannelInfo()
+        // alert(JSON.stringify(this.chanList[0].userTeamInfo.ownerYn))
       }
       if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true

@@ -6,8 +6,9 @@
     <div v-else class="chanRow w-100P fl" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
         <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
-        <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
-        <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px;position: absolute; bottom: -15px;;" alt="">
+        <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; right: 15px; top: -15px;" />
+        <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:35px;position: absolute; right: -16px; top: -6px;" alt="">
+        <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 15px; position: absolute; bottom: 0; right: -3px;" />
         </div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P" >
@@ -41,9 +42,14 @@ export default {
     chanList: {},
     imgUrl: {}
   },
+  created () {
+  },
   watch: {
     chanList () {
       this.loadingRefHide()
+      if (this.chanList.userTeamInfo) {
+
+      }
     }
   },
   methods: {

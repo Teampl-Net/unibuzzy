@@ -6,7 +6,7 @@
             <!-- <a :href='"#memo"+memo.parentMemoKey'> -->
             <p class="fl commonBlack mleft-1 mtop-05" >{{memo.meMemoUserDispMtext}}</p>
             <!-- <p class="fl commonColor mleft-05 mtop-05" >{{memo.meMemoBodyMinStr}}</p> -->
-            <div  class="fl commonColor mleft-05 mtop-05" v-html="memo.meMemoBodyMinStr"></div>
+            <div class="fl commonColor font12 mleft-05 mtop-05" v-html="memo.meMemoBodyMinStr"></div>
 
             <!-- </a> -->
           </div>
@@ -23,11 +23,12 @@
       </div>
       <div class="commentMiddle" style="display: flex; min-height: 30px; float: left; width: 100%; ">
         <!-- <img src="" style="height: 30px; width: 30px; " /> -->
-        <input type="text" style="margin-left: 5px; width: 70%;float: left; font-size: 15px; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-model="inputText"  >
+        <!-- <input type="text" style="margin-left: 5px; width: 70%;float: left; font-size: 15px; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-model="inputText"> -->
+        <div id="editCommentBox" class="editableContent" contenteditable=true style="margin-left: 5px; width: 70%;float: left; font-size: 15px; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
         <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; font-size: 15px; height: 100%;" class="commonBlack" v-html="memo.bodyFullStr" ></div>
 
       </div>
-      <div class="commentBottom" style="height: 20px; line-height: 20px; font-size: 14px; width: 100%; float: left; color: #666;" >
+      <div class="commentBottom" style="height: 20px; line-height: 20px; font-size: 14px; width: 100%; float: left; color: #666; margin-top: 10px;" >
         <!-- <div class="commentBottom" style="height: 25px; line-height: 25px; font-size: 14px; width: 100%; float: left;" > -->
         <div v-if="editIndex === index">
             <div style="float: right; width: 40px; height: 100%; text-align: center;" @click="editEnd(memo, index)" >완료</div>
@@ -72,7 +73,7 @@ export default {
     },
     editMemoClick (data, index) {
       this.editIndex = index
-      this.inputText = data.bodyFullStr
+      this.inputText = this.$decodeHTML(data.bodyFullStr)
     },
     cancelEdit () {
       this.editIndex = ''
@@ -80,8 +81,8 @@ export default {
     async editEnd (data) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
-      memo.bodyFullStr = this.inputText
-      memo.bodyMinStr = this.inputText
+      memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
+      memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
       var result = await this.$commonAxiosFunction({
@@ -107,12 +108,12 @@ export default {
       setTimeout(() => {
         document.getElementById(key).style.backgroundColor = ''
       }, 700)
-    },
-    decodeContents (data) {
-      // eslint-disable-next-line no-undef
-      var changeText = Base64.decode(data)
-      return changeText
     }
+    // decodeContents (data) {
+    //   // eslint-disable-next-line no-undef
+    //   var changeText = Base64.decode(data)
+    //   return changeText
+    // }
 
   }
 }

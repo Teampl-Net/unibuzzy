@@ -6,9 +6,8 @@
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
             <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
-              <img class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
-              <!-- v-if="alim.officialYn"  -->
+              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc; border-radius: 5px;z-index:1  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
+              <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
             </div>
             <img v-else @click="goChanDetail(alim)" class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
 

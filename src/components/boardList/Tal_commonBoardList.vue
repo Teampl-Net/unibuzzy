@@ -10,7 +10,9 @@
     </div> -->
       <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{this.scrollDirection}}, {{this.scrollPosition}}</div> -->
       <template id="boardRow" v-for="(board, index) in commonBoardListData" :key="index">
-        <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" >
+        <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
+        <!-- :class="{top5MyChanColor : value.ownerYn} -->
+        <div v-if="board.readYn === 0" class="readYnArea"></div>
           <div @click="goDetail(board)" class="pushDetailTopArea">
               <div class="">
                 <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
@@ -67,6 +69,7 @@
 export default {
   data: function () {
     return { // 데이터 정의
+      userKey: '',
       findPopShowYn: false,
       firstContOffsetY: null,
       scrollDirection: null,
@@ -93,6 +96,7 @@ export default {
   },
   created () {
     // this.boardList = this.commonBoardListData
+    this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   },
   computed: {
   },
@@ -154,14 +158,7 @@ export default {
       //
       // this.findPopShowYn = false
     },
-    async changeTab(tabName) {
-      // this.$emit('openLoading')
-      this.viewTab = tabName
-      this.mCabContentsList = []
-      var resultList = await this.$parent.getContentsList()
-      this.mCabContentsList = resultList.content
-      this.scrollMove()
-    },
+
     loadingRefShow(){
       this.$refs.sLoadingBoard.show()
     },
@@ -186,6 +183,8 @@ export default {
       param.contentsKey = value.contentsKey
       param.targetKey = value.contentsKey
       param.value = value
+      value.readYn = 1
+      param.readYn = value.readYn
       this.$emit('goDetail', param)
     },
     cutStickerName (value) {
@@ -260,6 +259,10 @@ export default {
 }
 </script>
 <style scoped>
+.creatorBoardContentBox {
+  background-color: #6768a712 !important;
+  box-shadow: 0 0 7px 3px #6768a740 !important;
+}
 .reload--pinned {
     transform: translateY(0%);
     transition: .3s;

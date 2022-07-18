@@ -32,7 +32,7 @@
 
     <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 250px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
-      <div class="" id="boardListWrap" ref="boardListWrapCompo" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%; ">
+      <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
         <transition name="showModal">
           <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
@@ -40,14 +40,17 @@
           <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
           <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
-        <div class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+        <div :style="calcBoardPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)) ; height: calc(100% + var(--paddingTopLength));" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
       </div>
     </div>
-    <div :class="this.scrolledYn || !this.reloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);" @click="refreshAll">
-      <img src="../../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
+    <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
+    v-on="handleScroll"
+    style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
+    @click="refreshAll" >
+      <img src="../../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
     </div>
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
@@ -70,6 +73,7 @@ export default {
     await this.getCabinetDetail()
     var resultList = await this.getContentsList()
     this.mCabContentsList = resultList.content
+    this.findPaddingTopBoard()
     if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
       this.endListYn = true
     } else {
@@ -95,9 +99,13 @@ export default {
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
+    if (this.findPopShowYn) {
+      this.findPaddingTopBoard()
+    }
   },
   data () {
     return {
+      paddingTop: 0,
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       listBox: null,
       firstContOffsetY: null,
@@ -131,6 +139,10 @@ export default {
     }
   },
   methods: {
+    findPaddingTopBoard () {
+      var element = document.getElementById('searchResultWrapLength')
+      this.paddingTop = element.clientHeight
+    },
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
@@ -246,7 +258,7 @@ export default {
 
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-debugger
-      debugger
+      // debugger
       // eslint-disable-next-line no-unused-vars
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!his.mCabinetContentsDetail')
       console.log(this.mCabinetContentsDetail)
@@ -436,6 +448,7 @@ export default {
       // await this.getCabinetDetail()
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
+      this.findPaddingTopBoard()
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -465,6 +478,11 @@ export default {
     }
   },
   computed: {
+    calcBoardPaddingTop () {
+      return {
+        '--paddingTopLength': (this.paddingTop) + 'px'
+      }
+    },
     setBlockBoxHeight () {
       return {
         '--height': 300 - this.scrollPosition + 'px'
@@ -478,7 +496,7 @@ export default {
 .boardMainAdminArea{
   width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px; margin-right: calc(5% - 10px)
 }
-.commonBoardListWrap{width: 100%; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%;}
+.commonBoardListWrap{width: 100%; position: relative; float: left; width: 100%; overflow: hidden scroll;}
 .reload--pinned {
     transform: translateY(0%);
     transition: .3s;

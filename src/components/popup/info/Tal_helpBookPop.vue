@@ -1,5 +1,5 @@
 <template>
-  <p style="padding: 15px; background-color: white; opacity: 0.7" class="commonBlack textLeft">
+  <p style="padding: 15px; background-color: white;" class="commonBlack textLeft">
     그룹의 성격과 유형에 따라 자유롭게 주소록으로 분류하여 한눈에 정리할 수 있어요! <br>
     관리자는 주소록을 대상으로<br>
     &nbsp;&nbsp;&nbsp;  1) 한번에 알림을 보낼 수 있고,<br>

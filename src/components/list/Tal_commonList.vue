@@ -9,7 +9,7 @@
       </div>
 
       <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
-        <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox">
+        <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" >
           <div v-if="alim.readYn === 0" class="readYnArea"></div>
             <div class="pushDetailTopArea">
               <div class="chanLogoImgWrap">

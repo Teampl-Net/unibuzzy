@@ -1,5 +1,5 @@
 <template>
-  <p style="padding: 15px; background-color: white; opacity: 0.7" class="commonBlack textLeft">
+  <p style="padding: 15px; background-color: white;" class="commonBlack textLeft">
     '멤버'는 당신의 채널에 소속이 된 애정 구독자입니다! <br>
     구독자는 언제든지 멤버를 신청할 수 있고, <br>
     관리자는 멤버 리스트를 통해 <br>
