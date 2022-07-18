@@ -320,7 +320,7 @@ export default {
     height:60px;
     border-bottom:1px solid #ddd; padding: 0.7rem 0;
     position: relative;
-    min-width: 280px;
+
     overflow: auto;
     /* transition : background-color 0.5s ease-in !important; */
 }
