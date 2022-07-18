@@ -109,10 +109,13 @@ export default {
       memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
+      console.log('memoParam')
+      console.log(memo)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
         param: { memo: memo }
       })
+      console.log(result)
       if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
         this.$emit('editTrue')

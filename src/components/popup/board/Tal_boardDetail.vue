@@ -44,7 +44,7 @@
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
-            <gBtnSmall btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="this.memoShowYn = true"/>
+            <gBtnSmall v-if="detailVal.replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
@@ -196,7 +196,7 @@ export default {
       }
     },
     mememoCancel () {
-      this.mememoValue = {}
+      this.mememoValue = null
     },
     scrollMove (wich) {
       var middle = (document.innerHeight || window.innerHeight) / 2 - 100
@@ -209,8 +209,8 @@ export default {
     },
     writeMemo () {
       if (this.detailVal.shareAuth.R === true) {
-        this.memoShowYn = true
         this.mememoValue = null
+        this.memoShowYn = true
       } else {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
