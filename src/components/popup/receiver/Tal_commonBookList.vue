@@ -126,7 +126,6 @@ export default {
                         for (var s = 0; s < this.parentSelectList.bookList.length; s ++) {
                             if (this.parentSelectList.bookList[s].cabinetKey === this.cabinetList[i].cabinetKey) {
                                 this.cabinetList[i].selectedYn = true
-
                                 break
                             }
                         }
@@ -219,6 +218,7 @@ export default {
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
                 var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+
                 this.$emit('refreshList')
                 await this.getTeamCabList()
                 if(!document.getElementsByClassName('foo')[0]){
@@ -299,8 +299,10 @@ export default {
                 }
             )
             console.log(result)
-            this.$emit('getBookList')
+            // this.$emit('getBookList')
+            this.$parent.getBookList()
             index = this.cabinetList.length - 1
+
         }
     }
 

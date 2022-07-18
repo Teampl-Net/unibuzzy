@@ -36,11 +36,11 @@
             </div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
-                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey !== 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                 <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
               </template>
               <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey !== 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
                 <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
               </template>
             </div>
@@ -270,7 +270,6 @@ export default {
       if (result.data.content) {
         this.totalElements = result.data.totalElements
         if (allYn) {
-          this.memoList = []
           this.memoList = result.data.content
           this.endListYn = true
         } else {
@@ -438,6 +437,8 @@ export default {
       if (resultList.content[0].userDoList) {
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)
+      } else {
+        this.settingUserDo()
       }
       // await this.settingUserDo(tempuserDoList)
 
@@ -447,6 +448,7 @@ export default {
     settingUserDo (userDo) {
       this.userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
+      console.log(userDo)
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
         this.userDoStickerList = new Array()
