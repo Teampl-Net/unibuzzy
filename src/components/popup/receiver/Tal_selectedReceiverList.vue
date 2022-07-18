@@ -77,7 +77,7 @@ export default {
     // },
     methods: {
         addMe (){
-            
+
             if(this.teamList.memberList) {
                 var checkYn = true
                 for (var i = 0; i < this.teamList.memberList.length; i ++) {
@@ -88,6 +88,7 @@ export default {
                     }
                 }
                 if (checkYn) {
+                    this.sessionUserInfo.shareSeq = this.sessionUserInfo.userKey
                     this.$emit('addMemberList', this.sessionUserInfo)
                 }
 

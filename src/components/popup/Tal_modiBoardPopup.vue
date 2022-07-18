@@ -462,10 +462,14 @@ export default {
           this.writePermission = W + '명(그룹)에게 권한 부여'
           this.readPermission = V + '명(그룹)에게 권한 부여'
           this.commentPermission = R + '명(그룹)에게 권한 부여'
+
+          this.selectShareList = data.mCabinet.cabShareList
+          this.selectItemList = data.mCabinet.mShareItemList
         }
       } else {
         // 처음 만들었으면 // mShareList.length === 0
         this.changeShareType('all')
+
         this.writePermissionAllYn = true
         this.readPermissionAllYn = true
         this.commentPermissionAllYn = true
@@ -774,14 +778,6 @@ export default {
           dataLength += data.memberList.length
         }
       }
-
-      if (selectLength !== 1) { this.selectedReceiver = text + ' 외 ' + (selectLength - 1) + '개' }
-      if (selectLength === 1) { this.selectedReceiver = text }
-
-      if (dataLength === 0) {
-        this.selectedReceiver = '0명에게 공유중'
-      }
-
       // var shareType = ''
       // if(this.currentSelectBookType === 'write'){this.writePermission = this.selectedReceiver; shareType }
       // if(this.currentSelectBookType === 'read'){this.readPermission = this.selectedReceiver}
@@ -827,8 +823,15 @@ export default {
       console.log(this.selectShareList)
 
       if (this.currentSelectBookType === 'select') {
-        this.writePermission = this.selectedReceiver; this.readPermission = this.selectedReceiver; this.commentPermission = this.selectedReceiver
+        this.selectedList = []
+
         this.selectedList = datas
+        if (selectLength !== 1) { this.selectedReceiver = text + ' 외 ' + (selectLength - 1) + '개' }
+        if (selectLength === 1) { this.selectedReceiver = text }
+
+        if (dataLength === 0) {
+          this.selectedReceiver = '0명에게 공유중'
+        }
       } else {
         var shareType = ''
         if (this.currentSelectBookType === 'write') shareType = 'W'

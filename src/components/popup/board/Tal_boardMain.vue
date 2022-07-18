@@ -71,17 +71,13 @@ export default {
   async created () {
     this.$emit('openLoading')
     await this.getCabinetDetail()
-    var resultList = await this.getContentsList()
-    this.mCabContentsList = resultList.content
-    this.findPaddingTopBoard()
-    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-      this.endListYn = true
-    } else {
-      this.endListYn = false
-    }
-    // console.log(this.mCabContentsList)
-    //
-    // cothis.mCabContentsList
+    // var resultList = await this.getContentsList()
+    // this.mCabContentsList = resultList.content
+    // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+    //   this.endListYn = true
+    // } else {
+    //   this.endListYn = false
+    // }
   },
   mounted () {
     this.boardListWrap = document.getElementById('boardListWrap')
@@ -151,6 +147,7 @@ export default {
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
       this.changeTab('N')
+      this.offsetInt = 0
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
@@ -290,10 +287,11 @@ export default {
         param.creTeamKey = this.chanDetailKey
       } */
       param.cabinetKey = this.propData.targetKey
+      param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
-      } else {
-        param.offsetInt = this.offsetInt
+      // } else {
+        // param.offsetInt = this.offsetInt
       }
       if (pageSize) {
         param.pageSize = pageSize
@@ -376,6 +374,7 @@ export default {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
+        this.offsetInt += 1
         this.endListYn = false
       }
       // this.$refs.boardListCompo.loadingRefHide()
@@ -459,7 +458,7 @@ export default {
       this.findPopShowYn = false
     },
     async loadMore (pageSize) {
-      if (this.endListYn === false || this.totalElements > pageSize) {
+      if (this.endListYn === false) {
         var resultList = await this.getContentsList()
         const newArr = [
           ...this.mCabContentsList,
@@ -468,6 +467,7 @@ export default {
         if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
           this.endListYn = true
         } else {
+          this.offsetInt += 1
           this.endListYn = false
         }
         this.mCabContentsList = newArr

@@ -140,9 +140,11 @@ export default {
     async addDirectly(params){
 
       var follower = new Object()
+      follower = params
       var param = new Object()
 
       follower.teamKey = this.propData.currentTeamKey
+
 
       follower.inEmail = params.userEmail
       follower.inPhone = params.userPhone

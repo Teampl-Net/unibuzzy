@@ -5,24 +5,25 @@
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; height:50px; margin-bottom:1rem; position: relative;"  >
+          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
             <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
-            <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 30px); margin-left: 30px; padding: 3px 0; float: left; height: 100%;">
-                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left;" :style="'background: ' + data.picBgPath + ';'"></div>
+            <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); margin-left: 30px; padding: 3px 0; float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
+                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;" :style="'background: ' + data.picBgPath + ';'"></div>
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
-            <div  @click="deleteCabinet(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
+            <div  @click="checkDelete(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
               <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer;" alt="">
             </div>
           </div>
         </transition-group>
       </draggable>
-      <div class="btnPlus" btnTitle="추가" @click="addBoardRow"><p style="font-size:40px;">+</p></div>
+      <div class="btnPlus" @click="addBoardRow"><p style="font-size:40px;">+</p></div>
     </div>
 </div>
+  <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
   <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
 
 </template>
@@ -39,6 +40,7 @@ export default {
     editYn: {},
     chanInfo: {},
     teamNameText: {}
+
   },
   computed: {
     historyStack () {
@@ -73,7 +75,11 @@ export default {
       modiBoardDetailProps: null,
       dragging: false,
       modiBoardPopShowYn: false,
-      enabled: false
+      enabled: false,
+      errorBoxText: '',
+      errorBoxYn: false,
+      tempDeleteData: {},
+      currentConfirmType: ''
     }
   },
   components: {
@@ -82,6 +88,24 @@ export default {
     // longPress: VueDirectiveLongPress
   },
   methods: {
+    checkDelete (data, index) {
+      var temp = {}
+      temp.data = data
+      temp.index = index
+      this.tempDeleteData = temp
+      this.currentConfirmType = 'delete'
+
+      this.errorBoxText = '게시판을 삭제하시겠습니까?'
+      this.errorBoxYn = true
+    },
+    async confirmfunc () {
+      if (this.currentConfirmType) {
+        var data = this.tempDeleteData.data
+        var index = this.tempDeleteData.index
+        await this.deleteCabinet(data, index)
+        this.errorBoxYn = false
+      }
+    },
     closeNrefresh () {
       this.modiBoardPopShowYn = false
       this.getTeamMenuList()
@@ -93,13 +117,12 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
-      this.boardList = result
 
-      // console.log(this.boardList)
-      for (var i = 0; i < this.boardList.length; i++) {
-        var changeText = this.boardList[i].cabinetNameMtext
-        this.boardList[i].cabinetNameMtext = this.$changeText(changeText)
+      for (var i = 0; i < result.length; i++) {
+        var changeText = result[i].cabinetNameMtext
+        result[i].cabinetNameMtext = this.$changeText(changeText)
       }
+      this.boardList = result
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -185,6 +208,13 @@ export default {
       var index = null
       console.log('this.boardList 여기를 보세요!!!')
       console.log(this.boardList)
+      // var tempList = []
+      // for (let index = 0; index < cardList.length; index++) {
+      //   tempList.push(cardList[index].getAttribute('index'))
+      // }
+      // console.log(tempList)
+      // eslint-disable-next-line no-array-constructor
+      var tempList = new Array()
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
         for (var i = 0; i < this.boardList.length; i++) {
@@ -198,19 +228,42 @@ export default {
             if (this.boardList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext }
             if (this.boardList[i].sysCabinetCode) { menu.sysCabinetCode = this.boardList[i].sysCabinetCode }
             teamMenuList.push(menu)
+            tempList.unshift(menu)
             break
           }
         }
       }
       paramSet.teamMenuList = teamMenuList
-      await this.$commonAxiosFunction(
+      var result = await this.$commonAxiosFunction(
         {
           url: '/tp.changePosTeamMenu',
           param: paramSet
         }
       )
-      this.boardList = []
-      this.getTeamMenuList()
+      console.log('teamMenuList')
+      console.log(teamMenuList)
+      console.log(tempList)
+      console.log(result.data.result)
+
+      if (result.data.result === true) {
+        this.boardList = []
+        await this.getTeamMenuList()
+      //   this.boardList = new Array(tempList)[0]
+      //   console.log(this.boardList)
+      }
+
+      // this.indexChange(teamMenuList)
+      // this.getTeamMenuList()
+    },
+    indexChange (list) {
+      var tempList = []
+      for (let i = 0; i < list.length; i++) {
+        var a = i
+        tempList.push(list[list.length - (a + 1)])
+      }
+      console.log(tempList)
+      this.boardList = new Array(tempList)
+      console.log(this.boardList)
     }
     // this.boardList.push()
   }

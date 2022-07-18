@@ -28,6 +28,7 @@
             <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
+
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
@@ -57,6 +58,7 @@
 
     </div>
     <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
+    <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" />
 </div>
 <popUp v-if="confirmPopShowYn" @no='confirmPopShowYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -79,17 +81,18 @@ export default {
         // console.log(this.propData)
         console.log(this.propData);
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
-            if(this.propData.userDispMtext){
-                this.memName = this.$changeText(this.propData.userDispMtext)
-            }else{
-                this.memName = this.$changeText(this.propData.userNameMtext)
-            }
-            if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
-
-            if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
-
             if(this.propData.readOnlyYn){this.readOnlyYn = true}
 
+                if(this.propData.userDispMtext){
+                    this.memName = this.$changeText(this.propData.userDispMtext)
+                }else{
+                    this.memName = this.$changeText(this.propData.userNameMtext)
+                }
+            if(this.readOnlyYn){
+                if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
+
+                if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
+            }
 
 
         }
@@ -108,10 +111,21 @@ export default {
         }
     },
     methods:{
+        async deleteManager () {
+            console.log('deleteManager Axios param -> result')
+
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.deleteManager',
+                param: this.propData
+            })
+            console.log(result)
+            if(result.data === true){this.$emit('deleteManager')}
+
+        },
         testInput(){
-            this.memName = '정재준'
-            this.memEmail = 'wowns4963@naver.com'
-            this.memPhone = '01050044963'
+            this.memName = '11111wwww'
+            this.memEmail = '11111@naver.com'
+            this.memPhone = '01011111111'
         },
         regEmail(text) {
             var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
@@ -143,7 +157,13 @@ export default {
 
                 } else {
                     var param = new Object()
-                    param.userDispMtext = 'KO$^$' + this.memName
+
+
+                    param.inUserName = this.memName
+                    param.userName =  this.memName
+                    param.userDispMtext = "KO$^$"+this.memName
+                    param.userNameMtext = "KO$^$"+this.memName
+
                     param.userEmail = this.memEmail
                     param.userPhone = this.memPhone
 

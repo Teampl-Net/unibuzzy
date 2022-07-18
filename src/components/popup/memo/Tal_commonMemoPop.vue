@@ -3,9 +3,9 @@
     <div style="width: calc(100% ; border-radius: 15px 15px 0 0; left: 0px; min-height: 80px; padding: 15px 10px; box-shadow: 0 0 9px 4px #00000036; position: fixed; z-index: 9999; bottom: 0; background: #fff;">
       <div v-if="meMemoData !== null"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
         <!-- <div class="w-100P fl"> -->
-          <p class="fl commonBlack" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
+          <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
           <!-- <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p> -->
-          <div class="fl mleft-05 mright-05 font14 commonColor" style="text-align: left;" v-html="meMemoData.memo.bodyMinStr"></div>
+          <div class="fl mleft-05 mright-05 font14 commonBlack" style="text-align: left;" v-html="meMemoData.memo.bodyMinStr"></div>
         <!-- </div> -->
         <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
           <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">

@@ -36,7 +36,7 @@
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
-      <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
+      <bookMemberDetail @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
 
       <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
@@ -218,6 +218,7 @@ export default {
     }
   },
   methods: {
+
     selectedReceiverBookNMemberList (param) {
       if (!param.emit) {
         param.emit = true
@@ -366,7 +367,11 @@ export default {
         if (target.currentCabinetKey) {
           if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
         } else {
-          this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+          if (!target.managerKey) {
+            this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+          } else {
+            this.headerTitle = '매니저 수정'
+          }
         }
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시글 작성'
@@ -410,8 +415,9 @@ export default {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
-      if (this.targetType === 'boardMain' || this.targetType === 'chanDetail') reloadYn = true
-
+      if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
+      console.log(this.targetType)
+      console.log(this.reloadYn)
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
@@ -448,8 +454,10 @@ export default {
           await this.$refs.chanMenuCompo.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
           this.pushListAndDetailYn = false
-        } else if (this.targetType === 'pushListAndDetail') {
-
+        } else if (this.targetType === 'memberManagement') {
+          // getManagingList
+          await this.$refs.mamberManagementCompo.changeTab('Admin')
+          // await this.$refs.mamberManagementCompo.getManagingList()
         }
       }
     },
@@ -478,6 +486,7 @@ export default {
       //   this.pushListAndDetailYn = false
         reloadYn = true
       }
+
       this.$emit('closePop', reloadYn)
     },
     // sucssesCreChan(){

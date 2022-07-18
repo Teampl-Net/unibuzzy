@@ -59,7 +59,7 @@
           </div>
           <div class="boardBorder"></div>
           <div class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
+            <gMemoList @loadMore='loadMore'  ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -67,7 +67,9 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
+        <div class="pushDetailPaperEffect" />
       </div>
+
     </div>
     <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div>
     <transition name="showMemoPop">
@@ -77,8 +79,7 @@
   </div>
 </template>
 <script>
-/* eslint-disable */
-// eslint-disable-next-line
+
 import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
@@ -103,10 +104,16 @@ export default {
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
       mememoValue: null,
-      replyYn:false,
-      confirmType:false,
-      boardFuncType:'',
-      ownerYn : false
+      replyYn: false,
+      confirmType: false,
+      boardFuncType: '',
+      ownerYn: false,
+
+      offsetInt: 0,
+      pagesize: 10,
+      endListYn: false,
+      axiosYn: false,
+      totalElements: 0
 
     }
   },
@@ -116,25 +123,25 @@ export default {
   components: {
     manageStickerPop
   },
-  async created() {
+  async created () {
     console.log('#########################################')
     console.log(this.detailVal.value.value)
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
     } else {
       if (this.detailVal.value) {
-        if (this.detailVal.value.value !== undefined &&  this.detailVal.value.value !== null
-              && (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
-                // alert(true)
+        if (this.detailVal.value.value !== undefined && this.detailVal.value.value !== null &&
+              (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
+          // alert(true)
           this.replyYn = true
         }
       }
     }
     if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
-      this.ownerYn =  true
+      this.ownerYn = true
     }
     await this.getContentsList()
-    await this.getMemoList()
+    // await this.getMemoList()
     await this.getLikeCount()
   },
   computed: {
@@ -146,6 +153,7 @@ export default {
   },
   methods: {
     openUpdateContentsPop () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = this.alimDetail[0].contentsKey
       param.targetType = 'writeBoard'
@@ -155,114 +163,159 @@ export default {
       param.titleStr = this.alimDetail[0].title
       this.$emit('openPop', param)
     },
-    boardFuncClick(type){
+    boardFuncClick (type) {
       this.confirmPopShowYn = true
       this.confirmType = true
       this.boardFuncType = type
-      if(type === "BOAR"){
-        this.confirmText='게시글을 삭제 하시겠습니까?'
-      }else if(type === "REPORT"){
-        this.confirmText='해당 게시글을 신고 하시겠습니까?'
+      if (type === 'BOAR') {
+        this.confirmText = '게시글을 삭제 하시겠습니까?'
+      } else if (type === 'REPORT') {
+        this.confirmText = '해당 게시글을 신고 하시겠습니까?'
       }
     },
-    async confirmOk(){
+    async confirmOk () {
       this.confirmPopShowYn = false
       this.confirmType = false
       var inParam = {}
-      console.log(this.alimDetail);
+      console.log(this.alimDetail)
       inParam.contentsKey = this.alimDetail[0].contentsKey
-      inParam.jobkindId = "BOAR"
+      inParam.jobkindId = 'BOAR'
       inParam.teamKey = this.alimDetail[0].creTeamKey
-      if(this.boardFuncType === "BOAR" ){
+      if (this.boardFuncType === 'BOAR') {
         inParam.deleteYn = true
         var result = await this.$commonAxiosFunction({
           url: '/tp.saveContents',
           param: inParam
         })
-        this.$emit("closeXPop",true)
-        // console.log("Delete Content Result");
-      }else if(this.boardFuncType  === "REPORT"){
+        this.$emit('closeXPop', true)
+        console.log('Delete Content Result' + result)
+      } else if (this.boardFuncType === 'REPORT') {
         inParam.reportYn = true
         this.confirmPopShowYn = true
-        this.confirmText='신고되었습니다.'
+        this.confirmText = '신고되었습니다.'
       }
     },
-    mememoCancel(){
+    mememoCancel () {
       this.mememoValue = {}
     },
-    scrollMove(wich){
+    scrollMove (wich) {
+      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var memoArea = this.$refs.memoarea
-      memoArea.scrollTo({top:(wich - 25), behavior:'smooth'});
+      if (wich === -1) {
+        wich = document.getElementById(this.memoList[this.memoList.length - 1].memoKey).offsetTop
+        this.$refs.boardMemoListCompo[0].anima(this.memoList[this.memoList.length - 1].memoKey)
+      }
+      memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
-    writeMemo(){
+    writeMemo () {
       if (this.detailVal.shareAuth.R === true) {
         this.memoShowYn = true
         this.mememoValue = null
-      } else{
+      } else {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
     },
     writeMememo (memo) {
-      if (this.detailVal.shareAuth.R === true ) {
+      if (this.detailVal.shareAuth.R === true) {
         var data = {}
-        data.parentMemoKey = memo.memoKey //대댓글때 사용하는것임
+        data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
         data.memo = memo
+        // eslint-disable-next-line no-new-object
         this.mememoValue = new Object()
         this.mememoValue = data
         this.memoShowYn = true
-      }else{
+      } else {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
-
     },
     async deleteMemo (param) {
-      console.log(param);
+      console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
         url: '/tp.deleteMemo',
         param: memo
       })
-      if(result.data.result == true){
+      if (result.data.result === true) {
         // this.memoList = []
         await this.getContentsList()
-        await this.getMemoList()
+        await this.getMemoList(true)
       }
     },
-    async getMemoList () {
+    async loadMore () {
+      if (this.endListYn === false && this.axiosYn === false) {
+        await this.getMemoList()
+        this.offsetInt += 1
+      }
+    },
+    async getMemoList (allYn) {
+      this.$refs.boardMemoListCompo[0].memoLoadingShow()
+      this.axiosYn = true
+      // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.targetKind = 'C'
       memo.targetKey = this.alimDetail[0].contentsKey
-      memo.pageSize = 100
-      memo.offsetInt = 0
+      memo.pageSize = this.pagesize
+      memo.offsetInt = this.offsetInt
+      if (allYn) {
+        memo.pageSize = this.totalElements + 1
+        memo.offsetInt = 0
+      }
       var result = await this.$commonAxiosFunction({
         url: '/tp.getMemoList',
         param: memo
       })
-      if(result.data.content) {
-        this.memoList = result.data.content
+      console.log(result)
+      if (result.data.content) {
+        this.totalElements = result.data.totalElements
+        if (allYn) {
+          this.memoList = []
+          this.memoList = result.data.content
+          this.endListYn = true
+        } else {
+          const newArr = [
+            ...this.memoList,
+            ...result.data.content
+          ]
+          this.memoList = newArr
+        }
+
         await this.mememoChangeList()
 
+        this.axiosYn = false
+        if (this.totalElements < (result.data.pageable.offset + result.data.pageable.pageSize)) {
+          this.endListYn = true
+        } else {
+          this.endListYn = false
+          if (allYn) {
+            this.endListYn = true
+          }
+        }
       }
+      this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
     async getLikeCount () {
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       param.actYn = true
       param.targetKind = 'C'
       param.targetKey = this.alimDetail[0].contentsKey
       param.doType = 'LI'
+      // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
         url: '/tp.getUserDoListPage',
         param: param
       })
     },
-    mememoChangeList() {
+    mememoChangeList () {
       for (let i = 0; i < this.memoList.length; i++) {
-        if(this.memoList[i].parentMemoKey){
+        this.memoList[i].mememoCount = 0
+        if (this.memoList[i].parentMemoKey) {
           for (let j = 0; j < this.memoList.length; j++) {
-            if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
+            if (this.memoList[j].memoKey === this.memoList[i].parentMemoKey) {
+              this.memoList[j].mememoCount += 1
               this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext || this.memoList[j].userNameMtext)
               this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyMinStr
             }
@@ -288,10 +341,10 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080'
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey +
+                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' +
+                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null
       if (titleText.length > 20) {
@@ -332,9 +385,10 @@ export default {
       })
     },
     async saveMemo (text) {
+      // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.parentMemoKey = null
-      if(this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {} ){
+      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
 
@@ -346,18 +400,19 @@ export default {
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
-      console.log(memo);
+      console.log(memo)
 
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
-        param: {memo: memo}
+        param: { memo: memo }
       })
-      if(result.data.result === true || result.data.result === 'true') {
+      if (result.data.result === true || result.data.result === 'true') {
         /* this.confirmText = '댓글 저장 성공'
         this.confirmPopShowYn = true */
         this.memoShowYn = false
         await this.getContentsList()
-        await this.getMemoList()
+        await this.getMemoList(true)
+        this.scrollMove(-1)
       }
     },
     decodeContents (data) {
@@ -368,6 +423,7 @@ export default {
     async getContentsList () {
       // eslint-disable-next-line no-new-object
 
+      // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
       param.contentsKey = this.detailVal.targetKey
@@ -376,8 +432,8 @@ export default {
       // console.log('console.log(resultList);console.log(resultList);console.log(resultList);');
       // console.log(resultList);
       this.alimDetail = resultList.content
-      console.log('this.alimDetail');
-      console.log(this.alimDetail);
+      console.log('this.alimDetail')
+      console.log(this.alimDetail)
 
       // var tempuserDoList = resultList.content[0].userDoList
       if (resultList.content[0].userDoList) {
@@ -432,8 +488,8 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
       }
-      console.log("resultresult");
-      console.log(result);
+      console.log('resultresult')
+      console.log(result)
       if (result === true) {
         await this.getContentsList()
         // this.$emit('reloadParent')
@@ -441,7 +497,6 @@ export default {
         // setTimeout(()=>{
         //   this.loadYn = true
         // },200)
-
       }
     },
     goChanDetail (alim) {
@@ -493,7 +548,6 @@ export default {
 
 .pushMbox{margin-bottom: 20px;}
 
-
 .pushMbox{margin-bottom: 20px;}
 
   .content {
@@ -512,18 +566,6 @@ export default {
       min-height: 22rem;
       padding-bottom: 3rem;
   }
-
-  .content ::after {
-      content: '';
-      position: absolute;
-      display: block;
-      width: 30px;
-      height: 30px;
-      background-color: #e1e1f2;
-      bottom: 0;
-      right: 0;
-  }
-
 
 .showMemoPop-enter {animation: showMemoPop-dialog-fade-in 0.2s ease;}
 .showMemoPop-leave {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}

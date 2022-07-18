@@ -1,12 +1,13 @@
 <template>
 <div class="chanDetailWrap" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'" :class="{zindex1000:alimSubPopYn === true }">
+<!-- <div class="chanDetailWrap zindex1000" :style="'background-image: url(' + chanDetail.bgPathMtext + ')'" > -->
   <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <div class="channelItemBox">
     <div style="width: 100%; height: 100%; position: relative;">
       <!-- <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " :headerTitle="this.$changeText(chanDetail.nameMtext)" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/> -->
-      <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " headerTitle="알림 상세" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
+      <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " headerTitle="채널 상세" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
       <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanDetail" @copyText="copyText" @goChanMain="changeFollowTrue" @closePop="okMember" @applyMember="okMember" />
       <div ref="chanImg"  class="mt-header chanWhiteBox">
         <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
@@ -212,6 +213,7 @@ export default {
         this.errorPopYn = true
       } else {
         var fStatus = this.followYn
+
         // eslint-disable-next-line no-new-object
         this.followParam = new Object()
         this.followParam.teamKey = this.chanDetail.teamKey
@@ -246,6 +248,7 @@ export default {
       } else {
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
       }
+      console.log(result)
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
