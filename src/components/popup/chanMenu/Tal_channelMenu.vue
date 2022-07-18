@@ -7,7 +7,7 @@
       <!-- <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
       <img @click="goNo" class="mtop-05 mleft-1"  src="../../../assets/images/common/icon_back.png"/>
-      <p :class="{editColor: editYn === true }" class="fontBold fl" >{{menuHeaderTitle}}</p>
+      <p :class="{editColor: editYn === true }" class="fontBold font16 fl" >{{menuHeaderTitle}}</p>
       <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
       <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
       <div v-else />
@@ -437,7 +437,7 @@ export default {
 <style scoped>
 .calcMarginLeft { margin-left: 2rem !important; }
 .menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
+.menuHeader p{color: #FFFFFF; text-align: center;}
 
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 

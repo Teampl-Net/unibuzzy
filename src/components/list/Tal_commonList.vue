@@ -11,9 +11,9 @@
       <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
         <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" >
           <div v-if="alim.readYn === 0" class="readYnArea"></div>
-            <div class="pushDetailTopArea">
-              <div class="chanLogoImgWrap">
-                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo;" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+            <div class="commonPushListTopArea">
+              <div class="pushChanLogoImgWrap">
+                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img src="../../assets/images/channel/icon_official.svg" v-if="alim.officialYn" style="width: 30px; position:absolute; bottom:-1rem;" class='' alt="">
               </div>
@@ -229,8 +229,9 @@ export default {
 .commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: 100%;}
 
 .pushDetailWrap{height: fit-content;}
-.pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.commonPushListTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 30px; margin-right: 1px;}
+.pushDetailChanLogo img {width: 100%;}
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.1rem;}
 
 .alimCheckContents{width: 100%;float: right; min-height: 20px;}
@@ -239,7 +240,7 @@ export default {
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-.chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
+.pushChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 .pushMbox{margin-bottom: 20px;}
 .userDoWrap img {width: 1rem;}
 .commonListContentBox{

@@ -2,7 +2,7 @@
 <!-- <div style="z-index:999; width: 100vw; height: 100vh; position: fixed; top:0; left:0;" @click="this.$emit('closePop')"/> -->
 <div style="width:100vw; height:100vh; position:fixed; background: #00000030; top:0; left:0; " @click="closePop" ></div>
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' style="z-index:9999999;" v-if="errorPopYn" @no='errorPopYn = false'  />
-<div style="width: 100vw; height: 50%; position:fixed; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
+<div class="zoomInOutPop" style="width: 100vw; height: 50%; position:fixed; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
     <div v-if="type==='admin'" class="fadein greetingTextArea">
       <p class="commonBlack fontBold font16 textLeft ">[{{this.$changeText(chanInfo.nameMtext)}}] 채널를 만드셨네요! </p>
       <p class="commonBlack fontBold font16 textLeft">관리자가 발송하는 모든 알림은 '최신'탭에 볼 수 있어요!</p>
@@ -21,7 +21,7 @@
                       + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" style="float: left; width: calc(50% - 10px);" btnTitle="채널링크복사하기" />
       </div>
     </div>
-      <img class="" style="width: 150px; margin-left: 18%;" src="../../../assets/images/common/winkAlimLogo.png" alt="">
+    <img class="" style="width: 150px; margin-left: 18%;" src="../../../assets/images/common/winkAlimLogo.png" alt="">
       <!-- <gSvg class="boombox"
       viewBox="0 0 200 200 "
       width="200"

@@ -11,7 +11,7 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
             <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: value.ownerYn === true}">
-              <div class="chanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+              <div class="top5PushChanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
               <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style=" width:30px; position:absolute;bottom:-1rem " alt="">
 
               </div>
@@ -110,8 +110,8 @@ export default {
 <style scoped>
 /* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
 .top5MyPushColor { background-color: #6768a712;}
-.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
-.chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
+.top5PushChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
+.top5PushChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .commonListTr{
 animation-name: fadein;
 animation-duration: 0.3s;

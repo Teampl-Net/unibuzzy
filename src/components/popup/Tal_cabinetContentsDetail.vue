@@ -5,7 +5,7 @@
 
       <img v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" src="../../assets/images/common/icon_back.png"/>
 
-      <p >{{itemTitle}}</p>
+      <p class="font16" >{{itemTitle}}</p>
     </div>
 
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
@@ -207,7 +207,7 @@ export default {
 .pushMbox{margin-bottom: 20px;}
 
 .menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
+.menuHeader p{text-align: center; line-height: 2.5rem;}
 .menuHeader img{ width: 0.8rem; line-height: 50px;}
 
 </style>

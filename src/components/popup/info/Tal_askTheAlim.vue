@@ -151,7 +151,7 @@ export default {
 </script>
 <style scoped>
 .askCommonFont{color: #303030; font-size: 15px;}
-.askBoxWrap{width: 100%; min-height: 50px; border-radius: 5px; border: 1px solid #CFCFCF; padding: 0 0.5rem}
+.askBoxWrap{width: 100%; min-height: 50px; border-radius: 5px; border: 1px solid #CFCFCF; padding: 0 0.7rem}
 .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }

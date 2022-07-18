@@ -11,7 +11,7 @@
         </div>
     </template>
 
-    <div v-else><p>공유된 게시판이 없습니다.</p></div>
+    <div class="textLeft" style="margin-left: calc(2rem + 20px);" v-else><p class="font14">공유된 게시판이 없습니다.</p></div>
 </template>
 
 <script>

@@ -242,8 +242,4 @@ export default {
   height: calc(100vh - 35px) !important;
 }
 
-.menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
-
 </style>

@@ -138,7 +138,6 @@ export default {
         } else {
           message = e.data
         }
-
         if (message.type === 'pushmsg') {
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
             this.systemName = localStorage.getItem('systemName')
@@ -153,16 +152,29 @@ export default {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+            if (this.notiDetail.actYn) {
               if ((currentPage === 0 || currentPage === undefined)) {
-                this.notiDetailShowYn = true
+                if (this.notiDetail.actType === 'WR') {
+                  this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+                } else {
+                  if (this.notiDetail.actType === 'LI') {
+                    this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+                  }
+                }
+              } else {
               }
             } else {
-              if ((currentPage === 0 || currentPage === undefined)) {
-                this.$router.replace({ path: '/pushList' })
-                this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
+              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+                if ((currentPage === 0 || currentPage === undefined)) {
+                  this.notiDetailShowYn = true
+                }
               } else {
-                this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
+                if ((currentPage === 0 || currentPage === undefined)) {
+                  this.$router.replace({ path: '/pushList' })
+                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
+                } else {
+                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
+                }
               }
             }
           } else if (this.notiDetail.targetKind === 'TEAM') {
@@ -309,6 +321,12 @@ export default {
   }
   100% {
     transform: translateX(500px);
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .pagePaddingWrap {
+    padding-top: 50px !important;
   }
 }
 

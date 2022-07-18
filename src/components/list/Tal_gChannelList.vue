@@ -5,7 +5,7 @@
     </div>
     <div v-else class="chanRow w-100P fl" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
-        <div class="chanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+        <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
         <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; right: 15px; top: -15px;" />
         <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:35px;position: absolute; right: -16px; top: -6px;" alt="">
         <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 15px; position: absolute; bottom: 0; right: -3px;" />
@@ -18,7 +18,7 @@
                 <span class="commonColor font14" >{{value.followerCount}}</span>
             </div>
             <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
-            <span class="lightGray font14 fr" style="">{{this.$changeDateFormat(value.creDate)}}</span>
+            <p class="lightGray font14 fr mNone " style="line-height: 30px;" >{{this.$changeDateFormat(value.creDate)}}</p>
           </div>
           <div style="width: 100%; margin-top: 4px; position: relative;">
             <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
@@ -122,11 +122,24 @@ td {
 .ownerChannelRowColor {background-color: #6768a712}
 .channelRow{display: flex; align-items: center; padding: 15px 5px; min-height: 70px;  border-bottom: 1px solid #E4E4E4; }
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
-.chanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
-.chanLogoImgWrap img{width: 40px; margin-right: 0.05rem;}
+.gChanPageChanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
+.gChanPageChanLogoImgWrap img{width: 100%; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 .chanRow{
   animation-name: fadein;
   animation-duration: 0.3s;
+}
+
+@media screen and (max-width: 300px) {
+  .gChanPageChanLogoImgWrap {
+    width: 40px!important;
+    height: 40px!important;
+    top: 10%!important;
+    padding: 3px;
+    margin-right: 0px!important;
+  }
+  .channelRow{
+    padding: 8px 5px;
+  }
 }
 </style>

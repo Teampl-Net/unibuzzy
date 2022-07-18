@@ -327,7 +327,7 @@ export default {
 .leaveContentsWrap{width: 100%; height: 80%; margin-bottom: 3rem; }
 .leavePageWrap{display: flex; flex-direction: column; text-align: left; height: 100vh; overflow: hidden scroll;}
 .guideText{color: #303030; font-size: 15px;}
-.guideTextWrap{width: 100%; min-height: 180px; margin-top: 0.5rem; border: 1px solid #CFCFCF; padding: 0 0.5rem}
+.guideTextWrap{width: 100%; min-height: 180px; margin-top: 0.5rem; border: 1px solid #CFCFCF; padding: 0 0.7rem}
 .guideBox{width: 100%; min-height: 80px; margin-top: 2rem;}
 .guideBox p{color: #6768A7; font-size: 15px; font-weight: bold;}
 input{margin-right: 0.5rem;}

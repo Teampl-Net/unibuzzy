@@ -5,21 +5,21 @@
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div style="width: 80px; height: 80px; border-radius: 80px; overflow: hidden; display: flex; margin-right: 1rem">
-      <img v-if="userInfo.soPicUrl !== undefined && userInfo.soPicUrl !== null && userInfo.soPicUrl !== ''" :src="userInfo.soPicUrl"  style="width: 85px; height: 85px;"/>
-      <img v-else src="../../assets/images/main/main_profile.png"  style="width: 85px; height: 85px;"/>
+    <div class="picImgWrap">
+      <img v-if="userInfo.soPicUrl !== undefined && userInfo.soPicUrl !== null && userInfo.soPicUrl !== ''" :src="userInfo.soPicUrl" />
+      <img v-else src="../../assets/images/main/main_profile.png" />
     </div>
     <div class="userProfileTextWrap">
-      <p ref="userName" class="font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
-      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
+      <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
+      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
-        <img src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
-        <span class="profileTitle" ref="userEmail">이메일</span>
+        <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
+        <span class="profileTitle font14" ref="userEmail">이메일</span>
         <span class="grayBlack font14" ref="userEmail">{{userInfo.userEmail}}</span>
       </div>
       <div>
-        <img src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-        <span @click="test" class="profileTitle" ref="userEmail">휴대폰</span>
+        <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
+        <span @click="test" class="profileTitle font14" ref="userEmail">휴대폰</span>
         <span class="grayBlack font14" ref="userMobile">{{userInfo.phoneLast}}</span>
       </div>
     </div>
@@ -248,6 +248,17 @@ export default {
   .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
-  .userProfileTextWrap .profileTitle{font-size: 14px; font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
+  .userProfileTextWrap .profileTitle{font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
+.picImgWrap {width: 80px; height: 80px; border-radius: 80px; overflow: hidden; display: flex; margin-right: 1rem}
+.picImgWrap img {width: 100%;}
+@media screen and (max-width: 300px) {
+  .picImgWrap{
+    width: 60px!important;
+    height: 60px!important;
+  }
+  .mainUserName {font-size: 15px!important;}
+  .mainIcon {width: 0.7rem!important;}
+  .mainRefreshBtn {width: 20px!important}
+}
 
 </style>

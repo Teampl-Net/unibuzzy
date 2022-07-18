@@ -8,7 +8,7 @@
                 <div id="noneChanPage">
                   <img class="mbottom-2" src="../../assets/images/main/message_logo.png" alt="">
                   <p class="mbottom-1 font15" >현재 생성된 채널이 없습니다!</p>
-                  <div class="creChanBigBtn" @click="this.creChanPopYn = true">채널 생성하기</div>
+                  <div class="creChanBigBtn font18" @click="this.creChanPopYn = true">채널 생성하기</div>
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                 <span v-html="changeText(value.nameMtext)"></span>
               </div>
               <div  style="width: 150px; float: left; display: flex; flex-direction: column; height: 150px; ">
-                <div style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 25px;" @click="this.creChanPopYn = true" >+</div>
+                <div class="font25" style="width: 130px; height: 130px; border-radius: 10px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center;" @click="this.creChanPopYn = true" >+</div>
               </div>
             </div>
 
@@ -32,7 +32,7 @@
                 <div style="width: 60%; height: 100%; margin: 0 auto; margin-top: 40%;">
                     <img class="mbottom-2" src="../../assets/images/main/message_logo.png" alt="">
                     <p class="mbottom-1 font15" >채널이 성공적으로 생성되었습니다!</p>
-                    <div @click="creChanResultYn = false" class="creChanBigBtn">내 채널 둘러보기</div>
+                    <div @click="creChanResultYn = false" class="creChanBigBtn font18">내 채널 둘러보기</div>
                 </div>
             </div>
 
@@ -96,20 +96,10 @@ export default {
   box-shadow: 0px 7px 9px -9px #00000036;
 }
 
-.creChanIntroTextWrap {
-  padding: 10px 0;
-  float: left;
-  border-bottom: 1px solid #ccc;
-}
-.creChanIntroTextWrap p {
-  font-size: 18px;
-}
-
 .creChanBigBtn {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  font-size: 18px;
   background: #6768a7;
   color: #fff;
   border-radius: 8px;

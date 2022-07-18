@@ -30,7 +30,7 @@
                 <p class="font14"> 알림음 선택 </p>
               </td>
               <td class="fr" >
-                <p style="color:#ccc; font-size:14px">띵동</p>
+                <p style="color:#ccc; " class="font14">띵동</p>
               </td>
             </tr>
 
@@ -48,7 +48,7 @@
                 <p class="font14"> 진동패턴 선택 </p>
               </td>
               <td class="fr" >
-                <p style="color:#ccc; font-size:14px">~~~</p>
+                <p style="color:#ccc; " class="font14">~~~</p>
               </td>
             </tr>
 
@@ -61,7 +61,7 @@
             <tr rowspan="2" style="border-bottom:0px;">
               <td class="fl" rowspan="2" style=" text-align:left;">
                 <p class="font14"> 내 채널 알림 </p>
-                <p style="color:#aaa; font-size:12px;line-height:auto; margin-top:-1rem; margin-right:10px; line-height:1rem; ">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p>
+                <p class="font12" style="color:#aaa; line-height:auto; margin-top:-1rem; margin-right:10px; line-height:1rem; ">내 채널에 구독자 추가, 게시글 추가 등 발생하는 이벤트에 대한 알림을 받습니다.</p>
               </td>
 
               <td class="fr" >
@@ -110,7 +110,6 @@ p{color: #2c3e50;}
 /* .policy-01{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px)}
 .policy-02{margin-top: 70px; text-align: left; padding: 0.5rem 1rem; overflow-y: auto; height: calc(100% - 60px) } */
 .dNone{display: none;}
-.titleText{font-size: 14px; font-weight: bold;}
 .subTitle{font-weight: bold;}
 
 table tr{

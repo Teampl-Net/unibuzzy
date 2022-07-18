@@ -3,7 +3,7 @@
         <div class="loadingZcontainer">
             <img class="boombox" src="../../assets/images/common/message_logo.png" alt="">
             <div class="shadow"></div>
-            <p class="waitingText">Wait a moment...</p>
+            <p class="waitingText font20">Wait a moment...</p>
         </div>
     </div>
 </template>
@@ -239,5 +239,5 @@ export default {
   animation-delay: 2s;
   box-shadow: none!important;
 }
-.waitingText{position: absolute;bottom: -80px; color: #6768A7; left: -10px; font-size: 20px; font-weight: bold;}
+.waitingText{position: absolute;bottom: -80px; color: #6768A7; left: -10px; font-weight: bold;}
 </style>

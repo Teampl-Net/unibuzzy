@@ -90,8 +90,8 @@
     <div class="itemWrite fl" style="border-bottom: none;">
       <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상</p>
       <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
-        <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl mleft-05 mtop-02" for="shareAll">전체</label>
-        <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl mleft-05 mtop-02" for="shareSelect">선택</label>
+        <input class="h-100P fl" type="radio" :checked="this.shareType === 'all'? true: false" @click="changeShareType('all')" name="shareType" value="all" id="shareAll"><label class="fl font14 mleft-05 mtop-02" for="shareAll">전체</label>
+        <input class="h-100P fl mleft-1" type="radio" :checked="this.shareType === 'select'? true: false" @click="changeShareType('select')" name="shareType" value="select" id="shareSelect"><label class="fl font14 mleft-05 mtop-02" for="shareSelect">선택</label>
       </div>
     </div>
     <div class="fl" style="width: 100%;">
@@ -105,9 +105,9 @@
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem" v-if="this.shareType == 'select'">{{writePermission}}</div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="display:flex" >
-          <div><input class="h-100P fl" type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use"  id="writeTrue"><label class="fl mleft-05" for="writeTrue">전체</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" id="writeFalse"><label class="fl mleft-05" for="writeFalse">사용 안함</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionSelectYn ===  true ? true : false " @click="selectPermission('write')" name="writePermissionAllYn" value="unuse" id="writeSelect"><label class="fl mleft-05" for="writeSelect">선택 지정</label></div>
+          <div><input class="h-100P fl" type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use"  id="writeTrue"><label class="fl font14 mleft-05" for="writeTrue">전체</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" id="writeFalse"><label class="fl font14  mleft-05" for="writeFalse">사용 안함</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionSelectYn ===  true ? true : false " @click="selectPermission('write')" name="writePermissionAllYn" value="unuse" id="writeSelect"><label class="fl font14  mleft-05" for="writeSelect">선택 지정</label></div>
         </div>
         <div @click="showSelectBookPop('write')" v-if="writePermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{writePermission}}</div>
       </div>
@@ -117,9 +117,9 @@
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem" v-if="this.shareType == 'select'">{{readPermission}}</div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="display:flex">
-          <div><input class="h-100P fl" type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" id="readTrue"><label class="fl mleft-05" for="readTrue">전체</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" id="readFalse"><label class="fl mleft-05" for="readFalse">사용 안함</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionSelectYn ===  true ? true : false" @click="selectPermission('read')" name="readPermissionAllYn" value="unuse" id="readSelect"><label class="fl mleft-05" for="readSelect">선택 지정</label></div>
+          <div><input class="h-100P fl" type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" id="readTrue"><label class="fl font14  mleft-05" for="readTrue">전체</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" id="readFalse"><label class="fl font14  mleft-05" for="readFalse">사용 안함</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionSelectYn ===  true ? true : false" @click="selectPermission('read')" name="readPermissionAllYn" value="unuse" id="readSelect"><label class="fl font14  mleft-05" for="readSelect">선택 지정</label></div>
         </div>
         <div @click="showSelectBookPop('read')" v-if="readPermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{readPermission}}</div>
       </div>
@@ -128,9 +128,9 @@
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem" v-if="this.shareType == 'select'" >{{commentPermission}}</div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="">
-          <div><input class="h-100P fl" type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" id="commentTrue"><label class="fl mleft-05"  for="commentTrue">전체</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" id="commentFalse"><label class="fl mleft-05" for="commentFalse">사용 안함</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionSelectYn ===  true ? true : false" @click="selectPermission('comment')" name="commentPermissionAllYn" value="unuse" id="commentSelect"><label class="fl mleft-05" for="commentSelect">선택 지정</label></div>
+          <div><input class="h-100P fl" type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" id="commentTrue"><label class="fl font14 mleft-05"  for="commentTrue">전체</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" id="commentFalse"><label class="fl font14 mleft-05" for="commentFalse">사용 안함</label></div>
+          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionSelectYn ===  true ? true : false" @click="selectPermission('comment')" name="commentPermissionAllYn" value="unuse" id="commentSelect"><label class="fl font14 mleft-05" for="commentSelect">선택 지정</label></div>
         </div>
         <div @click="showSelectBookPop('comment')" v-if="commentPermissionSelectYn === true && this.shareType == 'all'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{commentPermission}}</div>
       </div>
@@ -905,8 +905,6 @@ export default {
 </script>
 
 <style scoped>
-.menuHeader { padding:0.5rem 0;position: fixed; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff; background-color:#6768a7 ;}
-.menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
 
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 .toggleBtn{width: 50%; height: 100%;background-color: #fff; float: left; line-height: 25px;}
@@ -933,29 +931,6 @@ export default {
 }
 .inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
 
-.editWrap{
-  background-color: #F9F9F9;
-}
-.editmenuHeader{
-border-bottom: 1.5px solid #999;
-}
-.editColor{
-  color: #6768a7 !important;
-}
-.fontBlack{color: black !important;}
-
-.editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
-.boardNameText{
-  /* font-size: ; */
-  font-weight: bold;
-  line-height: 2.5rem;
-  margin-left: 2rem;
-}
-.boardPlusBtn{
-  color:white;
-  font-size:20px;
-  font-weight:bold;
-}
 /* 드롭다운 박스 */
 .dropdown {
 
@@ -1074,10 +1049,8 @@ input:-internal-autofill-selected {
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }
 .creChanIntroTextWrap p{font-size: 20px; }
-.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
 .activeTypeBox{background: #6768a7; color: #fff;}
 .activeTypeBox p {color: #fff;}
-.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
 .selecWriterShow{background: #6768a7 !important; color: #fff;}
 
 /* @media(height:700px){
@@ -1104,9 +1077,6 @@ input:-internal-autofill-selected {
     margin-left: 0rem !important;
     padding-left: 1rem !important;
   }
-  .moidRadioArea label{
-    font-size: 12px;
-  }
   .inputBoxThema{
     width: calc(90%);
   }
@@ -1121,9 +1091,6 @@ input:-internal-autofill-selected {
   display: flex;
   /* margin-left: 2.1rem; */
   padding-left: 2.7rem;
-}
-.moidRadioArea label{
-  font-size: 14px;
 }
 
 </style>

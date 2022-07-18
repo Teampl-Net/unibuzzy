@@ -2,7 +2,7 @@
     <div>
         <div style="position: relative; margin: 1rem 0">
             <img @click="findChannel" class="searchIcon" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-            <input class="searchInput" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
+            <input class="searchInput font15" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
         </div>
         <div class="newestSearchWrap">
             <div lass="w-100P" style="height: 2rem">

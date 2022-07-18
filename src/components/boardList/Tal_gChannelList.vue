@@ -1,6 +1,6 @@
 <template>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
-      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+      <div class="gChanPageChanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
         <div class=" text-start mr-04 w-100P" >
           <p class="font15 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
@@ -33,7 +33,7 @@ export default {
   props: {
     chanList: {}
   },
-  watch:{
+  watch: {
     chanList () {
       this.$refs.sLoadingChannel.hide()
     }
@@ -99,7 +99,7 @@ td {
 
 .top5ChannelRow{display: flex; align-items: center; padding: 15px 5px; min-height: 70px;  border-bottom: 1px solid #E4E4E4;}
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
-.chanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
-.chanLogoImgWrap img{width: 40px; margin-right: 0.05rem;}
+.gChanPageChanLogoImgWrap {width: 60px; height:60px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
+.gChanPageChanLogoImgWrap img{width: 40px; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 </style>

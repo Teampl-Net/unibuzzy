@@ -222,10 +222,6 @@ export default {
 <style >
 /* btnPlus common.css로 옮김 */
 
-.menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
-
 .longHeight{
 height:100% !important;
 }

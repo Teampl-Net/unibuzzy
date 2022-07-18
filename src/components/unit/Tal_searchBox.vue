@@ -2,7 +2,7 @@
     <div class="pushListSearchArea">
       <div style="position: relative; margin-top: 1rem; height: 40px;">
         <img class="searchIcon mtop-03" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <div class="searchInput" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
+        <div class="searchInput font15" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
       </div>
       <div style="width: 100%;">
         <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />

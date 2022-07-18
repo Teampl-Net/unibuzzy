@@ -4,8 +4,8 @@
 
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
-      <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
-        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림발송 {{chanItem.totalContentsCount}}건 | 받은 알림 {{myContentsCount}}건</p>
+      <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
+        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림 {{chanItem.totalContentsCount}}건 | 내가 받은 알림 {{myContentsCount}}건</p>
         <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
       </div>
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div> -->
-    <div id="chanInfoArea" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
+    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
       <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
     </div>
   </div>

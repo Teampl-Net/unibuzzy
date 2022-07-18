@@ -269,9 +269,6 @@ export default {
 /* btnPlus common.css로 옮김 */
 .bookAndMemListWrap{width: 100%; height: calc(100% - 10px); position: relative;}
 .editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
-.menuHeader {padding-top:0.5rem; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
 
 .longHeight{
 height:100% !important;

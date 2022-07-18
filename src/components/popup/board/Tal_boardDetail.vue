@@ -9,8 +9,8 @@
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
             <div class="fr" v-if="creUser === alim.creUserKey">
-              <p class="fl mright-05"  @click="openUpdateContentsPop">수정</p>
-              <p class="fl mright-05"  @click="boardFuncClick('BOAR')">삭제</p>
+              <p class="fl mright-05 font13"  @click="openUpdateContentsPop">수정</p>
+              <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
               <!-- <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p> -->
             </div>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
@@ -31,8 +31,8 @@
               </div>
             </div> -->
             <div class="w-100P fl mbottom-05">
-                <p class="commonBlack font12" style="float: right;">좋아요 {{alim.likeCount}}개</p>
-                <p class="commonBlack font12" style="float: right; margin-right: 10px;'">댓글 {{alim.memoCount}}개</p>
+                <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
+                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{alim.memoCount}}개</p>
             </div>
             <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
               <template v-if="userDo.doType === 'ST'">
@@ -55,7 +55,7 @@
             </div>
           </div>
           <div v-if='!replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
-            <p class="w-100P commonBlack textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
+            <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div class="boardBorder"></div>
           <div class="w-100P fl" style=" min-height: 100px;" >
@@ -263,7 +263,7 @@ export default {
         if(this.memoList[i].parentMemoKey){
           for (let j = 0; j < this.memoList.length; j++) {
             if(this.memoList[j].memoKey === this.memoList[i].parentMemoKey){
-              this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext || this.memoList[j].userDispMtext)
+              this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext || this.memoList[j].userNameMtext)
               this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyMinStr
             }
           }
@@ -344,7 +344,7 @@ export default {
       memo.targetKey = this.alimDetail[0].contentsKey
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      memo.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       console.log(memo);
 
@@ -421,6 +421,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = contentsKey
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (param.targetKey === null) { return }
       param.doType = act.doType
       if (saveYn === false) {
@@ -469,20 +470,6 @@ export default {
 }
 </script>
 <style scoped>
-.commentBtn {
-  width: fit-content;
-  font-size: 14px;
-  line-height: 30px;
-  border-radius: 5px;
-  min-width: 3rem;
-  float: right;
-  height: 30px;
-  padding: 0 20px;
-  text-align: center;
-  background-color: #fff;
-  border: 1px solid #A9AACD;
-  color: #3E3F6A;
-}
 .pagePaddingWrap {
     box-sizing: border-box;
     width: 100%;
@@ -505,10 +492,6 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 .pushMbox{margin-bottom: 20px;}
-
-.menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
 
 
 .pushMbox{margin-bottom: 20px;}

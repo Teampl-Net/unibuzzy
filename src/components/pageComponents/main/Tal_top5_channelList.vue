@@ -7,7 +7,7 @@
       <img src="/resource/common/placeholder_white.png" />
     </div>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}">
-      <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+      <div class="top5ChanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
       <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: 0;" />
       <img src="../../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px;  position: absolute; bottom: -0.3rem; " class='fl ' alt="">
       </div>
@@ -133,8 +133,8 @@ export default {
 .top5MyChanColor { background-color: #6768a712;}
 .top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4; animation-name: fadein; animation-duration: 0.3s; position: relative;}
 .chanTop5Wrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
-.chanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
-.chanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
+.top5ChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
+.top5ChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 /* .chanMsgWrap{line-height: 0.9rem; padding: 0.5rem; text-align: left; background-color: #6768A71A; border-radius: 6px; opacity: 1; min-height: 39px; box-sizing: border-box} */
 </style>

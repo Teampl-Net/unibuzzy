@@ -9,12 +9,12 @@
       <popHeader v-if="alimSubPopYn === true" :chanAlimListTeamKey='null' :bgblack="true" style="background: transparent; " headerTitle="알림 상세" @closeXPop="this.$emit('closeXPop')" class="commonPopHeader chanDetailPopHeader"/>
       <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanDetail" @copyText="copyText" @goChanMain="changeFollowTrue" @closePop="okMember" @applyMember="okMember" />
       <div ref="chanImg"  class="mt-header chanWhiteBox">
-        <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
+        <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
           <p class="font16">구독자 {{chanDetail.followerCount}}명| 알림발송 {{chanDetail.totalContentsCount}}건</p>
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
         <div v-if="admYn" class="editChanBtnWrap">
-          <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+          <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
@@ -37,17 +37,17 @@
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_2.png" alt="발행일 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 발행일 </div><div class="w-80P fl textLeft"> {{this.$changeDateFormat(chanDetail.creDate)}}</div></td>
+            <td><div class="w-30P fl textLeft commonColor font16 fontBold " > 발행일 </div><div class="w-70P fl textLeft"> {{this.$changeDateFormat(chanDetail.creDate)}}</div></td>
           </tr>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"></td>
-            <td><div class="w-20P fl textLeft commonColor fontBold" > 산업군 </div><div class="w-80P fl textLeft"> {{teamTypeText}}<!-- <span class="fl mr-04">{{chanDetail.followerCount}}명</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="공유하기" /> --></div></td>
+            <td><div class="w-30P fl textLeft commonColor font16 fontBold " > 산업군 </div><div class="w-70P fl textLeft"> {{teamTypeText}}<!-- <span class="fl mr-04">{{chanDetail.followerCount}}명</span><gBtnSmall class="plusMarginBtn" style="float: left;" btnTitle="공유하기" /> --></div></td>
           </tr>
           <tr style="border: none;">
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_1.png" alt="발행자 아이콘"></td>
             <td>
-              <div class="w-20P fl textLeft commonColor fontBold" @click="kakaoLink" > 링크공유 </div>
-              <div class="w-80P fl textLeft">
+              <div class="w-30P fl textLeft commonColor font16 fontBold " @click="kakaoLink" > 링크공유 </div>
+              <div class="w-70P fl textLeft">
                 <!-- <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
                 <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
                 <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
@@ -173,7 +173,7 @@ export default {
         param.memberYn = false
         params = { follower: param }
       } else {
-        params = { follower: param, targetType: 'ME' }
+        params = { follower: param, doType: 'ME' }
       }
       console.log(param)
       var result = await this.$commonAxiosFunction({
@@ -221,7 +221,7 @@ export default {
         var result = false
         this.sendLoadingYn = true
         if (fStatus) {
-          result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'del')
+          result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
           this.followYn = false
 
           if (result.result || result) {
@@ -241,7 +241,7 @@ export default {
     async okMember (inMemberYn) {
       // this.followParam.memberYn = inMemberYn
       var result = null
-      if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, targetType: 'FL' }, 'save') }
+      if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save') }
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {

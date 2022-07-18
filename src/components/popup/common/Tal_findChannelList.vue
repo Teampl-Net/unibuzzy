@@ -5,7 +5,7 @@
     <div class="findPopBody  mtop-05">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
           <img @click="findChannel" class="searchIcon" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-          <input class="searchInput" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
+          <input class="searchInput font15" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
       </div>
 
       <!-- change By Jeong -->
@@ -94,11 +94,17 @@ export default {
 <style scoped>
 .findPopupWrap{position: fixed;width: 100vw; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.3rem; right: 8px;}
-.searchInput{border: none; margin-bottom: 5px!important; font-size: 15px; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
+.searchInput{border: none; margin-bottom: 5px!important; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}
 
 .searchIcon{width: 1.5rem; position: absolute; top:0.6rem; right: 0.9rem}
 .searchInput{border: none; background: #e4e4e463; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .newestSearchWrap{border-radius: 10px; background-color: #F5F5F9; height: 150px; width: 100%; padding: 0.4rem 1rem; box-sizing: border-box;}
+
+@media screen and (max-width: 300px) {
+  .pagePaddingWrap {
+    padding-top: 50px !important;
+  }
+}
 
 </style>

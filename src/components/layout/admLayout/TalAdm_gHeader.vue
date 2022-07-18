@@ -5,11 +5,11 @@
                 <router-link to="/"><img style="width: 7rem;" src="../../../assets/images/main/main_logo.png" alt=""></router-link>
             </div>
             <div style="width: 56%; float: left; box-sizing: border-box; padding-top: 0.5rem;">
-                <router-link to="/admChanMain"><span class="menuText">채널메인</span></router-link>
-                <router-link to="/admSendPushList"><span class="menuText">보낸알림</span></router-link>
-                <router-link to="/admManageRecvList"><span class="menuText">수신자관리</span></router-link>
-                <router-link to="/admWritePush"><span class="menuText">알림작성</span></router-link>
-                <router-link to="/admManageChannel"><span class="menuText">채널관리</span></router-link>
+                <router-link to="/admChanMain"><span class="menuText font20">채널메인</span></router-link>
+                <router-link to="/admSendPushList"><span class="menuText font20">보낸알림</span></router-link>
+                <router-link to="/admManageRecvList"><span class="menuText font20">수신자관리</span></router-link>
+                <router-link to="/admWritePush"><span class="menuText font20">알림작성</span></router-link>
+                <router-link to="/admManageChannel"><span class="menuText font20">채널관리</span></router-link>
                 <!-- <router-link to="/statistics"><span class="menuText">통계</span></router-link> -->
             </div>
             <div style="width: 30%; float: left;">
@@ -17,7 +17,7 @@
                     <p class="textRight font14 fontBold" style="color: #3A3A3A;">안녕하세요.</p>
                     <p class="textRight font20 fontBold" style="color: #6768A7;">{{this.managerTeam}}의 {{this.userName}}님!</p>
                 </div>
-                <div class="roundBtn mtop-1 mleft-1" style="">로그아웃</div>
+                <div class="roundBtn font16 mtop-1 mleft-1" style="">로그아웃</div>
             </div>
         </div>
     </div>
@@ -45,6 +45,6 @@ export default {
 </script>
 <style scoped>
 .headerWrap{height: 90px;z-index: 2; background-color: #FFFFFF; width: 100%; position: fixed; left: 0; top:0; box-sizing: border-box; padding: 1.5rem  0 ; box-shadow: 0px 7px 9px -7px #c8c8c8a3;}
-.menuText{color: #6768A7; font-size: 20px; font-weight: bold; margin-right: 2rem; float: left;}
-.roundBtn{height: 30px; background-color: #6768A7; border-radius: 38px; color: #FFFFFF; padding: 0.2rem 1rem; float: left; box-sizing: border-box; font-size: 16px; font-weight: bold;}
+.menuText{color: #6768A7; font-weight: bold; margin-right: 2rem; float: left;}
+.roundBtn{height: 30px; background-color: #6768A7; border-radius: 38px; color: #FFFFFF; padding: 0.2rem 1rem; float: left; box-sizing: border-box; font-weight: bold;}
 </style>

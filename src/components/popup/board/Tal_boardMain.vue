@@ -7,7 +7,7 @@
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
           <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
-          <p class="cBlack fl" style="width: 100%; height: 30px; font-size: 16px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
+          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
           <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn" style="">
@@ -17,12 +17,12 @@
           </div>
         </div>
         <!-- 게시판 이름 , 소속 채널 -->
-        <div style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.7); font-size: 22px; font-weight: bold; display: flex; align-items: center; border-radius: 10px;">
-          <p class="cBlack fl font20" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          <p class="fl font16 cBlack" style="width: 100%;  color: gray">{{ this.$changeText(this.propData.nameMtext) }}</p>
+        <div class="font22" style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;">
+          <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+          <p class="font16 lightGray" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div>
         <!-- 익명게시판 여부 -->
-        <div v-if="mCabinetContentsDetail.blindYn === 1" style="width: 100%; font-size: 16px; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
+        <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
       <div id="boardInfoSummary2" class="summaryHeader2" style="">
         <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; padding: 0px 1.5rem; position: relative; min-height: calc(100% - 250px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; position: relative; min-height: calc(100% - 250px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
       <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
         <transition name="showModal">
@@ -553,12 +553,14 @@ export default {
   height: calc(100vh - 35px) !important;
 }
 
-.menuHeader {padding-top:0.5rem; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
-.menuHeader p{font-size: 16px; text-align: center; line-height: 2.5rem;}
-.menuHeader img{ width: 0.8rem; line-height: 50px;}
-
 .summaryIconChange{
   background-color: rgba(0, 0, 0, 0.26); color: white;
 }
 
+.boardItemBox {padding: 0 1.5rem;}
+
+@media screen and (max-width: 300px) {
+  .boardItemBox {padding: 0 0.7rem!important;}
+
+}
 </style>

@@ -515,6 +515,7 @@ export default {
         } else {
           message = e.data
         }
+        alert(JSON.stringfy(this.notiDetail))
         if (message.type === 'pushmsg') {
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
             this.systemName = localStorage.getItem('systemName')
@@ -529,29 +530,42 @@ export default {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+            if (this.notiDetail.actYn) {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
-                if (this.targetType === 'chanDetail') {
-                  if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
-                    this.$refs.boardMainPop.refresh()
-                  } else {
-                    this.notiDetailShowYn = true
-                  }
-                } else if (this.targetType === 'writePush') {
-                  return
+                if (this.notiDetail.actType === 'WR') {
+                  this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
                 } else {
-                  this.notiDetailShowYn = true
+                  if (this.notiDetail.actType === 'LI') {
+                    this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+                  }
                 }
               }
             } else {
-              currentPage = this.$store.getters.hCPage
-              if ((currentPage === 0 || currentPage === undefined)) {
-              } else {
-                if (this.targetType === 'pushList') {
-                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
+              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+                if ((currentPage === 0 || currentPage === undefined)) {
                 } else {
-                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
+                  if (this.targetType === 'chanDetail') {
+                    if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
+                      this.$refs.boardMainPop.refresh()
+                    } else {
+                      this.notiDetailShowYn = true
+                    }
+                  } else if (this.targetType === 'writePush') {
+                    return
+                  } else {
+                    this.notiDetailShowYn = true
+                  }
+                }
+              } else {
+                currentPage = this.$store.getters.hCPage
+                if ((currentPage === 0 || currentPage === undefined)) {
+                } else {
+                  if (this.targetType === 'pushList') {
+                    this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
+                  } else {
+                    this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
+                  }
                 }
               }
             }
@@ -562,13 +576,27 @@ export default {
             currentPage = this.$store.getters.hCPage
             if ((currentPage === 0 || currentPage === undefined)) {
             } else {
-              this.$router.replace({ path: '/' })
               if (this.notiDetail.actType === 'FL') {
                 this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
               } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
                 this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
               } else if (this.notiDetail.actType === 'MA') {
                 this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+              }
+            }
+          }
+        } else if (this.notiDetail.targetKind === 'CONT') {
+          if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+            return
+          }
+          currentPage = this.$store.getters.hCPage
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (this.notiDetail.actType === 'WR') {
+              this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+            } else {
+              if (this.notiDetail.actType === 'LI') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
               }
             }
           }

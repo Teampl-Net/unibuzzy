@@ -146,7 +146,7 @@ export default {
 
       follower.inEmail = params.userEmail
       follower.inPhone = params.userPhone
-      follower.inUserName = this.$changeText(params.userDispMtext)
+      follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext) 
       param.follower = follower
       console.log(param)
 
