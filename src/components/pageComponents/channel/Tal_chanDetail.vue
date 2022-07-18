@@ -239,9 +239,13 @@ export default {
       }
     },
     async okMember (inMemberYn) {
-      // this.followParam.memberYn = inMemberYn
       var result = null
-      if (inMemberYn) { result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save') } else { result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save') }
+      if (inMemberYn) {
+        this.followParam.memberYn = inMemberYn
+        result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
+      } else {
+        result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
+      }
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
