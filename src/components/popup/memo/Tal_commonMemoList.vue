@@ -105,10 +105,17 @@ export default {
     async editEnd (data) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
+      memo = data
       memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
       memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
+      // memo.targetKey = data.targetKey
+      // memo.targetKind = data.targetKind
       /* memo.bodyFilekey  */
-      memo.memoKey = data.memoKey
+      // alert(JSON.stringify(data))
+      // memo.memoKey = data.memoKey
+      // memo.creUserKey = data.creUserKey
+      // memo.deleteYn = false
+
       console.log('memoParam')
       console.log(memo)
       var result = await this.$commonAxiosFunction({

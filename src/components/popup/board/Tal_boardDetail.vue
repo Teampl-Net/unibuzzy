@@ -79,7 +79,6 @@
   </div>
 </template>
 <script>
-
 import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {

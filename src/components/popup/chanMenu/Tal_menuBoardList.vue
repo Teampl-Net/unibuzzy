@@ -6,7 +6,7 @@
                 <img src="../../../assets/images/channel/channer_board.png" style="width: 100%; " alt="" >
             </div>
 
-            <div class="fl mleft-05 fontBold" style="line-height:30px;color:black; width: calc(100% - 60px); text-align:left;">{{this.$changeText(data.cabinetNameMtext)}}</div>
+            <div class="fl mleft-05 fontBold font16" style="line-height:30px;color:black; width: calc(100% - 60px); text-align:left;">{{this.$changeText(data.cabinetNameMtext)}}</div>
 
         </div>
     </template>

@@ -8,7 +8,7 @@
             <div class="fl" style="width:30px;height:30px; margin-left:1rem;">
                 <img src="../../../assets/images/channel/channer_addressBook.svg" alt="" >
             </div>
-            <div class="fl mleft-2 fontBold" style="line-height:30px;color:black;">{{data.cabinetNameMtext}}</div>
+            <div class="fl mleft-2 fontBold font16" style="line-height:30px;color:black;">{{data.cabinetNameMtext}}</div>
         </div>
     </div>
 
