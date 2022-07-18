@@ -58,6 +58,7 @@ export default {
     // PullToRefresh.destroyAll()
   },
   mounted () {
+
     /* this.checkDeepLinkQueue() */
     // console.log('pulltorefreshjs')
     // PullToRefresh.init({

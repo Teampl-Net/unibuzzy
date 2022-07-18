@@ -24,6 +24,14 @@ export default {
     }
   },
   mounted () {
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 360) {
+        this.tabwidth = 4
+        if (window.innerWidth < 290) {
+          this.tabwidth = 3.5
+        }
+      }
+    })
     // this.$refs.activeBar.style.setProperty('--tabwidth', 5.5 + 'rem')
   },
   computed: {

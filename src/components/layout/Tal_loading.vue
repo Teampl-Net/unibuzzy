@@ -240,4 +240,11 @@ export default {
   box-shadow: none!important;
 }
 .waitingText{position: absolute;bottom: -80px; color: #6768A7; left: -10px; font-weight: bold;}
+
+@media screen and (max-width: 300px) {
+  .loadingcontainer {
+    left: 78%!important
+  }
+}
+
 </style>

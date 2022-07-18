@@ -6,7 +6,7 @@
   <div class="userProfileWrap">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
     <div class="picImgWrap">
-      <img v-if="userInfo.soPicUrl !== undefined && userInfo.soPicUrl !== null && userInfo.soPicUrl !== ''" :src="userInfo.soPicUrl" />
+      <img v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" :src="userInfo.userProfileImg" />
       <img v-else src="../../assets/images/main/main_profile.png" />
     </div>
     <div class="userProfileTextWrap">
@@ -249,7 +249,7 @@ export default {
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
-.picImgWrap {width: 80px; height: 80px; border-radius: 80px; overflow: hidden; display: flex; margin-right: 1rem}
+.picImgWrap {width: 80px; height: 80px; border-radius: 80px; border:2.5px solid #6768a7; padding: 5px;overflow: hidden; display: flex; margin-right: 1rem}
 .picImgWrap img {width: 100%;}
 @media screen and (max-width: 300px) {
   .picImgWrap{
