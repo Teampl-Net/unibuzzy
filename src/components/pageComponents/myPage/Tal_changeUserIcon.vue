@@ -3,7 +3,7 @@
     <div style="width: calc(100% - 30px);  position: fixed;top: 15%; left: 15px; z-index: 999999; background: #FFF; border-radius: 20px; padding: 10px; border: 0.51px solid #ccc; box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%); height: 430px; float: left;">
         <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">프로필 이미지 변경</p>
         <div style="width: 100%;height: calc(100% - 80px); float: left; overflow: hidden auto;">
-          <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; margin-bottom: 5px; width: calc(50% - 20px); height: 102px; margin: 5px 10px; padding: 10px; " v-for="(value, index) in teamImgList" :key="index">
+          <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; " v-for="(value, index) in teamImgList" :key="index">
             <img style="width: 80%;" :src="value.pathMtext"  alt="">
           </div>
         </div>
