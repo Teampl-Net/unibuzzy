@@ -6,7 +6,7 @@
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 130px;">컬러</p>
+      <p class="fontBold textLeft font16 fl " style="width: 130px;">배경 색깔</p>
       <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
       <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
           <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />

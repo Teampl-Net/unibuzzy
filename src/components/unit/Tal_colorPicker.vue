@@ -1,8 +1,8 @@
 <template>
     <div style="background-color: #FFFFFF; width: 100%; height: 100%;  padding: 20px 10px; ">
         <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
-          <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 20px;margin-left: 10px" btnTitle="선택"/>
-          <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/>
+          <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
+          <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/>
         <div style="width: 100%; height:calc(100% - 50px); overflow-y: auto; overflow-x: hidden;">
           <div v-for="(value, index) in colorList" :key="index" style="width: 100%;">
             <div style="width: 50%; float: left; ">

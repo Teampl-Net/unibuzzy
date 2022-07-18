@@ -207,7 +207,7 @@ export default {
           this.endListYn = false
         }
         this.chanList = newArr
-        this.allChannelInfo()
+
       } else {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
@@ -257,7 +257,6 @@ export default {
         this.endListYn = false
       }
       if (this.viewTab === 'all') {
-
         this.allChannelInfo()
         // alert(JSON.stringify(this.chanList[0].userTeamInfo.ownerYn))
       }

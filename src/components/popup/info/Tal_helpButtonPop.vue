@@ -1,6 +1,7 @@
 <template>
 <div style="width: 100vw; height: 100vh; position: fixed; top: 50px; bottom: 0; background-color: #000000cc; z-index: 999999;" @click="closeHelpPop">
-  <helpMemberPop v-if="this.helpButtonType === 'member'" />
+  <!-- <helpMemberPop style="position: relative;" v-if="this.helpButtonType === 'member'" /> -->
+  <helpMemberPop />
   <helpBookPop v-if="this.helpButtonType === 'book'" />
   <helpBoardPop v-if="this.helpButtonType === 'board'" />
 </div>

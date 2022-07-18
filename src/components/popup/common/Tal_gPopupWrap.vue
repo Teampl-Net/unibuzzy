@@ -524,7 +524,7 @@ export default {
         } else {
           message = e.data
         }
-        alert(JSON.stringfy(this.notiDetail))
+        // alert(JSON.stringify(this.notiDetail))
         if (message.type === 'pushmsg') {
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
             this.systemName = localStorage.getItem('systemName')

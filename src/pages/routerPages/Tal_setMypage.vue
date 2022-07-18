@@ -1,5 +1,5 @@
 <template>
-    <div style="padding-bottom: 60px; overflow: hidden scroll; height: 100%;">
+    <div style="padding-bottom: 30px; overflow: hidden scroll; height: 100%;">
     <!-- <pushPop :detailVal='dummy' @closePushPop="closePushPop" /> -->
       <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
@@ -55,10 +55,8 @@
             </tr> -->
 
         </table>
-        <div v-on:click="openLogoutPop" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
-          더알림 로그아웃
-        </div>
-        <p class="leaveText">더알림을 탈퇴하려면 <span v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
+        <div v-on:click="openLogoutPop" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-top: 1rem; margin-bottom: 1rem; border-radius: 5px; padding: 0.6rem;">더알림 로그아웃</div>
+        <p class="font14 leaveText">더알림을 탈퇴하려면 <span v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
 
       <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>

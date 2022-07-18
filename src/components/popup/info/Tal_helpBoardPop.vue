@@ -1,5 +1,5 @@
 <template>
-  <p style="padding: 15px; background-color: white;" class="commonBlack textLeft">
+  <p style="padding: 15px; background-color: white;" class="commonBlack textLeft font16">
     게시판은 다양한 성격의 커뮤니티가 될 수 있어요. <br>
     구독자 모두와 소통할 수 있는 커뮤니티가 될 수도 있고,<br>
     아기자기한 이야기를 하는 나와 내 친구들만의 비밀 공간이 될 수도 있죠.<br>
