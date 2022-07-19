@@ -17,9 +17,12 @@
         </div>
         <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
-          <img src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-          <p class="grayBlack fl font14" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
-          <p class="font14" style="float: right; margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
+          <div v-if="memo.userProfileImg"  class="memoPicImgWrap">
+            <img :src="memo.userProfileImg" />
+          </div>
+          <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+          <p class="grayBlack fl font15" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
+          <p class="font15" style="float: right; margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
         </div>
         <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; ">
           <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 70%;float: left; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
@@ -175,4 +178,7 @@ float: right; width: 40px; height: 100%; text-align: center;
 .mememoMTop{
   /* margin-top: 50px; */
 }
+
+.memoPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
+.memoPicImgWrap img {width: 100%;}
 </style>

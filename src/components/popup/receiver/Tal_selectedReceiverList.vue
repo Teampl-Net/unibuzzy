@@ -8,9 +8,6 @@
                 <gBtnSmall v-if="selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
             </div>
         </div>
-        <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
-            <p class="font15 commonBlack">+</p>
-        </div> -->
         <div class="selecteItemdArea">
             <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
                 <!-- <img src="../../../assets/images/common/people.svg" class="fl" alt=""> -->

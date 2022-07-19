@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; height: 100%;"  class="">
+    <div class="">
         <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
 
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">

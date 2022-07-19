@@ -288,8 +288,8 @@ export default {
 
 <style >
 .selectBookListWrap{height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
-.selectBookListContents{width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;}
-.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;}
-.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;}
+.selectBookListContents{width: 100%; height: calc(100% - 310px); position: relative; padding: 0 1.5rem; float: left; margin-top:50px;}
+.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; width: calc(100% - 3rem); background: #fff;}
+.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); width: calc(100vw - 3rem); background: #fff;}
 .selectedListStyle{float: left; width:100vw; height:310px; position: absolute; bottom:0px; left:0px}
 </style>

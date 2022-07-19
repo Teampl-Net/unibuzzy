@@ -1,12 +1,15 @@
 <template>
     <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
-        <img src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
+        <div v-if="member.userProfileImg"  class="managerPicImgWrap">
+          <img :src="member.userProfileImg" />
+        </div>
+        <img v-else src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
         <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">
           <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
           <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
         </div>
-        <p class="fl font16 commonBlack" style="text-align:left; padding-left:10px; width:calc(100% - 30px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+        <p class="fl font16 commonBlack" style="text-align:left; padding-left:5px; width:calc(100% - 40px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
       </div>
       <div class="fr  memberItemBox" >
         <img class="fl" @click="openPop('writePush', member)" src="../../../assets/images/common/icon_message_solid.svg" style=" width:20px; height:18px; margin:0.6rem"  />
@@ -136,4 +139,6 @@ export default {
   }
 }
 
+.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
+.managerPicImgWrap img {width: 100%;}
 </style>

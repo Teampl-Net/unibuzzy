@@ -5,7 +5,10 @@
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
                     <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" style="width:100%; height:60px; position: relative;" >
-                        <img src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 15px; margin-top: 10px;" class="fl"/>
+                        <div v-if="data.userProfileImg"  class="memberPicImgWrap">
+                          <img :src="data.userProfileImg" />
+                        </div>
+                        <img v-else src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 5px; margin-top: 10px;" class="fl"/>
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
                             <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
@@ -174,4 +177,7 @@ export default {
 
 }
 
+.memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
+.memberPicImgWrap img {width: 100%;}
+.receiverTeamMemberCard {padding: 10px 0px;}
 </style>
