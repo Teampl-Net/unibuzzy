@@ -1,15 +1,17 @@
 <template>
-    <div style="width: 100%; min-height: 300px; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class="">
-        <div class="mbottom-05" style="width: 100%; height: 30px; margin-top:1rem; margin-left:0.5rem">
+    <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class="">
+        <div class="mbottom-05" style="width: 100%; min-height: 30px; margin-top:0.5rem; margin-left:0.5rem">
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
             <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
-            <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
-            <gBtnSmall v-if="selectMemberPopYn" class="fl mleft-1" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
+            <div  class="fl selfAddArea">
+                <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
+                <gBtnSmall v-if="selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
+            </div>
         </div>
         <!-- <div v-if="editYn" @click="newAddTeam"  class="fl receiverTeamMemberCard" style="width:100%; min-height: 60px; line-height: 40px;margin-bottom: 10px;">
             <p class="font15 commonBlack">+</p>
         </div> -->
-        <div style="width:100%; background-color:#6768A720; height:calc(100% - 3.5rem); padding:15px; overflow: hidden auto">
+        <div class="selecteItemdArea">
             <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
                 <!-- <img src="../../../assets/images/common/people.svg" class="fl" alt=""> -->
                 <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -178,6 +180,9 @@ export default {
 
 .fontBold{font-weight: bold;}
 .trans90{transform:rotate(270deg)}
+.selecteItemdArea{
+    width:100%; background-color:#6768A720; height:calc(100% - 3rem); padding:15px; overflow: hidden auto;
+}
 /* .movePointerArea{
     transform: scaleY(1.7);
         margin-top: 0.1rem;
@@ -192,5 +197,23 @@ export default {
 .selPopFl{
     float:left;
     margin-left: 1rem;
+}
+
+.mobileMleft{
+    margin-left: 0.5rem;
+}
+
+@media screen and (max-width: 410px) {
+    .selfAddArea{
+        width: calc(100% - 15px);
+        margin: 0.5rem 0rem !important;
+    }
+    .mobileMleft{
+        margin-left: 0.5rem;
+        white-space:nowrap
+    }
+    .selecteItemdArea{
+         height:calc(100% - 3rem - 30px) !important;
+    }
 }
 </style>

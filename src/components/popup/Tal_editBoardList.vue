@@ -3,7 +3,7 @@
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
     <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' />
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
-      <draggable  ref="editableArea" :move="changePosTeamMenu" @end="changePosTeamMenu" @change="changePosTeamMenu" class="ghostClass" :v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
+      <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
           <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative;"  >
         <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
@@ -11,7 +11,7 @@
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div>
             <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); margin-left: 30px; padding: 3px 0; float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
-                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;" :style="'background: ' + data.picBgPath + ';'"></div>
+                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: data.picBgPath || '#ffffff' }"></div>
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
             <div  @click="checkDelete(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
@@ -214,7 +214,6 @@ export default {
       // }
       // console.log(tempList)
       // eslint-disable-next-line no-array-constructor
-      var tempList = new Array()
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
         for (var i = 0; i < this.boardList.length; i++) {
@@ -228,7 +227,6 @@ export default {
             if (this.boardList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.boardList[i].cabinetNameMtext }
             if (this.boardList[i].sysCabinetCode) { menu.sysCabinetCode = this.boardList[i].sysCabinetCode }
             teamMenuList.push(menu)
-            tempList.unshift(menu)
             break
           }
         }
@@ -242,18 +240,14 @@ export default {
       )
       console.log('teamMenuList')
       console.log(teamMenuList)
-      console.log(tempList)
       console.log(result.data.result)
-
       if (result.data.result === true) {
-        this.boardList = []
-        await this.getTeamMenuList()
+        // this.boardList = []
+        // await this.getTeamMenuList()
       //   this.boardList = new Array(tempList)[0]
       //   console.log(this.boardList)
       }
-
-      // this.indexChange(teamMenuList)
-      // this.getTeamMenuList()
+      console.log(this.boardList)
     },
     indexChange (list) {
       var tempList = []

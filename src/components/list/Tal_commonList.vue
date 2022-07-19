@@ -44,7 +44,7 @@
           <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
           </div>
       </template>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style="">s</myObserver>
       <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>

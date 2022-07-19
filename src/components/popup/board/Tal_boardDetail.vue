@@ -16,7 +16,7 @@
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
             <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
-            <p class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(alim.updDate) + ')'}}</p>
+            <p v-if="alim.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(alim.updDate) + ')'}}</p>
           </div>
 
         </div>
@@ -117,7 +117,8 @@ export default {
       pagesize: 10,
       endListYn: false,
       axiosYn: false,
-      totalElements: 0
+      totalElements: 0,
+      shareAuth: { R: true, W: true, V: true }
 
     }
   },
@@ -129,6 +130,7 @@ export default {
   },
   async created () {
     console.log('#########################################')
+    console.log(this.detailVal)
     console.log(this.detailVal.value.value)
     if (this.detailVal.value.value) {
       var temp = this.detailVal.value.value
@@ -152,6 +154,7 @@ export default {
     await this.getContentsList()
     // await this.getMemoList()
     await this.getLikeCount()
+    await this.checkUserAuth()
   },
   computed: {
     getWindowSize () {
@@ -161,6 +164,23 @@ export default {
     }
   },
   methods: {
+    async checkUserAuth () {
+      if (this.detailVal.shareAuth) { this.shareAuth = this.detailVal.shareAuth }
+      if (this.alimDetail.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+        this.ownerYn = true
+        this.shareAuth.R = true
+        this.shareAuth.W = true
+        this.shareAuth.V = true
+      } else {
+        var param = {}
+        param.currentTeamKey = this.alimDetail[0].creTeamKey
+        param.cabinetKey = this.alimDetail[0].cabinetKey
+        var resultList = await this.$getCabinetDetail(param)
+        // mShareItemList가 잘 들어오면 save잘 된것
+        var mCabinetContentsDetail = resultList.mCabinet
+        this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
+      }
+    },
     openUpdateContentsPop () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -217,7 +237,7 @@ export default {
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
-      if (this.detailVal.shareAuth.R === true) {
+      if (this.shareAuth.R === true) {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
@@ -226,7 +246,7 @@ export default {
       }
     },
     writeMememo (memo) {
-      if (this.detailVal.shareAuth.R === true) {
+      if (this.shareAuth.R === true) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
         data.memo = memo

@@ -1,5 +1,5 @@
 <template>
-  <div class="addNewBoardWrap pagePaddingWrap" style="">
+  <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName'/>
     <div class="itemWrite" style="">
       <p class="fontBold textLeft font16 fl" style="width: 130px;">게시판명</p>
@@ -1063,8 +1063,8 @@ input:-internal-autofill-selected {
 } */
 
 @media screen and (max-width:350px){
-  .pagePaddingWrap{
-    padding: 60px  1rem 9px 1rem;
+  .jjjPaddingWrap{
+    padding: 60px 1rem 9px 1rem !important
   }
   .subItemWrite{
     display: flex;

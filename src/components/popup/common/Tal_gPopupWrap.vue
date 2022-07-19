@@ -455,7 +455,9 @@ export default {
           this.pushListAndDetailYn = false
         } else if (this.targetType === 'memberManagement') {
           // getManagingList
-          await this.$refs.mamberManagementCompo.changeTab('Admin')
+          // await this.$refs.mamberManagementCompo.changeTab('Admin')
+          await this.$refs.mamberManagementCompo.refresh()
+
           // await this.$refs.mamberManagementCompo.getManagingList()
         }
       }

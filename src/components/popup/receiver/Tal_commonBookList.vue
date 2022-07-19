@@ -1,11 +1,12 @@
 <template>
     <div style="width: 100%; height: 100%;"  class="">
         <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-        <div v-show="loadingYn" style="width: 100%; height: calc(100% - 40px); background-color: white;"></div>
+
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="listData" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"  @end="changePosTeamMenu" @change="changePosTeamMenu" >
+
+            <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
                 <transition-group>
-                    <template  v-for="(data, index) in listData" :key='index'>
+                    <template  v-for="(data, index) in addressBookList" :key='index'>
                         <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
                             <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
                                 <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
@@ -56,7 +57,7 @@ export default {
     },
     data(){
         return {
-            loadingYn: true,
+            addressBookList: {},
             propObject: {},
             cabinetList: [],
             dragging: false,
@@ -78,7 +79,7 @@ export default {
         }
         await this.getTeamCabList()
         this.changeSelectedList()
-        this.loadingYn = false
+        this.addressBookList = this.listData
     },
     updated () {
         this.changeSelectedList()
@@ -98,6 +99,9 @@ export default {
                     }
                 }
             }
+        },
+        listData () {
+            this.addressBookList = this.listData
         }
     },
     components: {
@@ -179,8 +183,8 @@ export default {
                     param: param
                 })
                 if(result.data === 'true' || result.data === true){
-                    this.listData.splice(index, 1)
-                    if (this.listData.length === 0) {
+                    this.addressBookList.splice(index, 1)
+                    if (this.addressBookList.length === 0) {
                         this.cabinetList.length = 0
                     }
                 }
@@ -197,7 +201,7 @@ export default {
             var indexOf = this.selectedBookList.findIndex(i => i.cabinetKey === data.cabinetKey);
             if (indexOf === -1) {
                 this.selectedBookList.push(data)
-                this.listData[index].selectedYn = true
+                this.addressBookList[index].selectedYn = true
                 this.$emit('changeSelectBookList', this.selectedBookList)
             }else{
                 alert('중복선택')
@@ -207,7 +211,7 @@ export default {
             var param = new Object()
             param.creMenuYn = true
             var cabinet = new Object()
-            var defaultAddBoardName = await this.$checkSameName(this.listData, '주소록')
+            var defaultAddBoardName = await this.$checkSameName(this.addressBookList, '주소록')
             cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
             cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
             cabinet.sysCabinetCode = 'USER'
@@ -217,18 +221,19 @@ export default {
             param.cabinet = cabinet
             var result = await this.$saveCabinet(param)
             if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-                var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
+                // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
 
                 this.$emit('refreshList')
-                await this.getTeamCabList()
-                if(!document.getElementsByClassName('foo')[0]){
-                    setTimeout(() => {
-                        this.anima()
-                    },200)
-                }else{
-                    this.anima()
-                }
+                // await this.getTeamCabList()
+                // if(!document.getElementsByClassName('foo')[0]){
+                //     setTimeout(() => {
+                //         this.anima()
+                //     },200)
+                // }else{
+                //     this.anima()
+                // }
             }
+            this.anima()
         },
         anima(){
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
@@ -258,32 +263,36 @@ export default {
                 this.editIndex = null
 
         },
-        async changePosTeamMenu() {
+        async changePosTeamMenu(event) {
+            console.log(event);
+            // event.oldIndex
+
+
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()
             var cardList = document.getElementsByClassName('commonBookCard')
             var index = null
-            console.log('this.listData 여기요@@')
-            console.log(this.listData)
+            console.log('this.addressBookList 여기요@@')
+            console.log(this.addressBookList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
-                for (var i = 0; i < this.listData.length; i ++) {
+                for (var i = 0; i < this.addressBookList.length; i ++) {
                 if(index === i) {
                     menu = {}
-                    var tt = this.listData[i]
-                    if(this.listData[i].menuType)
+                    var tt = this.addressBookList[i]
+                    if(this.addressBookList[i].menuType)
                         menu.menuType = 'G'
                     menu.teamKey = this.propObject.currentTeamKey
-                    if(this.listData[i].parentMenuKey)
-                        menu.parentMenuKey = this.listData[i].parentMenuKey
-                    if(this.listData[i].cabinetKey)
-                        menu.cabinetKey = this.listData[i].cabinetKey
-                    if(this.listData[i].cabinetNameMtext)
-                        menu.cabinetNameMtext = this.listData[i].cabinetNameMtext
+                    if(this.addressBookList[i].parentMenuKey)
+                        menu.parentMenuKey = this.addressBookList[i].parentMenuKey
+                    if(this.addressBookList[i].cabinetKey)
+                        menu.cabinetKey = this.addressBookList[i].cabinetKey
+                    if(this.addressBookList[i].cabinetNameMtext)
+                        menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
 
-                    if(this.listData[i].sysCabinetCode)
-                        menu.sysCabinetCode = this.listData[i].sysCabinetCode
+                    if(this.addressBookList[i].sysCabinetCode)
+                        menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
 
                     teamMenuList.push(menu)
                     break
@@ -298,10 +307,11 @@ export default {
                 param: paramSet
                 }
             )
-            console.log(result)
+            console.log(result);
+
             // this.$emit('getBookList')
-            this.$parent.getBookList()
-            index = this.cabinetList.length - 1
+
+
 
         }
     }

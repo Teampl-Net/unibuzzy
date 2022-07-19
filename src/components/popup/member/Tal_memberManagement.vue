@@ -72,6 +72,9 @@ export default {
       this.tab = typeName
       this.getManagingList(typeName, 'tab')
     },
+    refresh () {
+      this.getManagingList(this.tab)
+    },
     async getManagingList (typeName, actionType) {
       if (actionType === 'tab') this.managingList = []
       var result= {}
@@ -148,9 +151,12 @@ export default {
 
       follower.inEmail = params.userEmail
       follower.inPhone = params.userPhone
-      follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext) 
+      follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext)
+      follower.userName
       param.follower = follower
       console.log(param)
+
+      debugger
 
       var result = await this.$commonAxiosFunction({
           url: '/tp.saveManager',

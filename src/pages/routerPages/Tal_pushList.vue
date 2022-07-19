@@ -263,8 +263,10 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.endListYn === false || this.commonListData.length > pageSize) {
+        // alert(true)
         this.offsetInt += 1
         var resultList = await this.getPushContentsList()
+
         const newArr = [
           ...this.commonListData,
           ...resultList.content

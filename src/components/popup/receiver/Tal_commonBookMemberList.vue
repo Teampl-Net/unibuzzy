@@ -1,6 +1,6 @@
 <template>
 <div class="receiverTeamMemberArea">
-    <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;">
+    <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
@@ -21,7 +21,7 @@
                 </template>
             </transition-group>
         </draggable>
-    </div>
+    <!-- </div> -->
 </div>
 
 </template>
