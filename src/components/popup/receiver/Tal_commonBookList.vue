@@ -13,8 +13,8 @@
                                 </div>
                                 <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
                                 <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-                                    <p class="fl" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
-                                    <p class="fl" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
+                                    <p class="fl font14" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
+                                    <p class="fl font14" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
                                 </div>
                             </div>
                             <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >

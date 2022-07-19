@@ -4,7 +4,7 @@
   <div class="confirmPopWrap" >
   <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
       <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
-          <p class="fontBold">{{msgTitle}}</p>
+          <p class="fontBold font18">{{msgTitle}}</p>
           <!-- <p style="font-size:14px">채널 종류를 선택해주세요</p> -->
           <!-- <p>채널 종류를 선택해주시면<br>필요한 서류를 알려드릴게요!</p> -->
       </div>
@@ -13,7 +13,7 @@
           <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
             <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
             <img v-if="opentype =='iconPop'" :src="value.pathMtext"  style="width: calc(var(--chanBoxSize) - 20px)"/>
-            <p v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
+            <p class="font15"  v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
 
             <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: 100%; height: 100%;" >
             <!-- <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: calc(var(--chanBoxSize) + 10px);" > -->
@@ -21,7 +21,7 @@
           </div>
       </div>
 
-      <div @click="setParam" class="creChanBigBtn fl mtop-2 mbottom-05">선택완료</div>
+      <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
 
   </div>
 </template>
@@ -104,10 +104,9 @@ export default {
   transform: translateY(-50%);
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
-.creChanIntroTextWrap p{font-size: 18px; }
 
 .creChanBigBtn{
-  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+  height: 50px; line-height: 50px; background: #6768a7; color: #fff; border-radius: 8px;
   width: 100%;
 
   margin-top: 10px;

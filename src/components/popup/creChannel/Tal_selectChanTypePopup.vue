@@ -16,11 +16,11 @@
       <div style="width: 100%; margin: 1rem 0px; margin-bottom: 0rem; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
           <!-- <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value.teamType)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style=" float: left; width: var(--chanBoxSize);margin-right: 10px; height: calc(var(--chanBoxSize)); margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;"> -->
           <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value.teamType)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:3rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; ">
-              <p style="font-size: 1rem">{{value.teamNameMtext}}</p>
+              <p class="font15" >{{value.teamNameMtext}}</p>
           </div>
       </div>
       <div :class="{activeTypeBox: selectedType === 'E'}" @click="selectChanType('E')" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px; float: left; height:3rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; ">
-          <p style="font-size: 1rem">기타</p>
+          <p class="font15" >기타</p>
       </div>
       <!-- <input type="text" v-model="inputTypeTeam" name="" :style="getChanBoxSize" class="fl" style="border: 1px solid rgb(204, 204, 204); border-radius: 5px; height: 46px; box-sizing: border-box; padding: 0 10px; margin-top: 1px; width: calc(100% - var(--chanBoxSize) - 20px)" placeholder="채널 종류를 입력해주세요" id=""> -->
       <!-- <p style="font-size: 1rem; float: left; width: 100px; height: 35px; line-height: 35px; text-align: left; padding: 0 5px;">직접 입력</p>
