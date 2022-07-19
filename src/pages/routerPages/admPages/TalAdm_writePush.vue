@@ -30,7 +30,7 @@
                     <label class="mright-1 fl" for="allFalse">선택</label> -->
 
                   </div>
-                  <div v-if="!allRecvYn" class="inputArea recvUserArea font15 fl" style="padding: 3px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                  <div v-if="!allRecvYn && !this.replyPopYn" class="inputArea recvUserArea font15 fl" style="padding: 3px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
                   </div>
                   <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >

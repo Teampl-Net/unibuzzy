@@ -1,6 +1,27 @@
 <template>
   <div class="pagePaddingWrap nonMemBoardWrap">
-    <popHeader @closeXPop="this.$router.replace({path: '/login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
+    <popHeader :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({path: '/login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
+    <div v-if="infoShowYn" style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000050; z-index: 9999;" @click="this.infoShowYn = false"></div>
+    <div v-if="infoShowYn" class="zoomInOutPop" style="width: 80%; padding: 10px 20px; margin: 0 auto; height: 80%; max-height: 550px; min-height: 300px; background: #ffff; position: fixed; top: 10%; left: 10%; border-radius: 15px; z-index: 9999;">
+      <div class="subPopHeader">
+        <img src="../../assets/images/main/main_logo.png" style="width: 100px;" class="fl" >
+        <p class="font13 headerFont commonColor fl" style="line-height: 2.6rem; margin-top: 2px; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
+      </div>
+      <p class="font18 mbottom-05 fontBold textLeft">더알림 비회원 문의 안내</p>
+      <p class="font15 fontBold commonBlack textLeft">1. 더알림 계정이 있으신가요?</p>
+      <p class="font14 mbottom-05 mleft-1 textLeft commonBlack">1) 더알림 채널 > 문의게시판 <br>2) 메뉴 > 문의하기를 통해 문의해주세요!</p>
+      <gBtnSmall btnTitle="로그인하러가기"  @click="this.$router.replace({path: '/login'})" class="w-100P mbottom-2 mtop-05" style="height: 35px; width: 100%;"/>
+      <p class="font15 fontBold commonBlack textLeft mtop-3">2. 어떤 도움이 필요하나요?</p>
+      <p class="font14 commonBlack mleft-1 textLeft">
+        1) [오류]시스템 문제로 앱 사용이 어려운경우
+        <br> 2) [문의]더알림에 대해 궁금한점이 있는 경우
+        <br> 3) [개선]더알림팀에게 개선점을 제시하고 싶은 경우
+        <br> 4) [메세지]더알림팀에게 응원/후기 등을 전달하고 싶은경우
+      </p>
+      <gBtnSmall btnTitle="비회원 문의하기" @click="openWritePop" class="w-100P mbottom-05 mtop-05" style="height: 35px; width: 100%;"/>
+      <p class="font11 mbottom-05 lightGray textLeft">비회원 문의하기의 경우, 추후에 내가 쓴 글을 확인하기 어려울 수 있으며<br> 키워드 검색을 통해 관련 문의를 찾을 수 있습니다.</p>
+
+    </div>
     <div id="boardListWrap" class="boardListWrap" style="width: 100%; margin-top: 60px; padding: 0 10px; overflow: hidden; position: relative; height: 100%; background: #fff; border-radius: 10px 10px 0 0;">
       <transition name="showModal">
         <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
@@ -36,7 +57,8 @@ export default {
       scrollDirection: 'down',
       endListYn: false,
       paddingTop: 0,
-      scrollCheckSec: 0
+      scrollCheckSec: 0,
+      infoShowYn: false
     }
   },
   components: {
@@ -64,6 +86,13 @@ export default {
     }
   },
   methods: {
+    openWritePop () {
+      this.infoShowYn = false
+      this.openWriteBoard()
+    },
+    clickHelp () {
+      this.infoShowYn = true
+    },
     async getContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -308,4 +337,6 @@ export default {
 .boardListHeader--unpinned {
     transform: translateY(-100%);
 }
+
+.subPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; margin-bottom: 10px;padding: 0.8rem 0.5rem;}
 </style>

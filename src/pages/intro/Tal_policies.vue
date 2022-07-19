@@ -40,6 +40,9 @@ export default {
   name: 'policy',
   created () {
     onMessage('REQ', 'CheckUserPermission')
+    if (localStorage.getItem('policiesOk') === true || localStorage.getItem('policiesOk') === 'true') {
+      this.$router.replace({ path: 'login' })
+    }
     /* window.ReactNativeWebView.postMessage(
       JSON.stringify({
         type: 'REQ',
@@ -86,6 +89,7 @@ export default {
       if (this.agreeAll !== true) {
         return
       }
+      localStorage.setItem('policiesOk', true)
       this.$router.replace({ path: 'login' })
     }
   }
