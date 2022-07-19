@@ -131,7 +131,8 @@ export default {
       /* subHistoryList: [], */
       viewTab: 'N',
       findKeyList: {},
-      resultSearchKeyList: []
+      resultSearchKeyList: [],
+      scrollCheckSec: 0
     }
   },
   methods: {
@@ -159,23 +160,33 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
+      var currentTime = new Date()
+      var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonBoardListContentBox')[0]
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      if (this.firstContOffsetY > 0) {
+        this.scrollDirection = 'up'
+        this.scrolledYn = false
+      }
+      if (time / 1000 > 1 && this.$diffInt(this.listBox.scrollTop, this.scrollPosition) > 150) {
+        this.scrollCheckSec = currentTime
+        if (this.firstContOffsetY < 0) {
+          if (this.listBox.scrollTop > this.scrollPosition) {
+            this.scrollDirection = 'down'
+            this.scrolledYn = true
+          } else if (this.listBox.scrollTop <= this.scrollPosition) {
+            this.scrollDirection = 'up'
+            this.scrolledYn = false
+          }
+        }
+      }
 
       // var test = document.getElementById('boardPageHeader')
       // parentElement = element.parentElement
       // this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
       // var test = this.firstContOffsetY
-      if (this.firstContOffsetY < 0) {
-        if (this.listBox.scrollTop > this.scrollPosition) {
-          this.scrollDirection = 'down'
-          this.scrolledYn = true
-        } else if (this.listBox.scrollTop <= this.scrollPosition) {
-          this.scrollDirection = 'up'
-          this.scrolledYn = false
-        }
-      }
+
       this.scrollPosition = this.listBox.scrollTop
     },
     // handleScroll () {

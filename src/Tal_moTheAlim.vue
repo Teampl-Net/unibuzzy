@@ -1,6 +1,8 @@
 <template>
   <div id="moTheAlimWrap" style="height: 100vh; width: 100vw;">
-    <fullModal id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+    <transition name="showModal">
+      <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+    </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
   </div>
@@ -35,6 +37,14 @@ export default {
         document.getElementById('FullModalWrap').appendChild(document.getElementById('commonWrap'))
         this.popShowYn = false
       }, 1000) */
+    },
+    /* openPushPop (params) {
+      this.pushPopParams = params
+      this.pushPopShowYn = true
+    }, */
+    async successWriteBoard (inParam) {
+      await this.closePop()
+      this.openPop(inParam)
     },
     closePop () {
       this.popShowYn = false

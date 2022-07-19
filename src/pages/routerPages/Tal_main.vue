@@ -249,7 +249,7 @@ export default {
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
-.picImgWrap {width: 80px; height: 80px; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px;padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
+.picImgWrap {width: 80px; height: 80px; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
 .picImgWrap img {width: 100%;}
 @media screen and (max-width: 300px) {
   .picImgWrap{

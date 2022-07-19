@@ -33,9 +33,9 @@
             <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
         </div>
         <div >
-          <div class="memoActionArea borderLeft font13" v-if="creUser || (editIndex !== index && memo.creUserKey == this.userKey)" @click="memoDeleteClick(memo, index)">삭제</div>
+          <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (editIndex !== index && memo.creUserKey == this.userKey))" @click="memoDeleteClick(memo, index)">삭제</div>
           <!-- <div style="float: right; width: 40px; height: 100%; text-align: center; border-left: 1px solid #aaa;  border-right: 1px solid #aaa; font-size: 13px;" @click="editMemoClick(memo, index)"  >수정</div> -->
-          <div class="memoActionArea borderLeft font13" v-if="editIndex !== index && memo.creUserKey == this.userKey"  @click="editMemoClick(memo, index)">수정</div>
+          <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.userKey)"  @click="editMemoClick(memo, index)">수정</div>
         </div>
         <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="replyYn === true && editIndex !== index">댓글</div>
         <p v-if="memo.mememoCount !== 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.mememoCount}}개</p>
@@ -57,7 +57,8 @@ export default {
     memoList: {},
     replyYn: {},
     creUser: {},
-    endList: {}
+    endList: {},
+    nonMemYn: {}
   },
   mounted () {
     this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -107,7 +108,7 @@ export default {
       var memo = new Object()
       memo = data
       memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
-      memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
+      // memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
       // memo.targetKey = data.targetKey
       // memo.targetKind = data.targetKind
       /* memo.bodyFilekey  */

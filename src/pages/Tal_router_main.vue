@@ -3,7 +3,7 @@
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <loadingCompo v-show="loadingYn" />
     <transition name="showModal">
-      <fullModal @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
+      <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
     <div style="background-color:#00000050; width:100vw; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
@@ -224,11 +224,12 @@ export default {
       this.pushPopParams = params
       this.pushPopShowYn = true
     }, */
+    async successWriteBoard (inParam) {
+      this.$router.go(0)
+      this.openPop(inParam)
+    },
     closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
-      /* if (reloadYn === true) {
-        this.$router.go(0)
-      } */
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)

@@ -201,7 +201,7 @@ export default {
         this.scrollDirection = 'up'
         this.scrolledYn = false
       }
-      if (time / 1000 > 1 && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
+      if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
         var test = document.getElementById('pageHeader')
         this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.scrollCheckSec = currentTime

@@ -33,21 +33,23 @@
               </div> -->
 
               <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-              <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
-                <template v-if="userDo.doType === 'ST'">
-                  <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                  <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-                </template>
-                <template v-else-if="userDo.doType === 'LI'">
-                  <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                  <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                </template>
+              <template v-if="nonMemYn !== true">
+                <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
+                  <template v-if="userDo.doType === 'ST'">
+                    <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                    <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                  </template>
+                  <template v-else-if="userDo.doType === 'LI'">
+                    <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                    <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                  </template>
+                </div>
+              </template>
+              <div v-if="nonMemYn !== true" class="fr">
+                  <p class="commonBlack font12"  style="float: right;">좋아요 {{board.likeCount}}개</p>
+                  <p class="commonBlack font12" style="float: right; margin-right: 10px;">댓글 {{board.memoCount}}개</p>
               </div>
-              <div class="fr">
-                  <p class="commonBlack font12" style="float: right;">좋아요 {{board.likeCount}}개</p>
-                  <p class="commonBlack font12" style="float: right; margin-right: 10px;'">댓글 {{board.memoCount}}개</p>
-              </div>
-
+              <div v-else class="commonBlack font12" style="float: right; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{board.memoCount > 0? '답변완료' : '답변대기'}}</div>
             </div>
           </div>
         </div>
@@ -89,7 +91,8 @@ export default {
     reloadShowYn: {},
     activeTabList: {},
     clickEvnt: {},
-    commonBoardListData: {}
+    commonBoardListData: {},
+    nonMemYn: {} //비회원 문의 게시판
   },
   components: {
 

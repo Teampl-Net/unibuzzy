@@ -13,12 +13,13 @@
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
         <div class="boardWritePaperBack">
           <div class="whitePaper">
-            <div class="overFlowYScroll pushInputArea">
+            <div class="overFlowYScroll boardInputArea">
               <div class="writeBoardPageTopArea">
-                <div class=""><p style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="recvUserArea inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                <div class=""><p class="boardWriteTitleText" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                <div class="" v-if="propData.nonMemYn"><p class="boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
                 <!-- <div class="">
                   <p style="">수신대상</p>
-                  <div class="inputArea recvUserArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
+                  <div class="inputArea pageTopInputArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
                   </div>
                 </div> -->
                 <!-- <p style="mright-05">옵션선택</p>
@@ -29,7 +30,7 @@
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
                 <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-                <div id="msgBox" @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
+                <div id="msgBox" @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 
               </div>
             </div>
@@ -138,7 +139,8 @@ export default {
       viewTab: 'text',
       activeTabList: [{ display: '기본 작성', name: 'text' }, { display: '복합 작성', name: 'complex' }],
       bodyString: '',
-      modiYn: false
+      modiYn: false,
+      nonMemUserName: ''
     }
   },
   computed: {
@@ -220,8 +222,13 @@ export default {
       param.actorList = this.propData.actorList
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
-      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (this.propData.nonMemYn) {
+        param.creUserName = 'KO$^$' + this.nonMemUserName
+        param.creUserKey = 0
+      } else {
+        param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      }
       param.title = this.writePushTitle
       param.showCreNameYn = true
 
@@ -237,7 +244,7 @@ export default {
         newP.targetType = 'boardDetail'
         newP.cabinetNameMtext = this.propData.cabinetNameMtext
         newP.value = this.propData
-        // this.$emit('successSave')
+
         if (!this.modiYn) {
           this.$emit('successWrite', newP)
         } else {
@@ -283,9 +290,6 @@ export default {
         editor.ui.view.toolbar.element,
         editor.ui.getEditableElement()
       )
-    },
-    selectedColor (index) {
-      this.selectedC = index
     },
     openPushDetail () {
       this.pushDetailPopShowYn = true
@@ -377,13 +381,6 @@ export default {
 .writeBoardPageTopArea input{font-size: 15px;}
 .writeBoardPageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
 
-#toolBox{margin-top: -1rem; float: left; height: 100%; background: #FFFFFF; display: flex;  width: var(--width); height: 100%;  border-left: none;}
-#toolBox >.toolContentsArea {height: calc(100% - 6rem); width: calc(100% - 100px)}
-.toolContentsArea {position: relative; padding: 0.5rem 1rem;  padding-right: 1.5rem;}
-
-.colorBox{float: left; width: 55px; height: 42px; border-radius: 5px; margin-right: 0.5rem; margin-bottom: 0.5rem;}
-.selectedColor{border: 2px solid #000}
-
 .editorOption{display: flex; flex-direction: column; border-right: 1px solid #BFBFDA; width: 100px;}
 .editorOption > div {height: 50px; text-align: center; padding: 0.5rem; cursor: pointer;}
 .activeColor{background: #EFEFF6;}
@@ -395,23 +392,9 @@ export default {
 .boardWritePaperBack{width: 100%; height: calc(100% - 15rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
-.pushInputArea{height: 100%; width: 100%;}
+.boardInputArea{height: 100%; width: 100%;}
 
-.pushInputArea .recvUserArea{border: 1px solid #BFBFDA; border-radius: 5px; height: 30px; float: left; position: relative; }
-.orgaIcon{position: absolute; top: 0.3rem; right: 0.5rem; cursor: pointer;}
-
-.pushBodyInput{resize: none; border-radius: 5px; border: 1px solid #BFBFDA; width: 100%; height: calc(100% - 7rem); padding: 1rem; box-sizing: border-box; color: #010101; font-size: 15px;}
-.attatchFileBtn{cursor: pointer; width: 80px; height: 80px;margin-top: 0.5rem;border-radius: 5px; background: #A9AACD; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-.attatchFileBtn p{color: #FFFFFF; font-size: 10px; margin-top: 0.5rem;}
-
-.toolBtnArea{justify-content: flex-end; position: absolute; right: 0; top: 0rem}
-.toolLeftTab{color: #6768A7; font-weight: bold; font-size: 15px;margin-bottom: 1rem;}
-
-.toolSearchBox{border: 1px solid #BFBFDA!important; border-radius: 5px!important;}
-.toolPushCard{box-shadow: none !important; border: 1px solid #E1E1E1 !important;}
-.selectPaperWrap{width: 100%; height: 100%; float: left; margin-top: 1rem;}
-
-.formText {padding: 0;}
+.boardInputArea .pageTopInputArea{border: 1px solid #BFBFDA; border-radius: 5px; height: 30px; float: left; position: relative; }
 
 .msgArea span {padding: 0;}
 #loading {
@@ -444,4 +427,12 @@ export default {
   border-bottom-color: #6768A7;
   animation: spinner .8s ease infinite;
 }
+
+@media screen and (max-width: 300px) {
+  .boardWriteTitleText {
+    display: none !important;
+  }
+  .writeBoardPageTopArea .inputArea{width: calc(100%);}
+}
+
 </style>

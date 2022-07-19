@@ -336,6 +336,7 @@ export default {
       if (this.allRecvYn === true) {
 
       } else {
+        console.log(this.param)
         if(this.replyPopYn) {
         param.parentContentsKey = this.params.targetContentsKey
         param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
@@ -366,6 +367,8 @@ export default {
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
       //
+      console.log('답장 후 ')
+      console.log(param)
       var result = await this.$saveContents(param)
 
       if (result.result === true) {
@@ -376,8 +379,7 @@ export default {
           param = this.params
           param.targetType = 'chanDetail'
 
-          console.log('답장 후 ');
-          console.log(param);
+          
           this.$emit('changePop', param)
 
         }else{

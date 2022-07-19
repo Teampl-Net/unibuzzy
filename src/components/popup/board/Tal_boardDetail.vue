@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadYn" class="boardDetailWrap" :style="detailVal.value.picBgPath? 'background: ' + detailVal.value.picBgPath + ';' : 'background: #ece6cc;'">
+  <div v-if="loadYn" class="boardDetailWrap" :style="detailVal.value.picBgPath? 'background: ' + detailVal.value.picBgPath + ';' : 'background: #6768A7;'">
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -8,7 +8,7 @@
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-            <div class="fr" v-if="creUser === alim.creUserKey">
+            <div class="fr" v-if="creUser === alim.creUserKey || alim.creUserKey === 0">
               <p class="fl mright-05 font13"  @click="openUpdateContentsPop">수정</p>
               <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
               <!-- <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p> -->
@@ -30,21 +30,26 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <div class="w-100P fl mbottom-05">
+            <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
                 <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
                 <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{alim.memoCount}}개</p>
             </div>
-            <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
-              <template v-if="userDo.doType === 'ST'">
-                <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-              </template>
-              <template v-else-if="userDo.doType === 'LI'">
-                <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
-              </template>
+            <div v-else class="mbottom-05 fl" style="min-height: 30px;">
+              <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{alim.memoCount > 0? '답변완료' : '답변대기'}}</div>
             </div>
-            <gBtnSmall v-if="detailVal.replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+            <template v-if="!detailVal.nonMemYn">
+              <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
+                <template v-if="userDo.doType === 'ST'">
+                  <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                  <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+                </template>
+                <template v-else-if="userDo.doType === 'LI'">
+                  <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                  <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                </template>
+              </div>
+            </template>
+            <gBtnSmall v-if="!detailVal.nonMemYn && detailVal.replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
@@ -54,12 +59,12 @@
               <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt="">
             </div>
           </div>
-          <div v-if='!replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
+          <div v-if='!detailVal.nonMemYn && !replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div class="boardBorder"></div>
           <div class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList @loadMore='loadMore'  ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore'  ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -125,6 +130,11 @@ export default {
   async created () {
     console.log('#########################################')
     console.log(this.detailVal.value.value)
+    if (this.detailVal.value.value) {
+      var temp = this.detailVal.value.value
+      // eslint-disable-next-line vue/no-mutating-props
+      this.detailVal.value = temp
+    }
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
     } else {
@@ -315,7 +325,7 @@ export default {
             if (this.memoList[j].memoKey === this.memoList[i].parentMemoKey) {
               this.memoList[j].mememoCount += 1
               this.memoList[i].meMemoUserDispMtext = this.$changeText(this.memoList[j].userDispMtext || this.memoList[j].userNameMtext)
-              this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyMinStr
+              this.memoList[i].meMemoBodyMinStr = this.memoList[j].bodyFullStr
             }
           }
         }
@@ -397,6 +407,7 @@ export default {
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       console.log(memo)
 

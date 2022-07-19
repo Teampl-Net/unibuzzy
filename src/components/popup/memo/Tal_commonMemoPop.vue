@@ -5,7 +5,7 @@
         <!-- <div class="w-100P fl"> -->
           <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
           <!-- <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p> -->
-          <div class="fl mleft-05 mright-05 font14 commonBlack" style="text-align: left;" v-html="meMemoData.memo.bodyMinStr"></div>
+          <div class="fl mleft-05 mright-05 font14 commonBlack" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
         <!-- </div> -->
         <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
           <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">

@@ -2,11 +2,11 @@
   <div class="pushDetailWrap">
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
       <!-- <div class="whiteArea"> -->
-        <div :class="{ alimCreatorColor : this.creatorYn}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+        <div :class="{ alimCreatorColor : creUser === alim.creUserKey}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
             <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1  " v-if="creatorYn"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
+              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1  " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
               <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
 
             </div>
@@ -30,7 +30,7 @@
 
           <div id="alimCheckArea">
             <div class="alimCheckContents">
-              <gBtnSmall v-if="alim.canReplyYn && !this.creatorYn " btnTitle="답장하기" @click="alimReply"/>
+              <gBtnSmall v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
               <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
               <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
 
@@ -75,7 +75,8 @@ export default {
       dateCheck: true,
       dateText: '11',
       confirmPopShowYn: false,
-      confirmText: ''
+      confirmText: '',
+      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey
 
     }
   },
@@ -164,9 +165,10 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetKey = this.detailVal.value.creTeamKey
+      
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
-      // params.targetContentsKey = this.alimDetail[0].contentsKey
+      params.targetContentsKey = this.alimDetail[0].contentsKey
       params.replyPopYn = true
       params.targetType = 'writePush'
       params.targetNameMtext = this.detailVal.value.nameMtext
@@ -194,6 +196,14 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
+      if (this.alimDetail[0].childrenContents) {
+        if (this.alimDetail[0].creUserKey === this.creUser) {
+          this.alimDetail = [
+            this.alimDetail[0],
+            ...this.alimDetail[0].childrenContents
+          ]
+        }
+      }
       // eslint-disable-next-line no-
       if (resultList.content[0].userDoList) {
         var userDoList = resultList.content[0].userDoList
@@ -351,7 +361,7 @@ export default {
 <style scoped>
 
 /* .alimCreatorColor {background-color: #6768a7 !important} */
-.alimCreatorColor {background-color: #f4f4f9 !important;}
+.alimCreatorColor {background-color: #f0f0ff !important;}
 .pagePaddingWrap {
     padding: 60px 1.5rem;
     box-sizing: border-box;
@@ -392,6 +402,7 @@ export default {
       text-align: left;
       display: flex;
       flex-direction: column;
+      margin-bottom: 10px;
       padding-bottom: 30px;
       justify-content: space-between;
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
