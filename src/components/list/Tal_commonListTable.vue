@@ -12,8 +12,6 @@
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
             <td v-if="mainYn === true" style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: value.ownerYn === true}">
               <div class="top5PushChanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
-              <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style=" width:30px; position:absolute;bottom:-1rem " alt="">
-
               </div>
 
             </td>
@@ -27,7 +25,8 @@
                 <div>
                 <!-- <div style="display: flex; align-items: center; justify-content: space-between;"> -->
                   <!-- <div style="display: flex; align-items: center; "> -->
-                    <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"/>
+                    <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" />
+                    <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"></span>
 
                   <!-- </div> -->
                     <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>

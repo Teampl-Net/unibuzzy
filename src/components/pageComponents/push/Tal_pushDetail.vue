@@ -48,7 +48,7 @@
             <div data-clipboard-action="copy" id="pushDetailCopyBody" @click="copyText"
                 :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + this.alimDetail[0].contentsKey
                     + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                  style="background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
+                  style="background: #6768a7; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
               <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
             </div>
           </div>

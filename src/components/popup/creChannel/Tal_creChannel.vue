@@ -23,18 +23,18 @@
 
         <!-- <div style="display: flex; align-items: center; justify-content: space-around;"> -->
         <div style="width:100%; height: 30px" class="mtop-1">
-          <p class="textLeft font14 fl" style="line-height: 30px;">채널명</p>
-          <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
+          <p class="textLeft font16 fl" style="line-height: 30px;">채널명</p>
+          <input style="background: ghostwhite;" v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
         </div>
         <div style="width:100%; min-height: 100px " class="mtop-1 ">
-          <p class="textLeft font14 fl" style="line-height: 30px;">설명</p>
+          <p class="textLeft font16 fl" style="line-height: 30px;">설명</p>
           <!-- <input type="text" placeholder="간단한 소개글을 입력해주세요." name="" value="" class="creChanInput"  id="channelName" style="width: 80%; height: 50px; float: right; padding-right: 10px; border: none;border-bottom: 1px solid #ccc;"> -->
-          <textarea v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
+          <textarea style="background: ghostwhite;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
         </div>
         <div style="width:100%; height: 30px" class="mtop-1" >
-          <p class="textLeft font14 fl" style="line-height: 30px;">산업군</p>
-          <div class="changeChanTypeBtnWrap" @click="channelTypeClick">
-            <p class="textLeft font14 fl mleft-05" style="line-height:30px;" >{{selectTypeText}}</p>
+          <p class="textLeft font16 fl" style="line-height: 30px;">산업군</p>
+          <div class="changeChanTypeBtnWrap" style="background: ghostwhite;" @click="channelTypeClick">
+            <p class="textLeft font14 fl mleft-05 commonBlack" style="line-height:30px;" >{{selectTypeText}}</p>
           </div>
         </div>
         <!-- <div style="width:100%; height: 40px" class="mtop-1" >
@@ -48,7 +48,7 @@
 
         <!-- <div v-if="chanDetail.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:3em; bottom:80px;"> -->
         <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:2em; top:1rem;">
-          <p style="color:white; font-weight:bold"> 채널 삭제 </p>
+          <p class="font12" style="color:white; font-weight:bold"> 채널 삭제 </p>
         </div>
         <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
@@ -97,7 +97,6 @@ export default {
       keyWord2: '',
       checkPopYn: false,
       okPopYn: false,
-
       errorMsg: '',
       errorPopYn: false
     }
@@ -259,11 +258,11 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
 .channelLogoLabel{
   color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.5; font-size:14px;white-space: nowrap;
 }
-#chboxtest p{
+/* #chboxtest p{
   color: black;
-}
+} */
 #chboxtest{
-  font-size:14px; width: 100%; position:relative; min-height: 400px; background: #FFF; top:0; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem); opacity:0.9
+  font-size:14px; width: 100%; position:relative; min-height: 400px; background: #FFF; top:0; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem);
 }
 
 #channelName{

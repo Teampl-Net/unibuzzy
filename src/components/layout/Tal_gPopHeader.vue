@@ -6,6 +6,7 @@
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
+
     <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
@@ -32,6 +33,7 @@ import helpButtonPop from '../popup/info/Tal_helpButtonPop.vue'
 export default {
   name: 'talHeader',
   props: {
+    checkOfficialChanYn: {},
     chanName: {},
     headerTitle: {},
     chanAlimListTeamKey: {},
@@ -44,6 +46,9 @@ export default {
     helpYn: {}
   },
   methods: {
+    checkOfficialChan () {
+      alert(true)
+    },
     clickHelp () {
       if (this.headerTitle === '멤버 관리') {
         this.helpButtonType = 'member'
@@ -88,7 +93,7 @@ export default {
     helpButtonPop
   },
   created () {
-    console.log(this.targetType)
+    // alert(JSON.stringify(this.checkOfficialChanYn))
   },
   watch: {
     bgblack () {

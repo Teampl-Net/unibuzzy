@@ -7,12 +7,13 @@
     <section class="">
       <Datepicker
         ref="datePickerLib"
+        inline
+        :editable='false'
         inputmode="none"
         type="date"
         range
         placeholder="날짜를 선택해주세요"
         title-format="YYYY-MM-DD"
-        editable = false
         v-model:value="value1"
       ></Datepicker>
     </section>

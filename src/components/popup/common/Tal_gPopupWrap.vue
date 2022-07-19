@@ -6,9 +6,8 @@
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
-      <popHeader ref="gPopupHeader" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
-      <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/>
-      -->
+      <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
+      <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
       <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
@@ -482,10 +481,10 @@ export default {
       }
     },
     async closeXPop (reloadYn) { // 내 팝업 닫기
-      if (this.targetType === 'pushDetail') {
-      //   this.pushListAndDetailYn = false
-        reloadYn = true
-      }
+      // if (this.targetType === 'pushDetail') {
+      // //   this.pushListAndDetailYn = false
+      //   reloadYn = true
+      // }
 
       this.$emit('closePop', reloadYn)
     },

@@ -15,7 +15,7 @@
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
         <div v-if="admYn" class="editChanBtnWrap">
-          <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; margin-bottom: 0px;">
+          <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; right: 1rem; bottom: -20px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
@@ -380,10 +380,10 @@ export default {
 }
 .chanLogoWrap{width: 185px; height: 185px; min-width: 180px; min-height: 180px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);}
 .chanWhiteBox{position: absolute; top: -170px; bottom: 50vh; height: 100%; display: flex; flex-direction: column;align-items: center;width: 100%;z-index: 999;}
-.channelItemBox{background-color: #fff; width: 100%; height: 65%; position: absolute; bottom: 0; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; width: 100%; height: calc(100% - 350px); position: absolute; bottom: 0; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
-.copyTextIcon{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
+.copyTextIcon{background: #6768a7; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
 </style>

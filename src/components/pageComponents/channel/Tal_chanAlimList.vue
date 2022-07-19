@@ -1,21 +1,20 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <!-- <div>{{pushKey}}</div> -->
-
+  <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
       <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
         <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림 {{chanItem.totalContentsCount}}건 | 내가 받은 알림 {{myContentsCount}}건</p>
-        <p class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</p>
+        <p class="font22 fontBold" style="padding-right: 30px;"><img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" />{{changeText(chanItem.nameMtext)}}</p>
       </div>
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
-        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진">
+        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진" />
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
           <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
           <p class="fl commonBlack font16" style="line-height: 24px;" v-if="memberYn">(멤버)</p>
           <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->
-          <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; bottom:-1rem; left: 50%; transform: translateX(-50%);" alt="">
         </div>
       </div>
       <!-- <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
@@ -35,8 +34,11 @@
         </div>
       </div>
     </div> -->
-    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
-      <p class="font14 fontBold" @click="openPop" style="">채널정보 ></p>
+    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 3.5rem; right: 1rem;" >
+      <p class="fl font14 fontBold" @click="saveMemberButton" style="">멤버 신청하기 ></p>
+    </div>
+    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
+      <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p>
     </div>
   </div>
   <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; overflow: hidden;">
@@ -46,9 +48,9 @@
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
     <!-- <popHeader  :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
-    <chanDetailComp @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp ref="chanDetailRef" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
-  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false' @ok='saveMember' v-if="errorBoxYn"/>
+  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 </div>
 </template>
@@ -59,6 +61,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 export default {
   data () {
     return {
+      smallPopYn: false,
       greetingInfoYn: false,
       reloadShowYn: false,
       alimListToDetail: false,
@@ -79,7 +82,6 @@ export default {
       memberYn: false,
       myContentsCount: null,
       greetingType: 'follow'
-
     }
   },
   watch: {
@@ -89,7 +91,6 @@ export default {
   },
   props: {
     chanDetail: {}
-
   },
   components: {
     pushList,
@@ -98,13 +99,11 @@ export default {
   async created () {
     console.log('this.chanDetail')
     console.log(this.chanDetail)
-
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
-    console.log('this.chanItem')
-    console.log(this.chanItem)
+    // console.log(this.chanItem.userTeamInfo.followerKey)
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -121,6 +120,66 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
   },
   methods: {
+    async saveMemberButton () {
+      this.smallPopYn = true
+      if (this.memberYn || this.memberYn === 1) {
+        this.confirmMsg = '멤버 취소가 완료되었습니다.'
+        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanItem.nameMtext) + ' 의 멤버가 될 수 있습니다.)'
+      } else {
+        this.confirmMsg = '멤버 신청이 완료되었습니다.'
+        this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
+      }
+      var params = null
+      var param = {}
+      param.followerKey = this.chanItem.userTeamInfo.followerKey
+      param.teamKey = this.chanItem.teamKey
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) || this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.memberYn = true
+      param.teamName = this.$changeText(this.chanItem.nameMtext)
+      if (this.memberYn || this.memberYn === 1) {
+        param.memberYn = false
+        params = { follower: param }
+      } else {
+        params = { follower: param, doType: 'ME' }
+      }
+      console.log(param)
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveFollower',
+        param: params
+      })
+      if (result.data.result === true) {
+        if (this.memberYn || this.memberYn === 1) {
+          this.memberYn = false
+        } else {
+          this.memberYn = true
+        }
+      }
+    },
+    // async saveMemberButton () {
+    //   var followParam = {}
+    //   var result = null
+    //   followParam.teamKey = this.chanItem.teamKey
+    //   followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    //   followParam.followerKey = this.chanItem.userTeamInfo.followerKey
+    //   followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+
+    //   if (this.memberYn) {
+    //     // 멤버 취소
+    //     followParam.memberYn = false
+    //     result = await this.$changeFollower({ follower: followParam, doType: 'FL' }, 'save')
+    //     this.memberYn = false
+    //   } else {
+    //     // 멤버 신청
+    //     followParam.memberYn = true
+    //     result = await this.$changeFollower({ follower: followParam, doType: 'FM' }, 'save')
+    //     this.memberYn = true
+    //   }
+
+    //   alert(JSON.stringify(result))
+
+    //   // alert(JSON.stringify(result))
+    // },
     numberOfElements (num) {
       this.myContentsCount = num
     },

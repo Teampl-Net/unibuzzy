@@ -7,11 +7,11 @@
       <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
         <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
         <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
-        <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; position: absolute; right: -15px; top: -6px;" alt="">
-        <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 15px; position: absolute; bottom: 0; right: -3px;" />
+        <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
         </div>
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
-          <div class=" text-start mr-04 w-100P" >
+          <div class=" text-start mr-04 w-100P">
+            <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
             <p class="font16 commonBlack fl fontBold mNone" style="line-height: 30px;" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
             <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
                 <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>

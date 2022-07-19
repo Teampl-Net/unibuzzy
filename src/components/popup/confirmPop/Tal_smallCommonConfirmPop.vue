@@ -49,6 +49,6 @@ export default {
   animation: fadein 0.3s ease-in-out;
   animation-fill-mode: forwards;
 }
-.smallConfirmText {font-size: 18px; color: black; width: 100%; word-break: keep-all; float: left; text-align: center; }
-.addSmallText {font-size: 16px; color: #505050; width: 100%; word-break: keep-all; float: left; text-align: center;}
+.smallConfirmText {font-size: 14px; color: black; width: 100%; word-break: keep-all; float: left; text-align: center; }
+.addSmallText {font-size: 12px; color: #505050; width: 100%; word-break: keep-all; float: left; text-align: center;}
 </style>

@@ -16,15 +16,15 @@
             <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->
           </div>
-          <div class="font20 fontBold" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
-            <span class="font20 fontBold fl">{{this.$changeText(this.userInfo.userDispMtext)}}</span>
+          <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
+            <span class="fl">{{this.$changeText(this.userInfo.userDispMtext)}}</span>
             <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr" @click="changeUserDispMtext()" >
           </div>
 
           <div class="fl" style=" width:100%; position: relative;" v-show="changeYn">
-            <div class="" style="position: absolute; left:50%; transform: translate(-50%); width:80%; max-width:250px; min-width:50px;">
-              <input class="fl font16" type="text" v-model="tempUserDispName" style="width:calc(100% - 75px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
-              <div class="fl" style="width:75px">
+            <div class="" style="position: absolute; left:50%; transform: translate(-50%); width:80%; max-width:250px; min-width:50px; margin-top: 10px;">
+              <input class="fl font16" type="text" v-model="tempUserDispName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
+              <div class="fl" style="width: 100px">
                 <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
                 <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
               </div>
@@ -41,7 +41,7 @@
         <table>
           <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
           <!-- <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr> -->
-          <tr><th class="font16">가입일</th><td class="textRight">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
+          <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
           <!-- <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat('2021-06-22 14:22')}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th class="font16" colspan="2">이용약관</th></tr>
@@ -208,7 +208,7 @@ export default {
 <style scoped>
 .profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
-.roundDiv{box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;} 
+.roundDiv{box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
 table{text-align: left; width: 100%;}
 tr, td, th {
   height: 4rem;

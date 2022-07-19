@@ -6,7 +6,7 @@
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 130px;">배경 색깔</p>
+      <p class="fontBold textLeft font16 fl " style="width: 130px;">배경지</p>
       <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
       <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
           <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
@@ -17,7 +17,7 @@
       <p class="fontBold textLeft font16 fl " style="width: 130px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
+      <div style="border-radius: 0 !important; border: none; padding: 1px;" class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
     </div>
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
@@ -932,7 +932,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc;padding:0 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
+.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; padding:0px 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
 
 /* 드롭다운 박스 */
 .dropdown {

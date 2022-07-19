@@ -15,11 +15,12 @@
               <div class="pushChanLogoImgWrap">
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-                <img src="../../assets/images/channel/icon_official.svg" v-if="alim.officialYn" style="width: 30px; position:absolute; bottom:-1rem;" class='' alt="">
               </div>
               <div @click="goDetail(alim)" class="pushDetailHeaderTextArea">
-                <p style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+
+                <p style="width:calc(100% - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+                <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                 <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
                 <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
               </div>
@@ -123,6 +124,9 @@ export default {
       var param = new Object()
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
+      if (value.officialYn) {
+        param.officialYn = value.officialYn
+      }
       param.value = value
       value.readYn = 1
       param.readYn = value.readYn

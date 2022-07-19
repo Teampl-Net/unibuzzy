@@ -19,7 +19,7 @@
         <!-- 게시판 이름 , 소속 채널 -->
         <div class="font22" style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;">
           <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          <p class="font16 lightGray" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
+          <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div>
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
