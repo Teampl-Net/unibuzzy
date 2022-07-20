@@ -230,13 +230,15 @@ export default {
       this.endListSetFunc(resultList)
     },
     endListSetFunc (resultList) {
+      var currentOffset = this.offsetInt
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
-        this.offsetInt -= 1
+        if(this.offsetInt > 0) this.offsetInt -= 1 ;
       } else {
         this.endListYn = false
         this.offsetInt += 1
       }
+      // alert(currentOffset + ' ' +  this.offsetInt)
     },
     async refreshPage () {
       var resultList = await this.getPushContentsList(10, 0)
@@ -375,11 +377,12 @@ export default {
       this.offsetInt = 0
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.endListYn = false
-      }
+      this.endListSetFunc(resultList)
+      // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      //   this.endListYn = true
+      // } else {
+      //   this.endListYn = false
+      // }
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -423,11 +426,12 @@ export default {
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       this.commonListData = resultList.content
       this.findPaddingTopPush()
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.endListYn = false
-      }
+      this.endListSetFunc(resultList)
+      // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      //   this.endListYn = true
+      // } else {
+      //   this.endListYn = false
+      // }
       // this.findPopShowYn = false
     }
   },

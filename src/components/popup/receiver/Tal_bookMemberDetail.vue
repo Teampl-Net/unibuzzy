@@ -6,6 +6,15 @@
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
 
+    <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+        <div v-if="!userProfileImg"  class="managerPicImgWrap">
+            <img :src="userProfileImg" />
+        </div>
+        <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " />
+    </div>
+
+
+
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB " style="width:10%; min-width:4rem; line-height: 30px;" @click="testInput">이름</p>
@@ -80,7 +89,11 @@ export default {
         console.log('##memberDetail##')
         // console.log(this.propData)
         console.log(this.propData);
+
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
+            if(this.propData.userProfileImg){
+                this.userProfileImg = this.propData.userProfileImg
+            }
             if(this.propData.readOnlyYn){this.readOnlyYn = true}
 
                 if(this.propData.userDispMtext){
@@ -107,7 +120,9 @@ export default {
             confirmPopShowYn: false,
             tempIndex: null,
             confirmText: '',
-            readOnlyYn:false
+            readOnlyYn:false,
+            userProfileImg : undefined
+
         }
     },
     methods:{
@@ -276,4 +291,8 @@ margin-bottom: 2rem;
     bottom: 10px;
     left: 5%;
 }
+
+.managerPicImgWrap { width:50%; max-width:200px ; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
+.managerPicImgWrap img {width: 100%;}
+
 </style>
