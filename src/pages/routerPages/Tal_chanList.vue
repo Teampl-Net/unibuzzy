@@ -11,7 +11,7 @@
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
-    <gChannelList ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
+    <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
@@ -246,11 +246,10 @@ export default {
       // this.chanList = []
       this.viewTab = tab
       this.offsetInt = 0
-      document.getElementById('chanListWrap').className += ' fadeOutAnimation'
+      this.listShowYn = false
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
-      console.log(this.chanList)
-      document.getElementById('chanListWrap').className += ' fadeInAnimation'
+      this.listShowYn = true
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -385,7 +384,8 @@ export default {
       myChanListPopYn: false,
       totalElements: 0,
       totalPages: 0,
-      scrollCheckSec: 0
+      scrollCheckSec: 0,
+      listShowYn: true
     }
   },
   props: {

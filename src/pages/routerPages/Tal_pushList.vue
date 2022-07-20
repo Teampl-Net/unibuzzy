@@ -12,8 +12,7 @@
         </transition>
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; "> -->
         <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
-        <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
-      <!-- <div class="stickerWrap">
+              <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
             <p class="font12">{{value.stickerName}}</p>
@@ -23,7 +22,7 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
-        <commonList ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       </div>
       <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 4.5rem; right: calc(50% - 25px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
@@ -292,15 +291,16 @@ export default {
     },
     async changeTab (tabName) {
       this.viewTab = tabName
-      this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
+      this.listShowYn = false
       this.offsetInt = 0
-      document.getElementById('pushListWrap').className += ' fadeOutAnimation'
+      // document.getElementById('pushListWrap').className += ' fadeOutAnimation'
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
+      this.listShowYn = true
 
       this.endListSetFunc(resultList)
 
-      document.getElementById('pushListWrap').className += ' fadeInAnimation'
+      // document.getElementById('pushListWrap').className += ' fadeInAnimation'
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
       this.introPushPageTab()
@@ -459,7 +459,8 @@ export default {
       transition: 'slide-next',
       tabIdx: 0,
       scrollCheckSec: 0,
-      axiosResultTempList: []
+      axiosResultTempList: [],
+      listShowYn: true
     }
   }
 }

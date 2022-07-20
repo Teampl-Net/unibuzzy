@@ -2,54 +2,55 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
+      <div style="width: 100%; height: 100%;" id="ttttt">
+        <div v-if="this.contentsList.length === 0" style="width: 100%; height: 100%;">
+          <!-- pushList.vue 에서 introPushPageTab() 참고 -->
+          <img :src="this.imgUrl" style="float: left;" />
+        </div>
 
-      <div v-if="this.contentsList.length === 0" style="width: 100%; height: 100%;">
-        <!-- pushList.vue 에서 introPushPageTab() 참고 -->
-        <img :src="this.imgUrl" style="float: left;" />
-      </div>
+        <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
+          <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" >
+            <div v-if="alim.readYn === 0" class="readYnArea"></div>
+              <div class="commonPushListTopArea">
+                <div class="pushChanLogoImgWrap">
+                  <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                  <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                </div>
+                <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 
-      <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
-        <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" >
-          <div v-if="alim.readYn === 0" class="readYnArea"></div>
-            <div class="commonPushListTopArea">
-              <div class="pushChanLogoImgWrap">
-                <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-                <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-              </div>
-              <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
+                  <p style="width:calc(100%); " class="font16 fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
 
-                <p style="width:calc(100%); " class="font16 fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
-              <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-
-                <div class=" w-100P fl">
-                  <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                  <p style="width:75%;"  :style="alim.officialYn ? 'width:calc(75% - 30px)': '' " class="font14 fl grayBlack textOverdot">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-                  <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                  <div class=" w-100P fl">
+                    <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                    <p style="width:75%;"  :style="alim.officialYn ? 'width:calc(75% - 30px)': '' " class="font14 fl grayBlack textOverdot">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                    <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
-            <div id="alimCheckArea">
-              <div class="alimCheckContents">
-                <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
-                <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
-                  <template v-if="userDo.doType === 'LI'">
-                    <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                    <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                  </template>
-                  <template v-else-if="userDo.doType === 'ST'">
-                    <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                    <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-                  </template>
+              <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
+              <div id="alimCheckArea">
+                <div class="alimCheckContents">
+                  <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+                  <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                    <template v-if="userDo.doType === 'LI'">
+                      <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                      <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                    </template>
+                    <template v-else-if="userDo.doType === 'ST'">
+                      <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                      <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                    </template>
+                  </div>
                 </div>
               </div>
+            <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
-          <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
-          </div>
-      </template>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-      <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
-        <gLoadingS ref="sLoadingPush" class="fl"/>
+        </template>
+        <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+        <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+          <gLoadingS ref="sLoadingPush" class="fl"/>
+        </div>
       </div>
 </template>
 <script>
