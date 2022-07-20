@@ -1,8 +1,8 @@
 <template>
   <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-    <div class="pushListWrap">
-      <commonListTable :commonListData="this.pushList" v-if="listLeloadYn"  @goDetail="openPop" :mainYnProp="this.mainYn" />
+    <div  class="pushListWrap">
+      <commonListTable :commonListData="this.pushList" v-show="listShowYn"  @goDetail="openPop" :mainYnProp="this.mainYn" />
     </div>
 </template>
 
@@ -13,9 +13,14 @@ import commonListTable from '../../list/Tal_commonListTable.vue'
 // import router from '../../../router'
 export default {
   name: 'top5PushList',
-  created () {
-    this.pushList = this.alimList
-    this.checkSenderYn()
+  async created () {
+    if (this.alimList) {
+      this.pushList = this.alimList
+    } else {
+      var resultList = await this.getContentsList()
+      this.listShowYn = false
+      this.pushList = resultList.content
+    }
     // // eslint-disable-next-line no-
     //
   },
@@ -26,7 +31,7 @@ export default {
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
-      listLeloadYn: true
+      listShowYn: true
     }
   },
   props: {
@@ -54,13 +59,6 @@ export default {
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'S') {
         this.imgUrl = '/resource/common/placeholder_white.png'
-      }
-    },
-    checkSenderYn () {
-      for (var i = 0; i < this.pushList.length; i++) {
-        if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.pushList[i].creUserKey) {
-          this.pushList[i].ownerYn = true
-        }
       }
     },
     async recvNoti (e) {
@@ -104,20 +102,20 @@ export default {
     async changeTab (tabName) {
       // this.pushList = [] ///######
       this.viewTab = tabName
+      this.listShowYn = false
       var resultList = await this.getContentsList()
-      this.listLeloadYn = false
+      console.log(resultList)
       this.pushList = resultList.content
       // this.userDoList = resultList.userDo
-      this.listLeloadYn = true
-      this.checkSenderYn()
+      this.listShowYn = true
     },
     async reLoad () {
       this.$refs.activeBarPushListTop5.switchtab(0)
       this.$refs.activeBarPushListTop5.selectTab('N')
       // var resultList = await this.getContentsList()
-      // this.listLeloadYn = false
+      // this.listShowYn = false
       // this.pushList = resultList.content
-      // this.listLeloadYn = true
+      // this.listShowYn = true
       console.log(this.pushList);
     },
     async getContentsList () {
