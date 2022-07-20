@@ -22,7 +22,7 @@
       <talInfo @closeLoading="this.loadingYn = false" v-if="this.targetType === 'theAlimInfo'" />
       <question @closeLoading="this.loadingYn = false" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.loadingYn = false" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
-      <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)"  @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
+      <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
       <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
 
       <selectBookList v-if="this.targetType === 'selectBookList'" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
@@ -374,7 +374,7 @@ export default {
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
-        if(this.params.value){
+        if (this.params.value) {
           this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)
         }
       } else if (this.targetType === 'editManagerList') {

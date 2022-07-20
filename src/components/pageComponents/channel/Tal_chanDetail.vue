@@ -15,7 +15,7 @@
           <p class="font22 fontBold">{{this.$changeText(chanDetail.nameMtext)}}</p>
         </div>
         <div v-if="admYn" class="editChanBtnWrap">
-          <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; right: 1rem; bottom: -20px;">
+          <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; right: 1rem; bottom: -30px; height: 30px; line-height: 30px;">
             <p class="font14 fontBold" @click="editChan" style="">채널 편집 ></p>
           </div>
         </div>
@@ -30,7 +30,7 @@
           <gBtnSmall v-if="chanDetail.teamKey !== 377" @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
         <div v-else-if="followYn === false" class="mtop-05"><gBtnSmall @click="changeFollowYn" class="fl mright-03" btnTitle="구독하기" /></div>
-        <table class="mtop-3" >
+        <table class="mtop-2" >
           <colgroup><col width="10%"><col width="90%"></colgroup>
           <tr>
             <td class="iconTd"><img  src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"></td>
@@ -380,7 +380,7 @@ export default {
 }
 .chanLogoWrap{width: 185px; height: 185px; min-width: 180px; min-height: 180px; position: relative; border-radius: 185px; display: flex; align-items: center; justify-content: center; border: 5px solid #ccc; background: rgb(255 255 255 / 50%);}
 .chanWhiteBox{position: absolute; top: -170px; bottom: 50vh; height: 100%; display: flex; flex-direction: column;align-items: center;width: 100%;z-index: 999;}
-.channelItemBox{background-color: #fff; width: 100%; height: calc(100% - 350px); position: absolute; bottom: 0; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; width: 100%; height: calc(100% - 250px); position: absolute; bottom: 0; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}

@@ -228,9 +228,8 @@ export default {
       this.commonListData = resultList.content
 
       this.endListSetFunc(resultList)
-
     },
-    endListSetFunc(resultList){
+    endListSetFunc (resultList) {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         this.offsetInt -= 1
@@ -238,14 +237,11 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-
     },
     async refreshPage () {
-
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
       this.endListSetFunc(resultList)
-
     },
     async recvNoti (e) {
       var message
@@ -265,7 +261,7 @@ export default {
       }
     },
     async loadMore (pageSize) {
-      if (this.endListYn === false ) {
+      if (this.endListYn === false) {
         // alert(true)
         var resultList = await this.getPushContentsList()
         this.axiosResultTempList = resultList.content
@@ -275,11 +271,8 @@ export default {
           ...this.axiosResultTempList
         ]
         this.commonListData = newArr
-
         this.endListSetFunc(resultList)
-
         this.$emit('numberOfElements', resultList.totalElements)
-
       } else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
@@ -358,7 +351,6 @@ export default {
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-
       var result = await this.$getContentsList(param)
       console.log(result)
       if (result.empty) {
@@ -463,7 +455,7 @@ export default {
       transition: 'slide-next',
       tabIdx: 0,
       scrollCheckSec: 0,
-      axiosResultTempList : []
+      axiosResultTempList: []
     }
   }
 }

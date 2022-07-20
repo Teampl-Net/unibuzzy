@@ -87,7 +87,7 @@ export default {
     }
   },
   methods: {
-    endListSetFunc(resultList){
+    endListSetFunc (resultList) {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         this.offsetInt -= 1

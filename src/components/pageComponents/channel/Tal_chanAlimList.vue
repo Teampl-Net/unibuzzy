@@ -13,7 +13,7 @@
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
           <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
-          <p class="fl commonBlack font16" style="line-height: 24px;" v-if="memberYn">(멤버)</p>
+          <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
           <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->
         </div>
       </div>
@@ -34,10 +34,10 @@
         </div>
       </div>
     </div> -->
-    <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 3.5rem; right: 1rem;" >
+    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; top: 16.5rem; right: 1rem;" >
       <p class="fl font14 fontBold" @click="saveMemberButton" style="">멤버 신청하기 ></p>
     </div>
-    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
+    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; top: 19rem; right: 1rem;">
       <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p>
     </div>
   </div>
@@ -118,6 +118,11 @@ export default {
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
+    // window.addEventListener('resize', () => {
+    //   if (window.innerWidth < 360) {
+    //     this.refreshList()
+    //   }
+    // })
   },
   methods: {
     async saveMemberButton () {
@@ -372,7 +377,7 @@ export default {
 .chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
-.channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}

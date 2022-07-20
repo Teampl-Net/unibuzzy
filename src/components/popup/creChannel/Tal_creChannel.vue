@@ -66,13 +66,17 @@
 import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {
-  created () {
+  created() {
+    this.$emit('openLoading')
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
       if (this.chanDetail.modiYn === true) {
         this.pageType = '수정'
         this.getTeamList()
       }
     }
+    setTimeout(() => {
+      this.$emit('closeLoading')
+    }, 500)
   },
   mounted () {
     this.loadingClose()

@@ -27,7 +27,8 @@
                   <!-- <div style="display: flex; align-items: center; "> -->
                     <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" />
                     <span v-if="changeText(value.nameMtext)" v-html="changeText(value.nameMtext)" class="fl commonBlack font12"></span>
-
+                    <span v-if="changeText(value.creUserName).length > 5" v-html="'&nbsp;' + '(' + changeText(value.creUserName).substring(0,5) + '...)'" class="fl commonBlack font12"></span>
+                    <span v-else v-html="'&nbsp;' + '(' + changeText(value.creUserName) + ')'" class="fl commonBlack font12"></span>
                   <!-- </div> -->
                     <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
                     <!-- <div :style="'background-color:' + value2.stickerColor" v-for="(value2, index2) in value.stickerList" :key="index2" style="width: 15px; margin-top: 8px; margin-right: 5px; height: 15px;float: right;border-radius: 10px; font-size: 12px; text-align: center;">{{cutStickerName(value2.stickerName)}}</div> -->

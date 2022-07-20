@@ -2,7 +2,7 @@
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
   <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: scroll;" class="boardListWrap">
-    <div id="summaryHeader" class="summaryHeader" style="height: 350px; width: 100%; position: fixed; float: left;" >
+    <div id="summaryHeader" class="summaryHeader">
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div class="summaryTop">
           <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
@@ -10,7 +10,7 @@
           <p class="cBlack fl font16" style="width: 100%; height: 30px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
-          <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn" style="">
+          <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn">
             <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
             <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
             <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
@@ -24,13 +24,13 @@
         <!-- 익명게시판 여부 -->
         <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
       </div>
-      <div id="boardInfoSummary2" class="summaryHeader2" style="">
+      <div id="boardInfoSummary2" class="summaryHeader2">
         <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
         <span class="font13 mbottom-05 fl">{{ this.$changeText(this.propData.nameMtext) }}</span>
       </div>
     </div>
 
-    <div class="boardItemBox" id="boardItemBox" style="overflow: hidden; position: relative; min-height: calc(100% - 250px); width: 100%;  margin-top: 350px; float: left; background: #FFF;">
+    <div class="boardItemBox" id="boardItemBox" style="">
       <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
       <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
         <transition name="showModal">
@@ -227,7 +227,7 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
+      if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
@@ -235,7 +235,7 @@ export default {
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
-        blockBox.style.height = '350px'
+        blockBox.style.height = '300px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
@@ -516,7 +516,7 @@ export default {
     transform: translateY(10rem);
     transition: .5s;
 }
-.summaryHeader{height: 350px; width: 100%; float: left; position: fixed;}
+.summaryHeader{height: 300px; width: 100%; float: left; position: fixed;}
 .summaryHeader2 {height: 50px;  width: 100%; float: left;}
 .boardListHeader {
   width: 100%;
@@ -541,8 +541,8 @@ export default {
   height: 100vh;
   background-size: cover;
 }
-.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 350px; }
-.boardItemBox{background-color: #fff; position: relative; width: 100%;float: left; box-sizing: border-box;}
+.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 300px; }
+.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 300px; float: left; background: #fff; box-sizing: border-box;}
 .boardItemBoxHeight{height: calc(100% - 50px)!important;}
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}

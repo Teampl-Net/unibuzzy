@@ -119,11 +119,10 @@ export default {
       axiosYn: false,
       totalElements: 0,
       shareAuth: { R: true, W: true, V: true },
-      picBgPath : '',
-
-      fileYn : false,
-      deleteYn : false, // 나중에 삭제된 게시글을 공유하게 된다면
-      blindYn : false
+      picBgPath: '',
+      fileYn: false,
+      deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
+      blindYn: false
     }
   },
   props: {
@@ -143,10 +142,7 @@ export default {
         // eslint-disable-next-line vue/no-mutating-props
         this.detailVal.value = temp
       }
-
     }
-
-
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
     } else {
@@ -158,12 +154,11 @@ export default {
         }
       }
     }
-    if (this.detailVal.value){
+    if (this.detailVal.value) {
       if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.ownerYn = true
       }
     }
-
     await this.getContentsList()
     // await this.getMemoList()
     await this.getLikeCount()
@@ -179,7 +174,6 @@ export default {
   methods: {
     async checkUserAuth () {
       if (this.detailVal) { this.shareAuth = this.detailVal.shareAuth }
-
       var param = {}
       param.currentTeamKey = this.alimDetail[0].creTeamKey
       param.cabinetKey = this.alimDetail[0].cabinetKey
@@ -193,15 +187,14 @@ export default {
 
       if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.ownerYn = true
-        this.shareAuth = {R : true, W: true, V: true}
+        this.shareAuth = { R: true, W: true, V: true }
         this.shareAuth.R = true
         this.shareAuth.W = true
         this.shareAuth.V = true
       }
-
       this.replyYn = true
       this.picBgPath = mCabinetContentsDetail.picBgPath
-      if(this.detailVal.nonMemYn){
+      if (this.detailVal.nonMemYn) {
         this.picBgPath = '#6768A7'
       }
       this.fileYn = mCabinetContentsDetail.fileYn
