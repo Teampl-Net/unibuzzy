@@ -7,7 +7,7 @@
     </div> -->
 
     <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
-        <div v-if="!userProfileImg"  class="managerPicImgWrap">
+        <div v-if="userProfileImg"  class="managerPicImgWrap">
             <img :src="userProfileImg" />
         </div>
         <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " />
