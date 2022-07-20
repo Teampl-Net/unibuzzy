@@ -1,41 +1,41 @@
 <template>
-        <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-        <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
+  <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
+  <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
 
-            <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
-                <transition-group>
-                    <template  v-for="(data, index) in addressBookList" :key='index'>
-                        <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
-                            <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
-                                <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                                    <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
-                                </div>
-                                <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
-                                <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-                                    <p class="fl font14" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
-                                    <p class="fl font14" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
-                                </div>
-                            </div>
-                            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >
-                                <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
-                                <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
-                            </div>
-                            <div v-if="!selectPopYn" class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-                                <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >
-                                <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="deleteCabinet(data,index)" >
-                            </div>
-                            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1" style="position: relative; height: 100%;">
-                                <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
-                                <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
-                            </div>
-                        </div>
-                    </template>
-                </transition-group>
-            </draggable>
-        </div>
-        <div v-else>
-            <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
-        </div>
+    <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
+      <transition-group>
+        <template  v-for="(data, index) in addressBookList" :key='index'>
+          <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
+            <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
+              <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
+                <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
+              </div>
+              <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+              <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
+                <p class="fl font14" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
+                <p class="fl font14" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
+              </div>
+            </div>
+            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >
+              <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
+              <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
+            </div>
+            <div v-if="!selectPopYn" class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
+              <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >
+              <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="deleteCabinet(data,index)" >
+            </div>
+            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1" style="position: relative; height: 100%;">
+              <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
+              <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
+            </div>
+          </div>
+        </template>
+      </transition-group>
+    </draggable>
+  </div>
+  <div v-else>
+      <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
+  </div>
 </template>
 
 <script>

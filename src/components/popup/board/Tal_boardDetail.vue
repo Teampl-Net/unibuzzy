@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadYn" class="boardDetailWrap" :style="detailVal.value.picBgPath? 'background: ' + detailVal.value.picBgPath + ';' : 'background: #6768A7;'">
+  <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -49,7 +49,7 @@
                 </template>
               </div>
             </template>
-            <gBtnSmall v-if="!detailVal.nonMemYn && detailVal.replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+            <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
@@ -118,8 +118,12 @@ export default {
       endListYn: false,
       axiosYn: false,
       totalElements: 0,
-      shareAuth: { R: true, W: true, V: true }
+      shareAuth: { R: true, W: true, V: true },
+      picBgPath : '',
 
+      fileYn : false,
+      deleteYn : false, // 나중에 삭제된 게시글을 공유하게 된다면
+      blindYn : false
     }
   },
   props: {
@@ -130,13 +134,19 @@ export default {
   },
   async created () {
     console.log('#########################################')
-    console.log(this.detailVal)
-    console.log(this.detailVal.value.value)
-    if (this.detailVal.value.value) {
-      var temp = this.detailVal.value.value
-      // eslint-disable-next-line vue/no-mutating-props
-      this.detailVal.value = temp
+    // console.log(this.detailVal)
+    // console.log(this.detailVal.value.value)
+    if (this.detailVal.value) {
+      this.picBgPath = this.detailVal.value.picBgPath
+      if (this.detailVal.value.value) {
+        var temp = this.detailVal.value.value
+        // eslint-disable-next-line vue/no-mutating-props
+        this.detailVal.value = temp
+      }
+
     }
+
+
     if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
       this.replyYn = true
     } else {
@@ -148,9 +158,12 @@ export default {
         }
       }
     }
-    if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
-      this.ownerYn = true
+    if (this.detailVal.value){
+      if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+        this.ownerYn = true
+      }
     }
+
     await this.getContentsList()
     // await this.getMemoList()
     await this.getLikeCount()
@@ -165,21 +178,35 @@ export default {
   },
   methods: {
     async checkUserAuth () {
-      if (this.detailVal.shareAuth) { this.shareAuth = this.detailVal.shareAuth }
-      if (this.alimDetail.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+      if (this.detailVal) { this.shareAuth = this.detailVal.shareAuth }
+
+      var param = {}
+      param.currentTeamKey = this.alimDetail[0].creTeamKey
+      param.cabinetKey = this.alimDetail[0].cabinetKey
+      var resultList = await this.$getCabinetDetail(param)
+      // mShareItemList가 잘 들어오면 save잘 된것
+      var mCabinetContentsDetail = resultList.mCabinet
+      this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
+      console.log(param)
+      console.log(resultList)
+      console.log(this.shareAuth)
+
+      if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.ownerYn = true
+        this.shareAuth = {R : true, W: true, V: true}
         this.shareAuth.R = true
         this.shareAuth.W = true
         this.shareAuth.V = true
-      } else {
-        var param = {}
-        param.currentTeamKey = this.alimDetail[0].creTeamKey
-        param.cabinetKey = this.alimDetail[0].cabinetKey
-        var resultList = await this.$getCabinetDetail(param)
-        // mShareItemList가 잘 들어오면 save잘 된것
-        var mCabinetContentsDetail = resultList.mCabinet
-        this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
       }
+
+      this.replyYn = true
+      this.picBgPath = mCabinetContentsDetail.picBgPath
+      if(this.detailVal.nonMemYn){
+        this.picBgPath = '#6768A7'
+      }
+      this.fileYn = mCabinetContentsDetail.fileYn
+      this.deleteYn = mCabinetContentsDetail.deleteYn // 나중에 삭제된 게시글을 공유하게 된다면
+      this.blindYn = mCabinetContentsDetail.blindYn
     },
     openUpdateContentsPop () {
       // eslint-disable-next-line no-new-object

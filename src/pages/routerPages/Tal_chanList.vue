@@ -194,7 +194,7 @@ export default {
     },
 
     async loadMore (pageSize) {
-      if (this.endListYn === false || this.totalElements > this.chanList.length) {
+      if (this.endListYn === false ) {
         this.offsetInt += 1
         var resultList = await this.getChannelList()
         const newArr = [

@@ -217,7 +217,6 @@ export default {
     }
   },
   methods: {
-
     selectedReceiverBookNMemberList (param) {
       if (!param.emit) {
         param.emit = true
@@ -375,7 +374,9 @@ export default {
       } else if (this.targetType === 'writeBoard') {
         this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
-        this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)
+        if(this.params.value){
+          this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)
+        }
       } else if (this.targetType === 'editManagerList') {
         this.headerTitle = '매니저 관리'
         this.chanName = this.propParams.teamNameMtext

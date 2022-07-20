@@ -67,14 +67,14 @@ export default {
       localStorage.setItem('notiReloadPage', 'none')
     }
     this.$emit('changePageHeader', '알림')
-    var resultList = await this.getPushContentsList()
-    this.commonListData = resultList.content
-    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-      this.endListYn = true
-    } else {
-      this.endListYn = false
-    }
-    this.$emit('numberOfElements', resultList.totalElements)
+    // var resultList = await this.getPushContentsList()
+    // this.commonListData = resultList.content
+    // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+    //   this.endListYn = true
+    // } else {
+    //   this.endListYn = false
+    // }
+    // this.$emit('numberOfElements', resultList.totalElements)
     this.$emit('closeLoading')
     this.findPopShowYn = false
     if (this.readySearhList) {
@@ -223,26 +223,29 @@ export default {
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
         pSize = Number(this.offsetInt) * 10
       }
-      this.endList = true
+
       var resultList = await this.getPushContentsList(pSize, 0)
       this.commonListData = resultList.content
+
+      this.endListSetFunc(resultList)
+
+    },
+    endListSetFunc(resultList){
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
+        this.offsetInt -= 1
       } else {
         this.endListYn = false
+        this.offsetInt += 1
       }
-      this.endList = false
+
     },
     async refreshPage () {
-      this.endList = true
+
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.endListYn = false
-      }
-      this.endList = false
+      this.endListSetFunc(resultList)
+
     },
     async recvNoti (e) {
       var message
@@ -262,21 +265,21 @@ export default {
       }
     },
     async loadMore (pageSize) {
-      if (this.endListYn === false || this.commonListData.length > pageSize) {
+      if (this.endListYn === false ) {
         // alert(true)
-        this.offsetInt += 1
         var resultList = await this.getPushContentsList()
+        this.axiosResultTempList = resultList.content
 
         const newArr = [
           ...this.commonListData,
-          ...resultList.content
+          ...this.axiosResultTempList
         ]
-        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-          this.endListYn = true
-        } else {
-          this.endListYn = false
-        }
         this.commonListData = newArr
+
+        this.endListSetFunc(resultList)
+
+        this.$emit('numberOfElements', resultList.totalElements)
+
       } else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
@@ -300,11 +303,9 @@ export default {
       document.getElementById('pushListWrap').className = 'fadeOutAnimation'
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.endListYn = false
-      }
+
+      this.endListSetFunc(resultList)
+
       document.getElementById('pushListWrap').className = 'fadeInAnimation'
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
@@ -461,7 +462,8 @@ export default {
       resultSearchKeyList: [],
       transition: 'slide-next',
       tabIdx: 0,
-      scrollCheckSec: 0
+      scrollCheckSec: 0,
+      axiosResultTempList : []
     }
   }
 }

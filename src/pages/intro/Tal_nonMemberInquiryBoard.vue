@@ -66,14 +66,15 @@ export default {
     findContentsList
   },
   async created () {
-    var resultList = await this.getContentsList()
-    this.mCabContentsList = resultList.content
-    if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-      this.endListYn = true
-    } else {
-      this.offsetInt += 1
-      this.endListYn = false
-    }
+    // var resultList = await this.getContentsList()
+    // this.mCabContentsList = resultList.content
+
+    // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+    //   this.endListYn = true
+    // } else {
+    //   this.offsetInt += 1
+    //   this.endListYn = false
+    // }
   },
   mounted () {
     this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
@@ -86,6 +87,15 @@ export default {
     }
   },
   methods: {
+    endListSetFunc(resultList){
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+        this.offsetInt -= 1
+      } else {
+        this.endListYn = false
+        this.offsetInt += 1
+      }
+    },
     openWritePop () {
       this.infoShowYn = false
       this.openWriteBoard()
@@ -125,7 +135,7 @@ export default {
       // param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
       var resultList = await this.$getContentsList(param)
-      this.totalElements = resultList.totalElements
+      // this.totalElements = resultList.totalElements
       return resultList
     },
     fuc () {
@@ -186,12 +196,9 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       var resultList = await this.getContentsList(10, 0)
       this.mCabContentsList = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.offsetInt += 1
-        this.endListYn = false
-      }
+
+      this.endListSetFunc(resultList)
+
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -249,12 +256,8 @@ export default {
       var resultList = await this.getContentsList(10, 0)
       this.mCabContentsList = resultList.content
       this.findPaddingTopBoard()
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
-        this.offsetInt += 1
-        this.endListYn = false
-      }
+
+      this.endListSetFunc(resultList)
       // await this.getCabinetDetail()
 
       this.findPopShowYn = false
@@ -266,12 +269,8 @@ export default {
           ...this.mCabContentsList,
           ...resultList.content
         ]
-        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-          this.endListYn = true
-        } else {
-          this.offsetInt += 1
-          this.endListYn = false
-        }
+        this.endListSetFunc(resultList)
+
         this.mCabContentsList = newArr
       } else {
         this.$refs.boardListCompo.loadingRefHide()

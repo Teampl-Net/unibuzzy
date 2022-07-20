@@ -34,7 +34,7 @@
         </div>
       </div>
     </div> -->
-    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 3.5rem; right: 1rem;" >
+    <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 3.5rem; right: 1rem;" >
       <p class="fl font14 fontBold" @click="saveMemberButton" style="">멤버 신청하기 ></p>
     </div>
     <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="float: right; position: absolute; bottom: 1rem; right: 1rem;">
@@ -304,11 +304,14 @@ export default {
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         document.getElementById('chanInfoSummary2').classList.add('displayBIm')
         document.getElementById('chanInfoArea').classList.add('displayNIm')
+        document.getElementById('memberInfoArea').classList.add('displayNIm')
+
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         document.getElementById('chanInfoArea').classList.remove('displayNIm')
+        document.getElementById('memberInfoArea').classList.remove('displayNIm')
         blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
