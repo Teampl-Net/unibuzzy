@@ -1,8 +1,8 @@
 <template>
   <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-    <div  class="pushListWrap">
-      <commonListTable :commonListData="this.pushList" v-show="listShowYn"  @goDetail="openPop" :mainYnProp="this.mainYn" />
+    <div class="pushListWrap">
+      <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
     </div>
 </template>
 
@@ -18,7 +18,6 @@ export default {
       this.pushList = this.alimList
     } else {
       var resultList = await this.getContentsList()
-      this.listShowYn = false
       this.pushList = resultList.content
     }
     // // eslint-disable-next-line no-
@@ -104,7 +103,6 @@ export default {
       this.viewTab = tabName
       this.listShowYn = false
       var resultList = await this.getContentsList()
-      console.log(resultList)
       this.pushList = resultList.content
       // this.userDoList = resultList.userDo
       this.listShowYn = true

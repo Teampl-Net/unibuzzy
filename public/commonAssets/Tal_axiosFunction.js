@@ -26,9 +26,8 @@ export async function commonAxiosFunction (setItem) {
   ).then(response => {
     result = response
   }).catch((error) => {
-    alert('세션이 만료되어 메인 페이지로 이동합니다.')
-    router.go(0)
-    router.push({ path: '/' })
+    // alert('세션이 만료되어 메인 페이지로 이동합니다.')
+    this.$router.replace('/')
     result = error
     console.log(error)
   })
