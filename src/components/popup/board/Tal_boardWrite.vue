@@ -223,12 +223,13 @@ export default {
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       if (this.propData.nonMemYn) {
-        param.creUserName = 'KO$^$' + this.nonMemUserName
+        param.creUserName = this.nonMemUserName
         param.creUserKey = 0
       } else {
-        param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+        param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
+      param.cabinetName = this.propData.cabinetNameMtext
       param.title = this.writePushTitle
       param.showCreNameYn = true
 

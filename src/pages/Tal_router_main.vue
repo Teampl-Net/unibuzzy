@@ -255,6 +255,8 @@ export default {
       console.log('targetKind: ' + param[0])
       if (param[0] === 'chanDetail') {
         this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
+      } else if (param[0] === 'boardDetail') {
+        this.openPop({ targetKey: param[1], targetType: 'boardDetail', contentsKey: param[1], pushOpenYn: true })
       }
       console.log('targetKey: ' + param[1])
     }
