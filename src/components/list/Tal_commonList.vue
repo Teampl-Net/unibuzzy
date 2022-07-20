@@ -60,7 +60,7 @@ export default {
       commonListCreUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       mainYn: false,
       chanWrap: null,
-      contentsList: {},
+      contentsList: [],
       currentScroll: 0,
     }
   },

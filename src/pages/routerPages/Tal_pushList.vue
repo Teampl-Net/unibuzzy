@@ -11,7 +11,7 @@
           <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; "> -->
-        <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100% + var(--paddingTopLength)); ">
+        <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
         <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
       <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
@@ -82,7 +82,7 @@ export default {
     }
     this.introPushPageTab()
     this.scrolledYn = false
-    this.findPaddingTopPush()
+    // this.findPaddingTopPush()
   },
 
   updated () {
@@ -112,6 +112,7 @@ export default {
       propObj.targetType = 'pushDetail'
       this.openPop(propObj)
     }
+    this.findPaddingTopPush()
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -230,10 +231,9 @@ export default {
       this.endListSetFunc(resultList)
     },
     endListSetFunc (resultList) {
-      var currentOffset = this.offsetInt
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
-        if(this.offsetInt > 0) this.offsetInt -= 1 ;
+        if (this.offsetInt > 0) this.offsetInt -= 1
       } else {
         this.endListYn = false
         this.offsetInt += 1
@@ -295,13 +295,13 @@ export default {
       this.viewTab = tabName
       this.$refs.pushListChangeTabLoadingComp.loadingRefShow()
       this.offsetInt = 0
-      document.getElementById('pushListWrap').className = 'fadeOutAnimation'
+      document.getElementById('pushListWrap').className += ' fadeOutAnimation'
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
 
       this.endListSetFunc(resultList)
 
-      document.getElementById('pushListWrap').className = 'fadeInAnimation'
+      document.getElementById('pushListWrap').className += ' fadeInAnimation'
       this.findPopShowYn = false
       this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
       this.introPushPageTab()

@@ -8,7 +8,7 @@
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100% + var(--paddingTopLength)); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
@@ -246,11 +246,11 @@ export default {
       // this.chanList = []
       this.viewTab = tab
       this.offsetInt = 0
-      document.getElementById('chanListWrap').className = 'fadeOutAnimation'
+      document.getElementById('chanListWrap').className += ' fadeOutAnimation'
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
       console.log(this.chanList)
-      document.getElementById('chanListWrap').className = 'fadeInAnimation'
+      document.getElementById('chanListWrap').className += ' fadeInAnimation'
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {

@@ -29,7 +29,7 @@
       <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       </div>
-      <div :style="calcBoardPaddingTop" style="padding-top: calc(100px + var(--paddingTopLength)) ; width: 100%; height: calc(100% + var(--paddingTopLength)); overflow: hidden scroll;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+      <div :style="calcBoardPaddingTop" style="padding-top: calc(100px + var(--paddingTopLength)) ; width: 100%; height: calc(100%); overflow: hidden scroll;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
         <boardList :nonMemYn="true" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
       </div>
     </div>

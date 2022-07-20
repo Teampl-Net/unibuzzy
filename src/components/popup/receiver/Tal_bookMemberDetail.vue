@@ -13,8 +13,6 @@
         <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " />
     </div>
 
-
-
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB " style="width:10%; min-width:4rem; line-height: 30px;" @click="testInput">이름</p>

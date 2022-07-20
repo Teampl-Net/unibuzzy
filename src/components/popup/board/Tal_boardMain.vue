@@ -40,7 +40,7 @@
           <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
           <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
-        <div :style="calcBoardPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)) ; height: calc(100% + var(--paddingTopLength));" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+        <div :style="calcBoardPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->

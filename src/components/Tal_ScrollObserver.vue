@@ -1,5 +1,5 @@
 <template>
-    <div ref="trigger"></div>
+    <div class="triggertrigger" ref="trigger"></div>
 </template>
 <script>
 import {
