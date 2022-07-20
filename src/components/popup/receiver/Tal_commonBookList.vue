@@ -1,7 +1,5 @@
 <template>
-    <div class="">
         <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-
         <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
 
             <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
@@ -38,7 +36,6 @@
         <div v-else>
             <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
         </div>
-    </div>
 </template>
 
 <script>
