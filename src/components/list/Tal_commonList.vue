@@ -48,7 +48,7 @@
           </div>
       </template>
       <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-      <div class="w-100P fl mbottom-2" style="position: relative; width:100%; height: 60px;">
+      <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
 </template>

@@ -26,7 +26,7 @@
       </div>
     </div>
     <myObserver @triggerIntersected="loadMore" class="fl wich" />
-    <div class="w-100P fl mbottom-2" style="position: relative; width:100%; height: 60px;">
+    <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
       <gLoadingS ref="sLoadingChan" class="fl"/>
     </div>
 </template>
