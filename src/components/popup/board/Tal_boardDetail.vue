@@ -8,7 +8,7 @@
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-            <div class="fr" v-if="creUser === alim.creUserKey || alim.creUserKey === 0">
+            <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
               <p class="fl mright-05 font13"  @click="openUpdateContentsPop">수정</p>
               <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
               <!-- <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p> -->

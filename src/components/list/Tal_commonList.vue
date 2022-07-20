@@ -16,13 +16,16 @@
                 <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
               </div>
-              <div @click="goDetail(alim)" class="pushDetailHeaderTextArea">
+              <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 
-                <p style="width:calc(100% - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" class=" font16 fontBold commonBlack">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                <p style="width:calc(100%); " class="font16 fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                <p class="font14 fl grayBlack">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
-                <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+
+                <div class=" w-100P fl">
+                  <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                  <p style="width:75%;"  :style="alim.officialYn ? 'width:calc(75% - 30px)': '' " class="font14 fl grayBlack textOverdot">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                  <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                </div>
               </div>
             </div>
             <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>

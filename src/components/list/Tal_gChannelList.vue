@@ -3,26 +3,25 @@
       <!-- chanList.vue 에서 introChanPageTab() 수정 -->
       <img :src="this.imgUrl" style="float: left;" />
     </div>
-    <div v-else class="chanRow w-100P fl" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
-      <div class="w-100P h-100P channelRow" :class="{ownerChannelRowColor : value.ownerYn}">
-        <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
-        <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
-        <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
+    <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
+    <div v-else class="chanRow w-100P fl channelRow " v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
+      <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+      <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
+      <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
+      </div>
+      <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
+        <div class=" text-start mr-04 w-100P">
+          <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
+          <p class="font16 commonBlack fl fontBold mNone" style="line-height: 30px;" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+          <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
+              <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
+              <span class="commonColor font14" >{{value.followerCount}}</span>
+          </div>
+          <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
+          <p class="lightGray font14 fr mNone " style="line-height: 30px;" >{{this.$changeDateFormat(value.creDate)}}</p>
         </div>
-        <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
-          <div class=" text-start mr-04 w-100P">
-            <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
-            <p class="font16 commonBlack fl fontBold mNone" style="line-height: 30px;" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
-            <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
-                <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
-                <span class="commonColor font14" >{{value.followerCount}}</span>
-            </div>
-            <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
-            <p class="lightGray font14 fr mNone " style="line-height: 30px;" >{{this.$changeDateFormat(value.creDate)}}</p>
-          </div>
-          <div style="width: 100%; margin-top: 4px; position: relative;">
-            <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
-          </div>
+        <div style="width: 100%; margin-top: 4px; position: relative;">
+          <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
         </div>
       </div>
     </div>

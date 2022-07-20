@@ -36,9 +36,9 @@
     </div>
   </div>
 
-  <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div>
+  <!-- <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div> -->
 
-    <div style="width:100%; margin-top:calc(20px); " :class="{editmTop:editYn !== true}" class="fl">
+    <div style="width:100%; margin-top:calc(20px); " :class="{'adminBoadrmtop-0':adminYn !== true}" class="fl">
       <div class="fl" style="width:100%; height: 2rem;">
         <div class="fl" style="width:20px; height: 100%; " @click="boardDropDown" >
           <img v-show="this.myBoardList.length !== 0 && boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
@@ -115,12 +115,12 @@ export default {
     await this.getTeamCabList()
     await this.getTeamMenuList()
     this.setDrop()
-    this.groupListlength()
+    this.groupListLength()
 
     // this. myBoardList =
   },
   mounted () {
-    // this.groupListlength()
+    // this.groupListLength()
     // this.boardListLength()
   },
   data () {
@@ -165,6 +165,9 @@ export default {
       this.getTeamCabList()
       this.getTeamMenuList()
       this.setDrop()
+      this.groupListLength()
+      this.boardListLength()
+
     },
     setDrop () {
       if(this.cabinetList.length === 0){
@@ -314,20 +317,12 @@ export default {
       var result = await this.$getTeamMenuList(paramMap)
       this.myBoardList = result
     },
-    groupListlength () {
+    groupListLength () {
       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
-      // return{
-      //   '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
-      // }
-      //  this.menuHeight = this.cabinetList.length * 70 + 20 + 'px'
-
     },
     boardListLength () {
       this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
-      // this.menuHeight = (this.cabinetList.length=== 0 ? 1 : this.cabinetList.length) * 70 + 20 + 'px'
-      return{
-        '--groupListlength' : this.myBoardList.length * 50 + 20 + 'px'
-      }
+
     },
     boardDropDown () {
 
@@ -343,7 +338,7 @@ export default {
     groupDropDown () {
 
       if(this.book === true){
-        this.groupListlength()
+        this.groupListLength()
 
         if(this.groupDropDownYn){// 이미지 변경
           this.groupDropDownYn = false
@@ -481,8 +476,8 @@ export default {
 .editWhiteColor{
   color: #fff;
 }
-.editmTop{
-  margin-top: 70px !important;
+.adminBoadrmtop-0{
+  margin-top: 0 !important;
 }
 .editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
 .boardBox{

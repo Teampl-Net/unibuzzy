@@ -6,7 +6,7 @@
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
             <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1  " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black;">보낸이</p> </div>
+              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
               <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
 
             </div>
@@ -30,10 +30,8 @@
 
           <div id="alimCheckArea">
             <div class="alimCheckContents">
-              <gBtnSmall v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
               <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
-              <div @click="changeAct(userDo, alim.contentsKey)" class="fl mright-05" v-for="(userDo, index) in this.userDoList" :key="index">
-
+              <div @click="changeAct(userDo, alim.contentsKey)" class="fl listMR05Last0" v-for="(userDo, index) in this.userDoList" :key="index">
                 <template v-if="userDo.doType === 'ST'">
                   <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                   <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
@@ -43,14 +41,19 @@
                   <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
                 </template>
               </div>
+              <gBtnSmall class="fr" v-if="(alim.canReplyYn && creUser === alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
+              <!-- <gBtnSmall v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/> -->
+
+              <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 35px;" alt="카카오톡 공유하기"> -->
+              <div data-clipboard-action="copy" id="pushDetailCopyBody" @click="copyText"
+                  :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + this.alimDetail[0].contentsKey
+                      + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                    style="background: #6768a7; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
+                <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
+              </div>
+
             </div>
-            <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 35px;" alt="카카오톡 공유하기"> -->
-            <div data-clipboard-action="copy" id="pushDetailCopyBody" @click="copyText"
-                :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + this.alimDetail[0].contentsKey
-                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                  style="background: #6768a7; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;">
-              <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
-            </div>
+
           </div>
           <div class="pushDetailPaperEffect"></div>
         </div>
@@ -165,7 +168,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetKey = this.detailVal.value.creTeamKey
-      
+
       params.creUserName = this.alimDetail[0].creUserName
       params.creUserKey = this.alimDetail[0].creUserKey
       params.targetContentsKey = this.alimDetail[0].contentsKey
@@ -375,7 +378,7 @@ export default {
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.2rem; margin-bottom: 0.2rem;}
 
 #alimCheckArea{min-height: 20px; width: calc(100%); float: left;}
-.alimCheckContents{width: calc(100% - 100px);float: left; height: 30px;}
+.alimCheckContents{width: 100%; float: left; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
@@ -409,6 +412,12 @@ export default {
   }
   .creYnTrans{
     transform: translate(0, -70%) !important;
+  }
+  .listMR05Last0{
+    margin-right: 0.5rem;
+  }
+  .listMR05Last0 :last-child{
+    margin-right: 0rem !important;
   }
 /* .pushDetailPaperEffect     >>>  common.css이동 */
 
