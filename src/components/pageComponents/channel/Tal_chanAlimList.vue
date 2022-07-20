@@ -34,7 +34,7 @@
         </div>
       </div>
     </div> -->
-    <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; top: 16.5rem; right: 1rem;" >
+    <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; bottom: 3rem; right: 1rem;" >
       <p class="fl font14 fontBold" @click="saveMemberButton" style="">멤버 신청하기 ></p>
     </div>
     <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; top: 19rem; right: 1rem;">
