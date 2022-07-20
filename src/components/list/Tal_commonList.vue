@@ -178,6 +178,7 @@ export default {
       param.targetKey = contentsKey
       if (param.targetKey === null) { return }
       param.doType = act.doType
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')

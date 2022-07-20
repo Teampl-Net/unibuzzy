@@ -226,6 +226,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = contentsKey
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (param.targetKey === null) { return }
       param.doType = act.doType
       if (saveYn === false) {

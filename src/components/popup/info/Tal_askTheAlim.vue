@@ -132,7 +132,7 @@ export default {
       // param.actorList = this.propData.actorList
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.title = this.askTitle
       param.showCreNameYn = true

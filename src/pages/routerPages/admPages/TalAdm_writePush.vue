@@ -362,7 +362,7 @@ export default {
       }
       //
       param.jobkindId = 'ALIM'
-      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+      param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn

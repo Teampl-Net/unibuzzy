@@ -26,6 +26,9 @@ export async function commonAxiosFunction (setItem) {
   ).then(response => {
     result = response
   }).catch((error) => {
+    console.log(error)
+    alert('세션이 만료되어 메인 페이지로 이동합니다.')
+    this.router.replace({ path: '/' })
     result = error
     console.log(error)
   })
