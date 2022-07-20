@@ -75,7 +75,6 @@ export default {
     //   this.endListYn = false
     // }
     // this.$emit('numberOfElements', resultList.totalElements)
-    this.$emit('closeLoading')
     this.findPopShowYn = false
     if (this.readySearhList) {
       this.requestSearchList(this.readySearhList)
@@ -359,6 +358,7 @@ export default {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
       var resultList = result
+      this.$emit('closeLoading')
       return resultList
     },
     async requestSearchList (param) {
