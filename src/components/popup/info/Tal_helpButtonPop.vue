@@ -1,9 +1,8 @@
 <template>
-<div style="width: 100vw; height: 100vh; overflow: hidden scroll; position: fixed; top: 50px; bottom: 0; background-color: #000000cc; z-index: 999999;" @click="closeHelpPop">
-  <helpMemberPop v-if="this.helpButtonType === 'member'" />
-  <helpBookPop v-if="this.helpButtonType === 'book'" />
-  <helpBoardPop v-if="this.helpButtonType === 'board'" />
-</div>
+<div style="width: 100vw; height: 100vh; overflow: hidden scroll; position: fixed; top: 0; bottom: 0; background-color: #000000cc; z-index: 99;" @click="closeHelpPop"></div>
+<helpMemberPop v-if="this.helpButtonType === 'member'" />
+<helpBookPop v-if="this.helpButtonType === 'book'" />
+<helpBoardPop v-if="this.helpButtonType === 'board'" />
 </template>
 <script>
 import helpMemberPop from './Tal_helpMemberPop.vue'

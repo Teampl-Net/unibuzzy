@@ -11,14 +11,19 @@
       <p class="commonBlack fontBold font16 textLeft">하단 + 버튼을 눌러 최초의 알림을 보내보세요!</p>
     </div>
     <div v-if="type==='follow'" class="fadein w-90P greetingTextArea" >
-      <p class="commonBlack fontBold font18 textLeft ">환영합니다[{{this.$changeText(chanInfo.nameMtext)}}]채널의 구독자가 되었습니다! <br></p>
+      <!-- <p class="commonBlack fontBold font18 textLeft ">환영합니다[{{this.$changeText(chanInfo.nameMtext)}}]채널의 구독자가 되었습니다! <br></p>
       <p class="commonBlack fontBold font16 textLeft"> <br>* 채널 이용하기<br>- 채널이 발송하는 다양한 알림을 받아볼 수 있어요 <br><span class="commonBlack fontBold font16 textLeft" style="margin-left: 15px;">알림에 하트, 별표를 눌러 관심있는 알림을 저장해보세요!</span></p>
       <p class="commonBlack fontBold font16 textLeft">- 채널의 공지사항을 손쉽게 확인해요!<br>- 채널의 다른 구성원들과 다양한 주제를 편하게 소통해보세요!</p>
-      <p class="commonBlack fontBold font16 textLeft"><br>*Tip<br>멤버를 신청하여 채널의 구성원이 되어보고, 친구에게 채널을 공유하여 함께 즐겨보세요!</p>
-      <div style="width: 100%; min-height: 50px; margin-top: 10px;">
-        <gBtnSmall @click="applyMember" class="fl" style="float: left; width: calc(50% - 10px); margin-right: 5px;" btnTitle="멤버신청하기" />
-        <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="fl copyTextIcon" :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanInfo.teamKey
-                      + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" style="float: left; width: calc(50% - 10px);" btnTitle="채널링크복사하기" />
+      <p class="commonBlack fontBold font16 textLeft"><br>*Tip<br>멤버를 신청하여 채널의 구성원이 되어보고, 친구에게 채널을 공유하여 함께 즐겨보세요!</p> -->
+      <p class="commonBlack fontBold font22 textLeft">환영합니다!<br><br></p>
+      <p class="commonBlack font16 textLeft"><b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널을 구독하였습니다.<br><br></p>
+      <p class="commonBlack font16 fontBold textLeft fl mbottom-1" data-clipboard-action="copy" id="copyTextBody" style="height: 30px; border-bottom: 1px solid black; line-height: 30px;" @click="copyText" :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanInfo.teamKey
+        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">채널 링크를 공유</p>
+      <p class="commonBlack font16 textLeft fl mbottom-1" style="height: 30px; line-height: 30px;">해 친구들을 초대하세요!</p>
+      <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
+        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="멤버 신청하기" />
+        <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanInfo.teamKey
+        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" btnTitle="채널링크 복사하기" /> -->
       </div>
     </div>
     <img class="" style="width: 150px; margin-left: 18%;" src="../../../assets/images/common/winkAlimLogo.png" alt="">
@@ -74,7 +79,7 @@ export default {
       var clip = new ClipboardJS('#copyTextBody')
       var _this = this
       clip.on('success', function (e) {
-        _this.errorMsg = '채널링크가 복사되었습니다!'
+        _this.errorMsg = '채널 링크가 복사되었습니다!'
         _this.errorPopYn = true
       })
     }
@@ -87,10 +92,12 @@ export default {
 }
 </script>
 <style>
+.greetingApplyMemberBtn {font-weight: bold !important; float: left !important; height: 40px !important; line-height: 40px !important; width: 100% !important; margin-right: 5px;}
+.greetingCopyTextIcon{background: #6768a7; width: 30px; height: 30px; float: left; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px; margin-left: 10px;}
 .chanGreetingArea{
   width:80vw; max-width:700px; min-width:230px; height: 60vh; max-height:800px; background-color:white; position: absolute; top:50%; left:50%; transform: translate(-50%,-50%); z-index:9; border-radius:20px;  box-shadow: 0px 0px 6px 1px #ccc; overflow:hidden;padding: 0.5rem;
 }
 .greetingTextArea{
-  max-width:90%; line-height:1.4rem; ;padding: 10px 20px; background-color:#ffffffe7; border-radius:20px; margin-bottom: 30px; float: left; min-width:350px;
+  max-width:90%; line-height:1.4rem; ;padding: 20px; background-color:#ffffffe7; border-radius:20px; margin-bottom: 30px; float: left;
 }
 </style>

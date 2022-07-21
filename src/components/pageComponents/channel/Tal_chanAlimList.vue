@@ -11,7 +11,7 @@
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
         <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진" />
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
-        <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
+        <div style="min-width: fit-content; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
           <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
           <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
           <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->
@@ -48,7 +48,7 @@
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
     <!-- <popHeader  :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
-    <chanDetailComp ref="chanDetailRef" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
@@ -97,8 +97,8 @@ export default {
     chanDetailComp
   },
   async created () {
-    console.log('this.chanDetail')
-    console.log(this.chanDetail)
+    // console.log('this.chanDetail')
+    // console.log(this.chanDetail)
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
@@ -115,13 +115,17 @@ export default {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
     })
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
+    // window.resizeTo(this.screenInnerWidth, this.screenInnerHeight)
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
-    // window.addEventListener('resize', () => {
-    //   if (window.innerWidth < 360) {
-    //     this.refreshList()
-    //   }
+    // var screenSize = document.querySelector('#textMsgBoxPush')
+    // eslint-disable-next-line no-debugger
+    // debugger
+    // screenSize.addEventListener('click', () => {
+    //   window.resizeTo(this.screenInnerWidth, this.screenInnerHeight)
+    //   alert('width' + this.screenInnerWidth)
+    //   alert('height' + this.screenInnerHeight)
     // })
   },
   methods: {
@@ -203,6 +207,9 @@ export default {
       // await this.$nextTick();
       await this.getChanDetail()
       await this.$refs.ChanAlimListPushListCompo.refreshList()
+      setTimeout(() => {
+        this.$emit('closeLoading')
+      }, 500)
     },
     openWritePushPop () {
       // eslint-disable-next-line no-new-object
@@ -374,7 +381,7 @@ export default {
   min-height: 3rem;
   text-align: left;
 }
-.chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%;}
+.chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: calc(100% - 50px);}
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
 .channelItemBox{background-color: #fff; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}

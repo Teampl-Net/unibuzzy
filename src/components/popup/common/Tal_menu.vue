@@ -1,6 +1,6 @@
 <template>
 
-  <div class="pagePaddingWrap" >
+  <div class="pagePaddingWrap" style="padding-top: 0 !important;" >
       <div class="menuHeader" >
           <img v-on:click="this.$emit('hideMenu')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
           <p class="font16" >메뉴</p>

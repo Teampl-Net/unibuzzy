@@ -321,8 +321,8 @@ export default {
       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
     },
     boardListLength () {
-      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
-
+      // this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
+      this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
     },
     boardDropDown () {
 

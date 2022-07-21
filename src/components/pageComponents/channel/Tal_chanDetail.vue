@@ -244,9 +244,13 @@ export default {
       var result = null
       if (inMemberYn) {
         this.followParam.memberYn = inMemberYn
+        this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
+        this.$emit('closeLoading')
       } else {
+        this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
+        this.$emit('closeLoading')
       }
       console.log(result)
       if (result.result || result) {

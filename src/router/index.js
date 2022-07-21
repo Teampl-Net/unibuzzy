@@ -86,15 +86,20 @@ const routes = [
           // 만약 로그인 상태라면
           if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
         }
+      },
+      {
+        path: '/logList',
+        name: 'logList',
+        props: true,
+        component: logList,
+        beforeEnter: (to, from, next) => {
+          // 만약 로그인 상태라면
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+        }
       }
     ]
   },
-  {
-    path: '/logList',
-    name: 'logList',
-    props: true,
-    component: logList
-  },
+
   {
     path: '/admRouterMain',
     name: 'admRouterMain',

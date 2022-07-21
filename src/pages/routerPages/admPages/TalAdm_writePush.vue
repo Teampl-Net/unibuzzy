@@ -67,7 +67,7 @@
               <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="editableContent" @click="test" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                <div id="textMsgBoxPush" class="editableContent" @click="test" v-show="viewTab === 'text'" style="padding: 7px; margin-bottom: 60px; overflow: hidden scroll; width: 100%; min-height: 240px; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
                 <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div>
                 <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
                 <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
@@ -117,8 +117,22 @@ export default {
       this.clickPageTopBtn()
     },
   },
+  mounted() {
+    // var screenSize = document.querySelector('#alimWrap')
+    var textArea = document.querySelector('#textMsgBoxPush')
+    textArea.addEventListener('focus', () => {
+      document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+      document.querySelector('#alimWrap').style.width = this.screenInnerWidth
+    })
+    textArea.addEventListener('blur', () => {
+      document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+      document.querySelector('#alimWrap').style.width = this.screenInnerWidth
+    })
+  },
   data () {
     return {
+      screenInnerWidth: window.innerWidth,
+      screenInnerHeight: window.innerHeight,
       receiverClickYn: true,
       replyPopYn: false,
       showCreNameYn: false,
@@ -184,8 +198,9 @@ export default {
       }
     }
   },
-  created () {
-
+  created() {
+    this.screenInnerHeight = window.innerHeight
+    this.screenInnerWidth = window.innerWidth
     if (this.params.replyPopYn) {
       this.replyPopYn = true
       this.allRecvYn = false
@@ -195,7 +210,6 @@ export default {
     }
   },
   methods: {
-
     openPop(param){
       console.log('param');
       console.log(param);
@@ -236,20 +250,16 @@ export default {
         }
         /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
 
-
       }
-
       // var shareItemMemberList = []
       // eslint-disable-next-line no-new-object
       var shareItemMemberObject = new Object()
       if (this.receiverList.memberList) {
         for (let i = 0; i < this.receiverList.memberList.length; i++) {
           var selectedMemberList = this.receiverList.memberList[i]
-
           shareItemMemberObject = {}
           shareItemMemberObject.accessKind = 'U'
           shareItemMemberObject.accessKey = selectedMemberList.userKey
-
           /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
           this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
           this.selectedReceiverList.push(shareItemMemberObject)
@@ -323,14 +333,12 @@ export default {
         targetMsgDiv = document.getElementById('msgBox')
       } else if (this.viewTab === 'text') {
         // param.bodyHtmlYn = false
-        document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+        document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
         //
-        targetMsgDiv = document.getElementById('textMsgBox')
+        targetMsgDiv = document.getElementById('textMsgBoxPush')
 
       }
       innerHtml = targetMsgDiv.innerHTML
-
-
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
@@ -413,7 +421,7 @@ export default {
       if(this.viewTab === 'complex') {
         msgData = document.getElementById('msgBox').innerHTML
       } else if (this.viewTab === 'text') {
-        msgData = document.getElementById('textMsgBox').innerHTML
+        msgData = document.getElementById('textMsgBoxPush').innerHTML
       }
       if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
       } else {

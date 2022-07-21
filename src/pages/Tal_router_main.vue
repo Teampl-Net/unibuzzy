@@ -244,6 +244,7 @@ export default {
       this.headerTitle = title
     },
     goPage (page) {
+      alert(JSON.stringify(page))
       this.showMenuYn = false
       this.$router.push({ path: '/' + page })
     }

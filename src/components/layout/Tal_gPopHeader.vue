@@ -10,7 +10,7 @@
     <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
-    <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
+    <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리' " style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
     <!-- <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" /> -->
     <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />
     <!-- <div class="commonColor font16 headerTitleWrap" style=""> -->
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     checkOfficialChan () {
-      alert(true)
+      // alert(true)
     },
     clickHelp () {
       if (this.headerTitle === '멤버 관리') {
@@ -93,6 +93,7 @@ export default {
     helpButtonPop
   },
   created () {
+    // alert(this.helpYn)
     // alert(JSON.stringify(this.checkOfficialChanYn))
   },
   watch: {
