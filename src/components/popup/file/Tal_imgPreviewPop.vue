@@ -6,7 +6,7 @@
         <img @click="this.$emit('closePop')" src="../../../assets/images/common/icon_back_white.png" class="" style="position: fixed; left: 20px; top: 20px; width: 15px;" alt="">
         <img @click="this.$emit('closePop')" src="../../../assets/images/common/download.svg" class="" style="position: fixed; width: 35px; right: 20px; top: 15px;" alt="">
       </div>
-      <Splide :options="{ rewind: true, start: startIndex || 0 }" aria-label="Vue Splide Example">
+      <Splide :options="{ rewind: false, start: startIndex || 0 }" aria-label="Vue Splide Example">
           <SplideSlide v-for="(value, index) in imgList" :key="index">
               <img @click="infoShown = !this.infoShown" :src="value.src" alt="Sample 1">
           </SplideSlide>
