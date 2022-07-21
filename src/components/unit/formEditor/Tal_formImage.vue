@@ -16,7 +16,7 @@
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
-            <input type="file" title ="선택" accept="image/*" style="cursor: pointer; position: absolute;width: 100%;top: -10px;left: 0;font-size: 0;min-height: 60px;" multiple  ref="selectFile" id="input-file" @change="previewFile"/>
+            <input type="file" title ="선택" accept="image/*" style="cursor: pointer; position: absolute;width: 100%;top: -10px;left: 0;font-size: 0;min-height: 60px;"  ref="selectFile" id="input-file" @change="previewFile"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
                 <div v-for="(value, index) in selectFileList"  :key="index" class="fl mright-05" :style="settingImgSize" style="width:var(--imgWidth);">
                     <img  class="editorImg" style="width:100%;" :src="value.previewImgUrl" />

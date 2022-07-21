@@ -1,12 +1,16 @@
 <template>
   <div class="pushDetailWrap">
+    <div v-if="previewPopShowYn" @click="this.previewPopShowYn = false" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 99999; background: #00000026;">
+    </div>
+    <imgPreviewPop :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
+
     <div class="pagePaddingWrap root mtop-1 overflowYScroll">
       <!-- <div class="whiteArea"> -->
         <div :class="{ alimCreatorColor : creUser === alim.creUserKey}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
-            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creatorYn}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
+            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creUser === alim.creUserKey}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
+              <div style="width:100%; position: fixed; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
               <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
 
             </div>
@@ -17,9 +21,9 @@
                   <p class="font12 fl lightGray" v-if="alim.showCreNameYn">{{this.changeText(alim.creUserName)}}</p>
 
                   <div style="height: 18px; float: right;">
-                    <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
-                    <img src="../../../assets/images/push/icon_clock.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="dateCheck = !dateCheck"/>
-                    <p class="font11 fr mleft-03 lightGray">{{dateText}}</p>
+                    <img src="../../../assets/images/push/icon_clock_noBackground.svg" v-if="clockClickYn" style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="datechange(alim.creDate, index)"/>
+                    <img src="../../../assets/images/push/icon_clock.svg" v-else style="width: 18px; height: 18px; padding-bottom: 3px;" class="fr mleft-05" @click="datechange(alim.creDate, index)"/>
+                    <p class="font11 fr mleft-03 lightGray">{{alim.dateText}}</p>
                     <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
                     <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
                     <p v-else class="fr font11 mleft-1">전체에게</p>
@@ -64,42 +68,39 @@
 <script>
 /* eslint-disable */
 /* import manageStickerPop from '../../popup/Tal_manageStickerPop.vue' */
+import imgPreviewPop from '../../popup/file/Tal_imgPreviewPop.vue'
 export default {
   data () {
     return {
       clockClickYn: false,
-      creatorYn: false,
-      alimDetail: {},
+      alimDetail: [],
+      clickImgList: [],
+      previewPopShowYn: false,
+      selectedImgContentsIndex: 0,
       /* manageStickerPopShowYn: false, */
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
       parentContentsKey: null,
       // dateClickYn:false
-      dateCheck: true,
-      dateText: '11',
       confirmPopShowYn: false,
       confirmText: '',
+      selectImgIndex: 0,
       creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey
 
     }
   },
   watch: {
-    dateCheck () {
-      this.datechange()
-      this.clockClickYn = !this.clockClickYn
-    },
   },
   props: {
     detailVal: {},
   },
   components: {
+    imgPreviewPop
     /* manageStickerPop */
   },
-  async created() {
+  created() {
     this.$emit('openLoading')
-    await this.getContentsList()
-    this.checkCreator()
-
+    this.getContentsList()
     /* if (this.alimDetail) {} else {
       this.alimDetail = {
         teamName: '',
@@ -107,11 +108,16 @@ export default {
         bodyFullStr: '오류입니다.'
       }
     } */
-    console.log(this.alimDetail)
-    this.datechange()
   },
   mounted () {
-    this.changeMode()
+    var thisthis = this
+    if (this.alimDetail.length > 0) {
+      this.changeMode()
+    } else {
+      setTimeout(() => {
+        thisthis.changeMode()
+      }, 3000)
+    }
     /*
     var test = this.$store.state.historyStack
     test.push(0)
@@ -133,8 +139,13 @@ export default {
     }
   },
   methods: {
-    datechange () {
-      this.dateText = this.$changeDateFormat(this.alimDetail[0].creDate, !this.dateCheck)
+    openPreviewImgPop (idx) {
+      this.previewPopShowYn = true
+      this.selectImgIndex = idx
+    },
+    datechange (date, index) {
+      this.clockClickYn = !this.clockClickYn
+      this.alimDetail[index].dateText = this.$changeDateFormat(date, this.clockClickYn)
     },
     setParentContents (data) {
       if (data.parentContentsKey) {
@@ -149,19 +160,20 @@ export default {
       }
       return text
     },
-    checkCreator () {
-      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // var userKey = 1
-      if (userKey === this.alimDetail[0].creUserKey) {
-        this.creatorYn = true
-      }
-    },
     changeMode () {
       var formList = document.querySelectorAll('#bodyArea .formCard')
       // eslint-disable-next-line no-
       //
       for (var i = 0; i < formList.length; i++) {
         formList[i].contentEditable = false
+      }
+      this.clickImgList = document.querySelectorAll('#bodyArea img')
+      for(var img = 0; img <this.clickImgList.length; img ++) {
+        var ttt = this
+        this.clickImgList[img].addEventListener('click', function openPreviewImgPop () {
+          // ttt.selectImgIndex = img
+          ttt.previewPopShowYn = true
+        })
       }
     },
     alimReply () {
@@ -213,6 +225,7 @@ export default {
         await this.settingUserDo(userDoList)
 
       }
+      this.alimDetail[0].dateText = this.$changeDateFormat(this.alimDetail[0].creDate, false)
       // console.log(this.alimDetail)
       this.$emit('closeLoading')
     },

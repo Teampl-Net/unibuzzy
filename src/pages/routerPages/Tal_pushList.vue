@@ -195,7 +195,10 @@ export default {
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
       var parentElement = element.parentElement
-      this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      console.log(this.getAbsoluteTop(element))
+      // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      this.firstContOffsetY = this.getAbsoluteTop(element)
+      console.log(this.firstContOffsetY)
       if (this.firstContOffsetY > 0) {
         this.scrollDirection = 'up'
         this.scrolledYn = false

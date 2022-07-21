@@ -466,3 +466,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   bottom: 5rem;
 
 }
+
+
+.splide__pagination {bottom: 20px !important; position: fixed!important; z-index: 999999!important}
