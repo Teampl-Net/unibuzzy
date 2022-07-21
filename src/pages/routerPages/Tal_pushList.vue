@@ -7,12 +7,13 @@
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
       </div>
-        <transition name="showModal">
-          <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-        </transition>
+      <transition name="showModal">
+        <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+      </transition>
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; "> -->
-        <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
-              <!-- <div class="stickerWrap">
+      <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
+        <div class="fr pushReadCheckAlimArea" :class="this.scrolledYn? 'pushReadCheckAlimArea--unpinned': 'pushReadCheckAlimArea--pinned'" style="height: 20px; position: sticky; top: 0px; z-index: 1; display: flex; align-items: center;" > <input type="checkbox" v-model="readCheckBoxYn" id="alimReadYn" style="" > <label for="alimReadYn" class="mleft-05">안읽은 알림 보기</label></div>
+        <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
             <p class="font12">{{value.stickerName}}</p>
@@ -121,7 +122,11 @@ export default {
     },
     reloadShowYn () {
       this.checkShowReload()
+    },
+    readCheckBoxYn (){
+      this.changeTab(this.viewTab)
     }
+
   },
   computed: {
     calcPaddingTop () {
@@ -292,6 +297,10 @@ export default {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
     async changeTab (tabName) {
+      if(this.viewTab !== tabName){
+        this.readCheckBoxYn = false
+      }
+
       this.viewTab = tabName
       this.listShowYn = false
       this.offsetInt = 0
@@ -345,6 +354,12 @@ export default {
       param.findActStarYn = false
       param.jobkindId = 'ALIM'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+
+      if (this.readCheckBoxYn){
+        param.findLogReadYn = false
+      }
+
+
       if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
@@ -462,7 +477,8 @@ export default {
       tabIdx: 0,
       scrollCheckSec: 0,
       axiosResultTempList: [],
-      listShowYn: true
+      listShowYn: true,
+      readCheckBoxYn : false
     }
   }
 }
@@ -500,9 +516,24 @@ export default {
     transform: translateY(10rem);
     transition: .5s;
 }
+
 .slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
   transition: .3s;
 }
+
+.pushReadCheckAlimArea{
+  will-change: transform;
+  transition: transform 0.3s linear;
+}
+.pushReadCheckAlimArea--pinned {
+    transform: translateY(0%);
+}
+.pushReadCheckAlimArea--unpinned {
+    transform: translateY(-130px);
+}
+
+
+
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;
@@ -531,4 +562,34 @@ export default {
   }
 }
 
+
+#alimReadYn[type="checkbox"] {
+  -webkit-appearance: none;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  outline: none !important;
+  border: 1px solid #eeeeee;
+  border-radius: 2px;
+background: #fbfbfb;
+}
+#alimReadYn[type="checkbox"]::before {
+  content: "\2713";
+  position: absolute;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform: scale(0) translate(-50%, -50%);
+  line-height: 1;
+}
+#alimReadYn[type="checkbox"]:checked {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #6768a7 !important;
+}
+#alimReadYn[type="checkbox"]:checked::before {
+  border-radius: 2px;
+  transform: scale(1) translate(-50%, -50%)
+}
 </style>

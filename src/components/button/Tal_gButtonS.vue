@@ -1,6 +1,6 @@
 
 <template >
-  <div class="commonBtn font14" :class="this.btnThema === 'light' ? 'lightColor':'deepColor'" >
+  <div class="commonBtn font14" :class="this.btnThema === 'light' ? 'lightColor' : this.btnThema === 'deepLightColor' ? 'deepLightColor' : 'deepColor'" >
       {{btnTitle}}
   </div>
 </template>
@@ -22,5 +22,6 @@ export default {
 
 .lightColor{background-color: #F5F5F9; color: #000000;}
 .deepColor{background-color: #A9AACD; color: #FFFFFF;}
+.deepLightColor{background-color: #ffffff; color: #000000;}
 .commonBtn {width: fit-content; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;}
 </style>

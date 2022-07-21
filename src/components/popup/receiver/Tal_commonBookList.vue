@@ -221,6 +221,8 @@ export default {
                 // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
 
                 this.$emit('refreshList')
+
+                this.anima()
                 // await this.getTeamCabList()
                 // if(!document.getElementsByClassName('foo')[0]){
                 //     setTimeout(() => {
@@ -230,7 +232,7 @@ export default {
                 //     this.anima()
                 // }
             }
-            this.anima()
+
         },
         anima(){
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'

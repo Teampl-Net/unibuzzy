@@ -229,6 +229,7 @@ export default {
         param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
+      alert(JSON.stringify(param))
       param.cabinetName = this.propData.cabinetNameMtext
       param.title = this.writePushTitle
       param.showCreNameYn = true

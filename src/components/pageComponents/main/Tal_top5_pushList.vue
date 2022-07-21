@@ -7,7 +7,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import listTitle from '../../unit/Tal_main_title.vue'
 import commonListTable from '../../list/Tal_commonListTable.vue'
 // import router from '../../../router'
@@ -20,8 +19,6 @@ export default {
       var resultList = await this.getContentsList()
       this.pushList = resultList.content
     }
-    // // eslint-disable-next-line no-
-    //
   },
   data () {
     return {

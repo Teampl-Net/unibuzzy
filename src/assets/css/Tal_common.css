@@ -304,6 +304,18 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   animation-fill-mode: forwards;
 }
 
+.showDropdown{
+  animation: showModal-dialog-fade-in 0.2s ease;
+}
+@keyframes showDropUpAni {
+  0% {transform: translateY(var(--widndowWidth));}
+  100% {transform: translateY(0);}
+}
+@keyframes showDropdownAniTo100 {
+  0% {transform: translateY(0);}
+  100% { transform: translateY(var(--widndowWidth));}
+}
+
 
 .showModal-enter {animation: showModal-dialog-fade-in 0.2s ease;}
 .showModal-leave {animation: showModal-dialog-fade-out 0.2s ease forwards;}

@@ -1,13 +1,14 @@
 <template>
-    <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" @click="infoMemo(memo)" >
+    <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" :style="index === (memoList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
       <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" > -->
-      <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% + 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem; margin-left: -1rem;" >
+      <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
+        <!--       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% + 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem; margin-left: -1rem;" > -->
           <!-- <div class="fl w-100P" > -->
-            <p class="fl commonBlack mleft-1 mtop-05 font13" >{{memo.meMemoUserDispMtext}}</p>
-            <div  class="fl commonBlack  font12" style="margin: 0.5rem" v-html="memo.meMemoBodyMinStr"></div>
+          <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText(memo.pmemo.userDispMtext || memo.pmemo.userDispMtext)}}</p>
+          <div  class="fl commonBlack  font12" style="margin: 0.5rem" v-html="memo.pmemo.bodyMinStr"></div>
           <!-- </div> -->
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt=""> -->
-          <p class="fl mleft-05 font14" v-if="!memo.meMemoUserDispMtext">삭제된 댓글입니다.</p>
+          <p class="fl mleft-05 font14" v-if="memo.pmemo.deleteYn">삭제된 댓글입니다.</p>
       </div>
 
       <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
@@ -38,7 +39,7 @@
             <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.userKey)"  @click="editMemoClick(memo, index)">수정</div>
           </div>
           <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn &&(replyYn === true && editIndex !== index)">댓글</div>
-          <p v-if="memo.mememoCount !== 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.mememoCount}}개</p>
+          <p v-if="memo.cmemoList.length > 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.cmemoList.length}}개</p>
         </div>
         <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
           <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
@@ -158,7 +159,8 @@ export default {
 <style scoped>
 .memoCard{
   width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left; margin: 5px 0;
-  background-color: white;
+  /* background-color: white; */
+  background-color: transparent;
   transition : background-color 0.5s ease-in;
   position: relative;
 }

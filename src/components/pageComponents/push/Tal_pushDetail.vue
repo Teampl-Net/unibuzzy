@@ -4,7 +4,7 @@
     </div>
     <imgPreviewPop :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
-    <div class="pagePaddingWrap root mtop-1 overflowYScroll">
+    <div class="pagePaddingWrap root mtop-1 overflowYScroll" ref="alimArea">
       <!-- <div class="whiteArea"> -->
         <div :class="{ alimCreatorColor : creUser === alim.creUserKey}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
           <div class="pushDetailTopArea" style="position: relative;">
@@ -45,7 +45,7 @@
                   <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
                 </template>
               </div>
-              <gBtnSmall class="fr" v-if="(alim.canReplyYn && creUser === alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
+              <gBtnSmall class="fr" v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
               <!-- <gBtnSmall v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/> -->
 
               <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; width: 35px;" alt="카카오톡 공유하기"> -->
@@ -57,12 +57,26 @@
               </div>
 
             </div>
+            <gBtnSmall  btnTitle="댓글쓰기" class="fr mtop-05" :btnThema="creUser === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo"/>
+
+            <div class="alimMemoBorder"></div>
+            <p class="commonBlack fr font14 mright-1 mtop-1" style="" @click="memoListShowYn = !memoListShowYn">{{memoListShowYn ? '댓글 접기' : '댓글 펼치기'}}</p>
+            <p class="commonBlack fl font16 mleft-05 mtop-1 fontBold" v-show="memoListShowYn" >댓글</p>
+            <div class="w-100P fl" v-show="memoListShowYn" style="border-radius:10px; min-height: 50px; background:white; margin-top:0.5rem; padding: 0.5rem 0.5rem" >
+              <gMemoList :replyYn='true' :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore'  ref="AlimMemoListCompo" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove'   />
+            </div>
 
           </div>
           <div class="pushDetailPaperEffect"></div>
         </div>
     </div>
-    <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
+
+    <div v-if="memoShowYn" class="alimMemoBoxBackground" @click="this.memoShowYn = false"></div>
+    <transition name="showMemoPop">
+      <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
+    </transition>
+
+    <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
   </div>
 </template>
 <script>
@@ -84,8 +98,18 @@ export default {
       // dateClickYn:false
       confirmPopShowYn: false,
       confirmText: '',
+
+      alimMemoList: [],
       selectImgIndex: 0,
-      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey
+      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+
+      offsetInt :0,
+      pagesize : 10,
+      endListYn : false,
+
+      mememoValue : undefined,
+      memoShowYn : false,
+      memoListShowYn : false,
 
     }
   },
@@ -136,13 +160,166 @@ export default {
   computed: {
     historyStack () {
       return this.$store.state.historyStack
+    },
+
+    getWindowSize () {
+      return {
+        '--widndowHeight': window.innerHeight + 'px'
+      }
     }
+
   },
   methods: {
-    openPreviewImgPop (idx) {
-      alert(idx)
-      this.selectImgIndex = idx
-      this.previewPopShowYn = true
+    eventModalTest(){
+      this.$refs.eventModalTestCompo.draggable()
+      this.eventModalTest = true
+
+    },
+    scrollMove (wich) {
+      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
+      var alimArea = this.$refs.alimArea
+      if (wich === -1) {
+        wich = document.getElementById(this.alimMemoList[this.alimMemoList.length - 1].memoKey).offsetTop
+        this.$refs.AlimMemoListCompo[0].anima(this.alimMemoList[this.alimMemoList.length - 1].memoKey)
+      }
+      alimArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
+    },
+    mememoCancel(){
+      this.mememoValue = null
+    },
+    writeMemo () {
+      // if (this.shareAuth.R === true) {
+        this.mememoValue = null
+        this.memoShowYn = true
+      // } else {
+      //   this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+      //   this.confirmPopShowYn = true
+      // }
+    },
+    writeMememo (memo) {
+      // if (this.shareAuth.R === true) {
+        var data = {}
+        alert(memo.memoKey)
+        data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
+        data.memo = memo
+        // eslint-disable-next-line no-new-object
+        this.mememoValue = new Object()
+        this.mememoValue = data
+        this.memoShowYn = true
+      // } else {
+      //   this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+      //   this.confirmPopShowYn = true
+      // }
+    },
+
+    async deleteMemo (param) {
+      console.log(param)
+      var memo = {}
+      memo.memoKey = param.memoKey
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.deleteMemo',
+        param: memo
+      })
+      if (result.data.result === true) {
+        // this.memoList = []
+        await this.getBoardMemoList(true)
+      }
+    },
+
+    async saveMemo (text) {
+      // eslint-disable-next-line no-new-object
+      var memo = new Object()
+      memo.parentMemoKey = null
+      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+        memo.parentMemoKey = this.mememoValue.parentMemoKey
+      }
+
+      memo.bodyFullStr = text
+      /* memo.bodyFilekey  */
+      memo.targetKind = 'C'
+      memo.targetKey = this.alimDetail[0].contentsKey
+      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
+      memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+
+      console.log(memo)
+
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveMemo',
+        param: { memo: memo }
+      })
+      if (result.data.result === true || result.data.result === 'true') {
+        /* this.confirmText = '댓글 저장 성공'
+        this.confirmPopShowYn = true */
+        this.memoShowYn = false
+        // await this.getContentsList()
+        await this.getBoardMemoList(true)
+        this.scrollMove(-1)
+      }
+    },
+
+
+
+
+    async loadMore () {
+      if (this.endListYn === false) {
+        await this.getBoardMemoList()
+      }
+    },
+    async getBoardMemoList (allYn) {
+      this.$refs.AlimMemoListCompo[0].memoLoadingShow()
+
+      var memo = {}
+      memo.targetKind = 'C'
+      memo.targetKey = this.alimDetail[0].contentsKey
+      memo.pageSize = this.pagesize
+      memo.offsetInt = this.offsetInt
+      if (allYn) {
+        memo.pageSize = this.totalElements + 1
+        memo.offsetInt = 0
+      }
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getMemoList',
+        param: memo
+      })
+
+
+      console.log(result)
+      if (result.data.content) {
+        if (allYn) {
+          this.alimMemoList = result.data.content
+          this.endListYn = true
+        } else {
+          const newArr = [
+            ...this.alimMemoList,
+            ...result.data.content
+          ]
+          this.alimMemoList = newArr
+        }
+
+        this.endListSetFunc(result.data)
+
+        // if (this.totalElements < (result.data.pageable.offset + result.data.pageable.pageSize)) {
+        //   this.endListYn = true
+        // } else {
+        //   this.endListYn = false
+        //   if (allYn) {
+        //     this.endListYn = true
+        //   }
+        // }
+      }
+      this.$refs.AlimMemoListCompo[0].memoLoadingHide()
+    },
+    endListSetFunc (resultList) {
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+        if (this.offsetInt > 0) this.offsetInt -= 1
+      } else {
+        this.endListYn = false
+        this.offsetInt += 1
+      }
+      // alert(currentOffset + ' ' +  this.offsetInt)
     },
     datechange (date, index) {
       this.clockClickYn = !this.clockClickYn
@@ -441,5 +618,12 @@ export default {
     /* accent-color:#6768A7; */
     accent-color:#ccc;
   }
+.alimMemoBorder{
+  width: 100%; height: 1.5px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;
+}
+
+.alimMemoBoxBackground{
+  width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;
+}
 
 </style>

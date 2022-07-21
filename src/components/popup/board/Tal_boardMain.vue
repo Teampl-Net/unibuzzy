@@ -41,6 +41,7 @@
           <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(140px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+          <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:0; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
           <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
@@ -99,6 +100,11 @@ export default {
       this.findPaddingTopBoard()
     }
   },
+  watch:{
+    readCheckBoxYn (){
+      this.changeTab(this.viewTab)
+    }
+  },
   data () {
     return {
       paddingTop: 0,
@@ -132,7 +138,8 @@ export default {
       viewTab: 'N',
       findKeyList: {},
       resultSearchKeyList: [],
-      scrollCheckSec: 0
+      scrollCheckSec: 0,
+      readCheckBoxYn : false
     }
   },
   methods: {
@@ -324,6 +331,11 @@ export default {
       param.jobkindId = 'BOAR'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
+
+      if (this.readCheckBoxYn){
+        param.findLogReadYn = false
+      }
+
       if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
@@ -336,6 +348,8 @@ export default {
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
+
+
       var resultList = await this.$getContentsList(param)
 
       this.totalElements = resultList.totalElements
@@ -375,6 +389,9 @@ export default {
     },
 
     async changeTab (tabName) {
+      if(this.viewTab !== tabName){
+        this.readCheckBoxYn = false
+      }
       // this.$emit('openLoading')
       this.viewTab = tabName
       this.$refs.boardListCompo.loadingRefShow()
@@ -536,6 +553,18 @@ export default {
     transform: translateY(-100%);
 }
 
+.boardReadCheckAlimArea{
+  will-change: transform;
+  transition: transform 0.3s linear;
+}
+.boardReadCheckAlimArea--pinned {
+    transform: translateY(0%);
+}
+.boardReadCheckAlimArea--unpinned {
+    transform: translateY(-130px);
+}
+
+
 #boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
 .boardListWrap{
   height: 100vh;
@@ -573,5 +602,34 @@ export default {
 @media screen and (max-width: 300px) {
   .boardItemBox {padding: 0 0.7rem!important;}
 
+}
+#boardReadYn[type="checkbox"] {
+  -webkit-appearance: none;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  outline: none !important;
+  border: 1px solid #eeeeee;
+  border-radius: 2px;
+background: #fbfbfb;
+}
+#boardReadYn[type="checkbox"]::before {
+  content: "\2713";
+  position: absolute;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform: scale(0) translate(-50%, -50%);
+  line-height: 1;
+}
+#boardReadYn[type="checkbox"]:checked {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #6768a7 !important;
+}
+#boardReadYn[type="checkbox"]:checked::before {
+  border-radius: 2px;
+  transform: scale(1) translate(-50%, -50%)
 }
 </style>
