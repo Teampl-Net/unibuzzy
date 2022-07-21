@@ -1,7 +1,6 @@
 <template>
   <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-  <div v-if="cabinetList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
-
+  <div v-if="addressBookList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
     <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
@@ -80,6 +79,7 @@ export default {
     },
     updated () {
         this.changeSelectedList()
+        this.addressBookList = this.listData
     },
     watch: {
         parentSelectList: function () {
@@ -216,13 +216,14 @@ export default {
             cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
             cabinet.menuType = 'G'
             param.cabinet = cabinet
-            var result = await this.$saveCabinet(param)
-            if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+            var result = null
+            result = await this.$saveCabinet(param)
+            if (result != null) {
                 // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-
+                // alert(true)
                 this.$emit('refreshList')
-
                 this.anima()
+                // alert(false)
                 // await this.getTeamCabList()
                 // if(!document.getElementsByClassName('foo')[0]){
                 //     setTimeout(() => {
@@ -232,7 +233,7 @@ export default {
                 //     this.anima()
                 // }
             }
-
+            // this.anima()
         },
         anima(){
             document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
