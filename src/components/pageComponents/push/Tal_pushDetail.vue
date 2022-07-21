@@ -140,8 +140,9 @@ export default {
   },
   methods: {
     openPreviewImgPop (idx) {
-      this.previewPopShowYn = true
+      alert(idx)
       this.selectImgIndex = idx
+      this.previewPopShowYn = true
     },
     datechange (date, index) {
       this.clockClickYn = !this.clockClickYn
@@ -168,13 +169,14 @@ export default {
         formList[i].contentEditable = false
       }
       this.clickImgList = document.querySelectorAll('#bodyArea img')
-      for(var img = 0; img <this.clickImgList.length; img ++) {
-        var ttt = this
-        this.clickImgList[img].addEventListener('click', function openPreviewImgPop () {
-          // ttt.selectImgIndex = img
-          ttt.previewPopShowYn = true
-        })
+
+      for(let m = 0; m < this.clickImgList.length; m++){
+        this.clickImgList[m].addEventListener('click', () => {
+          this.selectImgIndex = m
+          this.previewPopShowYn = true
+        });
       }
+
     },
     alimReply () {
       // eslint-disable-next-line no-new-object
