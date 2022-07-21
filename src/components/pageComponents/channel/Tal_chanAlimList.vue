@@ -340,6 +340,34 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+          if (this.notiDetail.targetKind === 'TEAM') {
+            if (Number(this.notiDetail.targetKey) === this.chanItem.teamKey) {
+              this.getChanDetail(true)
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
+    }
+    /*
+    recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
           var msgDetail = JSON.parse(message.pushMessage)
           if (msgDetail.noti.data.targetKind === 'TEAM') {
             if (Number(msgDetail.noti.data.targetKey) === this.chanItem.teamKey) {
@@ -350,7 +378,7 @@ export default {
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
-    }
+    } */
   },
   computed: {
     setBlockBoxHeight () {
