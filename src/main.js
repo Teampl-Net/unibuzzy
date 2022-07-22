@@ -98,6 +98,7 @@ axios.defaults.withCredentials = true */
 
 // axios.defaults.baseURL = 'api'
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'
+// axios.defaults.baseURL = 'http://14.51.96.245:9091'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'http://mo.d-alim.com:19090'
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'

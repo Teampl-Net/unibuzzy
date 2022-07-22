@@ -217,7 +217,7 @@ export default {
       findPopShowYn: false,
       subHistoryList: [],
 
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},

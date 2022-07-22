@@ -10,15 +10,16 @@
 
         <template v-else v-for="(alim, index) in this.contentsList" :key="index" >
           <div v-if="alim.bodyFullStr" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="commonListContentBox pushMbox" >
-            <div v-if="alim.readYn === 0" class="readYnArea"></div>
+            <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div class="pushChanLogoImgWrap">
                   <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
-
-                  <p style="width:calc(100%); " class="font16 fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                  <p style="width:calc(100% - 30px); " :class="{commonBlue: alim.readYn === 0}" class="font16 fl fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                  <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
+                  <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                 <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
 
                   <div class=" w-100P fl">

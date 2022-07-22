@@ -123,7 +123,7 @@ export default {
     reloadShowYn () {
       this.checkShowReload()
     },
-    readCheckBoxYn (){
+    readCheckBoxYn () {
       this.changeTab(this.viewTab)
     }
 
@@ -297,7 +297,7 @@ export default {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
     async changeTab (tabName) {
-      if(this.viewTab !== tabName){
+      if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
 
@@ -355,10 +355,9 @@ export default {
       param.jobkindId = 'ALIM'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
-      if (this.readCheckBoxYn){
+      if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
-
 
       if (this.viewTab === 'L') {
         param.findActYn = true
@@ -468,7 +467,7 @@ export default {
       findPopShowYn: false,
       subHistoryList: [],
       stickerList: [],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 보낸', name: 'M' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
       commonListData: [],
       findKeyList: {},
@@ -478,7 +477,7 @@ export default {
       scrollCheckSec: 0,
       axiosResultTempList: [],
       listShowYn: true,
-      readCheckBoxYn : false
+      readCheckBoxYn: false
     }
   }
 }
@@ -532,8 +531,6 @@ export default {
     transform: translateY(-130px);
 }
 
-
-
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;
@@ -561,7 +558,6 @@ export default {
     transform: translate(100%, 0);
   }
 }
-
 
 #alimReadYn[type="checkbox"] {
   -webkit-appearance: none;

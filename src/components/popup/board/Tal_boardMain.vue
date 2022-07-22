@@ -100,8 +100,8 @@ export default {
       this.findPaddingTopBoard()
     }
   },
-  watch:{
-    readCheckBoxYn (){
+  watch: {
+    readCheckBoxYn () {
       this.changeTab(this.viewTab)
     }
   },
@@ -139,7 +139,7 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
       scrollCheckSec: 0,
-      readCheckBoxYn : false
+      readCheckBoxYn: false
     }
   },
   methods: {
@@ -331,8 +331,7 @@ export default {
       param.jobkindId = 'BOAR'
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
-
-      if (this.readCheckBoxYn){
+      if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
 
@@ -348,7 +347,6 @@ export default {
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-
 
       var resultList = await this.$getContentsList(param)
 
@@ -389,7 +387,7 @@ export default {
     },
 
     async changeTab (tabName) {
-      if(this.viewTab !== tabName){
+      if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
       // this.$emit('openLoading')
@@ -563,7 +561,6 @@ export default {
 .boardReadCheckAlimArea--unpinned {
     transform: translateY(-130px);
 }
-
 
 #boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
 .boardListWrap{

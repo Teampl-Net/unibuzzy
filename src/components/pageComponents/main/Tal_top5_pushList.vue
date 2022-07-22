@@ -25,7 +25,7 @@ export default {
       mainYn: true,
       moreLink: 'push',
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 보낸', name: 'M' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
       listShowYn: true
     }
@@ -111,7 +111,7 @@ export default {
       // this.listShowYn = false
       // this.pushList = resultList.content
       // this.listShowYn = true
-      console.log(this.pushList);
+      console.log(this.pushList)
     },
     async getContentsList () {
       // eslint-disable-next-line no-new-object
