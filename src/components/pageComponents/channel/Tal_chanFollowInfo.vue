@@ -1,6 +1,6 @@
 <template>
 <!-- <div style="z-index:999; width: 100vw; height: 100vh; position: fixed; top:0; left:0;" @click="this.$emit('closePop')"/> -->
-<div style="width:100vw; height:100vh; position:fixed; background: #00000030; top:0; left:0; " @click="closePop" ></div>
+<div style="width:100vw; height:100vh; position:fixed; z-index: 9999; background: rgba(0, 0, 0, 0.5); top:0; left:0; " @click="closePop" ></div>
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' style="z-index:9999999;" v-if="errorPopYn" @no='errorPopYn = false'  />
 <div class="zoomInOutPop" style="width: 100vw; height: 50%; position:fixed; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
     <div v-if="type==='admin'" class="fadein greetingTextArea">

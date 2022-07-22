@@ -6,7 +6,7 @@
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
       <!-- <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
-      <img style="width: 0.8rem;" @click="goNo" class="mtop-05 mleft-1"  src="../../../assets/images/common/icon_back.png"/>
+      <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold font16 fl" >{{menuHeaderTitle}}</p>
       <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
       <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
@@ -27,11 +27,12 @@
           <img v-show="this.cabinetList.length !== 0 && groupDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.cabinetList.length !== 0 && groupDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
-        <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && groupDropDownYn === true) || (groupDropDownYn !== true) }" class="fl fontBold font16" @click="groupDropDown">주소록 </p>
+        <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && groupDropDownYn === true) || (groupDropDownYn !== true) }" class="fl fontBold font16" @click="groupDropDown">주소록</p>
+        <p class="fl fontBold mleft-05 commonColor textLeft font16" @click="groupDropDown"> ({{this.bookCount}})</p>
         <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
       </div>
       <div class="boardBox fl" style="overflow: hidden;" ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-        <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+        <addressBookList @bookCount="booksCount" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
   </div>
@@ -44,11 +45,12 @@
           <img v-show="this.myBoardList.length !== 0 && boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.myBoardList.length !== 0 && boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
-        <p style="color:black; text-align:left; margin-left:2rem;" :class="{calcMarginLeft: (this.myBoardList.length !== 0 && boardDropDownYn === true) || (boardDropDownYn !== true), editWhiteColor:editYn !== true }"  class="fl fontBold font16" @click="boardDropDown" >게시판</p>
+        <p class="fl fontBold font16 textLeft mleft-2" style="color:black;" :class="{calcMarginLeft: (this.myBoardList.length !== 0 && boardDropDownYn === true) || (boardDropDownYn !== true), editWhiteColor:editYn !== true }" @click="boardDropDown" >게시판</p>
+        <p class="fl mleft-05 fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.boardCount}})</p>
         <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
       </div>
       <div class="fl boardBox" style="overflow: hidden;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-        <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+        <menuBoardList @boardCount="boardsCount" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
   <!-- <div class='w-100P fl mtop-05' style='padding:10px; border:1px solid #CCC;' @click="memberSetting" >
@@ -101,7 +103,6 @@ export default {
 
   },
   async created() {
-
     console.log(this.adminYn);
     console.log('propData');
     this.getFollowerList()
@@ -125,6 +126,8 @@ export default {
   },
   data () {
     return {
+      boardCount: 0,
+      bookCount: 0,
       ownerYn: false,
       adminYn: false,
       myBoardList:{},
@@ -150,6 +153,12 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    booksCount(data) {
+      this.bookCount = data
+    },
+    boardsCount(data) {
+      this.boardCount = data
+    },
     memberSetting(){
       var param = {}
       // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -199,18 +208,13 @@ export default {
           }
           if(result.data.content[0].ownerYn)
             this.ownerYn = true
-
         }
-
       }
     },
     setSelectedList(datas){
       var data = datas.data
-
       console.log(data);
-
       this.selectManagerListYn = false // 선택창 닫기
-
       if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {
           var tempList ={}
@@ -221,9 +225,7 @@ export default {
           this.selectAdminList.push(tempList)
         }
       }
-
       if(data.memberList){
-
         for (let i = 0; i < data.memberList.length; i++) {
           var tempList ={}
           tempList.accessKey  = data.memberList[i].userKey
@@ -233,7 +235,6 @@ export default {
           this.selectAdminList.push(tempList)
         }
       }
-
       console.log(this.selectAdminList);
     },
     adminManagingClick(){
@@ -321,8 +322,7 @@ export default {
       this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
     },
     boardListLength () {
-      // this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
-      this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
+      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
     },
     boardDropDown () {
 

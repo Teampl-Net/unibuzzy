@@ -2,11 +2,11 @@
   <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName'/>
     <div class="itemWrite" style="">
-      <p class="fontBold textLeft font16 fl" style="width: 130px;">게시판명</p>
+      <p class="fontBold textLeft font16 fl" style="width: 100px;">게시판명</p>
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 130px;">배경지</p>
+      <p class="fontBold textLeft font16 fl " style="width: 100px;">배경지</p>
       <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
       <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
           <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
@@ -14,7 +14,7 @@
       <div @click="this.colorPickerShowYn = true" class="inputBoxThema textLeft" style=" border: none;" :style="'background:' + this.selectedColor + ';'" >선택</div>
     </div>
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 130px;">유형</p>
+      <p class="fontBold textLeft font16 fl " style="width: 100px;">유형</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
       <div style="border-radius: 0 !important; border: none; padding: 1px;" class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
@@ -22,9 +22,9 @@
     <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
     <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 130px;">기능 </p>
+      <p class="fontBold textLeft font16 fl " style="width: 100px;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="width: calc(100% - 130px); text-align: left;" @click="this.functionPopShowYn = true" class="fl font16 lightGray" >{{okFunctionList}}</div>
+      <div style="text-align: left;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>

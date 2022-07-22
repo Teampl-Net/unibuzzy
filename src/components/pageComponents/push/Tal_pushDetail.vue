@@ -35,14 +35,14 @@
           <div id="alimCheckArea">
             <div class="alimCheckContents">
               <!-- <gBtnSmall v-if="setParentContents(alim)" btnTitle="이전알림 보기" @click="ㅅㄷㄴㅅ"/> -->
-              <div @click="changeAct(userDo, alim.contentsKey)" class="fl listMR05Last0" v-for="(userDo, index) in this.userDoList" :key="index">
+              <div @click="changeIconColor(userDo, alim.contentsKey)" class="fl listMR05Last0" v-for="(userDo, index) in this.userDoList" :key="index">
                 <template v-if="userDo.doType === 'ST'">
-                  <img class="fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                  <img class="fl" v-if="userDo.doKey > 0 || !userDo.starClickYn" src="../../../assets/images/common/colorStarIcon.svg" alt="">
                   <img class="fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
                 </template>
                 <template v-else-if="userDo.doType === 'LI'">
-                  <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                  <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                  <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0 || !userDo.likeClickYn" src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                  <img class="mright-05 fl" style="margin-top: 4px;" v-else src="../../../assets/images/common/likeIcon.svg" alt="">
                 </template>
               </div>
               <gBtnSmall class="fr" v-if="(alim.canReplyYn && creUser !== alim.creUserKey) || (parentContentsKey && !alimDetail[0].creUserKey === alim.creUserKey) " btnTitle="답장하기" @click="alimReply"/>
@@ -86,6 +86,8 @@ import imgPreviewPop from '../../popup/file/Tal_imgPreviewPop.vue'
 export default {
   data () {
     return {
+      starClickYn: false,
+      likeClickYn: false,
       clockClickYn: false,
       alimDetail: [],
       clickImgList: [],
@@ -258,10 +260,6 @@ export default {
         this.scrollMove(-1)
       }
     },
-
-
-
-
     async loadMore () {
       if (this.endListYn === false) {
         await this.getBoardMemoList()
@@ -283,8 +281,6 @@ export default {
         url: '/tp.getMemoList',
         param: memo
       })
-
-
       console.log(result)
       if (result.data.content) {
         if (allYn) {
@@ -297,9 +293,7 @@ export default {
           ]
           this.alimMemoList = newArr
         }
-
         this.endListSetFunc(result.data)
-
         // if (this.totalElements < (result.data.pageable.offset + result.data.pageable.pageSize)) {
         //   this.endListYn = true
         // } else {
@@ -500,7 +494,20 @@ export default {
         ]
       })
     },
-    async changeAct (act, inputContentsKey) {
+    changeIconColor(act, inputContentsKey) {
+      if (act.likeClickYn) {
+        act.likeClickYn = false
+      } else {
+        act.likeClickYn = true
+      }
+      if (act.starClickYn) {
+        act.starClickYn = false
+      } else {
+        act.starClickYn
+      }
+      this.changeAct(act, inputContentsKey)
+    },
+    async changeAct(act, inputContentsKey) {
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -516,10 +523,13 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
+        alert('del')
+        // act.likeClickYn = false
       } else {
-        param.actYn = true
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
+        // act.likeClickYn = true
+        alert('save')
       }
       if (result === true) {
         var resultList = await this.$getContentsList({ contentsKey: inputContentsKey })

@@ -2,7 +2,7 @@
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='editPop' />
       <div class="selectBookListContents">
-        <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
             <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
@@ -288,8 +288,8 @@ export default {
 
 <style >
 .selectBookListWrap{height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
-.selectBookListContents{width: 100%; height: calc(100% - 310px); position: relative; padding: 0 1.5rem; float: left; margin-top:50px;}
-.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; width: calc(100% - 3rem); background: #fff;}
+.selectBookListContents{width: 100%; height: 50%; position: relative; padding: 0 1.5rem; float: left; margin-top:50px;}
+.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; width: calc(100% - 3rem) !important; background: #fff;}
 .memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); width: calc(100vw - 3rem); background: #fff;}
-.selectedListStyle{float: left; width:100vw; height:310px; position: absolute; bottom:0px; left:0px}
+.selectedListStyle{float: left; width:100vw; height:calc(50% - 50px); position: absolute; bottom:0px; left:0px}
 </style>

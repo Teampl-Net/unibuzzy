@@ -1,9 +1,9 @@
 <template>
 <div style="height: 100%; width:100%;">
-    <div class="" style="width:100%; height:calc(100% - 50px); margin-top:50px" >
-        <memberListCompo class="fl" style="height:50%; background-color:white; overflow:auto;" :listData="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
-        <selectedListCompo class="fl" style="height:50%;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
-    </div> <!-- this.propData.selectMemberType==='member'? true:false -->
+    <!-- <div style="width:100%; height:calc(100%);" > -->
+        <memberListCompo class="fl" style="margin-top: 50px; padding: 0 1.5rem; height: 50%; background-color:white; overflow:auto;" :listData="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
+        <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
+    <!-- </div> this.propData.selectMemberType==='member'? true:false -->
     <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? '구성원을 추가하시겠습니까?': '매니저를 추가하시겠습니까?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
 
 </div>

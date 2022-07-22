@@ -17,9 +17,6 @@
 
 <script>
 export default {
-  created () {
-    this.openTeamplHome()
-  },
   data () {
     return {
       btnTitle: '홈페이지 바로가기',
@@ -48,7 +45,8 @@ export default {
       // window.location.replace('http://www.pushmsg.net')
       // window.open('http://www.pushmsg.net', '_blank')
       // window.open('http://www.pushmsg.net','_parent')
-      window.open('http://www.pushmsg.net', '네이버팝업', 'scrollbars=yes')
+      // window.open('http://www.pushmsg.net', '네이버팝업', 'scrollbars=yes')
+      window.open('http://www.pushmsg.net', '_blank')
     }
   }
 }

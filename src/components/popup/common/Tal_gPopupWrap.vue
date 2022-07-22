@@ -384,7 +384,7 @@ export default {
         this.chanName = this.propParams.teamNameMtext
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
-        this.headerTitle = '멤버선택'
+        this.headerTitle = '멤버 선택'
       } else if (this.targetType === 'memberManagement') {
         this.headerTitle = '멤버 관리'
         this.helpYn = true
@@ -421,13 +421,15 @@ export default {
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       console.log(this.targetType)
       console.log(this.reloadYn)
+      console.log(reloadYn)
+      console.log(this.delyn)
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-      if (reloadYn !== undefined && reloadYn !== null && (reloadYn === true || reloadYn === 'true')) {
+      if (reloadYn) {
         // eslint-disable-next-line no-unused-vars
         if (this.targetType === 'pushList' || this.targetType === 'chanList') {
           this.pushListAndDetailYn = false
@@ -454,7 +456,7 @@ export default {
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail' && this.delyn !== true) {
           await this.$refs.gPopChanAlimList.refreshList()
-          await this.$refs.chanMenuCompo.refresh()
+          // await this.$refs.gPopChanAlimList.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
           this.pushListAndDetailYn = false
         } else if (this.targetType === 'memberManagement') {

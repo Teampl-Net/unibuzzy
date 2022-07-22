@@ -4,7 +4,7 @@
             <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
             <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
             <div  class="fl selfAddArea">
-                <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
+                <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mobileMleft" style="margin-left: 0 !important;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
                 <gBtnSmall v-if="selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
             </div>
         </div>

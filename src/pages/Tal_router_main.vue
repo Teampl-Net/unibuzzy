@@ -235,6 +235,10 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
+      // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
+      if (reloadYn) {
+        this.routerReloadKey += 1
+      }
       this.popShowYn = false
     },
     /* closeXPushPop () {
@@ -244,7 +248,6 @@ export default {
       this.headerTitle = title
     },
     goPage (page) {
-      alert(JSON.stringify(page))
       this.showMenuYn = false
       this.$router.push({ path: '/' + page })
     }

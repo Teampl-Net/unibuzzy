@@ -25,14 +25,12 @@
           <!-- </div> -->
         <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
       </div>
-      <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 6rem; right: calc(10% + 7px);" @click="refreshAll">
+      <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 1rem; right: calc(10% + 7px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
       </div>
     </div>
-
   <!-- </div> -->
 </template>
-
 <script>
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 export default {
@@ -126,7 +124,6 @@ export default {
     readCheckBoxYn () {
       this.changeTab(this.viewTab)
     }
-
   },
   computed: {
     calcPaddingTop () {
@@ -358,7 +355,6 @@ export default {
       if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
-
       if (this.viewTab === 'L') {
         param.findActYn = true
         param.findActLikeYn = true
@@ -530,7 +526,6 @@ export default {
 .pushReadCheckAlimArea--unpinned {
     transform: translateY(-130px);
 }
-
 .newRight{
   animation-name: slideRight; animation-duration: 1s;
   animation-fill-mode: forwards;

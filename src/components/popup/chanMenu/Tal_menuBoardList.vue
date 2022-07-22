@@ -5,7 +5,10 @@
             <div class="fl" style="width:30px;height:30px; border-radius:100%; margin-left:1rem; padding: 2px; border-radius: 100%;" :style="'background: ' + data.picBgPath + ';'">
                 <img src="../../../assets/images/channel/channer_board.png" style="width: 95%; " alt="" >
             </div>
-            <div class="textLeft fl mleft-2 fontBold font16" style="line-height:30px;color:black; width: calc(100% - 60px);">{{this.$changeText(data.cabinetNameMtext)}}</div>
+            <div class="textLeft fl mleft-2 font16" style="line-height: 30px; width: calc(100% - 60px);">
+                <span class="fontBold" style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
+                <!-- <span class="mleft-05 fl fontBold commonColor">{{data}}</span> -->
+            </div>
         </div>
     </template>
 
@@ -22,6 +25,9 @@ export default {
     data () {
         return{
         }
+    },
+    created() {
+        this.$emit('boardCount', this.listData.length)
     },
     methods: {
         listClick (data) {

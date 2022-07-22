@@ -6,9 +6,12 @@
         <div style="width:100%; height:30px;" class="fl">
             <!-- <img src="" /> -->
             <div class="fl" style="width:30px;height:30px; margin-left:1rem;">
-                <img style="padding: 3px;" src="../../../assets/images/channel/channer_addressBook.svg" alt="" >
+                <img style="padding: 3px;" src="../../../assets/images/channel/channer_addressBook.svg">
             </div>
-            <div class="fl mleft-2 fontBold font16" style="line-height:30px;color:black;">{{data.cabinetNameMtext}}</div>
+            <div class="fl mleft-2 fontBold font16" style="line-height: 30px;">
+                <span class="fontBold" style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
+                <!-- <span class="mleft-05 fontBold fl commonColor">{{data}}</span> -->
+            </div>
         </div>
     </div>
 
@@ -31,15 +34,15 @@ export default {
     data(){
         return{
             // cabinetList: [{cabinetNameMtext:'KO$^$SSS'},{cabinetNameMtext:'KO$^$BBB'}],
-
             editTeamName:'',
             editNameYn:null,
             teamList: {},
             dragging: false
         }
     },
-    async created() {
-
+    created () {
+        // alert(JSON.stringify(this.listData.length))
+        this.$emit('bookCount', this.listData.length)
     },
     components: {
         // draggable: VueDraggableNext
