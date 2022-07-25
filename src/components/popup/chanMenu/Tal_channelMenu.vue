@@ -23,15 +23,15 @@
 
     <div v-if="adminYn" class="fl" style="width:100%;">
       <div class="fl" style="width:100%; height: 30px;">
-        <div class="fl" style="width:20px; height: 100%; " @click="groupDropDown" >
-          <img v-show="this.cabinetList.length !== 0 && groupDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
-          <img v-show="this.cabinetList.length !== 0 && groupDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
+        <div class="fl" style="width:20px; height: 100%; " @click="bookDropDown" >
+          <img v-show="this.cabinetList.length !== 0 && bookDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
+          <img v-show="this.cabinetList.length !== 0 && bookDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
-        <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && groupDropDownYn === true) || (groupDropDownYn !== true) }" class="fl fontBold font16" @click="groupDropDown">주소록</p>
-        <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="groupDropDown"> ({{this.cabinetList.length}})</p>
+        <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && bookDropDownYn === true) || (bookDropDownYn !== true) }" class="fl fontBold font16" @click="bookDropDown">주소록</p>
+        <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
         <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
       </div>
-      <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
+      <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
         <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
@@ -138,7 +138,7 @@ export default {
       cabinetList:[],
       menuHeight: 0,
       boardDropDownYn:true,
-      groupDropDownYn:null,
+      bookDropDownYn:null,
       selectManagerListYn:false,
       selectedList : [],
       selectAdminList : [],
@@ -174,7 +174,7 @@ export default {
     setDrop () {
       if(this.cabinetList.length === 0){
         this.book = false
-        this.groupDropDownYn = true
+        this.bookDropDownYn = true
       }else {
         this.book = true
       }
@@ -339,13 +339,13 @@ export default {
         }
       }
     },
-    groupDropDown () {
+    bookDropDown () {
       if(this.book === true){
         this.bookListLength()
-        if(this.groupDropDownYn){// 이미지 변경
-          this.groupDropDownYn = false
+        if(this.bookDropDownYn){// 이미지 변경
+          this.bookDropDownYn = false
         }else{
-          this.groupDropDownYn = true
+          this.bookDropDownYn = true
         }
       }
     },
