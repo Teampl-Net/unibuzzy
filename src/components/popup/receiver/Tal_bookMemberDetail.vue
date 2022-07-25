@@ -5,7 +5,6 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-
     <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
         <div v-if="userProfileImg"  class="managerPicImgWrap">
             <img :src="userProfileImg" />
@@ -15,27 +14,49 @@
 
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB " style="width:10%; min-width:4rem; line-height: 30px;" @click="testInput">이름</p>
+            <p class="textLeft font16 fl cBlack tB detailLabelText"  @click="testInput">이름</p>
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memName}}</p>
             <input v-else type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
 
         </div>
 
-        <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB" style="width:10%; min-width:4rem; line-height: 30px;">이메일</p>
+        <div style="width:100%; height: 30px; position: relative;" class="mtop-2 fl memberItemRow">
+            <p class="textLeft font16 fl cBlack tB detailLabelText" >이메일</p>
 
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail}}</p>
             <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+            <!-- <img src="../../../assets/images/common/sendMailIcon.svg" @click="sendMail(memEmail)" style="width: 30px; position: absolute; right: 0; " alt=""> -->
 
         </div>
 
-        <div style="width:100%; height: 30px; " class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB" style="width:10%; min-width:4rem; line-height: 30px;">전화번호</p>
-            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone}}</p>
+        <div style="width:100%; height: 30px; position: relative; " class="mtop-2 fl memberItemRow">
+            <p class="textLeft font16 fl cBlack tB detailLabelText" >전화번호</p>
+            <p class="fl font16 commonBlack creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone}}</p>
             <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
+            <!-- <img src="../../../assets/images/common/sendSmsIcon.svg" @click="sendSms(memPhone)" style="width: 30px; position: absolute; right: 0; " alt="">
+            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 30px; position: absolute; right: 40px; " alt=""> -->
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-
+        <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
+            <div class="nativeServiceBtn">
+                <div class="nativeServiceBtnWrap">
+                    <img src="../../../assets/images/common/sendMailIcon.svg" @click="sendMail(memEmail)" style="width: 100%; " alt="">
+                </div>
+                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">메일쓰기</p>
+            </div>
+            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;">
+                <div class="nativeServiceBtnWrap">
+                    <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 100%; " alt="">
+                </div>
+                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
+            </div>
+            <div class="nativeServiceBtn"  style="border-left: 1px solid  #ccc;">
+                <div class="nativeServiceBtnWrap">
+                    <img src="../../../assets/images/common/sendSmsIcon.svg" @click="sendSms(memPhone)" style="width: 100%; " alt="">
+                </div>
+                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
+            </div>
+        </div>
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
@@ -74,6 +95,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import popUp from '../confirmPop/Tal_commonConfirmPop.vue'
+import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
     components: {
         popUp
@@ -84,6 +106,7 @@ export default {
         excelPopYn:{}
     },
     created(){
+       
         console.log('##memberDetail##')
         // console.log(this.propData)
         console.log(this.propData);
@@ -107,6 +130,7 @@ export default {
 
 
         }
+        // this.readOnlyYn = false
     },
     data () {
         return {
@@ -124,6 +148,15 @@ export default {
         }
     },
     methods:{
+        callPhone (num) {
+            onMessage('REQ', 'callphone', num)
+        },
+        sendMail (email) {
+            onMessage('REQ', 'sendMail', email)
+        },
+        sendSms (num) {
+            onMessage('REQ', 'sendSms', num)
+        },
         async deleteManager () {
             console.log('deleteManager Axios param -> result')
 
@@ -256,10 +289,10 @@ margin-bottom: 2rem;
 }
 
 .creChanInput{
-    width:70%;
+    width:calc(100% - 130px);
     min-width: 140px;
     border : none;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
     white-space: nowrap;
     overflow: scroll hidden;
 }
@@ -290,7 +323,19 @@ margin-bottom: 2rem;
     left: 5%;
 }
 
-.managerPicImgWrap { width:50%; max-width:200px ; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
+.managerPicImgWrap { width:50%; max-width:130px ; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
 .managerPicImgWrap img {width: 100%;}
+.nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
 
+.detailLabelText {width:10%; min-width:130px; line-height: 30px;}
+.nativeServiceBtn { float: left; width: calc(100% / 3 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
+@media screen and (max-width: 300px) {
+  .detailLabelText {
+    width:8%!important;
+    min-width: 60px!important;
+  }
+  .creChanInput {
+    width: calc(100% - 60px);
+  }
+}
 </style>

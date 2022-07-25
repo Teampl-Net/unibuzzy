@@ -12,10 +12,12 @@
       <template id="boardRow" v-for="(board, index) in commonBoardListData" :key="index">
         <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
-        <div v-if="board.readYn === 0" class="readYnArea"></div>
+        <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
           <div @click="goDetail(board)" class="pushDetailTopArea">
               <div class="">
-                <p class=" font15 fontBold commonBlack">{{resizeText(board.title)}}</p>
+                <p class=" font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width: calc(100% - 30px); float: left;">{{resizeText(board.title)}}</p>
+                <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fr" style="width: 20px;" alt="">
+                <img src="../../assets/images/board/readTrue.svg" v-else class="fr" style="width: 20px;" alt="">
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->

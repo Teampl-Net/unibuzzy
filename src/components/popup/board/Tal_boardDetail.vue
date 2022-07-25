@@ -22,7 +22,7 @@
           </div>
 
         </div>
-        <div  class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <div  id="boardBodyArea" class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -99,6 +99,7 @@ export default {
       loadYn: true,
       clickImgList: [],
       selectImgIndex: 0,
+      selectedImgContentsIndex: 0,
       alimDetail: [],
       previewPopShowYn: false,
       // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
@@ -118,7 +119,6 @@ export default {
       confirmType: false,
       boardFuncType: '',
       ownerYn: false,
-
       offsetInt: 0,
       pagesize: 10,
       endListYn: false,
@@ -168,12 +168,13 @@ export default {
     this.$emit('closeLoading')
   },
   mounted () {
-    this.clickImgList = document.querySelectorAll('#bodyArea img')
-    for (let m = 0; m < this.clickImgList.length; m++) {
-      this.clickImgList[m].addEventListener('click', () => {
-        this.selectImgIndex = m
-        this.previewPopShowYn = true
-      })
+    var thisthis = this
+    if (this.alimDetail.length > 0) {
+      this.addImgEvnt()
+    } else {
+      setTimeout(() => {
+        thisthis.addImgEvnt()
+      }, 3000)
     }
   },
   computed: {
@@ -184,6 +185,17 @@ export default {
     }
   },
   methods: {
+    addImgEvnt () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.clickImgList = document.querySelectorAll('#boardBodyArea img')
+      for (let m = 0; m < this.clickImgList.length; m++) {
+        this.clickImgList[m].addEventListener('click', () => {
+          this.selectImgIndex = m
+          this.previewPopShowYn = true
+        })
+      }
+    },
     async checkUserAuth () {
       if (this.detailVal) { this.shareAuth = this.detailVal.shareAuth }
       var param = {}

@@ -32,7 +32,7 @@
               <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
-                  <p v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+                  <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p>
                   <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">

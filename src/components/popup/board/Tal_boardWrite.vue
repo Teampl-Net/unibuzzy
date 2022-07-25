@@ -192,8 +192,8 @@ export default {
         this.propFormData = innerText
       }
     },
-    encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
-      return encodeURI(str);
+    encodeUTF8 (str) { // 특수문자도 포함할 경우,encodeURIComponent(str)를 사용.
+      return encodeURI(str)
     },
 
     async sendMsg () {
@@ -213,13 +213,12 @@ export default {
         }
 
         innerHtml = document.getElementById('msgBox').innerHTML
-
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
-        // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
+        var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
         // alert(text)
         innerHtml = text
       }
