@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     checkOfficialChan () {
-      // alert(true)
+
     },
     clickHelp () {
       if (this.headerTitle === '멤버 관리') {
@@ -93,8 +93,6 @@ export default {
     helpButtonPop
   },
   created () {
-    // alert(this.helpYn)
-    // alert(JSON.stringify(this.checkOfficialChanYn))
   },
   watch: {
     bgblack () {

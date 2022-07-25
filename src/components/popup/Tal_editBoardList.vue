@@ -123,6 +123,7 @@ export default {
         result[i].cabinetNameMtext = this.$changeText(changeText)
       }
       this.boardList = result
+
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -188,7 +189,10 @@ export default {
         // this.boardList = []
         await this.getTeamMenuList()
       }
-      this.anima()
+      if(this.boardList.length > 0){
+        this.anima()
+      }
+
     },
     anima () {
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'

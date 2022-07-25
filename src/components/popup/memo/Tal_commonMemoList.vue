@@ -114,7 +114,6 @@ export default {
       // memo.targetKey = data.targetKey
       // memo.targetKind = data.targetKind
       /* memo.bodyFilekey  */
-      // alert(JSON.stringify(data))
       // memo.memoKey = data.memoKey
       // memo.creUserKey = data.creUserKey
       // memo.deleteYn = false

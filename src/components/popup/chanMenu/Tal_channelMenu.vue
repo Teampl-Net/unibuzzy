@@ -50,7 +50,7 @@
         <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
       </div>
       <div class="fl boardBox" style="overflow: hidden;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-        <menuBoardList @boardCount="boardsCount" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+        <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" ref="channelBoardListCompo" @boardCount="boardsCount"  />
       </div>
     </div>
   <!-- <div class='w-100P fl mtop-05' style='padding:10px; border:1px solid #CCC;' @click="memberSetting" >
@@ -176,6 +176,7 @@ export default {
       this.setDrop()
       this.groupListLength()
       this.boardListLength()
+
 
     },
     setDrop () {
@@ -319,10 +320,15 @@ export default {
       this.myBoardList = result
     },
     groupListLength () {
-      this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length===0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
+      // this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
+      this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
+
     },
     boardListLength () {
-      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length===0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
+      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length=== 0 ? 1 : this.myBoardList.length ) * 50 + 'px')
+      // this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
+
+      // this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
     },
     boardDropDown () {
 

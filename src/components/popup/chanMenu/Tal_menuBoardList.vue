@@ -1,4 +1,5 @@
 <template>
+<div style="width:100%; height:100%;">
     <template v-if="listData.length > 0">
         <div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; min-height:30px; " @click="listClick(data)" >
             <!-- <img src="" /> -->
@@ -13,6 +14,7 @@
     </template>
 
     <div class="textLeft mtop-05" style="margin-left: calc(2rem + 20px);" v-else><p class="font14">공유된 게시판이 없습니다.</p></div>
+</div>
 </template>
 
 <script>

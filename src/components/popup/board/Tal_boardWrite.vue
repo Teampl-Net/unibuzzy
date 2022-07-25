@@ -192,6 +192,10 @@ export default {
         this.propFormData = innerText
       }
     },
+    encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
+      return encodeURI(str);
+    },
+
     async sendMsg () {
       this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
@@ -207,12 +211,17 @@ export default {
           }
           param.getBodyHtmlYn = true
         }
+
         innerHtml = document.getElementById('msgBox').innerHTML
+
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
+        // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
+        // alert(text)
+        innerHtml = text
       }
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
@@ -229,7 +238,7 @@ export default {
         param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-      alert(JSON.stringify(param))
+
       param.cabinetName = this.propData.cabinetNameMtext
       param.title = this.writePushTitle
       param.showCreNameYn = true

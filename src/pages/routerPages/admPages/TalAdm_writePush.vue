@@ -210,6 +210,9 @@ export default {
     }
   },
   methods: {
+    encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
+      return encodeURI(str);
+    },
     openPop(param){
       console.log('param');
       console.log(param);
@@ -337,8 +340,12 @@ export default {
         //
         targetMsgDiv = document.getElementById('textMsgBoxPush')
 
+
+
       }
-      innerHtml = targetMsgDiv.innerHTML
+      // innerHtml = targetMsgDiv.innerHTML
+      innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
+      alert(innerHtml)
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {
@@ -366,6 +373,7 @@ export default {
       if(this.writePushTitle !== '') {
         param.title = this.writePushTitle
       } else {
+        // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
         param.title = this.$titleToBody(targetMsgDiv)
       }
       //

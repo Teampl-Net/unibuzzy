@@ -1,24 +1,24 @@
 <template>
-<div class="receiverTeamMemberArea">
+<div class="receiverTeamMemberArea" >
     <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
-                    <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" style="width:100%; height:60px; position: relative;" >
+                    <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; height:60px; position: relative;"  >
                         <div v-if="data.userProfileImg"  class="memberPicImgWrap">
                           <img :src="data.userProfileImg" />
                         </div>
                         <img v-else src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 5px; margin-top: 10px;" class="fl"/>
-                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl" style="width: calc(100% - 100px); height: 100%;" >
-                            <p class="fl font16 commonBlack mleft-1 receiverTeamText">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
+                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot" style="width: calc(100% - 70px); height: 100%;" >
+                            <p class="fl font16 commonBlack mleft-1 receiverTeamText ">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                         </div>
                         <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
                             <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
                         </div>
-                        <div v-if="selectPopYn === true" class="fr" style="position: relative; height: 100%; width: 60px;">
-                            <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn" @click="addSelectedList(data,index)" >
-                            <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
+                        <div v-if="selectPopYn === true" class="fr" style="height: 100%; width: 30px; display:flex; flex-shrink: 0; flex-grow: 0; ">
+                            <img style="width: 30px; flex-shrink: 0; flex-grow: 0; " src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn" @click="addSelectedList(data,index)" >
+                            <img style="width: 25px; height: 20px; margin-top: 5px; flex-shrink: 0; flex-grow: 0; " src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
                         </div>
                     </div>
                 </template>
@@ -131,6 +131,7 @@ export default {
         data.targetType = 'bookMemberDetail'
         data.currentCabinetKey = this.propData.cabinetKey
         data.currentTeamKey = this.teamInfo.teamKey
+        data.readOnlyYn = true
         this.$emit('openAddPop', data)
       }
       // data.index = index
@@ -161,9 +162,15 @@ export default {
 
 <style >
 .selectedBox{background-color:#6768A720;}
+<<<<<<< .mine
+.receiverTeamMemberArea{float: left;  width: 100%;}
+||||||| .r745
+.receiverTeamMemberArea{float: left;  width: 100%; }
+=======
 .receiverTeamMemberArea{float: left;  width: 100%; padding-top: 10px !important;}
+>>>>>>> .r746
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
-.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 0.7rem 0;}
+
 /* .selectLastMargin :last-child{
     margin-bottom: 30px;
 } */
@@ -179,5 +186,5 @@ export default {
 
 .memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
-.receiverTeamMemberCard {padding: 10px 0px;}
+.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 10px 0px;}
 </style>

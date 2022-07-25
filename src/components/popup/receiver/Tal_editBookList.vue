@@ -133,7 +133,6 @@ export default {
         },
         async refresh () {
             var hStack = this.$store.getters.hStack
-            // alert(true)
             if (this.selectPopId === hStack[hStack.length - 1]) {
                 await this.getBookMemberList()
             } else {

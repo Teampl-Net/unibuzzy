@@ -1,10 +1,10 @@
 <template>
   <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-  <div v-if="addressBookList.length > 0" style="width: 100%; height: calc(100% - 60px); overflow: hidden scroll;">
+  <div v-if="addressBookList.length > 0" style=" height: calc(100% - 60px); overflow: hidden scroll;">
     <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
-          <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" >
+          <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
             <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
               <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                 <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
@@ -15,7 +15,7 @@
                 <p class="fl font14" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
               </div>
             </div>
-            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="width: calc(100% - 100px); height: 100%;" class="fl" >
+            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
               <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
               <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
             </div>
@@ -220,10 +220,12 @@ export default {
             result = await this.$saveCabinet(param)
             if (result != null) {
                 // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-                // alert(true)
+
                 this.$emit('refreshList')
-                this.anima()
-                // alert(false)
+                // if(this.addressBookList.length > 0){
+                    // this.anima()
+                // }
+
                 // await this.getTeamCabList()
                 // if(!document.getElementsByClassName('foo')[0]){
                 //     setTimeout(() => {

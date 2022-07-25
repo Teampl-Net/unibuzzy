@@ -155,7 +155,6 @@ export default {
       if (this.detailVal.value) {
         if (this.detailVal.value.value !== undefined && this.detailVal.value.value !== null &&
               (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
-          // alert(true)
           this.replyYn = true
         }
       }
@@ -166,6 +165,7 @@ export default {
       }
     }
     this.getContentsList()
+    this.$emit('closeLoading')
   },
   mounted () {
     this.clickImgList = document.querySelectorAll('#bodyArea img')

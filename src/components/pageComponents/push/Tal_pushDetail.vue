@@ -26,11 +26,12 @@
                     <p class="font11 fr mleft-03 lightGray">{{alim.dateText}}</p>
                     <p class="fr font11 mleft-1" v-if="alim.rUserCount === 1">한명에게</p>
                     <p class="fr font11 mleft-1" v-else-if="alim.rUserCount > 1">여러명에게</p>
-                    <p v-else class="fr font11 mleft-1">전체에게</p>
+                    <p v-else class="fr font11 mleft-1" @click="testAlert(alim)">전체에게</p>
                   </div>
             </div>
           </div>
           <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeContents(alim.bodyFullStr)"></div>
+          <!-- <div id="bodyArea" class="font15 mbottom-2" style="word-break: break-all;" v-html="decodeUTF8(decodeContents(alim.bodyFullStr))"></div> -->
 
           <div id="alimCheckArea">
             <div class="alimCheckContents">
@@ -172,6 +173,17 @@ export default {
 
   },
   methods: {
+    testAlert(data){
+      console.log(this.encodeUTF8(document.getElementById('bodyArea').innerHTML))
+      console.log(this.decodeUTF8(document.getElementById('bodyArea').innerHTML))
+      // alert(document.getElementById('bodyArea').innerHTML)
+    },
+    encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
+      return encodeURI(str);
+    },
+    decodeUTF8(str){ // 특수문자도 포함할 경우  decodeURIComponent(str) 를 사용.    
+      return decodeURI(str); 
+    },
     eventModalTest(){
       this.$refs.eventModalTestCompo.draggable()
       this.eventModalTest = true
@@ -201,7 +213,6 @@ export default {
     writeMememo (memo) {
       // if (this.shareAuth.R === true) {
         var data = {}
-        alert(memo.memoKey)
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
         data.memo = memo
         // eslint-disable-next-line no-new-object
@@ -313,7 +324,6 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-      // alert(currentOffset + ' ' +  this.offsetInt)
     },
     datechange (date, index) {
       this.clockClickYn = !this.clockClickYn

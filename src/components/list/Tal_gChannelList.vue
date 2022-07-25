@@ -13,13 +13,14 @@
         <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P">
             <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
-            <p class="font16 commonBlack fl fontBold mNone" style="line-height: 30px;" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+            <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px;" :style="value.officialYn ? 'max-width: calc(100% - 60px);' : 'max-width: calc(100% - 30px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+            <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px; width: calc(100% - var(--calcWidth)) " :style="value.officialYn ? '--calcWidth : 60px' : '--calcWidth : 40px' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p> -->
             <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
                 <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
                 <span class="commonColor font14" >{{value.followerCount}}</span>
             </div>
             <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
-            <p class="lightGray font14 fr mNone " style="line-height: 30px;" >{{this.$changeDateFormat(value.creDate)}}</p>
+            <p class="lightGray font14 fr mNone " style="line-height: 30px; " >{{this.$changeDateFormat(value.creDate)}}</p>
           </div>
           <div style="width: 100%; margin-top: 4px; position: relative;">
             <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>

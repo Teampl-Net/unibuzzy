@@ -124,8 +124,6 @@ export default {
     // debugger
     // screenSize.addEventListener('click', () => {
     //   window.resizeTo(this.screenInnerWidth, this.screenInnerHeight)
-    //   alert('width' + this.screenInnerWidth)
-    //   alert('height' + this.screenInnerHeight)
     // })
   },
   methods: {
@@ -184,10 +182,6 @@ export default {
     //     result = await this.$changeFollower({ follower: followParam, doType: 'FM' }, 'save')
     //     this.memberYn = true
     //   }
-
-    //   alert(JSON.stringify(result))
-
-    //   // alert(JSON.stringify(result))
     // },
     numberOfElements (num) {
       this.myContentsCount = num
