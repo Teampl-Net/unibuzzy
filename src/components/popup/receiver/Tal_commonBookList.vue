@@ -17,7 +17,7 @@
             </div>
             <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
               <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
-              <p v-if="editIndex !== index" class="fl font16 commonBlack  receiverTeamText mleft-1"  >{{data.cabinetNameMtext}}</p>
+              <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{data.cabinetNameMtext}}</p>
             </div>
             <div v-if="!selectPopYn" class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
               <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >

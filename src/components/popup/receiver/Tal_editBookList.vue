@@ -2,7 +2,7 @@
     <div class="editBookListWrap">
         <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
-            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; height:40px; margin-top:10px; overflow: hidden; " >
+            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; " >
                 <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span>
                 <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
                 <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->

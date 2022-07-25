@@ -1,13 +1,13 @@
 <template>
 <div style="width:100%; height:100%;">
     <template v-if="listData.length > 0">
-        <div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; min-height:30px; " @click="listClick(data)" >
+        <div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl"  style="width:100%; min-height:30px; max-height: 50px;" @click="listClick(data)" >
             <!-- <img src="" /> -->
-            <div class="fl" style="width:30px;height:30px; border-radius:100%; margin-left:1rem; padding: 2px; border-radius: 100%;" :style="'background: ' + data.picBgPath + ';'">
+            <div class="fl mleft-1" style="width:30px;height:30px; border-radius:100%; padding: 2px; border-radius: 100%;" :style="'background: ' + data.picBgPath + ';'">
                 <img src="../../../assets/images/channel/channer_board.png" style="width: 95%; " alt="" >
             </div>
-            <div class="textLeft fl mleft-2 font16" style="line-height: 30px; width: calc(100% - 60px);">
-                <span class="fontBold" style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
+            <div class="textLeft fl textLeft mleft-2 font15 textOverdot" style="line-height: 30px; width: calc(100% - 30px - 3rem);">
+                <span style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
                 <!-- <span class="mleft-05 fl fontBold commonColor">{{data}}</span> -->
             </div>
         </div>

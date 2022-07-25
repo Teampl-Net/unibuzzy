@@ -2,14 +2,13 @@
 
 <div v-if="listData.length > 0" style="width: 100%; margin-top:0.5rem;" class="">
     <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard fl" @click="clickList(data)">
-
-        <div style="width:100%; height:30px;" class="fl">
+        <div style="width:100%; min-height:30px;" class="fl">
             <!-- <img src="" /> -->
-            <div class="fl" style="width:30px;height:30px; margin-left:1rem;">
+            <div class="fl mleft-1" style="width:30px;height:30px;">
                 <img style="padding: 3px;" src="../../../assets/images/channel/channer_addressBook.svg">
             </div>
-            <div class="fl mleft-2 fontBold font16" style="line-height: 30px;">
-                <span class="fontBold" style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
+            <div class="fl mleft-2 textLeft font15 textOverdot" style="line-height: 30px; width: calc(100% - 30px - 3rem)">
+                <span style="color: black;">{{this.$changeText(data.cabinetNameMtext)}}</span>
                 <!-- <span class="mleft-05 fontBold fl commonColor">{{data}}</span> -->
             </div>
         </div>
@@ -41,8 +40,7 @@ export default {
         }
     },
     created () {
-        // alert(JSON.stringify(this.listData.length))
-        this.$emit('bookCount', this.listData.length)
+        console.log(this.listData)
     },
     components: {
         // draggable: VueDraggableNext

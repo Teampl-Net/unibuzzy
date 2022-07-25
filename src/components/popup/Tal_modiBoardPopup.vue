@@ -1,7 +1,7 @@
 <template>
   <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
-    <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName'/>
-    <div class="itemWrite" style="">
+    <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName' />
+    <div class="itemWrite">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">게시판명</p>
       <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
     </div>

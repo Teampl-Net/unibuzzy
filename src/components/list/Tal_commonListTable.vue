@@ -106,7 +106,7 @@ export default {
 animation-name: fadein;
 animation-duration: 0.3s;
 }
-.commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
+.commonListTr, .commonListTr td, .commonListTr th {height: 4rem; padding: 5px 10px;}
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
 </style>

@@ -33,6 +33,8 @@ import helpMemberPop from '../components/popup/info/Tal_helpMemberPop.vue'
 import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
 import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
 
+import myActList from '../components/pageComponents/myPage/Tal_myActList.vue'
+
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -244,6 +246,10 @@ const routes = [
   {
     path: '/helpBoardPop',
     component: helpBoardPop
+  },
+  {
+    path: '/myActList',
+    component: myActList
   }
 ]
 

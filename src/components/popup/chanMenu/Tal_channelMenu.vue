@@ -15,24 +15,24 @@
   </div>
 
   <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
-  <div style="margin-top:calc(50px + 20px); width:100%;" class="fl" >
+  <div style="margin-top:calc(70px); width:100%; " class="fl" >
 
     <!-- <div v-if="ownerYn" class="fl w-100P mtop-05 mbottom-2"  @click="adminManagingClick">
       <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
     </div> -->
 
     <div v-if="adminYn" class="fl" style="width:100%;">
-      <div class="fl" style="width:100%; height: 2rem;">
+      <div class="fl" style="width:100%; height: 30px;">
         <div class="fl" style="width:20px; height: 100%; " @click="groupDropDown" >
           <img v-show="this.cabinetList.length !== 0 && groupDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.cabinetList.length !== 0 && groupDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
         <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && groupDropDownYn === true) || (groupDropDownYn !== true) }" class="fl fontBold font16" @click="groupDropDown">주소록</p>
-        <p class="fl fontBold mleft-05 commonColor textLeft font16" @click="groupDropDown"> ({{this.bookCount}})</p>
+        <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="groupDropDown"> ({{this.cabinetList.length}})</p>
         <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
       </div>
-      <div class="boardBox fl" style="overflow: hidden;" ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
-        <addressBookList @bookCount="booksCount" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+      <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : groupDropDownYn === false, boardBoxDown:groupDropDownYn === true}" >
+        <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
   </div>
@@ -40,17 +40,17 @@
   <!-- <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div> -->
 
     <div style="width:100%; margin-top:calc(20px); " :class="{'adminBoadrmtop-0':adminYn !== true}" class="fl">
-      <div class="fl" style="width:100%; height: 2rem;">
+      <div class="fl" style="width:100%; height: 30px;">
         <div class="fl" style="width:20px; height: 100%; " @click="boardDropDown" >
           <img v-show="this.myBoardList.length !== 0 && boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.myBoardList.length !== 0 && boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
         <p class="fl fontBold font16 textLeft mleft-2" style="color:black;" :class="{calcMarginLeft: (this.myBoardList.length !== 0 && boardDropDownYn === true) || (boardDropDownYn !== true), editWhiteColor:editYn !== true }" @click="boardDropDown" >게시판</p>
-        <p class="fl mleft-05 fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.boardCount}})</p>
+        <p v-if="this.myBoardList.length !== 0" class="fl mleft-05 fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.myBoardList.length}})</p>
         <gBtnSmall class="fr" v-on:click="editChanMenu" btnTitle="관리" style="" v-if="adminYn" />
       </div>
-      <div class="fl boardBox" style="overflow: hidden;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
-        <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" ref="channelBoardListCompo" @boardCount="boardsCount"  />
+      <div class="fl boardBox" style="overflow: hidden scroll;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+        <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
   <!-- <div class='w-100P fl mtop-05' style='padding:10px; border:1px solid #CCC;' @click="memberSetting" >
@@ -103,6 +103,7 @@ export default {
 
   },
   async created() {
+    this.screenHeight = window.innerHeight
     console.log(this.adminYn);
     console.log('propData');
     this.getFollowerList()
@@ -116,18 +117,17 @@ export default {
     await this.getTeamCabList()
     await this.getTeamMenuList()
     this.setDrop()
-    this.groupListLength()
-
+    this.bookListLength()
+    this.boardListLength()
     // this. myBoardList =
   },
-  mounted () {
-    // this.groupListLength()
+  async mounted () {
+    // this.bookListLength()
     // this.boardListLength()
   },
   data () {
     return {
-      boardCount: 0,
-      bookCount: 0,
+      screenHeight: 0,
       ownerYn: false,
       adminYn: false,
       myBoardList:{},
@@ -140,7 +140,6 @@ export default {
       boardDropDownYn:true,
       groupDropDownYn:null,
       selectManagerListYn:false,
-
       selectedList : [],
       selectAdminList : [],
       book:false,
@@ -153,12 +152,6 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
-    booksCount(data) {
-      this.bookCount = data
-    },
-    boardsCount(data) {
-      this.boardCount = data
-    },
     memberSetting(){
       var param = {}
       // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -174,9 +167,8 @@ export default {
       this.getTeamCabList()
       this.getTeamMenuList()
       this.setDrop()
-      this.groupListLength()
+      this.bookListLength()
       this.boardListLength()
-
 
     },
     setDrop () {
@@ -319,19 +311,25 @@ export default {
       var result = await this.$getTeamMenuList(paramMap)
       this.myBoardList = result
     },
-    groupListLength () {
+    bookListLength () {
       // this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
-      this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
-
+      var bookListLength = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 50 + 20
+      if (this.cabinetList.length === 0) {
+        bookListLength = 50
+      } else if (bookListLength >= 250) {
+        bookListLength = 250
+      } else {
+        bookListLength = this.cabinetList.length * 50 + 20
+        }
+      this.$refs.groupRef.style.setProperty('--menuHeight', (bookListLength + 'px'))
     },
-    boardListLength () {
-      this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length=== 0 ? 1 : this.myBoardList.length ) * 50 + 'px')
-      // this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
-
-      // this.$refs.boardRef.style.setProperty('--menuHeight', 100 + '%')
+    boardListLength() {
+      var boardListLength = (this.screenHeight - 400) + 'px'
+      // var boardListLength = this.myBoardList.length * 50 + 20
+      this.$refs.boardRef.style.setProperty('--menuHeight', boardListLength)
+      // this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length === 0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
     },
     boardDropDown () {
-
       if(this.board === true){
         this.boardListLength()
         if(this.boardDropDownYn){
@@ -342,16 +340,13 @@ export default {
       }
     },
     groupDropDown () {
-
       if(this.book === true){
-        this.groupListLength()
-
+        this.bookListLength()
         if(this.groupDropDownYn){// 이미지 변경
           this.groupDropDownYn = false
         }else{
           this.groupDropDownYn = true
         }
-
       }
     },
     goPage (link) {
@@ -466,7 +461,7 @@ export default {
 .btnBig{
   font-size: 16px;
   width: 5rem;
-  height: 2rem;
+  height: 30px;
 }
 .editWrap{
   background-color: #F9F9F9 !important;

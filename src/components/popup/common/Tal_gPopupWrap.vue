@@ -455,6 +455,9 @@ export default {
           this.$refs.boardMainPop.getContentsList()
           await this.$refs.boardMainPop.refresh()
         } else if (this.targetType === 'chanDetail' && this.delyn !== true) {
+          if (this.openChanMenuYn) {
+            await this.$refs.chanMenuCompo.refresh()
+          }
           await this.$refs.gPopChanAlimList.refreshList()
           // await this.$refs.gPopChanAlimList.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
@@ -463,7 +466,6 @@ export default {
           // getManagingList
           // await this.$refs.mamberManagementCompo.changeTab('Admin')
           await this.$refs.mamberManagementCompo.refresh()
-
           // await this.$refs.mamberManagementCompo.getManagingList()
         }
       }

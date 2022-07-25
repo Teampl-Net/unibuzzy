@@ -234,7 +234,7 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
+      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
@@ -242,7 +242,7 @@ export default {
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
-        blockBox.style.height = '300px'
+        blockBox.style.height = '350px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
