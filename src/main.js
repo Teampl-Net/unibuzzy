@@ -88,13 +88,14 @@ app.use(axiosFunction)
 app.use(store)
 app.use(uploadFile)
 // app.use(massage)
-/* axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://mo.d-alim.com:19090, http://192.168.0.22:8080, http://localhost:8080, http://61.97.186.14:18080'
+
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true
 axios.defaults.headers.common['Content-Type'] = 'application/json;'
 axios.defaults.timeout = 100000
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
-axios.defaults.withCredentials = true */
+axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'api'
 // axios.defaults.baseURL = 'http://192.168.0.22:19090'

@@ -1,5 +1,7 @@
 <template>
   <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
+    <imgPreviewPop :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
+
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -84,6 +86,7 @@
   </div>
 </template>
 <script>
+import imgPreviewPop from '../file/Tal_imgPreviewPop.vue'
 import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
@@ -94,7 +97,10 @@ export default {
       confirmPopShowYn: false,
       memoShowYn: false,
       loadYn: true,
+      clickImgList: [],
+      selectImgIndex: 0,
       alimDetail: [],
+      previewPopShowYn: false,
       // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
       tempAlimList: {
@@ -129,10 +135,10 @@ export default {
     detailVal: {}
   },
   components: {
-    manageStickerPop
+    manageStickerPop,
+    imgPreviewPop
   },
-  async created () {
-    console.log('#########################################')
+  created () {
     // console.log(this.detailVal)
     // console.log(this.detailVal.value.value)
     if (this.detailVal.value) {
@@ -159,10 +165,16 @@ export default {
         this.ownerYn = true
       }
     }
-    await this.getContentsList()
-    // await this.getMemoList()
-    await this.getLikeCount()
-    await this.checkUserAuth()
+    this.getContentsList()
+  },
+  mounted () {
+    this.clickImgList = document.querySelectorAll('#bodyArea img')
+    for (let m = 0; m < this.clickImgList.length; m++) {
+      this.clickImgList[m].addEventListener('click', () => {
+        this.selectImgIndex = m
+        this.previewPopShowYn = true
+      })
+    }
   },
   computed: {
     getWindowSize () {
@@ -494,6 +506,8 @@ export default {
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)
+      await this.getLikeCount()
+      await this.checkUserAuth()
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
