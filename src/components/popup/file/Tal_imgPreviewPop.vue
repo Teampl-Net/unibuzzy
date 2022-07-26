@@ -20,7 +20,7 @@
 <script>
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-default.min.css'
-import { onMessage } from '../../../assets/js/webviewInterface'
+/* import { onMessage } from '../../../assets/js/webviewInterface' */
 export default {
   components: {
     Splide,
@@ -41,8 +41,8 @@ export default {
   methods: {
     download () {
       try {
-        onMessage('REQ', 'saveCameraRoll')
-        /* var pom = document.createElement('a')
+        // onMessage('REQ', 'saveCameraRoll')
+        var pom = document.createElement('a')
         pom.setAttribute('href', '/resource/common/main_email.png')
         pom.setAttribute('download', 'test')
 
@@ -52,7 +52,7 @@ export default {
           pom.dispatchEvent(event)
         } else {
           pom.click()
-        } */
+        }
         /*  const element = document.createElement('a')
         element.setAttribute('href', '/resource/stickerIcon/sticker_robot.svg')
         element.click() */
