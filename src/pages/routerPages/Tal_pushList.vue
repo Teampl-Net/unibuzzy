@@ -240,7 +240,7 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-      // alert(currentOffset + ' ' +  this.offsetInt)
+
     },
     async refreshPage () {
       var resultList = await this.getPushContentsList(10, 0)
@@ -266,7 +266,7 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.endListYn === false) {
-        // alert(true)
+
         var resultList = await this.getPushContentsList()
         this.axiosResultTempList = resultList.content
 

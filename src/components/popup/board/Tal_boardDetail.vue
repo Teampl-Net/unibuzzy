@@ -187,7 +187,7 @@ export default {
   methods: {
     addImgEvnt () {
       // eslint-disable-next-line no-debugger
-      debugger
+      // debugger
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
         this.clickImgList[m].addEventListener('click', () => {

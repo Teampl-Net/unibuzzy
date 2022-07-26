@@ -343,9 +343,9 @@ export default {
 
 
       }
-      // innerHtml = targetMsgDiv.innerHTML
-      innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
-      alert(innerHtml)
+      innerHtml = targetMsgDiv.innerHTML
+      // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
+
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
       if (this.allRecvYn === true) {

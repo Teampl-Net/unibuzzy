@@ -162,13 +162,7 @@ export default {
 
 <style >
 .selectedBox{background-color:#6768A720;}
-<<<<<<< .mine
 .receiverTeamMemberArea{float: left;  width: 100%;}
-||||||| .r745
-.receiverTeamMemberArea{float: left;  width: 100%; }
-=======
-.receiverTeamMemberArea{float: left;  width: 100%; padding-top: 10px !important;}
->>>>>>> .r746
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 
 /* .selectLastMargin :last-child{

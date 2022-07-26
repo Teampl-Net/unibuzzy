@@ -258,7 +258,6 @@ export default {
       }
       if (this.viewTab === 'all') {
         this.allChannelInfo()
-        // alert(JSON.stringify(this.chanList[0].userTeamInfo.ownerYn))
       }
       if (this.viewTab === 'mychannel') {
         this.myChanListPopYn = true

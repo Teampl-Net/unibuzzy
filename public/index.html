@@ -11,7 +11,7 @@
     <meta property="og:description" content="This is a description."/>
     <meta property="og:image" content="http://img.jpg"/> -->
     <meta property="og:locale" content="ko_KR">
-    <meta property="og:title" content="더알림, 구독형 알림"> 
+    <meta property="og:title" content="더알림, 구독형 알림">
     <meta property="og:description" content="나한테 꼭 필요한 알림만 선택해서 구독!
     보기 좋게 잘 정리된 알림목록">
     <meta property="og:type" content="website">
@@ -21,19 +21,27 @@
     <meta property="og:site_name" content="TheAlim - 더알림, 구독형 알림">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    
+
   </head>
-  <body><!-- 
+  <body><!--
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script> -->
     <script src="./commonAssets/kakaoLink/kakao.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.1/base64.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.3/clipboard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <!-- naver -->
     <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/5.9.1/firebase-auth.js"></script>
     <!-- // naver -->
+
+    <!-- google -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="777053173385-hp7otdoios6a7c0eb924bftbhoeuaat7.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- // google -->
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

@@ -35,6 +35,8 @@ import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
 
 import myActList from '../components/pageComponents/myPage/Tal_myActList.vue'
 
+import admLogin from '../pages/intro/Tal_Adm_login.vue'
+
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -100,6 +102,12 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/admLogin',
+    name: 'admLogin',
+    props: true,
+    component: admLogin
   },
 
   {

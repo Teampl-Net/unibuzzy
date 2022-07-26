@@ -176,7 +176,6 @@ export default {
     testAlert(data){
       console.log(this.encodeUTF8(document.getElementById('bodyArea').innerHTML))
       console.log(this.decodeUTF8(document.getElementById('bodyArea').innerHTML))
-      // alert(document.getElementById('bodyArea').innerHTML)
     },
     encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
       return encodeURI(str);
@@ -533,13 +532,11 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
-        alert('del')
         // act.likeClickYn = false
       } else {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
         // act.likeClickYn = true
-        alert('save')
       }
       if (result === true) {
         var resultList = await this.$getContentsList({ contentsKey: inputContentsKey })

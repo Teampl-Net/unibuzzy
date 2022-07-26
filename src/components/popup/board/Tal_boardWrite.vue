@@ -218,9 +218,8 @@ export default {
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
-        var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
-        // alert(text)
-        innerHtml = text
+        // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
+        // innerHtml = text
       }
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 

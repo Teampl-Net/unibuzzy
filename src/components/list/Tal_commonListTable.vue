@@ -42,7 +42,6 @@
 export default {
   created () {
     console.log('hello')
-    // alert(JSON.stringify(this.commonListData))
   },
   mounted () {
   },
