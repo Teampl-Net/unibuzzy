@@ -2,8 +2,12 @@
 <div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
+      <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberForm">
+      멤버 신청서 만들기
+      </div>
       <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' />
     </div>
+
     <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
 
     <gConfirmPop v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false" style="z-index:9999999" />
@@ -23,7 +27,7 @@ export default {
     return {
       errorPopYn : false,
       errorText: '',
-      activeTabList: [{ display: '멤버', name: 'Mem' }, { display: '관리자', name: 'Admin' }],
+      activeTabList: [{ display: '멤버', name: 'Mem' }, { display: '매니저', name: 'Admin' }],
       // tab:'Mem',
       tab: 'Mem',
       managingList: [],
@@ -38,11 +42,9 @@ export default {
   },
   mounted () {
     if (this.propData.ownerYn) {
-      this.activeTabList = [{ display: '멤버', name: 'Mem' }, { display: '관리자', name: 'Admin' }]
-
+      this.activeTabList = [{ display: '멤버', name: 'Mem' }, { display: '매니저', name: 'Admin' }]
     } else {
       this.activeTabList = [{ display: '멤버', name: 'Mem' }]
-
     }
   },
   methods: {

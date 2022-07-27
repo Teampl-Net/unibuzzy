@@ -21,34 +21,33 @@
 
 <script>
 // import { VueDraggableNext } from 'vue-draggable-next'
-/* eslint-disable */
-// eslint-disable-next-line
+
 export default {
-    props:{
-        listData:{},
-        editYn:{},
-        selectPopYn:{},
-        chanAlimListTeamKey: {}
-    },
-    data(){
-        return{
-            // cabinetList: [{cabinetNameMtext:'KO$^$SSS'},{cabinetNameMtext:'KO$^$BBB'}],
-            editTeamName:'',
-            editNameYn:null,
-            teamList: {},
-            dragging: false
-        }
-    },
-    created () {
-    },
-    components: {
-        // draggable: VueDraggableNext
-    },
-    methods:{
-        clickList(data){
-            this.$emit('openDetail',data)
-        },
+  props: {
+    listData: {},
+    editYn: {},
+    selectPopYn: {},
+    chanAlimListTeamKey: {}
+  },
+  data () {
+    return {
+      // cabinetList: [{cabinetNameMtext:'KO$^$SSS'},{cabinetNameMtext:'KO$^$BBB'}],
+      editTeamName: '',
+      editNameYn: null,
+      teamList: {},
+      dragging: false
     }
+  },
+  created () {
+  },
+  components: {
+    // draggable: VueDraggableNext
+  },
+  methods: {
+    clickList (data) {
+      this.$emit('openDetail', data)
+    }
+  }
 
 }
 </script>

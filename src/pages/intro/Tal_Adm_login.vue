@@ -24,7 +24,6 @@
       </div> -->
       <naver  :callbackFunction='naverCallbackFunction' :isPopup='false' />
 
-
       <div class="admLoginBtn font20" v-on:click="GoogleLoginBtn">
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
@@ -57,20 +56,20 @@
 import naver from '../Tal_naverCompo.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
+// import { onMessage } from '../../assets/js/webviewInterface'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg",
-    authDomain: "thealim-2602c.firebaseapp.com",
-    projectId: "thealim-2602c",
-    storageBucket: "thealim-2602c.appspot.com",
-    messagingSenderId: "777053173385",
-    appId: "1:777053173385:web:46b92863d81076f61d3858",
-    measurementId: "G-NHD2EKJML0"
-};
-
-import { onMessage } from '../../assets/js/webviewInterface'
+  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
+  authDomain: 'thealim-2602c.firebaseapp.com',
+  projectId: 'thealim-2602c',
+  storageBucket: 'thealim-2602c.appspot.com',
+  messagingSenderId: '777053173385',
+  appId: '1:777053173385:web:46b92863d81076f61d3858',
+  measurementId: 'G-NHD2EKJML0'
+}
 export default {
   name: '',
   data () {
@@ -80,7 +79,7 @@ export default {
     }
   },
   mounted () {
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig)
     // window.onload = function () {
     //   google.accounts.id.initialize({
     //     client_id: "345518181069-9s615p3gh64pn97jhssidej4urh8n1p6.apps.googleusercontent.com",
@@ -94,26 +93,29 @@ export default {
     // }
   },
   components: {
-    commonConfirmPop,naver
+    // eslint-disable-next-line vue/no-unused-components
+    commonConfirmPop, naver
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
   },
   methods: {
-    onSignIn(googleUser) {
-      console.log(googleUser);
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+    onSignIn (googleUser) {
+      console.log(googleUser)
+      // Useful data for your client-side scripts:
+      var profile = googleUser.getBasicProfile()
+      console.log('ID: ' + profile.getId()) // Don't send this directly to your server!
+      console.log('Full Name: ' + profile.getName())
+      console.log('Given Name: ' + profile.getGivenName())
+      console.log('Family Name: ' + profile.getFamilyName())
+      console.log('Image URL: ' + profile.getImageUrl())
+      console.log('Email: ' + profile.getEmail())
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
+      // The ID token you need to pass to your backend:
+      // eslint-disable-next-line camelcase
+      var id_token = googleUser.getAuthResponse().id_token
+      // eslint-disable-next-line camelcase
+      console.log('ID Token: ' + id_token)
     },
     NaverLoginBtn () {
     },
@@ -121,25 +123,23 @@ export default {
       alert('apple')
     },
     async GoogleLoginBtn () {
-      console.log("login");
-      const provider = new firebase.auth.GoogleAuthProvider();
+      console.log('login')
+      const provider = new firebase.auth.GoogleAuthProvider()
       provider.setCustomParameters({
-          prompt: "select_account",
-      });
-      const profile = await firebase.auth().signInWithPopup(provider);
-      console.log(profile);
-
+        prompt: 'select_account'
+      })
+      const profile = await firebase.auth().signInWithPopup(provider)
+      console.log(profile)
     },
 
-    naverCallbackFunction(log){
+    naverCallbackFunction (log) {
       alert(true)
       console.log(log)
     },
 
-    handleCredentialResponse(response) {
-      console.log("Encoded JWT ID token: " + response.credential);
+    handleCredentialResponse (response) {
+      console.log('Encoded JWT ID token: ' + response.credential)
     }
-
 
   }
 }

@@ -278,14 +278,13 @@ export default {
       this.openPop(data)
     },
     async reloadParent () {
-
       if (this.params.openActivity === 'chanAlimList') {
       } else {
         this.$emit('reloadPop')
       }
     },
     reloadPop (parentReloadYn) {
-      if(this.targetType === 'myChanMenuEdit'){
+      if (this.targetType === 'myChanMenuEdit') {
         // alert(true)
         this.closePop()
         return
@@ -405,18 +404,17 @@ export default {
       } else if (this.targetType === 'selectMemberPop') {
         this.headerTitle = '멤버 선택'
       } else if (this.targetType === 'memberManagement') {
-        this.headerTitle = '멤버 관리'
+        this.headerTitle = '매니저 관리'
         this.helpYn = true
-      }else if(this.targetType === 'editBoard'){
+      } else if (this.targetType === 'editBoard') {
         this.headerTitle = '게시판 관리'
-      }else if(this.targetType === 'myChanMenuEdit'){
+      } else if (this.targetType === 'myChanMenuEdit') {
         this.headerTitle = '채널 관리'
-      }else if(this.targetType === 'chanInfo'){
+      } else if (this.targetType === 'chanInfo') {
         this.headerTitle = '채널 상세'
         this.bgblackYn = true
-      }else if(this.targetType === 'autoAnswer'){
+      } else if (this.targetType === 'autoAnswer') {
         this.headerTitle = '자동 응답'
-
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -438,7 +436,6 @@ export default {
       this.popShowYn = true
     },
     async parentClose (delyn) {
-
       this.delyn = delyn
       await this.closePop(true)
       this.$emit('reloadPop', true)
@@ -448,7 +445,7 @@ export default {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
-      console.log(this.targetType);
+      console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       this.popShowYn = false
       var history = this.$store.getters.hStack

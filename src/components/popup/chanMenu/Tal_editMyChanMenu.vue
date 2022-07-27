@@ -55,7 +55,6 @@
     <!-- <tr><th class="font16"> 버전정보 <p class="font10">최신버전: 1.0</p></th>
     <td class="textRight font16"></td></tr> -->
 
-
   </table>
  </div>
 
@@ -65,12 +64,12 @@
 
 <script>
 export default {
-  props:{
-    propData:{}
+  props: {
+    propData: {}
   },
-  data (){
+  data () {
     return {
-      editMenuList : [{ menuName:'주소록 관리'},{menuName: '게시판 관리'},{menuName: '채널 상세'},{menuName: '매니저 관리'}, {menuName: '자동응답'}],
+      editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동응답' }],
       param: {},
       teamInfo: {}
 
@@ -93,7 +92,7 @@ export default {
       paramMap.set('teamKey', this.propData.teamKey)
       var result = await this.$getTeamList(paramMap)
       this.teamInfo = result.data.content[0]
-      console.log(this.teamInfo);
+      console.log(this.teamInfo)
     },
     addressEditClick () {
       this.param.targetType = 'editBookList'

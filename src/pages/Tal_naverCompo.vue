@@ -85,7 +85,6 @@ export default {
           this.naverLogin.init()
         window.addEventListener('load', function () {
           this.naverLogin.getLoginStatus(function (status) {
-
             console.log(status)
 
             return comp.callbackFunction(status)
