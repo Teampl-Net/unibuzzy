@@ -1,7 +1,7 @@
 <template>
-<div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+<!-- <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
-    <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' />
+    <!-- <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' /> -->
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
@@ -35,11 +35,9 @@ import modiBoardPop from './Tal_modiBoardPopup.vue'
 export default {
   props: {
     // editList: {},
-    addChanList: {},
-    currentTeamKey: {},
-    editYn: {},
-    chanInfo: {},
-    teamNameText: {}
+    teamNameText: {},
+
+    propData:{},
 
   },
   computed: {
@@ -60,13 +58,20 @@ export default {
     historyStack (value, old) {
     }
   },
-  created () {
-    var history = this.$store.getters.hStack
-    this.popId = 'manageBoardPop' + this.currentTeamKey
-    history.push(this.popId)
-    this.$store.commit('updateStack', history)
-
-    this.getTeamMenuList()
+  async created () {
+    this.$emit('openLoading')
+    console.log(this.propData)
+    if(this.propData){
+      this.chanInfo = {}
+      this.currentTeamKey = this.propData.currentTeamKey
+      this.chanInfo.nameMtext =  this.propData.teamNameMtext
+    }
+    // var history = this.$store.getters.hStack
+    // this.popId = 'manageBoardPop' + this.currentTeamKey
+    // history.push(this.popId)
+    // this.$store.commit('updateStack', history)
+    await this.getTeamMenuList()
+    this.$emit('closeLoading')
   },
   data () {
     return {
@@ -79,7 +84,9 @@ export default {
       errorBoxText: '',
       errorBoxYn: false,
       tempDeleteData: {},
-      currentConfirmType: ''
+      currentConfirmType: '',
+      currentTeamKey: null,
+      chanInfo: null
     }
   },
   components: {
@@ -128,8 +135,6 @@ export default {
       this.$emit('goPage', link)
     },
     openPop (param) {
-      console.log('param')
-      console.log(param)
       this.$emit('openPop', param)
     },
     goNo () {
@@ -152,10 +157,6 @@ export default {
       }
     },
     openModiBoardPop (data) {
-      console.log(data)
-      console.log(this.addChanList)
-      console.log(this.chanInfo)
-      console.log(this.teamNameText)
       this.modiBoardDetailProps = data
       if (this.chanInfo.value) {
         this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
@@ -181,7 +182,6 @@ export default {
       cabinet.fileYn = true
       cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
       param.cabinet = cabinet
-      console.log(param)
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
@@ -208,8 +208,7 @@ export default {
       var menu = new Object()
       var cardList = document.getElementsByClassName('receiverTeamListCard')
       var index = null
-      console.log('this.boardList 여기를 보세요!!!')
-      console.log(this.boardList)
+
       // var tempList = []
       // for (let index = 0; index < cardList.length; index++) {
       //   tempList.push(cardList[index].getAttribute('index'))
@@ -240,16 +239,13 @@ export default {
           param: paramSet
         }
       )
-      console.log('teamMenuList')
-      console.log(teamMenuList)
-      console.log(result.data.result)
+
       if (result.data.result === true) {
         // this.boardList = []
         // await this.getTeamMenuList()
       //   this.boardList = new Array(tempList)[0]
       //   console.log(this.boardList)
       }
-      console.log(this.boardList)
     },
     indexChange (list) {
       var tempList = []
@@ -257,9 +253,8 @@ export default {
         var a = i
         tempList.push(list[list.length - (a + 1)])
       }
-      console.log(tempList)
+
       this.boardList = new Array(tempList)
-      console.log(this.boardList)
     }
     // this.boardList.push()
   }
@@ -283,9 +278,9 @@ export default {
   right: 0; */
 
   width:100% ;
-  height:100vh !important;
-  position: fixed;
-  z-index: 999;
+  /* height:100vh !important; */
+  /* position: fixed; */
+  /* z-index: 999; */
   height: calc(100vh - 20%);
   top: 0;
   right: 0;

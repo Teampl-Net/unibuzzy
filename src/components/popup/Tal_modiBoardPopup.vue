@@ -264,8 +264,6 @@ export default {
   // emits: ['openPop', 'goPage'],
   methods: {
     openPop (param) {
-      console.log('param')
-      console.log(param)
       this.$emit('openPop', param)
     },
     changePermission (id, type) {
@@ -311,16 +309,10 @@ export default {
       param.currentTeamKey = this.modiBoardDetailProps.teamKey
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
-      console.log('paramparamparamparamparamparam')
-      console.log(param)
       var resultList = await this.$getCabinetDetail(param)
       this.settingCabDetail(resultList)
     },
     async settingCabDetail (data) {
-      console.log('settingsettingsettingsetting')
-      console.log(data)
-      console.log('setting')
-      console.log(data.mCabinet)
       if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }
@@ -335,7 +327,6 @@ export default {
       }
       if (data.mCabinet.mShareItemList.length > 0) {
         var indexOf = data.mCabinet.cabShareList.findIndex(i => i.accessKind === 'T')
-        console.log('T가 있나요? ' + indexOf)
 
         if (data.mCabinet.cabShareList) {
           var tempList = []
@@ -533,10 +524,10 @@ export default {
       if (this.currentPermissionType === 'R') this.commentPermission = text
 
       this.receiverAccessListYn = false
-      console.log('this.selectItemList')
-      console.log(this.selectItemList)
-      console.log('this.selectShareList')
-      console.log(this.selectShareList)
+      // console.log('this.selectItemList')
+      // console.log(this.selectItemList)
+      // console.log('this.selectShareList')
+      // console.log(this.selectShareList)
     },
 
     selectShareActorItem (itemType) {
@@ -544,7 +535,6 @@ export default {
       if (itemType === 'V') { this.permissionSelectedYn.V = true }
       if (itemType === 'R') { this.permissionSelectedYn.R = true }
       if (itemType === 'W') { this.permissionSelectedYn.W = true }
-      console.log(this.selectedList)
       if (this.selectedList.data) {
         if (this.selectedList.data.bookList || this.selectedList.data.memberList) {
           this.shareActorItemType = itemType
@@ -587,7 +577,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'W' // 작성
           itemList.push(item)
-          console.log(this.writePermissionAllYn)
+          // console.log(this.writePermissionAllYn)
         }
 
         if (this.readPermissionAllYn === true && this.readPermissionSelectYn !== true) {
@@ -595,7 +585,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'V' // 열람
           itemList.push(item)
-          console.log(this.readPermissionAllYn)
+          // console.log(this.readPermissionAllYn)
         }
 
         if (this.commentPermissionAllYn === true && this.commentPermissionSelectYn !== true) {
@@ -603,7 +593,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'R' // 댓글
           itemList.push(item)
-          console.log(this.commentPermissionAllYn)
+          // console.log(this.commentPermissionAllYn)
         }
 
         cabinet.shareList = shareList
@@ -701,8 +691,8 @@ export default {
       param.cabinet = cabinet
       param.creMenuYn = false
 
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(param)
+      // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      // console.log(param)
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         // console.log('@@성공@@')
@@ -756,8 +746,6 @@ export default {
       this.selectBookListShowYn = false
       var text = ''
       var selectLength = 0
-      console.log('#######################')
-      console.log(data)
       // console.log(datas);
       // if(this.currentSelectBookType === 'select'){}
 
@@ -819,8 +807,6 @@ export default {
           }
         }
       }
-      console.log('selectShareList')
-      console.log(this.selectShareList)
 
       if (this.currentSelectBookType === 'select') {
         this.selectedList = []

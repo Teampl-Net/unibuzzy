@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap headerShadow">
+  <div class="commonPopHeaderWrap headerShadow" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class="fl commonPopBackBtn commonPopHeaderWrapImg" >
     <img v-else src="../../assets/images/common/icon_back.png" v-on:click="closeXPop" class="fl commonPopBackBtn commonPopHeaderWrapImg" >
@@ -7,7 +7,9 @@
       <img :src="value.icon" />
     </div>
 
-    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail' }">{{headerTitle}}</span>
+    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail',}" :style="bgblack === true ? 'color:white;':'' ">
+      {{headerTitle}}
+    </span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
     <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리' " style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
@@ -93,6 +95,7 @@ export default {
     helpButtonPop
   },
   created () {
+
   },
   watch: {
     bgblack () {

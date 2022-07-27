@@ -161,7 +161,6 @@ export default {
             follower.inUserName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
-            console.log(param)
             result = await this.$commonAxiosFunction({
               url: '/tp.saveManager',
               param: param
@@ -177,7 +176,6 @@ export default {
 
           await this.$saveMCabContents(param)
         }
-        console.log(this.userKeyList)
 
         if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
           // eslint-disable-next-line no-new-object
@@ -195,7 +193,6 @@ export default {
             mCabContents.inPhone = this.directAddMemList[d].userPhone
             mCabContents.inUserName = this.$changeText(this.directAddMemList[d].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.mCabContents = mCabContents
-            console.log(param)
             result = await this.$saveMCabContents(param)
           }
         }

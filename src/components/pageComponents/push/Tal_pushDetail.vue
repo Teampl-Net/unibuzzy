@@ -173,10 +173,6 @@ export default {
 
   },
   methods: {
-    testAlert(data){
-      console.log(this.encodeUTF8(document.getElementById('bodyArea').innerHTML))
-      console.log(this.decodeUTF8(document.getElementById('bodyArea').innerHTML))
-    },
     encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
       return encodeURI(str);
     },
@@ -225,7 +221,7 @@ export default {
     },
 
     async deleteMemo (param) {
-      console.log(param)
+
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
@@ -254,8 +250,6 @@ export default {
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-
-      console.log(memo)
 
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
@@ -291,7 +285,6 @@ export default {
         url: '/tp.getMemoList',
         param: memo
       })
-      console.log(result)
       if (result.data.content) {
         if (allYn) {
           this.alimMemoList = result.data.content
@@ -540,7 +533,6 @@ export default {
       }
       if (result === true) {
         var resultList = await this.$getContentsList({ contentsKey: inputContentsKey })
-        console.log(resultList)
         var userDoList = resultList.content[0].userDoList
         await this.settingUserDo(userDoList)
         this.$emit('reloadParent')

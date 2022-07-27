@@ -56,9 +56,6 @@ export default {
         }
     },
     created() {
-        console.log('this.listData')
-        console.log(this.listData)
-
         this.upDatePage()
         this.sessionUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
 
@@ -117,7 +114,6 @@ export default {
                 if (this.listData !== undefined && this.listData !== null) {
                     if (this.listData.bookList !== undefined && this.listData.bookList !== null) {
                         this.teamList.bookList = this.listData.bookList
-                        console.log(this.teamList)
                     }
                     if (this.listData.memberList !== undefined && this.listData.memberList !== null && this.listData.memberList.length > 0) {
                         this.teamList.memberList = this.listData.memberList

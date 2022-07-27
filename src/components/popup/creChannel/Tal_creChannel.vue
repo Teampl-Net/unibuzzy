@@ -113,8 +113,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanDetail.targetKey)
       this.modiTeamData = await this.$getTeamList(paramMap)
-      console.log('this.modiTeamData');
-      console.log(this.modiTeamData);
+
       this.inputChannelName = this.$changeText(this.modiTeamData.data.content[0].nameMtext)
       this.inputChannelMemo = this.$changeText(this.modiTeamData.data.content[0].memoMtext)
       this.selectBg.selectedId = this.modiTeamData.data.content[0].picMfilekey
@@ -158,10 +157,10 @@ export default {
     setIconOrBGData (param) {
       if (this.iconBgPopupYn === 'iconPop') {
         this.selectIcon = param
-        console.log(this.selectIcon)
+
       } else if (this.iconBgPopupYn === 'bgPop') {
         this.selectBg = param
-        console.log(this.selectBg)
+
       }
       this.iconBgPopupYn = false
     },

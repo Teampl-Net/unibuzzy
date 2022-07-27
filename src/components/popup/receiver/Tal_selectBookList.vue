@@ -120,8 +120,6 @@ export default {
       params.targetType = 'editBookList'
       params.currentTeamKey = this.propData.targetKey
       params.value = ''
-      console.log('/')
-      console.log(params)
       this.$emit('openPop', params)
     },
     /* oepnPop (param) {
@@ -133,7 +131,6 @@ export default {
       obj.data = this.selectedList
       this.$emit('sendReceivers', obj)
       // this.$emit('selectedList', this.selectedList)
-      console.log(this.selectedList)
     },
     // 유민참고
     changeSelectMemberList (data) {
@@ -194,7 +191,6 @@ export default {
       obj.selectedTeamList = this.selectedTeamList
       obj.selectedMemberList = this.selectedMemberList
       // this.$emit('selectedReceiver', this.selectReceivers)
-      // console.log('@@@selectBookList // '+obj)
       this.$emit('selectedReceiver', obj)
       // this.$emit('selectedReceiver', this.selectReceivers)
     },

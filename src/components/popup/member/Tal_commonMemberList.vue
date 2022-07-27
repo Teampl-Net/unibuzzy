@@ -73,7 +73,6 @@ export default {
       this.$emit('openPop', param)
     },
     setManager (param) {
-      console.log(param)
       var params = {}
       params.userKey = param.toggleId
       params.manager = param.toggleYn
@@ -84,7 +83,6 @@ export default {
       this.$emit('setManager', params)
     },
     memberInfo (member) {
-      // console.log(member)
       this.$emit('memberInfo', member)
     },
     animation (key) {

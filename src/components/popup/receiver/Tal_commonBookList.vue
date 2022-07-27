@@ -266,7 +266,6 @@ export default {
 
         },
         async changePosTeamMenu(event) {
-            console.log(event);
             // event.oldIndex
 
 
@@ -275,8 +274,6 @@ export default {
             var menu = new Object()
             var cardList = document.getElementsByClassName('commonBookCard')
             var index = null
-            console.log('this.addressBookList 여기요@@')
-            console.log(this.addressBookList)
             for (var s = cardList.length - 1 ; s >=0; s--) {
                 index = Number(cardList[s].getAttribute('index'))
                 for (var i = 0; i < this.addressBookList.length; i ++) {
@@ -302,14 +299,12 @@ export default {
                 }
             }
             paramSet.teamMenuList = teamMenuList
-            console.log(paramSet);
             var result = await this.$commonAxiosFunction(
                 {
                 url: '/tp.changePosTeamMenu',
                 param: paramSet
                 }
             )
-            console.log(result);
 
             // this.$emit('getBookList')
 

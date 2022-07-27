@@ -33,8 +33,7 @@ export default {
     }
   },
   created () {
-    console.log('this console page management ')
-    console.log(this.propData)
+
     this.getManagingList(this.tab)
   },
   mounted () {
@@ -96,21 +95,18 @@ export default {
           url : '/tp.getManagerList',
           param: param
         })
-        console.log('매니저리스트');
+
         this.managingList =await result.data.managerList
       }
       // paramMap.set('followerType', 'M')
-      console.log(result)
+
 
 
 
     },
 
     async setManager (param) {
-      console.log('setManager tab!!')
-      console.log(this.tab)
-      console.log('setManager param!!')
-      console.log(param)
+
       var params = {}
       params.userKey = param.userKey
       params.teamKey = this.propData.teamKey
@@ -122,23 +118,19 @@ export default {
       this.getManagingList(this.tab)
     },
     async deleteManager (param) {
-      console.log('deleteManager Axios param -> result')
-      console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.deleteManager',
         param: param
       })
-      console.log(result)
+
     },
     async saveManager (follower) {
       var param = {}
       param.follower = follower
-      console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveManager',
         param: param
       })
-      console.log(result)
     },
     async addDirectly(params){
 
@@ -154,7 +146,6 @@ export default {
       follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext)
       follower.userName
       param.follower = follower
-      console.log(param)
 
       debugger
 
@@ -162,8 +153,6 @@ export default {
           url: '/tp.saveManager',
           param: param
       })
-      console.log('result')
-      console.log(result.data)
 
       if(result.data.result === true){
         if(result.data.message === '중복된 유저입니다.'){
@@ -180,8 +169,7 @@ export default {
     },
     async openAddManagerPop () {
       // eslint-disable-next-line no-new-object
-      console.log('openAddManagerPop this.propData');
-      console.log(this.propData);
+
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey

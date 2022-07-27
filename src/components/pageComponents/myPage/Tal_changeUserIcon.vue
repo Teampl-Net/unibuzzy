@@ -57,7 +57,7 @@ export default {
       param.updateYn = true
 
       var result = await this.$changeDispName(param)
-      console.log(result)
+      // console.log(result)
 
       if (result.data.message === 'OK') {
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)

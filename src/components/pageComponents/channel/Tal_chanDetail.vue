@@ -73,8 +73,8 @@
 import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
 export default {
   mounted () {
-    console.log('this.chanDetail')
-    console.log(this.chanDetail)
+    // console.log('this.chanDetail')
+    // console.log(this.chanDetail)
     // this.$refs.chanImg.style.setProperty('--halfWidth', (window.innerWidth - 185) / 2 + 'px')
   },
   data () {
@@ -127,6 +127,7 @@ export default {
     }
   },
   async created () {
+    this.$emit('openLoading')
     if (this.parentMemberYn) {
       this.memberYn = this.parentMemberYn
     }
@@ -151,6 +152,7 @@ export default {
       }
     }
     this.settingTeamType(this.chanDetail.teamType)
+    this.$emit('closeLoading')
   },
   methods: {
     async saveMember () {
@@ -176,7 +178,7 @@ export default {
       } else {
         params = { follower: param, doType: 'ME' }
       }
-      console.log(param)
+      // console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
         param: params
@@ -252,7 +254,7 @@ export default {
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
         this.$emit('closeLoading')
       }
-      console.log(result)
+      // console.log(result)
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {

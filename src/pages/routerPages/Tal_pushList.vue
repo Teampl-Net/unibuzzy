@@ -196,10 +196,10 @@ export default {
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
       var parentElement = element.parentElement
-      console.log(this.getAbsoluteTop(element))
+      // console.log(this.getAbsoluteTop(element))
       // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       this.firstContOffsetY = this.getAbsoluteTop(element)
-      console.log(this.firstContOffsetY)
+      // console.log(this.firstContOffsetY)
       if (this.firstContOffsetY > 0) {
         this.scrollDirection = 'up'
         this.scrolledYn = false
@@ -365,7 +365,7 @@ export default {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       var result = await this.$getContentsList(param)
-      console.log(result)
+      // console.log(result)
       if (result.empty) {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }

@@ -205,9 +205,7 @@ export default {
       // mShareItemList가 잘 들어오면 save잘 된것
       var mCabinetContentsDetail = resultList.mCabinet
       this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
-      console.log(param)
-      console.log(resultList)
-      console.log(this.shareAuth)
+
 
       if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.ownerYn = true
@@ -250,7 +248,7 @@ export default {
       this.confirmPopShowYn = false
       this.confirmType = false
       var inParam = {}
-      console.log(this.alimDetail)
+      // console.log(this.alimDetail)
       inParam.contentsKey = this.alimDetail[0].contentsKey
       inParam.jobkindId = 'BOAR'
       inParam.teamKey = this.alimDetail[0].creTeamKey
@@ -261,7 +259,7 @@ export default {
           param: inParam
         })
         this.$emit('closeXPop', true)
-        console.log('Delete Content Result' + result)
+        // console.log('Delete Content Result' + result)
       } else if (this.boardFuncType === 'REPORT') {
         inParam.reportYn = true
         this.confirmPopShowYn = true
@@ -304,7 +302,7 @@ export default {
       }
     },
     async deleteMemo (param) {
-      console.log(param)
+      // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
@@ -340,7 +338,6 @@ export default {
         url: '/tp.getMemoList',
         param: memo
       })
-      console.log(result)
       if (result.data.content) {
         this.totalElements = result.data.totalElements
         if (allYn) {
@@ -473,7 +470,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
-      console.log(memo)
+
 
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
@@ -502,11 +499,7 @@ export default {
       param.contentsKey = this.detailVal.targetKey
       param.jobkindId = 'BOAR'
       var resultList = await this.$getContentsList(param)
-      // console.log('console.log(resultList);console.log(resultList);console.log(resultList);');
-      // console.log(resultList);
       this.alimDetail = resultList.content
-      console.log('this.alimDetail')
-      console.log(this.alimDetail)
 
       // var tempuserDoList = resultList.content[0].userDoList
       if (resultList.content[0].userDoList) {
@@ -525,7 +518,7 @@ export default {
     settingUserDo (userDo) {
       this.userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       this.readYn = false
-      console.log(userDo)
+
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
         this.userDoStickerList = new Array()
@@ -566,8 +559,8 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
       }
-      console.log('resultresult')
-      console.log(result)
+      // console.log('resultresult')
+      // console.log(result)
       if (result === true) {
         await this.getContentsList()
         // this.$emit('reloadParent')

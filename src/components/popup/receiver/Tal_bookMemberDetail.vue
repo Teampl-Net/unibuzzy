@@ -106,10 +106,6 @@ export default {
         excelPopYn:{}
     },
     created(){
-       
-        console.log('##memberDetail##')
-        // console.log(this.propData)
-        console.log(this.propData);
 
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
@@ -158,13 +154,11 @@ export default {
             onMessage('REQ', 'sendSms', num)
         },
         async deleteManager () {
-            console.log('deleteManager Axios param -> result')
 
             var result = await this.$commonAxiosFunction({
                 url: '/tp.deleteManager',
                 param: this.propData
             })
-            console.log(result)
             if(result.data === true){this.$emit('deleteManager')}
 
         },

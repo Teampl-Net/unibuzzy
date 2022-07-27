@@ -85,7 +85,6 @@ export default {
     }
   },
   created () {
-    console.log(this.chanInfo)
     if (this.chanInfo.userTeamInfo !== undefined && this.chanInfo.userTeamInfo !== null && this.chanInfo.userTeamInfo.ownerYn) this.ownerYn = true
     this.startStep()
   }

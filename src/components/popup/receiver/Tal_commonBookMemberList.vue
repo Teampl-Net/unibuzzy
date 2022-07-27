@@ -109,14 +109,12 @@ export default {
           this.$emit('deleteManager', data)
         } else {
           var param = {}
-          console.log(data)
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
             url: '/tp.deleteMCabContents',
             param: param
           })
-          console.log(result)
           if (result.data === 'true' || result.data === true) {
             this.memberList = []
             this.$emit('refreshList')

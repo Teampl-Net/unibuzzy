@@ -111,7 +111,7 @@ export default {
       // this.listShowYn = false
       // this.pushList = resultList.content
       // this.listShowYn = true
-      console.log(this.pushList)
+      // console.log(this.pushList)
     },
     async getContentsList () {
       // eslint-disable-next-line no-new-object
@@ -134,7 +134,7 @@ export default {
       // }
       if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        console.log(param)
+        // console.log(param)
       }
       resultData = await this.$getContentsList(param)
       return resultData

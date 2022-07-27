@@ -305,7 +305,6 @@ const methods = {
       param: paramSet
     })
     result = response.data
-    console.log(response)
     return result
   },
   async getCodeList (inputParam) {
@@ -357,8 +356,6 @@ const methods = {
     if (inputParamMap) {
       paramSet = inputParamMap
     }
-    console.log('&&&&&&&&&&&&&&&&&&&&')
-    console.log(paramSet)
     var result = null
     var response = await commonAxiosFunction({
       url: '/tp.saveCabinet',
@@ -415,9 +412,6 @@ const methods = {
       url: '/tp.saveMCabContents',
       param: paramSet
     })
-    // console.log("## axios saveMCabContents")
-    // console.log(response)
-    // console.log("##")
     // result = response
     return response
   },

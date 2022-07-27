@@ -416,7 +416,6 @@ export default {
         this.selectFile = null
         this.previewImgUrl = null
       }
-      console.log(this.selectFileList)
     }
   }
 }

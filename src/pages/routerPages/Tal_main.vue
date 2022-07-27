@@ -197,7 +197,6 @@ export default {
 
       await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
-        console.log(response)
         if (response.status === 200 || response.status === '200') {
           this.alimList = []
           this.alimList = response.data.alimList

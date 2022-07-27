@@ -61,8 +61,8 @@ export default {
       }
       var resultList = await this.$getContentsList(param)
       this.myActContentsList = resultList.content
-      console.log('this.myActContentsList')
-      console.log(this.myActContentsList)
+      // console.log('this.myActContentsList')
+      // console.log(this.myActContentsList)
     },
     async myActTabClick (tab, index) {
       this.myActTabType = tab.myActTabType

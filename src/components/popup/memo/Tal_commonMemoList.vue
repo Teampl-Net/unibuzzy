@@ -85,11 +85,9 @@ export default {
       this.$emit('loadMore', 10)
     },
     memoLoadingShow () {
-      console.log('MemoLoadingshow')
       this.$refs.sLoadingMemoList.show()
     },
     memoLoadingHide () {
-      console.log('MemoLoadinghide')
       this.$refs.sLoadingMemoList.hide()
     },
     memoDeleteClick (data, index) {
@@ -118,13 +116,10 @@ export default {
       // memo.creUserKey = data.creUserKey
       // memo.deleteYn = false
 
-      console.log('memoParam')
-      console.log(memo)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
         param: { memo: memo }
       })
-      console.log(result)
       if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
         this.$emit('editTrue')

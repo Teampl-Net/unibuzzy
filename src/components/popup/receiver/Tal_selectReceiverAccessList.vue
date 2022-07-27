@@ -79,8 +79,7 @@ export default {
       // } else if (data.itemType === 'R') {
       //   this.setSelectedList.R = data.itemList
       // }
-      console.log('this.setSelectedListconsole.log(this.setSelectedList);console.log(this.setSelectedList);');
-      console.log(this.setSelectedList);
+
       // if(data.type === 'U'){
       //   var changeList = data.memberList
       //   for(var m = 0; m < this.memberList.length; m ++) {
@@ -96,7 +95,6 @@ export default {
 
 
       // }
-      console.log(data);
 
       if (this.itemType === 'V') {
         this.setSelectedList.V = data.itemList
@@ -107,7 +105,6 @@ export default {
       }
 
       this.$refs.selectBookNMemberListCompo.delSelectList(data.delKey, data.type)
-      console.log(this.setSelectedList);
 
     },
     sendReceivers (data) {
@@ -127,12 +124,7 @@ export default {
           }
         }
       }
-      console.log('this.itemTypethis.itemTypethis.itemTypethis.itemTypethis.itemType');
-      console.log()
 
-
-      console.log('datadatadatadatadatadatadatadatadatadatadatadata');
-      console.log(data);
       this.$emit('sendReceivers', data)
     },
     addSelectList (data) {

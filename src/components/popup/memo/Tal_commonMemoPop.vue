@@ -49,7 +49,6 @@ export default {
     saveMemo () {
       // document.getElementById('memoTextTag').contentEditable = false
       var html = document.getElementById('memoTextTag').innerHTML
-      console.log(html)
       this.$emit('saveMemoText', html)
     }
   }

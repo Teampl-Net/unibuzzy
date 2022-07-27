@@ -32,8 +32,6 @@ export default {
     created (){
         /* var history = this.$store.getters.hStack
         this.popId = 'editBookList' + history.length */
-        console.log('propData')
-        console.log(this.propData)
         this.getBookList()
         this.chanName = this.propData.teamNameMtext || ''
 
@@ -117,7 +115,6 @@ export default {
                 url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
-            console.log(result);
             this.memberList = result.data
             if (this.memberList) { // dispName이 없을시 userName으로 대체
                 for (var i =0; i < this.memberList.length; i ++) {

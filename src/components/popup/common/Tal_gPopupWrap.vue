@@ -3,7 +3,7 @@
       <loadingCompo style="z-index: 9999999;" v-show="loadingYn" />
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
-        <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+      <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++" @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
@@ -41,6 +41,11 @@
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
       <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
+      <editMyChanMenu v-if="this.targetType === 'myChanMenuEdit'" :propData="this.params" @openPop="openPop"  />
+      <editBoardPop v-if="this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+
+      <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeMemberYn='changeMemberYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
+      <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" />
     </div>
 </template>
 
@@ -78,6 +83,15 @@ import selectBookList from '../receiver/Tal_selectBookList.vue'
 import memberManagement from '../member/Tal_memberManagement.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
+
+import editBoardPop from '../../popup/Tal_editBoardList.vue'
+
+import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
+
+import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
+
+import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
+
 export default {
   async created () {
     await this.settingPop()
@@ -162,7 +176,11 @@ export default {
     memberManagement,
     selectAddressBookList,
     selectBookList,
-    loadingCompo
+    loadingCompo,
+    editBoardPop,
+    editMyChanMenu,
+    chanInfoComp,
+    autoAnswerList
   },
   updated () {
   },
@@ -236,10 +254,6 @@ export default {
         } else {
           await this.$refs.selectManagerCompo.changeDirectMemList(param)
         }
-
-        //           addDirectAddMemList
-        // changeDirectMemList
-
         this.closePop()
       }
     },
@@ -247,7 +261,6 @@ export default {
       this.memberDetailOpen = bool
     },
     bgcolor (data) {
-      console.log(data)
       this.bgblackYn = data
     },
     openChannelItem (data) {
@@ -265,13 +278,19 @@ export default {
       this.openPop(data)
     },
     async reloadParent () {
-      console.log(this.params)
+
       if (this.params.openActivity === 'chanAlimList') {
       } else {
         this.$emit('reloadPop')
       }
     },
     reloadPop (parentReloadYn) {
+      if(this.targetType === 'myChanMenuEdit'){
+        // alert(true)
+        this.closePop()
+        return
+      }
+
       if (parentReloadYn === true) {
         this.reloadParent()
       }
@@ -388,6 +407,16 @@ export default {
       } else if (this.targetType === 'memberManagement') {
         this.headerTitle = '멤버 관리'
         this.helpYn = true
+      }else if(this.targetType === 'editBoard'){
+        this.headerTitle = '게시판 관리'
+      }else if(this.targetType === 'myChanMenuEdit'){
+        this.headerTitle = '채널 관리'
+      }else if(this.targetType === 'chanInfo'){
+        this.headerTitle = '채널 상세'
+        this.bgblackYn = true
+      }else if(this.targetType === 'autoAnswer'){
+        this.headerTitle = '자동 응답'
+
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -409,6 +438,7 @@ export default {
       this.popShowYn = true
     },
     async parentClose (delyn) {
+
       this.delyn = delyn
       await this.closePop(true)
       this.$emit('reloadPop', true)
@@ -418,11 +448,8 @@ export default {
       this.$emit('parentClose')
     },
     async closePop (reloadYn) { // 자식 팝업닫기
+      console.log(this.targetType);
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
-      console.log(this.targetType)
-      console.log(this.reloadYn)
-      console.log(reloadYn)
-      console.log(this.delyn)
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
@@ -471,16 +498,11 @@ export default {
       }
     },
     successCreChan (params) {
-      console.log('successCreChan params!!!')
-      console.log(params)
       if (params.deleteYn === true && params.modiYn === true) {
         this.$emit('parentClose', true)
-
         // this.closeXPop()
         return
       }
-      console.log('gPopWrap params!!!')
-      console.log(params)
       if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)

@@ -275,8 +275,7 @@ export default {
       // eslint-disable-next-line no-debugger
       // debugger
       // eslint-disable-next-line no-unused-vars
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!his.mCabinetContentsDetail')
-      console.log(this.mCabinetContentsDetail)
+
       if (this.propData.ownerYn === 1) {
         this.shareAuth.R = true
         this.shareAuth.W = true
@@ -284,11 +283,7 @@ export default {
       } else {
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
-      console.log('this.mCabinetContentsDetail.mShareItemList')
-      console.log(this.mCabinetContentsDetail.mShareItemList)
 
-      console.log('this.shareAuth')
-      console.log(this.shareAuth)
       /* if (this.shareAuth.V === false) {
         this.$emit('closeXPop')
       } */
@@ -316,7 +311,7 @@ export default {
       } else {
         pageSize = 10
       }
-      console.log(this.findKeyList)
+
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
           param.title = this.findKeyList.searchKey
@@ -411,7 +406,7 @@ export default {
       ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async requestSearchList (param) {
-      console.log(param)
+
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey

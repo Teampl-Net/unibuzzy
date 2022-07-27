@@ -9,7 +9,9 @@
       <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold font16 fl" >{{menuHeaderTitle}}</p>
       <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
-      <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="memberSetting"  />
+      <!--기존--><!--  <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
+      <!--색이 들어있는--><!-- <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting_gear.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
+      <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png"  v-if="ownerYn || adminYn"  @click="myChanEdit"  />
       <div v-else />
 
   </div>
@@ -104,11 +106,7 @@ export default {
   },
   async created() {
     this.screenHeight = window.innerHeight
-    console.log(this.adminYn);
-    console.log('propData');
     this.getFollowerList()
-    console.log(this.addChanList);
-    console.log(this.propData)
     // this.cabinetList = this.$groupDummyList()
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
@@ -152,14 +150,14 @@ export default {
   },
   emits: ['openPop', 'goPage'],
   methods: {
-    memberSetting(){
+    myChanEdit(){
       var param = {}
       // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.targetType = 'memberManagement'
+      param.targetType = 'myChanMenuEdit'
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.currentTeamKey = this.chanAlimListTeamKey
       param.teamNameMtext = this.teamName()
-      param.ownerYn = this.ownerYn
+
       // param
       this.$emit('openItem', param)
     },
@@ -206,7 +204,6 @@ export default {
     },
     setSelectedList(datas){
       var data = datas.data
-      console.log(data);
       this.selectManagerListYn = false // 선택창 닫기
       if(data.bookList){
         for (let i = 0; i < data.bookList.length; i++) {
@@ -228,7 +225,7 @@ export default {
           this.selectAdminList.push(tempList)
         }
       }
-      console.log(this.selectAdminList);
+
     },
     adminManagingClick(){
       var param = new Object()
@@ -270,6 +267,7 @@ export default {
       // params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = data
       params.value = this.propData
+      console.log(this.propData);
 
       params.teamNameMtext = this.teamName()
 
@@ -307,7 +305,7 @@ export default {
       paramMap.set('currentTeamKey', this.chanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-      console.log(paramMap)
+
       var result = await this.$getTeamMenuList(paramMap)
       this.myBoardList = result
     },
@@ -371,15 +369,19 @@ export default {
 
     },
     editChanMenu (){
-      this.teamNameText = this.teamName()
-      this.editPopYn = true;
+      var param = {}
+      param.targetType = 'editBoard'
+      param.currentTeamKey = this.chanAlimListTeamKey
+      param.teamKey = this.chanAlimListTeamKey
+
+      param.teamNameMtext = this.teamName()
+
+      this.$emit('openPop', param)
+      // this.teamNameText = this.teamName()
+      // this.editPopYn = true;
     },
     chanMenuClick(data) {
       var params = new Object()
-      console.log(this.addChanList)
-      console.log(this.propData)
-      console.log(this.chanAlimListTeamKey)
-      console.log(data)
       params.targetType = 'boardMain'
       if(this.propData.value){
         params.nameMtext = this.propData.value.nameMtext

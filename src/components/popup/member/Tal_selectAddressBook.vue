@@ -22,8 +22,6 @@ export default {
   },
   created () {
     this.getBookList()
-    console.log('this data select Address ')
-    console.log(this.propData)
   },
   methods: {
     async getBookList () {
@@ -43,13 +41,10 @@ export default {
         }
       }
       this.editBookSelectedList()
-      // 
+      //
     },
     async addressPushData (list) {
       // eslint-disable-next-line no-new-object
-
-      console.log('addressPush')
-      console.log(list)
 
       // eslint-disable-next-line no-new-object
       var mCabContents = new Object()
@@ -59,7 +54,6 @@ export default {
       mCabContents.ownUserKey = this.propData.userKey
       mCabContents.targetKey = this.propData.teamKey
 
-      console.log(param)
       if (list.bookList) {
         for (let i = 0; i < list.bookList.length; i++) {
           mCabContents.cabinetKey = list.bookList[i].cabinetKey
@@ -67,7 +61,6 @@ export default {
           var result = await this.$saveMCabContents(param)
         }
       }
-      console.log(result)
       if (result.data.result === true) {
         this.$emit('closeXPop', true)
       }

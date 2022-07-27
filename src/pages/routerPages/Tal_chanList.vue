@@ -278,8 +278,7 @@ export default {
         value.followYn = true
       }
       params.value = value
-      console.log('!!!!!!!!!!!!!!!!!!!')
-      console.log(params)
+
       this.$emit('openPop', params)
 
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })

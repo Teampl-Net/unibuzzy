@@ -217,8 +217,6 @@ export default {
     },
 
     async changeAct (act, contentsKey) {
-      console.log(act)
-      console.log(contentsKey)
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data

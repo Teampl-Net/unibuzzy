@@ -80,15 +80,14 @@ export default {
 
   },
   mounted () {
-    console.log(this.contentsList)
   },
   methods: {
     loadingRefShow(){
-      console.log('show');
+      // console.log('show');
       this.$refs.sLoadingPush.show()
     },
     loadingRefHide(){
-      console.log('hide');
+      // console.log('hide');
       this.$refs.sLoadingPush.hide()
     },
     resizeText (text, name) {

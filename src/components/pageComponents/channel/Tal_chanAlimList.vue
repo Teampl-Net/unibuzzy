@@ -150,7 +150,7 @@ export default {
       } else {
         params = { follower: param, doType: 'ME' }
       }
-      console.log(param)
+
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveFollower',
         param: params
@@ -226,9 +226,7 @@ export default {
         paramMap.set('addContentsListYn', true)
       }
 
-      console.log(paramMap)
       var resultList = await this.$getTeamList(paramMap)
-      console.log(resultList)
 
       // if (resultList.data) { this.chanItem = resultList.data.content[0] }
       this.chanItem = resultList.data.content[0]
