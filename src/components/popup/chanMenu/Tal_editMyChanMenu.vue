@@ -38,30 +38,26 @@
     </tr>
 
     <tr @click="managerEditClick">
-      <th class="font16">매니저 관리</th>
+      <th class="font16">멤버/매니저 관리</th>
       <td class="">
         <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
         <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
       </td>
     </tr>
     <tr @click="autoAnswerClick">
-      <th class="font16">자동응답</th>
+      <th class="font16">자동 응답</th>
       <td class="">
         <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
         <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
       </td>
     </tr>
-
     <!-- <tr><th class="font16"> 버전정보 <p class="font10">최신버전: 1.0</p></th>
     <td class="textRight font16"></td></tr> -->
-
   </table>
- </div>
-
+  </div>
 </div>
 
 </template>
-
 <script>
 export default {
   props: {
@@ -69,7 +65,7 @@ export default {
   },
   data () {
     return {
-      editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동응답' }],
+      editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동 응답' }],
       param: {},
       teamInfo: {}
 

@@ -5,13 +5,13 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
           <div class="imgSize">
             <div class="roundDiv">
-              <img v-if="this.userInfo.userProfileImg" :src="this.userInfo.userProfileImg" style="width: 100%;"/>
-              <img  v-else src="../../assets/images/main/main_profile.png" style="width: 100px;"/>
+              <img v-if="this.userInfo.userProfileImg" :src="this.userInfo.userProfileImg" style="width: 100%; position: absolute; left: 0; top: 0;"/>
+              <img  v-else src="../../assets/images/main/main_profile.png" style="width: 100%; position: absolute; left: 0; top: 0;"/>
             </div>
             <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->
@@ -93,7 +93,6 @@ export default {
       pageHistoryName: '',
       userInfo: {},
       changeUserIconShowYn:false,
-      headerTitle: '마이페이지',
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
@@ -153,11 +152,11 @@ export default {
         this.getUserInform()
         this.changeYn = false
         this.$router.push('/')
+        this.$emit('closeXPop')
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
-      }else{
+      } else {
         this.errorBoxText = '이름 변경 중 서버에 오류'
         this.errorBoxYn = true
-
       }
     },
     changeUserDispMtext () {
@@ -208,7 +207,7 @@ export default {
 <style scoped>
 .profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
-.roundDiv{box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
+.roundDiv{position: relative; box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
 table{text-align: left; width: 100%;}
 tr, td, th {
   height: 4rem;

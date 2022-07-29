@@ -19,7 +19,7 @@
       </div>
       <div>
         <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-        <span @click="test" class="profileTitle font14" ref="userEmail">휴대폰</span>
+        <span @click="test" class="profileTitle font14" ref="userMobile">휴대폰</span>
         <span class="grayBlack font14" ref="userMobile">{{userInfo.phoneLast}}</span>
       </div>
     </div>
@@ -248,8 +248,8 @@ export default {
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
-.picImgWrap {width: 80px; height: 80px; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
-.picImgWrap img {width: 100%;}
+.picImgWrap {width: 80px; height: 80px; position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
+.picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;}
 @media screen and (max-width: 300px) {
   .picImgWrap{
     width: 60px!important;

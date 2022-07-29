@@ -4,7 +4,6 @@
 </template>
 <script>
 const defaultErrorMessage = '현재 네이버 로그인 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해주세요.'
-
 export default {
   name: 'NaverLogin',
   props: {

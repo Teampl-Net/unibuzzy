@@ -29,6 +29,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
 import modiBoardPop from './Tal_modiBoardPopup.vue'

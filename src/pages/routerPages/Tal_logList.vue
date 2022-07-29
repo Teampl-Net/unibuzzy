@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100%; overflow: hidden scroll;">
+  <div style="width: 100%; height: 100%;background-color: #fff;overflow: hidden scroll;">
     <!-- 오늘/어제/이번주/이전 -->
     <div class="logWrap">
       <p class="logDate">오늘</p>

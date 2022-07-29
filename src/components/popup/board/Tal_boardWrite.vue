@@ -159,7 +159,7 @@ export default {
     if (this.propData.bodyFullStr) {
       this.bodyString = this.decodeContents(this.propData.bodyFullStr)
       this.modiYn = true
-      console.log('WOW!!!!' + this.decodeContents(this.propData.bodyFullStr))
+      console.log('WOW!!!!' + this.decodeContents(this.bodyString))
     }
     if (this.propData.titleStr) {
       this.writePushTitle = this.propData.titleStr

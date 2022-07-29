@@ -8,7 +8,6 @@ import main from '../pages/routerPages/Tal_main.vue'
 import login from '../pages/intro/Tal_login.vue'
 import permissions from '../pages/intro/Tal_permissions.vue'
 import policies from '../pages/intro/Tal_policies.vue'
-import setMypage from '../pages/routerPages/Tal_setMypage.vue'
 import pushList from '../pages/routerPages/Tal_pushList.vue'
 import chanList from '../pages/routerPages/Tal_chanList.vue'
 import logList from '../pages/routerPages/Tal_logList.vue'
@@ -34,6 +33,7 @@ import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
 import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
 
 import myActList from '../components/pageComponents/myPage/Tal_myActList.vue'
+import myPage from '../pages/routerPages/Tal_myPage.vue'
 
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 
@@ -61,14 +61,14 @@ const routes = [
         } */
       },
       {
-        path: '/setMypage',
-        name: 'setMypage',
+        path: '/myPage',
+        name: 'myPage',
         props: true,
-        component: setMypage
-        /* beforeEnter: (to, from, next) => {
+        component: myPage,
+        beforeEnter: (to, from, next) => {
         // 만약 로그인 상태라면
           if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
-        } */
+        }
       },
       {
         path: '/pushList',

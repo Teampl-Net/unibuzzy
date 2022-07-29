@@ -19,6 +19,6 @@
 
 </script>
 <style>
-.boardPopText {z-index: 999; top: 0; position: absolute; background-color: white; overflow: hidden; margin: 10px; border-radius: 10px; padding: 15px; min-height: 400px; max-height: 70%;}
+.boardPopText {z-index: 999; top: 20%; position: absolute; background-color: white; overflow: hidden; margin: 10px; border-radius: 10px; padding: 15px; min-height: 400px; max-height: 70%;}
 .boardPopAlimImg {width:100px;right: 20px;position: absolute;float:right;bottom: calc(30% - 100px);}
 </style>

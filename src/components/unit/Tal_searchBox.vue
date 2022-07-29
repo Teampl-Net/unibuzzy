@@ -2,7 +2,7 @@
     <div class="pushListSearchArea">
       <div style="position: relative; margin-top: 1rem; height: 40px;">
         <img class="searchIcon mtop-03" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <div class="searchInput font15" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
+        <div class="searchInput font15" :class="{darkerBgColor : this.targetType === 'myActList'}" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
       </div>
       <div style="width: 100%;">
         <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
@@ -29,13 +29,15 @@ export default {
     }
   },
   props: {
-    resultSearchKeyList: {}
+    resultSearchKeyList: {},
+    targetType: {}
   },
   computed: {
   }
 }
 </script>
 <style scoped>
+.darkerBgColor {background: #e9e9e9 !important;}
 .pushListSearchArea{position: relative; margin-bottom: 1.5rem; min-height: 2.5rem; width: 100%; float: left;}
 .searchIcon{width: 1.5rem; float: right;}
 .searchInput{border: 2px solid #E4E4E4; float: left; width: calc(100% - 2rem); float: left; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}

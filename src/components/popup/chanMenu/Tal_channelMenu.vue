@@ -7,7 +7,7 @@
       <!-- <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
       <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
       <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
-      <p :class="{editColor: editYn === true }" class="fontBold font16 fl" >{{menuHeaderTitle}}</p>
+      <p :class="{editColor: editYn === true }" class="fontBold font20 fl" >{{menuHeaderTitle}}</p>
       <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
       <!--기존--><!--  <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
       <!--색이 들어있는--><!-- <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting_gear.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
@@ -167,7 +167,6 @@ export default {
       this.setDrop()
       this.bookListLength()
       this.boardListLength()
-
     },
     setDrop () {
       if(this.cabinetList.length === 0){

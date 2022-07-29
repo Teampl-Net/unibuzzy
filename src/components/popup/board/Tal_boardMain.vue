@@ -11,6 +11,7 @@
           <!-- 관리자 여부 확인 -->
           <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
           <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn">
+          <!-- <div class="fl boardMainAdminArea"> -->
             <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
             <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
             <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
@@ -234,15 +235,15 @@ export default {
 
       this.scrollPosition = this.box.scrollTop
 
-      if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
-        blockBox.style.height = 50 + 'px'
+      if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
+        blockBox.style.height = '50px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
         document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
-        blockBox.style.height = '350px'
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
+        blockBox.style.height = '300px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
@@ -270,7 +271,6 @@ export default {
       param.cabinetKey = this.propData.targetKey
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
-
       this.mCabinetContentsDetail = resultList.mCabinet
       // eslint-disable-next-line no-debugger
       // debugger
@@ -406,7 +406,6 @@ export default {
       ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     async requestSearchList (param) {
-
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -557,7 +556,7 @@ export default {
     transform: translateY(-130px);
 }
 
-#boardInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
+#boardInfoSummary2{width: 100%; padding-top: 0; line-height: 50px; height: 100%; display: none; flex-direction: column; float: left}
 .boardListWrap{
   height: 100vh;
   background-size: cover;

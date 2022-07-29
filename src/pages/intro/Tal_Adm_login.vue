@@ -23,7 +23,6 @@
         네이버 로그인
       </div> -->
       <naver  :callbackFunction='naverCallbackFunction' :isPopup='false' />
-
       <div class="admLoginBtn font20" v-on:click="GoogleLoginBtn">
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
@@ -120,7 +119,7 @@ export default {
     NaverLoginBtn () {
     },
     AppleLoginBtn () {
-      alert('apple')
+      // alert('apple')
     },
     async GoogleLoginBtn () {
       console.log('login')
@@ -133,7 +132,7 @@ export default {
     },
 
     naverCallbackFunction (log) {
-      alert(true)
+      // alert(true)
       console.log(log)
     },
 

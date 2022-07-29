@@ -62,6 +62,7 @@ export default {
       if (result.data.message === 'OK') {
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
         this.$router.replace({ path: '/' })
+        this.$emit('closeXPop')
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
 

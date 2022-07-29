@@ -3,7 +3,7 @@
         <div @click="routePage('/')" class="footerRouter col-3"> <div class="commonColor fontBold text-center font12" ><img src="../../assets/images/common/icon_home.png"/><p class="font12" :class="{activeFooterMenu : activeFooter === '/'}">홈</p></div></div>
         <div @click="routePage('/pushList')" class="footerRouter col-3"><div class="commonColor fontBold text-center font12"><img src="../../assets/images/common/icon_notice.png"/> <p class="font12" :class="{activeFooterMenu : activeFooter === '/pushList'}">알림</p></div></div>
         <div @click="routePage('/chanList')" class="footerRouter col-3"><div class="commonColor fontBold text-center font12"><img src="../../assets/images/common/icon_subscribe.png"/><p class="font12" :class="{activeFooterMenu : activeFooter === '/chanList'}">채널</p></div></div>
-        <div @click="routePage('/setMypage')" class="footerRouter col-3"><div class="commonColor fontBold text-center font12"><img src="../../assets/images/common/icon_setting.png"/> <p class="font12" :class="{activeFooterMenu : activeFooter === '/setMypage'}">설정</p></div></div>
+        <div @click="routePage('/myPage')" class="footerRouter col-3"><div class="commonColor fontBold text-center font12"><img src="../../assets/images/main/main_subscriber.png"/> <p class="font12" :class="{activeFooterMenu : activeFooter === '/myPage'}">My</p></div></div>
     </div>
 </template>
 <script>

@@ -49,17 +49,11 @@ import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 import gSvg from './components/Tal_svgCollection.vue'
 import Iconwink from './components/Tal_winkAlimLogo.vue'
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-
 // import gToggle from 'vue-toggle-btn';
 /* import Meta from 'vue-meta' */
-
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
-
-
 app.use(commonjs)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)

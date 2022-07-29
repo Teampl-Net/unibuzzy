@@ -20,10 +20,10 @@
                 <span class="commonColor font14" >{{value.followerCount}}</span>
             </div>
             <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
-            <p class="lightGray font14 fr mNone " style="line-height: 30px; " >{{this.$changeDateFormat(value.creDate)}}</p>
           </div>
           <div style="width: 100%; margin-top: 4px; position: relative;">
-            <span class="chanMsgWrap w-100P fl font14 grayBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
+            <span class="chanMsgWrap fl font14 grayBlack textOverdot" style="width: calc(100% - 45px); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
+            <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; width: 40px" >{{this.$changeDateFormat(value.creDate)}}</p>
           </div>
         </div>
       </div>

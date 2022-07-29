@@ -11,7 +11,7 @@
       <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
         <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진" />
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
-        <div style="min-width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
+        <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
           <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
           <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
           <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->

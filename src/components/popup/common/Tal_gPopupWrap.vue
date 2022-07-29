@@ -11,7 +11,7 @@
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
       <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
-        <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearhList="this.readySearchList" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @openPop="openPop" />
+        <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @openPop="openPop" />
       </div>
       <pushBox @closeLoading="this.loadingYn = false" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'chanList'">
@@ -41,6 +41,9 @@
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
       <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
+      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'setMypage'">
+        <setMypage v-if="this.targetType === 'setMypage'" @closeXPop="closeXPop" />
+      </div>
       <editMyChanMenu v-if="this.targetType === 'myChanMenuEdit'" :propData="this.params" @openPop="openPop"  />
       <editBoardPop v-if="this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
 
@@ -80,16 +83,13 @@ import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 
 import selectBookList from '../receiver/Tal_selectBookList.vue'
 
+import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
 import memberManagement from '../member/Tal_memberManagement.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
-
 import editBoardPop from '../../popup/Tal_editBoardList.vue'
-
 import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
-
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
-
 import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
 
 export default {
@@ -143,7 +143,6 @@ export default {
       delyn: false,
       loadingYn: false,
       selectedBookNMemberList: {}
-
     }
   },
   props: {
@@ -152,6 +151,7 @@ export default {
     parentPopN: {}
   },
   components: {
+    setMypage,
     pushDetail,
     chanAlimList,
     pushList,
@@ -289,7 +289,6 @@ export default {
         this.closePop()
         return
       }
-
       if (parentReloadYn === true) {
         this.reloadParent()
       }
@@ -396,6 +395,8 @@ export default {
       } else if (this.targetType === 'boardDetail') {
         if (this.params.value) {
           this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)
+        } else {
+          this.headerTitle = this.$changeText(this.params.cabinetNameMtext)
         }
       } else if (this.targetType === 'editManagerList') {
         this.headerTitle = '매니저 관리'
@@ -404,7 +405,7 @@ export default {
       } else if (this.targetType === 'selectMemberPop') {
         this.headerTitle = '멤버 선택'
       } else if (this.targetType === 'memberManagement') {
-        this.headerTitle = '매니저 관리'
+        this.headerTitle = '멤버/매니저 관리'
         this.helpYn = true
       } else if (this.targetType === 'editBoard') {
         this.headerTitle = '게시판 관리'
@@ -415,8 +416,9 @@ export default {
         this.bgblackYn = true
       } else if (this.targetType === 'autoAnswer') {
         this.headerTitle = '자동 응답'
+      } else if (this.targetType === 'setMypage') {
+        this.headerTitle = '프로필 설정'
       }
-
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1
       } else {
@@ -432,6 +434,8 @@ export default {
     },
 
     openPop (params) {
+      console.log('hahahaha')
+      console.log(params)
       this.popParams = params
       this.popShowYn = true
     },

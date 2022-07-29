@@ -205,8 +205,6 @@ export default {
       // mShareItemList가 잘 들어오면 save잘 된것
       var mCabinetContentsDetail = resultList.mCabinet
       this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
-
-
       if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.ownerYn = true
         this.shareAuth = { R: true, W: true, V: true }
@@ -254,7 +252,7 @@ export default {
       inParam.teamKey = this.alimDetail[0].creTeamKey
       if (this.boardFuncType === 'BOAR') {
         inParam.deleteYn = true
-        var result = await this.$commonAxiosFunction({
+        await this.$commonAxiosFunction({
           url: '/tp.saveContents',
           param: inParam
         })
@@ -469,9 +467,6 @@ export default {
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-
-
-
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
         param: { memo: memo }

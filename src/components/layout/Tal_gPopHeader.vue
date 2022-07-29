@@ -7,13 +7,13 @@
       <img :src="value.icon" />
     </div>
 
-    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail',}" :style="bgblack === true ? 'color:white;':'' ">
+    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail'}" :style="bgblack === true ? 'color:white;':'' ">
       {{headerTitle}}
     </span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
     <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리' " style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
-    <!-- <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" /> -->
+    <!-- <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버/매니저 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" /> -->
     <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />
     <!-- <div class="commonColor font16 headerTitleWrap" style=""> -->
           <!--v-if="this.headerTitle === '주소록 관리'|| this.headerTitle === '매니저 관리' || this.headerTitle ==='게시판 편집' || this.headerTitle ==='게시판 수정'"> -->
@@ -52,7 +52,7 @@ export default {
 
     },
     clickHelp () {
-      if (this.headerTitle === '멤버 관리') {
+      if (this.headerTitle === '멤버/매니저 관리') {
         this.helpButtonType = 'member'
         this.clickHelpYn = true
       } else if (this.headerTitle === '주소록 관리') {
@@ -95,7 +95,6 @@ export default {
     helpButtonPop
   },
   created () {
-
   },
   watch: {
     bgblack () {
