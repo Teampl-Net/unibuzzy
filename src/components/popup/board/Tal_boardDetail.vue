@@ -186,6 +186,7 @@ export default {
   },
   methods: {
     addImgEvnt () {
+      console.log(this.alimDetail[0])
       // eslint-disable-next-line no-debugger
       // debugger
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
@@ -194,6 +195,19 @@ export default {
           this.selectImgIndex = m
           this.previewPopShowYn = true
         })
+      }
+      // eslint-disable-next-line no-unused-vars
+      var tttt = this.alimDetail[0]
+      if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
+        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
+        for (var i = 0; i < addFalseImgList.length; i++) {
+          for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
+            if (Number(addFalseImgList[i].attributes.filekey.value) === Number(this.alimDetail[0].attachFileList[s].fileKey)) {
+              addFalseImgList[i].setAttribute('mmFilekey', this.alimDetail[0].attachFileList[s].mmFilekey)
+              break
+            }
+          }
+        }
       }
     },
     async checkUserAuth () {
@@ -227,6 +241,7 @@ export default {
       param.targetKey = this.alimDetail[0].contentsKey
       param.targetType = 'writeBoard'
       param.creTeamKey = this.alimDetail[0].creTeamKey
+      if (this.alimDetail[0].attachMfilekey) { param.attachMfilekey = this.alimDetail[0].attachMfilekey }
       param.bodyFullStr = this.alimDetail[0].bodyFullStr
       param.modiContentsKey = this.alimDetail[0].contentsKey
       param.titleStr = this.alimDetail[0].title

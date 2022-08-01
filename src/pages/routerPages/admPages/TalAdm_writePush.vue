@@ -89,9 +89,10 @@
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
+  <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
   <div v-show="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="복합 알림 작성" />
-    <formEditor :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+    <formEditor @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
   <!-- <div v-if="receiverPopYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999"  >
       <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' @openPop='openPop' />
@@ -174,6 +175,7 @@ export default {
       activeTabList: [{ display: '기본 알림', name: 'text' }, { display: '복합 알림', name: 'complex' }],
       viewTab: 'text',
       titleShowYn: false,
+      uploadFileList: []
       // formCardHeight: 0
     }
   },
@@ -210,6 +212,9 @@ export default {
     }
   },
   methods: {
+    changeUploadList (upList) {
+        this.uploadFileList = upList
+    },
     encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
       return encodeURI(str);
     },
@@ -308,7 +313,13 @@ export default {
     },
     async sendMsg () {
       var paramImgList = []
-      this.sendLoadingYn = true
+      if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
+        this.checkPopYn = false
+        this.progressShowYn = true
+      } else {
+        this.sendLoadingYn = true
+      }
+      // this.sendLoadingYn = true
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var innerHtml =''
@@ -316,7 +327,13 @@ export default {
       var targetMsgDiv = null
       if(this.viewTab === 'complex') {
         param.bodyHtmlYn = true
-
+        if (this.uploadFileList.length > 0) {
+          await this.formSubmit()
+          setTimeout(() => {
+            this.progressShowYn = false
+          }, 2000)
+          this.sendLoadingYn = true
+        }
         /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
         /* var imgSrc = null
         var imgList = document.querySelectorAll('#msgBox img')
@@ -325,7 +342,8 @@ export default {
           paramImgList.push(imgSrc)
           imgList[img].src = 'imgTagSrc' + img
         }
-        param.imgList = imgList */
+        param.imgList = imgList
+         */
         var formList = document.querySelectorAll('#msgBox .formCard')
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
@@ -348,6 +366,10 @@ export default {
 
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
       param.allRecvYn = this.allRecvYn
+      var attachFileList = await this.setAttachFileList()
+      if (attachFileList.length > 0) {
+        param.attachFileList = attachFileList
+      }
       if (this.allRecvYn === true) {
 
       } else {
@@ -403,6 +425,19 @@ export default {
         }
       }
 
+    },
+    setAttachFileList () {
+      var newAttachFileList = new Array()
+      var setObj = new Object()
+      for (var i = 0; i < this.uploadFileList.length; i++) {
+        setObj = new Object()
+        setObj.addYn = true
+        setObj.attachYn = false
+        setObj.fileKey = this.uploadFileList[i].fileKey
+        setObj.fileName = (this.uploadFileList[i])[0].file.name
+        newAttachFileList.push(setObj)
+      }
+      return newAttachFileList
     },
     messageAreaClick () {
       this.msgPopYn = true
@@ -466,12 +501,62 @@ export default {
     },
     openSelectFilePop () {
       this.$refs.selectFile.click()
-    }
-    /* countDown () {
-      this.closeAutoPopCnt --
-      if(this.closeAutoPopCnt === 0)
-                clearInterval(play)
-    } */
+    },
+    async formSubmit () {
+      if (this.uploadFileList.length > 0) {
+        var testtest = this.uploadFileList
+        console.log(this.uploadFileList)
+        var iList = document.querySelectorAll(".msgArea .formCard .addTrue")
+        // Form 필드 생성
+        // if (!this.selectFileList.length) return
+        var form = new FormData()
+        var thisthis = this
+        for (var i = 0; i < this.uploadFileList.length; i++) {
+          // var selFile = this.selectFileList[i].file
+          form = new FormData()
+          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
+          // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
+          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+          await this.$axios
+            .post('/uploadFile', form/* ,
+              {
+                onUploadProgress: (progressEvent) => {
+                  var percentage = (progressEvent.loaded * 100) / progressEvent.total
+                  thisthis.progressBarList[i].percentage = Math.round(percentage)
+                }
+              } */,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+            .then(res => {
+              console.log(res)
+              if(res.data.length > 0) {
+                var path =res.data[0].pathMtext
+                this.uploadFileList[i].previewImgUrl = path
+                this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
+                this.uploadFileList[i].fileKey = res.data[0].fileKey
+                this.uploadFileList[i].completeYn = true
+              }
+            })
+            .catch(error => {
+              this.response = error
+              this.isUploading = false
+            })
+        }
+        console.log(this.uploadFileList)
+        for (var i = 0; i < this.uploadFileList.length; i++) {
+          iList[i].src = this.uploadFileList[i].previewImgUrl
+          iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
+          iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
+          iList[i].classList.remove("addTrue")
+        }
+      } else {
+        alert('파일을 선택해 주세요.')
+      }
+      return true
+    },
   },
 
   components: {

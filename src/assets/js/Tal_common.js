@@ -298,6 +298,22 @@ const methods = {
       titleText.substring(0, 64)
     }
     return titleText
+  },
+  /**
+ * byte 용량을 환산하여 반환
+ * 용량의 크기에 따라 MB, KB, byte 단위로 환산함
+ * @param fileSize  byte 값
+ * @param fixed     환산된 용량의 소수점 자릿수
+ * @returns {String}
+ */
+  byteConvert (size) {
+    const byteUnits = ['KB', 'MB', 'GB', 'TB']
+
+    for (let i = 0; i < byteUnits.length; i++) {
+      size = Math.floor(size / 1024)
+
+      if (size < 1024) return size.toFixed(1) + byteUnits[i]
+    }
   }
 
 }
@@ -322,5 +338,6 @@ export default {
     Vue.config.globalProperties.$titleToBody = methods.titleToBody
     Vue.config.globalProperties.$diffInt = methods.diffInt
     Vue.config.globalProperties.$decodeHTML = methods.decodeHTML
+    Vue.config.globalProperties.$byteConvert = methods.byteConvert
   }
 }

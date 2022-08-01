@@ -1,5 +1,5 @@
 <template>
-  <div id="naverIdLogin"></div>
+  <div class="admLoginBtn" id="naverIdLogin"></div>
 
 </template>
 <script>
@@ -10,13 +10,13 @@ export default {
     clientId: {
       type: String,
       required: true,
-      // default: 'BbUrvFqJkUbcMb6ISALy'  // 더알림 공식
-      default: 'jR5bRjvCeurlPVOkCKEg'
+      default: 'BbUrvFqJkUbcMb6ISALy'// 더알림 공식
+      // default: 'jR5bRjvCeurlPVOkCKEg'
 
     },
     callbackUrl: {
       required: true,
-      default: 'http://localhost:8080/#/'
+      default: 'http://localhost:8080/#/naverCallback'
     },
     callbackFunction: {
       required: true
@@ -31,7 +31,7 @@ export default {
     },
     buttonType: {
       type: Number,
-      default: 3
+      default: 2
     },
     buttonHeight: {
       type: Number,
@@ -49,54 +49,48 @@ export default {
   computed: {
 
   },
-  mounted: function () {
-    const scriptId = 'naver_login'
-    const isExist = !!document.getElementById(scriptId)
-    if (!isExist) {
-      const script = document.createElement('script')
-      script.src = this.scriptUrl
-      script.onload = () => this.initiate(this)
-      script.onerror = error => this.handleError(error)
-      script.id = scriptId
-      document.body.appendChild(script)
-    } else this.initiate(this)
+  mounted () {
+    this.naverLogin.init()
   },
   methods: {
     logOut () {
       this.naverLogin.logout()
       location.reload()
+    },
+    handleError: (err) => {
+      console.warn(`This component threw an error (in '${err.target.outerHTML}'):`, this)
     }
   },
   data () {
     return {
       isLoggedIn: false,
-      naverLogin: null,
-      initiate: (comp) => {
-        // eslint-disable-next-line no-undef
-        this.naverLogin = new naver.LoginWithNaverId({
-          clientId: comp.clientId,
-          callbackUrl: comp.callbackUrl,
-          isPopup: comp.isPopup,
-          loginButton: { color: comp.buttonColor, type: comp.buttonType, height: comp.buttonHeight },
-          callbackHandle: true
-        })
-        this.naverLogin =
-          this.naverLogin.init()
-        window.addEventListener('load', function () {
-          this.naverLogin.getLoginStatus(function (status) {
-            console.log(status)
-
-            return comp.callbackFunction(status)
-          })
-        })
-      },
-      handleError: (err) => {
-        console.warn(`This component threw an error (in '${err.target.outerHTML}'):`, this)
-      }
+      // eslint-disable-next-line no-undef
+      naverLogin: new naver.LoginWithNaverId({
+        clientId: this.clientId,
+        callbackUrl: this.callbackUrl,
+        isPopup: this.isPopup,
+        loginButton: { color: this.buttonColor, type: this.buttonType, height: this.buttonHeight },
+        callbackHandle: true
+      })
     }
   },
-  beforeUnmount () {
-    window.removeEventListener('load')
+  unmounted () {
+    // window.removeEventListener('load')
   }
 }
 </script>
+<style scoped>
+.naverIdLogin_loginButton {
+    width: 100%;
+    height: 50px;
+    color: #fff;
+    margin-bottom: 15px;
+    background-color: #3E3F6A !;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+#naverIdLogin img {
+  display: none;
+}
+</style>

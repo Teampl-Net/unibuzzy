@@ -23,6 +23,8 @@ export async function userLoginCheck () {
     paramMap.set('fcmKey', '123456789')
     paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
   } else {
+    // eslint-disable-next-line no-debugger
+    debugger
     if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === null || localStorage.getItem('user') === '') {
       this.$router.replace('/policies')
       return
@@ -35,6 +37,8 @@ export async function userLoginCheck () {
   // paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
   await axios.post('/officeon/smartPassTrack/spt.getStoreList', Object.fromEntries(paramMap)
   ).then(response => {
+    // eslint-disable-next-line no-debugger
+    debugger
     if (response.data.resultCode === 'OK') {
       localStorage.setItem('sessionUser', JSON.stringify(response.data.userMap))
       localStorage.setItem('loginYn', true)

@@ -58,6 +58,7 @@ export async function saveUser (userProfile) {
     user.soPicUrl = userProfile.userImg
     user.picMfilekey = userProfile.userImg
   }
+  user.mobileYn = userProfile.mobileYn
   /* if (userProfile.mobile !== undefined && userProfile.mobile !== null && userProfile.mobile !== 'null' && userProfile.mobile !== '') {
     user.phoneLast = userProfile.mobile.slice(-4, userProfile.mobile.length)
     user.phoneEnc = userProfile.mobile
@@ -66,17 +67,19 @@ export async function saveUser (userProfile) {
     user.phoneEnc = userProfile.phoneEnc
     user.phoneLast = ('' + userProfile.phoneEnc).slice(-4, userProfile.phoneEnc.length)
   } */
-  var deviceInfo = userProfile.deviceInfo
-  user.fcmKey = deviceInfo.fcmKey
-  user.osName = deviceInfo.systemName
-  user.osVersion = deviceInfo.systemVersion
   user.soAccessToken = userProfile.aToken
-  user.deviceId = deviceInfo.uniqueId
-  user.deviceModel = deviceInfo.model
-  user.deviceBrand = deviceInfo.brand
-  user.isTablet = deviceInfo.isTablet
-  user.countryCode = deviceInfo.contry
-  user.areaName = deviceInfo.timeZome
+  var deviceInfo = userProfile.deviceInfo
+  if (deviceInfo) {
+    user.fcmKey = deviceInfo.fcmKey
+    user.osName = deviceInfo.systemName
+    user.osVersion = deviceInfo.systemVersion
+    user.deviceId = deviceInfo.uniqueId
+    user.deviceModel = deviceInfo.model
+    user.deviceBrand = deviceInfo.brand
+    user.isTablet = deviceInfo.isTablet
+    user.countryCode = deviceInfo.contry
+    user.areaName = deviceInfo.timeZome
+  }
   setParam.user = user
   var result = await commonAxiosFunction({
     url: '/tp.saveUser',
@@ -90,6 +93,14 @@ export async function saveUser (userProfile) {
   }
 }
 const methods = {
+  getMobileYn () {
+    var user = navigator.userAgent
+    var mobileYn = false
+    if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
+      mobileYn = true
+    }
+    return mobileYn
+  },
   async userLoginCheck () {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
@@ -114,9 +125,12 @@ const methods = {
         return
       }
       var user = JSON.parse(localStorage.getItem('user'))
+
       if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
       if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
+      paramMap.set('userEmail', user.userEmail || user.soEmail)
     }
+
     paramMap.set('mobileYn', isMobile())
     var result = await commonAxiosFunction({
       url: '/tp.loginCheck',
@@ -453,5 +467,6 @@ export default {
     Vue.config.globalProperties.$getCabinetDetail = methods.getCabinetDetail
     Vue.config.globalProperties.$saveMCabContents = methods.saveMCabContents
     Vue.config.globalProperties.$changeDispName = methods.changeDispName
+    Vue.config.globalProperties.$getMobileYn = methods.getMobileYn
   }
 }

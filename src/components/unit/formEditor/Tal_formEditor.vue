@@ -34,7 +34,7 @@
                         --><!-- position: fixed; top: var(--selectFromScrollH); left: 10px; -->
                         <div v-for="(value, index) in formCardList" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
                             <formText v-if="value.type === 'text'" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
-                            <formImage :selectFileListProp="value.selectFileList" :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc"   @click="clickImg(index)"  :src="value.src" contenteditable />
+                            <formImage :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                             <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div>
                         </div>
                         <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
@@ -94,7 +94,10 @@ export default {
       selectFromOffsetTop: 0,
       previewImgUrl: '',
       selectFileList: [],
-      selectRow: 0
+      selectRow: 0,
+      progressBarList: [],
+      uploadFileKeyList: [],
+      uploadFileList: []
     }
   },
   components: {
@@ -177,8 +180,32 @@ export default {
     },
     async successImgPreview (target) {
       // await this.addFormCard('text')
+      this.progressBarList.push({ name: target.selectFileList[0].file.name, target: target.targetKey, percentage: 0 })
+
       this.toolBoxShowYn = false
+      var tempList = this.uploadFileList
+      var tempKeyList = this.uploadFileKeyList
+      if (tempList.length > 0) {
+        this.uploadFileList = []
+        this.uploadFileKeyList = []
+
+        this.uploadFileList = [
+          ...tempList,
+          target.selectFileList
+        ]
+
+        this.uploadFileKeyList = [
+          ...tempKeyList,
+          target.targetKey
+        ]
+      } else {
+        this.uploadFileList.push(target.selectFileList)
+        this.uploadFileKeyList.push(target.targetKey)
+      }
+      console.log(this.uploadFileList)
+      this.$emit('changeUploadList', this.uploadFileList)
       this.formCardList[target.targetKey].selectFileList = target.selectFileList
+      this.formCardList[target.targetKey].addYn = true
     },
     /* addFormCard2 (type, src) {
       const selection = document.getSelection()
@@ -209,6 +236,16 @@ export default {
       var targetKey = this.selectRow
       for (var i = 0; i < this.formCardList.length; i++) {
         if (targetKey === this.formCardList[i].targetKey) {
+          if (this.formCardList[i] !== 'text') {
+            for (var f; f < this.uploadFileKeyList.length; f++) {
+              if (this.uploadFileKeyList[f] === this.formCardList[i].targetKey) {
+                this.uploadFileKeyList.splice(f, 1)
+                this.uploadFileList.splice(f, 1)
+                this.progressBarList.splice(f, 1)
+                this.$emit('changeUploadList', this.uploadFileList)
+              }
+            }
+          }
           this.formCardList.splice(i, 1)
         }
       }
@@ -329,39 +366,6 @@ export default {
     },
     allBlur () {
       this.selectedCardKey = ''
-    },
-    async formSubmit () {
-      if (this.selectFileList.length > 0) {
-        // Form 필드 생성
-        var form = new FormData()
-
-        // if (!this.selectFileList.length) return
-
-        for (var i = 0; i < this.selectFileList.length; i++) {
-          // var selFile = this.selectFileList[i].file
-          // Here we create unique key 'files[i]' in our response dict
-          form.append('files[' + i + ']', this.selectFileList[i].file)
-        }
-        this.isUploading = true
-
-        this.$axios
-          .post('/uploadFile', form, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(res => {
-            this.response = res
-            this.isUploading = false
-          })
-          .catch(error => {
-            this.response = error
-            this.isUploading = false
-          })
-      } else {
-        alert('파일을 선택해 주세요.')
-      }
-      return true
     },
     openSelectFilePop () {
       this.$refs.selectFile.click()

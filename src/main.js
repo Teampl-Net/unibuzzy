@@ -4,8 +4,10 @@ import moTheAlim from './Tal_moTheAlim.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.js'
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+
 import { longClickDirective } from 'vue-long-click'
 import dayjs from 'dayjs'
 
@@ -33,7 +35,6 @@ import smallPop from './components/popup/confirmPop/Tal_smallCommonConfirmPop.vu
 import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
 import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
-
 // import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
@@ -55,6 +56,7 @@ const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
 app.use(commonjs)
+app.use(BootstrapVue3)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)

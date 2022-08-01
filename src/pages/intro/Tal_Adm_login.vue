@@ -23,11 +23,12 @@
         네이버 로그인
       </div> -->
       <naver  :callbackFunction='naverCallbackFunction' :isPopup='false' />
-      <div class="admLoginBtn font20" v-on:click="GoogleLoginBtn">
+
+      <div @click="onLogin" class="admLoginBtn font20" >
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-
+<!--
       <div id="g_id_onload"
         data-client_id="777053173385-hp7otdoios6a7c0eb924bftbhoeuaat7.apps.googleusercontent.com"
         data-login_uri="http://localhost:8080/"
@@ -42,7 +43,7 @@
         data-text="sign_in_with"
         data-shape="rectangular"
         data-logo_alignment="left">
-      </div>
+      </div> -->
 
       <div v-if="this.systemName === 'iOS' || this.systemName === 'ios'" class="admLoginBtn font20" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
@@ -53,22 +54,11 @@
 
 <script>
 import naver from '../Tal_naverCompo.vue'
-import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-
-import firebase from 'firebase/app'
-import 'firebase/auth'
-
-// import { onMessage } from '../../assets/js/webviewInterface'
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
-  authDomain: 'thealim-2602c.firebaseapp.com',
-  projectId: 'thealim-2602c',
-  storageBucket: 'thealim-2602c.appspot.com',
-  messagingSenderId: '777053173385',
-  appId: '1:777053173385:web:46b92863d81076f61d3858',
-  measurementId: 'G-NHD2EKJML0'
-}
+import AuthService from '../../assets/js/login/Tal.authService'
+import { firebaseApp } from '../../assets/js/login/Tal.firebase'
+import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+const authService = new AuthService(firebaseApp)
 export default {
   name: '',
   data () {
@@ -78,7 +68,6 @@ export default {
     }
   },
   mounted () {
-    firebase.initializeApp(firebaseConfig)
     // window.onload = function () {
     //   google.accounts.id.initialize({
     //     client_id: "345518181069-9s615p3gh64pn97jhssidej4urh8n1p6.apps.googleusercontent.com",
@@ -92,36 +81,43 @@ export default {
     // }
   },
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    commonConfirmPop, naver
+    naver
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
   },
   methods: {
-    onSignIn (googleUser) {
-      console.log(googleUser)
-      // Useful data for your client-side scripts:
-      var profile = googleUser.getBasicProfile()
-      console.log('ID: ' + profile.getId()) // Don't send this directly to your server!
-      console.log('Full Name: ' + profile.getName())
-      console.log('Given Name: ' + profile.getGivenName())
-      console.log('Family Name: ' + profile.getFamilyName())
-      console.log('Image URL: ' + profile.getImageUrl())
-      console.log('Email: ' + profile.getEmail())
+    onLogin () {
+      var thisthis = this
+      authService.login('Google').then(async function (result) {
+        console.log(result)
+        if (result.user) {
+          // eslint-disable-next-line no-new-object
+          var user = new Object()
+          user.email = result.user.email
+          user.mobile = result.user.phoneNumber
+          user.name = result.user.displayName
+          user.aToken = result.user.accessToken
+          user.rToken = ''
+        }
+        var userProfile = await setUserInfo(user)
 
-      // The ID token you need to pass to your backend:
-      // eslint-disable-next-line camelcase
-      var id_token = googleUser.getAuthResponse().id_token
-      // eslint-disable-next-line camelcase
-      console.log('ID Token: ' + id_token)
+        /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
+                // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
+                router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
+              } else */
+
+        await saveUser(userProfile) // 서버에 save요청
+        localStorage.setItem('loginYn', true)
+        thisthis.$router.replace({ path: '/' })
+      })
     },
     NaverLoginBtn () {
     },
     AppleLoginBtn () {
       // alert('apple')
     },
-    async GoogleLoginBtn () {
+    /* async GoogleLoginBtn () {
       console.log('login')
       const provider = new firebase.auth.GoogleAuthProvider()
       provider.setCustomParameters({
@@ -129,17 +125,14 @@ export default {
       })
       const profile = await firebase.auth().signInWithPopup(provider)
       console.log(profile)
-    },
-
+    }, */
     naverCallbackFunction (log) {
       // alert(true)
       console.log(log)
     },
-
     handleCredentialResponse (response) {
       console.log('Encoded JWT ID token: ' + response.credential)
     }
-
   }
 }
 </script>

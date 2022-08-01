@@ -145,6 +145,20 @@ export default {
         thisthis.changeMode()
       }, 3000)
     }
+
+    /* debugger
+    var tets = this.alimDetail
+    if (this.alimDetail[0].attachFileList != undefined && this.alimDetail[0].attachFileList.length > 0) {
+      var addFalseImgList = document.querySelectorAll('.pushDetailPaper .formCard .editorImg')
+      if (this.alimDetail[0].attachFileList.length === addFalseImgList.length) {
+        for (var i = 0; i < addFalseImgList.length; i++) {
+          if (Number(addFalseImgList[i].attributes.filekey.value) === this.alimDetail[0].attachFileList[i].filekey) {
+            addFalseImgList[i].setAttribute('mmFilekey', this.alimDetail[0].attachFileList[i].mmFilekey)
+          }
+        }
+      }
+      
+    } */
     /*
     var test = this.$store.state.historyStack
     test.push(0)
@@ -386,6 +400,8 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
+      // debugger
+      
       if (this.alimDetail[0].childrenContents) {
         if (this.alimDetail[0].creUserKey === this.creUser) {
           this.alimDetail = [

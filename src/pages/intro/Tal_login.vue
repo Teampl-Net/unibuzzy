@@ -12,7 +12,8 @@
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
       </div> -->
-      <div class="loginBtn font20" v-on:click="NaverLoginBtn">
+      <naver  :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
+      <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
         <img src="../../assets/images/intro/login/login_naver.png">
         네이버 로그인
       </div>
@@ -28,20 +29,27 @@
 </template>
 
 <script>
-
+import naver from '../Tal_naverCompo.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-
+import AuthService from '../../assets/js/login/Tal.authService'
+import { firebaseApp } from '../../assets/js/login/Tal.firebase'
 import { onMessage } from '../../assets/js/webviewInterface'
+
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
+const authService = new AuthService(firebaseApp)
 export default {
   name: '',
   data () {
     return {
       systemName: 'iOS',
-      appCloseYn: false
+      appCloseYn: false,
+      mobileYn: this.$getMobileYn()
     }
   },
   components: {
-    commonConfirmPop
+    commonConfirmPop,
+    naver
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
@@ -55,12 +63,16 @@ export default {
       this.$router.replace('/testLoginPage')
     },
     GoogleLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginGoogle'
-        })
-      )
+      if (this.mobileYn) {
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'REQ',
+            callFunc: 'loginGoogle'
+          })
+        )
+      } else {
+        this.onLogin()
+      }
     },
     KakaoLoginBtn () {
       window.ReactNativeWebView.postMessage(
@@ -85,6 +97,32 @@ export default {
           callFunc: 'loginApple'
         })
       )
+    },
+    onLogin () {
+      var thisthis = this
+      localStorage.setItem('loginType', 'G')
+      authService.login('Google').then(async function (result) {
+        console.log(result)
+        if (result.user) {
+          // eslint-disable-next-line no-new-object
+          var user = new Object()
+          user.email = result.user.email
+          user.mobile = result.user.phoneNumber
+          user.name = result.user.displayName
+          user.aToken = result.user.accessToken
+          user.rToken = ''
+        }
+        var userProfile = await setUserInfo(user)
+
+        /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
+                // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
+                router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
+              } else */
+
+        await saveUser(userProfile) // 서버에 save요청
+        localStorage.setItem('loginYn', true)
+        thisthis.$router.replace({ path: '/' })
+      })
     },
     pictureResponse (data) {
     },

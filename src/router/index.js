@@ -36,7 +36,7 @@ import myActList from '../components/pageComponents/myPage/Tal_myActList.vue'
 import myPage from '../pages/routerPages/Tal_myPage.vue'
 
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
-
+import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -108,6 +108,12 @@ const routes = [
     name: 'admLogin',
     props: true,
     component: admLogin
+  },
+  {
+    path: '/naverCallback',
+    name: 'naverCallback',
+    props: true,
+    component: naverCallback
   },
 
   {

@@ -2,7 +2,7 @@
         <div v-if="pSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px); height: var(--cardHeight)">
               <div class="fl mright-05" style="width:100%;">
-                  <img  class="editorImg" style="width:100%;" :src="pSrc" />
+                  <img  class="editorImg addFalse" :filekey="pFilekey" style="width:100%;" :src="pSrc" />
                   <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
               </div>
           </div>
@@ -19,7 +19,7 @@
             <input class="formImageFile" type="file" title ="선택" accept="image/*" multiple  ref="selectFile" id="input-file" @change="previewFile"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
                 <div v-for="(value, index) in selectFileList"  :key="index" class="fl mright-05" :style="settingImgSize" style="width:var(--imgWidth);">
-                    <img  class="editorImg" style="width:100%;" :src="value.previewImgUrl" />
+                    <img  class="editorImg" style="width:100%;" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
                     <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
                 </div>
             </div>
@@ -37,8 +37,7 @@ export default {
   mounted () {
     // eslint-disable-next-line no-unused-vars
     var test = this.$refs.imageBox
-    // eslint-disable-next-line no-debugger
-    debugger
+
     this.cardHeight = this.$refs.imageBox.scrollHeight
     // this.$refs.selectFile.click()
   },
@@ -50,7 +49,8 @@ export default {
   props: {
     selectFileListProp: {},
     targetKey: {},
-    pSrc: {}
+    pSrc: {},
+    pFilekey: {}
   },
   data () {
     return {
@@ -93,6 +93,9 @@ export default {
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
+          // eslint-disable-next-line no-unused-vars
+          var tt = this.selectFile
+
           let fileExt = this.selectFile.name.substring(
             this.selectFile.name.lastIndexOf('.') + 1
           )
@@ -127,7 +130,8 @@ export default {
 
                 canvas.getContext('2d').drawImage(image, 0, 0, width, height)
                 this.previewImgUrl = canvas.toDataURL('image/png', 0.8)
-                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), file: thisthis.selectFile })
+                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: thisthis.selectFile })
+
                 thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: thisthis.selectFileList, originalType: 'image' })
                 // this.$emit('updateImgForm', this.previewImgUrl)
                 setTimeout(() => {
@@ -168,23 +172,24 @@ export default {
           // var selFile = this.selectFileList[i].file
           // Here we create unique key 'files[i]' in our response dict
           form.append('files[' + i + ']', this.selectFileList[i].file)
-        }
-        this.isUploading = true
 
-        this.$axios
-          .post('/uploadFile', form, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-          .then(res => {
-            this.response = res
-            this.isUploading = false
-          })
-          .catch(error => {
-            this.response = error
-            this.isUploading = false
-          })
+          this.isUploading = true
+
+          this.$axios
+            .post('/uploadFile', form, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            .then(res => {
+              this.response = res
+              this.isUploading = false
+            })
+            .catch(error => {
+              this.response = error
+              this.isUploading = false
+            })
+        }
       } else {
         alert('파일을 선택해 주세요.')
       }

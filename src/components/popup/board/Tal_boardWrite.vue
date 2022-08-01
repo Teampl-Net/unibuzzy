@@ -44,10 +44,11 @@
     </div>
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
-  </div>
+  </div>  <!-- v-if="progressShowYn" -->
+  <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
   <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
-    <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
+    <formEditor @changeUploadList="changeUploadList" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
   </div>
 </template>
 <script>
@@ -56,6 +57,7 @@
 // import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
+import progressBar from '../common/Tal_commonProgressBar.vue'
 export default {
   props: {
     propData: {},
@@ -94,6 +96,8 @@ export default {
         }
         if (imgYn) {
           jsonObj.pSrc = formC[i].querySelector('img').src
+
+          jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
         }
         newArr.push(jsonObj)
       }
@@ -101,15 +105,18 @@ export default {
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
       this.viewTab = 'complex'
+      this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
+      console.log(this.addFalseList)
+      // eslint-disable-next-line no-debugger
+      debugger
       // this.formEditorShowYn = true
     } else {
-      // eslint-disable-next-line no-debugger
-      // debugger
       document.getElementById('textMsgBox').innerHTML = this.bodyString
     }
   },
   data () {
     return {
+      addFalseList: [],
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,
@@ -140,7 +147,8 @@ export default {
       activeTabList: [{ display: '기본 작성', name: 'text' }, { display: '복합 작성', name: 'complex' }],
       bodyString: '',
       modiYn: false,
-      nonMemUserName: ''
+      nonMemUserName: '',
+      uploadFileList: []
     }
   },
   computed: {
@@ -166,6 +174,9 @@ export default {
     }
   },
   methods: {
+    changeUploadList (upList) {
+      this.uploadFileList = upList
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
@@ -195,15 +206,75 @@ export default {
     encodeUTF8 (str) { // 특수문자도 포함할 경우,encodeURIComponent(str)를 사용.
       return encodeURI(str)
     },
-
+    async setAttachFileList () {
+      var imgItemList = document.querySelectorAll('.msgArea .formCard .editorImg')
+      console.log(imgItemList)
+      console.log(this.addFalseList)
+      // eslint-disable-next-line no-undef
+      var delList = []
+      for (var f = this.addFalseList.length - 1; f > -1; f--) {
+        var delYn = true
+        for (var t = 0; t < imgItemList.length; t++) {
+          if (Number(this.addFalseList[f].attributes.filekey.value) === Number(imgItemList[t].attributes.filekey.value)) {
+            delYn = false
+            break
+          }
+        }
+        if (delYn) {
+          delList.push(this.addFalseList[f])
+        }
+      }
+      // eslint-disable-next-line no-array-constructor
+      var newAttachFileList = new Array()
+      // eslint-disable-next-line no-new-object
+      var setObj = new Object()
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
+      console.log(this.addFalseList)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (delList.length > 0) {
+        for (var a = 0; a < delList.length; a++) {
+          // eslint-disable-next-line no-new-object
+          setObj = new Object()
+          setObj.addYn = false
+          setObj.attachYn = false
+          setObj.mFilekey = this.propData.attachMfilekey
+          setObj.fileKey = Number(delList[a].attributes.filekey.value)
+          newAttachFileList.push(setObj)
+        }
+      }
+      for (var i = 0; i < this.uploadFileList.length; i++) {
+        // eslint-disable-next-line no-new-object
+        setObj = new Object()
+        setObj.addYn = true
+        setObj.attachYn = false
+        setObj.mFilekey = this.propData.attachMfilekey
+        setObj.fileKey = this.uploadFileList[i].fileKey
+        setObj.fileName = (this.uploadFileList[i])[0].file.name
+        newAttachFileList.push(setObj)
+      }
+      return newAttachFileList
+    },
     async sendMsg () {
-      this.sendLoadingYn = true
+      if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
+        this.checkPopYn = false
+        this.progressShowYn = true
+      } else {
+        this.sendLoadingYn = true
+      }
       // eslint-disable-next-line no-new-object
       var param = new Object()
 
       var innerHtml = ''
       if (this.viewTab === 'complex') {
         param.bodyHtmlYn = true
+        if (this.uploadFileList.length > 0) {
+          await this.formSubmit()
+          setTimeout(() => {
+            this.progressShowYn = false
+          }, 2000)
+          this.sendLoadingYn = true
+        }
         var formList = document.querySelectorAll('#msgBox .formCard')
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
@@ -211,7 +282,7 @@ export default {
           }
           param.getBodyHtmlYn = true
         }
-
+        param.attachFileList = await this.setAttachFileList()
         innerHtml = document.getElementById('msgBox').innerHTML
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
@@ -227,6 +298,10 @@ export default {
       param.cabinetKey = this.propData.cabinetKey
       param.creTeamKey = this.propData.currentTeamKey
       param.actorList = this.propData.actorList
+
+      if (this.propData.attachMfilekey) {
+        param.attachMfilekey = this.propData.attachMfilekey
+      }
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
       if (this.propData.nonMemYn) {
@@ -253,7 +328,7 @@ export default {
         newP.targetType = 'boardDetail'
         newP.cabinetNameMtext = this.propData.cabinetNameMtext
         newP.value = this.propData
-
+        this.progressShowYn = false
         if (!this.modiYn) {
           this.$emit('successWrite', newP)
         } else {
@@ -316,6 +391,64 @@ export default {
     },
     openSelectFilePop () {
       this.$refs.selectFile.click()
+    },
+    async formSubmit () {
+      if (this.uploadFileList.length > 0) {
+        console.log(this.uploadFileList)
+
+        var form = new FormData()
+        var thisthis = this
+        for (var i = 0; i < this.uploadFileList.length; i++) {
+          thisthis.uploadFileList[i].percentage = 0
+          // var selFile = this.selectFileList[i].file
+          form = new FormData()
+          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
+          // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
+          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+
+          await this.$axios
+            .post('/uploadFile', form,
+              {
+                onUploadProgress: (progressEvent) => {
+                  var percentage = (progressEvent.loaded * 100) / progressEvent.total
+                  thisthis.uploadFileList[i].percentage = Math.round(percentage)
+                }
+              },
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+            .then(res => {
+              console.log(res)
+              if (res.data.length > 0) {
+                var path = res.data[0].pathMtext
+                this.uploadFileList[i].previewImgUrl = path
+                this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
+                this.uploadFileList[i].fileKey = res.data[0].fileKey
+              }
+            })
+            .catch(error => {
+              this.response = error
+              this.isUploading = false
+            })
+        }
+        console.log(this.uploadFileList)
+        var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        for (var s = 0; s < this.uploadFileList.length; s++) {
+          var uploadFile = this.uploadFileList[s]
+          iList[s].src = uploadFile.previewImgUrl
+          // eslint-disable-next-line no-unused-vars
+          iList[s].setAttribute('fileKey', uploadFile.fileKey)
+          iList[s].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+          iList[s].classList.remove('addTrue')
+          iList[s].classList.add('addFalse')
+          // iList[s].at.remove('addTrue')
+        }
+      } else {
+        alert('파일을 선택해 주세요.')
+      }
+      return true
     }
     /* countDown () {
       this.closeAutoPopCnt --
@@ -326,7 +459,8 @@ export default {
 
   components: {
     commonConfirmPop,
-    formEditor
+    formEditor,
+    progressBar
     // msgPop,
     // writePushPageTitle,
     // pushPop
