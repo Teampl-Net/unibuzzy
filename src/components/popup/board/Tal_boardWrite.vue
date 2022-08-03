@@ -3,29 +3,17 @@
   <div class="w-100P" style=" height: 100vh;top: 50px; position: absolute; overflow:auto">
     <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
-      <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-        <!-- <div  :style="setColor" class="boardWritePaperBack"> -->
-          <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
         <div class="boardWritePaperBack">
           <div class="whitePaper">
             <div class="overFlowYScroll boardInputArea">
               <div class="writeBoardPageTopArea">
                 <div class=""><p class="boardWriteTitleText" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="" v-if="propData.nonMemYn"><p class="boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
-                <!-- <div class="">
-                  <p style="">수신대상</p>
-                  <div class="inputArea pageTopInputArea" style="padding-left: 2px; background: rgb(204 204 204 / 48%);" @click="openBoardReceiverSelect">
-                  </div>
-                </div> -->
-                <!-- <p style="mright-05">옵션선택</p>
-                <div style="width: 150px; margin-left: 5px; min-height: 25px; float: left;"><input id="creNameInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="showCreNameYn"><label class="mleft-05" for="creNameInput">작성자명 공개</label></div>
-                <div style="width: 100px; margin-left: 5px; min-height: 25px; float: left;"><input id="replyInput" type="checkbox" style="float: left;margin-top: 6px;"  v-model="canReplyYn"><label class="mleft-05" for="replyInput">답글허용</label></div> -->
-              </div>
+             </div>
               <gActiveBar :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
@@ -33,12 +21,15 @@
                 <div id="msgBox" @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 
               </div>
+              <div style="float: left; width: 100%; padding: 10px 0; min-height: 50px;">
+                <div style="width: 100%; min-height: 30px;">
+                  <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt="">
+                  <p class="commonColor fl font16 fontBold" style="margin-top: 4px;">첨부파일</p>
+                  <attachFileList :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                </div>
+              </div>
             </div>
           </div>
-          <!-- <div style="width: 100%;" >
-                  <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
-                  <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
-          </div> -->
         </div>
       </div>
     </div>
@@ -52,12 +43,10 @@
   </div>
 </template>
 <script>
-// import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
-// import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
-// import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
 import progressBar from '../common/Tal_commonProgressBar.vue'
+import attachFileList from '../../unit/formEditor/Tal_attachFile.vue'
 export default {
   props: {
     propData: {},
@@ -106,13 +95,20 @@ export default {
       document.getElementById('msgBox').innerHTML = innerHtml
       this.viewTab = 'complex'
       this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-      console.log(this.addFalseList)
       // eslint-disable-next-line no-debugger
       debugger
+      console.log(this.propData.parentAttachTrueFileList)
       // this.formEditorShowYn = true
     } else {
       document.getElementById('textMsgBox').innerHTML = this.bodyString
     }
+    if (this.propData.parentAttachTrueFileList && this.propData.parentAttachTrueFileList.length > 0) {
+      this.addFalseList = [
+        ...this.addFalseList,
+        ...this.propData.parentAttachTrueFileList
+      ]
+    }
+    console.log(this.addFalseList)
   },
   data () {
     return {
@@ -148,7 +144,9 @@ export default {
       bodyString: '',
       modiYn: false,
       nonMemUserName: '',
-      uploadFileList: []
+      uploadFileList: [],
+      attachTrueFileList: [],
+      delAddFalseFileList: []
     }
   },
   computed: {
@@ -169,13 +167,43 @@ export default {
       this.modiYn = true
       console.log('WOW!!!!' + this.decodeContents(this.bodyString))
     }
+    if (this.propData.parentAttachTrueFileList && this.propData.parentAttachTrueFileList.length > 0) {
+      this.attachTrueFileList = this.propData.parentAttachTrueFileList
+    }
     if (this.propData.titleStr) {
       this.writePushTitle = this.propData.titleStr
     }
   },
   methods: {
+    delAttachFile (dFile) {
+      if (dFile.addYn) {
+        for (var d = 0; d < this.uploadFileList.length; d++) {
+          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile[0].attachKey) {
+            this.uploadFileList.splice(d, 1)
+          }
+        }
+      } else {
+        this.delAddFalseFileList.push(dFile)
+      }
+    },
+    setSelectedAttachFileList (sFile) {
+      if (sFile[0].addYn === true) {
+        this.uploadFileList.push(sFile)
+      }
+      console.log(this.uploadFileList)
+    },
     changeUploadList (upList) {
-      this.uploadFileList = upList
+      var tempList = []
+      if (this.uploadFileList.length > 0) {
+        tempList = [
+          ...this.uploadFileList,
+          ...upList
+        ]
+        this.uploadFileList = []
+        this.uploadFileList = tempList
+      } else {
+        this.uploadFileList = upList
+      }
     },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
@@ -210,28 +238,39 @@ export default {
       var imgItemList = document.querySelectorAll('.msgArea .formCard .editorImg')
       console.log(imgItemList)
       console.log(this.addFalseList)
+      console.log(this.delAddFalseFileList)
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-undef
       var delList = []
       for (var f = this.addFalseList.length - 1; f > -1; f--) {
-        var delYn = true
-        for (var t = 0; t < imgItemList.length; t++) {
-          if (Number(this.addFalseList[f].attributes.filekey.value) === Number(imgItemList[t].attributes.filekey.value)) {
-            delYn = false
-            break
+        if (this.addFalseList[f].attachYn) {
+          for (var af = 0; af < this.delAddFalseFileList.length; af++) {
+            if (this.addFalseList[f].fileKey === this.delAddFalseFileList[af].fileKey) {
+              delList.push(this.addFalseList[f])
+              break
+            }
+          }
+        } else {
+          var delYn = true
+          for (var t = 0; t < imgItemList.length; t++) {
+            if (Number(this.addFalseList[f].attributes.filekey.value) === Number(imgItemList[t].attributes.filekey.value)) {
+              delYn = false
+              break
+            }
+          }
+          if (delYn) {
+            delList.push(this.addFalseList[f])
           }
         }
-        if (delYn) {
-          delList.push(this.addFalseList[f])
-        }
       }
+      console.log(delList)
       // eslint-disable-next-line no-array-constructor
       var newAttachFileList = new Array()
       // eslint-disable-next-line no-new-object
       var setObj = new Object()
       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
       console.log(this.addFalseList)
-      // eslint-disable-next-line no-debugger
-      debugger
       if (delList.length > 0) {
         for (var a = 0; a < delList.length; a++) {
           // eslint-disable-next-line no-new-object
@@ -239,42 +278,51 @@ export default {
           setObj.addYn = false
           setObj.attachYn = false
           setObj.mFilekey = this.propData.attachMfilekey
-          setObj.fileKey = Number(delList[a].attributes.filekey.value)
+          if (delList[a].attachYn) {
+            setObj.fileKey = delList[a].fileKey
+          } else {
+            setObj.fileKey = Number(delList[a].attributes.filekey.value)
+          }
           newAttachFileList.push(setObj)
         }
       }
       for (var i = 0; i < this.uploadFileList.length; i++) {
         // eslint-disable-next-line no-new-object
         setObj = new Object()
-        setObj.addYn = true
-        setObj.attachYn = false
-        setObj.mFilekey = this.propData.attachMfilekey
-        setObj.fileKey = this.uploadFileList[i].fileKey
-        setObj.fileName = (this.uploadFileList[i])[0].file.name
-        newAttachFileList.push(setObj)
+        if (this.uploadFileList[i].successSave) {
+          setObj.addYn = true
+          if (this.uploadFileList[i].attachYn) {
+            setObj.attachYn = this.uploadFileList[i].attachYn
+          } else {
+            setObj.attachYn = false
+          }
+          setObj.mFilekey = this.propData.attachMfilekey
+          setObj.fileKey = this.uploadFileList[i].fileKey
+          setObj.fileName = (this.uploadFileList[i])[0].file.name
+          newAttachFileList.push(setObj)
+        }
       }
       return newAttachFileList
     },
     async sendMsg () {
-      if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+      if (this.uploadFileList.length > 0) {
         this.checkPopYn = false
         this.progressShowYn = true
+        await this.uploadFile()
+        setTimeout(() => {
+          this.progressShowYn = false
+        }, 2000)
+        this.sendLoadingYn = true
       } else {
         this.sendLoadingYn = true
       }
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-
+      param.attachFileList = await this.setAttachFileList()
       var innerHtml = ''
       if (this.viewTab === 'complex') {
         param.bodyHtmlYn = true
-        if (this.uploadFileList.length > 0) {
-          await this.formSubmit()
-          setTimeout(() => {
-            this.progressShowYn = false
-          }, 2000)
-          this.sendLoadingYn = true
-        }
         var formList = document.querySelectorAll('#msgBox .formCard')
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
@@ -282,7 +330,6 @@ export default {
           }
           param.getBodyHtmlYn = true
         }
-        param.attachFileList = await this.setAttachFileList()
         innerHtml = document.getElementById('msgBox').innerHTML
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
@@ -392,22 +439,21 @@ export default {
     openSelectFilePop () {
       this.$refs.selectFile.click()
     },
-    async formSubmit () {
+    async uploadFile () {
       if (this.uploadFileList.length > 0) {
+        console.log('this.uploadFileList')
         console.log(this.uploadFileList)
 
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
           thisthis.uploadFileList[i].percentage = 0
-          // var selFile = this.selectFileList[i].file
           form = new FormData()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
-          // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
+          // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
-
           await this.$axios
-            .post('/uploadFile', form,
+            .post('/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -422,45 +468,59 @@ export default {
             .then(res => {
               console.log(res)
               if (res.data.length > 0) {
+                if ((this.uploadFileList[i])[0].attachYn === true) {
+                  this.uploadFileList[i].attachYn = true
+                } else {
+                }
                 var path = res.data[0].pathMtext
-                this.uploadFileList[i].previewImgUrl = path
+                this.uploadFileList[i].successSave = true
+                this.uploadFileList[i].filePath = path
                 this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
                 this.uploadFileList[i].fileKey = res.data[0].fileKey
               }
             })
             .catch(error => {
-              this.response = error
-              this.isUploading = false
+              console.log(error)
             })
+          /* } */
+          // var selFile = this.selectFileList[i].file
         }
         console.log(this.uploadFileList)
         var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
-        for (var s = 0; s < this.uploadFileList.length; s++) {
-          var uploadFile = this.uploadFileList[s]
-          iList[s].src = uploadFile.previewImgUrl
-          // eslint-disable-next-line no-unused-vars
-          iList[s].setAttribute('fileKey', uploadFile.fileKey)
-          iList[s].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
-          iList[s].classList.remove('addTrue')
-          iList[s].classList.add('addFalse')
-          // iList[s].at.remove('addTrue')
+        if (iList.length > 0) {
+          for (var il = 0; il < iList.length; il++) {
+            for (var s = 0; s < this.uploadFileList.length; s++) {
+              var uploadFile = this.uploadFileList[s]
+              if (uploadFile.successSave) {
+                console.log('uploadFile[0]')
+                console.log(uploadFile)
+                if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                  iList[il].src = uploadFile.filePath
+                  // eslint-disable-next-line no-unused-vars
+                  iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                  iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                  iList[il].classList.remove('addTrue')
+                  iList[il].classList.add('addFalse')
+                  break
+                }
+              } else {
+                this.uploadFileList.splice(s, 1)
+              }
+            }
+          }
         }
       } else {
         alert('파일을 선택해 주세요.')
       }
       return true
     }
-    /* countDown () {
-      this.closeAutoPopCnt --
-      if(this.closeAutoPopCnt === 0)
-                clearInterval(play)
-    } */
   },
 
   components: {
     commonConfirmPop,
     formEditor,
-    progressBar
+    progressBar,
+    attachFileList
     // msgPop,
     // writePushPageTitle,
     // pushPop
@@ -509,10 +569,10 @@ export default {
 }
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
+.pageMsgArea{ height: 100px; min-height: 200px; float: left; height: calc(100% - 14rem); width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea .msgArea{ width:100%; height:calc(100%); border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
 
 .writeBoardPageTopArea{
   width: 100%; height: 3rem;
@@ -532,7 +592,7 @@ export default {
 
 .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.boardWritePaperBack{width: 100%; height: calc(100% - 15rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+.boardWritePaperBack{width: 100%; height: calc(100% - 5rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .boardInputArea{height: 100%; width: 100%;}

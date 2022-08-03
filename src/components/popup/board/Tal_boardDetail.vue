@@ -22,6 +22,17 @@
           </div>
 
         </div>
+        <div style="position: relative;width: 100%; height: 30px; float: left; ">
+          <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span></span>
+          <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
+          <div v-if="filePopShowYn" style="width: 70%; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
+            <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 ({{this.attachTrueFileList.length}})</p>
+            <div :fileKey="value.fileKey" :filePath="value.pathMtext" @click="download1(value.fileKey)" class="font12 textOverdot"  style="width: 100%; height: 30px; " v-for="(value, index) in this.attachTrueFileList" :key="index">
+              - {{value.fileName}}
+            </div>
+            <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
+          </div>
+        </div>
         <div  id="boardBodyArea" class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
@@ -101,6 +112,7 @@ export default {
       selectImgIndex: 0,
       selectedImgContentsIndex: 0,
       alimDetail: [],
+      filePopShowYn: false,
       previewPopShowYn: false,
       // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
@@ -128,7 +140,8 @@ export default {
       picBgPath: '',
       fileYn: false,
       deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
-      blindYn: false
+      blindYn: false,
+      attachTrueFileList: []
     }
   },
   props: {
@@ -185,6 +198,105 @@ export default {
     }
   },
   methods: {
+    async pdf_file_get (path, fileName) {
+      window.open(path, 'Download')
+      // for non-IE
+      /* if (!window.ActiveXObject) {
+        var save = document.createElement('a')
+        save.href = path
+        save.target = '_blank'
+        save.download = fileName || path
+        var evt = document.createEvent('MouseEvents')
+        evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0,
+          false, false, false, false, 0, null)
+        save.dispatchEvent(evt);
+        (window.URL || window.webkitURL).revokeObjectURL(save.href)
+      } else if (!!window.ActiveXObject && document.execCommand) {
+        var _window = window.open(path, '_blank')
+        _window.document.close()
+        _window.document.execCommand('SaveAs', true, fileName || path)
+        _window.close()
+      } */
+    },
+    download (link, name) {
+      var iframe
+      iframe = document.getElementById('hiddenDownloader')
+      if (iframe == null) {
+        iframe = document.createElement('iframe')
+        iframe.id = 'hiddenDownloader'
+        iframe.style.visibility = 'none'
+        document.body.appendChild(iframe)
+      }
+      link = link.replaceAll('http://61.97.186.14:19090/', '')
+      iframe.src = 'http://61.97.186.14:19090/Tal_fileDownload.jsp?downloadURL=' + link + '&fileName=' + name
+      // iframe.download = name
+      this.filePopShowYn = false
+      return false
+    },
+    download1 (fileKey) {
+      var iframe
+      iframe = document.getElementById('hiddenDownloader')
+      if (iframe == null) {
+        iframe = document.createElement('iframe')
+        iframe.id = 'hiddenDownloader'
+        iframe.style.visibility = 'none'
+        document.body.appendChild(iframe)
+      }
+      iframe.src = 'http://192.168.0.10:19090/file.downloadFile?fileKey=' + fileKey
+      /* try {
+        var pom = document.createElement('a')
+        pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')
+        pom.setAttribute('download', 'test')
+        if (document.createEvent) {
+          var event = document.createEvent('MouseEvents')
+          event.initEvent('click', true, true)
+          pom.dispatchEvent(event)
+        } else {
+          pom.click()
+        }
+      } catch (error) {
+        console.log(error)
+      } */
+    },
+    async fileDownload (urls, name) {
+      const res = await this.$axios.get(urls, {
+        headers: { responseType: 'arraybuffer', withCredentials: true, credentials: 'include' }
+      })
+
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+      const link = document.createElement('a')
+      const contentDisposition = res.headers['content-disposition'] // 파일 이름
+      let fileName = name
+      if (contentDisposition) {
+        const [fileNameMatch] = contentDisposition.split(';').filter(str => str.includes(fileName))
+        if (fileNameMatch) { [, fileName] = fileNameMatch.split('=') }
+      }
+      link.href = url
+      link.setAttribute('download', fileName)
+      link.style.cssText = 'display:none'
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    },
+    async downloadFile (link, name) {
+      try {
+        // onMessage('REQ', 'saveCameraRoll')
+        var pom = document.createElement('a')
+        var hrefStr = '/proc/download.asp?fn=' + link + '&ofn=' + name
+        pom.setAttribute('href', hrefStr)
+        pom.setAttribute('download', name)
+
+        if (document.createEvent) {
+          var event = document.createEvent('MouseEvents')
+          event.initEvent('click', true, true)
+          pom.dispatchEvent(event)
+        } else {
+          pom.click()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     addImgEvnt () {
       console.log(this.alimDetail[0])
       // eslint-disable-next-line no-debugger
@@ -196,19 +308,7 @@ export default {
           this.previewPopShowYn = true
         })
       }
-      // eslint-disable-next-line no-unused-vars
-      var tttt = this.alimDetail[0]
-      if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
-        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
-        for (var i = 0; i < addFalseImgList.length; i++) {
-          for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
-            if (Number(addFalseImgList[i].attributes.filekey.value) === Number(this.alimDetail[0].attachFileList[s].fileKey)) {
-              addFalseImgList[i].setAttribute('mmFilekey', this.alimDetail[0].attachFileList[s].mmFilekey)
-              break
-            }
-          }
-        }
-      }
+      this.settingAddFalseList(false)
     },
     async checkUserAuth () {
       if (this.detailVal) { this.shareAuth = this.detailVal.shareAuth }
@@ -245,6 +345,7 @@ export default {
       param.bodyFullStr = this.alimDetail[0].bodyFullStr
       param.modiContentsKey = this.alimDetail[0].contentsKey
       param.titleStr = this.alimDetail[0].title
+      param.parentAttachTrueFileList = this.attachTrueFileList
       this.$emit('openPop', param)
     },
     boardFuncClick (type) {
@@ -495,6 +596,25 @@ export default {
         this.scrollMove(-1)
       }
     },
+    settingAddFalseList (attachYn) {
+      if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
+        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
+
+        for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
+          var attFile = this.alimDetail[0].attachFileList[s]
+          if (!attachYn) {
+            for (var i = 0; i < addFalseImgList.length; i++) {
+              if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+                addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+                break
+              }
+            }
+          } else {
+            this.attachTrueFileList.push(attFile)
+          }
+        }
+      }
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
@@ -518,6 +638,7 @@ export default {
       } else {
         this.settingUserDo()
       }
+      await this.settingAddFalseList(true)
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)

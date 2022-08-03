@@ -1,6 +1,6 @@
 <template>
-  <div class="admLoginBtn" id="naverIdLogin"></div>
-
+  <div class="admLoginBtn loginBtn" style="padding: 0;" id="naverIdLogin">
+  </div>
 </template>
 <script>
 const defaultErrorMessage = '현재 네이버 로그인 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해주세요.'
@@ -16,7 +16,7 @@ export default {
     },
     callbackUrl: {
       required: true,
-      default: 'http://localhost:8080/#/naverCallback'
+      default: 'http://mo.d-alim.com:18080/#/naverCallback'
     },
     callbackFunction: {
       required: true
@@ -51,6 +51,9 @@ export default {
   },
   mounted () {
     this.naverLogin.init()
+    if (document.querySelectorAll('#naverIdLogin_loginButton img').length > 0) {
+      document.querySelectorAll('#naverIdLogin_loginButton img')[0].src = '/resource/common/pcNaverLoginIcon.png'
+    }
   },
   methods: {
     logOut () {
@@ -90,7 +93,7 @@ export default {
     box-sizing: border-box;
     border-radius: 10px;
 }
-#naverIdLogin img {
-  display: none;
-}
+
+.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+
 </style>

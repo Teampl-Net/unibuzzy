@@ -13,7 +13,6 @@ class AuthServcie {
   }
 
   login (providerName) {
-    alert(true)
     const provider = this.getProvider(providerName)
     return signInWithPopup(getAuth(), provider)
   }

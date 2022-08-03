@@ -1,9 +1,32 @@
+import axiosCommonFunction from 'axios'
+axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
+axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
+axiosCommonFunction.defaults.headers.common['Content-Type'] = 'application/json;'
+
+axiosCommonFunction.defaults.timeout = 100000
+axiosCommonFunction.defaults.withCredentials = true
+
+// 캐싱 방지
+/* axios.defaults.headers.get['Cache-Control'] = 'no-cache'
+axios.defaults.headers.get.Pragma = 'no-cache' */
+
 // 당일: 시,분
 // 당월: 일, 시, 분
 // 당해: 월, 일, 시, 분
 // 그 외: 년, 월, 일, 시, 분
 const methods = {
-
+  async commonAx (setItem) {
+    var result = false
+    await axiosCommonFunction.post(setItem.url, setItem.param, { withCredentials: true }
+    ).then(response => {
+      result = response
+    }).catch((error) => {
+      result = error
+      console.log(error)
+    })
+    return result
+  },
   parseHTML (html) {
     var t = document.createElement('template')
     t.innerHTML = html
@@ -314,6 +337,49 @@ const methods = {
 
       if (size < 1024) return size.toFixed(1) + byteUnits[i]
     }
+  },
+  getFileExt (fileName) {
+    let fileExt = fileName.substring(
+      fileName.lastIndexOf('.') + 1
+    )
+    // 소문자로 변환
+    var type = null
+    fileExt = fileExt.toLowerCase()
+    if (
+      ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'svg'].includes(fileExt)
+    ) {
+      type = 'img'
+    } else if (['xlsx'].includes(fileExt)) {
+      type = 'exel'
+    } else if (['hwp', 'doc'].includes(fileExt)) {
+      type = 'document'
+    } else if (['ppt', 'pptx'].includes(fileExt)) {
+      type = 'ppt'
+    } else if (['pdf'].includes(fileExt)) {
+      type = 'pdf'
+    } else if (['txt'].includes(fileExt)) {
+      type = 'txt'
+    } else if (['vue', 'jsp', 'java', 'class', 'html', 'css', 'js', 'xml', 'ts'].includes(fileExt)) {
+      type = 'programming'
+    } else if (['zip'].includes(fileExt)) {
+      type = 'zip'
+    } else {
+      type = 'else'
+    }
+    return type
+  },
+  downloadFile (link, name) {
+    var iframe
+    iframe = document.getElementById('hiddenDownloader')
+    if (iframe == null) {
+      iframe = document.createElement('iframe')
+      iframe.id = 'hiddenDownloader'
+      iframe.style.visibility = 'none'
+      document.body.appendChild(iframe)
+    }
+    iframe.src = 'http://61.97.186.14:19090/Tal_fileDownload.jsp?downloadURL=' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png'
+    // iframe.download = name
+    return false
   }
 
 }
@@ -339,5 +405,8 @@ export default {
     Vue.config.globalProperties.$diffInt = methods.diffInt
     Vue.config.globalProperties.$decodeHTML = methods.decodeHTML
     Vue.config.globalProperties.$byteConvert = methods.byteConvert
+    Vue.config.globalProperties.$getFileExt = methods.getFileExt
+    Vue.config.globalProperties.$downloadFile = methods.downloadFile
+    Vue.config.globalProperties.$commonAx = methods.commonAx
   }
 }

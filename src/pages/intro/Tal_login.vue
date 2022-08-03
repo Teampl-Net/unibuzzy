@@ -5,19 +5,19 @@
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
       <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn font20" >비회원 문의하기</div>
-      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+      <!-- <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
-      </div>
+      </div> -->
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
       </div> -->
-      <naver  :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
+      <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
       <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
         <img src="../../assets/images/intro/login/login_naver.png">
         네이버 로그인
       </div>
-      <div class="loginBtn font20" v-on:click="GoogleLoginBtn">
+      <div class="loginBtn font20" @click="GoogleLoginBtn">
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
@@ -100,7 +100,7 @@ export default {
     },
     onLogin () {
       var thisthis = this
-      localStorage.setItem('loginType', 'G')
+      localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
         console.log(result)
         if (result.user) {

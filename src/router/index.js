@@ -34,7 +34,7 @@ import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
 
 import myActList from '../components/pageComponents/myPage/Tal_myActList.vue'
 import myPage from '../pages/routerPages/Tal_myPage.vue'
-
+import suminTest from '../components/unit/formEditor/Tal_attachFile.vue'
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
@@ -210,12 +210,12 @@ const routes = [
     props: true,
     component: saveName
   },
-  // {
-  //   path: '/test',
-  //   name: 'test',
-  //   props: true,
-  //   component: suminTest
-  // },
+  {
+    path: '/test',
+    name: 'test',
+    props: true,
+    component: suminTest
+  },
   // {
   //   path: '/myChanList',
   //   name: 'myChanList',

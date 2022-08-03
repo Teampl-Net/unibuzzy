@@ -84,6 +84,20 @@ export async function saveUser (userProfile) {
   var result = await commonAxiosFunction({
     url: '/tp.saveUser',
     param: setParam
+  }).catch(function (error) {
+    if (error.response) {
+      // 요청은 됐으나 에러리턴됨
+      console.log(error.response)
+    } else if (error.request) {
+      // 요청은 됐으나 응답받지못함
+      console.log(error.request)
+    } else {
+      // 그외
+      console.log('ERROR: ', error.message)
+    }
+    alert('세션이 만료되어 메인으로 이동합니다.')
+    router.replace({ path: '/' })
+    console.log(error.config)
   })
   if (result.data.message === 'OK') {
     if (result.data.userInfo) {
