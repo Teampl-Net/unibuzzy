@@ -368,7 +368,7 @@ const methods = {
     }
     return type
   },
-  downloadFile (link, name) {
+  downloadFile (fileKey) {
     var iframe
     iframe = document.getElementById('hiddenDownloader')
     if (iframe == null) {
@@ -377,12 +377,25 @@ const methods = {
       iframe.style.visibility = 'none'
       document.body.appendChild(iframe)
     }
-    iframe.src = 'http://61.97.186.14:19090/Tal_fileDownload.jsp?downloadURL=' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png'
-    // iframe.download = name
-    return false
+    iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
+    /* try {
+      var pom = document.createElement('a')
+      pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')
+      pom.setAttribute('download', 'test')
+      if (document.createEvent) {
+        var event = document.createEvent('MouseEvents')
+        event.initEvent('click', true, true)
+        pom.dispatchEvent(event)
+      } else {
+        pom.click()
+      }
+    } catch (error) {
+      console.log(error)
+    } */
   }
 
 }
+
 export default {
   install (Vue) {
     Vue.config.globalProperties.$changeDateFormat = methods.changeDateFormat

@@ -180,7 +180,7 @@ export default {
       }
       // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'http://mo.d-alim.com:19090/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -303,14 +303,15 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var kakaoLinkUrl = 'https://thealim.page.link/' +
+      var kakaoLinkUrl = await this.kakaoLink()
+      /* var kakaoLinkUrl = 'https://thealim.page.link/' +
 
       '?link=' + 'http// mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey +
             '&apn=' + 'com.tal_project' +
             '&ibn=' + 'name' +
             '&st=' + '더알림' +
             '&sd=' + '더편한구독알림' +
-            '&si=' + 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+            '&si=' + 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png' */
       // eslint-disable-next-line no-undef
       Kakao.Link.sendDefault({
         objectType: 'feed',
@@ -333,8 +334,8 @@ export default {
           }
         ]
       })
-    }
-    /* async kakaoLink () {
+    },
+    async kakaoLink () {
       var result = null
       var params = {
         dynamicLinkInfo: {
@@ -344,12 +345,14 @@ export default {
         },
         suffix: { option: 'SHORT' }
       }
-      await this.$axios.post('/firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
+      await this.$axios.post('https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
         .then(function (response) {
           result = response.data.shortLink
+          // eslint-disable-next-line no-debugger
+          debugger
         })
       return result
-    } */
+    }
   }
 }
 </script>

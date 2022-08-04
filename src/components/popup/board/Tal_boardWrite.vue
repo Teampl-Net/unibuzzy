@@ -193,16 +193,15 @@ export default {
       console.log(this.uploadFileList)
     },
     changeUploadList (upList) {
-      var tempList = []
       if (this.uploadFileList.length > 0) {
-        tempList = [
-          ...this.uploadFileList,
-          ...upList
-        ]
+        var temp = this.uploadFileList
         this.uploadFileList = []
-        this.uploadFileList = tempList
+        this.uploadFileList = [
+          ...temp,
+          upList
+        ]
       } else {
-        this.uploadFileList = upList
+        this.uploadFileList.push(upList)
       }
     },
     decodeContents (data) {
@@ -302,6 +301,9 @@ export default {
           newAttachFileList.push(setObj)
         }
       }
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(newAttachFileList)
       return newAttachFileList
     },
     async sendMsg () {
@@ -443,7 +445,6 @@ export default {
       if (this.uploadFileList.length > 0) {
         console.log('this.uploadFileList')
         console.log(this.uploadFileList)
-
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -453,7 +454,7 @@ export default {
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
-            .post('/tp.uploadFile', form,
+            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -467,6 +468,8 @@ export default {
               })
             .then(res => {
               console.log(res)
+              // eslint-disable-next-line no-debugger
+              debugger
               if (res.data.length > 0) {
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
@@ -488,12 +491,12 @@ export default {
         console.log(this.uploadFileList)
         var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
-          for (var il = 0; il < iList.length; il++) {
-            for (var s = 0; s < this.uploadFileList.length; s++) {
-              var uploadFile = this.uploadFileList[s]
-              if (uploadFile.successSave) {
-                console.log('uploadFile[0]')
-                console.log(uploadFile)
+          for (var s = 0; s < this.uploadFileList.length; s++) {
+            var uploadFile = this.uploadFileList[s]
+            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            console.log(uploadFile)
+            if (uploadFile.successSave) {
+              for (var il = 0; il < iList.length; il++) {
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
                   iList[il].src = uploadFile.filePath
                   // eslint-disable-next-line no-unused-vars
@@ -503,9 +506,9 @@ export default {
                   iList[il].classList.add('addFalse')
                   break
                 }
-              } else {
-                this.uploadFileList.splice(s, 1)
               }
+            } else {
+              this.uploadFileList.splice(s, 1)
             }
           }
         }

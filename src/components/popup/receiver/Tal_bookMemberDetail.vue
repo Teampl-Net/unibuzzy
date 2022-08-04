@@ -156,7 +156,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: '/tp.deleteManager',
+                url: 'https://mo.d-alim.com:10443/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}

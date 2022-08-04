@@ -181,7 +181,8 @@ export default {
     async successImgPreview (target) {
       // await this.addFormCard('text')
       this.progressBarList.push({ name: target.selectFileList[0].file.name, target: target.targetKey, percentage: 0 })
-
+      // eslint-disable-next-line no-debugger
+      debugger
       this.toolBoxShowYn = false
       var tempList = this.uploadFileList
       var tempKeyList = this.uploadFileKeyList
@@ -203,7 +204,7 @@ export default {
         this.uploadFileKeyList.push(target.targetKey)
       }
       console.log(this.uploadFileList)
-      this.$emit('changeUploadList', this.uploadFileList)
+      this.$emit('changeUploadList', target.selectFileList)
       this.formCardList[target.targetKey].selectFileList = target.selectFileList
       this.formCardList[target.targetKey].addYn = true
     },

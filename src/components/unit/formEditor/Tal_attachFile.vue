@@ -20,7 +20,8 @@ export default {
       selectFile: '',
       preImgUrl: null,
       sFileList: [],
-      gAttachKey: 0
+      gAttachKey: 0,
+      uploadCnt: 0
     }
   },
   props: {
@@ -54,14 +55,15 @@ export default {
   },
   methods: {
     async previewFile () {
-      this.selectFile = null
       this.preImgUrl = null
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
 
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+          this.selectFile = null
           this.gAttachKey += 1
+          console.log(this.$refs.selectFile.files[k])
           this.selectFile = this.$refs.selectFile.files[k]
 
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -78,10 +80,11 @@ export default {
             debugger
             var reader = new FileReader()
             var thisthis = this
-            reader.onload = e => {
+            reader.onload = async e => {
               var image = new Image()
-              image.onload = function () {
+              image.onload = await function () {
                 // Resize image
+                thisthis.selectFile = thisthis.$refs.selectFile.files[thisthis.uploadCnt]
                 var canvas = document.createElement('canvas')
                 var width = image.width
                 var height = image.height
@@ -103,7 +106,7 @@ export default {
                 thisthis.preImgUrl = canvas.toDataURL('image/png', 0.8)
                 thisthis.sFileList.push({ preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: thisthis.selectFile })
                 thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: thisthis.selectFile }])
-
+                thisthis.uploadCnt += 1
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               }

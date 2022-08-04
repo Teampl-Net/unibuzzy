@@ -1,6 +1,6 @@
 <template>
   <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
-    <imgPreviewPop :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
+    <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
@@ -23,13 +23,18 @@
 
         </div>
         <div style="position: relative;width: 100%; height: 30px; float: left; ">
-          <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span></span>
+          <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
           <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
           <div v-if="filePopShowYn" style="width: 70%; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
-            <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 ({{this.attachTrueFileList.length}})</p>
-            <div :fileKey="value.fileKey" :filePath="value.pathMtext" @click="download1(value.fileKey)" class="font12 textOverdot"  style="width: 100%; height: 30px; " v-for="(value, index) in this.attachTrueFileList" :key="index">
-              - {{value.fileName}}
-            </div>
+            <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
+            <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
+              <div  v-if="value.attachYn"  style="width: 100%; height: 30px; float: left;" >
+                <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
+                <a :fileKey="value.fileKey" :filePath="value.pathMtext" @click="download1(value.fileKey)" class="font12 commonBlack textOverdot"  >
+                  {{value.fileName}}
+                </a>
+              </div>
+            </templete>
             <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
           </div>
         </div>
@@ -198,26 +203,6 @@ export default {
     }
   },
   methods: {
-    async pdf_file_get (path, fileName) {
-      window.open(path, 'Download')
-      // for non-IE
-      /* if (!window.ActiveXObject) {
-        var save = document.createElement('a')
-        save.href = path
-        save.target = '_blank'
-        save.download = fileName || path
-        var evt = document.createEvent('MouseEvents')
-        evt.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0,
-          false, false, false, false, 0, null)
-        save.dispatchEvent(evt);
-        (window.URL || window.webkitURL).revokeObjectURL(save.href)
-      } else if (!!window.ActiveXObject && document.execCommand) {
-        var _window = window.open(path, '_blank')
-        _window.document.close()
-        _window.document.execCommand('SaveAs', true, fileName || path)
-        _window.close()
-      } */
-    },
     download (link, name) {
       var iframe
       iframe = document.getElementById('hiddenDownloader')
@@ -242,60 +227,7 @@ export default {
         iframe.style.visibility = 'none'
         document.body.appendChild(iframe)
       }
-      iframe.src = 'http://192.168.0.10:19090/file.downloadFile?fileKey=' + fileKey
-      /* try {
-        var pom = document.createElement('a')
-        pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')
-        pom.setAttribute('download', 'test')
-        if (document.createEvent) {
-          var event = document.createEvent('MouseEvents')
-          event.initEvent('click', true, true)
-          pom.dispatchEvent(event)
-        } else {
-          pom.click()
-        }
-      } catch (error) {
-        console.log(error)
-      } */
-    },
-    async fileDownload (urls, name) {
-      const res = await this.$axios.get(urls, {
-        headers: { responseType: 'arraybuffer', withCredentials: true, credentials: 'include' }
-      })
-
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      const contentDisposition = res.headers['content-disposition'] // 파일 이름
-      let fileName = name
-      if (contentDisposition) {
-        const [fileNameMatch] = contentDisposition.split(';').filter(str => str.includes(fileName))
-        if (fileNameMatch) { [, fileName] = fileNameMatch.split('=') }
-      }
-      link.href = url
-      link.setAttribute('download', fileName)
-      link.style.cssText = 'display:none'
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
-    },
-    async downloadFile (link, name) {
-      try {
-        // onMessage('REQ', 'saveCameraRoll')
-        var pom = document.createElement('a')
-        var hrefStr = '/proc/download.asp?fn=' + link + '&ofn=' + name
-        pom.setAttribute('href', hrefStr)
-        pom.setAttribute('download', name)
-
-        if (document.createEvent) {
-          var event = document.createEvent('MouseEvents')
-          event.initEvent('click', true, true)
-          pom.dispatchEvent(event)
-        } else {
-          pom.click()
-        }
-      } catch (error) {
-        console.log(error)
-      }
+      iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
@@ -369,7 +301,7 @@ export default {
       if (this.boardFuncType === 'BOAR') {
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -420,7 +352,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -449,7 +381,7 @@ export default {
         memo.offsetInt = 0
       }
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       if (result.data.content) {
@@ -488,7 +420,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
         param: param
       })
     },
@@ -584,7 +516,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -597,6 +529,8 @@ export default {
       }
     },
     settingAddFalseList (attachYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
         var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 

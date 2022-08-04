@@ -11,8 +11,14 @@
             </b-progress>
         </div> -->
         <div v-for="(value, index) in uploadFileList"  style="margin-top: 10px; position: relative;" :key="index">
-            <p class="textLeft commonBlack font16">{{ (index + 1) +'. ' + value[0].file.name || '파일'}} <small class="font13">{{'(' + this.$byteConvert(value[0].file.size) + ')'}}</small></p>
-            <b-progress :max="100" height="1rem">
+            <p class="textLeft commonBlack font16">{{ (index + 1) +'. ' + value[0].file.name}} <small class="font13">{{'(' + this.$byteConvert(value[0].file.size) + ')'}}</small></p>
+            <b-progress variant="danger" v-if="!value.successSave" :max="100" height="1rem">
+                <b-progress-bar variant="danger" :value="100">
+                <!-- eslint-disable-next-line vue/no-parsing-error -->
+                <span style="position: absolute; left: 40%" :class="100 < 50 ? 'commonBlack' : 'whiteColor'"><strong>{{ '업로드 실패 '}}</strong></span>
+                </b-progress-bar>
+            </b-progress>
+            <b-progress v-else :max="100" height="1rem">
                 <b-progress-bar  :value="value.percentage || 0">
                 <!-- eslint-disable-next-line vue/no-parsing-error -->
                 <span style="position: absolute; left: 40%" :class="Number(value.percentage) < 50 ? 'commonBlack' : 'whiteColor'"><strong>{{ Number(value.percentage) < 100 ? value.percentage + '%' : 'success!'}}</strong></span>

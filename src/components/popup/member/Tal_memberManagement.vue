@@ -97,7 +97,7 @@ export default {
         paramMap.set('memberYn', true)
         paramMap.set('teamKey', this.propData.currentTeamKey)
         result = await this.$commonAxiosFunction({
-          url: '/tp.getFollowerList',
+          url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.managingList = await result.data.content
@@ -107,7 +107,7 @@ export default {
         param.teamKey = this.propData.currentTeamKey
 
         result = await this.$commonAxiosFunction({
-          url : '/tp.getManagerList',
+          url : 'https://mo.d-alim.com:10443/tp.getManagerList',
           param: param
         })
 
@@ -134,7 +134,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteManager',
+        url: 'https://mo.d-alim.com:10443/tp.deleteManager',
         param: param
       })
 
@@ -143,7 +143,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveManager',
+        url: 'https://mo.d-alim.com:10443/tp.saveManager',
         param: param
       })
     },
@@ -165,7 +165,7 @@ export default {
       debugger
 
       var result = await this.$commonAxiosFunction({
-          url: '/tp.saveManager',
+          url: 'https://mo.d-alim.com:10443/tp.saveManager',
           param: param
       })
 

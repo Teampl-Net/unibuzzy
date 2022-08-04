@@ -213,7 +213,16 @@ export default {
   },
   methods: {
     changeUploadList (upList) {
-        this.uploadFileList = upList
+      if (this.uploadFileList.length > 0) {
+        var temp = this.uploadFileList
+        this.uploadFileList = []
+        this.uploadFileList = [
+          ...temp,
+          upList
+        ]
+      } else {
+        this.uploadFileList.push(upList)
+      }
     },
     encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
       return encodeURI(str);
@@ -518,7 +527,7 @@ export default {
           // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
-            .post('/uploadFile', form/* ,
+            .post('https://mo.d-alim.com:12443/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -551,6 +560,7 @@ export default {
           iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
           iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
           iList[i].classList.remove("addTrue")
+          iList[i].classList.add('addFalse')
         }
       } else {
         alert('파일을 선택해 주세요.')
