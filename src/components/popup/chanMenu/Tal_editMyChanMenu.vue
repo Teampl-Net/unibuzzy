@@ -1,59 +1,61 @@
 <template>
-<div style="margin-top:calc(50px); width:100%;" >
- <!-- <div v-for="(data, index) in editMenuList" :key="index" class="fl" style="width:100%; height:3rem; padding: 0 2rem; border-bottom:1px solid #ccc; ">
-   <p class="fl commonBlack font16" style="line-height:3rem;">{{data.menuName}}</p>
- </div> -->
- <div class="editMyChanMenuWrap">
-  <table>
+<div class="pagePaddingWrap" >
+<!-- <div v-for="(data, index) in editMenuList" :key="index" class="fl" style="width:100%; height:3rem; padding: 0 2rem; border-bottom:1px solid #ccc; ">
+  <p class="fl commonBlack font16" style="line-height:3rem;">{{data.menuName}}</p>
+</div> -->
+  <div class="editMyChanMenuWrap">
+    <table>
 
-    <tr @click="addressEditClick">
-      <th class="font16">주소록</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-      </td>
-    </tr>
+      <tr @click="addressEditClick">
+        <th class="font16">주소록</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr>
 
-    <tr @click="boardEditClick">
-      <th class="font16">게시판 관리</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-        <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
-      </td>
-    </tr>
+      <tr @click="boardEditClick">
+        <th class="font16">게시판 관리</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr>
 
-    <tr @click="chanDetailClick">
-      <th class="font16">채널 상세</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-        <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
-      </td>
-    </tr>
+      <tr @click="chanDetailClick">
+        <th class="font16">채널 상세</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr>
 
-    <tr @click="editChanDetaillClick">
-      <th class="font16">채널 수정</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-        <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
-      </td>
-    </tr>
+      <tr @click="editChanDetaillClick">
+        <th class="font16">채널 수정</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr>
 
-    <tr @click="managerEditClick">
-      <th class="font16">멤버/매니저 관리</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-        <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
-      </td>
-    </tr>
-    <tr @click="autoAnswerClick">
-      <th class="font16">자동 응답</th>
-      <td class="">
-        <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
-        <!-- <gBtnSmall @click="addressEdit"  btnTitle="멤버 신청하기" /> -->
-      </td>
-    </tr>
-    <!-- <tr><th class="font16"> 버전정보 <p class="font10">최신버전: 1.0</p></th>
-    <td class="textRight font16"></td></tr> -->
-  </table>
+      <tr @click="managerEditClick">
+        <th class="font16">멤버/매니저 관리</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr>
+      <!-- <tr @click="autoAnswerClick">
+        <th class="font16">자동 응답</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr> -->
+      <!-- <tr @click="memberFormEditClick">
+        <th class="font16">멤버신청서 관리</th>
+        <td class="">
+          <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
+        </td>
+      </tr> -->
+
+      <!-- <tr><th class="font16"> 버전정보 <p class="font10">최신버전: 1.0</p></th>
+      <td class="textRight font16"></td></tr> -->
+    </table>
   </div>
 </div>
 
@@ -120,6 +122,10 @@ export default {
       this.param.targetType = 'autoAnswer'
       this.openPop()
     },
+    memberFormEditClick () {
+      this.param.targetType = 'memberFormList'
+      this.openPop()
+    },
     openPop () {
       this.$emit('openPop', this.param)
     }
@@ -129,24 +135,15 @@ export default {
 </script>
 
 <style >
-.editMyChanMenuWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
+.editMyChanMenuWrap{
+  /* padding: 0.7rem 0 ; */
+  box-sizing: border-box; width: 100%; }
 .editMyChanMenuWrap table{text-align: left; width: 100%; padding: 0 10px}
-.editMyChanMenuWrap tr, .editMyChanMenuWrap td, .editMyChanMenuWrap th {
-  height: 4rem;
-  margin-bottom: 1rem;
-}
-.editMyChanMenuWrap td {
-  border-bottom: none !important;
-  padding-right: 2rem;
-}
-.editMyChanMenuWrap tr{border-bottom: 1px solid #F3F3F3;
-}
-.editMyChanMenuWrap th {color: #6768A7;
-padding-left: 3rem;
-}
-.editMyChanMenuWrap .btnStyle{
-  transform: rotate(180deg); width:10px;
+.editMyChanMenuWrap tr, .editMyChanMenuWrap td, .editMyChanMenuWrap th { height: 4rem; margin-bottom: 1rem; }
+.editMyChanMenuWrap td { border-bottom: none !important; padding-right: 1rem; }
+.editMyChanMenuWrap tr { border-bottom: 1px solid #F3F3F3; }
+.editMyChanMenuWrap th { color: #6768A7; padding-left: 1rem; }
 
-}
+.editMyChanMenuWrap .btnStyle{ transform: rotate(180deg); width:10px;}
 
 </style>

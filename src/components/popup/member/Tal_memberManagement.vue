@@ -2,10 +2,14 @@
 <div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
-      <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberForm">
+      <!-- <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
       멤버 신청서 만들기
-      </div>
+      </div> -->
+      <!-- <gBtnSmall v-if="tab === 'Mem'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
       <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' />
+      <div v-if="managingList.length === 0 && ownerYn && tab === 'Mem'" class="mtop-1" style="">
+        <p class="font16 " style="">신청한 멤버가 없습니다. <br> <!--채널을 조금 더 홍보해보세요! --> </p>
+      </div>
     </div>
 
     <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
@@ -33,7 +37,9 @@ export default {
       managingList: [],
       smallPopYn:false,
       confirmMsg:'',
-      addSmallMsg:''
+      addSmallMsg:'',
+      // userKey : JSON.parse(localStorage.getItem('sessionUser')).userKey ,
+      ownerYn : false
     }
   },
   created () {
@@ -42,12 +48,19 @@ export default {
   },
   mounted () {
     if (this.propData.ownerYn) {
+      this.ownerYn = true
       this.activeTabList = [{ display: '멤버', name: 'Mem' }, { display: '매니저', name: 'Admin' }]
     } else {
       this.activeTabList = [{ display: '멤버', name: 'Mem' }]
     }
   },
   methods: {
+    memberFormClick(){
+      var param = {}
+      param.targetType = 'memberForm'
+      param.teamKey = this.propData.currentTeamKey
+      this.$emit('openPop', param)
+    },
     matchInfo(){
       this.smallPopYn = true
       this.confirmMsg = '상대방이 구독하기를 기다리는 중 입니다. '

@@ -48,7 +48,9 @@
       <editBoardPop v-if="this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
 
       <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeMemberYn='changeMemberYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
-      <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" />
+      <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" @openPop="openPop"  />
+      <memberForm v-if="this.targetType === 'memberForm'" :propData="this.params"  />
+      <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" />
     </div>
 </template>
 
@@ -91,6 +93,9 @@ import editBoardPop from '../../popup/Tal_editBoardList.vue'
 import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
 import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
+
+import memberForm from '../memberQuestion/Tal_editMemberForm.vue'
+import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
 
 export default {
   async created () {
@@ -180,7 +185,9 @@ export default {
     editBoardPop,
     editMyChanMenu,
     chanInfoComp,
-    autoAnswerList
+    autoAnswerList,
+    memberForm,
+    memberFormList
   },
   updated () {
   },
@@ -416,9 +423,16 @@ export default {
         this.bgblackYn = true
       } else if (this.targetType === 'autoAnswer') {
         this.headerTitle = '자동 응답'
+      } else if (this.targetType === 'memberForm') {
+        this.headerTitle = '멤버신청서 만들기'
       } else if (this.targetType === 'setMypage') {
         this.headerTitle = '프로필 설정'
+      } else if (this.targetType === 'memberFormList') {
+        this.headerTitle = '멤버신청서 목록'
+      } else if (this.targetType === 'templateList') {
+        this.headerTitle = '멤버신청서 템플릿 목록'
       }
+
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1
       } else {

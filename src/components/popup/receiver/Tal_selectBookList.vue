@@ -76,6 +76,7 @@ export default {
   },
   methods: {
     async getBookList () {
+        console.log(this.propData)
         var paramMap = new Map()
         paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
         paramMap.set('sysCabinetCode', 'USER')

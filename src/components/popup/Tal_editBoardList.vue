@@ -38,7 +38,7 @@ export default {
     // editList: {},
     teamNameText: {},
 
-    propData:{},
+    propData: {}
 
   },
   computed: {
@@ -62,10 +62,10 @@ export default {
   async created () {
     this.$emit('openLoading')
     console.log(this.propData)
-    if(this.propData){
+    if (this.propData) {
       this.chanInfo = {}
       this.currentTeamKey = this.propData.currentTeamKey
-      this.chanInfo.nameMtext =  this.propData.teamNameMtext
+      this.chanInfo.nameMtext = this.propData.teamNameMtext
     }
     // var history = this.$store.getters.hStack
     // this.popId = 'manageBoardPop' + this.currentTeamKey

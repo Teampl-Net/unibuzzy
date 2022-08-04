@@ -168,11 +168,15 @@ export default {
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
 
+    console.log('this.modiBoardDetailProps')
+    console.log(this.modiBoardDetailProps)
+
+    this.chanProps = this.modiBoardDetailProps
     if (this.chanInfo.value) {
-      this.chanProps = this.chanInfo.value
+      // this.chanProps = this.chanInfo.value
       this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
     } else {
-      this.chanProps = this.chanInfo
+      // this.chanProps = this.chanInfo
       this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
     }
 
