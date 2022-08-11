@@ -102,7 +102,7 @@ axios.defaults.timeout = 100000
 axios.defaults.withCredentials = true
 
 // axios.defaults.baseURL = 'api'
-// axios.defaults.baseURL = 'http://192.168.0.22:19090'
+// axios.defaults.baseURL = 'http://192.168.0.2:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:9091'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
 // axios.defaults.baseURL = 'https://mo.d-alim.com:10443'

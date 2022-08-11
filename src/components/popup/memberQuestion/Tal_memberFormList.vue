@@ -50,9 +50,21 @@ export default {
       param.teamKey = this.propData.teamKey
       console.log(param)
       // 서비스가 나오면 여기서 axios로 데이터 받아 set해주기!!!!
+      // var result = await this.$commonAxiosFunction({
+      //   url : 'https://mo.d-alim.com:10443/tp.getChanMemberForm',
+      //   param: param
+      // })
       this.memberFormList = this.dummyData
     },
     toggle (data) {
+      // 활성화 토글 시
+      // var param = {}
+      // param.key = key
+      // param.activeYn = true
+      // var result = await this.$commonAxiosFunction({
+      //   url : 'https://mo.d-alim.com:10443/tp.changeMQuestion',
+      //   param: param
+      // })
       data.activeYn = !data.activeYn
     },
     plusBtnClick () {

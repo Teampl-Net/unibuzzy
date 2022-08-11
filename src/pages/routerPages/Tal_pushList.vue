@@ -2,17 +2,19 @@
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100vw; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
     <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
-      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+      <div id="pageHeader" ref="pushListHeader" class="pushListHeader "  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
+        <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
-        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
+        <!-- <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" /> -->
+        <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
       </div>
       <transition name="showModal">
         <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
-      <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" style="position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; height: 100%; "> -->
-      <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
-        <div class="fr pushReadCheckAlimArea" :class="this.scrolledYn? 'pushReadCheckAlimArea--unpinned': 'pushReadCheckAlimArea--pinned'" style="border-radius: 5px; height: 20px; padding: 3px 10px; background: rgb(255 255 255 / 70%); position: sticky; top: 0px; z-index: 1; display: flex; align-items: center;" > <input type="checkbox" v-model="readCheckBoxYn" id="alimReadYn" style="" > <label for="alimReadYn" class="mleft-05 font15">안읽은 알림 보기</label></div>
+
+      <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
+        <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
+        <div class="fr pushReadCheckAlimArea" :class="this.scrolledYn? 'pushReadCheckAlimArea--unpinned': 'pushReadCheckAlimArea--pinned'" style="border-radius: 5px; height: 20px; padding: 3px 10px; background: rgb(255 255 255 / 70%); position: sticky; top: 10px; z-index: 1; display: flex; align-items: center;" > <input type="checkbox" v-model="readCheckBoxYn" id="alimReadYn" style="" > <label for="alimReadYn" class="mleft-05 font15">안읽은 알림 보기</label></div>
         <!-- <div class="stickerWrap">
         <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
           <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
@@ -486,7 +488,9 @@ export default {
 }
 .pushListHeader {
     width: 100%;
-    min-height: 132px;
+    /* min-height: 132px; */
+    padding-top: 0.5rem;
+    min-height: 50px;
     position: absolute;
     background-color: #FFF;
     top: 0;
@@ -522,7 +526,7 @@ export default {
     transform: translateY(0%);
 }
 .pushReadCheckAlimArea--unpinned {
-    transform: translateY(-130px);
+    transform: translateY(-50px);
 }
 .newRight{
   animation-name: slideRight; animation-duration: 1s;

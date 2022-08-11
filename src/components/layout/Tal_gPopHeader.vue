@@ -12,7 +12,7 @@
     </span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
-    <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리' " style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" />
+    <!-- <img src="../../assets/images/common/icon_help_circle.svg" v-if="helpYn || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리' " style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" /> -->
     <!-- <img src="../../assets/images/common/icon_help_circle.svg" v-if="this.headerTitle === '멤버/매니저 관리' || this.headerTitle === '주소록 관리' || this.headerTitle === '게시판 관리'" style="width: 22px; height: 22px; position: absolute; right: 1rem;" @click="clickHelp" /> -->
     <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />
     <!-- <div class="commonColor font16 headerTitleWrap" style=""> -->
@@ -20,8 +20,8 @@
       <!-- {{chanName}} -->
     <!-- </div> -->
 
-    <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" />
-    <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" />
+    <!-- <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" /> -->
+    <!-- <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" /> -->
     <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar" @click="openMenu">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
@@ -95,6 +95,7 @@ export default {
     helpButtonPop
   },
   created () {
+    console.log(this.chanName)
   },
   watch: {
     bgblack () {

@@ -3,12 +3,12 @@
 
 <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
-    <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/>
-    <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
+    <!-- <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/> -->
+    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"></gActiveBar>
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
-  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
@@ -407,7 +407,9 @@ export default {
 }
 .chanListHeader {
     width: 100%;
-    min-height: 132px;
+    /* min-height: 132px; */
+    min-height: 50px;
+    padding-top: 0.5rem;
     position: absolute;
     background-color: #FFF;
     top: 0;

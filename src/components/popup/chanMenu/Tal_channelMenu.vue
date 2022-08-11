@@ -4,42 +4,53 @@
 
 <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
-      <!-- <img v-if="editYn === false" v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/>
-      <img v-else v-on:click="this.$emit('closePop')" class="mtop-05 mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/icon_back.png"/> -->
-      <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
-      <p :class="{editColor: editYn === true }" class="fontBold font20 fl" >{{menuHeaderTitle}}</p>
-      <!-- <img v-on:click="this.$emit('closePop')" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn"  @click="adminManagingClick"  /> -->
-      <!--기존--><!--  <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_manager.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
-      <!--색이 들어있는--><!-- <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting_gear.svg"  v-if="ownerYn || adminYn"  @click="myChanEdit"  /> -->
-      <img  class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png"  v-if="ownerYn || adminYn"  @click="myChanEdit"  />
-      <div v-else />
-
+    <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
+    <p :class="{editColor: editYn === true }" class="fontBold font20 fl" >{{menuHeaderTitle}}</p>
+    <img v-if="ownerYn || adminYn" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
+    <div v-else />
   </div>
-
-  <!-- <div v-show="editYn" style="margin-top:calc(50px + 20px); width:100%;     box-shadow: 2px 2px 3px 0px #eee; " class="fl" > -->
-  <div style="margin-top:calc(70px); width:100%; " class="fl" >
-
-    <!-- <div v-if="ownerYn" class="fl w-100P mtop-05 mbottom-2"  @click="adminManagingClick">
-      <p style="border:1px solid #6768A7; padding: 1rem 2rem; font-weight:bold;" class="font16"> 매니저 관리</p>
-    </div> -->
-
-    <div v-if="adminYn" class="fl" style="width:100%;">
-      <div class="fl" style="width:100%; height: 30px;">
-        <div class="fl" style="width:20px; height: 100%; " @click="bookDropDown" >
-          <img v-show="this.cabinetList.length !== 0 && bookDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
-          <img v-show="this.cabinetList.length !== 0 && bookDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
-        </div>
-        <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && bookDropDownYn === true) || (bookDropDownYn !== true) }" class="fl fontBold font16" @click="bookDropDown">주소록</p>
+  <div v-if="true" style="overflow:auto">
+    <div v-if="adminYn" class="fl"  style="margin-top:calc(50px); width:100%; display: flex; flex-direction: row; justify-content: space-between;" >
+      <div class="fl" style="margin-top:20px; width:50%;" >
+        <img class="fl" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
+        <p class="fl font16 mleft-05 commonBlack fontBold"  @click="bookDropDown">주소록</p>
         <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
-        <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
       </div>
-      <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
-        <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+      <div class="boardBox fr" style="overflow: hidden scroll; width:50%;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
+        <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+      </div>
+    </div>
+
+    <div class="fl" :style="!adminYn ? 'margin-top:50px !important;' : 'margin-top:1rem;'" style=" width:100%; display: flex; flex-direction: row; justify-content: space-between;"  >
+      <div class="fl" style="margin-top:20px; width:50%;" >
+        <img class="fl" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_board_color.png">
+
+          <p class="fl font16 mleft-05 commonBlack fontBold"  @click="boardDropDown">게시판</p>
+        <p v-if="this.myBoardList.length !== 0" class="fl mleft-05 fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.myBoardList.length}})</p>
+      </div>
+      <div class="fl boardBox" style="overflow: hidden scroll; width:50%;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+        <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
   </div>
 
-  <!-- <div v-if="adminYn && editYn" style="width:100%; height:1px; background:#ccc;" class="fl mtop-1"></div> -->
+  <div v-else>
+    <div style="margin-top:calc(70px); width:100%; " class="fl" >
+      <div v-if="adminYn" class="fl" style="width:100%;">
+        <div class="fl" style="width:100%; height: 30px;">
+          <div class="fl" style="width:20px; height: 100%; " @click="bookDropDown" >
+            <img v-show="this.cabinetList.length !== 0 && bookDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fl dropdownBtn" style=" margin-top : 0.5rem;" >
+            <img v-show="this.cabinetList.length !== 0 && bookDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fl dropdownBtn " style="margin-top : 0.5rem;" >
+          </div>
+          <p style="color:black; text-align:left; margin-left: 2rem;" :class="{calcMarginLeft: (this.cabinetList.length !== 0 && bookDropDownYn === true) || (bookDropDownYn !== true) }" class="fl fontBold font16" @click="bookDropDown">주소록</p>
+          <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
+          <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
+        </div>
+        <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
+          <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
+        </div>
+      </div>
+    </div>
 
     <div style="width:100%; margin-top:calc(20px); " :class="{'adminBoadrmtop-0':adminYn !== true}" class="fl">
       <div class="fl" style="width:100%; height: 30px;">
@@ -55,16 +66,10 @@
         <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
-  <!-- <div class='w-100P fl mtop-05' style='padding:10px; border:1px solid #CCC;' @click="memberSetting" >
-    <p>맴버 관리</p>
-  </div> -->
+  </div>
 </div>
-<!-- <addChanMenu v-if="openAddChanMenuYn" @closePop='openAddChanMenuYn = false' @addFinish='addChanMenuFinish' /> -->
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
-<!-- <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='editPopYn = false' :editList='myBoardList' :teamNameText='teamNameText'/> -->
-
-<!-- <selectBookList :chanInfo="propData" :propData="propData" v-if="selectBookListYn" @closeXPop='selectBookListYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" /> -->
-<selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' />
+<!-- <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' /> -->
 </template>
 <script>
 /* eslint-disable */
@@ -311,19 +316,21 @@ export default {
     bookListLength () {
       // this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
       var bookListLength = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 50 + 20
-      if (this.cabinetList.length === 0) {
-        bookListLength = 50
-      } else if (bookListLength >= 250) {
-        bookListLength = 250
-      } else {
-        bookListLength = this.cabinetList.length * 50 + 20
-        }
+      // if (this.cabinetList.length === 0) {
+      //   bookListLength = 50
+      // } else if (bookListLength >= 250) {
+      //   bookListLength = 250
+      // } else {
+      //   bookListLength = this.cabinetList.length * 50 + 20
+      // }
       this.$refs.groupRef.style.setProperty('--menuHeight', (bookListLength + 'px'))
     },
     boardListLength() {
-      var boardListLength = (this.screenHeight - 400) + 'px'
-      // var boardListLength = this.myBoardList.length * 50 + 20
-      this.$refs.boardRef.style.setProperty('--menuHeight', boardListLength)
+      // var boardListLength = (this.screenHeight - 300) + 'px'
+      var boardListLength = this.myBoardList.length * 50 + 60
+      // var boardListLength = this.$refs.menuBoardListRef.$el.clientHeight
+      // console.log('게시판 리스트의 높이는 : ' + boardListLength);
+      this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
       // this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length === 0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
     },
     boardDropDown () {

@@ -127,6 +127,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .grayBlack{color: #505050;}
 .lightGray{color: #A1A1A1;}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
+.commonRed{color:#DC143C}
 /* 불투명 색: #dcddeb */
 
 .w-10P{width: 10%;}
@@ -410,7 +411,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .blackTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgb(0 0 0 / 50%); }
 .chanTextBox {max-width: calc(100% - 20px);}
 .whiteTextBox p {color: #000;}
-.whiteTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.5); }
+.whiteTextBox {float: left; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3px 15px; margin-bottom: 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.65); }
 
 
 /*수신그룹*/

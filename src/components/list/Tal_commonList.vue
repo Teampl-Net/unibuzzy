@@ -17,11 +17,11 @@
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
-                  <p style="width:calc(100% - 30px); " :class="{commonBlue: alim.readYn === 0}" class="font16 fl fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
-                  <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
-                  <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
-                <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-
+                  <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl" style="width: 20px;" alt="">
+                  <img src="../../assets/images/board/readTrue.svg" v-else class="fl" style="width: 20px;" alt="">
+                  <p style="width:calc(100% - 30px ); " :class="{commonBlue: alim.readYn === 0}" class="mleft-05 font16 fl fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
+                  <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
+                  <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
                   <div class=" w-100P fl">
                     <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                     <p style="width:75%;"  :style="alim.officialYn ? 'width:calc(75% - 30px)': '' " class="font14 fl grayBlack textOverdot">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
@@ -32,17 +32,30 @@
               <div @click="goDetail(alim)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
-                  <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p>
+                  <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
+                  <p @click="alimBigView" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p>
+
                   <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                      <p class="fl font16 mleft-03">{{alim.likeCount}}</p>
                     </template>
                     <template v-else-if="userDo.doType === 'ST'">
                       <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
                       <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
+                  <p class="fr font16 mleft-03">{{alim.memoCount}}</p>
+                  <img style="width:20px;" class="fr" src="../../assets/images/common/icon_comment.svg" alt="">
+
+                  <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+                      :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + alim.contentsKey
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                        class="copyTextIcon mleft-05 fl" style="width:20px;" >
+                    <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
+                  </div>
+
                 </div>
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -53,6 +66,7 @@
           <gLoadingS ref="sLoadingPush" class="fl"/>
         </div>
       </div>
+      <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
 </template>
 <script>
 /* eslint-disable */
@@ -64,6 +78,9 @@ export default {
       chanWrap: null,
       contentsList: [],
       currentScroll: 0,
+      alimBigViewYn: false,
+      confirmText: '',
+      confirmPopShowYn: false
     }
   },
   components: {
@@ -71,17 +88,31 @@ export default {
   },
   created () {
     this.contentsList = this.commonListData
+    console.log(this.contentsList)
   },
   watch: {
     commonListData() {
       this.contentsList = this.commonListData
       this.loadingRefHide()
+      console.log(this.contentsList)
     },
 
   },
   mounted () {
   },
   methods: {
+    alimBigView () {
+
+    },
+    async copyText () {
+      // eslint-disable-next-line no-undef
+      var clip = new ClipboardJS('#copyTextBody')
+      var _this = this
+      clip.on('success', function (e) {
+        _this.confirmText = '알림링크가 복사되었습니다!'
+        _this.confirmPopShowYn = true
+      })
+    },
     loadingRefShow(){
       // console.log('show');
       this.$refs.sLoadingPush.show()

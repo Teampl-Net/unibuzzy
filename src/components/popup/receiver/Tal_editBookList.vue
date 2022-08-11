@@ -2,15 +2,23 @@
     <div class="editBookListWrap">
         <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
-            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; " >
-                <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span>
+            <!-- <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
+                <!-- <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span> -->
                 <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
                 <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
+            <!-- </div> -->
+            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; " v-if="cabinetName !== ''" >
+                <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">
+                    <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
+                    <p class="fl mleft-05 font18 colorBlack" >{{this.cabinetName}}</p>
+                </span>
             </div>
-            <div class="bookAndMemListWrap">
+
+            <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 3.5rem);' : '' ">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
-                    <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
                 <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
@@ -116,6 +124,7 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
+            console.log(this.memberList);
             if (this.memberList) { // dispName이 없을시 userName으로 대체
                 for (var i =0; i < this.memberList.length; i ++) {
                     if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
@@ -176,7 +185,7 @@ export default {
             }
         },
         async openMCabUserList(data){
-            this.receiverTitle = '구성원 관리'
+            this.receiverTitle = '주소록 멤버 관리'
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
             this.selectPopId = 'selectMemeberPopup' + history.length
@@ -264,7 +273,7 @@ export default {
 
 <style >
 /* btnPlus common.css로 옮김 */
-.bookAndMemListWrap{width: 100%; height: calc(100% - 10px); position: relative;}
+.bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: auto;}
 .editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
 
 .longHeight{

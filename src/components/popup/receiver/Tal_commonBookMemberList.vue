@@ -9,11 +9,16 @@
                           <img :src="data.userProfileImg" />
                         </div>
                         <img v-else src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 5px; margin-top: 10px;" class="fl"/>
-                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot" style="width: calc(100% - 70px); height: 100%;" >
-                            <p class="fl font16 commonBlack mleft-1 receiverTeamText ">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
+                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
+                            <p class="fl font16 commonBlack">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
+                            <p class="fl font12 commonBlack" v-if="data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true)">{{this.setPhone(data.phoneEnc)}}</p>
+                            <p class="fl font11 commonBlack" v-if="!data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true) ">등록된 번호가 없습니다.</p>
                         </div>
-                        <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" @click="deleteMemberClick(data,index)" class="fl" style="width:55px; height: 60px; line-height:60px; position:absolute; top:0; right: 0; ">
-                            <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg"  style="width: 20px;" alt="">
+                        <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" class="fr" style="width:70px; height: 100%; display:flex; justify-content: space-between;">
+
+                            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(data.memPhone)" style="width: 20px;" class="mright-15" alt="">
+
+                            <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="height: 100%; width: 30px; display:flex; flex-shrink: 0; flex-grow: 0; ">
@@ -30,6 +35,7 @@
 </template>
 
 <script>
+import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   components: { },
   props: {
@@ -50,6 +56,7 @@ export default {
       newYn: true,
       selectedMemberList: [],
       pageTopBtnTitle: '편집'
+
     }
   },
   beforeUnmount () {
@@ -64,6 +71,16 @@ export default {
     // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
   },
   methods: {
+    setPhone (num) {
+      if (num !== undefined && num !== null && num !== '') {
+        return num.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3')
+      }
+    },
+    callPhone (num) {
+      if (num !== undefined && num !== null && num !== '') {
+        onMessage('REQ', 'callphone', num)
+      }
+    },
     async refresh () {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
     },
@@ -178,5 +195,5 @@ export default {
 
 .memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
-.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 10px 0px;}
+.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 10px 10px;}
 </style>

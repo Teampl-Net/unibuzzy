@@ -4,6 +4,7 @@
         <img class="searchIcon mtop-03" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         <div class="searchInput font15" :class="{darkerBgColor : this.targetType === 'myActList'}" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
       </div>
+
       <div style="width: 100%;">
         <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
       </div>
@@ -30,7 +31,8 @@ export default {
   },
   props: {
     resultSearchKeyList: {},
-    targetType: {}
+    targetType: {},
+    searchType: {}
   },
   computed: {
   }

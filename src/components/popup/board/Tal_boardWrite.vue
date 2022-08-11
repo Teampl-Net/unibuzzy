@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100vh;top: 50px; position: absolute; overflow:auto">
+  <div class="w-100P" style=" height:100vh;top: 50px; position: absolute; overflow:auto">
     <div style="min-height: 800px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
@@ -29,7 +29,9 @@
                 </div>
               </div>
             </div>
+
           </div>
+          <gBtnSmall class="mright-05" style="position: absolute; left:50%; bottom: 0; transform: translateX(-50%);" btnTitle='작성하기' @click="clickPageTopBtn()" />
         </div>
       </div>
     </div>
@@ -454,6 +456,7 @@ export default {
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
+          // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
@@ -593,9 +596,9 @@ export default {
 .activeColor p{color: #6768A7!important;}
 .editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
-.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 2rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
+.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 5rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.boardWritePaperBack{width: 100%; height: calc(100% - 5rem);min-height: 600px; position: relative; margin: 0 auto; padding: 4rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+.boardWritePaperBack{width: 100%; height: calc(100% - 5rem);min-height: 600px; position: relative; margin: 0 auto; padding: 2rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .boardInputArea{height: 100%; width: 100%;}

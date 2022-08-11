@@ -377,6 +377,7 @@ const methods = {
       iframe.style.visibility = 'none'
       document.body.appendChild(iframe)
     }
+    // 파일서버 fileServer fileserver FileServer Fileserver
     iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
     /* try {
       var pom = document.createElement('a')

@@ -1,7 +1,7 @@
 <template>
   <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
   <div v-if="addressBookList.length > 0" style=" height: calc(100% - 60px); overflow: hidden scroll;">
-    <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style="margin-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
+    <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
           <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
@@ -41,6 +41,7 @@
 // import loadingCompo from '../../../components/Tal_loading.vue'
 // import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
+
 /* eslint-disable */
 // eslint-disable-next-line
 export default {

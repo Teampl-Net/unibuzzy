@@ -5,18 +5,21 @@
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="boardList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="receiverTeamListCard fl" style=" width: calc(100% - 3px); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative;"  >
-        <!-- <div v-for="(data, index) in listData" :key='index' class="receiverunistCard fl" @click="clickList(data)" style="width:100%; height:4rem; margin-bottom:10px; "  > -->
-            <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
+          <div  v-for="(data, index) in boardList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
+            <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
-            </div>
-            <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); margin-left: 30px; padding: 3px 0; float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
+            </div> -->
+            <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: data.picBgPath || '#ffffff' }"></div>
                 <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
             </div>
-            <div  @click="checkDelete(data, index)" style="position: absolute; top: 0; right: 0; width: 55px; height: 100%; background: rgb(242 242 242); display: flex; justify-content: center; align-items: center; ">
-              <img src="../../assets/images/formEditor/trashIcon_gray.svg" style=" width: 22px; cursor: pointer;" alt="">
+
+            <div class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
+              <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="openModiBoardPop(data)" >
+              <img src="../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="checkDelete(data, index)" >
             </div>
+
+            <!-- </div> -->
           </div>
         </transition-group>
       </draggable>
@@ -316,4 +319,14 @@ border-bottom: 1.5px solid #999;
   font-size:20px;
   font-weight:bold;
 }
+.boardListCard{
+  width: 100%;
+  height:60px;
+  border-bottom:1px solid #ddd; padding: 0.7rem 0;
+  position: relative;
+
+   /* width: calc(100%); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative; */
+
+}
+
 </style>

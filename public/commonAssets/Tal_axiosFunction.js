@@ -358,7 +358,7 @@ const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com:10443/tp.updateUserDoList',
+      url: '/.updateUserDoList',
       param: paramSet
     })
     result = response.data

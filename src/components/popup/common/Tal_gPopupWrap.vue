@@ -1,6 +1,6 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
-      <loadingCompo style="z-index: 9999999;" v-show="loadingYn" />
+      <loadingCompo style="z-index: 999999999;" v-show="loadingYn" />
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
       <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
@@ -49,8 +49,11 @@
 
       <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeMemberYn='changeMemberYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
       <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" @openPop="openPop"  />
-      <memberForm v-if="this.targetType === 'memberForm'" :propData="this.params"  />
+      <memberForm v-if="this.targetType === 'memberForm'" :propData="this.params" @closeXPop="closeXPop" @openPop="openPop" />
       <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" />
+
+      <memberFormPreView v-if="this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
+
     </div>
 </template>
 
@@ -96,6 +99,7 @@ import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
 
 import memberForm from '../memberQuestion/Tal_editMemberForm.vue'
 import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
+import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
 
 export default {
   async created () {
@@ -187,7 +191,8 @@ export default {
     chanInfoComp,
     autoAnswerList,
     memberForm,
-    memberFormList
+    memberFormList,
+    memberFormPreView
   },
   updated () {
   },
@@ -389,7 +394,8 @@ export default {
         this.helpYn = true
       } else if (this.targetType === 'bookMemberDetail') {
         if (target.currentCabinetKey) {
-          if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
+          // if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
+          if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '상세' } // this.$changeText(this.params.value.userDispMtext)
         } else {
           if (!target.managerKey) {
             this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
@@ -431,6 +437,8 @@ export default {
         this.headerTitle = '멤버신청서 목록'
       } else if (this.targetType === 'templateList') {
         this.headerTitle = '멤버신청서 템플릿 목록'
+      } else if (this.targetType === 'mQPreview') {
+        this.headerTitle = '멤버신청서 미리보기'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

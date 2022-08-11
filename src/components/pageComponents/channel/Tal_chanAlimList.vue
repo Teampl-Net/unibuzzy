@@ -1,63 +1,124 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
+  <p class="font20 fontBold" style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :style="chanItem.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
+  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-  <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap" >
-    <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox">
-      <div class="chanTextBox" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'">
-        <p id="chanCnt" class="font16">구독자 {{chanItem.followerCount}}명 | 누적 알림 {{chanItem.totalContentsCount}}건 | 내가 받은 알림 {{myContentsCount}}건</p>
-        <p class="font22 fontBold" style="padding-right: 30px;"><img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" />{{changeText(chanItem.nameMtext)}}</p>
-      </div>
-      <div style="width: 110px; height: 110px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; ">
+  <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanDetail" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="okMember" />
+  <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
+    <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
+    <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
+      <div class="chanImgRound" > <!-- 채널 로고 부분 -->
         <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진" />
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
-        <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
-          <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
-          <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
-          <!-- <p class="fl" v-if="chanItem.userTeamInfo.managerKey">(매니저)</p> -->
+      </div>
+      <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
+        <div class="fl font16  w-100P">
+          <div style="width:20px;" class="fl">
+            <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
+            <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 산업군 </p> -->
+          </div>
+          <p class="font16 textLeft fl mleft-1">{{teamTypeText}}</p>
+        </div>
+
+        <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+          <div style="width:20px;" class="fl">
+            <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
+            <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
+          </div>
+          <p class="font16 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeText(chanItem.memoMtext)}}</p>
         </div>
       </div>
-      <!-- <div :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" class="mtop-15">
-        <p class="font13 ">#라이프스타일</p>
-      </div> -->
+    </div>
+    <div id="ownerChannelEditArea" class="w-100P fl" v-if="ownerYn">
+      <div class="fr " @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important">
+        <p class="font16 textLeft lightGray fr"  >편집 > </p>
+      </div>
+    </div>
+
+    <div id="channelCardWrap" class="fl w-100P mtop-05" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
+      <p class="font16 fl w-100P">구독자 {{chanItem.followerCount}}명</p>
+      <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">개설일 {{this.$changeDateFormat(chanItem.creDate)}}</p>
+    </div>
+
+    <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
+
+        <div v-if="followYn" class="fl" style="display: flex; align-items: center;">
+          <div style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;">
+            <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/>
+          </div>
+          <div class="mleft-05" style="display:flex; flex-direction: column;">
+            <p class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
+            <div>
+              <p class="fl font14 commonBlack">{{followTypeText}}</p>
+              <p class="fl commonBlack font14 " v-if="memberYn">(멤버)</p>
+            </div>
+          </div>
+          <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
+        </div>
+        <div v-if="followYn" class="fl" style="display: flex; width: 50%; justify-content: space-around;">
+          <div style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
+            <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
+          </div>
+          <img style="width:20px;" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+          <img style="width:20px;" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
+
+          <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+              :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanItem.teamKey
+                + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                class="copyTextIcon">
+            <img style="width:20px;" src="../../../assets/images/common/icon_share_square.svg" alt="">
+          </div>
+        </div>
+
+        <div v-if="followYn === false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+          <!-- <p class="font20 fontBold">구독하기</p> -->
+          <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(chanItem.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
+          <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1" btnTitle="구독하기" />
+        </div>
 
     </div>
-    <div id="chanInfoSummary2" ref="chanImg2" style="">
-      <span style="line-height: 50px;" class="font20 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-      <!-- <span class="font13 mbottom-05 fl">#라이프스타일</span> -->
+
+    <div id="followerCancelArea" v-if="followYn && !adminYn" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
+      <p v-if="chanItem.teamKey !== 377" @click="changeFollowYn" class="fl font14 fontBold" :style="followYn ? 'color:white' : '' " >구독취소</p>
     </div>
-    <!-- <div style="width: 100%; height: 320px;float: left;">
-      <div id="summaryWrap2" class="summaryWrap2">
-        <div id="chanInfoSummary2" ref="chanImg"  class="mt-header ">
-          <span class="font22 fontBold">{{changeText(chanItem.nameMtext)}}</span>
-          <span class="font13 mbottom-05 fl">#라이프스타일</span>
-        </div>
-      </div>
-    </div> -->
-    <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; bottom: 3rem; right: 1rem;" >
+    <!-- <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
+        <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
+        <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
+      </div> -->
+
+    <!-- <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; bottom: 3rem; right: 1rem;" >
       <p class="fl font14 fontBold" @click="saveMemberButton" style="">멤버 신청하기 ></p>
     </div>
     <div id="chanInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; top: 19rem; right: 1rem;">
       <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p>
-    </div>
+    </div> -->
+
+    <!-- <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p> -->
   </div>
-  <div v-if="this.detailShowYn === false" class="channelItemBox " id="channelItemBox"  style="padding: 0px 1.5rem; margin-top: 350px; overflow: hidden;">
-    <pushList :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
+  <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
+  <div v-if="followYn" class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;">
+    <pushList  :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
+    <!-- <div v-else style="">
+      <p>구독하고 알림을 받아보세요!</p>
+    </div> -->
   </div>
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
-    <!-- <popHeader  :bgblack="true" v-if="detailHeaderShowYn" style="background: transparent;" :headerTitle="changeText(chanItem.nameMtext)" @closeXPop="this.closeDetailPop" :thisPopN="this.thisPopN" class="commonPopHeader chanDetailPopHeader"/> -->
     <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
+  <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 </div>
 </template>
 
 <script>
+// import a from '../../../assets/images/'
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
+import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
 export default {
   data () {
     return {
@@ -78,10 +139,21 @@ export default {
       errorBoxText: '',
       errorBoxType: 'two',
       adminYn: false,
-      detailShowYn: true,
+      // detailShowYn: true,
+      detailShowYn: false,
       memberYn: false,
       myContentsCount: null,
-      greetingType: 'follow'
+      greetingType: 'follow',
+      teamTypeText: '기타',
+      currentUserInfo: '',
+      userGrade: '',
+      recvAlimYn: true,
+      admYn: false,
+      sendLoadingYn: false,
+      followParam: null,
+      openWelcomePopYn: false,
+      ownerYn: false
+      // errorPopYn: false
     }
   },
   watch: {
@@ -94,9 +166,12 @@ export default {
   },
   components: {
     pushList,
-    chanDetailComp
+    chanDetailComp,
+    welcomePopUp
   },
   async created () {
+    this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
+    console.log(this.currentUserInfo)
     // console.log('this.chanDetail')
     // console.log(this.chanDetail)
     this.$emit('openLoading')
@@ -104,6 +179,29 @@ export default {
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
     // console.log(this.chanItem.userTeamInfo.followerKey)
+
+    console.log(this.chanItem)
+    this.settingTeamType(this.chanItem.teamType)
+
+    if (this.chanItem) {
+      this.setGrade()
+      if (this.chanItem.userTeamInfo) {
+        if (this.chanItem.userTeamInfo.ownerYn) {
+          this.admYn = true
+        }
+        if (this.chanItem.userTeamInfo.notiYn) {
+          if (this.chanItem.userTeamInfo.notiYn === false) {
+            this.recvAlimYn = false
+          }
+        }
+        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        this.ownerYn = (userKey === this.chanItem.creUserKey)
+      }
+    }
+    this.$emit('closeLoading')
+    if (this.chanItem.userTeamInfo === null) {
+      this.followYn = false
+    }
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -127,6 +225,120 @@ export default {
     // })
   },
   methods: {
+    editChan () {
+      var param = {}
+      param.targetType = 'createChannel'
+      param.targetKey = this.chanItem.teamKey
+      param.modiYn = true
+      param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanItem.creUserKey)
+      this.$emit('openPop', param)
+    },
+    async okMember (inMemberYn) {
+      var result = null
+      if (inMemberYn) {
+        this.followParam.memberYn = inMemberYn
+        this.$emit('openLoading')
+        result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
+        this.$emit('closeLoading')
+      } else {
+        this.$emit('openLoading')
+        result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
+        this.$emit('closeLoading')
+      }
+      // console.log(result)
+      if (result.result || result) {
+        this.sendLoadingYn = false
+        if (result.message === 'OK') {
+          this.openWelcomePopYn = false
+          this.followYn = true
+          this.$emit('changeFollowYn', this.followYn)
+        } else {
+          this.errorMsg = result.message
+          this.errorPopYn = true
+        }
+      } else {
+        this.sendLoadingYn = false
+        this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
+        this.errorPopYn = true
+      }
+
+      this.followYn = true
+    },
+    async changeFollowYn () {
+      if (this.admYn === true) {
+        this.errorBoxText = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
+        this.errorBoxYn = true
+      } else {
+        var fStatus = this.followYn
+        // eslint-disable-next-line no-new-object
+        this.followParam = new Object()
+        this.followParam.teamKey = this.chanItem.teamKey
+        this.followParam.teamName = this.$changeText(this.chanItem.nameMtext)
+        this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+        console.log(this.followParam)
+        var result = false
+        this.sendLoadingYn = true
+        if (fStatus) {
+          console.log(this.followParam)
+          result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
+          this.followYn = false
+          console.log(result)
+
+          if (result.result || result) {
+            this.sendLoadingYn = false
+            this.$emit('pageReload')
+          } else {
+            this.sendLoadingYn = false
+            this.errorBoxText = '실패했습니다. 관리자에게 문의해주세요'
+            this.errorBoxType = 'timeover'
+            this.errorBoxYn = true
+          }
+        } else {
+          this.sendLoadingYn = false
+          this.openWelcomePopYn = true
+        }
+      }
+    },
+    setGrade () {
+      if (this.chanItem.userTeamInfo) {
+        if (this.chanItem.userTeamInfo.memberYn) {
+          this.userGrade = '(공개)'
+        }
+        if (this.chanItem.userTeamInfo.managerKey) {
+          this.userGrade = '(매니저)'
+        }
+        if (this.chanItem.userTeamInfo.ownerYn) {
+          this.userGrade = '(관리자)'
+        }
+      }
+    },
+    async copyText () {
+      // eslint-disable-next-line no-undef
+      var clip = new ClipboardJS('#copyTextBody')
+      var _this = this
+      clip.on('success', function (e) {
+        _this.errorBoxText = '채널링크가 복사되었습니다!'
+        _this.errorBoxType = 'timeout'
+        _this.errorBoxYn = true
+      })
+    },
+    changeRecvAlimYn () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.followerKey = this.chanItem.userTeamInfo.followerKey
+      if (this.recvAlimYn === true) {
+        param.notiYn = false
+        this.recvAlimYn = false
+      } else {
+        param.notiYn = true
+        this.recvAlimYn = true
+      }
+      this.$changeRecvAlimYn(param)
+    },
+    settingTeamType (teamType) {
+      if (teamType === 'C') { this.teamTypeText = '기업' } else if (teamType === 'G') { this.teamTypeText = '정부' } else if (teamType === 'S') { this.teamTypeText = '학교' } else if (teamType === 'H') { this.teamTypeText = '종교' } else if (teamType === 'D') { this.teamTypeText = '동호회' } else if (teamType === 'Q') { this.teamTypeText = '병원' } else if (teamType === 'V') { this.teamTypeText = '약국' } else if (teamType === 'P') { this.teamTypeText = '식당' } else if (teamType === 'A') { this.teamTypeText = '매장' } else if (teamType === 'E') { this.teamTypeText = '기타' } else { this.teamTypeText = '기타' }
+    },
     async saveMemberButton () {
       this.smallPopYn = true
       if (this.memberYn || this.memberYn === 1) {
@@ -162,6 +374,8 @@ export default {
           this.memberYn = true
         }
       }
+      this.openWelcomePopYn = false
+      this.setGrade()
     },
     // async saveMemberButton () {
     //   var followParam = {}
@@ -247,6 +461,7 @@ export default {
           if (this.chanItem.userTeamInfo.managerKey !== undefined && this.chanItem.userTeamInfo.managerKey !== null && this.chanItem.userTeamInfo.managerKey !== '') {
             if (this.chanItem.userTeamInfo.ownerYn === true || this.chanItem.userTeamInfo.ownerYn === 'true') {
               this.followTypeText = '소유자'
+              this.ownerYn = true
             } else {
               this.followTypeText = '관리자'
             }
@@ -260,7 +475,7 @@ export default {
       // if (resultList.content[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
       //   this.adminYn = true
       // }
-      this.$emit('closeLoading')
+      // this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
       if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
@@ -269,17 +484,13 @@ export default {
         this.$emit('openPop', param)
       }
     },
-    async changeFollowYn (fYn) {
-      this.$emit('openLoading')
-      this.detailShowYn = false
-      this.detailHeaderShowYn = false
-      await this.getChanDetail(false)
-      this.$emit('closeLoading')
-      // this.detailShowYn = false
-      /* setTimeout(() => {
-        this.greetingInfoYn = false
-      }, 4000) */
-    },
+    // async changeFollowYn (fYn) {
+    //   this.$emit('openLoading')
+    //   this.detailShowYn = false
+    //   this.detailHeaderShowYn = false
+    //   await this.getChanDetail(false)
+    //   this.$emit('closeLoading')
+    // },
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
@@ -289,7 +500,7 @@ export default {
     },
     openPop () {
       this.alimListToDetail = true
-      this.detailShowYn = true
+      // thiopenPop.detailShowYn = true
       this.detailHeaderShowYn = true
     },
     updateScroll () {
@@ -306,19 +517,32 @@ export default {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
-        document.getElementById('chanInfoSummary2').classList.add('displayBIm')
-        document.getElementById('chanInfoArea').classList.add('displayNIm')
-        document.getElementById('memberInfoArea').classList.add('displayNIm')
+        // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
+        // document.getElementById('chanInfoArea').classList.add('displayNIm')
+        // document.getElementById('memberInfoArea').classList.add('displayNIm')
+        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+
+        if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+
+        document.getElementById('channelCardWrap').classList.add('displayNIm')
+        document.getElementById('userCardWrap').classList.add('displayNIm')
 
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
-        document.getElementById('chanInfoArea').classList.remove('displayNIm')
-        document.getElementById('memberInfoArea').classList.remove('displayNIm')
+        // document.getElementById('chanInfoArea').classList.remove('displayNIm')
+        // document.getElementById('memberInfoArea').classList.remove('displayNIm')
+        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.remove('displayNIm')
+
+        if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.remove('displayNIm')
+
+        document.getElementById('channelCardWrap').classList.remove('displayNIm')
+        document.getElementById('userCardWrap').classList.remove('displayNIm')
+
         blockBox.style.height = '350px'
         this.box.style.height = ''
-        document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
+        // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
         this.reloadShowYn = false
       }
@@ -401,7 +625,8 @@ export default {
   min-height: 3rem;
   text-align: left;
 }
-.chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: calc(100% - 50px);}
+/* .chanWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: calc(100% - 50px); } */
+.chanWhiteBox{ display: flex; flex-direction: row;align-items: flex-start; justify-content: center; position: relative; width: 100%; align-items: center; align-content: center; }
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
 .channelItemBox{background-color: #fff; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}
@@ -414,7 +639,10 @@ export default {
 
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
-#chanInfoSummary2{width: 100%; padding-top: 0; height: 100%; display: none; flex-direction: column; float: left}
+.chanImgRound{ width: 100px; height: 100px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
+#chanInfoSummary2{width: 100%; padding-top: 0; height: 100%;
+/* display: none;  */
+flex-direction: column; float: left}
 .blockBox{width: 100%; height: 320px;float: left; height: var(--height); min-height: 50px;}
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
 

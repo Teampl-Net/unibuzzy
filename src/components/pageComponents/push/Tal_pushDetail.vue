@@ -157,7 +157,7 @@ export default {
           }
         }
       }
-      
+
     } */
     /*
     var test = this.$store.state.historyStack
@@ -401,7 +401,7 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
       // debugger
-      
+
       if (this.alimDetail[0].childrenContents) {
         if (this.alimDetail[0].creUserKey === this.creUser) {
           this.alimDetail = [

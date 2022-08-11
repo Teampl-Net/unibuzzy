@@ -1,37 +1,54 @@
 <template>
 <!-- :class="{ssss: tabList.length > 3}" -->
-    <div ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%; " >
+    <div ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%;" >
       <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
           <p :style="activebarWidth" class="tabItem font16 fontBold commonColor" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
       </div>
       <div class="activeBar"  ref="activeBar" :style="activebarWidth"   style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+
+      <div v-if="searchYn">
+        <div class="fr" style="position: absolute; height: 40px; right:0; bottom:0; display: flex; flex-direction: row; align-items: center;">
+          <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->
+          <img class="fl" style="width:20px; line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+        </div>
+
+        <div style="width: 100%;">
+          <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
+        </div>
+      </div>
     </div>
 
 </template>
 <script>
+import searchResult from '../../components/unit/Tal_searchResult.vue'
 export default {
+  components: {
+    searchResult
+  },
   props: {
     tabList: {},
-    activetabProp: {}
+    activetabProp: {},
+    searchYn: { type: Boolean, default: false },
+    resultSearchKeyList: {}
   },
   data () {
     return {
       transition: 'slide-next',
       activetab: 0,
       // tabwidth: 4.8,
-      tabwidth: 4.8,
+      tabwidth: 4,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null }
     }
   },
   mounted () {
-    window.addEventListener('resize', () => {
-      if (window.innerWidth < 360) {
-        this.tabwidth = 4
-        if (window.innerWidth < 290) {
-          this.tabwidth = 3.5
-        }
-      }
-    })
+    // window.addEventListener('resize', () => {
+    //   if (window.innerWidth < 360) {
+    //     this.tabwidth = 3.5
+    //     if (window.innerWidth < 290) {
+    //       this.tabwidth = 3.0
+    //     }
+    //   }
+    // })
     // this.$refs.activeBar.style.setProperty('--tabwidth', 5.5 + 'rem')
   },
   computed: {
@@ -47,6 +64,9 @@ export default {
     }
   },
   methods: {
+    changeSearchList (type) {
+      this.$emit('changeSearchList', type)
+    },
     switchtab (n) {
       this.$nextTick(() => {
         this.activetab = n
@@ -76,6 +96,9 @@ export default {
 </script>
 
 <style >
+/* background: #e9e9e9 */
+ /* background: #e4e4e463; */
+.activeSearchInput{border: none; background: #e9e9e9; height: 90%; float: left; width: 6%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .activeBar{
   min-width: var(--tabwidth);
   top: 1.8rem;

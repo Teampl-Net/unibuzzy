@@ -49,12 +49,6 @@
     </draggable>
   </div>
 
-  <!-- <div style="width:100%; min-height:50px; background:white; position:fixed; bottom:0; left:0; border-radius: 15px 15px 0px 0px; border:1px solid #eee; display: flex; justify-content: space-around; align-items: center;">
-    <div class="fl">플러스</div>
-    <div class="fl">이미지</div>
-    <div class="fl">플러스</div>
-  </div> -->
-
 </div>
 </template>
 
