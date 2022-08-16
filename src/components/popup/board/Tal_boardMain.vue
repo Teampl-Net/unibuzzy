@@ -13,23 +13,23 @@
           <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
           <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div> -->
-      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0 10px;">
+      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">
         <div class="chanImgRound" > <!-- 채널 로고 부분 -->
           <img id="chanImg" :src="chanInfo.logoPathMtext" style="width: 70px;" alt="채널사진" />
           <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         </div>
-        <div class="chanTextBox fl mleft-05;" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
+        <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
           <div class="fl font16  w-100P">
             <div style="width:50px;" >
               <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 채널명 </p>
+              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
             </div>
             <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeText(this.propData.nameMtext) }}</p>
           </div>
           <div class="fl font16  w-100P">
             <div style="width:50px;" >
               <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 만든일 </p>
+              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
             </div>
             <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(mCabinetContentsDetail.creDate)}}</p>
           </div>
@@ -38,7 +38,7 @@
             <div class="fl font16  w-100P">
               <div style="width:100%" class="fl" >
                 <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-                <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 게시판기능 </p>
+                <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
               </div>
               <p class="mleft-05 fl font14 commonBlack" v-if="mCabinetContentsDetail.replyYn === 1">댓글</p>
               <p class="fl font14 mleft-05 commonBlack" v-if="mCabinetContentsDetail.fileYn === 0">파일업로드</p>
@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-          <div style="display:flex; align-items: center; width: 100px; justify-content: space-around;">
+          <div style="display:flex; align-items: center; justify-content: space-around; max-width:100px; width:40%;">
 
             <img style="width:20px;" v-if="shareAuth.W === true" class="fr" src="../../../assets/images/board/icon_square_pen.svg" alt="">
             <img style="width:20px;" v-else class="fr" src="../../../assets/images/board/icon_square_pen_solid.svg" alt="">
@@ -123,15 +123,22 @@
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+<!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
+<div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
+  <boardWrite @closeXPop="boardWriteYn = false" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
+</div>
 </template>
 <script>
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '../../boardList/Tal_commonBoardList.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
+import boardWrite from './Tal_boardWrite.vue'
+
 export default {
   components: {
     findContentsList,
-    boardList
+    boardList,
+    boardWrite
   },
   props: {
     propData: {}
@@ -211,10 +218,27 @@ export default {
       scrollCheckSec: 0,
       readCheckBoxYn: false,
       chanInfo: [],
-      currentUserInfo: ''
+      currentUserInfo: '',
+      boardWriteYn: false,
+      boardWriteData: {}
     }
   },
   methods: {
+    successWriteBoard (data) {
+      // this.$emit('successWrite', data)
+      // successWriteBoard
+      this.findKeyList.searchKey = null
+      this.findKeyList.toCreDateStr = null
+      this.findKeyList.fromCreDateStr = null
+      this.resultSearchKeyList = []
+      this.changeTab('N')
+      this.offsetInt = 0
+
+      this.boardWriteYn = false
+    },
+    successSave () {
+      this.$emit('successSave')
+    },
     async getChanInfo () {
       // this.memberYn = false
       // this.adminYn = false
@@ -342,7 +366,11 @@ export default {
       params.cabinetNameMtext = this.$changeText(this.mCabinetContentsDetail.cabinetNameMtext)
       params.cabinetKey = this.mCabinetContentsDetail.cabinetKey
       params.value = this.mCabinetContentsDetail
-      this.$emit('openPop', params)
+      this.boardWriteData = {}
+      this.boardWriteData = params
+      this.boardWriteYn = true
+
+      // this.$emit('openPop', params)
     },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object

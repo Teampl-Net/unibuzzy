@@ -38,7 +38,7 @@ export default {
       transition: 'slide-next',
       activetab: 0,
       // tabwidth: 4.8,
-      tabwidth: 3.3,
+      tabwidth: 3,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null },
       selectedTabName: ''
     }
@@ -82,7 +82,9 @@ export default {
       })
     },
     selectTab (tab, displayName) {
-      this.selectedTabName = displayName.replaceAll(' ', '')
+      if (displayName !== undefined && displayName !== null && displayName !== '') {
+        this.selectedTabName = displayName.replaceAll(' ', '')
+      }
       this.$emit('changeTab', tab)
     }
   },

@@ -1,10 +1,10 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :style="chanItem.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
+  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 17px;': '' " style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-  <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanDetail" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="okMember" />
+  <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanItem" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="okMember" />
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
     <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
@@ -14,31 +14,47 @@
       </div>
       <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
         <div class="fl font16  w-100P">
-          <div style="width:20px;" class="fl">
-            <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
-            <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 산업군 </p> -->
-          </div>
-          <p class="font16 textLeft fl mleft-1">{{teamTypeText}}</p>
+          <!-- <div style="width:20px;" class="fl">
+            <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
+          </div> -->
+          <p class="font16 textLeft fl">
+            <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
+            {{teamTypeText}}
+          </p>
         </div>
 
         <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
-          <div style="width:20px;" class="fl">
-            <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
-            <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
-          </div>
-          <p class="font16 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeText(chanItem.memoMtext)}}</p>
+          <!-- <div style="width:20px;" class="fl"> -->
+            <!-- <img class="fl" style="width:20px; margin-top:2px; src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
+          <!-- </div> -->
+          <p class="font16 textLeft fl " style="word-break:break-all" >
+            <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
+            {{this.$changeText(chanItem.memoMtext)}}
+          </p>
         </div>
+
+        <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+
+            <p class="font16 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일 </p>
+            <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
+            <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
+
+          <p class="font16 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeDateFormat(chanItem.creDate)}}</p>
+        </div>
+
       </div>
     </div>
     <div id="ownerChannelEditArea" class="w-100P fl" v-if="ownerYn">
-      <div class="fr " @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important">
+      <div class="fr " @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; margin:0 !important;">
         <p class="font16 textLeft lightGray fr"  >편집 > </p>
       </div>
     </div>
 
     <div id="channelCardWrap" class="fl w-100P mtop-05" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
       <p class="font16 fl w-100P">구독자 {{chanItem.followerCount}}명</p>
-      <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">개설일 {{this.$changeDateFormat(chanItem.creDate)}}</p>
+
+      <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{chanItem.totalContentsCount}}건</p>
+      <!-- <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">개설일 {{this.$changeDateFormat(chanItem.creDate)}}</p> -->
     </div>
 
     <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
@@ -56,7 +72,7 @@
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
-        <div v-if="followYn" class="fl" style="display: flex; width: 50%; justify-content: space-around; align-items: center;">
+        <div v-if="followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
           <div style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
             <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
           </div>
@@ -109,7 +125,7 @@
     <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
-  <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:9">
+  <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
     <writePush  ref="chanAlimListWritePushRefs" @closeXPop='writePushYn = false' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
   </div>
 
@@ -161,8 +177,9 @@ export default {
       openWelcomePopYn: false,
       ownerYn: false,
       writePushData: {},
-      writePushYn: false
+      writePushYn: false,
       // errorPopYn: false
+      titleLongYn: false
     }
   },
   watch: {
@@ -514,7 +531,10 @@ export default {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
       changeTxt = this.$makeMtextMap(text, 'KO')
-      if (changeTxt) { return changeTxt }
+      if (changeTxt) {
+        if (changeTxt.length > 12) { this.titleLongYn = true }
+        return changeTxt
+      }
       // if (changeTxt !== undefined) { return changeTxt }
     },
     openPop () {
@@ -637,6 +657,9 @@ export default {
 .chanDetailWrap{
   height: 100vh;
   background-size: cover;
+}
+.officialTitle{
+  padding-right: 30px;
 }
 
 .chanDetailWrap tr, .chanDetailWrap td{

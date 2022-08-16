@@ -1,5 +1,5 @@
 <template>
-    <form  @submit.prevent="formSubmit" class="font14" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px;background: #6768A7;width: calc(100% - 200px);height: 27px; margin-top: 2px;border-radius: 8px;float: right;position: relative;color: white;" method="post">
+    <form  @submit.prevent="formSubmit" class="font14" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px;background: #6768A7;width: calc(100% - 200px);height: 27px; margin-top: 2px;border-radius: 8px;float: right;position: relative;color: white; min-width:70px;" method="post">
          파일 선택
         <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="previewFile"/>
     </form>

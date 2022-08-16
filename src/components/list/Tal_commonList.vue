@@ -17,14 +17,19 @@
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
-                  <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl" style="width: 20px;" alt="">
-                  <img src="../../assets/images/board/readTrue.svg" v-else class="fl" style="width: 20px;" alt="">
-                  <p style="width:calc(100% - 30px ); " :class="{commonBlue: alim.readYn === 0}" class="mleft-05 font16 fl fontBold commonBlack textOverdot">{{resizeText(alim.title, alim.nameMtext)}}</p>
+
+                  <p style="width: 100%; " :class="{commonBlue: alim.readYn === 0}" class="mleft-05 font16 fl fontBold commonBlack">
+                    <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl" style="width: 20px;" alt="">
+                    <img src="../../assets/images/board/readTrue.svg" v-else class="fl" style="width: 20px;" alt="">
+                    {{resizeText(alim.title, alim.nameMtext)}}
+                  </p>
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
-                  <div class=" w-100P fl">
-                    <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                    <p style="width:65%;"  :style="alim.officialYn ? 'width:calc(65% - 30px)': '' " class="font14 fl grayBlack textOverdot">{{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}</p>
+                  <div class="w-100P fl">
+                    <p style="width:65%; " class="font14 fl grayBlack">
+                      <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                      {{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}
+                    </p>
                     <div class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                       <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;" class="fr mleft-05" alt="">
@@ -53,19 +58,21 @@
                       <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
-                  <p class="fr font16 mleft-03">{{alim.memoCount}}</p>
-                  <img style="width:20px;" @click="memoClick" class="fr" src="../../assets/images/common/icon_comment.svg" alt="">
-
                   <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                       :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + alim.contentsKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
                     <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
+                  <p class="fr font16 mleft-03">
+                    <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt="">
+                    {{alim.memoCount}}
+                  </p>
+                  <div class="fr w-100P mtop-05">
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
+                  </div>
 
                 </div>
-
               </div>
               <div class="alimListMemoBorder"></div>
               <div class="w-100P">
@@ -436,7 +443,7 @@ export default {
 .commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: 100%;}
 
 .pushDetailWrap{height: fit-content;}
-.commonPushListTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.commonPushListTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 30px; margin-right: 1px;}
 .pushDetailChanLogo img {width: 100%;}
 .pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.1rem;}

@@ -621,7 +621,7 @@ export default {
       /* height: calc(100% - 60px); */
       min-height: 500px;
       height: 90%;
-      overflow: auto;
+      /* overflow: auto; */
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -656,7 +656,7 @@ export default {
 
 /* add by_jeong */
 /* .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;} */
-.pageMsgArea{ min-height: 240px; float: left; width: 100%; height: 70%; }
+.pageMsgArea{ min-height: 240px; float: left; width: 100%; height: 60%; }
 .pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ padding:7px; overflow: hidden scroll; margin-bottom: 60px; width: 100%; min-height: 240px; height: 90%;; border-radius: 5px; background: #fff; border:1px solid #BFBFDA; font-size: 16px; text-align: left;}
 

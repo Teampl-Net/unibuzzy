@@ -1,7 +1,8 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height:100vh;top: 50px; position: absolute; overflow:auto">
-    <div style="min-height: 800px; height: 100%;">
+  <!-- <div class="w-100P" style=" height:100vh;top: 50px; position: absolute; overflow:auto"> -->
+    <div class="w-100P" style=" height:100vh;top: 0; position: absolute; overflow:auto">
+    <div style="min-height: 400px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
@@ -10,10 +11,14 @@
         <div class="boardWritePaperBack">
           <div class="whitePaper">
             <div class="overFlowYScroll boardInputArea">
+              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
+                <p class="fontBold commonColor font20 fl">게시글작성</p>
+                <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
+              </div>
               <div class="writeBoardPageTopArea">
                 <div class=""><p class="boardWriteTitleText" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="" v-if="propData.nonMemYn"><p class="boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
-             </div>
+              </div>
               <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
@@ -25,7 +30,7 @@
                 <div style="width: 100%; min-height: 30px;">
                   <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt="">
                   <p class="commonColor fl font16 fontBold" style="margin-top: 4px;">첨부파일</p>
-                  <attachFileList :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                  <attachFileList style="min-width:80px;" :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
                 </div>
               </div>
             </div>
