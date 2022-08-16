@@ -122,7 +122,7 @@ export default {
 
 <style scoped>
 
-.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 99999999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
+.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: fixed; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 999999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 
@@ -155,5 +155,5 @@ export default {
 .pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
-.pushBackground{width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999999999999999999;}
+.pushBackground{width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:99999999999999999;}
 </style>

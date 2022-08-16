@@ -153,7 +153,7 @@ export default {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.actYn) {
+            if (this.notiDetail.actYn === true) {
               if ((currentPage === 0 || currentPage === undefined)) {
                 if (this.notiDetail.actType === 'WR') {
                   this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })

@@ -1,5 +1,5 @@
 <template>
-    <div id="gPopup" style="height: 100vh; width: 100vw; max-width: 780px; margin: 0 auto; max-height: 1200px;" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
+    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <loadingCompo style="z-index: 999999999;" v-show="loadingYn" />
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
@@ -304,7 +304,6 @@ export default {
     },
     reloadPop (parentReloadYn) {
       if (this.targetType === 'myChanMenuEdit') {
-        // alert(true)
         this.closePop()
         return
       }
@@ -599,7 +598,7 @@ export default {
               return
             }
             var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.actYn) {
+            if (this.notiDetail.actYn === true) {
               if ((currentPage === 0 || currentPage === undefined)) {
               } else {
                 if (this.notiDetail.actType === 'WR') {

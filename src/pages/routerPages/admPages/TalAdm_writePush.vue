@@ -438,7 +438,6 @@ export default {
       console.log('답장 후 ')
       console.log(param)
       var result = await this.$saveContents(param)
-
       if (result.result === true) {
 
         this.sendLoadingYn = false

@@ -25,7 +25,7 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
-        <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop"/>
+        <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" @scrollMove="scrollMove" />
       </div>
       <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 10rem;' : 'bottom: 5rem;' " style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
@@ -314,10 +314,13 @@ export default {
       this.introPushPageTab()
       this.scrollMove()
     },
-    scrollMove () {
+    scrollMove (wich) {
+      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
+      if (wich === undefined || wich === null || wich === '') { wich = 0 }
+      ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
+
     async getPushContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
