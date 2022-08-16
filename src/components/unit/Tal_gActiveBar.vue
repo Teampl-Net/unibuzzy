@@ -2,10 +2,11 @@
 <!-- :class="{ssss: tabList.length > 3}" -->
     <div ref="tabbar" style="border-bottom: 0.5px solid #6768A78A; height: 1.9rem; position: relative; width: 100%;" >
       <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
-          <p :style="activebarWidth" class="tabItem font16 fontBold commonColor" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name)"></p>
+          <!-- <p :style="activebarWidth" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p> -->
+          <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
       </div>
-      <div class="activeBar"  ref="activeBar" :style="activebarWidth"   style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
-
+      <!-- <div class="activeBar"  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
+      <div class="activeBar"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
       <div v-if="searchYn">
         <div class="fr" style="position: absolute; height: 40px; right:0; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->
@@ -29,6 +30,7 @@ export default {
     tabList: {},
     activetabProp: {},
     searchYn: { type: Boolean, default: false },
+    modeType: { type: String, default: 'Basic' },
     resultSearchKeyList: {}
   },
   data () {
@@ -36,8 +38,9 @@ export default {
       transition: 'slide-next',
       activetab: 0,
       // tabwidth: 4.8,
-      tabwidth: 4,
-      touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null }
+      tabwidth: 3.3,
+      touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null },
+      selectedTabName: ''
     }
   },
   mounted () {
@@ -64,6 +67,12 @@ export default {
     }
   },
   methods: {
+    tabTrimLength (displayName) {
+      if (this.modeType === 'Basic') {
+        var text = displayName.replaceAll(' ', '')
+        return text.length
+      }
+    },
     changeSearchList (type) {
       this.$emit('changeSearchList', type)
     },
@@ -72,11 +81,13 @@ export default {
         this.activetab = n
       })
     },
-    selectTab (tab) {
+    selectTab (tab, displayName) {
+      this.selectedTabName = displayName.replaceAll(' ', '')
       this.$emit('changeTab', tab)
     }
   },
   created () {
+    // this.selectedTabName = this.tabList.display
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -85,12 +96,15 @@ export default {
         }
       }
     }
-    if (window.innerWidth < 360) {
-      this.tabwidth = 4
-      if (window.innerWidth < 290) {
-        this.tabwidth = 3.5
-      }
+    if (this.modeType === 'write') {
+      this.tabwidth = 4.8
     }
+    // if (window.innerWidth < 360) {
+    //   this.tabwidth = 4
+    //   if (window.innerWidth < 290) {
+    //     this.tabwidth = 3.5
+    //   }
+    // }
   }
 }
 </script>
@@ -139,9 +153,10 @@ export default {
   /* width: 130px; */
   background: black;
   transition: 0.5s ease;
-
 }
-
+.mWidth{
+  width: 4.5rem !important;
+}
 .tabcontainer {
   height: 900px;
   position: relative;

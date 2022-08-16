@@ -4,12 +4,7 @@
 <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
 <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'"  @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
   <div :style="'background: url(' + selectBg.selectPath + ');'" class="createChanWrap"  >
-<!-- <div style="width: 100%; height: calc(100% - 110px);  overflow: auto; position:absolute; top:50px;"  > -->
-    <!-- <input type="file" id="input-Logoimgfile" style="display:none" />
-    <input type="file" id="input-Backimgfile" style="display:none" /> -->
     <div class="createChanContentsWrap">
-
-      <!-- <div id='chboxtest' style="font-size:14px; position: absolute; width: 100%; min-height: 100px; background: #FFF; top: 10rem ; box-shadow: rgb(189 189 189) 0px -1px 12px -4px; padding: 0 2rem; height: calc(100% - 50px);"> -->
       <div id='chboxtest' >
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap" >
             <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
@@ -20,23 +15,31 @@
               <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>
         </div>
-
-        <!-- <div style="display: flex; align-items: center; justify-content: space-around;"> -->
-        <div style="width:100%; height: 30px" class="mtop-1">
-          <p class="textLeft font16 fl" style="line-height: 30px;">채널명</p>
-          <input style="background: ghostwhite;" v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
-        </div>
-        <div style="width:100%; min-height: 100px " class="mtop-1 ">
-          <p class="textLeft font16 fl" style="line-height: 30px;">설명</p>
-          <!-- <input type="text" placeholder="간단한 소개글을 입력해주세요." name="" value="" class="creChanInput"  id="channelName" style="width: 80%; height: 50px; float: right; padding-right: 10px; border: none;border-bottom: 1px solid #ccc;"> -->
-          <textarea style="background: ghostwhite;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
-        </div>
-        <div style="width:100%; height: 30px" class="mtop-1" >
-          <p class="textLeft font16 fl" style="line-height: 30px;">산업군</p>
-          <div class="changeChanTypeBtnWrap" style="background: ghostwhite;" @click="channelTypeClick">
-            <p class="textLeft font14 fl mleft-05 commonBlack" style="line-height:30px;" >{{selectTypeText}}</p>
+        <div class="w-100P fl" style="height: calc(100% - 110px); overflow: auto;">
+          <div style="width:100%; height: 30px" class="mtop-1 fl">
+            <p class="textLeft font16 fl" style="line-height: 30px;">채널명</p>
+            <input style="background: ghostwhite;" v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
           </div>
+          <div style="width:100%;" class="mtop-1 fl ">
+            <div class="fr w-100P" style="display: flex; justify-content: flex-end;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
+            <p v-show="chanMemoYn" class="textLeft font16 fl" style="line-height: 30px;">소개글</p>
+            <!-- <input type="text" placeholder="간단한 소개글을 입력해주세요." name="" value="" class="creChanInput"  id="channelName" style="width: 80%; height: 50px; float: right; padding-right: 10px; border: none;border-bottom: 1px solid #ccc;"> -->
+            <textarea v-show="chanMemoYn" style="background: ghostwhite;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
+          </div>
+          <div style="width:100%; height: 30px" class="mtop-1 fl" >
+            <p class="textLeft font16 fl" style="line-height: 30px;">산업군</p>
+            <!-- <div class="changeChanTypeBtnWrap" style="background: ghostwhite;" @click="channelTypeClick">
+              <p class="textLeft font14 fl mleft-05 commonBlack" style="line-height:30px;" >{{selectTypeText}}</p>
+            </div> -->
+            <div style="width: 100%; margin: 1rem 0px; margin-bottom: 0rem; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start ">
+              <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:3rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; ">
+                  <p class="font15" >{{value.teamNameMtext}}</p>
+              </div>
+            </div>
+          </div>
+
         </div>
+
         <!-- <div style="width:100%; height: 40px" class="mtop-1" >
           <p class="textLeft font14 fl" style="line-height: 30px;">키워드</p>
           <div class="keywordWrap ">
@@ -50,7 +53,7 @@
         <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:2em; top:1rem;">
           <p class="font12" style="color:white; font-weight:bold"> 채널 삭제 </p>
         </div>
-        <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
+        <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: fixed; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
   </div>
@@ -71,6 +74,7 @@ export default {
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
       if (this.chanDetail.modiYn === true) {
         this.pageType = '수정'
+        this.chanMemoYn = true
         this.getTeamList()
       }
     }
@@ -102,10 +106,29 @@ export default {
       checkPopYn: false,
       okPopYn: false,
       errorMsg: '',
-      errorPopYn: false
+      errorPopYn: false,
+      chanMemoYn: false,
+      businessTypeList: [
+        { teamNameMtext: '기업', teamType: 'C' },
+        { teamNameMtext: '정부', teamType: 'G' },
+        { teamNameMtext: '학교', teamType: 'S' },
+        { teamNameMtext: '종교 단체', teamType: 'H' },
+        { teamNameMtext: '동호회', teamType: 'D' },
+        { teamNameMtext: '병원', teamType: 'Q' },
+        { teamNameMtext: '약국', teamType: 'V' },
+        { teamNameMtext: '매장', teamType: 'A' },
+        { teamNameMtext: '식당', teamType: 'P' },
+        { teamNameMtext: '기타', teamType: 'E' }
+      ],
+      selectedType: ''
     }
   },
   methods: {
+    selectChanType (value) {
+      this.selectedType = value.teamType
+      this.selectType = value.teamType
+      this.selectTypeText = value.teamNameMtext
+    },
     chanDelete () {
       this.setParam(true)
     },
@@ -131,6 +154,7 @@ export default {
     },
     setTypeData (param) {
       this.selectType = param.teamType
+      this.selectedType = param.teamType
       if (param.teamType === 'C') {
         this.selectTypeText = '기업'
       } else if (param.teamType === 'G') {
@@ -175,19 +199,24 @@ export default {
         this.errorPopYn = true
         return
       }
-      if (this.inputChannelMemo.length > 40) {
-        this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요'
-        this.errorPopYn = true
-        return
-      } else if (this.inputChannelMemo === '') {
-        this.errorMsg = '채널 소개를 입력해주세요'
-        this.errorPopYn = true
-        return
+      if (chanMemoYn) {
+        if (this.inputChannelMemo.length > 40) {
+          this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요'
+          this.errorPopYn = true
+          return
+        } else if (this.inputChannelMemo === '') {
+          this.errorMsg = '채널 소개를 입력해주세요'
+          this.errorPopYn = true
+          return
+        }
       }
       if (this.selectTypeText === '클릭해서 산업군을 선택해주세요.') {
         this.errorMsg = '채널의 산업군을 선택해주세요'
         this.errorPopYn = true
         return
+      }
+      if (this.chanMemoYn === false && this.pageType === '생성') {
+        this.inputChannelMemo = this.selectTypeText + '의 산업군을 가진 채널입니다!'
       }
       this.checkPopYn = true
     },
@@ -242,8 +271,13 @@ export default {
 
   },
   computed: {
+    getChanBoxSize () {
+      return {
+        // '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
+        '--chanBoxSize': window.innerWidth / 4 - 30 + 'px'
+      }
+    }
   },
-
   components: {
     selecTypePopup, seleciconBgPopup
   }
@@ -266,13 +300,14 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
 } */
 #chboxtest{
   font-size:14px; width: 100%; position:relative; min-height: 400px; background: #FFF; top:0; padding-bottom:50px; padding: 0 2rem; height: calc(100% - 15rem);
+
 }
 
 #channelName{
   padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px;
 }
 .channelMemo{
-  width: 80%; min-height: 100px; float: right; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px;
+  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px;
 }
 
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
@@ -293,7 +328,8 @@ border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin
 .changeChanTypeBtnWrap{width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;}
 .changeLogoBtnWrap{position: absolute; left:40%; bottom:0; transform: translate(-30%);}
 .changeBgBtnWrap{position: absolute; right: 1.5rem; top: -3rem;}
-.createChanWrap{width: 100%;display: flex; flex-direction: column; overflow: hidden scroll; height: 100%; top:50px;}
+/* .createChanWrap{width: 100%;display: flex; flex-direction: column; overflow: hidden scroll; height: 100%; top:50px;} */
+.createChanWrap{width: 100%;display: flex; flex-direction: column; height: 100%; top:50px;}
 .createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
 
 </style>

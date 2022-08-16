@@ -249,12 +249,19 @@ export default {
   },
   methods: {
     selectedReceiverBookNMemberList (param) {
+      console.log('selectedReceiverBookNMemberList')
+      console.log(this.targetType)
+      console.log(param)
       if (!param.emit) {
         param.emit = true
         this.$emit('selectedReceiverBookNMemberList', param)
         this.closeXPop()
       } else {
-        this.$refs.writePushCompo.setSelectedList(param.data)
+        if (this.targetType === 'chanDetail') {
+          this.$refs.gPopChanAlimList.setSelectedList(param.data)
+        } else {
+          this.$refs.writePushCompo.setSelectedList(param.data)
+        }
       }
     },
     async addDirectAddMemList (param) {

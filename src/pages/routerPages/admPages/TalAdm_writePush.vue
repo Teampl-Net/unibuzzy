@@ -17,6 +17,10 @@
               <div class="pageTopArea">
                 <!-- {{receiverList}} -->
                 <div class="fl" style="margin-bottom: 5px; width:100%;">
+                  <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
+                    <p class="fontBold commonColor font20 fl">알림작성</p>
+                    <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
+                  </div>
                   <p class="fontBold commonColor font16">수신</p>
                   <div style="min-height: 2rem; padding-top: 3px; float: left;" v-if="!this.replyPopYn">
                     <div class="fl" style="margin-bottom: 10px; margin-left: 5px;">
@@ -32,7 +36,7 @@
                   </div>
                   <div v-if="!allRecvYn && !this.replyPopYn" class="fr" @click="openPushReceiverSelect" style="border-radius:10px; background-color:white; display: flex; align-items: center; justify-content: center; padding-left:10px;">
                     <img class="fl" style="line-height:30px; width:15px;" src="../../../assets/images/main/main_subscriber.png" alt="">
-                    <p>{{receiverTotalNum}}</p>
+                    <p class="fr font16">{{receiverTotalNum}}</p>
                   </div>
                   <!-- <div v-if="!allRecvYn && !this.replyPopYn" class="inputArea recvUserArea font15 fl" style="padding: 0px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
                       {{receiverText}}
@@ -47,10 +51,10 @@
                 <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
                   <!-- <div style="width: 120px; height: 100%; float: left; margin-right: 30px;"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자 공개</label></div>
                   <div style="width: 85px; height: 100%; float: left;"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font14" for="creNameInput">작성자 공개</label></div>
+                  <div class="fl"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
                   <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">덧글 허용</label></div>
-                  <div class="fl mleft-05" ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font14" style="margin-left: 5px;" for="titleShow">제목 추가</label></div>
+                  <div class="fl mleft-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
+                  <div class="fl mleft-1" ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
                 </div>
 
                 <div v-else class="fl" style="width: 100%; min-height: 25px; margin-left: 5px; margin-bottom: 15px;">
@@ -68,7 +72,7 @@
               </div>
 
               <div style="width: 100%;float: left; min-height: 50px; position: relative;">
-                <gActiveBar :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+                <gActiveBar modeType="write" :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
                 <!-- <div class="titleAddArea" >
                   <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
                   <label class="fl" for="titleShow">제목 추가</label>
@@ -88,7 +92,7 @@
             </div>
             <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div>
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn" style="" btnTitle='발송하기' @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" />
 
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
@@ -183,7 +187,7 @@ export default {
       selectedReceiverList: [],
       allRecvYnInput: true,
       creUserName: null,
-      activeTabList: [{ display: '기본 작성', name: 'text' }, { display: '복합 작성', name: 'complex' }],
+      activeTabList: [{ display: '기본작성', name: 'text' }, { display: '복합작성', name: 'complex' }],
       viewTab: 'text',
       titleShowYn: false,
       uploadFileList: [],
@@ -662,7 +666,7 @@ export default {
 .pageTopArea >div{
   width: 100%; min-height: 2rem;
 }
-.pageTopArea p{ font-size: 16px; float: left; line-height: 30px; margin-left: 5px; margin-right: 10px; }
+.pageTopArea p{ float: left; line-height: 30px; margin-left: 5px; margin-right: 10px; }
 /* .pageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;} */
 .pageTopArea input{font-size: 16px;}
 .pageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}

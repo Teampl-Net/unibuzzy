@@ -95,44 +95,107 @@
       </div>
     </div>
     <div class="fl" style="width: 100%;">
-      <div v-show="this.shareType === 'select'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; ">{{selectedReceiver}}</div>
+      <div v-show="this.shareType === 'select'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
+        <p class="font16 commonBlack" v-if="selectedShareList.length === 0">{{selectedReceiver}}</p>
+        <template v-if="selectedShareList.length > 0">
+          <div v-for="(data, index) in selectedShareList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+            <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+            <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+            {{data.name}}
+          </div>
+        </template>
+        </div>
     </div>
 
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
     <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
-      <div class="subItemWrite">
-        <p class="textLeft mleft-15 font16 fl" style="flex:1">작성</p>
+      <div class="subItemWrite" :style="writePermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
+        <p class="textLeft mleft-15 font16 fl" style="">작성</p>
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
-        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem" v-if="this.shareType == 'select'">{{writePermission}}</div>
+        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareType == 'select'">
+          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
+          <template v-if="selectedWriteList.length > 0">
+            <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="display:flex" >
           <div><input class="h-100P fl" type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('write',true)" name="writePermissionAllYn" value="use"  id="writeTrue"><label class="fl font14 mleft-05" for="writeTrue">전체</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('write',false)" name="writePermissionAllYn" value="unuse" id="writeFalse"><label class="fl font14  mleft-05" for="writeFalse">사용 안함</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionSelectYn ===  true ? true : false " @click="selectPermission('write')" name="writePermissionAllYn" value="unuse" id="writeSelect"><label class="fl font14  mleft-05" for="writeSelect">선택 지정</label></div>
         </div>
-        <div @click="showSelectBookPop('write')" v-if="writePermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{writePermission}}</div>
+        <div @click="showSelectBookPop('write')" v-if="writePermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
+          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
+          <template v-if="selectedWriteList.length > 0">
+            <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
       </div>
 
-      <div class="subItemWrite">
-        <p class="textLeft mleft-15 font16 fl " style="flex:1">열람</p>
+      <div class="subItemWrite" :style="readPermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
+        <p class="textLeft mleft-15 font16 fl " style="">열람</p>
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
-        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem" v-if="this.shareType == 'select'">{{readPermission}}</div>
+        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareType == 'select'">
+          <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
+          <template v-if="selectedReadList.length > 0">
+            <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="display:flex">
           <div><input class="h-100P fl" type="radio" :checked="this.readPermissionAllYn ===  true ? true : false" @click="changePermission('read',true)" name="readPermissionAllYn" value="use" id="readTrue"><label class="fl font14  mleft-05" for="readTrue">전체</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionAllYn ===  false ? true : false" @click="changePermission('read',false)" name="readPermissionAllYn" value="unuse" id="readFalse"><label class="fl font14  mleft-05" for="readFalse">사용 안함</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.readPermissionSelectYn ===  true ? true : false" @click="selectPermission('read')" name="readPermissionAllYn" value="unuse" id="readSelect"><label class="fl font14  mleft-05" for="readSelect">선택 지정</label></div>
         </div>
-        <div @click="showSelectBookPop('read')" v-if="readPermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{readPermission}}</div>
+        <div @click="showSelectBookPop('read')" v-if="readPermissionSelectYn === true && this.shareType == 'all'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
+          <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
+          <template v-if="selectedReadList.length > 0">
+            <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
       </div>
-      <div class="subItemWrite" style="">
-        <p class="textLeft mleft-15 font16 fl " style="flex:1">댓글</p>
+      <div class="subItemWrite" :style="commentPermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
+        <p class="textLeft mleft-15 font16 fl " style="">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
-        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem" v-if="this.shareType == 'select'" >{{commentPermission}}</div>
+        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareType == 'select'" >
+          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
+          <template v-if="selectedCommentList.length > 0">
+            <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
         <div v-if="this.shareType == 'all'" class=" textLeft moidRadioArea" style="">
           <div><input class="h-100P fl" type="radio" :checked="this.commentPermissionAllYn ===  true ? true : false" @click="changePermission('comment',true)" name="commentPermissionAllYn" value="use" id="commentTrue"><label class="fl font14 mleft-05"  for="commentTrue">전체</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionAllYn ===  false ? true : false" @click="changePermission('comment',false)" name="commentPermissionAllYn" value="unuse" id="commentFalse"><label class="fl font14 mleft-05" for="commentFalse">사용 안함</label></div>
           <div><input class="h-100P fl mleft-1" type="radio" :checked="this.commentPermissionSelectYn ===  true ? true : false" @click="selectPermission('comment')" name="commentPermissionAllYn" value="unuse" id="commentSelect"><label class="fl font14 mleft-05" for="commentSelect">선택 지정</label></div>
         </div>
-        <div @click="showSelectBookPop('comment')" v-if="commentPermissionSelectYn === true && this.shareType == 'all'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px;">{{commentPermission}}</div>
+        <div @click="showSelectBookPop('comment')" v-if="commentPermissionSelectYn === true && this.shareType == 'all'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
+          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
+          <template v-if="selectedCommentList.length > 0">
+            <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
+              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
+              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+              {{data.name}}
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
@@ -260,7 +323,11 @@ export default {
       boardName: '',
       dbSelectedList: { bookList: [], memberList: [] },
       currentPermissionType: '',
-      currentSelectBookType: ''
+      currentSelectBookType: '',
+      selectedShareList: [],
+      selectedWriteList: [],
+      selectedReadList: [],
+      selectedCommentList: []
 
     }
   },
@@ -320,7 +387,7 @@ export default {
       if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }
-
+      console.log(data)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList = ''
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
@@ -473,6 +540,7 @@ export default {
     setOk (data) {
       var text = ''
       var selectLength = 0
+      var tempSelectedList = {}
       if (data.bookList) {
         if (data.bookList.length > 0) {
           // itemList 중복 제거
@@ -489,8 +557,15 @@ export default {
             teampItemList.shareSeq = data.bookList[i].shareSeq
 
             this.selectItemList.push(teampItemList)
+            tempSelectedList = {}
+            tempSelectedList.type = 'group'
+            tempSelectedList.name = data.bookList[i].cabinetNameMtext
+            if (this.currentPermissionType === 'W') this.selectedWriteList.push(tempSelectedList)
+            if (this.currentPermissionType === 'V') this.selectedReadList.push(tempSelectedList)
+            if (this.currentPermissionType === 'R') this.selectedCommentList.push(tempSelectedList)
           }
           text = '그룹: ' + data.bookList[0].cabinetNameMtext
+
           selectLength += data.bookList.length
         }
       }
@@ -509,6 +584,12 @@ export default {
             teampItemList.shareType = data.memberList[i].shareType
             teampItemList.shareSeq = data.memberList[i].shareSeq
             this.selectItemList.push(teampItemList)
+            tempSelectedList = {}
+            tempSelectedList.type = 'person'
+            tempSelectedList.name = this.$changeText(data.memberList[i].userDispMtext) || this.$changeText(data.memberList[i].userNameMtext)
+            if (this.currentPermissionType === 'W') this.selectedWriteList.push(tempSelectedList)
+            if (this.currentPermissionType === 'V') this.selectedReadList.push(tempSelectedList)
+            if (this.currentPermissionType === 'R') this.selectedCommentList.push(tempSelectedList)
           }
           text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList[0].userNameMtext)
           selectLength += data.memberList.length
@@ -750,6 +831,7 @@ export default {
       this.selectBookListShowYn = false
       var text = ''
       var selectLength = 0
+      var tempSelectedList = {}
       // console.log(datas);
       // if(this.currentSelectBookType === 'select'){}
 
@@ -791,6 +873,10 @@ export default {
             tempList.shareSeq = data.bookList[i].shareSeq
             this.selectShareList.push(tempList)
           }
+          tempSelectedList = {}
+          tempSelectedList.type = 'group'
+          tempSelectedList.name = data.bookList[i].cabinetNameMtext
+          this.selectedShareList.push(tempSelectedList)
         }
       }
 
@@ -809,6 +895,10 @@ export default {
             tempList.shareSeq = data.memberList[i].shareSeq
             this.selectShareList.push(tempList)
           }
+          tempSelectedList = {}
+          tempSelectedList.type = 'person'
+          tempSelectedList.name = this.$changeText(data.memberList[i].userDispMtext) || this.$changeText(data.memberList.userDispMtext)
+          this.selectedShareList.push(tempSelectedList)
         }
       }
 
@@ -922,7 +1012,7 @@ export default {
   width: 5rem;
   height: 2rem;
 }
-.inputBoxThema{height: 30px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; padding:0px 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
+.inputBoxThema{min-height: 30px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; padding:0px 10px; width: calc(100% - 130px); float: left; line-height: 30px;white-space: nowrap;}
 
 /* 드롭다운 박스 */
 .dropdown {
@@ -1039,6 +1129,8 @@ input:-internal-autofill-selected {
   width: 100vw;
   min-height: 45px;
   float: left;
+  display: flex;
+  align-items: center;
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }
 .creChanIntroTextWrap p{font-size: 20px; }
@@ -1059,6 +1151,7 @@ input:-internal-autofill-selected {
   .subItemWrite{
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
   .subItemWrite p{
     margin-left:2% !important;
@@ -1072,6 +1165,7 @@ input:-internal-autofill-selected {
   }
   .inputBoxThema{
     width: calc(90%);
+    margin-left:0 !important;
   }
 }
 

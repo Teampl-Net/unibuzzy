@@ -31,7 +31,7 @@
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666; margin-top: 10px;" >
           <div v-if="editIndex === index">
-              <div class="memoActionArea borderLeft font13"  @click="editEnd(memo, index)" >완료</div>
+              <div class="memoActionArea borderLeft font13"  @click="editEnd(memo)" >완료</div>
               <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
           </div>
           <div >
@@ -106,20 +106,21 @@ export default {
     async editEnd (data) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
-      memo = data
+      // memo = data
       memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
       // memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
-      // memo.targetKey = data.targetKey
-      // memo.targetKind = data.targetKind
+      memo.targetKey = data.targetKey
+      memo.targetKind = data.targetKind
       /* memo.bodyFilekey  */
-      // memo.memoKey = data.memoKey
-      // memo.creUserKey = data.creUserKey
-      // memo.deleteYn = false
-
+      memo.memoKey = data.memoKey
+      memo.creUserKey = data.creUserKey
+      memo.deleteYn = false
+      console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
+      console.log(result)
       if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
         this.$emit('editTrue')

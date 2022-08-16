@@ -14,7 +14,7 @@
                 <div class=""><p class="boardWriteTitleText" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                 <div class="" v-if="propData.nonMemYn"><p class="boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
              </div>
-              <gActiveBar :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+              <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
               <div class="pageMsgArea" style="">
                 <!-- <p class="">내용</p> -->
                 <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
@@ -31,7 +31,8 @@
             </div>
 
           </div>
-          <gBtnSmall class="mright-05" style="position: absolute; left:50%; bottom: 0; transform: translateX(-50%);" btnTitle='작성하기' @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 commonColor writeBoardBtn whitePurpleBG" style="color:#6768a7; font-weight:bold;" btnTitle='작성하기' @click="clickPageTopBtn()" />
+          <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
         </div>
       </div>
     </div>
@@ -643,5 +644,8 @@ export default {
   }
   .writeBoardPageTopArea .inputArea{width: calc(100%);}
 }
-
+.writeBoardBtn{
+position: absolute; left:50%; bottom: 0; transform: translateX(-50%);
+ width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
+}
 </style>

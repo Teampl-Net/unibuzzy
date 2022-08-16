@@ -126,6 +126,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .commonBlack{color: #303030;}
 .grayBlack{color: #505050;}
 .lightGray{color: #A1A1A1;}
+.whitePurple{color: #f4f4f9}
+.whitePurpleBG{background-color: #f4f4f9 !important}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
 .commonRed{color:#DC143C}
 /* 불투명 색: #dcddeb */

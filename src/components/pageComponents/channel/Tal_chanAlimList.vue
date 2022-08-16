@@ -56,7 +56,7 @@
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
-        <div v-if="followYn" class="fl" style="display: flex; width: 50%; justify-content: space-around;">
+        <div v-if="followYn" class="fl" style="display: flex; width: 50%; justify-content: space-around; align-items: center;">
           <div style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
             <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
           </div>
@@ -109,8 +109,14 @@
     <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
+  <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:9">
+    <writePush  ref="chanAlimListWritePushRefs" @closeXPop='writePushYn = false' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
+  </div>
+
+  <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
   <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
+
 </div>
 </template>
 
@@ -119,6 +125,7 @@
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
+import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
 export default {
   data () {
     return {
@@ -152,7 +159,9 @@ export default {
       sendLoadingYn: false,
       followParam: null,
       openWelcomePopYn: false,
-      ownerYn: false
+      ownerYn: false,
+      writePushData: {},
+      writePushYn: false
       // errorPopYn: false
     }
   },
@@ -167,7 +176,8 @@ export default {
   components: {
     pushList,
     chanDetailComp,
-    welcomePopUp
+    welcomePopUp,
+    writePush
   },
   async created () {
     this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
@@ -225,6 +235,12 @@ export default {
     // })
   },
   methods: {
+    setSelectedList (data) {
+      this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
+    },
+    openItem (param) {
+      this.$emit('openPop', param)
+    },
     editChan () {
       var param = {}
       param.targetType = 'createChannel'
@@ -364,7 +380,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -425,7 +441,10 @@ export default {
       params.targetKey = this.chanItem.teamKey
       params.targetType = 'writePush'
       params.targetNameMtext = this.chanItem.nameMtext
-      this.$emit('openPop', params)
+      this.writePushData = {}
+      this.writePushData = params
+      this.writePushYn = true
+      // this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {
       // this.memberYn = false

@@ -2,28 +2,94 @@
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
   <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: scroll;" class="boardListWrap">
+    <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
+    <p class="font20 fontBold" style="color:#2c3e50; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
     <div id="summaryHeader" class="summaryHeader">
+      <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
-        <div class="summaryTop">
-          <!-- 전체/지정(공유사람수) / 게시글(개수) / 권한(관리자/일반-아이콘) -->
-          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
-          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
-          <!-- 관리자 여부 확인 -->
-          <!-- <div v-if="this.propData.value.adminYn" class="fl" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: center;  border-left: 1px solid white"> -->
-          <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn">
-          <!-- <div class="fl boardMainAdminArea"> -->
-            <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
-            <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
-            <!-- <div class="fl" style="background-color: #fff; width: 20px; height: 20px; border-radius: 100%;"></div> -->
-          </div>
-        </div>
+
         <!-- 게시판 이름 , 소속 채널 -->
-        <div class="font22" style="padding: 0 10px; width: 90%; min-height: 80px; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;">
+        <!-- <div class="font22 boardCard">
           <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
           <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
+        </div> -->
+      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 0 10px;">
+        <div class="chanImgRound" > <!-- 채널 로고 부분 -->
+          <img id="chanImg" :src="chanInfo.logoPathMtext" style="width: 70px;" alt="채널사진" />
+          <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         </div>
+        <div class="chanTextBox fl mleft-05;" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
+          <div class="fl font16  w-100P">
+            <div style="width:50px;" >
+              <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
+              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 채널명 </p>
+            </div>
+            <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeText(this.propData.nameMtext) }}</p>
+          </div>
+          <div class="fl font16  w-100P">
+            <div style="width:50px;" >
+              <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
+              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 만든일 </p>
+            </div>
+            <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(mCabinetContentsDetail.creDate)}}</p>
+          </div>
+
+          <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+            <div class="fl font16  w-100P">
+              <div style="width:100%" class="fl" >
+                <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
+                <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 게시판기능 </p>
+              </div>
+              <p class="mleft-05 fl font14 commonBlack" v-if="mCabinetContentsDetail.replyYn === 1">댓글</p>
+              <p class="fl font14 mleft-05 commonBlack" v-if="mCabinetContentsDetail.fileYn === 0">파일업로드</p>
+            </div>
+            <!-- <p class="fl font14">{{mCabinetContentsDetail.blindYn === 1? '파일업로드O/': '파일업로드X/'}}</p> -->
+          </div>
+        </div>
+      </div>
+
         <!-- 익명게시판 여부 -->
-        <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div>
+        <!-- <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div> -->
+
+        <!-- <div class="summaryTop">
+          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
+          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
+          <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn">
+            <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
+            <img src="../../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
+          </div>
+        </div> -->
+        <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+          <p class="cBlack fl font16" style="width: 100%; ">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
+          <p class="cBlack fl font16" style="width: 100%; border-left: 1px solid white">게시글 {{totalElements}}개</p>
+        </div>
+
+        <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+          <div style="display:flex; align-items: center;">
+            <div style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;">
+              <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/>
+            </div>
+            <div class="mleft-05" style="display:flex; flex-direction: column;">
+              <p class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
+              <div>
+                <p class="fl font14 commonBlack">{{followTypeText}}</p>
+                <p class="fl commonBlack font14 " v-if="memberYn">(멤버)</p>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items: center; width: 100px; justify-content: space-around;">
+
+            <img style="width:20px;" v-if="shareAuth.W === true" class="fr" src="../../../assets/images/board/icon_square_pen.svg" alt="">
+            <img style="width:20px;" v-else class="fr" src="../../../assets/images/board/icon_square_pen_solid.svg" alt="">
+
+            <img style="width:20px;" v-if="shareAuth.V === true" class="fr" src="../../../assets/images/board/icon_eyes.svg" alt="">
+            <img style="width:20px;" v-else class="fr" src="../../../assets/images/board/icon_eyes_solid.svg" alt="">
+
+            <img style="width:20px;" v-if="shareAuth.R === true" class="fr" src="../../../assets/images/common/icon_comment.svg" alt="">
+            <img style="width:20px;" v-else class="fr" src="../../../assets/images/common/icon_comment_solid.svg" alt="">
+          </div>
+        </div>
+
       </div>
       <div id="boardInfoSummary2" class="summaryHeader2">
         <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span>
@@ -71,8 +137,11 @@ export default {
     propData: {}
   },
   async created () {
+    console.log(this.propData)
     this.$emit('openLoading')
     await this.getCabinetDetail()
+    await this.getChanInfo()
+    this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
     // var resultList = await this.getContentsList()
     // this.mCabContentsList = resultList.content
     // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -140,10 +209,22 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
       scrollCheckSec: 0,
-      readCheckBoxYn: false
+      readCheckBoxYn: false,
+      chanInfo: [],
+      currentUserInfo: ''
     }
   },
   methods: {
+    async getChanInfo () {
+      // this.memberYn = false
+      // this.adminYn = false
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.currentTeamKey)
+      var resultList = await this.$getTeamList(paramMap)
+      // if (resultList.data) { this.chanItem = resultList.data.content[0] }
+      this.chanInfo = resultList.data.content[0]
+      console.log(this.chanInfo)
+    },
     findPaddingTopBoard () {
       var element = document.getElementById('searchResultWrapLength')
       this.paddingTop = element.clientHeight
@@ -239,14 +320,14 @@ export default {
         blockBox.style.height = '50px'
         // blockBox.scrollHeight = 100
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
-        document.getElementById('boardInfoSummary2').classList.add('displayBIm')
+        // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
         blockBox.style.height = '300px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
-        document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
+        // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
         this.reloadShowYn = false
       }
@@ -283,7 +364,8 @@ export default {
       } else {
         this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       }
-
+      console.log('this.mCabinetContentsDetail')
+      console.log(this.mCabinetContentsDetail)
       /* if (this.shareAuth.V === false) {
         this.$emit('closeXPop')
       } */
@@ -625,4 +707,8 @@ background: #fbfbfb;
   border-radius: 2px;
   transform: scale(1) translate(-50%, -50%)
 }
+.boardCard{
+padding: 10px; width: 90%; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;
+}
+.chanImgRound{ width: 90px; height: 90px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
 </style>
