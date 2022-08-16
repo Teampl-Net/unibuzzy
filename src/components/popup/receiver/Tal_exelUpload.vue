@@ -16,7 +16,7 @@
             </div>
             <p class="commonBlack font16 textLeft">STEP.2 업로드한 데이터의 정보를 확인합니다.</p>
             <div class="commonBoxStyle" style="min-height: 35px;">
-                <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn? 'background-color:#ccc;' : ''" btnTitle="정합성 확인" />
+                <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" btnTitle="정합성 확인" />
                 <div v-if="this.excelFileList.length > 0" class="font13 textLeft lightGray mleft-05 fl mtop-05">{{'적합 데이터: ' + this.excelFileList.length + ', 부적합 데이터: ' + this.failList.length}}</div>
             </div>
             <div class="commonBoxStyle" style="width: 100%; height: calc(100% - 300px); min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc;">
@@ -51,8 +51,8 @@
                     </tbody>
                 </table>
             </div>
-            <p class="commonBlack font16 fl textLeft">STEP.3 추가하기 버튼을 클릭하면 구성원이 추가됩니다.</p>
-            <gBtnSmall @click="confirmSavePop" style="margin-top: 5px; " btnTitle="추가하기" />
+            <p class="commonBlack font16 fl textLeft">STEP.3 구성원을 업로드 합니다.</p>
+            <gBtnSmall @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" btnTitle="업로드" />
         </div>
     </div>
 </template>
@@ -158,12 +158,14 @@ export default {
       }
     },
     confirmSavePop () {
-      this.confirmMsg = ''
-      this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
-      if (this.failCnt > 0) {
-        this.confirmMsg += '(부적합 데이터' + this.failCnt + '명 제외)'
+      if (this.checkUserYn) {
+        this.confirmMsg = ''
+        this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
+        if (this.failCnt > 0) {
+          this.confirmMsg += '(부적합 데이터' + this.failCnt + '명 제외)'
+        }
+        this.confirmYn = true
       }
-      this.confirmYn = true
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({

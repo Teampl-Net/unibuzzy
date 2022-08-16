@@ -20,7 +20,7 @@
                     <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
-                <div class="btnPlus" style="bottom: 160px;" @click="openExcelUploadPop" v-if="!editYn" ><p style="font-size:14px;">{{'일괄\n업로드'}}</p></div>
+                <div class="btnPlus" style="bottom: 160px;" @click="openExcelUploadPop" v-if="!editYn && !mobileYn" ><p style="font-size:14px;" v-html="'엑셀<br>업로드'"></p></div>
                 <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
         </div>
@@ -91,7 +91,8 @@ export default {
             selMemberList: [],
             cabinetName: '',
             excelUploadShowYn: false,
-            excelPopId: null
+            excelPopId: null,
+            mobileYn: this.$getMobileYn()
         }
     },
     methods: {
