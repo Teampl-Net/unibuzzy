@@ -20,9 +20,12 @@
                     <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
+                <div class="btnPlus" style="bottom: 160px;" @click="openExcelUploadPop" v-if="!editYn" ><p style="font-size:14px;">{{'일괄\n업로드'}}</p></div>
                 <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
             </div>
         </div>
+        <excelUploadPop @success="successExcelUpload" :cabinetKey="this.selectBookDetail.cabinetKey" :targetKey="this.selectBookDetail.teamKey" v-if="excelUploadShowYn" @closePop="backClick"/>
+        <div @click="backClick" v-if="excelUploadShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #00000030; z-index: 99999;"></div>
     </div>
 </template>
 
@@ -32,6 +35,7 @@
 import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
+import excelUploadPop from './Tal_exelUpload.vue'
 export default {
     props: {
         chanInfo: {},
@@ -51,24 +55,23 @@ export default {
     },
     computed: {
         historyStack () {
-            return this.$store.getters.hRPage
+        return this.$store.getters.hRPage
         },
         pageUpdate () {
-            return this.$store.getters.hUpdate
+        return this.$store.getters.hUpdate
         }
     },
-        watch: {
-            pageUpdate (value, old) {
-                var hStack = this.$store.getters.hStack
-                this.backClick()
-            /* if (this.popId === hStack[hStack.length - 1]) {
+    watch: {
+        pageUpdate (value, old) {
+        this.backClick()
+        /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */
         },
         historyStack (value, old) {
         }
     },
-    components: { findContentsList, bookListCompo,memberList },
+    components: { findContentsList, bookListCompo,memberList,excelUploadPop },
     data () {
         return {
             editYn: false,
@@ -87,6 +90,8 @@ export default {
             teamLength: 0,
             selMemberList: [],
             cabinetName: '',
+            excelUploadShowYn: false,
+            excelPopId: null
         }
     },
     methods: {
@@ -180,6 +185,11 @@ export default {
                 this.detailOpenYn = false
                 this.cabinetName = ''
                 this.receiverTitle = '주소록 관리'
+            } else  if (this.excelPopId === hStack[hStack.length - 1]) {
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
+                this.excelUploadShowYn = false
             } else {
                 this.$emit('closeXPop')
             }
@@ -212,6 +222,14 @@ export default {
             }
             this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
             await this.getPushContentsList()
+        },
+        openExcelUploadPop () {
+            var history = this.$store.getters.hStack
+            this.excelPopId = 'excelUploadPop' + history.length
+            history.push(this.excelPopId)
+            this.$store.commit('updateStack', history)
+
+            this.excelUploadShowYn = true
         },
         async openSelectMemberPop () {
         // eslint-disable-next-line no-new-object
@@ -266,6 +284,10 @@ export default {
         }, */
         openAddPop (data) {
             this.$emit('openPop', data)
+        },
+        successExcelUpload() {
+            this.excelUploadShowYn = false
+            this.refresh()
         }
     }
 }

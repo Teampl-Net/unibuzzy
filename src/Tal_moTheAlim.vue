@@ -1,5 +1,5 @@
 <template>
-  <div id="moTheAlimWrap" style="height: 100vh; width: 100vw;">
+  <div id="moTheAlimWrap" style="height: 100vh; width: 100vw; max-width: 780px; margin: 0 auto;max-height: 1200px;">
     <transition name="showModal">
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>

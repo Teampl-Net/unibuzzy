@@ -37,7 +37,7 @@
             <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 30px; position: absolute; right: 40px; " alt=""> -->
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-        <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
+        <!-- <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
             <div class="nativeServiceBtn">
                 <div class="nativeServiceBtnWrap">
                     <img src="../../../assets/images/common/sendMailIcon.svg" @click="sendMail(memEmail)" style="width: 100%; " alt="">
@@ -56,7 +56,7 @@
                 </div>
                 <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">

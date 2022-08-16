@@ -21,7 +21,7 @@
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
             {{teamTypeText}}
           </p>
-        </div>
+          </div>
 
         <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
           <!-- <div style="width:20px;" class="fl"> -->
@@ -40,7 +40,7 @@
             <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
 
           <p class="font16 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeDateFormat(chanItem.creDate)}}</p>
-        </div>
+          </div>
 
       </div>
     </div>
@@ -126,7 +126,7 @@
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
-    <writePush  ref="chanAlimListWritePushRefs" @closeXPop='writePushYn = false' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
+    <writePush  ref="chanAlimListWritePushRefs" @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
   </div>
 
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
@@ -178,13 +178,9 @@ export default {
       ownerYn: false,
       writePushData: {},
       writePushYn: false,
-      // errorPopYn: false
+      writePopId: '',
       titleLongYn: false
-    }
-  },
-  watch: {
-    wrapKey () {
-      this.refreshList()
+      // errorPopYn: false
     }
   },
   props: {
@@ -460,6 +456,11 @@ export default {
       params.targetNameMtext = this.chanItem.nameMtext
       this.writePushData = {}
       this.writePushData = params
+
+      var history = this.$store.getters.hStack
+      this.writePopId = 'writePush' + history.length
+      history.push(this.writePopId)
+      this.$store.commit('updateStack', history)
       this.writePushYn = true
       // this.$emit('openPop', params)
     },
@@ -535,7 +536,20 @@ export default {
         if (changeTxt.length > 12) { this.titleLongYn = true }
         return changeTxt
       }
-      // if (changeTxt !== undefined) { return changeTxt }
+    },
+    backClick () {
+      var hStack = this.$store.getters.hStack
+      if (this.writePopId === hStack[hStack.length - 1]) {
+        this.closeWritePushPop()
+      }
+    },
+    closeWritePushPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+      this.writePushYn = false
     },
     openPop () {
       this.alimListToDetail = true
@@ -640,6 +654,25 @@ export default {
       return {
         '--height': 300 - this.scrollPosition + 'px'
       }
+    },
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+            this.closeSubPop()
+        } */
+    },
+    historyStack (value, old) {
+    },
+    wrapKey () {
+      this.refreshList()
     }
   }
 }
