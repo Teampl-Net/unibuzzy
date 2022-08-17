@@ -1,5 +1,5 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100vw; z-index:9999; position:absolute; top:0; left:0">
+<div style="height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
     <div class="longHeight w-100P" style="position:absolute; top:50px; h overflow: auto;" >

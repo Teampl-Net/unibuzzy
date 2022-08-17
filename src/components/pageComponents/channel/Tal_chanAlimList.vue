@@ -1,6 +1,6 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 17px;': '' " style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
+  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 17px;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -709,7 +709,7 @@ export default {
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
 
-.summaryWrap{height: 350px; width: 100%; float: left; position: fixed;}
+.summaryWrap{height: 350px; width: 100%; float: left; position: absolute;}
 .summaryWrap2 {height: 50px;  width: 100%; float: left;}
 
 .displayNIm{display: none!important;}

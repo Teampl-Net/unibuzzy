@@ -155,7 +155,7 @@ export default {
 <style scoped>
 .mx-icon-clear {position: absolute; right: 8px; transform: translateY(50%); vertical-align: -8rem !important;}
 .mx-input-wrapper {width: 100%; height: 40px;}
-.findPopupWrap{position: fixed; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: absolute; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.8rem; right: 8px;}
 .searchInput{border: none !important; margin-bottom: 5px!important; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}

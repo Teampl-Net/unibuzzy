@@ -16,7 +16,7 @@
         <!-- <creStep04 ref="step4" @makeParam="setParam" v-else-if="creStep === 4" /> -->
       </div>
       <!-- <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; "> -->
-      <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; width: 90%; position: fixed; bottom: 10px; left: 5%;">
+      <div v-if="creStep !== 0" style="width: 100%; height: 50px; float: left; display: flex; align-items: center; justify-content: center; width: 90%; position: absolute; bottom: 10px; left: 5%;">
         <gBtnSmall @click="clickPrevBtn" btnThema="light" class="fl" style="float: left!important; margin-right: 10px; width:100px; height:50px; line-height:50px;font-size:18px" btnTitle="이전" />
         <gBtnSmall btnThema="" @click="changePage" class="fl" style="float: left!important; width:100px; height:50px; line-height:50px; font-size:18px " btnTitle="다음" />
       </div>

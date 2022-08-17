@@ -1,6 +1,6 @@
 <template>
   <!-- <div id="chanWrap" class="commonListWrap"> -->
-    <!-- <p style="position: fixed;">{{currentScroll}}</p> -->
+    <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <div style="width: 100%; height: 100%;" id="ttttt">
         <div v-if="this.contentsList.length === 0" style="width: 100%; height: 100%;">
@@ -462,7 +462,7 @@ export default {
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
+.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 .pushChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 .pushMbox{margin-bottom: 20px;}
@@ -496,6 +496,6 @@ export default {
 }
 
 .alimListMemoBoxBackground{
-  width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0; z-index: 999;}
+  width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0; z-index: 999;}
 
 </style>

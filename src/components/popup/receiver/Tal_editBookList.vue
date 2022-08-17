@@ -25,7 +25,7 @@
             </div>
         </div>
         <excelUploadPop @success="successExcelUpload" :cabinetKey="this.selectBookDetail.cabinetKey" :targetKey="this.selectBookDetail.teamKey" v-if="excelUploadShowYn" @closePop="backClick"/>
-        <div @click="backClick" v-if="excelUploadShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #00000030; z-index: 99999;"></div>
+        <div @click="backClick" v-if="excelUploadShowYn" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: #00000030; z-index: 99999;"></div>
     </div>
 </template>
 
@@ -297,7 +297,7 @@ export default {
 <style >
 /* btnPlus common.css로 옮김 */
 .bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: auto;}
-.editBookListWrap {height: 100vh; background-color:white; width:100vw; z-index:999; position:absolute; top:0; left:0}
+.editBookListWrap {height: 100vh; background-color:white; width:100%; z-index:999; position:absolute; top:0; left:0}
 
 .longHeight{
 height:100% !important;

@@ -1,5 +1,5 @@
 <template>
-    <div style="position: fixed; width: 100%; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 15%); z-index: 99 ">
+    <div style="position: absolute; width: 100%; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 15%); z-index: 99 ">
         <div></div>
         <popHeader headerTitle="스티커 선택" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
         <div class="popBody" style="margin-top: 70px; padding: 0 1.5rem">

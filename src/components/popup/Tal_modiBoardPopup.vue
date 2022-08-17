@@ -7,7 +7,7 @@
     </div>
     <div class="itemWrite">
       <p class="fontBold textLeft font16 fl " style="width: 100px;">배경지</p>
-      <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
+      <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
       <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
           <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
       </div>
@@ -26,9 +26,9 @@
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <div style="text-align: left;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray" >{{okFunctionList}}</div>
     </div>
-    <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
-    <div v-if="functionPopShowYn"  style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
-    <div v-if="functionPopShowYn" class="function" style="width: 80%; position: fixed; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
+    <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
+    <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
+    <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
       <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
         <!-- <div class="itemWrite" style="width: 100%;">
@@ -993,13 +993,13 @@ export default {
 .toggleBtn{width: 50%; height: 100%;background-color: #fff; float: left; line-height: 25px;}
 .addNewBoardWrap{
   /* width:100% ;
-  position: fixed; z-index: 999;
+  position: absolute; z-index: 999;
   height: 100vh;
   top: 0;
   right: 0; */
 
-  width:100vw ;
-  position: fixed; z-index: 999;
+  width:100% ;
+  position: absolute; z-index: 999;
   height: 100vh;
   top: 0;
   right: 0;
@@ -1126,7 +1126,7 @@ input:-internal-autofill-selected {
   border-bottom: 1px solid #ccc;
 }
 .subItemWrite{
-  width: 100vw;
+  width: 100%;
   min-height: 45px;
   float: left;
   display: flex;

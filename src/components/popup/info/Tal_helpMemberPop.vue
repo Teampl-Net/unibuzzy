@@ -17,6 +17,6 @@
 
 </script>
 <style>
-.memberPopText {top: 20%; background-color:white;margin:10px;border-radius:10px;padding:15px;min-height: 300px;max-height: 60%;position: fixed;z-index: 999;}
+.memberPopText {top: 20%; background-color:white;margin:10px;border-radius:10px;padding:15px;min-height: 300px;max-height: 60%;position: absolute;z-index: 999;}
 .memberPopAlimImg {width: 100px;right: 20px; float: right; position: absolute; z-index: 999;}
 </style>

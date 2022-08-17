@@ -37,7 +37,7 @@ export default {
   min-width: fit-content;
   left: 40%;
   transform: translate(-50%, 0);
-  position: fixed;
+  position: absolute;
   bottom: 10%;
   padding: 10px;
   border-radius: 10px;

@@ -1,6 +1,6 @@
 <template>
-<div style="position: fixed; width: 100vw; height: 100vh; background: #00000026; left: 0; z-index: 9999; top: 0;"></div>
-    <div class="testProgress" style="width: 80%; overflow: hidden auto; max-width: 500px; height: 300px; position: fixed; top: 25%; left: 10%; z-index: 99999; background:#FFF; border-radius: 15px; box-shadow: 9px 9px 9px -9px #ccc; padding: 10px 20px;">
+<div style="position: absolute; width: 100%; height: 100vh; background: #00000026; left: 0; z-index: 9999; top: 0;"></div>
+    <div class="testProgress" style="width: 80%; overflow: hidden auto; max-width: 500px; height: 300px; position: absolute; top: 25%; left: 10%; z-index: 99999; background:#FFF; border-radius: 15px; box-shadow: 9px 9px 9px -9px #ccc; padding: 10px 20px;">
         <p class="font18 fontBold commonBlack textLeft">파일 업로드중 ...</p>
         <!-- <div style=" margin-top: 10px; position: relative;">
             <p class="textLeft commonBlack font16">{{'1. zzzzz'}} <small class="font13">{{'(' + this.$byteConvert(12105) + ')'}}</small></p>

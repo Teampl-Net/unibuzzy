@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " ></div>
+    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " ></div>
     <div :style="popLeft" class="admMsgPopWrap">
         <div class="admMsgPopHeader">
             <p class="font12 headerFont fl" style="line-height: 2.6rem; margin-left: 0.3rem" >내용을 입력해주세요.</p>
@@ -54,7 +54,7 @@ export default {
 
 <style >
 .admMsgPopHeader{height: 50px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.6rem 0.5rem;}
-.admMsgPopWrap{width: 450px; position: fixed; z-index: 999; top: 30%; border-radius: 10px; background: #FFFFFF;}
+.admMsgPopWrap{width: 450px; position: absolute; z-index: 999; top: 30%; border-radius: 10px; background: #FFFFFF;}
 .admMsgPopBody{width: 100%; padding: 1em 0; background-color: #f9f9f9;}
 .admMsgTextarea{ resize: none; width:90%; height:250px; border:1px solid #6768A7 }
 .admMsgBtnArea{display: flex; height: 20px; justify-content:center;}

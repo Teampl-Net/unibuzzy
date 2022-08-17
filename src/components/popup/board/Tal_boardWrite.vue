@@ -45,7 +45,7 @@
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>  <!-- v-if="progressShowYn" -->
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-  <div v-if="formEditorShowYn" style="position: fixed; top: 0; left: 0; width: 100vw; background: #fff; height: 100vh; z-index: 99999999999999999999">
+  <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
     <formEditor @changeUploadList="changeUploadList" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
   </div>
@@ -615,7 +615,7 @@ export default {
 #loading {
   width: 100%;
   height: 100%;
-  position: fixed;
+  position: absolute;
   top:0;
   left:0;
   z-index: 999999;

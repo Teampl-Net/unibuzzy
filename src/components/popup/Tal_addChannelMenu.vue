@@ -17,7 +17,7 @@
 
     </div>
 
-    <div style="width: 100vw; height:calc(50% - 50px); background-color:white; position: absolute; left:0; box-shadow: 0px -7px 9px -9px #00000036;">
+    <div style="width: 100%; height:calc(50% - 50px); background-color:white; position: absolute; left:0; box-shadow: 0px -7px 9px -9px #00000036;">
         <!-- 설명 -->
         <p class="channelMenuTitle" style="margin-top:1.6rem; margin-left: calc(1rem + 20px)">설명</p>
         <div class="channelItemExplain" style="" v-html="explainText"></div>
@@ -136,8 +136,8 @@ computed: {
 <style>
 
 .addChanMenuArea{
-    width:100vw ;
-    position: fixed;
+    width:100% ;
+    position: absolute;
     z-index: 9999;
     height: 100vh;
     top: 0;

@@ -244,7 +244,7 @@ export default {
 
 <style >
 table {
-    table-layout: fixed;
+    table-layout: absolute;
     word-break: break-all;
 }
 .memberTable td {
@@ -292,10 +292,10 @@ margin-bottom: 2rem;
 }
 
 .addTeamMemberArea{
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: calc(100vh - 50px);
     background-color: white;
 
@@ -312,7 +312,7 @@ margin-bottom: 2rem;
 
   /* add Jeong */
     width: 90%;
-    position: fixed;
+    position: absolute;
     bottom: 10px;
     left: 5%;
 }

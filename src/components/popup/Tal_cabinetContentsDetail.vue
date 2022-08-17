@@ -192,7 +192,7 @@ export default {
     height: 100%;
     padding-top: 0;
 }
-.pushDetailWrap{height: fit-content; z-index: 99999; position: absolute; top: 0; left: 0; width: 100vw; height: calc(100vh);}
+.pushDetailWrap{height: fit-content; z-index: 99999; position: absolute; top: 0; left: 0; width: 100%; height: calc(100vh);}
 .pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
@@ -202,7 +202,7 @@ export default {
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
+.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 .pushMbox{margin-bottom: 20px;}

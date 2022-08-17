@@ -44,7 +44,7 @@ export default {
 }
 </script>
 <style scoped>
-.headerWrap{height: 90px;z-index: 2; background-color: #FFFFFF; width: 100%; position: fixed; left: 0; top:0; box-sizing: border-box; padding: 1.5rem  0 ; box-shadow: 0px 7px 9px -7px #c8c8c8a3;}
+.headerWrap{height: 90px;z-index: 2; background-color: #FFFFFF; width: 100%; position: absolute; left: 0; top:0; box-sizing: border-box; padding: 1.5rem  0 ; box-shadow: 0px 7px 9px -7px #c8c8c8a3;}
 .menuText{color: #6768A7; font-weight: bold; margin-right: 2rem; float: left;}
 .roundBtn{height: 30px; background-color: #6768A7; border-radius: 38px; color: #FFFFFF; padding: 0.2rem 1rem; float: left; box-sizing: border-box; font-weight: bold;}
 </style>

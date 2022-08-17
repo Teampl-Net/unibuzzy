@@ -8,7 +8,7 @@
                     <span class="font15">{{value.stickerName}} <span @click="removeStickerList(index)" class="float: right; margin-left: 1rem;">x</span></span>
                 </div>
             </div>
-            <div style="display: none; position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 999; background:rgb(0 0 0 / 17%);<!--  display: flex; --> justify-content: center; align-items: center;">
+            <div style="display: none; position: absolute; width: 100%; height: 100vh; top: 0; left: 0; z-index: 999; background:rgb(0 0 0 / 17%);<!--  display: flex; --> justify-content: center; align-items: center;">
                 <div style="width: 80%; min-height: 150px; background:#FFFFFF; position: absolute; margin-bottom: 100px; border-radius: 20px;<!-- border: 1px solid #6768A7; -->">
                     <div style="width: 100%; padding: 0.3rem 1rem; height: 33px; border-bottom: 2px solid #6768A7;">
                         <p class="font16 fontBold textLeft">스티커 추가</p>
@@ -98,6 +98,6 @@ export default {
 </script>
 
 <style scoped>
-.manageStickerWrap{position: fixed; width: 100%; height: 100%; top:0; left: 0; background: #FFFFFF; z-index: 99}
+.manageStickerWrap{position: absolute; width: 100%; height: 100%; top:0; left: 0; background: #FFFFFF; z-index: 99}
 .manageStickerHeader{box-shadow: 0px 7px 9px -9px #00000036;}
 </style>

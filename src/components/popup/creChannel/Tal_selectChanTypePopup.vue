@@ -1,7 +1,7 @@
 <template>
 
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="this.$emit('no')"></div>
+  <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="this.$emit('no')"></div>
   <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" confirmText="채널종류를 선택해주세요" />
 
   <div class="confirmPopWrap" >
@@ -93,7 +93,7 @@ export default {
 }
 </script>
 <style scoped>
-.confirmPopWrap{width: 90%; position: fixed; z-index: 9999; top: 50%; ; border-radius: 10px; background: #FFFFFF;
+.confirmPopWrap{width: 90%; position: absolute; z-index: 9999; top: 50%; ; border-radius: 10px; background: #FFFFFF;
 padding: 0.5rem 2rem;
 left: 5%;
 overflow: auto;

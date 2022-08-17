@@ -44,7 +44,7 @@ export default {
   align-items: center;
   background-color: white;
   border-radius: 10px 10px 0 0;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);

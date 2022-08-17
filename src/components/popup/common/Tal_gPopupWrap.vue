@@ -285,6 +285,11 @@ export default {
     openChannelItem (data) {
       // this.itemTitle = item
       if (data.targetType === 'boardMain') {
+        var history = this.$store.getters.hStack
+        var removePage = history[history.length - 1]
+        history = history.filter((element, index) => index < history.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', history)
         this.openChanMenuYn = false
       } else {
         this.openChanMenuYn = true
@@ -681,7 +686,7 @@ export default {
 
 <style scoped>
 
-.commonPopWrap{position: fixed;width: 100vw;height: 100vh;top: 0;z-index: 9999; background: #FFFFFF;}
+.commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 9999; background: #FFFFFF;}
 .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;}
 /* .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;} */
 

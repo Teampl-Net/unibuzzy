@@ -5,15 +5,15 @@
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
-    <div style="background-color:#00000050; width:100vw; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
-    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: fixed; top: 0; z-index: 999"/>
+    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="pagePaddingWrap" style="height: calc(100vh - 60px); overflow: hidden;">
       <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
     </div>
-    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: fixed; bottom: 0; z-index: 999"/>
+    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999"/>
   </div>
 </template>
 
@@ -282,18 +282,18 @@ export default {
   height: 100vh;
 }
 .menuBtn{
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: rgb(0 0 0 / 8%);
   z-index: 999;
   top: 0;
   left: 0;
-  position: fixed;
+  position: absolute;
 }
 .TalmenuStyle {
   height: 100vh;
   top: 0;
-  position: fixed;
+  position: absolute;
   padding: 0 1rem;
   box-sizing: border-box;
   width: 80%;

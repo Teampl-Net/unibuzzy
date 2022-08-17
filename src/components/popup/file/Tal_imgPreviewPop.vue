@@ -3,8 +3,8 @@
       <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; top: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
         <p style="color: white;margin-bottom: 5px;" class="font16  fontBold">{{creUserName}}</p>
         <a style="color: #fff; float: left;" href="/resource/stickerIcon/sticker_robot.svg"></a>
-        <img @click="this.$emit('closePop')" src="../../../assets/images/common/icon_back_white.png" class="" style="position: fixed; left: 20px; top: 20px; width: 15px;" alt="">
-        <img src="../../../assets/images/common/download.svg" @click="download" class="" style="position: fixed; width: 35px; right: 20px; top: 15px;" alt="">
+        <img @click="this.$emit('closePop')" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
+        <img src="../../../assets/images/common/download.svg" @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
       </div>
       <Splide :options="{ rewind: false, start: startIndex || 0 }" aria-label="Vue Splide Example">
           <SplideSlide v-for="(value, index) in imgList" :key="index">
@@ -13,7 +13,7 @@
           </SplideSlide>
       </Splide>
     <!-- <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; bottom: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
-      <img @click="this.$emit('closePop')" src="../../../assets/images/common/download.svg" class="" style="position: fixed; width: 30px; right: 20px; bottom: 25px;" alt="">
+      <img @click="this.$emit('closePop')" src="../../../assets/images/common/download.svg" class="" style="position: absolute; width: 30px; right: 20px; bottom: 25px;" alt="">
     </div> -->
   </div>
 </template>

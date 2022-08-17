@@ -1,5 +1,5 @@
 <template>
-    <!-- <div style="width: 100vw; height: 100vh; position: fixed; z-index: 9999; top: 0; left: 0; background: #fff; "> -->
+    <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 9999; top: 0; left: 0; background: #fff; "> -->
     <div style="height: calc(100vh - 120px );">
         <!-- <popHeader :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
         <div style="width: 100%; margin-top: 10px;">
@@ -23,7 +23,7 @@
               </div>
             </div>
 
-            <div v-if="creChanPopYn" style="width: 100vw;  position: fixed; z-index: 99999; top: 0; left: 0; background: #fff; ">
+            <div v-if="creChanPopYn" style="width: 100%;  position: absolute; z-index: 99999; top: 0; left: 0; background: #fff; ">
                 <creChanPop @successCreChan="successCreChan"  @closePop="this.creChanPopYn = false"/>
             </div>
             <!-- <div v-if="creChanResultYn" style="width: 100%; height: calc(100vh - 60px); margin-top: 60px;"> -->

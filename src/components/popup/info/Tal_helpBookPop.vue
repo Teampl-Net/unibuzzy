@@ -18,6 +18,6 @@
 
 </script>
 <style>
-.bookPopText {z-index: 999; top: 20%; background-color: white; position: fixed; overflow: hidden scroll; margin: 10px; border-radius: 10px; padding: 15px; min-height: 300px; max-height: 70%;}
+.bookPopText {z-index: 999; top: 20%; background-color: white; position: absolute; overflow: hidden scroll; margin: 10px; border-radius: 10px; padding: 15px; min-height: 300px; max-height: 70%;}
 .bookPopAlimImg {width:100px;right: 20px;position: absolute;float:right;}
 </style>

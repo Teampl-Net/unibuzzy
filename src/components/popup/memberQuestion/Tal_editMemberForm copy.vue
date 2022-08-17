@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div style="background-color:#f0ebf8; width:100vw; height:70%; margin-top:1rem; position: absolute; bottom:0; left:0;padding-top:1rem; box-shadow: inset 0px 1px 5px 0px #ccc;" class="fl" >
+  <div style="background-color:#f0ebf8; width:100%; height:70%; margin-top:1rem; position: absolute; bottom:0; left:0;padding-top:1rem; box-shadow: inset 0px 1px 5px 0px #ccc;" class="fl" >
     <draggable @end="changePosTeamMenu" class="ghostClass" v-model="questionList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
     <transition-group>
       <div v-for="(list, index) in questionList" :key="index" @click="editCardSet(list, index)" class="fl w-100P questionListCard" style="min-height:50px; margin-bottom:1rem" :style="index === (questionList.length-1) ? 'border-bottom: none;' : '' ">

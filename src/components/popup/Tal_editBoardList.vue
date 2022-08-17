@@ -1,5 +1,5 @@
 <template>
-<!-- <div style="width: 100vw; height: 100vh; position: fixed; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
+<!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
     <!-- <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' /> -->
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
@@ -276,14 +276,14 @@ export default {
 
 .channelMenuEditWrap{
   /* width:100% ;
-  position: fixed; z-index: 999;
+  position: absolute; z-index: 999;
   height: 100vh;
   top: 0;
   right: 0; */
 
   width:100% ;
   /* height:100vh !important; */
-  /* position: fixed; */
+  /* position: absolute; */
   /* z-index: 999; */
   height: calc(100vh - 20%);
   top: 0;

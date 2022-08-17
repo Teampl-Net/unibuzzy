@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style scoped>
-.findPopupWrap{position: fixed;width: 100vw; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: absolute;width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.6rem; right: 8px;}
 .searchInput{border: none !important; background: #e4e4e463; width: 100%; height: 40px; margin-bottom: 5px!important; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box; float: left;}

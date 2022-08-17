@@ -1,8 +1,8 @@
 <template>
-<!-- <div style="z-index:999; width: 100vw; height: 100vh; position: fixed; top:0; left:0;" @click="this.$emit('closePop')"/> -->
-<div style="width:100vw; height:100vh; position:fixed; z-index: 9999; background: rgba(0, 0, 0, 0.5); top:0; left:0; " @click="closePop" ></div>
+<!-- <div style="z-index:999; width: 100%; height: 100vh; position: absolute; top:0; left:0;" @click="this.$emit('closePop')"/> -->
+<div style="width:100%; height:100vh; position:absolute; z-index: 9999; background: rgba(0, 0, 0, 0.5); top:0; left:0; " @click="closePop" ></div>
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' style="z-index:9999999;" v-if="errorPopYn" @no='errorPopYn = false'  />
-<div class="zoomInOutPop" style="width: 100vw; height: 50%; position:fixed; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
+<div class="zoomInOutPop" style="width: 100%; height: 50%; position:absolute; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
     <div v-if="type==='admin'" class="fadein greetingTextArea">
       <p class="commonBlack fontBold font16 textLeft ">[{{this.$changeText(chanInfo.nameMtext)}}] 채널를 만드셨네요! </p>
       <p class="commonBlack fontBold font16 textLeft">관리자가 발송하는 모든 알림은 '최신'탭에 볼 수 있어요!</p>
@@ -36,7 +36,7 @@
       ><iconWink  />
       </gSvg> -->
     <!-- </div> -->
-    <!-- <gBtnSmall v-on:click="sendBtnClick" btnTitle="닫기" style="position: fixed; bottom: 1rem; left:50%;  transform: translateX(-50%); z-index:99"  /> -->
+    <!-- <gBtnSmall v-on:click="sendBtnClick" btnTitle="닫기" style="position: absolute; bottom: 1rem; left:50%;  transform: translateX(-50%); z-index:99"  /> -->
 
 </div>
   <!-- <div class="chanGreetingArea "> -->

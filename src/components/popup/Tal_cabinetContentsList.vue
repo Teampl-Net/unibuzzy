@@ -2,7 +2,7 @@
 
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div class="pagePaddingWrap" style=" height: 100vh;absolute; background-color:white; width:100vw">
+  <div class="pagePaddingWrap" style=" height: 100vh;absolute; background-color:white; width:100%">
     <div class= "pageHeader pushListCover" style="margin:0 1rem" >
       <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       <transition name="showModal">

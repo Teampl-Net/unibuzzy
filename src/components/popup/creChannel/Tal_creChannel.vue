@@ -53,7 +53,7 @@
         <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:2em; top:1rem;">
           <p class="font12" style="color:white; font-weight:bold"> 채널 삭제 </p>
         </div>
-        <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: fixed; bottom: 20px;">채널 {{pageType}}</div>
+        <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
   </div>

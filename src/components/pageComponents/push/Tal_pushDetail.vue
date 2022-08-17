@@ -1,8 +1,8 @@
 <template>
   <div class="pushDetailWrap">
-    <div v-if="previewPopShowYn" @click="this.previewPopShowYn = false" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 99999; background: #00000026;">
+    <div v-if="previewPopShowYn" @click="this.previewPopShowYn = false" style="width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 99999; background: #00000026;">
     </div>
-    <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100vw; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
+    <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
     <div class="pagePaddingWrap root mtop-1 overflowYScroll" ref="alimArea">
       <!-- <div class="whiteArea"> -->
@@ -10,7 +10,7 @@
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
             <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creUser === alim.creUserKey}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
-              <div style="width:100%; position: fixed; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
+              <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
               <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
 
             </div>
@@ -600,7 +600,7 @@ export default {
 .alimCheckContents > img {margin-top: 3px;}
 
 .pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100vw - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
+.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 /* .whiteArea{
@@ -648,7 +648,7 @@ export default {
 }
 
 .alimMemoBoxBackground{
-  width: 100vw; height: 100vh; background: #00000036; position: fixed; top: 0; left: 0;
+  width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;
 }
 
 </style>

@@ -213,13 +213,13 @@ export default {
 </script>
 
 <style scoped>
-.backModal{position: fixed; width: 100%; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 20%); z-index: 99 }
+.backModal{position: absolute; width: 100%; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 20%); z-index: 99 }
 .dispN{display:  none!important;}
-.stickerPopWrap{position: fixed; z-index: 999; top: 20%;left: 10%; display: flex; flex-direction: column;max-width: 500px; align-items: center; min-width: 300px; width: 80%; height: 50%; background: #FFFFFF; border-radius: 20px; padding: 20px 30px;}
+.stickerPopWrap{position: absolute; z-index: 999; top: 20%;left: 10%; display: flex; flex-direction: column;max-width: 500px; align-items: center; min-width: 300px; width: 80%; height: 50%; background: #FFFFFF; border-radius: 20px; padding: 20px 30px;}
 .selectedStickerWrap{width: 100%; min-height: 100px; padding: 10px 0; overflow-x: auto; overflow-y: hidden; margin-bottom: 15px;}
 .totalStickerWrap{width: 100%; min-height: 100px; padding: 10px 0; overflow-x: auto; overflow-y: hidden}
 .createStickerBtn{display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px; position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;}
-.createStickerPopWrap{position: fixed; width: 100%;  display: flex;  justify-content: center; align-items: center; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 20%); z-index: 999}
+.createStickerPopWrap{position: absolute; width: 100%;  display: flex;  justify-content: center; align-items: center; height: 100%; top:0; left: 0; background: rgb(0 0 0 / 20%); z-index: 999}
 .createStickerPop{width: 260px; height: 310px; background: #FFFFFF; position: relative; border-radius: 20px; padding: 20px 30px;}
 .stickerNameInput{margin: 0 auto; margin-top: 5px; background: #ffffff7a;width: 60%;border: none; border-bottom: 1px solid #6c5c9d;}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: fixed; top: 15%; left: 10%; background: #fff; border: 1px solid #ccc;">
+    <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: absolute; top: 15%; left: 10%; background: #fff; border: 1px solid #ccc;">
         <commonConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
         <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid #6768A7; float: left; text-align: left;">
             <p class="fontBold font18">엑셀업로드</p>

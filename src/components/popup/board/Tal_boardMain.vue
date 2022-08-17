@@ -3,9 +3,9 @@
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
   <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: scroll;" class="boardListWrap">
     <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
-    <p class="font20 fontBold" style="color:#2c3e50; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+    <p class="font20 fontBold" style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
     <div id="summaryHeader" class="summaryHeader">
-      <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:fixed; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
+      <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
 
         <!-- 게시판 이름 , 소속 채널 -->
@@ -111,12 +111,12 @@
           <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:20px; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
           <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
         </div>
-        <!-- <div style="width: 100%; height: 200px; background: #ccc; position: fixed; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
+        <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
       </div>
     </div>
     <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
     v-on="handleScroll"
-    style="position: fixed; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
+    style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
     @click="refreshAll" >
       <img src="../../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
     </div>
@@ -668,7 +668,7 @@ export default {
     transform: translateY(10rem);
     transition: .5s;
 }
-.summaryHeader{height: 300px; width: 100%; float: left; position: fixed;}
+.summaryHeader{height: 300px; width: 100%; float: left; position: absolute;}
 .summaryHeader2 {height: 50px;  width: 100%; float: left;}
 .boardListHeader {
   width: 100%;
@@ -711,7 +711,7 @@ export default {
 .boardItemBoxHeight{height: calc(100% - 50px)!important;}
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
-.summaryWrap{height: calc(35vh); width: 100%; float: left; position: fixed;}
+.summaryWrap{height: calc(35vh); width: 100%; float: left; position: absolute;}
 .summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 10px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}

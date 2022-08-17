@@ -167,10 +167,10 @@ export default {
   -moz-animation-delay: 2s;
   -webkit-animation-delay: 2s;
   animation-delay: 2s;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   z-index: 9999999;
 }

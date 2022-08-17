@@ -1,5 +1,5 @@
 <template>
-<div style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; ">
+<div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; ">
     <div style="width: 80%; height: 220px; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;">
       <div style="height: 50px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.6rem 0.5rem;">
         <img src="../assets/images/common/thealim_header_logo.png" class="fl" style=" width: 1.7rem; margin: 0 0.4rem" >

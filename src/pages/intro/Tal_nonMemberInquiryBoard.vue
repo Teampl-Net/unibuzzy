@@ -1,8 +1,8 @@
 <template>
   <div class="pagePaddingWrap nonMemBoardWrap">
     <popHeader :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({path: '/login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
-    <div v-if="infoShowYn" style="width: 100vw; height: 100vh; position: fixed; top:0; left: 0; background: #00000050; z-index: 9999;" @click="this.infoShowYn = false"></div>
-    <div v-if="infoShowYn" class="zoomInOutPop" style="width: 80%; padding: 10px 20px; margin: 0 auto; height: 80%; max-height: 550px; min-height: 300px; background: #ffff; position: fixed; top: 10%; left: 10%; border-radius: 15px; z-index: 9999;">
+    <div v-if="infoShowYn" style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000050; z-index: 9999;" @click="this.infoShowYn = false"></div>
+    <div v-if="infoShowYn" class="zoomInOutPop" style="width: 80%; padding: 10px 20px; margin: 0 auto; height: 80%; max-height: 550px; min-height: 300px; background: #ffff; position: absolute; top: 10%; left: 10%; border-radius: 15px; z-index: 9999;">
       <div class="subPopHeader">
         <img src="../../assets/images/main/main_logo.png" style="width: 100px;" class="fl" >
         <p class="font13 headerFont commonColor fl" style="line-height: 2.6rem; margin-top: 2px; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
