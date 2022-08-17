@@ -192,7 +192,7 @@ export default {
       params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: params
       })
       if (result.data) {
@@ -290,7 +290,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: '/tp.getTeamMenuList',
+          url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data
@@ -366,7 +366,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       await this.$store.commit('setRemovePage', removePage)
-      await this.$store.commit('updateStack', history) 
+      await this.$store.commit('updateStack', history)
       this.$emit('closePop')
       /* setTimeout(() => {
         this.$emit('closePop')

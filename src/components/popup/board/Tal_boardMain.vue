@@ -73,7 +73,7 @@
               <p class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
               <div>
                 <p class="fl font14 commonBlack">{{followTypeText}}</p>
-                <p class="fl commonBlack font14 " v-if="memberYn">(멤버)</p>
+                <p class="fl commonBlack font14 " v-if="memberYn">(내정보공개)</p>
               </div>
             </div>
           </div>

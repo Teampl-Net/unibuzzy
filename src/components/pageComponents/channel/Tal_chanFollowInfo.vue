@@ -21,7 +21,7 @@
         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">채널 링크를 공유</p>
       <p class="commonBlack font16 textLeft fl mbottom-1" style="height: 30px; line-height: 30px;">해 친구들을 초대하세요!</p>
       <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
-        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="멤버 신청하기" />
+        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="내정보 공개하기" />
         <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanInfo.teamKey
         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" btnTitle="채널링크 복사하기" /> -->
       </div>

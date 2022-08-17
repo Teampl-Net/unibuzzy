@@ -78,7 +78,7 @@
       </tr> -->
 
       <!-- <tr @click="memberFormEditClick">
-        <th class="font16">멤버신청서 관리</th>
+        <th class="font16">공개신청서 관리</th>
         <td class="">
           <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt="">
         </td>

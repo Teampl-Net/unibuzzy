@@ -427,9 +427,9 @@ export default {
         this.chanName = this.propParams.teamNameMtext
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
-        this.headerTitle = '멤버 선택'
+        this.headerTitle = '공개 대상 선택'
       } else if (this.targetType === 'memberManagement') {
-        this.headerTitle = '멤버/매니저 관리'
+        this.headerTitle = '공개/매니저 관리'
         this.helpYn = true
       } else if (this.targetType === 'editBoard') {
         this.headerTitle = '게시판 관리'
@@ -441,15 +441,15 @@ export default {
       } else if (this.targetType === 'autoAnswer') {
         this.headerTitle = '자동 응답'
       } else if (this.targetType === 'memberForm') {
-        this.headerTitle = '멤버신청서 만들기'
+        this.headerTitle = '공개신청서 만들기'
       } else if (this.targetType === 'setMypage') {
         this.headerTitle = '프로필 설정'
       } else if (this.targetType === 'memberFormList') {
-        this.headerTitle = '멤버신청서 목록'
+        this.headerTitle = '공개신청서 목록'
       } else if (this.targetType === 'templateList') {
-        this.headerTitle = '멤버신청서 템플릿 목록'
+        this.headerTitle = '공개신청서 템플릿 목록'
       } else if (this.targetType === 'mQPreview') {
-        this.headerTitle = '멤버신청서 미리보기'
+        this.headerTitle = '공개신청서 미리보기'
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

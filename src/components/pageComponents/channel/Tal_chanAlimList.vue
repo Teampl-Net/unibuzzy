@@ -67,7 +67,7 @@
             <p class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
             <div>
               <p class="fl font14 commonBlack">{{followTypeText}}</p>
-              <p class="fl commonBlack font14 " v-if="memberYn">(멤버)</p>
+              <p class="fl commonBlack font14 " v-if="memberYn">(공개)</p>
             </div>
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
@@ -157,7 +157,7 @@ export default {
       followYn: false,
       detailHeaderShowYn: false,
       chanItem: {},
-      memberText: '멤버 신청하기 >',
+      memberText: '공개 신청하기 >',
       errorBoxYn: false,
       errorBoxText: '',
       errorBoxType: 'two',
@@ -371,11 +371,11 @@ export default {
     async saveMemberButton () {
       this.smallPopYn = true
       if (this.memberYn || this.memberYn === 1) {
-        this.confirmMsg = '멤버 취소가 완료되었습니다.'
-        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanItem.nameMtext) + ' 의 멤버가 될 수 있습니다.)'
+        this.confirmMsg = '내 정보 공개가 취소 완료되었습니다.'
+        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanItem.nameMtext) + ' 의 정보 공개를 할 수 있습니다.)'
       } else {
-        this.confirmMsg = '멤버 신청이 완료되었습니다.'
-        this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
+        this.confirmMsg = '내 정보 공개가 완료되었습니다.'
+        this.addSmallMsg = '(관리자는 당신의 프로필 정보를 조회할 수 있습니다.)'
       }
       var params = null
       var param = {}
@@ -393,7 +393,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

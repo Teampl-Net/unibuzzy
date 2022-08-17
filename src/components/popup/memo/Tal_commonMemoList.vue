@@ -117,7 +117,7 @@ export default {
       memo.deleteYn = false
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)
