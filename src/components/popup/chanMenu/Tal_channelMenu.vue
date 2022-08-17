@@ -110,13 +110,12 @@ export default {
 
   },
   async created() {
-    this.screenHeight = window.innerHeight
-    this.getFollowerList()
-    // this.cabinetList = this.$groupDummyList()
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
     this.$store.commit('updateStack', history)
-
+    this.screenHeight = window.innerHeight
+    this.getFollowerList()
+    // this.cabinetList = this.$groupDummyList()
     await this.getTeamCabList()
     await this.getTeamMenuList()
     this.setDrop()
@@ -250,12 +249,12 @@ export default {
       param.managerOpenYn = true
       param.selectMemberType = 'manager'
 
-      var history = this.$store.getters.hStack
+      /* var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
-
+ */
       this.$emit('openItem', param)
     },
     closeEditPop () {
@@ -275,11 +274,11 @@ export default {
 
       params.teamNameMtext = this.teamName()
 
-      var history = this.$store.getters.hStack
+      /* var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('updateStack', history) */
 
 
       this.$emit('openItem',params)
@@ -361,17 +360,17 @@ export default {
       params.targetType = link
       this.$emit('openPop', params)
     },
-    goNo (){
+    async goNo (){
       this.closeYn = true
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
-
-      setTimeout(() => {
+      await this.$store.commit('setRemovePage', removePage)
+      await this.$store.commit('updateStack', history) 
+      this.$emit('closePop')
+      /* setTimeout(() => {
         this.$emit('closePop')
-      }, 200);
+      }, 200); */
 
     },
     editChanMenu (){
@@ -399,11 +398,11 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-      var history = this.$store.getters.hStack
+      /* var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('updateStack', history) */
       this.$emit('openItem', params)
     },
     receiverClick(data){
@@ -414,11 +413,11 @@ export default {
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
 
-      var history = this.$store.getters.hStack
+      /* var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('updateStack', history) */
 
       params.teamNameMtext = this.teamName()
       this.$emit('openItem',params)

@@ -214,11 +214,11 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+      var history = this.$store.getters.hStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         this.closeXPop() // 혹시 모르니 일단 삭제
       } else {
-        if (hStack[hStack.length - 1] === this.popId) {
+        if (history[history.length - 1] === this.popId) {
           this.closeXPop()
         }
       }
@@ -482,6 +482,7 @@ export default {
       this.popShowYn = false
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
+      /* if (this.popId === history[history.length - 1]) { */
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
@@ -525,6 +526,7 @@ export default {
           // await this.$refs.mamberManagementCompo.getManagingList()
         }
       }
+      /* } */
     },
     successCreChan (params) {
       if (params.deleteYn === true && params.modiYn === true) {

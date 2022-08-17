@@ -6,6 +6,7 @@ export default createStore({
     historyStack: [0],
     currentPage: null,
     removePage: 0,
+    canRemoveYn: true,
     pageUpdate: 0,
     recvPushQueue: [],
     deepLinkQueue: []
@@ -13,6 +14,9 @@ export default createStore({
   mutations: {
     updateServerList (state, server) {
       state.archivingServerList = server // state의 account변수에 넘겨 받은 account값을 입력함
+    },
+    changeRemoveYn (state, blean) {
+      state.canRemoveYn = blean // state의 account변수에 넘겨 받은 account값을 입력함
     },
     updateStack (state, stack) {
       state.historyStack = stack // state의 account변수에 넘겨 받은 account값을 입력함
@@ -40,6 +44,9 @@ export default createStore({
   getters: {
     archServerList (state) { // 현재 로그인 상태인지 확인 (true/false)
       return state.archivingServerList
+    },
+    canRYn (state) { // 현재 로그인 상태인지 확인 (true/false)
+      return state.canRemoveYn
     },
     hStack (state) { // 현재 로그인 상태인지 확인 (true/false)
       return state.historyStack

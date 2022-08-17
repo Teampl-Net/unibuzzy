@@ -125,7 +125,7 @@
 <gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
-  <boardWrite @closeXPop="boardWriteYn = false" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
+  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
 </template>
 <script>
@@ -177,11 +177,6 @@ export default {
       this.findPaddingTopBoard()
     }
   },
-  watch: {
-    readCheckBoxYn () {
-      this.changeTab(this.viewTab)
-    }
-  },
   data () {
     return {
       paddingTop: 0,
@@ -220,7 +215,8 @@ export default {
       chanInfo: [],
       currentUserInfo: '',
       boardWriteYn: false,
-      boardWriteData: {}
+      boardWriteData: {},
+      writePopId: null
     }
   },
   methods: {
@@ -234,6 +230,20 @@ export default {
       this.changeTab('N')
       this.offsetInt = 0
 
+      this.closeWriteBoardPop()
+    },
+    backClick () {
+      var hStack = this.$store.getters.hStack
+      if (this.writePopId === hStack[hStack.length - 1]) {
+        this.closeWriteBoardPop()
+      }
+    },
+    closeWriteBoardPop () {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
       this.boardWriteYn = false
     },
     successSave () {
@@ -368,6 +378,12 @@ export default {
       params.value = this.mCabinetContentsDetail
       this.boardWriteData = {}
       this.boardWriteData = params
+
+      var history = this.$store.getters.hStack
+      this.writePopId = 'writeBoard' + history.length
+      history.push(this.writePopId)
+      this.$store.commit('updateStack', history)
+
       this.boardWriteYn = true
 
       // this.$emit('openPop', params)
@@ -617,8 +633,25 @@ export default {
       return {
         '--height': 300 - this.scrollPosition + 'px'
       }
+    },
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+    },
+    readCheckBoxYn () {
+      this.changeTab(this.viewTab)
+    },
+    historyStack (value, old) {
     }
   }
+
 }
 </script>
 
