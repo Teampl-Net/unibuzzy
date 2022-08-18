@@ -23,11 +23,9 @@
         </div>
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
-      <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 " style="margin-top:50px;" />
           <!-- </div> -->
-        <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 " style="margin-top:50px;" />
         <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" @scrollMove="scrollMove" />
-
+        <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
       </div>
       <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 10rem;' : 'bottom: 5rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />

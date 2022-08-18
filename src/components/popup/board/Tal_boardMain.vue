@@ -1,7 +1,7 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
-  <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: scroll;" class="boardListWrap">
+  <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" class="boardListWrap">
     <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
     <p class="font20 fontBold" style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
     <div id="summaryHeader" class="summaryHeader">
@@ -110,6 +110,7 @@
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:20px; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
           <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
+          <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
       </div>
@@ -180,7 +181,7 @@ export default {
   data () {
     return {
       paddingTop: 0,
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 쓴', name: 'M' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       listBox: null,
       firstContOffsetY: null,
       scrolledYn: false,
@@ -216,7 +217,9 @@ export default {
       currentUserInfo: '',
       boardWriteYn: false,
       boardWriteData: {},
-      writePopId: null
+      writePopId: null,
+      currentTabName: '최신',
+      emptyYn: true
     }
   },
   methods: {
@@ -506,16 +509,31 @@ export default {
       this.$emit('openPop', value)
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
-
     async changeTab (tabName) {
       if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
       // this.$emit('openLoading')
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       this.viewTab = tabName
+      switch (this.viewTab) {
+        case 'N' :
+          this.currentTabName = '최신'
+          break
+        case 'L' :
+          this.currentTabName = '좋아요'
+          break
+        case 'S' :
+          this.currentTabName = '스크랩'
+          break
+        case 'M' :
+          this.currentTabName = '내가 쓴'
+          break
+      }
       this.$refs.boardListCompo.loadingRefShow()
       this.offsetInt = 0
       // this.mCabContentsList = []
+      this.emptyYn = false
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -524,6 +542,7 @@ export default {
         this.offsetInt += 1
         this.endListYn = false
       }
+      if (this.mCabContentsList.length === 0) this.emptyYn = true
       // this.$refs.boardListCompo.loadingRefHide()
       this.scrollMove()
     },

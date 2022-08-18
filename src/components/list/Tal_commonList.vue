@@ -2,100 +2,94 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
-      <div style="width: 100%; height: 100%;" id="ttttt">
-        <div v-if="this.contentsList.length === 0" style="width: 100%;">
-          <!-- pushList.vue 에서 introPushPageTab() 참고 -->
-          <!-- <img :src="this.imgUrl" style="float: left;" /> -->
-        </div>
 
-        <div v-else class="fl w-100P" ref="commonListCompo">
-          <template v-for="(alim, index) in this.contentsList" :key="index" >
-            <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
-              <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
-                <div class="commonPushListTopArea">
-                  <div class="pushChanLogoImgWrap">
-                    <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-                    <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-                  </div>
-                  <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
+      <div class="fl w-100P" ref="commonListCompo">
+        <template v-for="(alim, index) in this.contentsList" :key="index" >
+          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+            <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
+              <div class="commonPushListTopArea">
+                <div class="pushChanLogoImgWrap">
+                  <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                  <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                </div>
+                <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 
-                    <p style="width: 100%; " :class="{commonBlue: alim.readYn === 0}" class="mleft-05 font16 fl fontBold commonBlack">
-                      <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl" style="width: 20px;" alt="">
-                      <img src="../../assets/images/board/readTrue.svg" v-else class="fl" style="width: 20px;" alt="">
-                      {{resizeText(alim.title, alim.nameMtext)}}
+                  <p style="width: 100%; " :class="{commonBlue: alim.readYn === 0}" class="font16 fl fontBold commonBlack">
+                    <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
+                    <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt="">
+                    {{resizeText(alim.title, alim.nameMtext)}}
+                  </p>
+                  <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
+                  <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
+                  <div class="w-100P fl">
+                    <p style="width:65%; " class="font14 fl grayBlack">
+                      <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                      {{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}
                     </p>
-                    <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
-                    <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
-                    <div class="w-100P fl">
-                      <p style="width:65%; " class="font14 fl grayBlack">
-                        <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                        {{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}
-                      </p>
-                      <div class="fr" style="display: flex; align-items: center;">
-                        <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
-                        <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;" class="fr mleft-05" alt="">
-                        <p class="fr font14 lightGray" :class="{'mleft-05':alim.rUserCount === -1}" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
-                      </div>
+                    <div class="fr" style="display: flex; align-items: center;">
+                      <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                      <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;" class="fr mleft-05" alt="">
+                      <p class="fr font14 lightGray" :class="{'mleft-05':alim.rUserCount === -1}" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
                     </div>
                   </div>
                 </div>
-                <!-- 밑 1줄이 본문 텍스트  -->
-
-                  <div @click="goDetail(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
-                  <p @click="alimBigView(alim.contentsKey)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
-
-                <div id="alimCheckArea">
-                  <div class="alimCheckContents">
-                    <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
-
-                    <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
-                      <template v-if="userDo.doType === 'LI'">
-                        <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                        <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                        <p class="fl font16 mleft-03">{{alim.likeCount}}</p>
-                      </template>
-                      <template v-else-if="userDo.doType === 'ST'">
-                        <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                        <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
-                      </template>
-                    </div>
-                    <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-                        :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + alim.contentsKey
-                          + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                          class="copyTextIcon mleft-05 fl" style="width:20px;" >
-                      <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
-                    </div>
-                    <p class="fr font16 mleft-03">
-                      <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt="">
-                      {{alim.memoCount}}
-                    </p>
-                    <div class="fr w-100P mtop-05">
-                      <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
-                    </div>
-
-                  </div>
-                </div>
-                <div class="alimListMemoBorder"></div>
-                <div class="w-100P">
-                  <p class="commonColor fr font14 mright-1 mtop-1" :id="'memoOpen'+alim.contentsKey" @click="memoOpenClick(alim.contentsKey)">댓글 펼치기</p>
-                  <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
-                </div>
-                <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; min-height: 50px; background:white; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
-                  <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                  <gMemoList :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' />
-                </div>
-              <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
               </div>
-          </template>
-        </div>
-        <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-        <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
-          <gLoadingS ref="sLoadingPush" class="fl"/>
-        </div>
+              <!-- 밑 1줄이 본문 텍스트  -->
+
+                <div @click="goDetail(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <p @click="alimBigView(alim.contentsKey)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+
+              <div id="alimCheckArea">
+                <div class="alimCheckContents">
+                  <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
+
+                  <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                    <template v-if="userDo.doType === 'LI'">
+                      <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                      <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                      <p class="fl font16 mleft-03">{{alim.likeCount}}</p>
+                    </template>
+                    <template v-else-if="userDo.doType === 'ST'">
+                      <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                      <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                    </template>
+                  </div>
+                  <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+                      :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + alim.contentsKey
+                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                        class="copyTextIcon mleft-05 fl" style="width:20px;" >
+                    <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
+                  </div>
+                  <p class="fr font16 mleft-03" @click="memoOpenClick(alim.contentsKey)">
+                    <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt="">
+                    {{alim.memoCount}}
+                  </p>
+                  <div class="fr w-100P mtop-05">
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
+                  </div>
+
+                </div>
+              </div>
+              <div class="alimListMemoBorder" :id="'borderLine'+alim.contentsKey" ></div>
+              <div class="w-100P">
+                <!-- <p class="commonColor fr font14 mright-1 mtop-1" :id="'memoOpen'+alim.contentsKey" @click="memoOpenClick(alim.contentsKey)">댓글 펼치기</p> -->
+                <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
+              </div>
+              <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; min-height: 50px; background:white; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
+                <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
+                <gMemoList :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' />
+              </div>
+            <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
+            </div>
+        </template>
+      </div>
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+      <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+        <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
       <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div>
       <transition name="showMemoPop">
-        <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0;"/>
+        <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
       <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
 </template>
@@ -227,26 +221,38 @@ export default {
       // }
     },
     async memoOpenClick (key) {
-      this.currentContentsKey = key
+
       var findIndex = this.openMemoList.indexOf(key)
       this.currentMemoList = []
       // var div = document.getElementById('memoList'+key)
       // console.log('div')
       // console.log(div)
+      console.log(key)
+      console.log(this.currentContentsKey)
+      console.log(findIndex)
       if (findIndex === -1) {
         // this.openMemoList.push(key)
         var list = new Array
         list.push(key)
         this.openMemoList = list
-        document.getElementById('memoOpen'+key).innerText = '댓글접기'
+        // document.getElementById('memoOpen'+key).innerText = '댓글접기'
+        if (this.currentContentsKey !== null ){
+          document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
+          document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+        }
         document.getElementById('alimMemo'+key).style.display = 'block'
+        document.getElementById('borderLine'+key).style.display = 'block'
+
         this.currentMemoList = await this.getContentsMemoList(key)
-      }else {
+
+      } else {
+        // document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
         this.openMemoList.splice(findIndex, 1)
-        document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
         document.getElementById('alimMemo'+key).style.display = 'none'
+        document.getElementById('borderLine'+key).style.display = 'none'
       }
 
+      this.currentContentsKey = key
     },
     alimBigView (key) {
       document.getElementById('bodyFullStr'+key).style.maxHeight = '100%'
@@ -492,9 +498,10 @@ export default {
     }
 .alimListMemoBorder{
   width: 100%; height: 1.5px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;
+  display: none;
 }
 
 .alimListMemoBoxBackground{
-  width: 100%; height: 100%; background: #00000036; position: fixed; top: 0; left: 0; z-index: 999;}
+  width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
 
 </style>

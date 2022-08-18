@@ -411,7 +411,7 @@ export default {
     transition: .3s;
 }
 .reload--unpinned {
-    transform: translateY(10rem);
+    transform: translateY(15rem);
     transition: .5s;
 }
 .chanListHeader {

@@ -8,8 +8,8 @@
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-        <div class="boardWritePaperBack">
-          <div class="whitePaper">
+        <div class="boardWritePaperBack"></div>
+          <div class="whitePaperBoard">
             <div class="overFlowYScroll boardInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">게시글작성</p>
@@ -36,11 +36,10 @@
             </div>
 
           </div>
-          <gBtnSmall class="mright-05 commonColor writeBoardBtn whitePurpleBG" style="color:#6768a7; font-weight:bold;" btnTitle='작성하기' @click="clickPageTopBtn()" />
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
-        </div>
       </div>
     </div>
+    <gBtnSmall class="mright-05 commonColor writeBoardBtn whitePurpleBG" style="color:#6768a7; font-weight:bold; bottom: 1rem" btnTitle='작성하기' @click="clickPageTopBtn()" />
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>  <!-- v-if="progressShowYn" -->
@@ -540,14 +539,23 @@ export default {
 }
 </script>
 <style scoped>
-.whitePaper {
-      position: relative;
+.whitePaperBoard {
+      /* position: relative;
       width: 100%;
       margin: 0 auto;
-      margin-top: 1rem;
+      margin-top: 1rem; */
+      position: absolute;
+      left: 50%;
+      top: 47%;
+      transform: translate(-50%, -50%);
+      /* width: 100%; */
+      width: 90%;
+
       border-radius: 0.8rem;
-      height: calc(100% - 60px);
+      /* height: calc(100% - 60px); */
       min-height: 500px;
+      /* height: 90%; */
+      height: 85%;
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -560,7 +568,7 @@ export default {
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%);
   }
 
-  .whitePaper:after {
+  .whitePaperBoard:after {
       content: '';
       position: absolute;
       display: block;
@@ -570,7 +578,7 @@ export default {
       bottom: 0;
       right: 0;
   }
-  .whitePaper:before {
+  .whitePaperBoard:before {
   content: '';
   position: absolute;
   bottom: 0;
@@ -602,9 +610,12 @@ export default {
 .activeColor p{color: #6768A7!important;}
 .editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
-.writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 5rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;}
+/* .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 5rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;} */
+.writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 650px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden; position: relative;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
-.boardWritePaperBack{width: 100%; height: calc(100% - 5rem);min-height: 600px; position: relative; margin: 0 auto; padding: 2rem 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+/* .boardWritePaperBack{width: 100%; 100%; position: relative; margin: 0 auto; padding: 2rem 2rem; border-radius: 10px 10px 0 0;} */
+.boardWritePaperBack{width: 100%; min-height: 500px; height:100%; position: absolute; top:0; left:0 }
+
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .boardInputArea{height: 100%; width: 100%;}

@@ -686,7 +686,8 @@ export default {
 
 <style scoped>
 
-.commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 9999; background: #FFFFFF;}
+/* .commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 9999; background: #FFFFFF;} */
+.commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 9999; background: #FFFFFF; overflow: hidden;}
 .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;}
 /* .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;} */
 

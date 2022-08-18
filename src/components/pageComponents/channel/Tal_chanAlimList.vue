@@ -73,8 +73,9 @@
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
         <div v-if="followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-          <div style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
+          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
             <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
+            <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >내정보공개</p> -->
           </div>
           <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
           <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
@@ -90,7 +91,7 @@
         <div v-if="followYn === false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <!-- <p class="font20 fontBold">구독하기</p> -->
           <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(chanItem.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
-          <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1" btnTitle="구독하기" />
+          <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold" btnTitle="구독하기" />
         </div>
 
     </div>
