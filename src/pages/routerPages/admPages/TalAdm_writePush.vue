@@ -435,8 +435,6 @@ export default {
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
       //
-      console.log('답장 후 ')
-      console.log(param)
       var result = await this.$saveContents(param)
       if (result.result === true) {
 

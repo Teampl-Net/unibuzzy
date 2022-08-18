@@ -5,7 +5,7 @@
 
       <div class="fl w-100P" ref="commonListCompo">
         <template v-for="(alim, index) in this.contentsList" :key="index" >
-          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div v-if="alim.bodyFullStr" :cIndex="alim.index" :page="alim.page" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div class="pushChanLogoImgWrap">

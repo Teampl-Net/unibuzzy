@@ -523,6 +523,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 
 
-input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .menuRow {
+input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .menuRow, .commonPopHeaderWrap img {
   cursor: pointer;
 }

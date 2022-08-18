@@ -544,12 +544,13 @@ export default {
         this.closeWritePushPop()
       }
     },
-    closeWritePushPop () {
+    async closeWritePushPop () {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
+      await this.refreshList()
       this.writePushYn = false
     },
     openPop () {

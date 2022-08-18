@@ -9,7 +9,7 @@
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
+        <tr v-for="(value, index) in commonListData" :cIndex="value.index" :page="value.page" class="commonListTr textLeft" :key="index" >
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
               <div class="top5PushChanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
               </div>
@@ -19,7 +19,7 @@
                 <!-- <img v-if="value.readYn === true" src="../../assets/images/main/icon_notice1.png" style="width:1.5rem">
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             <!-- </td> -->
-            <td v-on:click="goDetail(value)" :class="{top5MyPushColor:  sessionUserKey === value.creUserKey}">
+            <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  sessionUserKey === value.creUserKey}">
                 <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <!-- <div> -->
                 <!-- <div style="display: flex; align-items: center; justify-content: space-between;"> -->
@@ -54,7 +54,9 @@ export default {
       param.targetKey = data.creTeamKey
       param.nameMtext = data.nameMtext
       param.chanName = data.nameMtext
-
+      param.page = data.page
+      param.cIdx = data.index
+      param.targetContentsKey = data.contentsKey
       // 세션에서 유저키 받아오기
       if (data.creUserKey === this.creUserKey) {
         param.ownerYn = true
