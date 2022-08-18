@@ -31,7 +31,7 @@ export default {
       box: null,
       resultSearchKeyList: [],
       findKeyList: {},
-      findPopShowYn: true,
+      findPopShowYn: false,
       clickStatus: '',
       myActTitle: '내가 작성한 게시글',
       myActTabType: 'mw',

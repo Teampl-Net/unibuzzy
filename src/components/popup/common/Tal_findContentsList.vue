@@ -11,7 +11,17 @@
             <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
-        <Datepicker class="font14" :editable="false" v-model="creDate" type="date" range placeholder="날짜를 선택해주세요" titleFormat="YYYY-MM-DD" ></Datepicker>
+        <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
+        <Datepicker
+          style="font-size: 14px;"
+          inline
+          :editable="false"
+          v-model:value="creDate"
+          type="date"
+          range
+          placeholder="날짜를 선택해주세요"
+          titleFormat="YYYY-MM-DD"
+        ></Datepicker>
     </div>
   </div>
 </template>
@@ -26,6 +36,7 @@ export default {
   data () {
     return {
       pageHistoryName: '',
+      credate: [],
       searchKey: '',
       creTeam: '',
       creDate: '',
