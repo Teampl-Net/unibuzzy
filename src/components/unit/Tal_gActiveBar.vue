@@ -10,7 +10,7 @@
       <div v-if="searchYn">
         <div class="fr" style="position: absolute; height: 40px; right:0; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->
-          <img class="fl" style="width:20px; line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img class="fl cursorP" style="width:20px; line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
 
         <div style="width: 100%;">
@@ -120,9 +120,6 @@ export default {
   top: 1.8rem;
   transition: 0.5s ease;
   transform: var(--transform);
-}
-.tabTitleBox{
-  /* min-width: 4rem; */
 }
 .tabs {
   display: inline-table;

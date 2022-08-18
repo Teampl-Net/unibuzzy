@@ -168,7 +168,7 @@ export default {
 <style >
 /* .receiverTeamListCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 
-.receiverTeamText{ height:40px; line-height:40px;}
+.receiverTeamText{ height:40px; cursor: pointer; line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
 
 .fontBold{font-weight: bold;}

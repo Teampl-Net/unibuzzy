@@ -55,8 +55,8 @@ export default {
       dragable: false,
       newYn: true,
       selectedMemberList: [],
-      pageTopBtnTitle: '편집'
-
+      pageTopBtnTitle: '편집',
+      systemName: 'iOS'
     }
   },
   beforeUnmount () {
@@ -65,9 +65,10 @@ export default {
     // eslint-disable-next-line vue/no-mutating-props
     this.propData.managerOpenYn = true
   },
-  async created () {
+  created () {
     // eslint-disable-next-line vue/no-mutating-props
     if (!this.propData.value) this.propData.value = {}
+    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
     // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
   },
   methods: {
@@ -77,10 +78,11 @@ export default {
       }
     },
     callPhone (num) {
-      onMessage('REQ', 'callphone', num)
-      // if (num !== undefined && num !== null && num !== '') {
-      // onMessage('REQ', 'callphone', num)
-      // }
+      if (num !== undefined && num !== null && num !== '') {
+        if (this.systemName === 'iOS' || this.systemName === 'ios') { document.location.href = 'tel:' + num } else { onMessage('REQ', 'callphone', num) }
+      } else {
+        alert('전화번호 정보가 없습니다')
+      }
     },
     async refresh () {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
@@ -196,5 +198,5 @@ export default {
 
 .memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
-.receiverTeamMemberCard {border-bottom:1px solid #ddd; padding: 10px 10px;}
+.receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px;}
 </style>

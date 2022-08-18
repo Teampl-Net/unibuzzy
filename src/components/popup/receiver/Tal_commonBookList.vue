@@ -11,19 +11,19 @@
               </div>
               <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
               <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-                <p class="fl font14" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
-                <p class="fl font14" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
+                <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
+                <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
               </div>
             </div>
             <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
               <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
               <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{data.cabinetNameMtext}}</p>
             </div>
-            <div v-if="!selectPopYn" class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
+            <div v-if="!selectPopYn" class="fl cursorP" style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
               <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >
               <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="deleteCabinet(data,index)" >
             </div>
-            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1" style="position: relative; height: 100%;">
+            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1 cursorP" style="position: relative; height: 100%;">
               <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
               <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
             </div>
@@ -319,7 +319,7 @@ export default {
 
 <style >
 /* .receiverTeamListCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
-.receiverTeamText{ height:40px; line-height:40px;}
+.receiverTeamText{ height:40px; cursor: pointer;line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
 .foo {
     transition : background-color 0.5s ease-in;
@@ -327,6 +327,7 @@ export default {
 .commonBookCard {
     /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */
     width: 100%;
+    cursor: pointer;
     height:60px;
     border-bottom:1px solid #ddd; padding: 0.7rem 0;
     position: relative;

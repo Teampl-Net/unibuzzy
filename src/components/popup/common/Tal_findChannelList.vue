@@ -4,7 +4,7 @@
     <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
-          <img @click="findChannel" class="searchIcon" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img @click="findChannel" class="searchIcon cursorP" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
           <input class="searchInput font14" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
       </div>
 
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style scoped>
-.findPopupWrap{position: absolute;width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: fixed;width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.6rem; right: 8px;}
 .searchInput{border: none !important; background: #e4e4e463; width: 100%; height: 40px; margin-bottom: 5px!important; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box; float: left;}

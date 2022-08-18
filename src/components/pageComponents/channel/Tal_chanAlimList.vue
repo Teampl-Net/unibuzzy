@@ -44,9 +44,9 @@
 
       </div>
     </div>
-    <div id="ownerChannelEditArea" class="w-100P fl" v-if="ownerYn">
+    <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="ownerYn">
       <div class="fr " @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; margin:0 !important;">
-        <p class="font16 textLeft lightGray fr"  >편집 > </p>
+        <p class="font16 textLeft lightGray fr "  >편집 > </p>
       </div>
     </div>
 
@@ -67,22 +67,22 @@
             <p class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
             <div>
               <p class="fl font14 commonBlack">{{followTypeText}}</p>
-              <p class="fl commonBlack font14 " v-if="memberYn">(공개)</p>
+              <p class="fl commonBlack font14 cursorP" v-if="memberYn">(공개)</p>
             </div>
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
         <div v-if="followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
           <div style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
-            <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
+            <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
           </div>
-          <img style="width:20px;" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
-          <img style="width:20px;" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
+          <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+          <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
               :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanItem.teamKey
                 + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                class="copyTextIcon">
+                class="copyTextIcon cursorP">
             <img style="width:20px;" src="../../../assets/images/common/icon_share_square.svg" alt="">
           </div>
         </div>

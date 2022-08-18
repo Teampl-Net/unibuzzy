@@ -22,7 +22,7 @@
     <!-- <div class="font16 profileSetting" @click="goSetMyPage">프로필 설정 ></div> -->
     <div class="myPageTabList">
       <div class="myPageTab font14" :class="{activeMyPageTabList: this.myPageTabType === tab.myPageTabType}" @click="myPageTabClick(tab, index)" v-for="(tab, index) in myPageTabList" :key="index">{{tab.name}}</div>
-      <div class="font14 fontBold" @click="goMyChanList" style="width: 90px;height: 30px;line-height: 30px;margin-top: 5px;float: right;background-color: #6768A7;border-radius: 0.8rem;color: #fff;">내 채널 ></div>
+      <div class="font14 fontBold commonBigBtn" @click="goMyChanList" style="">내 채널 ></div>
     </div>
     <div class="myPageContentsWrap commonBlack">
       <myActList v-if="this.myPageTabType === 'ma'" @openPop="openPop" style="border-radius: 0.8rem;" />
@@ -100,7 +100,7 @@ export default {
 }
 </script>
 <style>
-.myProfileWrap {width: 100%; height: 70px;float: left; margin-top: 0.5rem; background-color: #fff; border-radius: 0.8rem; padding: 10px; margin-bottom: 1.5rem;}
+.myProfileWrap {width: 100%; height: 70px;float: left; cursor: pointer; margin-top: 0.5rem; background-color: #fff; border-radius: 0.8rem; padding: 10px; margin-bottom: 1.5rem;}
 .myProfileLeft {width: 70px; height: 100%; float: left;}
 .myPagePicImgWrap {width: 50px; height: 50px; position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
 .myPagePicImgWrap img {width: 100%; position: absolute; top: 0; left: 0;}
@@ -109,11 +109,13 @@ export default {
 .myProfileRightContents {width: 100%; height: 30px; line-height: 30px; float: left; text-align: left;}
 .myProfileRightIcon {width: 15px;height: 15px;margin-right: 5px;float: left;margin-top: 2.5px;}
 .myProfileRightName {margin-right: 5px;width: 40px;height: 20px;line-height: 20px;float: left; font-weight: bold;}
-.myProfileRightInfo {width: calc(100% - 25px); height: 20px; line-height: 20px; float: left;}
+.myProfileRightInfo {width: calc(100% - 25px); height: 20px; cursor: pointer; line-height: 20px; float: left;}
 .profileSetting {font-weight: bold; box-shadow: 0 0 7px 3px #b7b4b440; border-radius: 15px; background-color: #6768A7; color: #fff; float: left}
 
 .myPageTabList {width: 100%; height: 45px; line-height: 45px; float: left;}
 .myPageTab {border-radius: 0.8rem 0.8rem 0 0; border-bottom: 0 !important; width: 70px; height: 100%; float: left; color: #303030; background-color: rgba(186, 187, 215); margin-right: 5px;}
 .activeMyPageTabList {background-color: #fff !important; width: 90px !important; font-weight: bold; color: #6768A7;}
-.myPageContentsWrap {border-radius: 0 0.8rem 0 0; padding: 5px 10px 0 10px; width: 100%; height: calc(100% - 133px); background-color: #fff; display: inline-block; float: left;}
+.myPageContentsWrap {border-radius: 0 0.8rem 0 0; padding: 5px 10px 0 10px; width: 100%; height: calc(100% - 133px); background-color: #fff; display: inline-block; }
+
+.commonBigBtn{cursor: pointer; width: 90px;height: 30px;line-height: 30px;margin-top: 5px;float: right;background-color: #6768A7;border-radius: 0.8rem;color: #fff;}
 </style>

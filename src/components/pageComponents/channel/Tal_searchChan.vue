@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="position: relative; margin: 1rem 0">
-            <img @click="findChannel" class="searchIcon" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img @click="findChannel" class="searchIcon cursorP" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
             <input style="border: none !important;" class="searchInput font15" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
         </div>
         <div class="newestSearchWrap">

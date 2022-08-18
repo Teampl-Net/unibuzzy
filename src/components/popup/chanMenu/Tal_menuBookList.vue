@@ -1,7 +1,7 @@
 <template>
 
 <div v-if="listData.length > 0" style="width: 100%; margin-top:0.5rem;" class="">
-    <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard fl" @click="clickList(data)">
+    <div v-for="(data, index) in listData" :id="'book'+ index" :key='index' class="cabinetListCard cursorP fl" @click="clickList(data)">
         <div style="width:100%; min-height:30px;" class="fl">
             <!-- <img src="" /> -->
             <div v-if="!noIcon" class="fl mleft-1" style="width:30px;height:30px;" >

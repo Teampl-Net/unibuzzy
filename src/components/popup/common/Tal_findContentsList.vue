@@ -1,38 +1,17 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="pagePaddingWrap findPopupWrap" style="padding-top: 60px;">
-    <popHeader v-if="contentsListTargetType === 'boardMain'" headerTitle="게시글 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="contentsListTargetType === 'myActList'" headerTitle="나의 활동 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-if="(contentsListTargetType === 'boardMain')" headerTitle="게시글 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else headerTitle="알림 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
             <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
-            <img class="searchIcon mtop-03" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
-        <!-- <input class="searchInput" placeholder="제목 또는 내용을 입력해주세요" type="text" name=""  id=""> -->
-        <input v-if="contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain'" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
-        <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
-        <Datepicker
-          style="font-size: 14px;"
-          inline
-          :editable='false'
-          v-model:value="creDate"
-          type="date"
-          range
-          placeholder="날짜를 선택해주세요"
-          titleFormat="YYYY-MM-DD"
-        ></Datepicker>
-        <!-- <div class="newestFindWrap">
-            <div style="width: 100%; height: 30px;">
-                <p class="fl textLeft font18 fontBold">최근 검색</p>
-                <div class="fr"><span class="font15">전체 삭제</span><span style="margin: 0 10px;">|</span><span class="font15">자동저장 {{this.autoSaveLog}}</span></div>
-            </div>
-            <div v-for="(value, index) in searchLogList" class="newestfindContentsListWrap" :key="index" >
-                <p class="fl font16 commonBlack">{{value.searchKeyword}}</p>
-                <span class="fr font16">{{settingDateFormat(Number(value.searchDate))}}<span @click="deleteChannelFindLogList(index)" class="mleft-1">x</span></span>
-            </div>
-        </div> -->
+        <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
+        <Datepicker class="font14" :editable="false" v-model="creDate" type="date" range placeholder="날짜를 선택해주세요" titleFormat="YYYY-MM-DD" ></Datepicker>
     </div>
   </div>
 </template>
@@ -47,7 +26,6 @@ export default {
   data () {
     return {
       pageHistoryName: '',
-      credate: [],
       searchKey: '',
       creTeam: '',
       creDate: '',
@@ -153,9 +131,9 @@ export default {
 </script>
 
 <style scoped>
-.mx-icon-clear {position: absolute; right: 8px; transform: translateY(50%); vertical-align: -8rem !important;}
+.mx-icon-clear {position: fixed; right: 8px; transform: translateY(50%); vertical-align: -8rem !important;}
 .mx-input-wrapper {width: 100%; height: 40px;}
-.findPopupWrap{position: absolute; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
+.findPopupWrap{position: fixed; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.8rem; right: 8px;}
 .searchInput{border: none !important; margin-bottom: 5px!important; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
 .findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}

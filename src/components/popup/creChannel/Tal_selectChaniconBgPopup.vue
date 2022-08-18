@@ -10,6 +10,7 @@
       </div>
       <!-- <div style="width: 100%; height: calc(100% - 350px); margin-top: 20px; float: left;">  /* change Jeong */ -->
       <div style="width: 100%; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
+
           <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
             <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
             <img v-if="opentype =='iconPop'" :src="value.pathMtext"  style="width: calc(var(--chanBoxSize) - 20px)"/>

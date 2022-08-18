@@ -4,17 +4,17 @@
 
 <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
-    <img style="width: 1rem;" @click="goNo" class="mleft-1"  src="../../../assets/images/common/popup_close.png"/>
+    <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
     <p :class="{editColor: editYn === true }" class="fontBold font20 fl" >{{menuHeaderTitle}}</p>
-    <img v-if="ownerYn || adminYn" class="fr" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
+    <img v-if="ownerYn || adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
     <div v-else />
   </div>
   <div v-if="true" style="overflow:auto">
     <div v-if="adminYn" class="fl"  style="margin-top:calc(50px); width:100%; display: flex; flex-direction: row; justify-content: space-between;" >
       <div class="fl" style="margin-top:20px; width:50%;" >
-        <img class="fl" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
-        <p class="fl font16 mleft-05 commonBlack fontBold"  @click="bookDropDown">주소록</p>
-        <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
+        <img class="fl cursorP" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
+        <p class="fl cursorP font16 mleft-05 commonBlack fontBold"  @click="bookDropDown">주소록</p>
+        <p v-if="this.cabinetList.length !== 0" class="fl cursorP fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
       </div>
       <div class="boardBox fr" style="overflow: hidden scroll; width:50%;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
         <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
@@ -23,10 +23,10 @@
 
     <div class="fl" :style="!adminYn ? 'margin-top:50px !important;' : 'margin-top:1rem;'" style=" width:100%; display: flex; flex-direction: row; justify-content: space-between;"  >
       <div class="fl" style="margin-top:20px; width:50%;" >
-        <img class="fl" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_board_color.png">
+        <img class="fl cursorP" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_board_color.png">
 
-          <p class="fl font16 mleft-05 commonBlack fontBold"  @click="boardDropDown">게시판</p>
-        <p v-if="this.myBoardList.length !== 0" class="fl mleft-05 fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.myBoardList.length}})</p>
+          <p class="fl font16 mleft-05 cursorP commonBlack fontBold"  @click="boardDropDown">게시판</p>
+        <p v-if="this.myBoardList.length !== 0" class="fl mleft-05 cursorP fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.myBoardList.length}})</p>
       </div>
       <div class="fl boardBox" style="overflow: hidden scroll; width:50%;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
         <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="myBoardList" @chanMenuClick="chanMenuClick" />

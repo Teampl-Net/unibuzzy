@@ -42,11 +42,15 @@ export default {
     },
     myPageLoadingRefShow () {
       // console.log('show');
-      this.$refs.myActsLoadingPush.show()
+      /* if (this.$refs && this.$refs.myActsLoadingPush) {
+        this.$refs.myActsLoadingPush.show()
+      } */
     },
     myPageLoadingRefHide () {
       // console.log('hide');
-      this.$refs.myActsLoadingPush.hide()
+      /* if (this.$refs && this.$refs.myActsLoadingPush) {
+        this.$refs.myActsLoadingPush.hide()
+      } */
     },
     myActBoardContentDetail (data) {
       console.log('게시글')

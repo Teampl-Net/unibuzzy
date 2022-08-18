@@ -11,7 +11,7 @@
     <div class="fl myActContentsWrap" id="myActContentsWrap" ref="myActContentsWrap" style="overflow: hidden scroll; height: calc(100% - 5px); padding-top: 50px;">
       <!-- <div v-if="listShowYn" style="width: 100%; height: 30px; line-height: 30px; margin-top: 10px;" class="fl fontBold font18 commonColor textLeft">{{myActTitle}}</div> -->
       <gSearchBox style="margin-bottom: 0 !important;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-      <findContentsList :contentsListTargetType="'myActList'" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
+      <findContentsList contentsListTargetType="myActList" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
       <myActContentList v-if="listShowYn" :endListYn="this.endListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :myActTabType="this.myActTabType" :myActContentsList="this.myActContentsList" />
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
       box: null,
       resultSearchKeyList: [],
       findKeyList: {},
-      findPopShowYn: false,
+      findPopShowYn: true,
       clickStatus: '',
       myActTitle: '내가 작성한 게시글',
       myActTabType: 'mw',
@@ -120,7 +120,9 @@ export default {
         this.endListSetFunc(resultList)
         this.myActContentsList = newArr
       } else {
-        this.$refs.myActContentRef.myPageLoadingRefHide()
+        if (this.$refs.myActContentRef) {
+          this.$refs.myActContentRef.myPageLoadingRefHide()
+        }
       }
     },
     endListSetFunc (resultList) {
@@ -177,7 +179,9 @@ export default {
       var result = await this.$getContentsList(param)
       if (result.empty) {
         this.endListYn = true
-        this.$refs.myActContentRef.myPageLoadingRefHide()
+        if (this.$refs.myActContentRef) {
+          this.$refs.myActContentRef.myPageLoadingRefHide()
+        }
       }
       var resultList = result
       return resultList

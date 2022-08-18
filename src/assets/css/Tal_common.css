@@ -498,3 +498,31 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 #naverIdLogin_loginButton img {
   height: 100%;
 }
+
+.appleWebLoginBtn svg {
+  display: none!important
+}
+.appleWebLoginBtn {
+  position: relative;
+}
+.appleWebLoginBtn div {
+  width: 100%!important;
+  height: 100%!important;
+  padding: 0!important;
+  margin: 0!important;
+  max-width: none!important;
+}
+.appleWebLoginBtn .loginAppleWeb{
+  position: absolute;
+  top: 10px;
+  left: 3px;
+}
+
+.btnPlus {
+  cursor: pointer;
+}
+
+
+input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .menuRow {
+  cursor: pointer;
+}

@@ -4,10 +4,10 @@
     <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
-      <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn font20" >비회원 문의하기</div>
-      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+      <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
+      <!-- <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
-      </div>
+      </div> -->
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
@@ -21,9 +21,17 @@
         <img src="../../assets/images/intro/login/login_google.png">
         Google 로그인
       </div>
-      <div v-if="this.systemName === 'iOS' || this.systemName === 'ios'" class="loginBtn font20" v-on:click="AppleLoginBtn">
+      <div v-if="(this.systemName === 'iOS' || this.systemName === 'ios') && mobileYn" class="loginBtn font20" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
+      </div>
+      <div v-else-if="!mobileYn" style="position: relative;" class="loginBtn appleWebLoginBtn">
+        <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign in">
+        </div>
+        <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
+          <img src="../../assets/images/intro/login/login_apple.png">
+          Apple 로그인
+        </div>
       </div>
   </div>
 </template>
@@ -37,6 +45,7 @@ import { onMessage } from '../../assets/js/webviewInterface'
 
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
+
 const authService = new AuthService(firebaseApp)
 export default {
   name: '',
@@ -53,8 +62,43 @@ export default {
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+    // 애플로 로그인 성공 시.
+    document.addEventListener('AppleIDSignInOnSuccess', (data) => {
+      // handle successful response
+      console.log('AppleIDSignInOnSuccess')
+      this.successAppleLogin(data)
+      // todo success logic
+    })
+    // 애플로 로그인 실패 시.
+    // eslint-disable-next-line handle-callback-err
+    document.addEventListener('AppleIDSignInOnFailure', (error) => {
+      console.log('AppleIDSignInOnFailure')
+    })
   },
   methods: {
+    clickAppleLoginInWeb () {
+      document.querySelector('#appleid-signin').click()
+    },
+    async successAppleLogin (data) {
+      localStorage.setItem('loginType', 'apple')
+      // eslint-disable-next-line no-new-object
+      var user = new Object()
+      user.email = ''
+      user.mobile = ''
+      user.name = ''
+      user.aToken = data.detail.authorization.id_token
+      user.rToken = ''
+      var userProfile = await setUserInfo(user)
+
+      /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
+                // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
+                router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
+              } else */
+
+      await saveUser(userProfile) // 서버에 save요청
+      localStorage.setItem('loginYn', true)
+      this.$router.replace({ path: '/' })
+    },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
       this.appCloseYn = false
@@ -142,7 +186,7 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 .loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
 .loginContentsWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
 
@@ -154,4 +198,5 @@ p{margin-bottom: 0;}
   }
   .loginBtn img {width: 1rem; margin-bottom: 5px; margin-right: 10px}
 }
+
 </style>

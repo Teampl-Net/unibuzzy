@@ -3,23 +3,25 @@
         <commonConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
         <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid #6768A7; float: left; text-align: left;">
             <p class="fontBold font18">엑셀업로드</p>
-            <img @click="this.$emit('closePop')" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 10px; top: 15px; width: 20px;" alt="">
+            <img @click="this.$emit('closePop')" class="cursorP" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 10px; top: 15px; width: 20px;" alt="">
         </div>
-        <div style="width: 100%; height: calc(100% - 50px); float: left; padding: 10px;">
-            <p class="commonBlack font16 textLeft">STEP.1 추가할 구성원 엑셀 파일을 업로드 합니다.</p>
+        <div style="width: 100%; height: calc(100% - 50px); margin-top: 10px; float: left; padding: 10px;">
+            <div style="width: 100%; float: left; min-height: 40px;">
+              <p class="commonBlack font16 fl fontBold textLeft">STEP.1 <a class="lightGray" href="" @click="downLoadTemplete">템플릿 파일을 다운로드</a> 하여 작성합니다.</p>
+              <!-- <a style="margin-left: 5px; margin-top: 2px;" class="lightGray fl font15" @click="downLoadTemplete">다운로드</a> -->
+            </div>
+            <p class="commonBlack font16 fontBold textLeft">STEP.2 파일을 업로드하고 정합성 테스트를 합니다.</p>
             <div class="commonBoxStyle">
                 <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
-                <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; cursor: pointer; min-height: 50px;position: relative;" method="post">
-                    <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD;     color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
+                <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; width: 65%; margin-right: 10px; cursor: pointer; min-height: 45px;position: relative;" method="post">
+                    <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD; width: 100%; float: left; color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
                 </form>
-                <a style="float: left; margin-left: 5px; margin-top: 10px;" class="lightGray font15" @click="downLoadTemplete">템플릿 다운</a>
+                <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" btnTitle="정합성 테스트" />
             </div>
-            <p class="commonBlack font16 textLeft">STEP.2 업로드한 데이터의 정보를 확인합니다.</p>
-            <div class="commonBoxStyle" style="min-height: 35px;">
-                <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" btnTitle="정합성 확인" />
-                <div v-if="this.excelFileList.length > 0" class="font13 textLeft lightGray mleft-05 fl mtop-05">{{'적합 데이터: ' + this.excelFileList.length + ', 부적합 데이터: ' + this.failList.length}}</div>
-            </div>
-            <div class="commonBoxStyle" style="width: 100%; height: calc(100% - 300px); min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc;">
+            <!-- <p class="commonBlack font16 textLeft">STEP.3 업로드한 데이터의 정보를 확인합니다.</p> -->
+            <p class="font14 fontBold font fl commonBlack" style="margin-bottom: 2px;">{{'테스트 결과'}}</p>
+            <p v-if="this.excelFileList.length > 0" class="font13 fr lightGray">{{'적합 데이터: ' + this.excelFileList.length + ', 부적합 데이터: ' + this.failList.length}}</p>
+            <div class="commonBoxStyle" style="width: 100%; height: calc(100% - 300px); margin-top: 0px; min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc;">
                 <table style="width: 100%; ">
                     <colgroup><col style="width: 20%"><col style="width: 40%"><col style="width: 40%;"></colgroup>
                     <tbody>
@@ -51,7 +53,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="commonBlack font16 fl textLeft">STEP.3 구성원을 업로드 합니다.</p>
+            <p class="commonBlack font16 fontBold fl textLeft mtop-05">STEP.3 위 구성원을 주소록에 추가합니다.</p>
             <gBtnSmall @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" btnTitle="업로드" />
         </div>
     </div>
@@ -189,5 +191,5 @@ export default {
 </script>
 
 <style scoped>
-.commonBoxStyle{width: 100%; min-height: 50px; float: left; margin-top: 5px;}
+.commonBoxStyle{width: 100%; min-height: 45px; float: left; margin-top: 5px;}
 </style>

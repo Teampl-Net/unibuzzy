@@ -126,6 +126,7 @@ export default {
 
 
         }
+        if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
         // this.readOnlyYn = false
     },
     data () {
@@ -139,19 +140,40 @@ export default {
             tempIndex: null,
             confirmText: '',
             readOnlyYn:false,
-            userProfileImg : undefined
-
+            userProfileImg : undefined,
+            systemName: 'iOS'
         }
     },
     methods:{
         callPhone (num) {
-            onMessage('REQ', 'callphone', num)
+            if (num != undefined && num != null && num != '') {
+                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                    document.location.href='tel:' + num
+                else
+                    onMessage('REQ', 'callphone', num)
+            } else {
+                alert('전화번호 정보가 없습니다')
+            }
         },
         sendMail (email) {
-            onMessage('REQ', 'sendMail', email)
+            if (email != undefined && email != null && email != '') {
+                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                    document.location.href='mailto:' + email
+                else
+                    onMessage('REQ', 'sendMail', email)
+            } else {
+                alert('이메일 정보가 없습니다')
+            }
         },
         sendSms (num) {
-            onMessage('REQ', 'sendSms', num)
+            if (num != undefined && num != null && num != '') {
+                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                    document.location.href='sms:' + num
+                else
+                    onMessage('REQ', 'sendSms', num)
+            } else {
+                alert('전화번호 정보가 없습니다')
+            }
         },
         async deleteManager () {
 
