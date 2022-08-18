@@ -50,6 +50,8 @@ import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 import gSvg from './components/Tal_svgCollection.vue'
 import Iconwink from './components/Tal_winkAlimLogo.vue'
 
+import gEmty from './components/unit/Tal_commonEmty.vue'
+
 // import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 
@@ -84,6 +86,7 @@ app.component('gLoadingS', gLoadingS)
 app.component('gToggle', gToggle)
 app.component('gSvg', gSvg)
 app.component('iconWink', Iconwink)
+app.component('gEmty', gEmty)
 
 app.use(webViewBridge)
 app.use(axiosFunction)
@@ -105,7 +108,7 @@ axios.defaults.withCredentials = true
 // axios.defaults.baseURL = 'http://192.168.0.2:19090'
 // axios.defaults.baseURL = 'http://14.51.96.245:9091'
 // axios.defaults.baseURL = 'http://192.168.0.27:19090'
-// axios.defaults.baseURL = 'https://mo.d-alim.com:10443'
+// axios.defaults.baseURL = ''
 // axios.defaults.baseURL = 'http://61.97.186.14:19090'
 // axios.defaults.baseURL = 'http://192.168.219.100:19090'
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'

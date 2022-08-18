@@ -2,6 +2,7 @@
   <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
     <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
     <div class="pushListWrap">
+      <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
       <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
     </div>
 </template>
@@ -27,7 +28,9 @@ export default {
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 보낸', name: 'M' }],
       viewTab: 'N',
-      listShowYn: true
+      listShowYn: true,
+      currentTabName: '최신',
+      emptyYn: true
     }
   },
   props: {
@@ -48,12 +51,16 @@ export default {
   methods: {
     introTop5PushPageTab () {
       if (this.viewTab === 'N') {
+        this.currentTabName = '최신'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'M') {
+        this.currentTabName = '내가 보낸'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'L') {
+        this.currentTabName = '좋아요'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'S') {
+        this.currentTabName = '스크랩'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
@@ -98,9 +105,15 @@ export default {
     async changeTab (tabName) {
       // this.pushList = [] ///######
       this.viewTab = tabName
+      this.introTop5PushPageTab()
       this.listShowYn = false
+      this.emptyYn = false
       var resultList = await this.getContentsList()
       this.pushList = resultList.content
+      if (this.pushList.length === 0) {
+        this.emptyYn = true
+      }
+
       // this.userDoList = resultList.userDo
       this.listShowYn = true
     },

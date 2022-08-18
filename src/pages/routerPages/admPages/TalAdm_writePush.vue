@@ -11,7 +11,7 @@
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
         <!-- <div  :style="setColor" class="paperBackground"> -->
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
-        <div class="paperBackground">
+        <div class="paperBackground"></div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
@@ -98,7 +98,7 @@
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
                   <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
           </div> -->
-        </div>
+        <!-- </div> -->
       </div>
     </div>
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
@@ -612,14 +612,20 @@ export default {
 .toggleBtn{width: 50%; height: 100%;background-color: #fff; float: left; line-height: 25px;}
 
 .whitePaper {
-      position: relative;
-      width: 100%;
+      position: absolute;
+      left: 50%;
+      top: 47%;
+      transform: translate(-50%, -50%);
+      /* width: 100%; */
+      width: 90%;
       margin: 0 auto;
-      margin-top: 1rem;
+      /* margin-top: 1rem; */
       border-radius: 0.8rem;
       /* height: calc(100% - 60px); */
       min-height: 500px;
-      height: 90%;
+      /* height: 90%; */
+      height: 85%;
+
       /* overflow: auto; */
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
@@ -686,7 +692,7 @@ export default {
 .writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 650px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden; position: relative;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
 /* .paperBackground{width: 100%; height: calc(100% - 10rem);min-height: 600px; position: relative; margin: 0 auto; padding: calc(3rem - 2px) 2rem;  border-radius: 10px 10px 0 0;} */
-.paperBackground{width: 100%; min-height: 500px; height:100%; position: relative; margin: 0 auto; padding: calc(3rem - 2px) 2rem; /* box-shadow: 0 0 9px 0px #00000029; */ border-radius: 10px 10px 0 0;}
+.paperBackground{width: 100%; min-height: 500px; height:100%; position: absolute; top:0; left:0 }
 .changePaperBtn{border: 1px solid #FFFFFF; position: absolute; top: 1.5rem; right: 2rem;}
 .latestPushBtn{float: right!important; position: absolute; right: 1.5rem; margin-top: 0.5rem;}
 .pushInputArea{height: 100%; width: 100%;}
@@ -712,7 +718,7 @@ export default {
   width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: -20px; position: absolute; margin-top: 7px;
 }
 .writePushBtn{
-position: absolute; left:50%; bottom:1rem; transform: translateX(-50%); width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
+position: absolute; left:50%; bottom:0.5rem; transform: translateX(-50%); width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
 }
 @media screen and (max-width:330px) {
   .titleAddArea{

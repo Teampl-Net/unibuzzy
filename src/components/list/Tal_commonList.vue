@@ -3,9 +3,9 @@
     <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <div style="width: 100%; height: 100%;" id="ttttt">
-        <div v-if="this.contentsList.length === 0" style="width: 100%; height: 100%;">
+        <div v-if="this.contentsList.length === 0" style="width: 100%;">
           <!-- pushList.vue 에서 introPushPageTab() 참고 -->
-          <img :src="this.imgUrl" style="float: left;" />
+          <!-- <img :src="this.imgUrl" style="float: left;" /> -->
         </div>
 
         <div v-else class="fl w-100P" ref="commonListCompo">
@@ -95,7 +95,7 @@
       </div>
       <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div>
       <transition name="showMemoPop">
-        <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
+        <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0;"/>
       </transition>
       <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
 </template>
@@ -230,7 +230,6 @@ export default {
       this.currentContentsKey = key
       var findIndex = this.openMemoList.indexOf(key)
       this.currentMemoList = []
-      console.log();
       // var div = document.getElementById('memoList'+key)
       // console.log('div')
       // console.log(div)
@@ -270,7 +269,7 @@ export default {
         url: '/tp.getMemoList',
         param: memo
       })
-      console.log(result.data.content)
+      // console.log(result.data.content)
       var list = new Array()
       list = result.data.content
       return list
@@ -496,6 +495,6 @@ export default {
 }
 
 .alimListMemoBoxBackground{
-  width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0; z-index: 999;}
+  width: 100%; height: 100%; background: #00000036; position: fixed; top: 0; left: 0; z-index: 999;}
 
 </style>

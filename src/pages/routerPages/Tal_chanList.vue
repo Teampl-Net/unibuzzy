@@ -11,6 +11,7 @@
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
+    <gEmty :tabName="currentTabName" contentName="채널" v-if="emptyYn && this.chanList.length === 0" style="margin-top:50px;" />
     <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.chanList"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
@@ -139,10 +140,13 @@ export default {
     },
     introChanPageTab () {
       if (this.viewTab === 'user') {
+        this.currentTabName = '구독중'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'all') {
+        this.currentTabName = '전체'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'mychannel') {
+        this.currentTabName = '내 채널'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
@@ -248,8 +252,11 @@ export default {
       this.viewTab = tab
       this.offsetInt = 0
       this.listShowYn = false
+      this.emptyYn = false
       var resultList = await this.getChannelList()
       this.chanList = resultList.content
+      if (this.chanList.length === 0) this.emptyYn = true
+
       this.listShowYn = true
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
@@ -384,7 +391,9 @@ export default {
       totalElements: 0,
       totalPages: 0,
       scrollCheckSec: 0,
-      listShowYn: true
+      listShowYn: true,
+      currentTabName: '구독중',
+      emptyYn: true
     }
   },
   props: {

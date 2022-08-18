@@ -25,7 +25,9 @@
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
 
           <!-- </div> -->
+        <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 " style="margin-top:50px;" />
         <commonList ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" @scrollMove="scrollMove" />
+
       </div>
       <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 10rem;' : 'bottom: 5rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
         <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;" />
@@ -181,12 +183,16 @@ export default {
     },
     introPushPageTab () {
       if (this.viewTab === 'N') {
+        this.currentTabName = '최신'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'M') {
+        this.currentTabName = '내가 보낸'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'L') {
+        this.currentTabName = '좋아요'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'S') {
+        this.currentTabName = '스크랩'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
@@ -297,13 +303,14 @@ export default {
       if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
-
       this.viewTab = tabName
       this.listShowYn = false
       this.offsetInt = 0
       // document.getElementById('pushListWrap').className += ' fadeOutAnimation'
+      this.emptyYn = false
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
+      if (this.commonListData.length === 0) this.emptyYn = true
       this.listShowYn = true
 
       this.endListSetFunc(resultList)
@@ -476,7 +483,10 @@ export default {
       scrollCheckSec: 0,
       axiosResultTempList: [],
       listShowYn: true,
-      readCheckBoxYn: false
+      readCheckBoxYn: false,
+      currentTabName: '최신',
+      emptyYn: true
+
     }
   }
 }

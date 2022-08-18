@@ -2,9 +2,10 @@
   <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
   <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
   <div class="chanTop5Wrap" >
-    <div v-if="this.chanList.length === 0" class="w-100P">
+    <div v-if="emptyYn && this.chanList.length === 0" class="w-100P">
       <!-- 다른 이미지로 대체하면 된다 -->
-      <img src="/resource/common/placeholder_white.png" />
+      <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
+      <!-- <img src="/resource/common/placeholder_white.png" /> -->
     </div>
     <!-- <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}"> -->
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
@@ -53,7 +54,9 @@ export default {
       // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
-      chanList: {}
+      chanList: {},
+      currentTabName: '구독중',
+      emptyYn: true
     }
   },
   components: {
@@ -62,8 +65,10 @@ export default {
   methods: {
     introTop5ChanPageTab () {
       if (this.viewTab === 'user') {
+        this.currentTabName = '구독중'
         this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'mychannel') {
+        this.currentTabName = '내 채널'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
@@ -118,8 +123,12 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
+      this.introTop5ChanPageTab()
+      this.emptyYn = false
       // console.log(data)
       await this.getContentsList()
+      if (this.chanList.length === 0) this.emptyYn = true
+
       this.checkOwnerYn()
     },
     async reLoad () {

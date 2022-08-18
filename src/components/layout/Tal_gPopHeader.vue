@@ -96,6 +96,7 @@ export default {
   },
   created () {
     console.log(this.chanName)
+    console.log(this.chanAlimListTeamKey)
   },
   watch: {
     bgblack () {
