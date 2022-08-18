@@ -102,7 +102,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
+                url: '/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -126,7 +126,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
+                url: '/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -192,7 +192,7 @@ export default {
                 this.$store.commit('updateStack', hStack)
                 this.excelUploadShowYn = false
             } else {
-                // this.$emit('closeXPop')
+                this.$emit('closeXPop')
             }
         },
         async openMCabUserList(data){
@@ -238,7 +238,7 @@ export default {
             params.teamKey = this.propData.currentTeamKey
             params.memberYn = true
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+                url: '/tp.getFollowerList',
                 param: params
             })
 
@@ -296,7 +296,7 @@ export default {
 
 <style >
 /* btnPlus common.css로 옮김 */
-.bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: auto;}
+.bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: hidden auto;}
 .editBookListWrap {height: 100vh; background-color:white; width:100%; z-index:999; position:absolute; top:0; left:0}
 
 .longHeight{

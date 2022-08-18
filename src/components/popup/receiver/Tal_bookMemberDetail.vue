@@ -37,26 +37,26 @@
             <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 30px; position: absolute; right: 40px; " alt=""> -->
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-        <!-- <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
-            <div class="nativeServiceBtn">
+        <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
+            <div class="nativeServiceBtn" @click="sendMail(memEmail)">
                 <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/sendMailIcon.svg" @click="sendMail(memEmail)" style="width: 100%; " alt="">
+                    <img src="../../../assets/images/common/sendMailIcon.svg"  style="width: 100%; " alt="">
                 </div>
                 <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">메일쓰기</p>
             </div>
-            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;">
+            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;"  @click="callPhone(memPhone)">
                 <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 100%; " alt="">
+                    <img src="../../../assets/images/common/callPhoneIcon.svg" style="width: 100%; " alt="">
                 </div>
                 <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
             </div>
-            <div class="nativeServiceBtn"  style="border-left: 1px solid  #ccc;">
+            <div class="nativeServiceBtn"  style="border-left: 1px solid  #ccc;" @click="sendSms(memPhone)">
                 <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/sendSmsIcon.svg" @click="sendSms(memPhone)" style="width: 100%; " alt="">
+                    <img src="../../../assets/images/common/sendSmsIcon.svg"  style="width: 100%; " alt="">
                 </div>
-                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
+                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">문자쓰기</p>
             </div>
-        </div> -->
+        </div>
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
@@ -156,7 +156,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+                url: '/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}
@@ -296,7 +296,7 @@ margin-bottom: 2rem;
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100vh - 50px);
+    height: calc(100% - 50px);
     background-color: white;
 
 }

@@ -16,7 +16,7 @@
                         </div>
                         <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" class="fr" style="width:70px; height: 100%; display:flex; justify-content: space-between;">
 
-                            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(data.memPhone)" style="width: 20px;" class="mright-15" alt="">
+                            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(data.phoneEnc)" style="width: 20px;" class="mright-15" alt="">
 
                             <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
@@ -77,9 +77,10 @@ export default {
       }
     },
     callPhone (num) {
-      if (num !== undefined && num !== null && num !== '') {
-        onMessage('REQ', 'callphone', num)
-      }
+      onMessage('REQ', 'callphone', num)
+      // if (num !== undefined && num !== null && num !== '') {
+      // onMessage('REQ', 'callphone', num)
+      // }
     },
     async refresh () {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
@@ -129,7 +130,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+            url: '/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {

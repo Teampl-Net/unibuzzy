@@ -1,5 +1,5 @@
 <template>
-<div class="w-100P h-100P" style="position: absolute; top: 50px; padding:1rem;">
+<div class="w-100P h-100P" style="position: absolute; top: 0; padding:1rem;">
     <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <!-- <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
@@ -97,7 +97,7 @@ export default {
         paramMap.set('memberYn', true)
         paramMap.set('teamKey', this.propData.currentTeamKey)
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+          url: '/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.managingList = await result.data.content
@@ -107,7 +107,7 @@ export default {
         param.teamKey = this.propData.currentTeamKey
 
         result = await this.$commonAxiosFunction({
-          url : 'https://mo.d-alim.com:10443/tp.getManagerList',
+          url : '/tp.getManagerList',
           param: param
         })
 
@@ -134,7 +134,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+        url: '/tp.deleteManager',
         param: param
       })
 
@@ -143,7 +143,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveManager',
+        url: '/tp.saveManager',
         param: param
       })
     },
@@ -165,7 +165,7 @@ export default {
       debugger
 
       var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveManager',
+          url: '/tp.saveManager',
           param: param
       })
 
