@@ -411,7 +411,7 @@ export default {
       //   param.DESCYn = this.loadMoreDESCYn
       // } else
       param.DESCYn = true
-      if (this.targetCKey) {
+      if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
         param.targetContentsKey = this.targetCKey
         param.DESCYn = this.loadMoreDESCYn
       }

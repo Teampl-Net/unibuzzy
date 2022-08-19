@@ -4,8 +4,8 @@
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo">
-        <template v-for="(alim, index) in this.contentsList" :key="index" >
-          <div v-if="alim.bodyFullStr" @click="cardInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+        <template v-for="(alim, index0) in this.contentsList" :change="changeData" :key="index0" >
+          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div class="pushChanLogoImgWrap">
@@ -43,7 +43,7 @@
                 <div class="alimCheckContents">
                   <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
-                  <div @click="changeAct(userDo, alim.contentsKey, index)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                  <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
@@ -115,7 +115,8 @@ export default {
       currentMemoList: [],
       mememoValue: undefined,
       currentContentsKey: null,
-      targetCKey: null
+      targetCKey: null,
+      changeData: 1
     }
   },
   components: {
@@ -426,10 +427,36 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
+        console.log(this.contentsList[idx])
+        console.log(this.contentsList)
+        var temp = this.contentsList[idx].userDoList
+        for (var i = 0; i < temp.length; i++) {
+          if(temp[i].doType === act.doType) {
+            temp.splice(i, 1)
+          }
+        }
+        this.contentsList[idx].userDoList = temp
+        this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
+        if (result.result === true) {
+          // debugger
+          console.log(result)
+          var temp = this.contentsList[idx].userDoList
+          if (!temp) {
+            temp = []
+          }
+          temp.push({ doType: act.doType, doKey: result.doKey })
+          /* for (var i = 0; i < temp.length; i++) {
+            if(temp[i].doType === act.doType) {
+              temp.splice(i, 1)
+            }
+          } */
+          this.contentsList[idx].userDoList = temp
+          this.changeData += 1
+        }
       }
       /* if (result === true) {
         await this.$emit('refresh')
