@@ -171,10 +171,10 @@ export default {
                 }
               } else {
                 if ((currentPage === 0 || currentPage === undefined)) {
-                  this.$router.replace({ path: '/pushList' })
-                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetType: 'pushDetail', value: this.notiDetail })
+                  /* this.$router.replace({ path: '/pushList' }) */
+                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
                 } else {
-                  this.openPop({ contentsKey: this.notiDetail.targetKey, targetKey: this.notiDetail.targetKey, targetType: 'pushListAndDetail', value: this.notiDetail })
+                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
                 }
               }
             }
@@ -203,10 +203,9 @@ export default {
     test () {
       var currentPage = this.$store.getters.hCPage
       if ((currentPage === 0 || currentPage === undefined)) {
-        this.$router.replace({ path: '/pushList' })
-        this.openPop({ contentsKey: this.testData.contentsKey, targetType: 'pushDetail', value: this.testData })
+        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
       } else {
-        this.openPop({ contentsKey: this.testData.contentsKey, targetKey: this.testData.contentsKey, targetType: 'pushListAndDetail', value: this.testData })
+        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
       }
     },
     showMenu () {

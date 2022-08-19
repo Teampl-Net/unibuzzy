@@ -25,7 +25,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="topLoadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
+          <commonList :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 10rem;' : 'bottom: 5rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
@@ -59,6 +59,9 @@ export default {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewTab = this.propData.alimTabType
       }
+    }
+    if (this.targetContentsKey) {
+      this.targetCKey = this.targetContentsKey
     }
     if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
       this.pushListReloadShowYn = this.reloadShowYn
@@ -291,12 +294,28 @@ export default {
       if (this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         var resultList = await this.getPushContentsList()
-        this.axiosResultTempList = resultList.content
         var newArr = []
-        newArr = [
-          ...this.commonListData,
-          ...this.axiosResultTempList
-        ]
+        if (descYn) {
+          this.axiosResultTempList = resultList.content
+          newArr = [
+            ...this.commonListData,
+            ...this.axiosResultTempList
+          ]
+        } else {
+          console.log('!!!!!!!!!!!!!!!!')
+          console.log(resultList.content)
+          // eslint-disable-next-line no-array-constructor
+          var tempArr = new Array()
+          for (var i = 0; i < resultList.content.length; i++) {
+            tempArr.unshift(resultList.content[i])
+          }
+          console.log(tempArr)
+          this.axiosResultTempList = tempArr
+          newArr = [
+            ...this.axiosResultTempList,
+            ...this.commonListData
+          ]
+        }
         this.commonListData = await newArr
         this.endListSetFunc(resultList)
         this.$emit('numberOfElements', resultList.totalElements)
@@ -325,6 +344,7 @@ export default {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
     async changeTab (tabName) {
+      this.targetCKey = null
       if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
@@ -390,9 +410,10 @@ export default {
       // if (this.loadMoreDESCYn === true) {
       //   param.DESCYn = this.loadMoreDESCYn
       // } else
-      param.DESCYn = this.loadMoreDESCYn
-      if (this.targetContentsKey) {
-        param.targetContentsKey = this.targetContentsKey
+      param.DESCYn = true
+      if (this.targetCKey) {
+        param.targetContentsKey = this.targetCKey
+        param.DESCYn = this.loadMoreDESCYn
       }
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
@@ -522,7 +543,8 @@ export default {
       readCheckBoxYn: false,
       currentTabName: '최신',
       emptyYn: true,
-      loadMoreDESCYn: null
+      loadMoreDESCYn: null,
+      targetCKey: null
 
     }
   }

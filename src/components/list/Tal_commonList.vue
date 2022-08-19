@@ -43,7 +43,7 @@
                 <div class="alimCheckContents">
                   <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
-                  <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                  <div @click="changeAct(userDo, alim.contentsKey, index)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
@@ -114,7 +114,8 @@ export default {
       offsetInt: 0,
       currentMemoList: [],
       mememoValue: undefined,
-      currentContentsKey: null
+      currentContentsKey: null,
+      targetCKey: null
     }
   },
   components: {
@@ -122,6 +123,9 @@ export default {
   },
   created () {
     this.contentsList = this.commonListData
+    if (this.targetContentsKey) {
+      this.targetCKey = this.targetContentsKey
+    }
     // if (this.contentsList.length) {
     //   if (this.targetContentsKey) {
     //     this.contentsWich()
@@ -136,7 +140,7 @@ export default {
   },
   updated() {
     if (this.contentsList.length) {
-      if (this.targetContentsKey) {
+      if (this.targetCKey) {
         this.contentsWich()
       }
     }
@@ -151,12 +155,13 @@ export default {
       var channelItemBoxDom = document.getElementById('summaryWrap')
       if(channelItemBoxDom.scrollHeight === 50) {
         var tempKey
-        if (this.targetContentsKey) tempKey = this.targetContentsKey
+        if (this.targetCKey) tempKey = this.targetCKey
         if (key !== undefined && key !== null && key !== '') { tempKey = key }
         console.log(this.contentsList)
         if (document.getElementById('memoCard'+tempKey)) {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
+          this.targetCKey = null
         }
       } else {
         /* setTimeout(() => {
@@ -405,26 +410,7 @@ export default {
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    settingUserDo (userDo) {
-      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
-      this.readYn = false
-      if (userDo !== undefined && userDo !== null && userDo !== '') {
-        for (var i = 0; i < userDo.length; i++) {
-          if (userDo[i].doType === 'LI') {
-            userDoList[1].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'ST') {
-            userDoList[0].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'RE') {
-            this.readYn = true
-          }
-        }
-      }
-      return userDoList
-    },
-    async changeAct (act, contentsKey) {
+    async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -445,20 +431,40 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
       }
-      if (result === true) {
+      /* if (result === true) {
         await this.$emit('refresh')
+      } */
+    },
+    settingUserDo (userDo) {
+      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
+      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      this.readYn = false
+      if (userDo !== undefined && userDo !== null && userDo !== '') {
+        for (var i = 0; i < userDo.length; i++) {
+          if (userDo[i].doType === 'LI') {
+            userDoList[1].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'ST') {
+            userDoList[0].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'RE') {
+            this.readYn = true
+          }
+        }
       }
+      return userDoList
     },
     async loadUpMore() {
       if (this.targetContentsKey){
         console.log('@@@topLoadMore@@@');
         // this.$emit('moreList', false)
-        this.$emit('topLoadMore', true)
+        this.$emit('topLoadMore', false)
       }
     },
     async loadMore() {
       this.loadingRefShow()
-      this.$emit('moreList', false)
+      /* this.$emit('moreList', false) */
+      this.$emit('moreList', true)
       /* const newArr = [
         ...this.commonListData,
         ...resultList.content
