@@ -268,8 +268,6 @@ export default {
         },
         async changePosTeamMenu(event) {
             // event.oldIndex
-
-
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()
@@ -281,24 +279,19 @@ export default {
                 if(index === i) {
                     menu = {}
                     var tt = this.addressBookList[i]
-                    if(this.addressBookList[i].menuType)
-                        menu.menuType = 'G'
                     menu.teamKey = this.propObject.currentTeamKey
-                    if(this.addressBookList[i].parentMenuKey)
-                        menu.parentMenuKey = this.addressBookList[i].parentMenuKey
-                    if(this.addressBookList[i].cabinetKey)
-                        menu.cabinetKey = this.addressBookList[i].cabinetKey
-                    if(this.addressBookList[i].cabinetNameMtext)
-                        menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
-
-                    if(this.addressBookList[i].sysCabinetCode)
-                        menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
-
+                    if(this.addressBookList[i].menuType) menu.menuType = 'G'
+                    if(this.addressBookList[i].parentMenuKey) menu.parentMenuKey = this.addressBookList[i].parentMenuKey
+                    if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
+                    if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
+                    if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
+                    console.log(menu);
                     teamMenuList.push(menu)
                     break
                 }
                 }
             }
+            console.log(teamMenuList)
             paramSet.teamMenuList = teamMenuList
             var result = await this.$commonAxiosFunction(
                 {

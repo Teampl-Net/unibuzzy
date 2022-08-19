@@ -47,6 +47,7 @@ export default {
   emits: ['goDetail'],
   methods: {
     goChanDetail (data) {
+      console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'chanDetail'

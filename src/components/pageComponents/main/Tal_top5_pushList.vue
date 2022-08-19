@@ -81,15 +81,20 @@ export default {
       }
     },
     openPop (value) {
+      // alert(JSON.stringify(value))
       // eslint-disable-next-line no-new-object
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
         if (value.targetType === 'chanDetail') {
-          params.targetType = value.targetType
-          params.teamKey = value.teamKey
+          params = value
+          // params.targetType = value.targetType
+          // params.teamKey = value.teamKey
+          // params.nameMtext = value.nameMtext
+          // params.targetKey = value.targetKey
+          // params.page = value.page
+          // params.cIdx = value.index
+          // params.targetContentsKey = value.contentsKey
           params.chanName = value.nameMtext
-          params.nameMtext = value.nameMtext
-          params.targetKey = value.targetKey
         } else {
           params.targetType = value.targetType
           params.alimTabType = this.viewTab
@@ -100,6 +105,7 @@ export default {
       }
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.nameMtext }
+      // alert(JSON.stringify(params))
       this.$emit('openPop', params)
     },
     async changeTab (tabName) {

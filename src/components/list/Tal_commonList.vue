@@ -2,10 +2,10 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
-
+      <myObserver v-if="currentContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo">
         <template v-for="(alim, index) in this.contentsList" :key="index" >
-          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div v-if="alim.bodyFullStr" @click="cardInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div class="pushChanLogoImgWrap">
@@ -121,28 +121,43 @@ export default {
   },
   created () {
     this.contentsList = this.commonListData
-    console.log(this.contentsList)
   },
   watch: {
     commonListData() {
       this.contentsList = this.commonListData
       this.loadingRefHide()
-      console.log(this.contentsList)
     },
-
   },
   mounted () {
+    if (this.targetContentsKey) {
+      this.contentsWich()
+    }
   },
   methods: {
-    scrollMove (wich) {
-      console.log('memoCard'+this.currentContentsKey);
+    cardInfo (alim) {
+      var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
+      this.$emit('scrollMove', a)
+    },
+    async contentsWich (key) {
+      var tempKey
+      if (this.targetContentsKey) tempKey = this.targetContentsKey
+      if (key !== undefined && key !== null && key !== '') { tempKey = key }
+      await this.$nextTick(() => {
+        setTimeout(()=>{
+          var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
 
-      var a = document.getElementById('memoCard'+this.currentContentsKey).offsetTop
-      console.log(a)
-      this.$emit('scrollMove', wich+a)
+          this.$emit('targetContentScrollMove', targetContentWich)
+          return targetContentWich
+        },500)
+      })
+    },
+    async scrollMove (wich) {
+      await this.$nextTick(() => {
+        var a = document.getElementById('memoCard'+this.currentContentsKey).offsetTop
+        this.$emit('scrollMove', wich+a)
+      })
     },
     async deleteMemo (param) {
-
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
@@ -411,9 +426,15 @@ export default {
         await this.$emit('refresh')
       }
     },
+    async loadUpMore() {
+      if (this.targetContentsKey){
+        console.log('@@@loadUpMore@@@');
+        this.$emit('moreList', false)
+      }
+    },
     async loadMore() {
       this.loadingRefShow()
-      this.$emit('moreList', 10)
+      this.$emit('moreList', true)
       /* const newArr = [
         ...this.commonListData,
         ...resultList.content
@@ -440,7 +461,8 @@ export default {
     tempAlimList: {
       readYn: false,
       stickerList: [ ]
-    }
+    },
+    targetContentsKey: {}
   },
   computed: {
   }

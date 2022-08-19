@@ -1,6 +1,6 @@
 <template>
 <div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 17px;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
+  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -114,8 +114,8 @@
     <!-- <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p> -->
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
-  <div v-if="followYn" class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;">
-    <pushList  :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' />
+  <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;">
+    <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' />
     <!-- <div v-else style="">
       <p>구독하고 알림을 받아보세요!</p>
     </div> -->
@@ -195,15 +195,14 @@ export default {
   },
   async created () {
     this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
-    console.log(this.chanDetail)
     // console.log('this.chanDetail')
-    // console.log(this.chanDetail)
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
     await this.getChanDetail(false)
     // console.log(this.chanItem.userTeamInfo.followerKey)
-
+    console.log('this.chanDetail')
+    console.log(this.chanDetail)
     console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     console.log(this.chanItem)
     this.settingTeamType(this.chanItem.teamType)
@@ -211,7 +210,6 @@ export default {
     if (this.chanItem) {
       this.setGrade()
       // eslint-disable-next-line no-debugger
-      debugger
       if (this.chanItem.userTeamInfo) {
         if (this.chanItem.userTeamInfo.ownerYn) {
           this.admYn = true
@@ -226,10 +224,11 @@ export default {
         this.ownerYn = (userKey === this.chanItem.creUserKey)
       }
     }
-    this.$emit('closeLoading')
+
     if (this.chanItem.userTeamInfo === null) {
       this.followYn = false
     }
+    this.$emit('closeLoading')
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
@@ -253,6 +252,16 @@ export default {
     // })
   },
   methods: {
+    async targetContentScrollMove (wich) {
+      if (this.chanDetail.targetContentsKey) {
+        const unit = this.$refs.testBox
+        await unit.scrollTo({ top: 500, behavior: 'smooth' })
+        this.reloadShowYn = false
+        setTimeout(() => {
+          this.$refs.ChanAlimListPushListCompo.chanAlimScrollMove(wich)
+        }, 500)
+      }
+    },
     setSelectedList (data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
     },

@@ -150,6 +150,7 @@ export default {
     openPop (params) {
       // eslint-disable-next-line no-new-object
       this.$emit('openPop', params)
+      // alert(JSON.stringify(params))
       // 아래라인 모달창에서 로딩화면보여주고싶으면 풀기
       // this.$emit('openLoading')
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
