@@ -2,7 +2,7 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
-      <myObserver v-if="currentContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
+      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo">
         <template v-for="(alim, index) in this.contentsList" :key="index" >
           <div v-if="alim.bodyFullStr" @click="cardInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
@@ -46,25 +46,25 @@
                   <div @click="changeAct(userDo, alim.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                      <img class="fl" style="margin-top: 3px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                      <p class="fl font16 mleft-03">{{alim.likeCount}}</p>
+                      <img class="fl" style="margin-top: 2px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
                     </template>
                     <template v-else-if="userDo.doType === 'ST'">
-                      <img class="mright-05 fl" style="width: 1.4rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                      <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                      <img class="mright-05 fl" style="width: 1.25rem;" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                      <img class="mright-05 fl" style="width: 1.25rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <!-- <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+                  <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                       :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
                     <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
-                  </div> -->
-                  <p class="fr font16 mleft-03" @click="memoOpenClick(alim.contentsKey)">
-                    <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt="">
-                    {{alim.memoCount}}
-                  </p>
+                  </div>
+                  <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05">
+                    <p class="fl font14" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
+                      <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
+                      댓글 {{alim.memoCount}}개
+                    </p>
                     <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
                   </div>
 
@@ -75,9 +75,10 @@
                 <!-- <p class="commonColor fr font14 mright-1 mtop-1" :id="'memoOpen'+alim.contentsKey" @click="memoOpenClick(alim.contentsKey)">댓글 펼치기</p> -->
                 <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
               </div>
-              <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; min-height: 50px; background:white; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
+              <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' />
+                <gMemoList v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' />
+                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
@@ -89,7 +90,7 @@
       </div>
       <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div>
       <transition name="showMemoPop">
-        <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
+        <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
       <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
 </template>
@@ -113,7 +114,8 @@ export default {
       offsetInt: 0,
       currentMemoList: [],
       mememoValue: undefined,
-      currentContentsKey: null
+      currentContentsKey: null,
+      targetCKey: null
     }
   },
   components: {
@@ -121,6 +123,14 @@ export default {
   },
   created () {
     this.contentsList = this.commonListData
+    if (this.targetContentsKey) {
+      this.targetCKey = this.targetContentsKey
+    }
+    if (this.contentsList.length) {
+      if (this.targetContentsKey) {
+        this.contentsWich()
+      } 
+    }
   },
   watch: {
     commonListData() {
@@ -128,9 +138,11 @@ export default {
       this.loadingRefHide()
     },
   },
-  mounted () {
-    if (this.targetContentsKey) {
-      this.contentsWich()
+  updated() {
+    if (this.contentsList.length) {
+      if (this.targetCKey) {
+        this.contentsWich()
+      } 
     }
   },
   methods: {
@@ -139,17 +151,30 @@ export default {
       this.$emit('scrollMove', a)
     },
     async contentsWich (key) {
-      var tempKey
-      if (this.targetContentsKey) tempKey = this.targetContentsKey
-      if (key !== undefined && key !== null && key !== '') { tempKey = key }
-      await this.$nextTick(() => {
-        setTimeout(()=>{
+      await this.$emit('targetContentScrollMove', targetContentWich)
+      var channelItemBoxDom = document.getElementById('summaryWrap')
+      if(channelItemBoxDom.scrollHeight === 50) {
+        var tempKey
+        if (this.targetCKey) tempKey = this.targetCKey
+        if (key !== undefined && key !== null && key !== '') { tempKey = key }
+        console.log(this.contentsList)
+        if (document.getElementById('memoCard'+tempKey)) {
+          var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
+          this.$emit('scrollMove', targetContentWich)
+          this.targetCKey = null
+        }
+      } else {
+        /* setTimeout(() => {
+          var tempKey
+          if (this.targetCKey) tempKey = this.targetCKey
+          if (key !== undefined && key !== null && key !== '') { tempKey = key }
+          console.log(this.contentsList)
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
 
-          this.$emit('targetContentScrollMove', targetContentWich)
+          this.targetCKey = null
           return targetContentWich
-        },500)
-      })
+        }, 1000) */
+      }
     },
     async scrollMove (wich) {
       await this.$nextTick(() => {
@@ -293,6 +318,9 @@ export default {
       // console.log(result.data.content)
       var list = new Array()
       list = result.data.content
+      /* console.log('this.$refs.gMemoRef')
+      console.log(this.$refs.gMemoRef)
+      this.$refs.gMemoRef.memoLoadingHide() */
       return list
         // if (allYn) {
         //   this.alimMemoList = result.data.content
@@ -427,7 +455,7 @@ export default {
       }
     },
     async loadUpMore() {
-      if (this.targetContentsKey){
+      if (this.targetCKey){
         console.log('@@@loadUpMore@@@');
         this.$emit('moreList', false)
       }

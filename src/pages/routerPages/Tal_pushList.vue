@@ -348,7 +348,7 @@ export default {
       this.scrollMove()
     },
     scrollMove (wich) {
-      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
+      // var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       console.log(wich)
       if (wich === undefined || wich === null || wich === '') { wich = 0 }

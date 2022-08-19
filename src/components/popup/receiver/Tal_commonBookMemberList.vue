@@ -16,7 +16,7 @@
                         </div>
                         <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" class="fr" style="width:70px; height: 100%; display:flex; justify-content: space-between;">
 
-                            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(data.phoneEnc)" style="width: 20px;" class="mright-15" alt="">
+                            <img src="../../../assets/images/common/callPhoneIcon.svg" v-if="mobileYn" @click="callPhone(data.phoneEnc)" style="width: 20px;" class="mright-15" alt="">
 
                             <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
@@ -56,7 +56,8 @@ export default {
       newYn: true,
       selectedMemberList: [],
       pageTopBtnTitle: '편집',
-      systemName: 'iOS'
+      systemName: 'iOS',
+      mobileYn: this.$getMobileYn()
     }
   },
   beforeUnmount () {

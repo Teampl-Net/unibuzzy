@@ -1,7 +1,7 @@
 <template>
   <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
   <div v-if="addressBookList.length > 0" style=" height: calc(100% - 60px); overflow: hidden scroll;">
-    <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" delay="200"    >
+    <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
           <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
@@ -54,10 +54,11 @@ export default {
     },
     data(){
         return {
-            addressBookList: {},
+            addressBookList: [],
             propObject: {},
             cabinetList: [],
             dragging: false,
+            enabled: false,
             editYn : false,
             pageTopBtnTitle: '편집',
             selectedBookList: [],
@@ -79,8 +80,8 @@ export default {
         this.addressBookList = this.listData
     },
     updated () {
-        this.changeSelectedList()
-        this.addressBookList = this.listData
+        /* this.changeSelectedList()
+        this.addressBookList = this.listData */
     },
     watch: {
         parentSelectList: function () {
@@ -267,7 +268,6 @@ export default {
 
         },
         async changePosTeamMenu(event) {
-            // event.oldIndex
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()

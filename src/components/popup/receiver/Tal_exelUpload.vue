@@ -84,12 +84,13 @@ export default {
   methods: {
     downLoadTemplete () {
       var iframe
+      var app = document.getElementById('app')
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenExcelDownloader'
         iframe.style.visibility = 'none'
-        document.body.appendChild(iframe)
+        app.appendChild(iframe)
       }
       iframe.src = '/commonFile/thealim_member_upload_list.xlsx'
       // iframe.download = name

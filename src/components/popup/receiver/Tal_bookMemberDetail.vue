@@ -37,7 +37,7 @@
             <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 30px; position: absolute; right: 40px; " alt=""> -->
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-        <div v-if="readOnlyYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
+        <div v-if="readOnlyYn && mobileYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
             <div class="nativeServiceBtn" @click="sendMail(memEmail)">
                 <div class="nativeServiceBtnWrap">
                     <img src="../../../assets/images/common/sendMailIcon.svg"  style="width: 100%; " alt="">
@@ -141,7 +141,8 @@ export default {
             confirmText: '',
             readOnlyYn:false,
             userProfileImg : undefined,
-            systemName: 'iOS'
+            systemName: 'iOS',
+            mobileYn: this.$getMobileYn()
         }
     },
     methods:{

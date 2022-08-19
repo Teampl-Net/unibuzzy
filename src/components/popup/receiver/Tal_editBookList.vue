@@ -12,8 +12,18 @@
                     <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
                     <p class="fl mleft-05 font18 colorBlack" >{{this.cabinetName}}</p>
                 </span>
+                <img @click="getBookMemberList" class="cursorP" style="float: right; width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+                <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; margin-right: 5px; min-height: 30px;"  @keyup.enter="getBookMemberList" placeholder="이름을 입력해주세요">
+                <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 100px; float: right; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
+                <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 220px; border: 1px solid #ccc;  top: 105px; z-index: 9999999;">
+                    <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
+                        등록순
+                    </div>
+                    <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
+                        이름순
+                    </div>
+                </div>
             </div>
-
             <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 3.5rem);' : '' ">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
@@ -92,10 +102,21 @@ export default {
             cabinetName: '',
             excelUploadShowYn: false,
             excelPopId: null,
-            mobileYn: this.$getMobileYn()
+            mobileYn: this.$getMobileYn(),
+            orderByText: 'creDate',
+            searchKeyword: '',
+            orderByPopShowYn: false
         }
     },
     methods: {
+        changeOrderBy (order) {
+            this.orderByText = order
+            this.orderByPopShowYn = false
+            this.getBookMemberList()
+        },
+        /* searchNanmeMtext() {
+            this.searchKeyword
+        }, */
         async getBookList () {
             var paramMap = new Map()
             paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
@@ -123,6 +144,12 @@ export default {
         async getBookMemberList () {
             this.detailOpenYn = false
             var paramMap = new Map()
+            var orderText = 'mcc.creDate DESC'
+            if (this.orderByText === 'userDispMtext') {
+                orderText = 'u.userDispMtext'
+            }
+            paramMap.set('orderbyStr', orderText)
+            paramMap.set('userDispMtext', this.searchKeyword)
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
@@ -316,5 +343,15 @@ height:100% !important;
 }
 input:focus{
   outline: none;
+}
+
+.commonSelectBox {
+    border-radius: 5px !important;
+    border: 1px solid #ccc !important;
+    white-space: nowrap !important;
+    overflow: scroll hidden !important;
+    padding: 5px ;
+    color: #303030 !important;
+    background: ghostwhite !important;
 }
 </style>

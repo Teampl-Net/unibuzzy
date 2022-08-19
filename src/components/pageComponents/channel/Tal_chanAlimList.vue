@@ -1,5 +1,5 @@
 <template>
-<div id="alimWrap" ref="testBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
+<div id="alimWrap" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -193,48 +193,19 @@ export default {
     welcomePopUp,
     writePush
   },
-  async created () {
+  created () {
     this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
     // console.log('this.chanDetail')
     this.$emit('openLoading')
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
-    await this.getChanDetail(false)
-    // console.log(this.chanItem.userTeamInfo.followerKey)
-    console.log('this.chanDetail')
-    console.log(this.chanDetail)
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-    console.log(this.chanItem)
-    this.settingTeamType(this.chanItem.teamType)
-
-    if (this.chanItem) {
-      this.setGrade()
-      // eslint-disable-next-line no-debugger
-      if (this.chanItem.userTeamInfo) {
-        if (this.chanItem.userTeamInfo.ownerYn) {
-          this.admYn = true
-        }
-        if (this.chanItem.userTeamInfo.notiYn) {
-          if (this.chanItem.userTeamInfo.notiYn === false || Number(this.chanItem.userTeamInfo.notiYn) === 0) {
-            this.recvAlimYn = false
-            console.log('notiYn설정완료')
-          }
-        }
-        var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        this.ownerYn = (userKey === this.chanItem.creUserKey)
-      }
-    }
-
-    if (this.chanItem.userTeamInfo === null) {
-      this.followYn = false
-    }
-    this.$emit('closeLoading')
+    this.readyFunction()
   },
   updated () {
     // eslint-disable-next-line no-unused-vars
-    // var test = this.$refs.testBox
+    // var test = this.$refs.scrollBox
     this.box = document.getElementById('alimWrap') // 이 dom scroll 이벤트를 모니터링합니다
-    // this.box = this.$refs.testBox
+    // this.box = this.$refs.scrollBox
     this.box.addEventListener('scroll', this.updateScroll)
     this.box.addEventListener('mousewheel', e => {
       this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
@@ -252,14 +223,54 @@ export default {
     // })
   },
   methods: {
-    async targetContentScrollMove (wich) {
+    async readyFunction () {
+      await this.getChanDetail(false)
+      // console.log(this.chanItem.userTeamInfo.followerKey)
+      console.log('this.chanDetail')
+      console.log(this.chanDetail)
+      console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+      console.log(this.chanItem)
+      this.settingTeamType(this.chanItem.teamType)
+
+      if (this.chanItem) {
+        await this.setGrade()
+        if (this.chanItem.userTeamInfo) {
+          if (this.chanItem.userTeamInfo.ownerYn) {
+            this.admYn = true
+          }
+          if (this.chanItem.userTeamInfo.notiYn === false || Number(this.chanItem.userTeamInfo.notiYn) === 0) {
+            this.recvAlimYn = false
+            console.log('notiYn설정완료')
+          }
+          var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          this.ownerYn = (userKey === this.chanItem.creUserKey)
+        }
+      }
+
+      if (this.chanItem.userTeamInfo === null) {
+        this.followYn = false
+      }
+      this.$emit('closeLoading')
+    },
+    targetContentScrollMove (wich) {
       if (this.chanDetail.targetContentsKey) {
-        const unit = this.$refs.testBox
-        await unit.scrollTo({ top: 500, behavior: 'smooth' })
+        const unit = this.$refs.scrollBox
+        unit.scrollTo({ top: 500, behavior: 'smooth' })
+        var blockBox = document.getElementById('summaryWrap')
+        blockBox.style.height = 50 + 'px'
+        // blockBox.scrollHeight = 100
+        document.getElementById('chanInfoSummary').classList.add('displayNIm')
+        // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
+        // document.getElementById('chanInfoArea').classList.add('displayNIm')
+        // document.getElementById('memberInfoArea').classList.add('displayNIm')
+        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+
+        if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+
+        document.getElementById('channelCardWrap').classList.add('displayNIm')
+        document.getElementById('userCardWrap').classList.add('displayNIm')
+        document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
         this.reloadShowYn = false
-        setTimeout(() => {
-          this.$refs.ChanAlimListPushListCompo.chanAlimScrollMove(wich)
-        }, 500)
       }
     },
     setSelectedList (data) {
