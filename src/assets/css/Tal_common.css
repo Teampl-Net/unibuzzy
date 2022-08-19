@@ -73,6 +73,10 @@ input, select {
   .commonPushListTopArea .chanLogoImgWrap{
     top: 10%!important;
   }
+  .chanImgRound{
+    width:65px !important;
+    height: 65px !important;
+  }
 }
 
 ::-webkit-scrollbar {

@@ -88,7 +88,6 @@ export default {
       this.$refs.sLoadingMemoList.show()
     },
     memoLoadingHide () {
-      alert(true)
       this.$refs.sLoadingMemoList.hide()
     },
     memoDeleteClick (data, index) {

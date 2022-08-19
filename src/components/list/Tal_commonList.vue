@@ -129,7 +129,7 @@ export default {
     if (this.contentsList.length) {
       if (this.targetContentsKey) {
         this.contentsWich()
-      } 
+      }
     }
   },
   watch: {
@@ -142,14 +142,14 @@ export default {
     if (this.contentsList.length) {
       if (this.targetCKey) {
         this.contentsWich()
-      } 
+      }
     }
   },
   methods: {
-    cardInfo (alim) {
-      var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
-      this.$emit('scrollMove', a)
-    },
+    // cardInfo (alim) {
+    //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
+    //   this.$emit('scrollMove', a)
+    // },
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')

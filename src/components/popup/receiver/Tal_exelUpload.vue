@@ -90,9 +90,19 @@ export default {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenExcelDownloader'
         iframe.style.visibility = 'none'
+        iframe.style.position = 'relative'
+
+        iframe.name = 'hiddenExcelDownloader'
         app.appendChild(iframe)
       }
+      // var url = '/commonFile/thealim_member_upload_list.xlsx'
+      // var _window = window.open(url,'엑셀 다운로드', '_blank')
+      // _window.document.close()
+      // _window.close()
+
       iframe.src = '/commonFile/thealim_member_upload_list.xlsx'
+
+      // window.open('hiddenExcelDownloader')
       // iframe.download = name
       return false
     },

@@ -22,7 +22,7 @@
           </div>
 
         </div>
-        <div style="position: relative;width: 100%; height: 30px; float: left; ">
+        <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; ">
           <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
           <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
           <div v-if="filePopShowYn" style="width: 70%; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
@@ -531,7 +531,6 @@ export default {
     },
     settingAddFalseList (attachYn) {
       // eslint-disable-next-line no-debugger
-      debugger
       if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
         var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 
@@ -574,6 +573,7 @@ export default {
         this.settingUserDo()
       }
       await this.settingAddFalseList(true)
+      this.fileDownloadAreaYn = this.attachTrueFileList.length() !== 0
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)

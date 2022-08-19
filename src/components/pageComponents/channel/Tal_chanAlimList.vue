@@ -1,6 +1,6 @@
 <template>
 <div id="alimWrap" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
+  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 14px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -8,8 +8,8 @@
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
     <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
-      <div class="chanImgRound" > <!-- 채널 로고 부분 -->
-        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 80px;" alt="채널사진" />
+      <div class="chanImgRound"  > <!-- 채널 로고 부분 -->
+        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 90%" alt="채널사진" />
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
       </div>
       <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
@@ -17,29 +17,29 @@
           <!-- <div style="width:20px;" class="fl">
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
           </div> -->
-          <p class="font16 textLeft fl">
+          <p class="font15 textLeft fl">
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
             {{teamTypeText}}
           </p>
           </div>
 
-        <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+        <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
           <!-- <div style="width:20px;" class="fl"> -->
             <!-- <img class="fl" style="width:20px; margin-top:2px; src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
           <!-- </div> -->
-          <p class="font16 textLeft fl " style="word-break:break-all" >
+          <p class="font14 textLeft fl " style="word-break:break-all" >
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
             {{this.$changeText(chanItem.memoMtext)}}
           </p>
         </div>
 
-        <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+        <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
 
-            <p class="font16 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일 </p>
+            <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일 </p>
             <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
             <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
 
-          <p class="font16 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeDateFormat(chanItem.creDate)}}</p>
+          <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeDateFormat(chanItem.creDate)}}</p>
           </div>
 
       </div>
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div id="channelCardWrap" class="fl w-100P mtop-05" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
+    <div id="channelCardWrap" class="fl w-100P " :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
       <p class="font16 fl w-100P">구독자 {{chanItem.followerCount}}명</p>
 
       <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{chanItem.totalContentsCount}}건</p>
@@ -740,7 +740,11 @@ export default {
 
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
-.chanImgRound{ width: 100px; height: 100px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
+.chanImgRound{ width: 80px; height: 80px;
+  background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative;
+  border-radius: 110px;
+  border-radius: 100%;
+  border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
 #chanInfoSummary2{width: 100%; padding-top: 0; height: 100%;
 /* display: none;  */
 flex-direction: column; float: left}
