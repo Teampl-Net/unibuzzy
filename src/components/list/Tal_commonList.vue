@@ -114,8 +114,7 @@ export default {
       offsetInt: 0,
       currentMemoList: [],
       mememoValue: undefined,
-      currentContentsKey: null,
-      targetCKey: null
+      currentContentsKey: null
     }
   },
   components: {
@@ -123,14 +122,11 @@ export default {
   },
   created () {
     this.contentsList = this.commonListData
-    if (this.targetContentsKey) {
-      this.targetCKey = this.targetContentsKey
-    }
-    if (this.contentsList.length) {
-      if (this.targetContentsKey) {
-        this.contentsWich()
-      }
-    }
+    // if (this.contentsList.length) {
+    //   if (this.targetContentsKey) {
+    //     this.contentsWich()
+    //   }
+    // }
   },
   watch: {
     commonListData() {
@@ -140,7 +136,7 @@ export default {
   },
   updated() {
     if (this.contentsList.length) {
-      if (this.targetCKey) {
+      if (this.targetContentsKey) {
         this.contentsWich()
       }
     }
@@ -155,13 +151,12 @@ export default {
       var channelItemBoxDom = document.getElementById('summaryWrap')
       if(channelItemBoxDom.scrollHeight === 50) {
         var tempKey
-        if (this.targetCKey) tempKey = this.targetCKey
+        if (this.targetContentsKey) tempKey = this.targetContentsKey
         if (key !== undefined && key !== null && key !== '') { tempKey = key }
         console.log(this.contentsList)
         if (document.getElementById('memoCard'+tempKey)) {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
-          this.targetCKey = null
         }
       } else {
         /* setTimeout(() => {
@@ -455,7 +450,7 @@ export default {
       }
     },
     async loadUpMore() {
-      if (this.targetCKey){
+      if (this.targetContentsKey){
         console.log('@@@topLoadMore@@@');
         // this.$emit('moreList', false)
         this.$emit('topLoadMore', true)
