@@ -45,7 +45,7 @@
       </div>
     </div>
     <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="ownerYn">
-      <div class="fr " @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; margin:0 !important;">
+      <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; ">
         <p class="font16 textLeft lightGray fr "  >편집 > </p>
       </div>
     </div>
@@ -412,7 +412,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

@@ -147,10 +147,11 @@ export default {
     }
   },
   methods: {
-    // cardInfo (alim) {
-    //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
-    //   this.$emit('scrollMove', a)
-    // },
+    cardInfo (alim) {
+      // var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
+      // this.$emit('scrollMove', a)
+      console.log(alim)
+    },
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
@@ -187,7 +188,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -215,7 +216,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -313,7 +314,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -411,12 +412,18 @@ export default {
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    async changeAct (act, contentsKey, idx) {
+    async changeAct (act, contentsKey, idx, alim) {
       var result = null
       var saveYn = true
+
       // this.pushDetail = JSON.parse(this.detailVal).data
       if (Number(act.doKey) > 0) {
         saveYn = false
+      }
+      alert(JSON.stringify(act))
+      alim.userDoList = this.settingUserDo(alim.userDoList)
+      if (act.doType === 'LI'){
+        if (alim.userDoList.doType === ''){}
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -426,7 +433,8 @@ export default {
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
-        result = await this.$saveUserDo(param, 'delete')
+        // result = await this.$saveUserDo(param, 'delete')
+        act.doKey = 1
         console.log(this.contentsList[idx])
         console.log(this.contentsList)
         var temp = this.contentsList[idx].userDoList
@@ -440,7 +448,8 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
-        result = await this.$saveUserDo(param, 'save')
+        // result = await this.$saveUserDo(param, 'save')
+        act.doKey = 1
         if (result.result === true) {
           // debugger
           console.log(result)
@@ -458,6 +467,7 @@ export default {
           this.changeData += 1
         }
       }
+      // <div @click="changeAct(userDo, alim.contentsKey, index)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
       /* if (result === true) {
         await this.$emit('refresh')
       } */
