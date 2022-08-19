@@ -5,7 +5,7 @@
 
       <div class="fl w-100P" ref="commonListCompo">
         <template v-for="(alim, index) in this.contentsList" :key="index" >
-          <div v-if="alim.bodyFullStr" :cIndex="alim.index" :page="alim.page" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div class="pushChanLogoImgWrap">
@@ -13,10 +13,10 @@
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
-
-                  <p style="width: 100%; " :class="{commonBlue: alim.readYn === 0}" class="font16 fl fontBold commonBlack">
-                    <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
-                    <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt="">
+<!-- :class="{commonBlue: alim.readYn === 0}"  -->
+                  <p style="width: 100%; " class="font16 fl fontBold commonBlack">
+                    <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
+                    <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
                   </p>
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
@@ -54,12 +54,12 @@
                       <img class="mright-05 fl" style="width: 1.4rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-                      :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?pushDetail=' + alim.contentsKey
+                  <!-- <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
+                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
                     <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
-                  </div>
+                  </div> -->
                   <p class="fr font16 mleft-03" @click="memoOpenClick(alim.contentsKey)">
                     <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt="">
                     {{alim.memoCount}}

@@ -9,7 +9,7 @@
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" :cIndex="value.index" :page="value.page" class="commonListTr textLeft" :key="index" >
+        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
               <div class="top5PushChanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
               </div>
@@ -54,8 +54,6 @@ export default {
       param.targetKey = data.creTeamKey
       param.nameMtext = data.nameMtext
       param.chanName = data.nameMtext
-      param.page = data.page
-      param.cIdx = data.index
       param.targetContentsKey = data.contentsKey
       // 세션에서 유저키 받아오기
       if (data.creUserKey === this.creUserKey) {

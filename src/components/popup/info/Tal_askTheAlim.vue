@@ -49,7 +49,7 @@ export default {
       formEditorShowYn: false,
 
       viewTab: 'text',
-      activeTabList: [{ display: '기본 문의', name: 'text' }, { display: '복합 문의', name: 'complex' }]
+      activeTabList: [{ display: '텍스트형', name: 'text' }, { display: '블로그형', name: 'complex' }]
 
     }
   },

@@ -5,9 +5,9 @@
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
       <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
-      <!-- <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
-      </div> -->
+      </div>
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인

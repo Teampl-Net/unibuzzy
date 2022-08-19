@@ -71,7 +71,7 @@
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-                :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey
+                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
                     + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                   class="copyTextWrap">
               <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt="">
@@ -457,7 +457,7 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080?boardDetail=' + this.alimDetail[0].contentsKey +
+      var link = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'

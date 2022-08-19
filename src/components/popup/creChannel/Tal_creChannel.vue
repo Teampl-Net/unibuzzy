@@ -199,7 +199,7 @@ export default {
         this.errorPopYn = true
         return
       }
-      if (chanMemoYn) {
+      if (chanMemoYn === true) {
         if (this.inputChannelMemo.length > 40) {
           this.errorMsg = '채널의 소개는 40글자 이내로 입력해주세요'
           this.errorPopYn = true

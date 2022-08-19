@@ -81,7 +81,7 @@
           <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-              :data-clipboard-text="'https://thealim.page.link/?link=http://mo.d-alim.com:18080?chanDetail=' + this.chanItem.teamKey
+              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanItem.teamKey
                 + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                 class="copyTextIcon cursorP">
             <img style="width:20px;" src="../../../assets/images/common/icon_share_square.svg" alt="">
@@ -195,7 +195,7 @@ export default {
   },
   async created () {
     this.currentUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
-    console.log(this.currentUserInfo)
+    console.log(this.chanDetail)
     // console.log('this.chanDetail')
     // console.log(this.chanDetail)
     this.$emit('openLoading')
@@ -204,18 +204,22 @@ export default {
     await this.getChanDetail(false)
     // console.log(this.chanItem.userTeamInfo.followerKey)
 
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     console.log(this.chanItem)
     this.settingTeamType(this.chanItem.teamType)
 
     if (this.chanItem) {
       this.setGrade()
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.chanItem.userTeamInfo) {
         if (this.chanItem.userTeamInfo.ownerYn) {
           this.admYn = true
         }
         if (this.chanItem.userTeamInfo.notiYn) {
-          if (this.chanItem.userTeamInfo.notiYn === false) {
+          if (this.chanItem.userTeamInfo.notiYn === false || Number(this.chanItem.userTeamInfo.notiYn) === 0) {
             this.recvAlimYn = false
+            console.log('notiYn설정완료')
           }
         }
         var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -364,7 +368,7 @@ export default {
         param.notiYn = true
         this.recvAlimYn = true
       }
-      this.$changeRecvAlimYn(param)
+      this.$changeRecvAlimYn({ follower: param })
     },
     settingTeamType (teamType) {
       if (teamType === 'C') { this.teamTypeText = '기업' } else if (teamType === 'G') { this.teamTypeText = '정부' } else if (teamType === 'S') { this.teamTypeText = '학교' } else if (teamType === 'H') { this.teamTypeText = '종교' } else if (teamType === 'D') { this.teamTypeText = '동호회' } else if (teamType === 'Q') { this.teamTypeText = '병원' } else if (teamType === 'V') { this.teamTypeText = '약국' } else if (teamType === 'P') { this.teamTypeText = '식당' } else if (teamType === 'A') { this.teamTypeText = '매장' } else if (teamType === 'E') { this.teamTypeText = '기타' } else { this.teamTypeText = '기타' }
@@ -479,7 +483,7 @@ export default {
       }
 
       var resultList = await this.$getTeamList(paramMap)
-
+      console.log(resultList)
       // if (resultList.data) { this.chanItem = resultList.data.content[0] }
       this.chanItem = resultList.data.content[0]
 
@@ -619,6 +623,12 @@ export default {
           } else {
             this.notiDetail = JSON.parse(message.pushMessage).noti.data
           }
+          if (this.notiDetail.targetKind === 'TEAM') {
+            if (Number(this.notiDetail.targetKey) === this.chanItem.teamKey) {
+              this.getChanDetail(true)
+            }
+          }
+        } else if (message.type === 'pushBar') {
           if (this.notiDetail.targetKind === 'TEAM') {
             if (Number(this.notiDetail.targetKey) === this.chanItem.teamKey) {
               this.getChanDetail(true)

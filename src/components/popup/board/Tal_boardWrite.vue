@@ -147,7 +147,7 @@ export default {
       pushDetailPopShowYn: true,
       progressShowYn: false,
       viewTab: 'text',
-      activeTabList: [{ display: '기본 작성', name: 'text' }, { display: '복합 작성', name: 'complex' }],
+      activeTabList: [{ display: '텍스트형', name: 'text' }, { display: '블로그형', name: 'complex' }],
       bodyString: '',
       modiYn: false,
       nonMemUserName: '',

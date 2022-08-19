@@ -106,7 +106,7 @@
   </div>
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
   <div v-show="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
-    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="복합 알림 작성" />
+    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="블로그형 작성" />
     <formEditor @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
   </div>
   <!-- <div v-if="receiverPopYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999"  >
@@ -187,7 +187,7 @@ export default {
       selectedReceiverList: [],
       allRecvYnInput: true,
       creUserName: null,
-      activeTabList: [{ display: '기본작성', name: 'text' }, { display: '복합작성', name: 'complex' }],
+      activeTabList: [{ display: '텍스트형', name: 'text' }, { display: '블로그형', name: 'complex' }],
       viewTab: 'text',
       titleShowYn: false,
       uploadFileList: [],
