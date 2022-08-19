@@ -25,7 +25,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
+          <commonList :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="topLoadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <div :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 10rem;' : 'bottom: 5rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
@@ -161,7 +161,6 @@ export default {
       await this.$nextTick(() => {
         // this.scrollMove(wich)
         var ScrollWrap = this.$refs.pushListWrapWrapCompo
-        console.log(wich)
         if (wich === undefined || wich === null || wich === '') { wich = 0 }
         ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
       })
@@ -287,14 +286,14 @@ export default {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
+    topLoadMore () { console.log('#!@#!#!#@!@#!@#!@#!@') },
     async loadMore (descYn) {
-      if (this.endListYn === false || descYn === false) {
+      if (this.endListYn === false) {
         this.loadMoreDESCYn = descYn
-        console.log(this.loadMoreDESCYn)
-
         var resultList = await this.getPushContentsList()
         this.axiosResultTempList = resultList.content
-        const newArr = [
+        var newArr = []
+        newArr = [
           ...this.commonListData,
           ...this.axiosResultTempList
         ]
@@ -350,7 +349,6 @@ export default {
     scrollMove (wich) {
       var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      console.log(wich)
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
       // ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
       ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
@@ -393,7 +391,9 @@ export default {
       //   param.DESCYn = this.loadMoreDESCYn
       // } else
       param.DESCYn = this.loadMoreDESCYn
-      if (this.targetContentsKey) { param.targetContentsKey = this.targetContentsKey }
+      if (this.targetContentsKey) {
+        param.targetContentsKey = this.targetContentsKey
+      }
       param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
       if (this.readCheckBoxYn) {
@@ -408,6 +408,8 @@ export default {
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
+      console.log('getContentsList')
+      console.log(param)
       var result = await this.$getContentsList(param)
       // console.log(result)
       if (result.empty) {

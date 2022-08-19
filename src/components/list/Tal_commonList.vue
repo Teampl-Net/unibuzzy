@@ -456,13 +456,14 @@ export default {
     },
     async loadUpMore() {
       if (this.targetCKey){
-        console.log('@@@loadUpMore@@@');
-        this.$emit('moreList', false)
+        console.log('@@@topLoadMore@@@');
+        // this.$emit('moreList', false)
+        this.$emit('topLoadMore', true)
       }
     },
     async loadMore() {
       this.loadingRefShow()
-      this.$emit('moreList', true)
+      this.$emit('moreList', false)
       /* const newArr = [
         ...this.commonListData,
         ...resultList.content

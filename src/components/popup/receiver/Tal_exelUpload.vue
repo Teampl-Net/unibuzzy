@@ -91,16 +91,14 @@ export default {
         iframe.id = 'hiddenExcelDownloader'
         iframe.style.visibility = 'none'
         iframe.style.position = 'relative'
-
+        iframe.src = '/commonFile/thealim_member_upload_list.xlsx'
         iframe.name = 'hiddenExcelDownloader'
         app.appendChild(iframe)
       }
-      // var url = '/commonFile/thealim_member_upload_list.xlsx'
-      // var _window = window.open(url,'엑셀 다운로드', '_blank')
-      // _window.document.close()
-      // _window.close()
-
-      iframe.src = '/commonFile/thealim_member_upload_list.xlsx'
+      var url = '/commonFile/thealim_member_upload_list.xlsx'
+      var _window = window.open(url, '엑셀 다운로드', 'window=800, height=700, toolbar=no, menubar=no, scrollbars=no, resize=no')
+      _window.document.close()
+      _window.close()
 
       // window.open('hiddenExcelDownloader')
       // iframe.download = name
