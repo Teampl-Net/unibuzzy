@@ -156,14 +156,14 @@ export default {
   methods: {
     targetContentScrollMove (wich) {
       this.$emit('targetContentScrollMove', wich)
-      // console.log(wich)
-      // console.log(wich + 5000)
-      // // this.scrollMove(wich + 5000)
     },
     async chanAlimScrollMove (wich) {
       await this.$nextTick(() => {
-        console.log('chanAlimScrollMovechanAlimScrollMovechanAlimScrollMovechanAlimScrollMove')
-        this.scrollMove(wich)
+        // this.scrollMove(wich)
+        var ScrollWrap = this.$refs.pushListWrapWrapCompo
+        console.log(wich)
+        if (wich === undefined || wich === null || wich === '') { wich = 0 }
+        ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
       })
     },
     findPaddingTopPush () {
@@ -348,11 +348,12 @@ export default {
       this.scrollMove()
     },
     scrollMove (wich) {
-      // var middle = (document.innerHeight || window.innerHeight) / 2 - 100
+      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       console.log(wich)
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
-      ScrollWrap.scrollTo({ top: (wich), behavior: 'smooth' })
+      // ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
+      ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
 
     async getPushContentsList (pageSize, offsetInput) {

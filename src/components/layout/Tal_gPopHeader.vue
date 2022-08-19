@@ -95,8 +95,8 @@ export default {
     helpButtonPop
   },
   created () {
-    console.log(this.chanName)
-    console.log(this.chanAlimListTeamKey)
+    // console.log(this.chanName)
+    // console.log(this.chanAlimListTeamKey)
   },
   watch: {
     bgblack () {

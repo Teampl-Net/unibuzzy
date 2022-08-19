@@ -258,15 +258,9 @@ export default {
         unit.scrollTo({ top: 500, behavior: 'smooth' })
         var blockBox = document.getElementById('summaryWrap')
         blockBox.style.height = 50 + 'px'
-        // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
-        // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
-        // document.getElementById('chanInfoArea').classList.add('displayNIm')
-        // document.getElementById('memberInfoArea').classList.add('displayNIm')
         if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
-
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
-
         document.getElementById('channelCardWrap').classList.add('displayNIm')
         document.getElementById('userCardWrap').classList.add('displayNIm')
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
