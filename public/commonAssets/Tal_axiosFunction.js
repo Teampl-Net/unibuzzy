@@ -20,6 +20,7 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 
 export async function commonAxiosFunction (setItem) {
+  await methods.userLoginCheck()
   var result = false
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
@@ -102,6 +103,7 @@ export async function saveUser (userProfile) {
   })
   if (result.data.message === 'OK') {
     if (result.data.userInfo) {
+      router.replace({ path: '/' })
       localStorage.setItem('user', JSON.stringify(result.data.userInfo))
       localStorage.setItem('testYn', false)
     }
@@ -116,7 +118,7 @@ const methods = {
     }
     return mobileYn
   },
-  async userLoginCheck () {
+  async userLoginCheck (maingoYn) {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     // testYn = false
@@ -147,14 +149,14 @@ const methods = {
     }
 
     paramMap.set('mobileYn', isMobile())
-    var result = await commonAxiosFunction({
-      url: '/tp.loginCheck',
-      param: Object.fromEntries(paramMap)
-    })
+    var result = await axios.post('/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+
     if (result.data.resultCode === 'OK') {
       localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)
-      router.replace({ name: 'main', params: { testYn: true } })
+      if (maingoYn) {
+        router.replace({ name: 'main', params: { testYn: true } })
+      }
     } else {
       router.replace('/policies')
       localStorage.setItem('sessionUser', '')

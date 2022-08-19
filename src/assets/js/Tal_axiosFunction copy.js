@@ -51,6 +51,7 @@ export async function userLoginCheck () {
     }
   }).catch((error) => {
     localStorage.setItem('user', '')
+    localStorage.setItem('sessionUser', '')
     localStorage.setItem('loginYn', false)
     router.replace('/policies')
     console.warn('ERROR!!!!! : ', error)

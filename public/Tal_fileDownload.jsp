@@ -9,7 +9,7 @@
 	$(function() {
         try {
             var queryString = window.location.search;
-
+            debugger
             var urlParams = new URLSearchParams(queryString);
 
             var url = urlParams.get('downloadURL')

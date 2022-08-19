@@ -47,8 +47,8 @@ export default {
     testYn: {}
   },
   async created () {
-    this.$userLoginCheck()
     this.$emit('openLoading')
+    await this.$userLoginCheck(true)
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     // onMessage('REQ', 'getUserInfo')
@@ -58,7 +58,7 @@ export default {
       ;
     } else {
       localStorage.setItem('loginYn', false)
-      await this.$userLoginCheck()
+      await this.$userLoginCheck(true)
     }
     await this.getUserInform()
     this.$store.commit('setRemovePage', 0)
@@ -90,6 +90,20 @@ export default {
     // top5Title
   },
   methods: {
+    /* checkSession () {
+      var iframe
+      iframe = document.getElementById('sessionHidden')
+      if (iframe == null) {
+        iframe = document.createElement('iframe')
+        iframe.id = 'sessionHidden'
+        iframe.style.visibility = 'none'
+        document.body.appendChild(iframe)
+      }
+      iframe.src = '/Tal_checkSession.jsp'
+      // iframe.download = name
+      this.filePopShowYn = false
+      return false
+    }, */
     async reloadPage () {
       // this.$forceUpdate()
       // window.location.replace(window.opener.documｅnt.location.href);

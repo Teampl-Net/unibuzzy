@@ -175,8 +175,9 @@ export default {
     closeLogoutPop (request) {
       this.logOutShowYn = false
       if (request !== undefined && request !== null && request !== '') {
-        localStorage.setItem('loginYn', false)
+        localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
+        localStorage.setItem('loginYn', false)
         this.$router.replace('/policies')
       }
     },

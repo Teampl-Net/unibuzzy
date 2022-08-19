@@ -83,9 +83,9 @@ export default {
       var currentPage = this.$store.getters.hCPage
 
       if ((currentPage === 0 || currentPage === undefined)) {
-        this.$emit('openDetailPop', { contentsKey: this.detailVal.contentsKey, targetKey: this.detailVal.contentsKey, targetType: 'pushDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { nameMtext: this.detailVal.creTeamName, targetKey: this.detailVal.creTeamKey, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.pushDetail })
       } else {
-        this.$emit('openDetailPop', { contentsKey: this.detailVal.contentsKey, targetKey: this.detailVal.contentsKey, targetType: 'pushListAndDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { targetKey: this.detailVal.creTeamKey, nameMtext: this.detailVal.creTeamName, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.detailVal })
       }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },

@@ -69,7 +69,7 @@ export default {
       }
       if (uId === 'teampl' && uPw === 'teampl123') {
         localStorage.setItem('testYn', true)
-        await this.$userLoginCheck()
+        await this.$userLoginCheck(true)
       } else {
         this.errorText = '사용자 정보를 찾을 수 없습니다!'
         this.failPopYn = true
