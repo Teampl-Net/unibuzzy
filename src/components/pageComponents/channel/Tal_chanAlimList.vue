@@ -720,7 +720,7 @@ export default {
 .chanDetailWrap{
   height: 100vh;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 .officialTitle{
   padding-right: 30px;

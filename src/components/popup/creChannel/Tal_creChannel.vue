@@ -3,14 +3,14 @@
 
 <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
 <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'" :selectIcon="this.selectIcon" :selectBg="this.selectBg" @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
-  <div :style="'background: url(' + selectBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: contain;" class="createChanWrap"  >
+  <div :style="'background: url(' + selectBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
     <div class="createChanContentsWrap">
       <div id='chboxtest' >
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap" >
             <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
         </form>
-        <div class="channelLogoArea" style="">
-          <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/>
+        <div class="channelLogoArea" :style="'background-image: url(' + selectIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
+          <!-- <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/> -->
           <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap" >
               <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>

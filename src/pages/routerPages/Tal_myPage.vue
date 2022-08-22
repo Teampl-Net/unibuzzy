@@ -44,7 +44,7 @@ export default {
     return {
       myPageTabType: 'ma',
       // ma: my act (내가 작성한, 내가 댓글 단..) / m1: my log (이력) / mi: my info (내 정보)
-      myPageTabList: [{ myPageTabType: 'ma', name: '나의 활동' }
+      myPageTabList: [{ myPageTabType: 'ma', name: '게시글 활동' }
         // { myPageTabType: 'ml', name: '나의 이력' }
         // { myPageTabType: 'mi', name: '내 정보' }
       ],

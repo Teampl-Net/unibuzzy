@@ -144,12 +144,6 @@ export default {
       }
     },
     async setParam () {
-      if (this.selectedImgPath !== undefined && this.selectedImgPath !== null && this.selectedImgPath !== '') {
-        if (this.selectedImgFilekey !== undefined && this.selectedImgFilekey !== null && this.selectedImgFilekey !== '') {
-        }
-      } else {
-        await this.formSubmit()
-      }
       console.log(this.selectedImgPath)
       console.log(this.selectedImgFilekey)
       if (this.viewTab === 'icon') {
@@ -163,6 +157,12 @@ export default {
         } else {
         }
       } else if (this.viewTab === 'img') {
+        if (this.selectedImgPath !== undefined && this.selectedImgPath !== null && this.selectedImgPath !== '') {
+          if (this.selectedImgFilekey !== undefined && this.selectedImgFilekey !== null && this.selectedImgFilekey !== '') {
+          }
+        } else {
+          await this.formSubmit()
+        }
         // eslint-disable-next-line no-new-object
         param = new Object()
         param.selectedId = this.selectedImgFilekey
