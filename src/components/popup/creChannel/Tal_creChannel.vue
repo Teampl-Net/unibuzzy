@@ -2,15 +2,15 @@
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
 
 <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
-<seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'"  @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
-  <div :style="'background: url(' + selectBg.selectPath + ');'" class="createChanWrap"  >
+<seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'" :selectIcon="this.selectIcon" :selectBg="this.selectBg" @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
+  <div :style="'background: url(' + selectBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: contain;" class="createChanWrap"  >
     <div class="createChanContentsWrap">
       <div id='chboxtest' >
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap" >
             <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel' for="input-Backimgfile">배경편집</label>
         </form>
         <div class="channelLogoArea" style="">
-          <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:90%"/>
+          <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/>
           <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap" >
               <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label>
           </form>
@@ -290,7 +290,7 @@ color: white; padding: 0.25rem 0.5rem;background-color: black; opacity: 0.5; fon
 }
 
 .channelLogoArea{
-border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto; margin-top: -80px; background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
+border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-radius: 120px; margin: 0 auto; margin-top: -80px; background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
 }
 .channelLogoLabel{
   color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.5; font-size:14px;white-space: nowrap;

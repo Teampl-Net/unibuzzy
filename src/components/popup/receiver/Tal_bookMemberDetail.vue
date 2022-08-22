@@ -1,13 +1,13 @@
 <template>
-<div class="addTeamMemberArea" style="margin-top:50px">
+<div id="addTeamMemberArea" class="addTeamMemberArea" style="margin-top:50px">
 
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
     <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
-        <div v-if="userProfileImg"  class="managerPicImgWrap">
-            <img :src="userProfileImg" />
+        <div v-if="userProfileImg" :style="'background-image: url(' + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
+            <!-- <img :src="userProfileImg" /> -->
         </div>
         <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " />
     </div>
@@ -105,6 +105,9 @@ export default {
         setEditMember:{},
         excelPopYn:{}
     },
+    mounted () {
+        this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
+    },
     created(){
 
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
@@ -142,7 +145,8 @@ export default {
             readOnlyYn:false,
             userProfileImg : undefined,
             systemName: 'iOS',
-            mobileYn: this.$getMobileYn()
+            mobileYn: this.$getMobileYn(),
+            popSize: 0
         }
     },
     methods:{
@@ -179,7 +183,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+                url: '/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}
@@ -340,11 +344,11 @@ margin-bottom: 2rem;
     left: 5%;
 }
 
-.managerPicImgWrap { width:50%; max-width:130px ; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
+.managerPicImgWrap { width:50%; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
 .managerPicImgWrap img {width: 100%;}
 .nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
 
-.detailLabelText {width:10%; min-width:130px; line-height: 30px;}
+.detailLabelText {width:10%; min-width: 130px; line-height: 30px;}
 .nativeServiceBtn { float: left; width: calc(100% / 3 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
 @media screen and (max-width: 300px) {
   .detailLabelText {

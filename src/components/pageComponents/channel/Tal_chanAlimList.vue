@@ -8,8 +8,8 @@
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
     <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
-      <div class="chanImgRound"  > <!-- 채널 로고 부분 -->
-        <img id="chanImg" :src="chanItem.logoPathMtext" style="width: 90%" alt="채널사진" />
+      <div class="chanImgRound" :style="'background-image: url(' + this.chanItem.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 -->
+        <!-- <img id="chanImg" :style="setProfileSize" :src="chanItem.logoPathMtext" style="width: 90%" alt="채널사진" /> -->
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
       </div>
       <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
@@ -60,8 +60,8 @@
     <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
 
         <div v-if="followYn" class="fl" style="display: flex; align-items: center;">
-          <div style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;">
-            <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/>
+          <div :style="'background-image: url(' + currentUserInfo.userProfileImg + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;">
+            <!-- <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
           </div>
           <div class="mleft-05" style="display:flex; flex-direction: column;">
             <p class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
@@ -215,21 +215,25 @@ export default {
   },
   mounted () {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
-    // var screenSize = document.querySelector('#textMsgBoxPush')
+
+    /* var img = document.querySelector('#chanImg')
     // eslint-disable-next-line no-debugger
-    // debugger
-    // screenSize.addEventListener('click', () => {
-    //   window.resizeTo(this.screenInnerWidth, this.screenInnerHeight)
-    // })
+    debugger
+    if (img) {
+      var width = img.scrollWidth
+      var height = img.scrollHeight
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (width > height) {
+        img.style.width = '100%'
+      } else {
+        img.style.height = '100%'
+      }
+    } */
   },
   methods: {
     async readyFunction () {
       await this.getChanDetail(false)
-      // console.log(this.chanItem.userTeamInfo.followerKey)
-      console.log('this.chanDetail')
-      console.log(this.chanDetail)
-      console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-      console.log(this.chanItem)
       this.settingTeamType(this.chanItem.teamType)
 
       if (this.chanItem) {
@@ -412,7 +416,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -715,7 +719,8 @@ export default {
 
 .chanDetailWrap{
   height: 100vh;
-  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .officialTitle{
   padding-right: 30px;
@@ -741,7 +746,7 @@ export default {
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
 .chanImgRound{ width: 80px; height: 80px;
-  background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative;
+  display: flex; align-items: center; justify-content: center; position: relative;
   border-radius: 110px;
   border-radius: 100%;
   border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }

@@ -1,6 +1,8 @@
 <template>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
-      <div class="gChanPageChanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"></div>
+      <div class="gChanPageChanLogoImgWrap" :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <!-- <img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"> -->
+      </div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
         <div class=" text-start mr-04 w-100P" >
           <p class="font15 commonBlack fl fontBold mNone" v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>

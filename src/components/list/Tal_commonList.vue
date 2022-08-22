@@ -8,9 +8,9 @@
           <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
-                <div class="pushChanLogoImgWrap">
-                  <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
-                  <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                <div @click="goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + alim.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                  <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
+                  <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
@@ -188,7 +188,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -216,7 +216,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -314,7 +314,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

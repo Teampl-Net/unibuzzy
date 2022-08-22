@@ -7,7 +7,7 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.timeout = 100000
-axios.defaults.baseURL = 'http://192.168.0.22:19090'
+// axios.defaults.baseURL = 'http://192.168.0.22:19090'
 /* axios.defaults.baseURL = 'http://14.51.96.245:19090' */
 // axios.defaults.baseURL = 'http://dev.on-apt.kr:8081/'
 
@@ -23,8 +23,6 @@ export async function userLoginCheck () {
     paramMap.set('fcmKey', '123456789')
     paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
   } else {
-    // eslint-disable-next-line no-debugger
-    debugger
     if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === null || localStorage.getItem('user') === '') {
       this.$router.replace('/policies')
       return
@@ -60,7 +58,7 @@ export async function userLoginCheck () {
 
 export async function getTeamList (paramMap) {
   var resultList = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getUserTeamList', Object.fromEntries(paramMap)
+  await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap)
   ).then(response => {
     resultList = response.data
   }).catch((error) => {
@@ -75,7 +73,7 @@ export async function getContentsList (inputMap) {
     paramMap = inputMap
   }
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getContentsList', Object.fromEntries(paramMap)
+  await this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -92,7 +90,7 @@ export async function getContentsList (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getContentsList', param
+  await this.$axios.post('/tp.getContentsList', param
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -134,7 +132,7 @@ export async function saveUser (userProfile) {
   user.countryCode = deviceInfo.contry
   user.areaName = deviceInfo.timeZome
   param.user = user
-  await axios.post('https://mo.d-alim.com:10443/tp.saveUser', param
+  await axios.post('/tp.saveUser', param
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
@@ -152,7 +150,7 @@ export async function saveUserDo (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.saveUserDo', param
+  await this.$axios.post('/tp.saveUserDo', param
   ).then(response => {
     result = response.data
   }).catch((error) => {

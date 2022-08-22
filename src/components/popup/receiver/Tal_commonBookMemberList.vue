@@ -5,10 +5,11 @@
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
                     <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; height:60px; position: relative;"  >
-                        <div v-if="data.userProfileImg"  class="memberPicImgWrap">
-                          <img :src="data.userProfileImg" />
+                        <div v-if="data.userProfileImg" :style="'background-image: url(' + data.userProfileImg + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+                          <!-- <img :src="data.userProfileImg" /> -->
                         </div>
-                        <img v-else src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 5px; margin-top: 10px;" class="fl"/>
+                        <div v-else style="background-image: url('../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+                        </div>
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
                             <p class="fl font16 commonBlack">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <p class="fl font12 commonBlack" v-if="data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true)">{{this.setPhone(data.phoneEnc)}}</p>
@@ -133,7 +134,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+            url: '/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {

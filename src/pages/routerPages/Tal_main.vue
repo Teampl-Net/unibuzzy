@@ -5,9 +5,10 @@
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div class="picImgWrap">
-      <img v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" :src="userInfo.userProfileImg" />
-      <img v-else src="../../assets/images/main/main_profile.png" />
+    <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+    </div>
+    <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+
     </div>
     <div class="userProfileTextWrap">
       <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
@@ -116,7 +117,7 @@ export default {
       //   this.$emit('closeLoading')
       // }, 2000)
 
-      // await this.$axios.post('https://mo.d-alim.com:10443/tp.getMainBoard', Object.fromEntries(paramMap)
+      // await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       // ).then(response => {
       //   if (response.status === 200 || response.status === '200') {
       //     console.log(response);
@@ -210,7 +211,7 @@ export default {
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
 
-      await this.$axios.post('https://mo.d-alim.com:10443/tp.getMainBoard', Object.fromEntries(paramMap)
+      await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         if (response.status === 200 || response.status === '200') {
           this.alimList = []

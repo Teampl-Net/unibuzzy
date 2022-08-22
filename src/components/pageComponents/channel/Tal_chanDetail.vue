@@ -180,7 +180,7 @@ export default {
       }
       // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -340,7 +340,7 @@ export default {
       var params = {
         dynamicLinkInfo: {
           dynamicLinkDomain: 'thealim.page.link',
-          link: 'https://mo.d-alim.com:9443?chanDetail=' + this.chanDetail.teamKey +
+          link: 'https://mo.d-alim.com?chanDetail=' + this.chanDetail.teamKey +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
         },
         suffix: { option: 'SHORT' }

@@ -6,7 +6,8 @@
       </div>
       <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
       <div v-else class="chanRow w-100P fl channelRow cursorP" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
-        <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+        <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <!-- <img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"> -->
         <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
         <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
         </div>

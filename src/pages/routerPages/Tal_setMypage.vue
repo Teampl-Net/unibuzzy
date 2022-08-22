@@ -5,13 +5,13 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
-          <div class="imgSize">
-            <div class="roundDiv">
-              <img v-if="this.userInfo.userProfileImg" :src="this.userInfo.userProfileImg" style="width: 100%; position: absolute; left: 0; top: 0;"/>
-              <img  v-else src="../../assets/images/main/main_profile.png" style="width: 100%; position: absolute; left: 0; top: 0;"/>
+          <div @click="changeUserImg()" class="cursorP imgSize">
+            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+            </div>
+            <div v-else class="roundDiv"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             </div>
             <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->

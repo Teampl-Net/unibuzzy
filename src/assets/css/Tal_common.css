@@ -75,6 +75,7 @@ input, select {
   }
   .chanImgRound{
     width:65px !important;
+    overflow: hidden;
     height: 65px !important;
   }
 }

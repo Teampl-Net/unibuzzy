@@ -11,7 +11,7 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
-              <div class="top5PushChanLogoImgWrap fl" style="background-color: #fff;" @click="goChanDetail(value)"><img alt="채널 프로필이미지" class="" :src="value.logoPathMtext">
+              <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
               </div>
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->

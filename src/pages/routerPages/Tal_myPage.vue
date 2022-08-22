@@ -2,9 +2,13 @@
   <div class="w-100P h-100P">
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
-        <div class="myPagePicImgWrap">
+        <!-- <div class="myPagePicImgWrap">
           <img v-if="this.userInfo.userProfileImg" :src="this.userInfo.userProfileImg"/>
           <img v-else src="../../assets/images/main/main_profile.png"/>
+        </div> -->
+        <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="myPagePicImgWrap" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+        </div>
+        <div v-else class="myPagePicImgWrap" style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         </div>
       </div>
       <div class="myProfileRight">
