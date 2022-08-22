@@ -5,7 +5,7 @@ module.exports = {
     proxy: {
       // 프록시 요청을 보낼 api의 시작 부분
       '^/tp': {
-        target: 'http://192.168.219.103:19090',
+        target: 'http://192.168.0.10:19090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
@@ -27,5 +27,6 @@ module.exports = {
         logLevel: 'debug'
       }
     }
-  }
+  },
+  css: { extract: false }
 }
