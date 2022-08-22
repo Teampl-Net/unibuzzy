@@ -16,7 +16,7 @@ export default {
   methods: {
     test () {
       this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.uploadTpUserRequireListExcelFile',
+        url: '/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })

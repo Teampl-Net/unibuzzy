@@ -159,6 +159,9 @@ export default {
     // }
   },
   mounted () {
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
+
     this.boardListWrap = document.getElementById('boardListWrap')
     this.boardListWrap.addEventListener('scroll', this.saveScroll)
     this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
@@ -177,6 +180,10 @@ export default {
     if (this.findPopShowYn) {
       this.findPaddingTopBoard()
     }
+  },
+  unmounted () {
+    document.removeEventListener('message', e => this.recvNoti(e))
+    window.removeEventListener('message', e => this.recvNoti(e))
   },
   data () {
     return {
@@ -223,6 +230,23 @@ export default {
     }
   },
   methods: {
+    async recvNoti (e) {
+      var message
+      // alert(JSON.stringify(e))
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+
+        if (message.actType === 'WR' && message.targetKey === this.propData.targetKey) {
+          this.refresh()
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
+    },
     successWriteBoard (data) {
       // this.$emit('successWrite', data)
       // successWriteBoard

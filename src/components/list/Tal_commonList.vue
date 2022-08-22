@@ -15,9 +15,11 @@
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
                   <p style="width: 100%; " class="font16 fl fontBold commonBlack">
+                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick('alim')" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
+
                   </p>
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
@@ -77,7 +79,7 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' />
+                <gMemoList v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" />
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -92,7 +94,8 @@
       <transition name="showMemoPop">
         <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
-      <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
+      <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false, this.reportYn = false'  />
+      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" @report="report" />
 </template>
 <script>
 /* eslint-disable */
@@ -116,7 +119,10 @@ export default {
       mememoValue: undefined,
       currentContentsKey: null,
       targetCKey: null,
-      changeData: 1
+      changeData: 1,
+      reportYn: false,
+      contentType: ''
+
     }
   },
   components: {
@@ -147,11 +153,29 @@ export default {
     }
   },
   methods: {
-    cardInfo (alim) {
-      // var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
-      // this.$emit('scrollMove', a)
-      console.log(alim)
+    report (type) {
+      if (type === 'alim') {
+        this.confirmText = '해당 알림이 신고되었습니다.'
+      } else if (type === 'board') {
+        this.confirmText = '해당 게시글이 신고되었습니다.'
+      } else if (type === 'memo') {
+        this.confirmText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'channel') {
+        this.confirmText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'user') {
+        this.confirmText = '해당 유저가 신고되었습니다.'
+      }
+      this.confirmPopShowYn = true
     },
+    contentMenuClick(type){
+      this.contentType = type
+      this.reportYn = true
+      // alert(type)
+    },
+    // cardInfo (alim) {
+    //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
+    //   this.$emit('scrollMove', a)
+    // },
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
@@ -188,7 +212,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -216,7 +240,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -314,7 +338,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -412,18 +436,12 @@ export default {
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    async changeAct (act, contentsKey, idx, alim) {
+    async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
-
       // this.pushDetail = JSON.parse(this.detailVal).data
       if (Number(act.doKey) > 0) {
         saveYn = false
-      }
-      alert(JSON.stringify(act))
-      alim.userDoList = this.settingUserDo(alim.userDoList)
-      if (act.doType === 'LI'){
-        if (alim.userDoList.doType === ''){}
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -433,8 +451,7 @@ export default {
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
-        // result = await this.$saveUserDo(param, 'delete')
-        act.doKey = 1
+        result = await this.$saveUserDo(param, 'delete')
         console.log(this.contentsList[idx])
         console.log(this.contentsList)
         var temp = this.contentsList[idx].userDoList
@@ -448,8 +465,7 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
-        // result = await this.$saveUserDo(param, 'save')
-        act.doKey = 1
+        result = await this.$saveUserDo(param, 'save')
         if (result.result === true) {
           // debugger
           console.log(result)
@@ -467,7 +483,6 @@ export default {
           this.changeData += 1
         }
       }
-      // <div @click="changeAct(userDo, alim.contentsKey, index)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
       /* if (result === true) {
         await this.$emit('refresh')
       } */

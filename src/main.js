@@ -51,6 +51,7 @@ import gSvg from './components/Tal_svgCollection.vue'
 import Iconwink from './components/Tal_winkAlimLogo.vue'
 
 import gEmty from './components/unit/Tal_commonEmty.vue'
+import gReport from './components/unit/Tal_commonReport.vue'
 
 // import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
@@ -87,6 +88,7 @@ app.component('gToggle', gToggle)
 app.component('gSvg', gSvg)
 app.component('iconWink', Iconwink)
 app.component('gEmty', gEmty)
+app.component('gReport', gReport)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

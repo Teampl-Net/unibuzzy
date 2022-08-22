@@ -42,7 +42,7 @@
       <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'setMypage'">
-        <setMypage v-if="this.targetType === 'setMypage'" @closeXPop="closeXPop" />
+        <setMypage v-if="this.targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
       </div>
       <editMyChanMenu v-if="this.targetType === 'myChanMenuEdit'" :propData="this.params" @openPop="openPop"  />
       <editBoardPop v-if="this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />

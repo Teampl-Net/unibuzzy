@@ -155,6 +155,7 @@ export default {
             var currentPage = this.$store.getters.hCPage
             if (this.notiDetail.actYn === true) {
               if ((currentPage === 0 || currentPage === undefined)) {
+                // alert(JSON.stringify(this.notiDetail.targetKey))
                 if (this.notiDetail.actType === 'WR') {
                   this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
                 } else {

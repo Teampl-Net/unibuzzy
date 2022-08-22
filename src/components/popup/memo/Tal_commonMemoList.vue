@@ -23,7 +23,9 @@
           </div>
           <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl font15" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
-          <p class="font15" style="float: right; margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
+          <img class="fr mtop-03" style="width:4.5px;" @click="contentMenuClick('memo')" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+          <p class="font13 mleft-05 fl" style="margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
+
         </div>
         <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; ">
           <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 70%;float: left; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
@@ -77,6 +79,9 @@ export default {
     }
   },
   methods: {
+    contentMenuClick (type) {
+      this.$emit('contentMenuClick', type)
+    },
     infoMemo (memo) {
       console.log(memo)
     },
@@ -117,7 +122,7 @@ export default {
       memo.deleteYn = false
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

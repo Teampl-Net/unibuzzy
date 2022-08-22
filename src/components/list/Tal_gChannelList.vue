@@ -125,7 +125,7 @@ td {
 .ownerChannelRowColor {background-color: #6768a712}
 .channelRow{display: flex; align-items: center; padding: 15px 5px; min-height: 70px;  border-bottom: 1px solid #E4E4E4; }
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
-.gChanPageChanLogoImgWrap {width: 60px; height:60px; padding: 5px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
+.gChanPageChanLogoImgWrap {width: 60px; height:60px; padding: 5px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative; flex-shrink: 0}
 .gChanPageChanLogoImgWrap img{width: 80%; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 .chanRow{

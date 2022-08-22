@@ -182,6 +182,8 @@ export default {
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
+      this.targetCKey = null
+      this.loadMoreDESCYn = true
       this.findKeyList.searchKey = null
       this.findKeyList.creTeamNameMtext = null
       this.findKeyList.toCreDateStr = null
@@ -248,6 +250,8 @@ export default {
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
         pSize = Number(this.offsetInt) * 10
       }
+      this.targetCKey = null
+      this.loadMoreDESCYn = true
 
       var resultList = await this.getPushContentsList(pSize, 0)
       this.commonListData = resultList.content
@@ -264,6 +268,8 @@ export default {
       }
     },
     async refreshPage () {
+      this.targetCKey = null
+      this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
       this.endListSetFunc(resultList)
