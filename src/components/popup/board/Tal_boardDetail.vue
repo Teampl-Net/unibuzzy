@@ -9,12 +9,14 @@
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor">{{alim.title}}</p>
-            <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
+            <p class=" font18 fontBold commonColor">
+              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type:'board', ownerYn: creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0), tempData: alim})" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+              {{alim.title}}
+            </p>
+            <!-- <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
               <p class="fl mright-05 font13"  @click="openUpdateContentsPop">수정</p>
               <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
-              <!-- <p class="fl" @click="boardFuncClick('REPORT')" > 신고 </p> -->
-            </div>
+            </div> -->
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
             <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -82,7 +84,7 @@
           </div>
           <div class="boardBorder"></div>
           <div class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore'  ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -98,7 +100,8 @@
     <transition name="showMemoPop">
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     </transition>
-    <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, confirmType = false' @ok='confirmOk' />
+    <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
+    <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" />
   </div>
 </template>
 <script>
@@ -146,7 +149,12 @@ export default {
       fileYn: false,
       deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
       blindYn: false,
-      attachTrueFileList: []
+      attachTrueFileList: [],
+      reportYn: false,
+      contentType: '',
+      contentOwner: false,
+      tempData: {}
+
     }
   },
   props: {
@@ -203,6 +211,52 @@ export default {
     }
   },
   methods: {
+    editable (type) {
+      this.reportYn = false
+      if (this.tempData) {
+        if (this.tempData.contentsKey) {
+          if (type === 'edit') {
+            this.openUpdateContentsPop()
+          } else if (type === 'delete') {
+            this.boardFuncClick('BOAR')
+          }
+        } else if (this.tempData.memoKey) {
+          if (type === 'edit') {
+            // alert('메모 수정')
+            this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index)
+            // this.openUpdateContentsPop()
+          } else if (type === 'delete') {
+            // alert('메모 삭제')
+            this.deleteMemo({ memoKey: this.tempData.memoKey })
+            // this.boardFuncClick('BOAR')
+          }
+        }
+      }
+    },
+    report (type) {
+      if (type === 'alim') {
+        this.confirmText = '해당 알림이 신고되었습니다.'
+      } else if (type === 'board') {
+        this.confirmText = '해당 게시글이 신고되었습니다.'
+      } else if (type === 'memo') {
+        this.confirmText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'channel') {
+        this.confirmText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'user') {
+        this.confirmText = '해당 유저가 신고되었습니다.'
+      }
+      this.confirmPopShowYn = true
+    },
+    contentMenuClick (params) {
+      this.contentOwner = params.ownerYn
+      this.contentType = params.type
+      if (params.tempData) {
+        params.tempData.index = params.index
+        // console.log(params.tempData.index)
+      }
+      this.tempData = params.tempData
+      this.reportYn = true
+    },
     download (link, name) {
       var iframe
       iframe = document.getElementById('hiddenDownloader')
@@ -282,7 +336,6 @@ export default {
       this.$emit('openPop', param)
     },
     boardFuncClick (type) {
-      this.confirmPopShowYn = true
       this.confirmType = true
       this.boardFuncType = type
       if (type === 'BOAR') {
@@ -290,6 +343,7 @@ export default {
       } else if (type === 'REPORT') {
         this.confirmText = '해당 게시글을 신고 하시겠습니까?'
       }
+      this.confirmPopShowYn = true
     },
     async confirmOk () {
       this.confirmPopShowYn = false
@@ -302,7 +356,7 @@ export default {
       if (this.boardFuncType === 'BOAR') {
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -353,7 +407,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -382,7 +436,7 @@ export default {
         memo.offsetInt = 0
       }
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       if (result.data.content) {
@@ -421,7 +475,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
         param: param
       })
     },
@@ -517,7 +571,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -573,7 +627,8 @@ export default {
         this.settingUserDo()
       }
       await this.settingAddFalseList(true)
-      this.fileDownloadAreaYn = this.attachTrueFileList.length() !== 0
+
+      this.fileDownloadAreaYn = this.attachTrueFileList.length !== 0
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)

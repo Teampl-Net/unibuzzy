@@ -13,17 +13,19 @@
         <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
         <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
-          <div @click="goDetail(board)" class="pushDetailTopArea">
-              <div class="">
-                <p class=" font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width: calc(100% - 30px); float: left;">{{resizeText(board.title)}}</p>
-                <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fr" style="width: 20px;" alt="">
-                <img src="../../assets/images/board/readTrue.svg" v-else class="fr" style="width: 20px;" alt="">
+          <div  class="pushDetailTopArea">
+                <img class="fr mright-03 mleft-03" style="width:4.5px;" @click="contentMenuClick('board', board.creUserKey === creUser, board)" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                <p @click="goDetail(board)" class="fl font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px)); float: left;">
+                  <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
+                  <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt="">
+                  {{resizeText(board.title)}}
+                </p>
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
                 <p class="font12 fl lightGray">{{board.showCreNameYn === 1? this.$changeText(board.creUserName): ''}}</p>
                 <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
-              </div>
+              <!-- </div> -->
           </div>
           <div @click="goDetail(board)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
           <div id="alimCheckArea">
@@ -85,7 +87,8 @@ export default {
       mainYn: false,
       boardListWrap: null,
       boardList: {},
-      currentScroll: 0
+      currentScroll: 0,
+      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
     }
   },
   props: {
@@ -125,7 +128,14 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
-    getAbsoluteTop(element) {
+    contentMenuClick (type, ownerYn, board) {
+      var param = {}
+      param.type = type
+      param.ownerYn = ownerYn
+      param.tempData = board
+      this.$emit('contentMenuClick', param)
+    },
+    getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
@@ -301,7 +311,7 @@ export default {
 .listBodyRow{width: calc(100% - 60px);}
 
 .pushDetailWrap{height: fit-content;}
-.pushDetailTopArea{height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
+.pushDetailTopArea{min-height: 3.0rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 30px; margin-right: 1px;}
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.1rem;}
 

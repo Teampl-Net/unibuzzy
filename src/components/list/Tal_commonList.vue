@@ -15,7 +15,7 @@
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
                   <p style="width: 100%; " class="font16 fl fontBold commonBlack">
-                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick('alim')" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: 'alim', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
@@ -79,7 +79,7 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" />
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -95,7 +95,7 @@
         <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
       <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false, this.reportYn = false'  />
-      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" @report="report" />
+      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report"  @editable="editable" />
 </template>
 <script>
 /* eslint-disable */
@@ -121,7 +121,9 @@ export default {
       targetCKey: null,
       changeData: 1,
       reportYn: false,
-      contentType: ''
+      contentType: '',
+      contentOwner: false,
+      tempData: {}
 
     }
   },
@@ -167,10 +169,54 @@ export default {
       }
       this.confirmPopShowYn = true
     },
-    contentMenuClick(type){
-      this.contentType = type
+    contentMenuClick(params){
+      this.contentOwner = params.ownerYn
+      this.contentType = params.type
+      if (params.tempData) {
+        params.tempData.index = params.index
+        // console.log(params.tempData.index)
+      }
+      this.tempData = params.tempData
       this.reportYn = true
-      // alert(type)
+    },
+    async deleteAlim(){
+      console.log(this.tempData)
+      if (this.tempData.jobkindId === 'ALIM') {
+        var inParam = {}
+        inParam.mccKey = this.tempData.mccKey
+        inParam.jobkindId = 'ALIM'
+        // inParam.teamKey = this.tempData.creTeamKey
+        // inParam.deleteYn = true
+
+        var result = await this.$commonAxiosFunction({
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+          param: inParam
+        })
+        console.log(result.data)
+        this.$emit('refresh')
+      }
+    },
+    editable (type) {
+      this.reportYn = false
+      // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
+      if (this.tempData) {
+        if (this.tempData.contentsKey) {
+          if (type === 'edit') {
+            //
+            alert('alim')
+          } else if (type === 'delete') {
+            this.deleteAlim()
+          }
+        } else if (this.tempData.memoKey) {
+          if (type === 'edit') {
+            // 댓글 수정
+            this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index)
+          } else if (type === 'delete') {
+            // 댓글 수정
+            this.deleteMemo({ memoKey: this.tempData.memoKey })
+          }
+        }
+      }
     },
     // cardInfo (alim) {
     //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
@@ -212,7 +258,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -240,7 +286,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -338,7 +384,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

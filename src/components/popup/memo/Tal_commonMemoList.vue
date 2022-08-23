@@ -4,11 +4,14 @@
       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
         <!--       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% + 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem; margin-left: -1rem;" > -->
           <!-- <div class="fl w-100P" > -->
-          <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText(memo.pmemo.userDispMtext || memo.pmemo.userDispMtext)}}</p>
-          <div  class="fl commonBlack  font12" style="margin: 0.5rem" v-html="memo.pmemo.bodyMinStr"></div>
+          <div v-if="memo.pmemo" >
+            <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText(memo.pmemo.userDispMtext || memo.pmemo.userDispMtext)}}</p>
+            <div  class="fl commonBlack font12" style="margin: 0.5rem" v-html="memo.pmemo.bodyMinStr"></div>
+          </div>
           <!-- </div> -->
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt=""> -->
-          <p class="fl mleft-05 font14" v-if="memo.pmemo.deleteYn">삭제된 댓글입니다.</p>
+
+          <p class="fl font14 " style="margin: 0.5rem" v-else >삭제된 댓글입니다.</p>
       </div>
 
       <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
@@ -23,7 +26,7 @@
           </div>
           <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl font15" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
-          <img class="fr mtop-03" style="width:4.5px;" @click="contentMenuClick('memo')" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+          <img class="fr mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
           <p class="font13 mleft-05 fl" style="margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
 
         </div>
@@ -79,11 +82,16 @@ export default {
     }
   },
   methods: {
-    contentMenuClick (type) {
-      this.$emit('contentMenuClick', type)
+    contentMenuClick (type, ownerYn, memo, index) {
+      var param = {}
+      param.type = type
+      param.ownerYn = ownerYn
+      param.tempData = memo
+      param.index = index
+      this.$emit('contentMenuClick', param)
     },
     infoMemo (memo) {
-      console.log(memo)
+      // console.log(memo)
     },
     loadMore () {
       // this.memoLoadingShow()
@@ -120,25 +128,29 @@ export default {
       memo.memoKey = data.memoKey
       memo.creUserKey = data.creUserKey
       memo.deleteYn = false
-      console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)
+
       if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
+
         this.$emit('editTrue')
       }
+      data.bodyFullStr = document.getElementById('editCommentBox').innerHTML
     },
     memoMemoClick (memo) {
       this.$emit('mememo', memo)
       // this.hoverAnima(memo.memoKey)
     },
     scrollMove (key) {
-      var location = document.getElementById(key).offsetTop
-      this.$emit('scrollMove', location)
-      this.anima(key)
+      var location = document.getElementById(key)?.offsetTop
+      if (location !== undefined && location !== null && location !== '') {
+        this.$emit('scrollMove', location)
+        this.anima(key)
+      }
     },
     anima (key) {
       document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'

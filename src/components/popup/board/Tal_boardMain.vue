@@ -109,7 +109,7 @@
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:20px; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
-          <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
+          <boardList ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' />
           <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
@@ -123,11 +123,12 @@
     </div>
   <div class="btnPlus" @click="openWriteBoard" v-if="this.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
 </div>
-<gConfirmPop :confirmText='errorBoxText' confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+<gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
   <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
+<gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" />
 </template>
 <script>
 // import findContentsList from '../Tal_findContentsList.vue'
@@ -226,10 +227,82 @@ export default {
       boardWriteData: {},
       writePopId: null,
       currentTabName: '최신',
-      emptyYn: true
+      emptyYn: true,
+      contentType: '',
+      reportYn: false,
+      contentOwner: false,
+      tempData: {},
+      confirmType: false
     }
   },
+
   methods: {
+    editable (type) {
+      if (type === 'edit') {
+        this.reportYn = false
+        this.openUpdateContentsPop()
+      } else if (type === 'delete') {
+        this.reportYn = false
+        this.boardFuncClick()
+      }
+    },
+    boardFuncClick () {
+      this.confirmType = true
+      this.errorBoxText = '게시글을 삭제 하시겠습니까?'
+      this.errorBoxYn = true
+    },
+    async confirmOk () {
+      this.errorBoxYn = false
+      this.confirmType = false
+      var inParam = {}
+      // console.log(this.alimDetail)
+      inParam.contentsKey = this.tempData.contentsKey
+      inParam.jobkindId = 'BOAR'
+      inParam.teamKey = this.tempData.creTeamKey
+
+      inParam.deleteYn = true
+      await this.$commonAxiosFunction({
+        url: 'https://mo.d-alim.com:10443/tp.saveContents',
+        param: inParam
+      })
+      this.refresh()
+      // this.$emit('closeXPop', true)
+    },
+    report (type) {
+      this.confirmType = false
+
+      if (type === 'alim') {
+        this.errorBoxText = '해당 알림이 신고되었습니다.'
+      } else if (type === 'board') {
+        this.errorBoxText = '해당 게시글이 신고되었습니다.'
+      } else if (type === 'memo') {
+        this.errorBoxText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'channel') {
+        this.errorBoxText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'user') {
+        this.errorBoxText = '해당 유저가 신고되었습니다.'
+      }
+      this.errorBoxYn = true
+    },
+    contentMenuClick (params) {
+      // alert(JSON.stringify(params))
+      this.contentOwner = params.ownerYn
+      this.contentType = params.type
+      this.tempData = params.tempData
+      this.reportYn = true
+    },
+    openUpdateContentsPop () {
+      var param = {}
+      param.targetKey = this.tempData.contentsKey
+      param.targetType = 'writeBoard'
+      param.creTeamKey = this.tempData.creTeamKey
+      if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
+      param.bodyFullStr = this.tempData.bodyFullStr
+      param.modiContentsKey = this.tempData.contentsKey
+      param.titleStr = this.tempData.title
+      param.parentAttachTrueFileList = this.attachTrueFileList
+      this.$emit('openPop', param)
+    },
     async recvNoti (e) {
       var message
       // alert(JSON.stringify(e))

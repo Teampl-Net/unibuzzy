@@ -5,6 +5,11 @@
 </template>
 <script>
 export default {
+  created () {
+    setTimeout(() => {
+      this.hide()
+    }, 1000)
+  },
   methods: {
     show () {
       document.getElementsByClassName('spinner')[0].style.display = 'block'
@@ -12,7 +17,6 @@ export default {
     hide () {
       document.getElementsByClassName('spinner')[0].style.display = 'none'
     }
-
   }
 }
 </script>
