@@ -83,7 +83,7 @@ const methods = {
       // }
     }
     if (mustTimeShowYn && format !== 'HH:mm') format += ' HH:mm'
-    return this.$dayjs(compareDate).format(format)
+    return this.$dayjs(compareDate).add(9, 'hour').format(format)
     //   if (compareDate === toDate) {
     //     return changeDateHM(compareDate)
     //   } else {
@@ -378,7 +378,7 @@ const methods = {
       document.body.appendChild(iframe)
     }
     // 파일서버 fileServer fileserver FileServer Fileserver
-    iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
+    iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
     /* try {
       var pom = document.createElement('a')
       pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')

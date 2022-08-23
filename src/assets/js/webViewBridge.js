@@ -85,13 +85,15 @@ const isJsonString = (str) => {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
             } else */
-            if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
+            /* if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
             } else {
               await saveUser(userProfile) // 서버에 save요청
               router.replace({ path: '/' })
-            }
+            } */
+            await saveUser(userProfile) // 서버에 save요청
+            router.replace({ path: '/' })
           } else {
             router.replace({ path: 'policies' })
           }

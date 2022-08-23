@@ -12,15 +12,17 @@
                     <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
                     <p class="fl mleft-05 font18 colorBlack" >{{this.cabinetName}}</p>
                 </span>
-                <img @click="getBookMemberList" class="cursorP" style="float: right; width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-                <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; margin-right: 5px; min-height: 30px;"  @keyup.enter="getBookMemberList" placeholder="이름을 입력해주세요">
-                <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 100px; float: right; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
-                <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 220px; border: 1px solid #ccc;  top: 105px; z-index: 9999999;">
-                    <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
-                        등록순
-                    </div>
-                    <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
-                        이름순
+                <div style="width: calc(100%); float: right; min-height: 30px; margin-top: 10px;">
+                    <img @click="getBookMemberList" class="cursorP" style="float: right; width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+                    <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% - 200px); margin-right: 5px; min-height: 30px;"  @keyup.enter="getBookMemberList" placeholder="이름을 입력해주세요">
+                    <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
+                    <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 223px; border: 1px solid #ccc;  top: 142px; z-index: 9999999;">
+                        <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
+                            등록순
+                        </div>
+                        <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
+                            이름순
+                        </div>
                     </div>
                 </div>
             </div>

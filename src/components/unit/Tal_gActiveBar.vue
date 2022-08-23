@@ -101,6 +101,9 @@ export default {
     if (this.modeType === 'write') {
       this.tabwidth = 4.8
     }
+    if (window.innerWidth > 400) {
+      this.tabwidth = 4.8
+    }
     // if (window.innerWidth < 360) {
     //   this.tabwidth = 4
     //   if (window.innerWidth < 290) {

@@ -12,7 +12,7 @@
           <div class="whitePaperBoard">
             <div class="overFlowYScroll boardInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
-                <p class="fontBold commonColor font20 fl">게시글작성</p>
+                <p class="fontBold commonColor font20 fl">{{this.modiYn?'게시글 수정' : '게시글 작성'}}</p>
                 <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
               </div>
               <div class="writeBoardPageTopArea">
@@ -45,7 +45,7 @@
   </div>  <!-- v-if="progressShowYn" -->
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
   <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
-    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
+    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" :headerTitle="this.modiYn?'블로그형 작성' : '블로그형 작성'" />
     <formEditor @changeUploadList="changeUploadList" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
   </div>
 </template>

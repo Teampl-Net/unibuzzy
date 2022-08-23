@@ -60,11 +60,11 @@
     <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
 
         <div v-if="followYn" class="fl" style="display: flex; align-items: center;">
-          <div :style="'background-image: url(' + currentUserInfo.userProfileImg + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;">
+          <div @click="goProfile" :style="'background-image: url(' + currentUserInfo.userProfileImg + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;">
             <!-- <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
           </div>
           <div class="mleft-05" style="display:flex; flex-direction: column;">
-            <p class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
+            <p @click="goProfile" class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
             <div>
               <p class="fl font14 commonBlack">{{followTypeText}}</p>
               <p class="fl commonBlack font14 cursorP" v-if="memberYn">(공개)</p>
@@ -114,7 +114,7 @@
     <!-- <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p> -->
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
-  <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;">
+  <div v-if="followYn" class="channelItemBox pagePaddingWrap" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; padding-top: 1.5rem!important; overflow: hidden;">
     <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' />
     <!-- <div v-else style="">
       <p>구독하고 알림을 받아보세요!</p>
@@ -232,6 +232,14 @@ export default {
     } */
   },
   methods: {
+    goProfile () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'bookMemberDetail'
+      param.readOnlyYn = true
+      param.selfYn = true
+      this.$emit('openPop', param)
+    },
     async readyFunction () {
       await this.getChanDetail(false)
       this.settingTeamType(this.chanItem.teamType)

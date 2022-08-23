@@ -42,7 +42,7 @@
                       {{receiverText}}
                   </div> -->
                   <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
-                    <span>{{this.creUserName + '님에게 답변'}}</span><!-- {{this.replyData.creUserKey}} -->
+                    <span>{{this.creUserName + '님'}}</span><!-- {{this.replyData.creUserKey}} -->
                   </div>
 
                 </div>
@@ -64,8 +64,8 @@
                   </div>
                   <div style="width: 100px; height: 100%; float: left;">
                     <!-- <div style="width: 13px; height: 13px; background-color: #ccc; float: left; margin-top: 6px;"></div> -->
-                    <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" />
-                    <label class="fl" style=" width: calc(100% - 30px); margin-left: 5px;" for="replyInput">답변 허용</label>
+                    <!-- <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" /> -->
+                    <!-- <label class="fl" style=" width: calc(100% - 30px); margin-left: 5px;" for="replyInput">답변 허용</label> -->
                   </div>
                 </div>
           <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >

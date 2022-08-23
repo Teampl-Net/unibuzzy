@@ -373,6 +373,9 @@ p{margin-bottom: 0; font-size: 1.5rem;}
     .mobileNone{display: none;}
     .pcNone {display: block;}
 }
+@media screen and (max-width:300px) {
+  .pagePaddingWrap {padding: 0 1rem!important;}
+}
 
 /* 팝업 효과 */
 @keyframes fadein {
@@ -493,7 +496,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   animation-name: fadein; animation-duration: 0.5s;
   animation-fill-mode: forwards;
   position: absolute;
-  bottom: 5rem;
+  bottom: 2rem;
 
 }
 

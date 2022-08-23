@@ -65,11 +65,11 @@
 
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
           <div style="display:flex; align-items: center;">
-            <div :style="'background-image: url('+ currentUserInfo.userProfileImg + ');'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div @click="goProfile" :style="'background-image: url('+ currentUserInfo.userProfileImg + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
              <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
             </div>
             <div class="mleft-05" style="display:flex; flex-direction: column;">
-              <p class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
+              <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
               <div>
                 <p class="fl font14 commonBlack">{{followTypeText}}</p>
                 <p class="fl commonBlack font14 " v-if="memberYn">(내정보공개)</p>
@@ -236,6 +236,14 @@ export default {
   },
 
   methods: {
+    goProfile () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'bookMemberDetail'
+      param.readOnlyYn = true
+      param.selfYn = true
+      this.$emit('openPop', param)
+    },
     editable (type) {
       if (type === 'edit') {
         this.reportYn = false

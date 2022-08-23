@@ -5,7 +5,7 @@
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
     </div>
     <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
@@ -91,6 +91,14 @@ export default {
     // top5Title
   },
   methods: {
+    goProfile () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'bookMemberDetail'
+      param.readOnlyYn = true
+      param.selfYn = true
+      this.$emit('openPop', param)
+    },
     /* checkSession () {
       var iframe
       iframe = document.getElementById('sessionHidden')
@@ -140,14 +148,6 @@ export default {
       }, 500)
 
       // this.$refs.topChan.reLoad()
-    },
-    openCloseAppPop () {
-      var history = this.$store.getters.hStack
-      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
-        if (this.$route.path === '/') {
-          /*  this.appCloseYn = true */
-        }
-      }
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -232,6 +232,9 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    openCloseAppPop () {
+      this.appCloseYn = true
     }
   },
   computed: {
@@ -244,7 +247,12 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      this.openCloseAppPop()
+      var history = this.$store.getters.hStack
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+        if (this.$route.path === '/') {
+          this.openCloseAppPop()
+        }
+      }
     },
     historyStack (value, old) {
     }

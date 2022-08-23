@@ -126,6 +126,7 @@ app.config.silent = true
 app.config.globalProperties.$axios = axios
 
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
+
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')

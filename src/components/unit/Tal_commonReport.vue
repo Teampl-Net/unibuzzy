@@ -34,7 +34,7 @@ export default {
     if (this.contentType === 'alim') {
       this.contentText = '알림'
     } else if (this.contentType === 'board') {
-      this.contentText = '게시판'
+      this.contentText = '게시글'
     } else if (this.contentType === 'memo') {
       this.contentText = '댓글'
     }

@@ -1,10 +1,11 @@
 <template>
   <div style="display: flex; align-items: center; justify-content: center;" class="">
+    <commonConfirmPop v-if="saveOkPopShowYn" @no="this.saveOkPopShowYn=false" confirmType="timeout" :confirmText="popText" />
     <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; top: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
       <p style="color: white;margin-bottom: 5px;" class="font16  fontBold">{{creUserName}}</p>
       <a style="color: #fff; float: left;" href="/resource/stickerIcon/sticker_robot.svg"></a>
       <img @click="this.$emit('closePop')" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
-      <img src="../../../assets/images/common/download.svg" v-if="!mobileYn" @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
+      <img src="../../../assets/images/common/download.svg"  @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
     </div>
     <Splide :options="{ rewind: false, start: startIndex || 0 }" aria-label="Vue Splide Example">
         <SplideSlide v-for="(value, index) in imgList" :key="index">
@@ -18,13 +19,15 @@
   </div>
 </template>
 <script>
+import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-default.min.css'
 import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   components: {
     Splide,
-    SplideSlide
+    SplideSlide,
+    commonConfirmPop
   },
   props: {
     contentsTitle: {},
@@ -37,7 +40,10 @@ export default {
   data () {
     return {
       infoShown: true,
-      imgList: []
+      imgList: [],
+      mobileYn: this.$getMobileYn(),
+      saveOkPopShowYn: false,
+      popText: '저장되었습니다!'
     }
   },
   created () {
@@ -72,12 +78,14 @@ export default {
       try {
         // var pom = document.createElement('a')
         var selectImg = document.querySelectorAll('.is-active > .imgList')[0]
-        onMessage('REQ', 'saveCameraRoll', selectImg.src)
-        var fKey = selectImg.attributes.fileKey.value
-        var result = await this.$downloadFile(fKey)
-        console.log(result)
-        // eslint-disable-next-line no-debugger
-        debugger
+        if (this.mobileYn) {
+          onMessage('REQ', 'saveCameraRoll', selectImg.src)
+        } else {
+          var fKey = selectImg.attributes.fileKey.value
+          var result = await this.$downloadFile(fKey)
+          console.log(result)
+        }
+        this.saveOkPopShowYn = true
       } catch (error) {
         console.log(error)
       }

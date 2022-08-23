@@ -62,7 +62,7 @@
                     <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
-                  <div class="fr w-100P mtop-05">
+                  <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1'">
                     <p class="fl font14" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
@@ -79,7 +79,7 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn='true' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn='alim.replayYn' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->

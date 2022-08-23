@@ -3,10 +3,11 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <div style="position: absolute; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
-        <div v-if="toolBoxShowYn" class="fl">
-          <span style=" color: #6768A7; float: left; margin-right: 5px; font-size: 18px; min-width:102px; border-right:2px solid #ccc;" @mousedown="clickSelectBox">폰트 {{this.tools.ftSize}}</span>
-          <div v-if="fontSelectBoxShowYn" style="width: 100px; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
+    <!-- v-if="toolBoxShowYn" -->
+    <div style="position: absolute; left: 0; bottom: 0; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
+        <div class="fl h-100P " style="width: 25%;">
+          <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
+          <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
             <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
             <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
             <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
@@ -18,15 +19,15 @@
               <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
           </select> -->
         </div>
-        <div class="fl" style="display: flex; align-items: center; justify-content: space-around;">
-          <div @click="changeTextStyle('bold')" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px;text-align: center;cursor: pointer;"><img class="w-60P" src="../../../assets/images/formEditor/boldFormatIcon.svg" alt=""></div>
-          <div @click="changeTextStyle('italic')" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 30px; padding-top: 2px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italic.svg" alt=""></div>
-          <div @click="changeTextStyle('underLine')" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 28px;text-align: center; padding-top: 2px; cursor: pointer;"><img class="w-90P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
-          <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt="">
+        <div   class="fl" style="display: flex; width: 45%;height: 100%; align-items: center; justify-content: space-around;">
+          <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px;text-align: center;cursor: pointer;"><img class="w-60P" src="../../../assets/images/formEditor/boldFormatIcon.svg" alt=""></div>
+          <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 30px; padding-top: 1px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italic.svg" alt=""></div>
+          <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 28px;text-align: center; padding-top: 1px; cursor: pointer;"><img class="w-90P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
+          <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
+          <!-- <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt=""> -->
         </div>
-        <div class="fr" style="border-left: 2px solid #ccc; padding-left: 0.5rem;">
+        <div class="fl" style="height: 100%; width: 30%; padding: 5px 10px 5px 5px;">
           <gBtnSmall @click="setParamInnerHtml" style="" class="fr" btnTitle="적용" />
-          <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fr" style="width: 30px; cursor: pointer; z-index: 999" alt="">
         </div>
         <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
 
@@ -35,12 +36,12 @@
     <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 10px 15px; overflow: scroll; overflow-x: hidden; background: #ffffff; position: relative; ">
 
         <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px; box-shadow: 0px 9px 16px 4px #ccc; ">
+        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px;    overflow: hidden scroll; box-shadow: 0px 9px 16px 4px #ccc; ">
             <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                         --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
-                        <div v-for="(value, index) in formCardList" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
+                        <div v-for="(value, index) in formCardList" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
                             <formText v-if="value.type === 'text'" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                             <formImage :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                             <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div>

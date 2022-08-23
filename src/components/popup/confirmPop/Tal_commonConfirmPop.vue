@@ -4,7 +4,7 @@
   <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
     <div class="confirmPopHeader">
       <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
-      <p class="font25 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
+      <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
       <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
     </div>
 
@@ -55,9 +55,9 @@ export default {
 
   },
   computed: {
-    popLeft () {
+    /* popLeft () {
       return { left: (window.innerWidth - 280) / 2 + 'px' }
-    }
+    } */
   },
   created () {
     this.timeOut()
@@ -65,7 +65,7 @@ export default {
 }
 </script>
 <style scoped>
-.confirmPopWrap{width: 280px; position: fixed; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;}
+.confirmPopWrap{/* max-width: 280px; */ width: 80%; left: 10%; position: fixed; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;}
 /* .confirmPopWrap{width: 90%; max-width: 400px; position: absolute; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;} */
 .confirmPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.8rem 0.5rem;}
 .confirmPopHeader img{width: 1.7rem; margin: 0 0.4rem}

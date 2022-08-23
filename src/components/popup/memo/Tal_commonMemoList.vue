@@ -31,7 +31,7 @@
 
         </div>
         <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; ">
-          <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 70%;float: left; height: 100%; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
+          <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
           <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; height: 100%;" class="commonBlack font14" v-html="memo.bodyFullStr" ></div>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666; margin-top: 10px;" >

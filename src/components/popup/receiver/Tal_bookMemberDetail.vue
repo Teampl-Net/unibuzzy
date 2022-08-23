@@ -14,7 +14,7 @@
 
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB detailLabelText"  @click="testInput">이름</p>
+            <p class="textLeft font16 fl cBlack tB detailLabelText" >이름</p>
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memName}}</p>
             <input v-else type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
 
@@ -123,8 +123,20 @@ export default {
                 }
             if(this.readOnlyYn){
                 if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
-
                 if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
+                if (this.propData.selfYn) {
+                    if(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg){
+                        this.userProfileImg = JSON.parse(localStorage.getItem('sessionUser')).userProfileImg
+                    }
+                    if (JSON.parse(localStorage.getItem('sessionUser')).userEmail)
+                        this.memEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
+                    else{ this.memEmail= '등록된 이메일이 없습니다.'}
+                    if (JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+                        this.memName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+                    if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc)
+                        this.memPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
+                    else{ this.memPhone= '등록된 번호가 없습니다.' }
+                }
             }
 
 

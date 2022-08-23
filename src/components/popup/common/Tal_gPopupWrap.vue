@@ -447,10 +447,14 @@ export default {
           // if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
           if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '상세' } // this.$changeText(this.params.value.userDispMtext)
         } else {
-          if (!target.managerKey) {
-            this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+          if (target.selfYn) {
+            this.headerTitle = '내 정보'
           } else {
-            this.headerTitle = '매니저 수정'
+            if (!target.managerKey) {
+              this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+            } else {
+              this.headerTitle = '매니저 수정'
+            }
           }
         }
       } else if (this.targetType === 'writeBoard') {
