@@ -4,30 +4,38 @@
         </div>
     </div> -->
     <div style="position: absolute; left: 0; bottom: 0; display: flex; align-items: center; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
-        <div v-if="toolBoxShowYn">
-          <span style=" color: #6768A7; float: left; margin-right: 5px; font-size: 18px;">폰트 |</span>
-          <div v-if="fontSelectBoxShowYn" style="width: 110px; position: absolute; background: #fff; min-height: 80px; left: 45px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
+        <div v-if="toolBoxShowYn" class="fl">
+          <span style=" color: #6768A7; float: left; margin-right: 5px; font-size: 18px; min-width:102px; border-right:2px solid #ccc;" @mousedown="clickSelectBox">폰트 {{this.tools.ftSize}}</span>
+          <div v-if="fontSelectBoxShowYn" style="width: 100px; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
             <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
             <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
             <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
           </div>
-          <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div>
+          <!-- <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div> -->
           <!-- <select @mousedown="clickSelectBox" name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
               <option style="font-size: 20px; color: #6768A7;" value="20">큰사이즈</option>
               <option style="font-size: 16px; color: #6768A7;" value="16">중간사이즈</option>
               <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
           </select> -->
+        </div>
+        <div class="fl" style="display: flex; align-items: center; justify-content: space-around;">
           <div @click="changeTextStyle('bold')" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px;text-align: center;cursor: pointer;"><img class="w-60P" src="../../../assets/images/formEditor/boldFormatIcon.svg" alt=""></div>
           <div @click="changeTextStyle('italic')" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 30px; padding-top: 2px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italic.svg" alt=""></div>
           <div @click="changeTextStyle('underLine')" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 28px;text-align: center; padding-top: 2px; cursor: pointer;"><img class="w-90P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
-          <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fr" alt="">
+          <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt="">
         </div>
-        <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt="">
+        <div class="fr" style="border-left: 2px solid #ccc; padding-left: 0.5rem;">
+          <gBtnSmall @click="setParamInnerHtml" style="" class="fr" btnTitle="적용" />
+          <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fr" style="width: 30px; cursor: pointer; z-index: 999" alt="">
+        </div>
+        <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
+
     </div>
-    <gBtnSmall @click="setParamInnerHtml" style="position: absolute; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" />
-    <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 0 10px; overflow: scroll; overflow-x: hidden; background: #f1f1f1; position: relative;">
+    <!-- <gBtnSmall @click="setParamInnerHtml" style="position: absolute; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" /> -->
+    <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 10px 15px; overflow: scroll; overflow-x: hidden; background: #ffffff; position: relative; ">
+
         <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-        <div style="">
+        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px; box-shadow: 0px 9px 16px 4px #ccc; ">
             <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
@@ -50,6 +58,7 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="formEditorWhitePaperEffect" style="position: absolute; top:0; right:0; "></div> -->
         <!-- <p>{{formCardList}}</p> -->
         <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
                         </div> -->
@@ -442,5 +451,15 @@ input:focus{
   outline: none;
 }
 .formDiv :hover{ cursor: text;}
-.formDiv{ width: 100%; border: 1px solid #6768a745; min-height: 46px; background: #fff;  cursor: pointer;text-align: left;}
+.formDiv{ width: 100%; border: 1px dashed #ccc; min-height: 46px; background: #fff;  cursor: pointer;text-align: left;}
+.formEditorWhitePaperEffect {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 50px;
+      height: 50px;
+      background-color: #e1e1f2;
+      top: 0;
+      right: 0;
+  }
 </style>

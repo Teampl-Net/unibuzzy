@@ -9,7 +9,7 @@
       </transition>
     </div> -->
       <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{this.scrollDirection}}, {{this.scrollPosition}}</div> -->
-      <template id="boardRow" v-for="(board, index) in commonBoardListData" :key="index">
+      <template id="boardRow" v-for="(board, index0) in commonBoardListData" :key="index0">
         <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
         <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
@@ -38,7 +38,7 @@
 
               <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
               <template v-if="nonMemYn !== true">
-                <div @click="changeAct(userDo, board.contentsKey)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
+                <div @click="changeAct(userDo, board.contentsKey, index0)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
                   <template v-if="userDo.doType === 'ST'">
                     <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
                     <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
@@ -226,7 +226,7 @@ export default {
       return userDoList
     },
 
-    async changeAct (act, contentsKey) {
+    async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -242,10 +242,30 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
+
+        var temp = this.commonBoardListData[idx].userDoList
+        for (var i = 0; i < temp.length; i++) {
+          if(temp[i].doType === act.doType) {
+            temp.splice(i, 1)
+          }
+        }
+        this.commonBoardListData[idx].userDoList = temp
+        this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
+        if (result.result === true) {
+          // debugger
+          console.log(result)
+          var temp = this.commonBoardListData[idx].userDoList
+          if (!temp) {
+            temp = []
+          }
+          temp.push({ doType: act.doType, doKey: result.doKey })
+          this.commonBoardListData[idx].userDoList = temp
+          this.changeData += 1
+        }
       }
       if (result === true) {
         await this.$emit('refresh')

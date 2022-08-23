@@ -6,7 +6,7 @@
     <!-- <div>{{pushKey}}</div> -->
 
     <div class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
-      <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index">
+      <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index" :change="changeData">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor">
@@ -153,7 +153,8 @@ export default {
       reportYn: false,
       contentType: '',
       contentOwner: false,
-      tempData: {}
+      tempData: {},
+      changeData: 1
 
     }
   },
@@ -282,7 +283,7 @@ export default {
         document.body.appendChild(iframe)
       }
       // 파일서버 fileServer fileserver FileServer Fileserver
-      iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+      iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
@@ -668,6 +669,7 @@ export default {
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      var temp = {}
       param.targetKey = contentsKey
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (param.targetKey === null) { return }
@@ -675,10 +677,31 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
+        temp = this.alimDetail[0].userDoList
+        for (var i = 0; i < temp.length; i++) {
+          if (temp[i].doType === act.doType) {
+            temp.splice(i, 1)
+          }
+        }
+        this.alimDetail[0].userDoList = temp
+        this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
+        console.log('resultresultresultresultresultresultresultresultresultresultresult')
+        console.log(result)
+        if (result.result === true) {
+          temp = this.alimDetail[0].userDoList
+          if (!temp) {
+            temp = []
+          }
+          temp.push({ doType: act.doType, doKey: result.doKey })
+          this.alimDetail[0].userDoList = temp
+          this.settingUserDo(temp)
+          this.changeData += 1
+        }
+        console.log(this.alimDetail[0])
       }
       // console.log('resultresult')
       // console.log(result)

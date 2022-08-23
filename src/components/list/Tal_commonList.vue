@@ -189,7 +189,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+          url: '/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -520,11 +520,6 @@ export default {
             temp = []
           }
           temp.push({ doType: act.doType, doKey: result.doKey })
-          /* for (var i = 0; i < temp.length; i++) {
-            if(temp[i].doType === act.doType) {
-              temp.splice(i, 1)
-            }
-          } */
           this.contentsList[idx].userDoList = temp
           this.changeData += 1
         }

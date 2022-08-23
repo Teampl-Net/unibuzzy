@@ -261,7 +261,7 @@ export default {
 
       inParam.deleteYn = true
       await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveContents',
+        url: '/tp.saveContents',
         param: inParam
       })
       this.refresh()
