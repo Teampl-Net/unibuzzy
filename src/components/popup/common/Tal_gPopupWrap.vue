@@ -55,6 +55,7 @@
       <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" />
 
       <memberFormPreView v-if="this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
+      <errorPage v-if="this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
 
     </div>
 </template>
@@ -103,6 +104,7 @@ import memberForm from '../memberQuestion/Tal_editMemberForm.vue'
 import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
 import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
 
+import errorPage from '../../popup/common/Tal_errorPage.vue'
 export default {
   async created () {
     await this.settingPop()
@@ -194,7 +196,8 @@ export default {
     autoAnswerList,
     memberForm,
     memberFormList,
-    memberFormPreView
+    memberFormPreView,
+    errorPage
   },
   updated () {
   },
@@ -225,7 +228,7 @@ export default {
         }
       }
     },
-    deepLinkQueue (value, old) {
+    async deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
       } else {
@@ -233,13 +236,32 @@ export default {
           var target = value[value.length - 1]
           // eslint-disable-next-line no-new-object
           var param = new Object()
-          param.targetType = target.targetKind
-          param.targetKey = target.targetKey
-
+          if (target.targetKind === 'pushDetail') {
+            var t = target.targetKey
+            var paramList = []
+            paramList = t.split('?')
+            param.targetType = 'chanDetail'
+            param.targetKey = paramList[1]
+            var followYn = await this.getFollowerYn(paramList[1])
+            if (followYn) {
+              param.targetContentsKey = paramList[0]
+            } else {
+              /* // eslint-disable-next-line no-new-object
+              param = new Object()
+              param.targetType = 'errorPage'
+              this.$store.commit('changeDeepLinkQueue', [])
+              this.openPop(param) */
+            }
+            this.$store.commit('changeDeepLinkQueue', [])
+            this.openPop(param)
+          } else {
+            param.targetType = target.targetKind
+            param.targetKey = target.targetKey
+            this.$store.commit('changeDeepLinkQueue', [])
+            this.openPop(param)
+          }
           /* target.splice(0, 1)
-          this.$store.commit('addDeepLinkQueue', target) */
-          this.$store.commit('addDeepLinkQueue', [])
-          this.openPop(param)
+          this.$store.commit('changeDeepLinkQueue', target) */
         }
       }
     },
@@ -250,6 +272,21 @@ export default {
     }
   },
   methods: {
+    async getFollowerYn (teamKey) {
+      var paramMap = new Map()
+      paramMap.set('teamKey', teamKey)
+      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getFollowerList',
+        param: Object.fromEntries(paramMap)
+      })
+      console.log(result)
+      if (result.data.content.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    },
     selectedReceiverBookNMemberList (param) {
       console.log('selectedReceiverBookNMemberList')
       console.log(this.targetType)

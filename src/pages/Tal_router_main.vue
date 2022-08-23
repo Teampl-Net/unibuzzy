@@ -85,22 +85,57 @@ export default {
     }
   },
   watch: {
-    deepLinkQueue (value, old) {
+    async deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (value.length > 0) {
           var target = value[value.length - 1]
           // eslint-disable-next-line no-new-object
           var param = new Object()
-          param.targetType = target.targetKind
-          param.targetKey = target.targetKey
-          this.$store.commit('addDeepLinkQueue', [])
-          this.openPop(param)
+          if (target.targetKind === 'pushDetail') {
+            var t = target.targetKey
+            var paramList = []
+            paramList = t.split('?')
+            param.targetType = 'chanDetail'
+            param.targetKey = paramList[1]
+            var followYn = await this.getFollowerYn(paramList[1])
+            if (followYn) {
+              param.targetContentsKey = paramList[0]
+            } else {
+              /* // eslint-disable-next-line no-new-object
+              param = new Object()
+              param.targetType = 'errorPage'
+              this.$store.commit('changeDeepLinkQueue', [])
+              this.openPop(param) */
+            }
+            this.$store.commit('changeDeepLinkQueue', [])
+            this.openPop(param)
+          } else {
+            param.targetType = target.targetKind
+            param.targetKey = target.targetKey
+            this.$store.commit('changeDeepLinkQueue', [])
+            this.openPop(param)
+          }
         }
       }
     }
   },
   methods: {
+    async getFollowerYn (teamKey) {
+      var paramMap = new Map()
+      paramMap.set('teamKey', teamKey)
+      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getFollowerList',
+        param: Object.fromEntries(paramMap)
+      })
+      console.log(result)
+      if (result.data.content.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    },
     /* checkDeepLinkQueue () {
       // const searchParams = new URLSearchParams(location.search)
 
@@ -111,7 +146,7 @@ export default {
         var param = new Object()
         param.targetType = target.targetKind
         param.targetKey = target.targetKey
-        this.$store.commit('addDeepLinkQueue', [])
+        this.$store.commit('changeDeepLinkQueue', [])
         this.openPop(param)
       }
     }, */

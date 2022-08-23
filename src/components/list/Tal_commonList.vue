@@ -56,7 +56,7 @@
                     </template>
                   </div>
                   <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey
+                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey + '?' + alim.creTeamKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
                     <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
@@ -258,7 +258,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -286,7 +286,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -384,7 +384,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

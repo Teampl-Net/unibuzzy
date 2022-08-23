@@ -33,7 +33,7 @@ export default createStore({
     addPushQueue (state, page) {
       state.recvPushQueue = page
     },
-    addDeepLinkQueue (state, page) {
+    changeDeepLinkQueue (state, page) {
       state.deepLinkQueue = page
     }
   },

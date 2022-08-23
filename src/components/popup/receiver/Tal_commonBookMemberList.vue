@@ -134,7 +134,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+            url: '/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {

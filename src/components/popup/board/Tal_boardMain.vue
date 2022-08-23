@@ -14,8 +14,7 @@
           <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div> -->
       <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">
-        <div class="chanImgRound" > <!-- 채널 로고 부분 -->
-          <img id="chanImg" :src="chanInfo.logoPathMtext" style="width: 70px;" alt="채널사진" />
+        <div class="chanImgRound" :style="'background-image: url(' + chanInfo.logoPathMtext + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
           <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         </div>
         <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
@@ -66,8 +65,8 @@
 
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
           <div style="display:flex; align-items: center;">
-            <div style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;">
-              <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/>
+            <div :style="'background-image: url('+ currentUserInfo.userProfileImg + ');'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+             <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
             </div>
             <div class="mleft-05" style="display:flex; flex-direction: column;">
               <p class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>

@@ -7,7 +7,7 @@
         </div>
         <div style="width: 100%; height: calc(100% - 50px); margin-top: 10px; float: left; padding: 10px;">
             <div style="width: 100%; float: left; min-height: 40px;">
-              <p class="commonBlack font16 fl fontBold textLeft">STEP.1 <a class="lightGray" href="" @click="downLoadTemplete">템플릿 파일을 다운로드</a> 하여 작성합니다.</p>
+              <p class="commonBlack font16 fl fontBold textLeft">STEP.1 <a class="lightGray" href="/commonFile/thealim_member_upload_list.xlsx" download>템플릿 파일을 다운로드</a> 하여 작성합니다.</p>
               <!-- <a style="margin-left: 5px; margin-top: 2px;" class="lightGray fl font15" @click="downLoadTemplete">다운로드</a> -->
             </div>
             <p class="commonBlack font16 fontBold textLeft">STEP.2 파일을 업로드하고 정합성 테스트를 합니다.</p>
@@ -30,28 +30,30 @@
                         </tr>
                     </tbody>
                 </table>
-                <table id="contentsTable" style="width: 100%; ">
-                    <colgroup><col style="width: 20%"><col style="width: 40%"><col style="width: 40%;"></colgroup>
-                    <tbody>
-                        <tr v-if="this.uploadErrorYn"><td colspan="3">파일 확인 실패: 업로드 파일 확인 후 재 업로드 해주세요</td></tr>
-                        <tr v-for="(value, index) in failList" :key="index">
-                            <td v-if="value[1]" class="font14">{{value[1]}}</td>
-                            <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                            <td v-if="value[2]" class="font14">{{value[2]}}</td>
-                            <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
-                            <td v-if="value[3]" class="font14">{{value[3]}}</td>
-                            <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                        </tr>
-                        <tr v-for="(value, index) in excelFileList" :key="index">
-                            <td v-if="value[1]" class="font14">{{value[1]}}</td>
-                            <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                            <td v-if="value[2]" class="font14">{{value[2]}}</td>
-                            <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
-                            <td v-if="value[3]" class="font14">{{value[3]}}</td>
-                            <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div style="width: 100%; height: calc(100% - 25px); overflow: hidden auto;">
+                  <table id="contentsTable" style="width: 100%; ">
+                      <colgroup><col style="width: 20%"><col style="width: 40%"><col style="width: 40%;"></colgroup>
+                      <tbody>
+                          <tr v-if="this.uploadErrorYn"><td colspan="3">파일 확인 실패: 업로드 파일 확인 후 재 업로드 해주세요</td></tr>
+                          <tr v-for="(value, index) in failList" :key="index">
+                              <td v-if="value[1]" class="font14">{{value[1]}}</td>
+                              <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
+                              <td v-if="value[2]" class="font14">{{value[2]}}</td>
+                              <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
+                              <td v-if="value[3]" class="font14">{{value[3]}}</td>
+                              <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
+                          </tr>
+                          <tr v-for="(value, index) in excelFileList" :key="index">
+                              <td v-if="value[1]" class="font14">{{value[1]}}</td>
+                              <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
+                              <td v-if="value[2]" class="font14">{{value[2]}}</td>
+                              <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
+                              <td v-if="value[3]" class="font14">{{value[3]}}</td>
+                              <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
             </div>
             <p class="commonBlack font16 fontBold fl textLeft mtop-05">STEP.3 위 구성원을 주소록에 추가합니다.</p>
             <gBtnSmall @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" btnTitle="업로드" />
@@ -84,29 +86,21 @@ export default {
   methods: {
     downLoadTemplete () {
       var iframe
-      var app = document.getElementById('app')
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenExcelDownloader'
         iframe.style.visibility = 'none'
-        iframe.style.position = 'relative'
-        iframe.src = '/commonFile/thealim_member_upload_list.xlsx'
-        iframe.name = 'hiddenExcelDownloader'
-        app.appendChild(iframe)
+        document.body.appendChild(iframe)
       }
-      var url = '/commonFile/thealim_member_upload_list.xlsx'
-      var _window = window.open(url, '엑셀 다운로드', 'window=800, height=700, toolbar=no, menubar=no, scrollbars=no, resize=no')
-      _window.document.close()
-      _window.close()
-
-      // window.open('hiddenExcelDownloader')
+      // link = link.replaceAll('http://61.97.186.14:19090/', '')
+      iframe.src = 'https://mo.d-alim.com/commonFile/thealim_member_upload_list.xlsx'
       // iframe.download = name
       return false
     },
     async test () {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.uploadTpUserRequireListExcelFile',
+        url: '/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })
@@ -131,7 +125,7 @@ export default {
             this.isUploading = true
 
             this.$axios
-              .post('https://mo.d-alim.com:10443/tp.uploadTpUserRequireListExcelFile', form, {
+              .post('/tp.uploadTpUserRequireListExcelFile', form, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -180,7 +174,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMUserFromExcelFile',
+        url: '/tp.saveMUserFromExcelFile',
         param: {
           excelList: this.excelFileList,
           cabinetKey: this.cabinetKey,

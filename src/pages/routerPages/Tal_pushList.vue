@@ -2,6 +2,7 @@
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
     <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;">
+      <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader "  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
@@ -35,11 +36,13 @@
   <!-- </div> -->
 </template>
 <script>
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 export default {
   name: 'pushList',
   components: {
-    findContentsList
+    findContentsList,
+    commonConfirmPop
     // searchResult
   },
   props: {
@@ -85,6 +88,15 @@ export default {
       this.requestSearchList(this.readySearchList)
     }
     this.introPushPageTab()
+    if (this.targetCKey) {
+      this.getMCabContYn(this.targetCKey).then(Response => {
+        if (Response !== true) {
+          this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
+          this.failPopYn = true
+          this.targetCKey = null
+        }
+      })
+    }
     this.scrolledYn = false
   },
 
@@ -157,6 +169,23 @@ export default {
     }
   },
   methods: {
+    async getMCabContYn (contentsKey) {
+      var paramMap = new Map()
+      paramMap.set('targetKey', contentsKey)
+      paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('jobkindId', 'ALIM')
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.getMCabContentsList',
+        param: Object.fromEntries(paramMap)
+      })
+      console.log(result)
+      if (result.data.length > 0) {
+        return true
+      } else {
+        return false
+      }
+      //
+    },
     targetContentScrollMove (wich) {
       this.$emit('targetContentScrollMove', wich)
     },
@@ -550,7 +579,9 @@ export default {
       currentTabName: '최신',
       emptyYn: true,
       loadMoreDESCYn: null,
-      targetCKey: null
+      targetCKey: null,
+      failPopYn: false,
+      errorText: ''
 
     }
   }

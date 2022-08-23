@@ -102,7 +102,7 @@ const isJsonString = (str) => {
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'deepLinkUrl') {
-          store.commit('addDeepLinkQueue', message.url)
+          store.commit('changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
           // alert(message.url)
           const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com:9443', ''))
@@ -113,7 +113,7 @@ const isJsonString = (str) => {
             queList.push({ targetKind: param[0], targetKey: param[1] })
           }
 
-          store.commit('addDeepLinkQueue', queList)
+          store.commit('changeDeepLinkQueue', queList)
         } else if (message.type === 'goback') {
           var history = store.getters.hStack
           var removePage = history[history.length - 1]
