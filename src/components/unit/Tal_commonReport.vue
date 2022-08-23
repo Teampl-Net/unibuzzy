@@ -14,12 +14,29 @@
     <div class="fl mtop-05" @click="this.$emit('closePop')" style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center;">
       취소
     </div>
+  </div>
 
+  <div style="width:95%; position: fixed; top:5rem; left:2.5%; z-index:9999; margin: 1rem 0rem;">
+    <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+      <p class="font16">신고하는 사유를 선택해주세요.</p>
+      <!-- <select name="selectReportType" id="selectReportType" >
+        <option value="A"> 나체 이미지 </option>
+        <option value="B">폭력물</option>
+        <option value="C">자살 또는 자해</option>
+        <option value="D">스팸</option>
+        <option value="E">거짓정보</option>
+        <option value="F"> 테러리즘</option>
+        <option value="G"> 혐오발언 </option>
+        <option value="H"> 기타 </option>
+      </select> -->
+      <select class="fr commonBlack" v-model="data.questionType" style="border: 1px solid #ccc; padding:0 5px" > <option v-for="(option, index) in options" :key="index" class="commonBlack" v-bind:value="option.value"> {{ option.text }} </option> </select>
+    </div>
   </div>
 
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   props: {
     contentType: { type: String, default: 'alim' },
@@ -27,7 +44,8 @@ export default {
   },
   data () {
     return {
-      contentText: ''
+      contentText: '',
+      options:{}
     }
   },
   mounted () {
