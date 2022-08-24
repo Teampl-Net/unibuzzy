@@ -183,16 +183,12 @@ float: right; width: 40px; height: 100%; text-align: center;
   border-left: 1px solid #aaa;
 }
 .commentBottom{
-  height: 20px; line-height: 20px; fwidth: 100%; float: left; color: #666;
+  height: 20px; line-height: 20px; width: 100%; float: left; color: #666;
 }
 .mememoLeftIconArea{
   width: calc(100% - 30px) !important;
   float: right !important;
 }
-.mememoMTop{
-  /* margin-top: 50px; */
-}
-
 .memoPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
 .memoPicImgWrap img {width: 100%;}
 </style>

@@ -9,7 +9,7 @@
         <div v-if="userProfileImg" :style="'background-image: url(' + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
             <!-- <img :src="userProfileImg" /> -->
         </div>
-        <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " />
+        <!-- <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " /> -->
     </div>
 
     <div class="addMemberTextArea">

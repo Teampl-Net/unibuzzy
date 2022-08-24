@@ -1,49 +1,65 @@
 <template>
     <div class="editBookListWrap">
-        <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
+        <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
+        <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
             <!-- <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
                 <!-- <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span> -->
                 <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
                 <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
             <!-- </div> -->
-            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; " v-if="cabinetName !== ''" >
-                <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">
+            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:10px 0; overflow: hidden; " v-if="cabinetName !== ''" >
+                <!-- <span @click="goCabinetList" style="width: calc(100%); max-width: calc(100% - 350px);" class="fl mright-05 font18 h-100P colorBlack">
                     <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
-                    <p class="fl mleft-05 font18 colorBlack" >{{this.cabinetName}}</p>
-                </span>
-                <div style="width: calc(100%); float: right; min-height: 30px; margin-top: 10px;">
-                    <img @click="getBookMemberList" class="cursorP" style="float: right; width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-                    <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% - 200px); margin-right: 5px; min-height: 30px;"  @keyup.enter="getBookMemberList" placeholder="이름을 입력해주세요">
-                    <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
-                    <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 223px; border: 1px solid #ccc;  top: 142px; z-index: 9999999;">
-                        <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
-                            등록순
-                        </div>
-                        <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
-                            이름순
-                        </div>
+                    <p class="fl mleft-05 font18 textLeft colorBlack" style="width: calc(100% - 50px)" >{{this.cabinetName}}</p>
+                </span> -->
+                <div style="width: calc(100%); min-width: 120px; float: right;">
+                    <div style=" margin-left: 5px; float: right; max-width: 200px; min-height: 30px; position: relative; width: 100%;">
+                        <img @click="cabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; right: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+                        <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% ); margin-right: 5px; min-height: 30px; min-width: calc(100% );padding-right:40px!important; "  @keyup.enter="cabinetName !== ''? getBookMemberList():getBookList()" :placeholder="cabinetName !== ''? '이름을 입력해주세요' : '주소록명을 입력해주세요'">
+                        <!-- <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
+                        <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 200px; border: 1px solid #ccc;  top: 142px; z-index: 9999999;">
+                            <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
+                                등록순
+                            </div>
+                            <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
+                                이름순
+                            </div>
+                        </div> -->
                     </div>
+                    <select v-model="orderByText" @change="changeOrderBy" class="commonSelectBox font14 cursorP"  style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;" name="" id="">
+                        <option value="creDate">등록순</option>
+                        <option value="userDispMtext">이름순</option>
+                    </select>
                 </div>
+                <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
             </div>
-            <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 3.5rem);' : '' ">
+            <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
                     <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
-                <div class="btnPlus" style="bottom: 160px;" @click="openExcelUploadPop" v-if="!editYn && !mobileYn && detailOpenYn" ><p style="font-size:14px;" v-html="'엑셀<br>업로드'"></p></div>
-                <div class="btnPlus" btnTitle="추가" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook(): this.openSelectMemberPop()" v-if="!editYn" ><p style="font-size:40px;">+</p></div>
+                <!-- <div v-if="plusMenuShowYn"  @click="plusMenuShowYn = !plusMenuShowYn" style="background: #00000026; height: 100%; width: 100%; position: fixed; left: 0; z-index: 999; top: 0;"></div> -->
+                <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'엑셀<br>업로드'"></p></div>
+                <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!editYn && !imInYn && detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'나를<br>추가'"></p></div>
+                <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'직접<br>추가'"></p></div>
+                <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'유저<br>선택'"></p></div>
+                <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div>
+                <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn" >
+                    <img style="width: 20px; margin-bottom: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
+                </div>
             </div>
         </div>
         <excelUploadPop @success="successExcelUpload" :cabinetKey="this.selectBookDetail.cabinetKey" :targetKey="this.selectBookDetail.teamKey" v-if="excelUploadShowYn" @closePop="backClick"/>
-        <div @click="backClick" v-if="excelUploadShowYn" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: #00000030; z-index: 99999;"></div>
+        <div @click="backClick()" v-if="excelUploadShowYn" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: #00000030; z-index: 99999;"></div>
     </div>
 </template>
 
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
+import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
@@ -75,7 +91,7 @@ export default {
     },
     watch: {
         pageUpdate (value, old) {
-        this.backClick()
+            this.backClick(true)
         /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */
@@ -83,7 +99,7 @@ export default {
         historyStack (value, old) {
         }
     },
-    components: { findContentsList, bookListCompo,memberList,excelUploadPop },
+    components: { findContentsList, bookListCompo,memberList,excelUploadPop, gConfirmPop },
     data () {
         return {
             editYn: false,
@@ -107,20 +123,29 @@ export default {
             mobileYn: this.$getMobileYn(),
             orderByText: 'creDate',
             searchKeyword: '',
-            orderByPopShowYn: false
+            confirmPopShowYn: false,
+            confirmText: '',
+            plusMenuShowYn: false,
+            imInYn: false
         }
     },
     methods: {
-        changeOrderBy (order) {
-            this.orderByText = order
-            this.orderByPopShowYn = false
-            this.getBookMemberList()
+        changeOrderBy () {
+            // this.orderByText = order
+            // this.orderByPopShowYn = false
+            if (this.cabinetName !== '') {
+                this.getBookMemberList()
+            } else {
+                this.getBookList()
+            }
         },
         /* searchNanmeMtext() {
             this.searchKeyword
         }, */
         async getBookList () {
             var paramMap = new Map()
+            paramMap.set('cabinetNameMtext', this.searchKeyword)
+
             paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
@@ -136,14 +161,57 @@ export default {
             //
         },
         newAddMember(){
-            this.newYn = false
+            this.plusMenuShowYn = false
+            // this.newYn = false
             var data = new Object()
             data.targetType = 'bookMemberDetail'
-            data.currentCabinetKey = this.propData.cabinetKey
-            data.currentTeamKey = this.propData.teamKey
-            this.$emit('openAddPop',data)
+            data.currentCabinetKey = this.selectBookDetail.cabinetKey
+            data.currentTeamKey = this.propData.currentTeamKey
+            this.$emit('openPop',data)
+        },
+        async addMe () {
+            var me = new Object()
+            me.userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
+            if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc) {
+               me.userPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc 
+            }
+            if (JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) {
+               me.userDispMtext = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext 
+            }
+            await this.saveMemberDirectly(me)
+            this.plusMenuShowYn = false
+        },
+        async saveMemberDirectly (selectMem) {
+           var userKeyList = []
+            // eslint-disable-next-line no-new-object
+            var param = new Object()
+            // eslint-disable-next-line no-unused-vars
+            var result = null
+            // eslint-disable-next-line no-unused-vars
+            if (selectMem !== undefined && selectMem !== null && selectMem !== '') {
+                // eslint-disable-next-line no-new-object
+                var mCabContents = new Object()
+                // eslint-disable-next-line no-new-object
+                param = new Object()
+                mCabContents.jobkindId = 'USER'
+                mCabContents.cabinetKey = this.selectBookDetail.cabinetKey
+                mCabContents.targetKey = this.propData.currentTeamKey
+
+                mCabContents.inEmail = selectMem.userEmail
+                mCabContents.inPhone = selectMem.userPhone
+                mCabContents.inUserName = this.$changeText(selectMem.userDispMtext || selectMem.userNameMtext)
+                param.mCabContents = mCabContents
+                debugger
+                result = await this.$saveMCabContents(param)
+                if (result.data.result) {
+                    console.log(result)
+                    debugger
+                    await this.getBookMemberList()
+                }
+            }    
         },
         async getBookMemberList () {
+            this.imInYn = false
             this.detailOpenYn = false
             var paramMap = new Map()
             var orderText = 'mcc.creDate DESC'
@@ -167,6 +235,10 @@ export default {
                     } else {
                         this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
                     }
+                    if (this.memberList[i].userKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+                        /* if (this.imInYn) this.imInYn = true */
+                        this.imInYn = true
+                    }
                 }
                 this.cabinetName = this.$changeText(this.selectBookDetail.cabinetNameMtext)
                 this.detailOpenYn = true
@@ -184,6 +256,7 @@ export default {
             this.editYn = data
         },
         goCabinetList () {
+            this.searchKeyword = ''
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
             if (this.selectPopId === hStack[hStack.length - 1]) {
@@ -197,10 +270,52 @@ export default {
                 return
             }
         },
-        backClick () {
+        backClick (backYn) {
+            var hStack = this.$store.getters.hStack
+            var removePage = hStack[hStack.length - 1]
+            if (this.propData.value.clickData) {
+                this.searchKeyword = ''
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
+                this.detailOpenYn = false
+                this.cabinetName = ''
+                this.$emit('closeXPop')
+            } else {
+                if (this.selectPopId === hStack[hStack.length - 1]) {
+                    this.searchKeyword = ''
+                    hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                    this.$store.commit('setRemovePage', removePage)
+                    this.$store.commit('updateStack', hStack)
+                    this.detailOpenYn = false
+                    this.cabinetName = ''
+                    this.receiverTitle = '주소록 관리'
+                }
+                else if (this.subPopId === hStack[hStack.length - 1]) {
+                    this.searchKeyword = ''
+                    hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                    this.$store.commit('setRemovePage', removePage)
+                    this.$store.commit('updateStack', hStack)
+                    this.detailOpenYn = false
+                    this.cabinetName = ''
+                    this.receiverTitle = '주소록 관리'
+                } else  if (this.excelPopId === hStack[hStack.length - 1]) {
+                    hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                    this.$store.commit('setRemovePage', removePage)
+                    this.$store.commit('updateStack', hStack)
+                    this.excelUploadShowYn = false
+                } else {
+                    if (backYn) {
+                        
+                    }   else {
+                        this.$emit('closeXPop')
+                    }
+                }
+            }/* 
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
             if (this.selectPopId === hStack[hStack.length - 1]) {
+                this.searchKeyword = ''
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
@@ -209,6 +324,7 @@ export default {
                 this.receiverTitle = '주소록 관리'
             }
             else if (this.subPopId === hStack[hStack.length - 1]) {
+                this.searchKeyword = ''
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('setRemovePage', removePage)
                 this.$store.commit('updateStack', hStack)
@@ -221,11 +337,16 @@ export default {
                 this.$store.commit('updateStack', hStack)
                 this.excelUploadShowYn = false
             } else {
-                this.$emit('closeXPop')
-            }
+                if (backYn === true) {
+                    
+                } else {
+                    this.$emit('closeXPop')
+                }
+            } */
         },
         async openMCabUserList(data){
-            this.receiverTitle = '주소록 멤버 관리'
+            this.searchKeyword = ''
+            this.receiverTitle = data.cabinetNameMtext /* + ' 멤버 관리' */
             this.selectBookDetail = data
             var history = this.$store.getters.hStack
             this.selectPopId = 'selectMemeberPopup' + history.length
@@ -254,12 +375,18 @@ export default {
             await this.getPushContentsList()
         },
         openExcelUploadPop () {
-            var history = this.$store.getters.hStack
-            this.excelPopId = 'excelUploadPop' + history.length
-            history.push(this.excelPopId)
-            this.$store.commit('updateStack', history)
+            this.plusMenuShowYn = false
+            if (!this.mobileYn) {
+                var history = this.$store.getters.hStack
+                this.excelPopId = 'excelUploadPop' + history.length
+                history.push(this.excelPopId)
+                this.$store.commit('updateStack', history)
 
-            this.excelUploadShowYn = true
+                this.excelUploadShowYn = true
+            } else {
+                this.confirmText = '엑셀업로드 기능은<br>더알림 PC버전에서만 가능합니다'
+                this.confirmPopShowYn = true
+            }
         },
         async openSelectMemberPop () {
         // eslint-disable-next-line no-new-object
@@ -276,6 +403,7 @@ export default {
             this.propData.currentCabinetKey = this.selectBookDetail.cabinetKey
             var param = new Object()
             param.targetType = 'selectMemberPop'
+            param.cabinetNameMtext = this.selectBookDetail.cabinetNameMtext
             param.pSelectedList = this.memberList
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'

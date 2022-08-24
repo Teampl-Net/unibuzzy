@@ -1,12 +1,12 @@
 <template>
     <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class="">
         <div class="mbottom-05" style="width: 100%; min-height: 30px; margin-top:0.5rem; margin-left:0.5rem">
-            <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 리스트</p>
+            <p class="textLeft fontBold font18 fl commonBlack" style="">선택된 {{selectMemberPopYn? '유저' : '리스트'}}</p>
             <gBtnSmall class="fr mright-1" btnTitle='적용' @click="sendReceivers" v-if="btnVisible !== false" />
-            <div  class="fl selfAddArea">
-                <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mobileMleft" style="margin-left: 0 !important;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
+            <!-- <div  class="fl selfAddArea">
+                <gBtnSmall v-if="selectShareTargetYn || selectMemberPopYn" class="fl mobileMleft" style="margin-left: 0 !important; float: left;" :btnThema="'light'" btnTitle='나를 추가' @click="addMe"/>
                 <gBtnSmall v-if="selectMemberPopYn" class="fl mobileMleft" style="float: left;" :btnThema="'light'" btnTitle='직접 추가' @click="addNewMember"/>
-            </div>
+            </div> -->
         </div>
         <div class="selecteItemdArea">
             <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >

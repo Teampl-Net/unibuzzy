@@ -18,7 +18,7 @@
           </div>
           <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
             <span class="fl">{{this.$changeText(this.userInfo.userDispMtext)}}</span>
-            <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr" @click="changeUserDispMtext()" >
+            <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
           </div>
 
           <div class="fl" style=" width:100%; position: relative;" v-show="changeYn">
@@ -44,11 +44,11 @@
           <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
           <!-- <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat('2021-06-22 14:22')}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
-          <tr @click="openPolicyPop('useTheAlim')"><th class="font16" colspan="2">이용약관</th></tr>
+          <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">이용약관</th></tr>
           <tr>
             <th class="font16">
               버전정보
-              <p class="font10">최신버전: 1.0</p>
+              <p class="font10">최신버전: 1.1.8</p>
             </th>
             <td class="textRight font16">{{appVersion}}</td></tr>
             <!-- <tr @click="this.myChanListPopYn = true">
@@ -60,10 +60,10 @@
             </tr> -->
 
         </table>
-        <div v-on:click="openLogoutPop" class="font14" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
+        <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
           더알림 로그아웃
         </div>
-        <p class="leaveText font14">더알림을 탈퇴하려면 <span v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
+        <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
 
       <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
@@ -96,7 +96,7 @@ export default {
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
-      appVersion: '1.0.1',
+      appVersion: '1.1.8',
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',

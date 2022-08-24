@@ -306,6 +306,9 @@ export default {
     async addDirectAddMemList (param) {
       if (this.targetType === 'bookMemberDetail') {
         this.$emit('addDirectAddMemList', param)
+      } else if (this.targetType === 'editBookList') {
+        await this.$refs.editBookListComp.saveMemberDirectly(param)
+        this.closePop()
       } else {
         if (param.cabinetKey === undefined || param.cabinetKey === null || param.cabinetKey === '') {
           await this.$refs.mamberManagementCompo.addDirectly(param)
@@ -470,7 +473,12 @@ export default {
         this.chanName = this.propParams.teamNameMtext
         // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
-        this.headerTitle = '공개 대상 선택'
+        // eslint-disable-next-line no-unused-vars
+        if (target.cabinetNameMtext) {
+          this.headerTitle = target.cabinetNameMtext + '에 추가할 유저'
+        } else {
+          this.headerTitle = '대상 선택'
+        }
       } else if (this.targetType === 'memberManagement') {
         this.headerTitle = '공개/매니저 관리'
         this.helpYn = true

@@ -70,14 +70,17 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
+      // alert('me')
+      /* alert(this.memberDetailOpen)
+      alert(this.headerTitle)
       if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
         this.$emit('memberDetailClose')
       // } else if (this.targetType === 'pushDetail') {
         // this.$emit('reloadParent')
         // this.$emit('closeXPop')
-      } else {
-        this.$emit('closeXPop', this.thisPopN)
-      }
+      } else { */
+      this.$emit('closeXPop')
+      /* } */
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {

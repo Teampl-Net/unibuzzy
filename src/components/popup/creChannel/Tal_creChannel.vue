@@ -5,9 +5,9 @@
 <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'" :selectIcon="this.selectIcon" :selectBg="this.selectBg" @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
   <div :style="'background: url(' + selectBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
     <div class="createChanContentsWrap">
-      <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap" >
+      <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
         <label @click="iconBgPopupYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
-          <img src="../../../assets/images/channel/icon_camera.svg" style="width:20px;" alt=""> 배경편집 </label>
+          <img src="../../../assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt=""> 배경편집 </label>
       </form>
 
       <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
@@ -16,12 +16,12 @@
 
       <div id='chboxtest' >
 
-        <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap" >
+        <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap cursorP" >
             <!-- <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' >로고편집</label> -->
-            <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel' ><img src="../../../assets/images/channel/icon_camera.svg" style="width:20px;" alt=""> </label>
+            <label @click="iconBgPopupYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel cursorP' ><img src="../../../assets/images/channel/icon_camera.svg" style="width:20px;" alt=""> </label>
         </form>
 
-        <div class="channelLogoArea" :style="'background-image: url(' + selectIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div @click="iconBgPopupYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + selectIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
           <!-- <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/> -->
         </div>
         <div class="w-100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
@@ -31,8 +31,8 @@
           </div> -->
 
           <!-- <p class="fontBold font20 fl w-100P textCenter" >채널이름 <img src="../../../assets/images/push/noticebox_edit.png" style="" alt=""></p> -->
-          <input style="text-align:right ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널명" class="creChanInput"  id="channelName" >
-          <img src="../../../assets/images/push/noticebox_edit.png" style="" alt="">
+          <input style="text-align:center ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
+          <img class="cursorP" src="../../../assets/images/push/noticebox_edit.png" style="" alt="">
 
           <div style="width:100%;" class="mtop-1 fl ">
             <div class="fr w-100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
@@ -47,7 +47,7 @@
             </div> -->
             <div class="fl mtop-05" style="width: 100%;">
               <!-- <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:2.5rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; background: #eee; "> -->
-                <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" class="fl" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; justify-content: center; align-items: center; ">
+                <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; justify-content: center; align-items: center; ">
                   <p class="font15 commonBlack fl" >{{value.teamNameMtext}}</p>
               </div>
             </div>
@@ -65,7 +65,7 @@
         </div> -->
 
         <!-- <div v-if="chanDetail.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:3em; bottom:80px;"> -->
-         <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
+         <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@ export default {
       iconBgPopupYn: '',
       modiTeamData: {},
       pageType: '생성',
-      inputChannelName: '채널이름',
+      inputChannelName: '',
       inputChannelMemo: '',
       selectTypeText: '클릭해서 산업군을 선택해주세요.',
       selectType: '',
@@ -325,7 +325,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 
 #channelName{
   /* padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px; */
-  padding-left: 5px; width: 40%;  height: 30px; border: 1px solid #ccc; border-radius: 5px;
+  padding-left: 5px; width: 40%;  height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
 }
 .channelMemo{
   width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px;
@@ -353,4 +353,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 .createChanWrap{width: 100%;display: flex; flex-direction: column; height: 100%; top:50px;}
 .createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
 
+#channelName::placeholder {
+  color: rgb(103, 104, 167) !important;
+}
 </style>

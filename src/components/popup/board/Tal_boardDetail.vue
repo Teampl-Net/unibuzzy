@@ -264,7 +264,7 @@ export default {
       if (iframe == null) {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenDownloader'
-        iframe.style.visibility = 'none'
+        iframe.style.display = 'none'
         document.body.appendChild(iframe)
       }
       link = link.replaceAll('http://61.97.186.14:19090/', '')
@@ -279,7 +279,7 @@ export default {
       if (iframe == null) {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenDownloader'
-        iframe.style.visibility = 'none'
+        iframe.style.display = 'none'
         document.body.appendChild(iframe)
       }
       // 파일서버 fileServer fileserver FileServer Fileserver

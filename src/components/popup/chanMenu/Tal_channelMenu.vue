@@ -109,18 +109,22 @@ export default {
     }
 
   },
-  async created() {
+  created() {
     var history = this.$store.getters.hStack
     history.push('chanMenu' + this.chanAlimListTeamKey)
     this.$store.commit('updateStack', history)
     this.screenHeight = window.innerHeight
-    this.getFollowerList()
+    this.getFollowerList().then(response => {
+    })
     // this.cabinetList = this.$groupDummyList()
-    await this.getTeamCabList()
-    await this.getTeamMenuList()
-    this.setDrop()
-    this.bookListLength()
-    this.boardListLength()
+    this.getTeamCabList().then(response => {
+      this.getTeamMenuList()
+      this.setDrop()
+      this.bookListLength()
+      this.boardListLength()
+    })
+    
+    
     // this. myBoardList =
   },
   async mounted () {
@@ -140,11 +144,11 @@ export default {
       cabinetList:[],
       menuHeight: 0,
       boardDropDownYn:true,
-      bookDropDownYn:null,
+      bookDropDownYn:true,
       selectManagerListYn:false,
       selectedList : [],
       selectAdminList : [],
-      book:false,
+      book:true,
       board:false,
       teamNameText:'',
       closeYn:false
@@ -178,12 +182,14 @@ export default {
         this.bookDropDownYn = true
       }else {
         this.book = true
+        this.bookDropDownYn = true
       }
       if(this.myBoardList.length === 0){
         this.board = false
         this.boardDropDownYn = true
         }else {
         this.board = true
+        this.boardDropDownYn = true
       }
 
     },

@@ -1,8 +1,8 @@
 
 <template>
   <div class="top5TitleWrap textLeft">
-    <img style="width: 1.2rem; " v-if="listTitle === '알림'" class="mright-03 mtop-03 fl" src="../../assets/images/main/icon_notice.png"/>
-    <img style="width: 1.2rem; " v-else-if="listTitle === '채널'" class="mright-03 mtop-02 fl" src="../../assets/images/main/icon_channel.png"/>
+    <img style="width: 1.2rem; margin-top: 0.4rem;" v-if="listTitle === '알림'" class="mright-03 fl"  src="../../assets/images/main/pushIcon.svg"/>
+    <img style="width: 1.2rem; " v-else-if="listTitle === '채널'" class="mright-03 mtop-05 fl" src="../../assets/images/main/chanIcon.svg"/>
     <p class="commonColor mtop-03 fl fontBold font16">{{listTitle}} TOP5</p>
     <gBtnSmall :btnThema="'light'" class="mtop-03" style="height: 25px; line-height: 25px;" btnTitle="더보기" v-on:click="openPop(moreLink)" />
   </div>

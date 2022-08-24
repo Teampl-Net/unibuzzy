@@ -1,6 +1,7 @@
+<!-- eslint-disable no-irregular-whitespace -->
 <template>
   <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="this.$emit('closePop')"></div>
-  <div style="width:95%; position: fixed; bottom:0; left:2.5%; z-index:9999; margin: 1rem 0rem;">
+  <div v-show="!reporeportPopShowYn" style="width:95%; position: fixed; bottom:0; left:2.5%; z-index:9999; margin: 1rem 0rem;">
     <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
       <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('edit')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}} 수정</p>
       <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'alim' && !contentOwner  ? 'border: none; border-bottom: 1px solid #eee;' : '' " @click="emit('delete')" v-if="contentOwner || contentType === 'alim'" >
@@ -16,8 +17,8 @@
     </div>
   </div>
 
-  <div style="width:95%; position: fixed; top:5rem; left:2.5%; z-index:9999; margin: 1rem 0rem;" v-if="reportYn">
-    <div class="fl " style="width: 100%; padding:2rem 0; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <div style="width:95%; position: fixed; bottom:0; left:2.5%; z-index:9999; margin: 0rem;" v-if="reporeportPopShowYn">
+    <div class="fl " style="width: 100%; padding:2rem 0; background:#ffffff; border-radius:10px 10px 0 0; min-height:100px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
       <p class="font16">신고하는 사유를 선택해주세요.</p>
       <select name="selectReportType" id="selectReportType" class="mtop-05" >
         <option value="A">나체 이미지</option>
@@ -47,7 +48,7 @@ export default {
     return {
       contentText: '',
       options: [{ value: 'su', text: '주관식' }, { value: 'si', text: '단일선택' }, { value: 'mu', text: '복수선택' }, { value: 'at', text: '첨부파일' }],
-      reportYn: false,
+      reporeportPopShowYn: false,
       repotType: ''
     }
   },
@@ -68,7 +69,7 @@ export default {
       this.$emit('editable', type)
     },
     report (type) {
-      this.reportYn = true
+      this.reporeportPopShowYn = true
       if (type === 'content') {
         type = this.contentType
       }

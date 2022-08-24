@@ -14,7 +14,7 @@
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p style="width: 100%; " class="font16 fl fontBold commonBlack">
+                  <p style="width: 100%; " class="font16 fl textOverdot fontBold commonBlack">
                     <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: 'alim', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
@@ -203,7 +203,6 @@ export default {
         if (this.tempData.contentsKey) {
           if (type === 'edit') {
             //
-            alert('alim')
           } else if (type === 'delete') {
             this.deleteAlim()
           }
@@ -498,6 +497,9 @@ export default {
       if (saveYn === false) {
         param.doKey = act.doKey
         result = await this.$saveUserDo(param, 'delete')
+        if (act.doType === 'LI') {
+          this.contentsList[idx].likeCount -= 1
+        }
         console.log(this.contentsList[idx])
         console.log(this.contentsList)
         var temp = this.contentsList[idx].userDoList
@@ -514,6 +516,9 @@ export default {
         result = await this.$saveUserDo(param, 'save')
         if (result.result === true) {
           // debugger
+          if (act.doType === 'LI') {
+            this.contentsList[idx].likeCount += 1
+          }
           console.log(result)
           var temp = this.contentsList[idx].userDoList
           if (!temp) {
@@ -638,7 +643,8 @@ export default {
 
     }
 .creatorListContentBox{
-    background-color: #6768a712 !important;
+    /* background-color: #6768a712 !important; */
+    background-color: #f5f5ff !important;
     box-shadow: 0 0 7px 3px #6768a740 !important;
     }
 .alimListMemoBorder{

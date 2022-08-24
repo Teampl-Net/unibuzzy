@@ -20,9 +20,9 @@
           </select> -->
         </div>
         <div   class="fl" style="display: flex; width: 45%;height: 100%; align-items: center; justify-content: space-around;">
-          <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px;text-align: center;cursor: pointer;"><img class="w-60P" src="../../../assets/images/formEditor/boldFormatIcon.svg" alt=""></div>
-          <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 30px; padding-top: 1px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italic.svg" alt=""></div>
-          <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 28px;text-align: center; padding-top: 1px; cursor: pointer;"><img class="w-90P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
+          <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
+          <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
+          <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underLineIcon.svg" alt=""></div>
           <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
           <!-- <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt=""> -->
         </div>
@@ -181,6 +181,7 @@ export default {
         formElement.src = src
       }
       this.formCardList.push(formElement)
+      this.selectRow = this.formCardList.length - 1
       this.resizeFormArea()
       /* if (formElement.targetKey === 0) {
         this.selectFromScrollH = 100

@@ -114,7 +114,7 @@
     <!-- <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p> -->
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
-  <div v-if="followYn" class="channelItemBox pagePaddingWrap" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; padding-top: 1.5rem!important; overflow: hidden;">
+  <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; padding: 0 1.5rem; padding-top: 1.5rem!important; overflow: hidden;">
     <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' />
     <!-- <div v-else style="">
       <p>구독하고 알림을 받아보세요!</p>
@@ -743,7 +743,7 @@ export default {
 .chanWhiteBox{ display: flex; flex-direction: row;align-items: flex-start; justify-content: center; position: relative; width: 100%; align-items: center; align-content: center; }
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
-.channelItemBox{background-color: #fff; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}
+.channelItemBox{background-color: #fff; border-radius: 10px 10px 0 0; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}

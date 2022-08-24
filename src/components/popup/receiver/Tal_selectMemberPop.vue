@@ -78,6 +78,7 @@ export default {
               for (var p = 0; p < this.pSelectedList.length; p++) {
                 if (this.pSelectedList[p].userKey === this.memberList[i].userKey) {
                   this.memberList.splice(i, 1)
+                  break
                 }
               }
             }
@@ -122,7 +123,6 @@ export default {
     refresh () {
       this.getFollowerList()
     },
-
     async saveMember () {
       var userKeyList = []
       // eslint-disable-next-line no-new-object

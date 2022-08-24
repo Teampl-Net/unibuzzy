@@ -374,7 +374,7 @@ const methods = {
     if (iframe == null) {
       iframe = document.createElement('iframe')
       iframe.id = 'hiddenDownloader'
-      iframe.style.visibility = 'none'
+      iframe.style.display = 'none'
       document.body.appendChild(iframe)
     }
     // 파일서버 fileServer fileserver FileServer Fileserver

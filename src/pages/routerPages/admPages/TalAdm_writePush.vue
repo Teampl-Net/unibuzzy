@@ -11,7 +11,7 @@
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
         <!-- <div  :style="setColor" class="paperBackground"> -->
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
-        <div class="paperBackground"></div>
+        <div class="paperBackground" @click="this.$emit('closeXPop')"></div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="pageTopArea">
@@ -22,10 +22,10 @@
                     <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
                   </div>
                   <p class="fontBold commonColor font16">수신</p>
-                  <div style="min-height: 2rem; padding-top: 3px; float: left;" v-if="!this.replyPopYn">
-                    <div class="fl" style="margin-bottom: 10px; margin-left: 5px;">
-                      <div class="fl font16" style="border: 1px solid #ccc; width: 50px; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
-                      <div class="fl font16" style="border: 1px solid #ccc; width: 50px; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
+                  <div style="min-height: 2rem; float: left;" v-if="!this.replyPopYn">
+                    <div class="fl" style="border: 1px solid #ccc; margin-bottom: 10px; margin-left: 5px; overflow: hidden; border-radius: 5px;">
+                      <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
+                      <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
                     </div>
                     <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
                     <label class="mright-1 fl" for="allTrue">전체</label>
@@ -51,10 +51,10 @@
                 <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
                   <!-- <div style="width: 120px; height: 100%; float: left; margin-right: 30px;"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자 공개</label></div>
                   <div style="width: 85px; height: 100%; float: left;"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
+                  <div class="fl mright-1"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
                   <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl mleft-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
-                  <div class="fl mleft-1" ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
+                  <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
+                  <div class="fl " ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
                 </div>
 
                 <div v-else class="fl" style="width: 100%; min-height: 25px; margin-left: 5px; margin-bottom: 15px;">

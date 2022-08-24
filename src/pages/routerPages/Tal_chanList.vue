@@ -17,7 +17,7 @@
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
   <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
-  <div :class="this.scrolledYn? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
+  <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
     <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
   </div>
 </div>
