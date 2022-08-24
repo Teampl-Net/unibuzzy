@@ -1,5 +1,5 @@
 <template>
-        <div v-if="pSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
+        <div v-if="pSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 60px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px); height: var(--cardHeight)">
               <div class="fl mright-05" style="width:100%;">
                   <img  class="editorImg addFalse" :filekey="pFilekey" style="width:100%;" :src="pSrc" />
@@ -218,6 +218,7 @@ export default {
     overflow: hidden !important;
     padding: 0 !important;
     background: none !important;
+
 }
 .imageBorder{box-shadow: rgb(191 191 218) 0px 0px 2px 0px;}
 </style>

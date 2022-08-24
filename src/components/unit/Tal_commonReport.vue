@@ -16,20 +16,21 @@
     </div>
   </div>
 
-  <div style="width:95%; position: fixed; top:5rem; left:2.5%; z-index:9999; margin: 1rem 0rem;">
-    <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <div style="width:95%; position: fixed; top:5rem; left:2.5%; z-index:9999; margin: 1rem 0rem;" v-if="reportYn">
+    <div class="fl " style="width: 100%; padding:2rem 0; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
       <p class="font16">신고하는 사유를 선택해주세요.</p>
-      <!-- <select name="selectReportType" id="selectReportType" >
-        <option value="A"> 나체 이미지 </option>
-        <option value="B">폭력물</option>
-        <option value="C">자살 또는 자해</option>
-        <option value="D">스팸</option>
-        <option value="E">거짓정보</option>
-        <option value="F"> 테러리즘</option>
-        <option value="G"> 혐오발언 </option>
-        <option value="H"> 기타 </option>
-      </select> -->
-      <select class="fr commonBlack" v-model="data.questionType" style="border: 1px solid #ccc; padding:0 5px" > <option v-for="(option, index) in options" :key="index" class="commonBlack" v-bind:value="option.value"> {{ option.text }} </option> </select>
+      <select name="selectReportType" id="selectReportType" class="mtop-05" >
+        <option value="A">나체 이미지</option>
+        <option value="B">폭력물</option>
+        <option value="C">자살 또는 자해</option>
+        <option value="D">스팸</option>
+        <option value="E">거짓정보</option>
+        <option value="F"> 테러리즘</option>
+        <option value="G"> 혐오발언 </option>
+        <option value="H"> 기타 </option>
+      </select>
+      <!-- <select class="fr commonBlack" v-model="data.questionType" style="border: 1px solid #ccc; padding:0 5px" > <option v-for="(option, index) in options" :key="index" class="commonBlack" v-bind:value="option.value"> {{ option.text }} </option> </select> -->
+      <gBtnSmall class="mtop-1 "  v-on:click="sendBtnClick" btnTitle="제출하기"  />
     </div>
   </div>
 
@@ -45,7 +46,9 @@ export default {
   data () {
     return {
       contentText: '',
-      options:{}
+      options: [{ value: 'su', text: '주관식' }, { value: 'si', text: '단일선택' }, { value: 'mu', text: '복수선택' }, { value: 'at', text: '첨부파일' }],
+      reportYn: false,
+      repotType: ''
     }
   },
   mounted () {
@@ -58,14 +61,18 @@ export default {
     }
   },
   methods: {
+    sendBtnClick () {
+      this.$emit('report', this.repotType)
+    },
     emit (type) {
       this.$emit('editable', type)
     },
     report (type) {
+      this.reportYn = true
       if (type === 'content') {
         type = this.contentType
       }
-      this.$emit('report', type)
+      this.repotType = type
     }
   }
 }

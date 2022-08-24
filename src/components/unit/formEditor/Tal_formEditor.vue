@@ -36,26 +36,27 @@
     <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 10px 15px; overflow: scroll; overflow-x: hidden; background: #ffffff; position: relative; ">
 
         <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px;    overflow: hidden scroll; box-shadow: 0px 9px 16px 4px #ccc; ">
+        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; border-radius: 0.5rem; overflow: hidden auto; ">
             <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
                 <transition-group>
                         <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                         --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
-                        <div v-for="(value, index) in formCardList" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv">
-                            <formText v-if="value.type === 'text'" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
+                        <div v-for="(value, index) in formCardList" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
+                            <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                             <formImage :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
-                            <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div>
+                            <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px;" alt=""></div>
+                            <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                         </div>
                         <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
                         <formLink v-else-if="value.type === 'link'" @click="selectCard(value.targetKey)"/> -->
                     <!-- </div> -->
                 </transition-group>
             </draggable>
-            <div style="width: 100%; min-height: 50px; margin-bottom: 100px;">
-              <div @click="this.plusBtnShowYn =false" v-if="plusBtnShowYn" class="plusCardBtn fl" style="width: 100%; display: flex; background: #FFF; align-items: center; justify-content: center; margin: 0 auto;height: 30px; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">+</div>
-                <div v-else class="plusCardBtn fl" style="width: 100%; display: flex; align-items: center; justify-content: center; margin: 0 auto;height: 30px; ">
-                    <div @click="addFormCard('text')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 30px; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7;"><img class="fl" src="../../../assets/images/formEditor/addText.svg" alt=""></div>
-                    <div @click="addFormCard('image')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 30px; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/gallery.svg" style="width: 20px;" alt=""></div>
+            <div class="mtop-1" style="width: 100%; min-height: 50px; margin-bottom: 100px; ">
+              <div @click="this.plusBtnShowYn =false" v-if="plusBtnShowYn" class="plusCardBtn fl" style="width: 100%; display: flex; background: #6768a7; align-items: center; justify-content: center; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; ">+</div>
+                <div v-else class="plusCardBtn fl" style="width: 100%; display: flex; align-items: center; justify-content: center; margin: 0 auto; min-height: 40px; ">
+                    <div @click="addFormCard('text')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7;"><img class="fl" src="../../../assets/images/formEditor/addText.svg" alt=""></div>
+                    <div @click="addFormCard('image')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/gallery.svg" style="width: 20px;" alt=""></div>
                 </div>
             </div>
         </div>
@@ -438,6 +439,7 @@ export default {
 
 <style scoped>
 .plusCardBtn{text-align: center;text-align: center; width: 30px; cursor: pointer; height: 30px;
+color: white; font-size: 30px;
 }
 .plusCardBtn:hover{box-shadow: rgb(191 191 218) 0px 0px 4px 0px;}
 .CardTypeBox{display: flex; justify-content: center; align-items: center; cursor: pointer; border-right: 1px solid #bfbfda4a; width: 50%; height: 40px; font-size: 14px; color: #BFBFDA; padding: 10px 10px; line-height: 25px ;}
@@ -452,7 +454,7 @@ input:focus{
   outline: none;
 }
 .formDiv :hover{ cursor: text;}
-.formDiv{ width: 100%; border: 1px dashed #ccc; min-height: 46px; background: #fff;  cursor: pointer;text-align: left;}
+.formDiv{ width: 100%; border: 1px dashed #ccc; min-height: 60px; background: #fff;  cursor: pointer;text-align: left; box-shadow: 0px 0px 3px 0px #ccc;}
 .formEditorWhitePaperEffect {
       content: '';
       position: absolute;
