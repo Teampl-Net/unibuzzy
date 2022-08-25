@@ -14,86 +14,91 @@
         <div class="paperBackground" @click="this.$emit('closeXPop')"></div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
-              <div class="pageTopArea">
-                <!-- {{receiverList}} -->
-                <div class="fl" style="margin-bottom: 5px; width:100%;">
-                  <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
-                    <p class="fontBold commonColor font20 fl">알림작성</p>
-                    <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
-                  </div>
-                  <p class="fontBold commonColor font16">수신</p>
-                  <div style="min-height: 2rem; float: left;" v-if="!this.replyPopYn">
-                    <div class="fl" style="border: 1px solid #ccc; margin-bottom: 10px; margin-left: 5px; overflow: hidden; border-radius: 5px;">
-                      <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
-                      <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
+              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
+                <p class="fontBold commonColor font20 fl">알림작성</p>
+                <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
+              </div>
+              <div style="width: 100%; height: calc(100% - 39px);  padding-top: 1.5rem; float: left; overflow: hidden auto; ">
+                <div class="pageTopArea fl">
+                  <!-- {{receiverList}} -->
+                  <div class="fl" style="margin-bottom: 5px; width:100%;">
+                    <p class="fontBold commonColor font16">수신</p>
+                    <div style="min-height: 2rem; float: left;" v-if="!this.replyPopYn">
+                      <div class="fl" style="border: 1px solid #ccc; margin-bottom: 10px; margin-left: 5px; overflow: hidden; border-radius: 5px;">
+                        <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; border-right: 1px solid #ccc; background-color: #f9f9f9; color: black;" @click="selectRecvType(true)" :class="{receiverClickColor: receiverClickYn === true }" :checked="allRecvYn" id="allTrue" :value="true">전체</div>
+                        <div class="fl font16" style=" width: 50%; min-width: 50px; height: 100%; text-align: center; background-color: #f9f9f9; color: black;" @click="selectRecvType(false)" id="allFalse" :value="false" :class="{receiverClickColor: receiverClickYn === false }" :checked="!allRecvYn">선택</div>
+                      </div>
+                      <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
+                      <label class="mright-1 fl" for="allTrue">전체</label>
+
+                      <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
+                      <label class="mright-1 fl" for="allFalse">선택</label> -->
+
                     </div>
-                    <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
-                    <label class="mright-1 fl" for="allTrue">전체</label>
-
-                    <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
-                    <label class="mright-1 fl" for="allFalse">선택</label> -->
+                    <div v-if="!allRecvYn && !this.replyPopYn" class="fr" @click="openPushReceiverSelect" style="border-radius:10px; background-color:white; display: flex; align-items: center; justify-content: center; padding-left:10px;">
+                      <img class="fl" style="line-height:30px; width:15px;" src="../../../assets/images/main/main_subscriber.png" alt="">
+                      <p class="fr font16">{{receiverTotalNum}}</p>
+                    </div>
+                    <!-- <div v-if="!allRecvYn && !this.replyPopYn" class="inputArea recvUserArea font15 fl" style="padding: 0px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
+                        {{receiverText}}
+                    </div> -->
+                    <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
+                      <span>{{this.creUserName + '님'}}</span><!-- {{this.replyData.creUserKey}} -->
+                    </div>
 
                   </div>
-                  <div v-if="!allRecvYn && !this.replyPopYn" class="fr" @click="openPushReceiverSelect" style="border-radius:10px; background-color:white; display: flex; align-items: center; justify-content: center; padding-left:10px;">
-                    <img class="fl" style="line-height:30px; width:15px;" src="../../../assets/images/main/main_subscriber.png" alt="">
-                    <p class="fr font16">{{receiverTotalNum}}</p>
+
+                  <!-- <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;" v-if="!this.replyPopYn"> -->
+                  <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
+                    <!-- <div style="width: 120px; height: 100%; float: left; margin-right: 30px;"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자 공개</label></div>
+                    <div style="width: 85px; height: 100%; float: left;"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div> -->
+                    <div class="fl mright-1"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
+                    <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
+                    <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
+                    <div class="fl " ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
                   </div>
-                  <!-- <div v-if="!allRecvYn && !this.replyPopYn" class="inputArea recvUserArea font15 fl" style="padding: 0px 10px; width: calc(100%); background: rgb(204 204 204 / 48%);" @click="openPushReceiverSelect">
-                      {{receiverText}}
+
+                  <div v-else class="fl" style="width: 100%; min-height: 25px; margin-left: 5px; margin-bottom: 15px;">
+                    <div style="width: 120px; height: 100%; float: left; margin-right: 30px;">
+                      <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" />
+                      <label class="fl" style="width: calc(100% - 20px); margin-left: 5px;" for="creNameInput">작성자 공개</label>
+                    </div>
+                    <div style="width: 100px; height: 100%; float: left;">
+                      <!-- <div style="width: 13px; height: 13px; background-color: #ccc; float: left; margin-top: 6px;"></div> -->
+                      <!-- <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" /> -->
+                      <!-- <label class="fl" style=" width: calc(100% - 30px); margin-left: 5px;" for="replyInput">답변 허용</label> -->
+                    </div>
+                  </div>
+                  <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
+                </div>
+
+                <div style="width: 100%;float: left; min-height: 50px; position: relative;">
+                  <gActiveBar modeType="write" :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+                  <!-- <div class="titleAddArea" >
+                    <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
+                    <label class="fl" for="titleShow">제목 추가</label>
                   </div> -->
-                  <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
-                    <span>{{this.creUserName + '님'}}</span><!-- {{this.replyData.creUserKey}} -->
-                  </div>
-
                 </div>
-
-                <!-- <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;" v-if="!this.replyPopYn"> -->
-                <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
-                  <!-- <div style="width: 120px; height: 100%; float: left; margin-right: 30px;"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자 공개</label></div>
-                  <div style="width: 85px; height: 100%; float: left;"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl mright-1"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
-                  <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
-                  <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
-                  <div class="fl " ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
-                </div>
-
-                <div v-else class="fl" style="width: 100%; min-height: 25px; margin-left: 5px; margin-bottom: 15px;">
-                  <div style="width: 120px; height: 100%; float: left; margin-right: 30px;">
-                    <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" />
-                    <label class="fl" style="width: calc(100% - 20px); margin-left: 5px;" for="creNameInput">작성자 공개</label>
+                <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
+                <div class="pageMsgArea" style="">
+                  <!-- <p class="">내용</p> -->
+                  <div id="textMsgBoxPush" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
+                  <!-- <div  style="border: 1px solid #6768a745; border-radius: 5px; width: 100%; height: 100%; float: left; overflow: hidden;">
+                  -->
+                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+                  <!-- </div> -->
+                  <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
+                  <!-- <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
+                  <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
+                  <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
+                    {{msgData}}
+                  </div> -->
                   </div>
-                  <div style="width: 100px; height: 100%; float: left;">
-                    <!-- <div style="width: 13px; height: 13px; background-color: #ccc; float: left; margin-top: 6px;"></div> -->
-                    <!-- <img src="../../../assets/images/push/checkedBox.svg" style="width: 15px; height: 15px; float: left; margin-top: 4px;" /> -->
-                    <!-- <label class="fl" style=" width: calc(100% - 30px); margin-left: 5px;" for="replyInput">답변 허용</label> -->
-                  </div>
+                  <gBtnSmall class="mright-05 font20 writePushBtn " style="float: right; font-weight:bold;margin-bottom: 60px; " btnTitle='발송하기' @click="clickPageTopBtn()" />
                 </div>
-          <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
               </div>
-
-              <div style="width: 100%;float: left; min-height: 50px; position: relative;">
-                <gActiveBar modeType="write" :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
-                <!-- <div class="titleAddArea" >
-                  <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
-                  <label class="fl" for="titleShow">제목 추가</label>
-                </div> -->
-              </div>
-              <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
-              <div class="pageMsgArea" style="">
-                <!-- <p class="">내용</p> -->
-                <div id="textMsgBoxPush" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
-                <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div>
-                <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
-                <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
-                  {{msgData}}
-                </div> -->
-              </div>
-
-            </div>
-            <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div>
+            <!-- <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div> -->
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" />
-
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
                   <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
@@ -105,10 +110,10 @@
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-  <div v-show="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
+  <!-- <div id="complexWriteWrap" v-show="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="블로그형 작성" />
     <formEditor @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
-  </div>
+  </div> -->
   <!-- <div v-if="receiverPopYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999"  >
       <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' @openPop='openPop' />
   </div> -->
@@ -136,14 +141,16 @@ export default {
   mounted() {
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
-    textArea.addEventListener('focus', () => {
-      document.querySelector('#alimWrap').style.height = this.screenInnerHeight
-      document.querySelector('#alimWrap').style.width = this.screenInnerWidth
-    })
-    textArea.addEventListener('blur', () => {
-      document.querySelector('#alimWrap').style.height = this.screenInnerHeight
-      document.querySelector('#alimWrap').style.width = this.screenInnerWidth
-    })
+    if (textArea) {
+        textArea.addEventListener('focus', () => {
+        document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+        document.querySelector('#alimWrap').style.width = this.screenInnerWidth
+      })
+      textArea.addEventListener('blur', () => {
+        document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+        document.querySelector('#alimWrap').style.width = this.screenInnerWidth
+      })
+    }
   },
   data () {
     return {
@@ -191,7 +198,8 @@ export default {
       viewTab: 'text',
       titleShowYn: false,
       uploadFileList: [],
-      receiverTotalNum: 0
+      receiverTotalNum: 0,
+      complexOkYn: false
       // formCardHeight: 0
     }
   },
@@ -330,7 +338,9 @@ export default {
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
       this.editorType = 'complex'
-      this.formEditorShowYn = false
+      this.complexOkYn = true
+      this.clickPageTopBtn()
+      // this.formEditorShowYn = false
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -342,6 +352,7 @@ export default {
       }
     },
     async sendMsg () {
+      
       var paramImgList = []
       if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
         this.checkPopYn = false
@@ -356,6 +367,7 @@ export default {
       param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
       var targetMsgDiv = null
       if(this.viewTab === 'complex') {
+        // this.$refs.complexEditor.setParamInnerHtml()
         param.bodyHtmlYn = true
         if (this.uploadFileList.length > 0) {
           await this.formSubmit()
@@ -373,7 +385,7 @@ export default {
           imgList[img].src = 'imgTagSrc' + img
         }
         param.imgList = imgList
-         */
+        */
         var formList = document.querySelectorAll('#msgBox .formCard')
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
@@ -450,6 +462,7 @@ export default {
         }else{
           this.$emit('closeXPop',true)
         }
+      
       }
 
     },
@@ -477,30 +490,34 @@ export default {
       this.msgPopYn = false
     },
     async clickPageTopBtn () {
-      var title = this.writePushTitle
-      if (this.titleShowYn) {
-        if (title !== undefined && title !== null && title !== '') {
+      if(this.viewTab === 'complex' && this.complexOkYn === false) {
+        this.$refs.complexEditor.setParamInnerHtml()
+      } else {
+        var title = this.writePushTitle
+        if (this.titleShowYn) {
+          if (title !== undefined && title !== null && title !== '') {
+          } else {
+            this.errorText = '제목을 입력해주세요'
+            this.failPopYn = true
+            return
+          }
+        }
+
+        var msgData = ''
+        if(this.viewTab === 'complex') {
+          msgData = document.getElementById('msgBox').innerHTML
+        } else if (this.viewTab === 'text') {
+          msgData = document.getElementById('textMsgBoxPush').innerHTML
+        }
+        if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
         } else {
-          this.errorText = '제목을 입력해주세요'
+          this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
           return
         }
-      }
 
-      var msgData = ''
-      if(this.viewTab === 'complex') {
-        msgData = document.getElementById('msgBox').innerHTML
-      } else if (this.viewTab === 'text') {
-        msgData = document.getElementById('textMsgBoxPush').innerHTML
+        this.checkPopYn = true
       }
-      if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
-      } else {
-        this.errorText = '알림 내용을 입력해주세요'
-        this.failPopYn = true
-        return
-      }
-
-      this.checkPopYn = true
     },
     onReady (editor) {
       // Insert the toolbar before the editable area.
@@ -546,7 +563,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mo.d-alim.com:12443/tp.uploadFile', form/* ,
+            .post('fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -611,18 +628,18 @@ export default {
 
 .whitePaper {
       position: absolute;
-      left: 50%;
-      top: 47%;
-      transform: translate(-50%, -50%);
+      left: 5%;
+      bottom: 0;
+      /* transform: translate(-50%, -50%); */
       /* width: 100%; */
       width: 90%;
       margin: 0 auto;
       /* margin-top: 1rem; */
-      border-radius: 0.8rem;
+      border-radius: 0.8rem 0.8rem 0 0;
       /* height: calc(100% - 60px); */
-      min-height: 500px;
+      height: 90%;
       /* height: 90%; */
-      height: 85%;
+      /* height: 85%; */
 
       /* overflow: auto; */
       /* background-color: #fafafa; */
@@ -634,7 +651,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%);
+      /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
   }
 
   .whitePaperEffect {
@@ -659,7 +676,7 @@ export default {
 
 /* add by_jeong */
 /* .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;} */
-.pageMsgArea{ min-height: 240px; float: left; width: 100%; height: 60%; }
+.pageMsgArea{ min-height: 300px; float: left; width: 100%;}
 .pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ padding:7px; overflow: hidden scroll; margin-bottom: 60px; width: 100%; min-height: 240px; height: 90%;; border-radius: 5px; background: #fff; border:1px solid #BFBFDA; font-size: 16px; text-align: left;}
 
@@ -710,13 +727,13 @@ export default {
 .selectPaperWrap{width: 100%; height: 100%; float: left; margin-top: 1rem;}
 
 .formText {padding: 0;}
-.editableContent{ padding: 7px;  overflow: hidden scroll; width: 100%; min-height: 240px; height:90%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; }
+.editableContent{ padding: 7px;  overflow: hidden scroll; width: 100%; min-height: 300px; height:100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; }
 .msgArea span {padding: 0;}
 .titleAddArea{
   width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: -20px; position: absolute; margin-top: 7px;
 }
 .writePushBtn{
-position: absolute; left:50%; bottom:0.5rem; transform: translateX(-50%); width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
+/* position: absolute; left:50%; bottom:0.5rem; transform: translateX(-50%);  */ float: left; margin: 0 auto!important; margin-top: 20px !important; width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
 }
 @media screen and (max-width:330px) {
   .titleAddArea{

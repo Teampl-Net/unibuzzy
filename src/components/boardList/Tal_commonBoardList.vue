@@ -14,8 +14,8 @@
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
         <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
           <div  class="pushDetailTopArea">
-                <img class="fr mright-03 mleft-03" style="width:4.5px;" @click="contentMenuClick('board', board.creUserKey === creUser, board)" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-                <p @click="goDetail(board)" class="fl font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px)); float: left;">
+                <img class="fr mright-03 mleft-03 cursorP" style="width:4.5px;" @click="contentMenuClick('board', board.creUserKey === creUser, board)" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px)); float: left;">
                   <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                   <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt="">
                   {{resizeText(board.title)}}
@@ -27,7 +27,7 @@
                 <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
               <!-- </div> -->
           </div>
-          <div @click="goDetail(board)" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
+          <div @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
           <div id="alimCheckArea">
             <div class="alimCheckContents">
               <!-- <div class="pushDetailStickerWrap">
@@ -36,7 +36,7 @@
                 </div>
               </div> -->
 
-              <p v-show="board.bodyFullStr.length > 130" class="font16 textRight mbottom-05" style="">더보기></p>
+              <p v-show="board.bodyFullStr.length > 130" @click="goDetail(board)" class="font16 textRight mbottom-05 cursorP" style="">더보기></p>
               <template v-if="nonMemYn !== true">
                 <div @click="changeAct(userDo, board.contentsKey, index0)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
                   <template v-if="userDo.doType === 'ST'">

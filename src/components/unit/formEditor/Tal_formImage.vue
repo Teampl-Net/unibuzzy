@@ -129,8 +129,17 @@ export default {
                 canvas.height = height
 
                 canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                this.previewImgUrl = canvas.toDataURL('image/png', 0.8)
-                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: thisthis.selectFile })
+                const imgBase64 = canvas.toDataURL('image/png', 0.8)
+                this.previewImgUrl = imgBase64
+                const decodImg = atob(imgBase64.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var file = new File([Bfile], thisthis.selectFile.name)
+
+                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file })
 
                 thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: thisthis.selectFileList, originalType: 'image' })
                 // this.$emit('updateImgForm', this.previewImgUrl)

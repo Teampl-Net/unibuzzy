@@ -82,7 +82,7 @@ export default {
         paramMap.set('sysCabinetCode', 'USER')
         paramMap.set('adminYn', true)
         var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
+            url: '/tp.getTeamMenuList',
             param: Object.fromEntries(paramMap)
         })
         this.bookList = result.data
@@ -98,7 +98,7 @@ export default {
         paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
         paramMap.set('jobkindId', 'USER')
         var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
+            url: '/tp.getMCabContentsList',
             param: Object.fromEntries(paramMap)
         })
         this.memberList = result.data
@@ -245,11 +245,11 @@ export default {
           // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
         }
 
-        if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
+        /* if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
         } else {
           this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
-        }
+        } */
 
       }
     },

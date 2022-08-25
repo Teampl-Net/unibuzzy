@@ -189,7 +189,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+          url: '/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -257,7 +257,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -285,7 +285,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -383,7 +383,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

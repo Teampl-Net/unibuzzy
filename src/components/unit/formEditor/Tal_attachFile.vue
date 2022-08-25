@@ -3,7 +3,7 @@
          파일 선택
         <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="previewFile"/>
     </form>
-    <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; overflow: auto hidden;">
+    <div v-if="this.sFileList.length > 0" style="width: 100%; min-height: 50px; margin-top: 10px; float: left; overflow: auto hidden;">
         <div :style="attachFileWidth" style="min-width: 100%;float: left; height: 50px; overflow: hiden;">
           <div style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; background: #6768a782; box-shadow: 1px 3px 3px 0px #e9e7e7;  border: 1px solid #ccc; border-radius: 5px; position: relative;" v-for="(value, index) in this.sFileList" :key="index">
               <p class="commonBlack font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>

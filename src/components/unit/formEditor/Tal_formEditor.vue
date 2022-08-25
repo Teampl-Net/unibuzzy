@@ -1,76 +1,93 @@
+
 <template>
     <!-- <div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 2;">
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
     <!-- v-if="toolBoxShowYn" -->
-    <div style="position: absolute; left: 0; bottom: 0; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 5px;z-index: 999; background: #FFFFFF;">
-        <div class="fl h-100P " style="width: 25%;">
-          <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
-          <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
-            <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
-            <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
-            <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
+    <div style="width: 100%; float: left; ">
+      <div style="position: fixed; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 10px;z-index: 999; background: #FFFFFF;">
+          <div class="fl h-100P " style="width: 25%;">
+            <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
+            <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
+              <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
+              <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
+              <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
+            </div>
+            <!-- <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div> -->
+            <!-- <select @mousedown="clickSelectBox" name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
+                <option style="font-size: 20px; color: #6768A7;" value="20">큰사이즈</option>
+                <option style="font-size: 16px; color: #6768A7;" value="16">중간사이즈</option>
+                <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
+            </select> -->
           </div>
-          <!-- <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div> -->
-          <!-- <select @mousedown="clickSelectBox" name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
-              <option style="font-size: 20px; color: #6768A7;" value="20">큰사이즈</option>
-              <option style="font-size: 16px; color: #6768A7;" value="16">중간사이즈</option>
-              <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
-          </select> -->
-        </div>
-        <div   class="fl" style="display: flex; width: 45%;height: 100%; align-items: center; justify-content: space-around;">
-          <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
-          <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
-          <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underLineIcon.svg" alt=""></div>
-          <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
-          <!-- <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt=""> -->
-        </div>
-        <div class="fl" style="height: 100%; width: 30%; padding: 5px 10px 5px 5px;">
-          <gBtnSmall @click="setParamInnerHtml" style="" class="fr" btnTitle="적용" />
-        </div>
-        <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
+          <div   class="fl" style="display: flex; width: 45%;height: 100%; align-items: center; justify-content: space-around;">
+            <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
+            <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
+            <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
+            <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
+            <!-- <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt=""> -->
+          </div>
+          <!-- <div class="fl" style="height: 100%; width: 30%; padding: 5px 10px 5px 5px;">
+            <gBtnSmall @click="setParamInnerHtml" style="" class="fr" btnTitle="적용" />
+          </div> -->
+          <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
 
-    </div>
-    <!-- <gBtnSmall @click="setParamInnerHtml" style="position: absolute; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" /> -->
-    <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; margin-top: 50px; height: calc(100% - 60px); padding: 10px 15px; overflow: scroll; overflow-x: hidden; background: #ffffff; position: relative; ">
+      </div>
+      <!-- <gBtnSmall @click="setParamInnerHtml" style="position: absolute; right: 15px; top: 10px; z-index: 999;" btnTitle="적용" /> -->
+      <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
 
-        <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-        <div style="width: 100%; height: 100%; padding:30px 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; border-radius: 0.5rem; overflow: hidden auto; ">
-            <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
-                <transition-group>
-                        <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
-                        --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
-                        <div v-for="(value, index) in formCardList" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;background-position: center;background-image: url('/resource/common/textBackground.png');background-size: 200px;background-repeat: NO-REPEAT;background-color: #FFF;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
-                            <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
-                            <formImage :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" v-else-if="value.type === 'image'" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
-                            <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px;" alt=""></div>
-                            <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
-                        </div>
-                        <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
-                        <formLink v-else-if="value.type === 'link'" @click="selectCard(value.targetKey)"/> -->
-                    <!-- </div> -->
-                </transition-group>
-            </draggable>
-            <div class="mtop-1" style="width: 100%; min-height: 50px; margin-bottom: 100px; ">
-              <div @click="this.plusBtnShowYn =false" v-if="plusBtnShowYn" class="plusCardBtn fl" style="width: 100%; display: flex; background: #6768a7; align-items: center; justify-content: center; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; ">+</div>
-                <div v-else class="plusCardBtn fl" style="width: 100%; display: flex; align-items: center; justify-content: center; margin: 0 auto; min-height: 40px; ">
+          <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
+          <div style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
+              <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+                  <transition-group>
+                          <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
+                          --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
+                          <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
+                              <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
+                              <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
+                              <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
+                              <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
+                              <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
+                              <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px;" alt=""></div>
+                              <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
+                          </div>
+                          <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
+                          <formLink v-else-if="value.type === 'link'" @click="selectCard(value.targetKey)"/> -->
+                      <!-- </div> -->
+                  </transition-group>
+              </draggable>
+              <div class="mtop-1" style="width: 100%; min-height: 50px; margin-bottom: 100px; ">
+                <div @click="this.plusBtnShowYn = false" v-if="plusBtnShowYn" class="plusCardBtn fl" style="  float: left; width: 100%; display: flex; background: #6768a7; align-items: center; justify-content: center; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; ">+</div>
+                <div v-else-if="this.plusBtnShowYn === false" class="plusCardBtn fl" style="width: 100%; display: flex;  float: left; align-items: center; justify-content: center; margin: 0 auto; min-height: 40px; ">
                     <div @click="addFormCard('text')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7;"><img class="fl" src="../../../assets/images/formEditor/addText.svg" alt=""></div>
                     <div @click="addFormCard('image')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/gallery.svg" style="width: 20px;" alt=""></div>
+                    <div @click="this.showBlockTypeYn = !this.showBlockTypeYn"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7;"><img class="fl" src="../../../assets/images/formEditor/borderIcon.svg" alt=""></div>
+                    <div @click="addFormCard('video')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/videoIcon.svg" style="width: 20px;" alt=""></div>
                 </div>
-            </div>
-        </div>
-        <!-- <div class="formEditorWhitePaperEffect" style="position: absolute; top:0; right:0; "></div> -->
-        <!-- <p>{{formCardList}}</p> -->
-        <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
-                        </div> -->
+                <div v-if="this.showBlockTypeYn === true" class="speech-bubble" style="width: 100%; background: rgba(186, 187, 215, 0.5); float: left;  height: 60px; padding: 10px 10px;display: flex; align-items: center; min-height: 40px; justify-content: center; margin: 0 auto; margin-top: 25px; min-height: 40px; ">
+                  <div @click="addFormCard('line')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center; border-right: #6768A7; "><img class="fl" style="width: 40px;" src="../../../assets/images/formEditor/dotIcon.svg" alt=""></div>
+                  <div @click="addFormCard('dot')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px;  display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/strightLineIcon.svg" style="width: 40px;" alt=""></div>
+                  <div @click="addFormCard('block')"  class="" style="width: calc(100% - 2.5px); background: #FFF; border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; display: flex; justify-content: center; align-items: center;"><img  class="fl" src="../../../assets/images/formEditor/emptyBoxIcon.svg" style="width: 20px;" alt=""></div>
+                </div>
+              </div>
+          </div>
+          <!-- <div class="formEditorWhitePaperEffect" style="position: absolute; top:0; right:0; "></div> -->
+          <!-- <p>{{formCardList}}</p> -->
+          <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
+                          </div> -->
+      </div>
     </div>
 </template>
 
 <script>
+// eslint-disable vue/no-unused-components
 import { VueDraggableNext } from 'vue-draggable-next'
 import formText from './Tal_formText.vue'
 import formImage from './Tal_formImage.vue'
+import formBlock from './Tal_formBlock.vue'
+import formDot from './Tal_formDotLine.vue'
+import formLine from './Tal_formLine.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
@@ -108,12 +125,19 @@ export default {
       selectRow: 0,
       progressBarList: [],
       uploadFileKeyList: [],
-      uploadFileList: []
+      uploadFileList: [],
+      showBlockTypeYn: false
     }
   },
   components: {
     formText,
     formImage,
+    // eslint-disable-next-line vue/no-unused-components
+    formBlock,
+    // eslint-disable-next-line vue/no-unused-components
+    formDot,
+    // eslint-disable-next-line vue/no-unused-components
+    formLine,
     // formLink,
     draggable: VueDraggableNext
   },
@@ -147,16 +171,17 @@ export default {
       this.changeTextStyle('font')
     },
     setParamInnerHtml () {
-      var formCard = document.querySelectorAll('.formDiv .formCard')
-
+      var formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
+      // var formCardpadding = document.querySelectorAll('#eContentsWrap .formDiv')
       for (var i = 0; i < formCard.length; i++) {
         this.formCardList[i].outerHtml = formCard[i].outerHTML
         this.formCardList[i].innerHtml = formCard[i].innerHTML
-        if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
+        this.formCardList[i].type = formCard[i].originalType
+        /*  if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
           this.formCardList[i].type = 'image'
         } else {
           this.formCardList[i].type = 'text'
-        }
+        } */
       }
       this.$emit('setParamInnerHtml', this.formCardList)
       /*
@@ -168,11 +193,12 @@ export default {
     },
     addFormCard (type, src) {
       this.plusBtnShowYn = true
-      this.plusBtnShowYn = true
+      this.showBlockTypeYn = false
       // eslint-disable-next-line no-new-object
       var formElement = new Object()
       formElement.type = type
       formElement.targetKey = this.formCardList.length
+      formElement.originalType = type
       this.selectedCardKey = formElement.targetKey
       this.toolBoxShowYn = true
       if (type === 'image') {
@@ -193,8 +219,7 @@ export default {
     async successImgPreview (target) {
       // await this.addFormCard('text')
       this.progressBarList.push({ name: target.selectFileList[0].file.name, target: target.targetKey, percentage: 0 })
-      // eslint-disable-next-line no-debugger
-      debugger
+
       this.toolBoxShowYn = false
       var tempList = this.uploadFileList
       var tempKeyList = this.uploadFileKeyList
@@ -454,6 +479,13 @@ color: white; font-size: 30px;
 input:focus{
   outline: none;
 }
+.formCardBackground{
+  background-position: center!important;
+  background-image: url('/resource/common/textBackground.png')!important;
+  background-size: 200px!important;
+  background-repeat: NO-REPEAT!important;
+  background-color: #FFF!important;
+}
 .formDiv :hover{ cursor: text;}
 .formDiv{ width: 100%; border: 1px dashed #ccc; min-height: 60px; background: #fff;  cursor: pointer;text-align: left; box-shadow: 0px 0px 3px 0px #ccc;}
 .formEditorWhitePaperEffect {
@@ -466,4 +498,28 @@ input:focus{
       top: 0;
       right: 0;
   }
+  .formLineCard {
+  min-height: 35px!important;
+}
+
+.speech-bubble {
+  margin-top: 20px;
+ position: relative;
+ background: rgba(186, 187, 215, 0.5);
+ border-radius: .4em;
+}
+
+.speech-bubble:after {
+ content: '';
+ position: absolute;
+ top: 0;
+ right: 33%;
+ width: 0;
+ height: 0;
+ border: 18px solid transparent;
+ border-bottom-color: rgba(186, 187, 215, 0.5);
+ border-top: 0;
+ margin-left: -9px;
+ margin-top: -18px;
+}
 </style>

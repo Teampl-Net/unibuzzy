@@ -283,7 +283,7 @@ export default {
         document.body.appendChild(iframe)
       }
       // 파일서버 fileServer fileserver FileServer Fileserver
-      iframe.src = 'https://mo.d-alim.com:12443/tp.downloadFile?fileKey=' + fileKey
+      iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
@@ -357,7 +357,7 @@ export default {
       if (this.boardFuncType === 'BOAR') {
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveContents',
+          url: '/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -408,7 +408,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -437,7 +437,7 @@ export default {
         memo.offsetInt = 0
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       if (result.data.content) {
@@ -476,7 +476,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
+        url: '/tp.getUserDoListPage',
         param: param
       })
     },
@@ -572,7 +572,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

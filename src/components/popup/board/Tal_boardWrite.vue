@@ -8,46 +8,50 @@
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-        <div class="boardWritePaperBack"></div>
+        <div class="boardWritePaperBack" @click="this.$emit('closeXPop')"></div>
           <div class="whitePaperBoard">
             <div class="overFlowYScroll boardInputArea">
-              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; padding-bottom:0.5rem;">
+              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">{{this.modiYn?'게시글 수정' : '게시글 작성'}}</p>
-                <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr"  src="../../../assets/images/common/popup_close.png"/>
+                <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
               </div>
-              <div class="writeBoardPageTopArea">
-                <div class=""><p class="boardWriteTitleText" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
-                <div class="" v-if="propData.nonMemYn"><p class="boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
-              </div>
-              <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
-              <div class="pageMsgArea" style="">
-                <!-- <p class="">내용</p> -->
-                <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-                <div id="msgBox" @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
-
-              </div>
-              <div style="float: left; width: 100%; padding: 10px 0; min-height: 50px;">
-                <div style="width: 100%; min-height: 30px;">
-                  <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt="">
-                  <p class="commonColor fl font16 fontBold" style="margin-top: 4px;">첨부파일</p>
-                  <attachFileList style="min-width:80px;" :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+              <div style="width: 100%; height: calc(100% - 39px); float: left; padding-top:1.5rem; overflow: hidden auto; ">
+                <div class="writeBoardPageTopArea font15">
+                  <div class=""><p class="boardWriteTitleText font15 fontBold" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="font15 pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                  <div class="" v-if="propData.nonMemYn"><p class="font15 boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
+                  <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
+                    <div style="width: 100%; min-height: 30px;">
+                      <!-- <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
+                      <p class="boardWriteTitleText fontBold font15 fl commonBlack" style="margin-top: 4px;">첨부파일</p>
+                      <attachFileList style="min-width:80px;" :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+                <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+                <div class="pageMsgArea" style="">
+                  <!-- <p class="">내용</p> -->
+                  <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px;    min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                  <formEditor ref="complexEditor" @changeUploadList="changeUploadList" v-show="viewTab === 'complex'" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
+                  <div id="msgBox" @click="formEditorShowYn = true" v-show="previewContentsShowYn"  class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 
+                </div>
+
+                <gBtnSmall class="commonColor writeBoardBtn font16" style="font-weight:bold; font-size: 16px; bottom: 1rem; margin-top: 20px; margin-bottom: 60px;" btnTitle='작성하기' @click="clickPageTopBtn()" />
+              </div>
+
+          </div>
           </div>
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
-    <gBtnSmall class="mright-05 commonColor writeBoardBtn whitePurpleBG" style="color:#6768a7; font-weight:bold; bottom: 1rem" btnTitle='작성하기' @click="clickPageTopBtn()" />
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
       <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>  <!-- v-if="progressShowYn" -->
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-  <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
+  <!-- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
     <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" :headerTitle="this.modiYn?'블로그형 작성' : '블로그형 작성'" />
     <formEditor @changeUploadList="changeUploadList" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
-  </div>
+  </div> -->
 </template>
 <script>
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
@@ -153,7 +157,8 @@ export default {
       nonMemUserName: '',
       uploadFileList: [],
       attachTrueFileList: [],
-      delAddFalseFileList: []
+      delAddFalseFileList: [],
+      complexOkYn: false
     }
   },
   computed: {
@@ -227,7 +232,9 @@ export default {
       this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
-      this.formEditorShowYn = false
+      /* this.formEditorShowYn = false */
+      this.complexOkYn = true
+      this.clickPageTopBtn()
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -403,26 +410,30 @@ export default {
       this.msgPopYn = false
     },
     async clickPageTopBtn () {
-      var title = this.writePushTitle
-      if (title !== undefined && title !== null && title !== '') {
+      if (this.viewTab === 'complex' && this.complexOkYn === false) {
+        this.$refs.complexEditor.setParamInnerHtml()
       } else {
-        this.errorText = '제목을 입력해주세요'
-        this.failPopYn = true
-        return
+        var title = this.writePushTitle
+        if (title !== undefined && title !== null && title !== '') {
+        } else {
+          this.errorText = '제목을 입력해주세요'
+          this.failPopYn = true
+          return
+        }
+        var msgData = ''
+        if (this.viewTab === 'complex') {
+          msgData = document.getElementById('msgBox').innerHTML
+        } else if (this.viewTab === 'text') {
+          msgData = document.getElementById('textMsgBox').innerHTML
+        }
+        if (msgData !== undefined && msgData !== null && msgData !== '') {
+        } else {
+          this.errorText = '알림 내용을 입력해주세요'
+          this.failPopYn = true
+          return
+        }
+        this.checkPopYn = true
       }
-      var msgData = ''
-      if (this.viewTab === 'complex') {
-        msgData = document.getElementById('msgBox').innerHTML
-      } else if (this.viewTab === 'text') {
-        msgData = document.getElementById('textMsgBox').innerHTML
-      }
-      if (msgData !== undefined && msgData !== null && msgData !== '') {
-      } else {
-        this.errorText = '알림 내용을 입력해주세요'
-        this.failPopYn = true
-        return
-      }
-      this.checkPopYn = true
     },
     onReady (editor) {
       // Insert the toolbar before the editable area.
@@ -462,7 +473,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -545,17 +556,18 @@ export default {
       margin: 0 auto;
       margin-top: 1rem; */
       position: absolute;
-      left: 50%;
-      top: 47%;
-      transform: translate(-50%, -50%);
+      left: 5%;
+      bottom: 0%;
+      /* transform: translate(-50%, -50%); */
       /* width: 100%; */
       width: 90%;
 
-      border-radius: 0.8rem;
+      border-radius: 0.8rem 0.8rem 0 0;
+      height: 90%;
       /* height: calc(100% - 60px); */
       min-height: 500px;
       /* height: 90%; */
-      height: 85%;
+      /* height: 85%; */
       /* background-color: #fafafa; */
       background-color: #f9f9f9;
       color: #363c5f;
@@ -565,10 +577,10 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%);
+      /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
   }
 
-  .whitePaperBoard:after {
+ /*  .whitePaperBoard:after {
       content: '';
       position: absolute;
       display: block;
@@ -586,13 +598,13 @@ export default {
   border-bottom: 50px solid #7373734f;
   border-right: 50px solid #F9F9F9;
   width: 0;
-}
+} */
 
 /* add by_jeong */
-.pageMsgArea{ height: 100px; min-height: 200px; float: left; height: calc(100% - 14rem); width: 100%; }
+.pageMsgArea{ min-height: 200px; float: left; width: 100%; }
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
-.pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
-.pageMsgArea .msgArea{ width:100%; height:calc(100%); border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}
+.pageMsgArea p{color: #3A3A3A;  line-height: 30px; }
+.pageMsgArea .msgArea{ width:100%; height:calc(100%); border:1px solid #BFBFDA; border-radius: 5px; background-color: white;}
 
 .writeBoardPageTopArea{
   width: 100%; height: 3rem;
@@ -600,15 +612,8 @@ export default {
 .writeBoardPageTopArea >div{
   width: 100%; min-height: 2.5rem;
 }
-.writeBoardPageTopArea p{width: 60px; font-size: 15px; color: #3A3A3A; float: left; line-height: 30px;}
-.writeBoardPageTopArea input{font-size: 15px;}
+.writeBoardPageTopArea p{width: 60px; color: #3A3A3A; float: left; line-height: 30px;}
 .writeBoardPageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
-
-.editorOption{display: flex; flex-direction: column; border-right: 1px solid #BFBFDA; width: 100px;}
-.editorOption > div {height: 50px; text-align: center; padding: 0.5rem; cursor: pointer;}
-.activeColor{background: #EFEFF6;}
-.activeColor p{color: #6768A7!important;}
-.editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
 
 /* .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 5rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;} */
 .writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 650px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden; position: relative;}
@@ -661,7 +666,6 @@ export default {
   .writeBoardPageTopArea .inputArea{width: calc(100%);}
 }
 .writeBoardBtn{
-position: absolute; left:50%; bottom: 0; transform: translateX(-50%);
- width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
+ width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; display: flex; justify-content: center; align-items: center;
 }
 </style>

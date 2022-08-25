@@ -630,6 +630,8 @@ export default {
     async updateCabinet () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
