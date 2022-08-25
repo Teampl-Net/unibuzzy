@@ -37,9 +37,9 @@
                 </div>
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
-
-                <div @click="goDetail(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
-                <p @click="alimBigView(alim.contentsKey)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+<!-- @click="goDetail(alim)" -->
+                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
@@ -123,7 +123,10 @@ export default {
       reportYn: false,
       contentType: '',
       contentOwner: false,
-      tempData: {}
+      tempData: {},
+      selectImgIndex: 0,
+      clickImgList: [],
+      selectFileKey: null
 
     }
   },
@@ -153,6 +156,8 @@ export default {
         this.contentsWich()
       }
     }
+  },
+  mounted() { 
   },
   methods: {
     report (type) {
@@ -365,10 +370,24 @@ export default {
 
       this.currentContentsKey = key
     },
-    alimBigView (key) {
-      document.getElementById('bodyFullStr'+key).style.maxHeight = '100%'
-      document.getElementById('bodyFullStr'+key).style.marginBottom = '2rem'
-      document.getElementById('bodyMore'+key).style.display = 'none'
+    alimBigView (alim) {
+      // contentsKey, alim.attachMfilekey
+      document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
+      document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
+      document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+      
+      var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
+      for (let m = 0; m < imgList.length; m++) {
+        imgList[m].addEventListener('click', () => {
+          var param = new Object
+          param.mfileKey = alim.attachMfilekey
+          param.creUserName = alim.creUserName
+          param.title = alim.title
+          param.creDate = alim.creDate
+          param.imgIndex = m
+          this.$emit('clickImg', param)
+        })
+      }
 
     },
     async getContentsMemoList (key) {
@@ -579,6 +598,16 @@ export default {
       }
       return str
     }
+    /* changeMode () {
+      this.clickImgList = document.querySelectorAll('.bodyFullStr img')
+
+      for (let m = 0; m < this.clickImgList.length; m++) {
+        this.clickImgList[m].addEventListener('click', () => {
+          this.selectFileKey = this.clickImgList[m].fileKey
+          this.previewPopShowYn = true
+        })
+      }
+    } */
   },
   props: {
     imgUrl: {},

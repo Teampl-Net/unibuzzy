@@ -26,23 +26,27 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
+          <commonList @clickImg="openImgPreviewPop" :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <div  :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
         </div>
+        <imgPreviewPop :mFileKey="this.selectImgObject.mfileKey" :startIndex="selectImgObject.imgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgObject.title" :creUserName="selectImgObject.creUserName" :creDate="selectImgObject.creDate"  />
     </div>
   <!-- </div> -->
 </template>
 <script>
+
+import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 export default {
   name: 'pushList',
   components: {
     findContentsList,
-    commonConfirmPop
+    commonConfirmPop,
+    imgPreviewPop
     // searchResult
   },
   props: {
@@ -243,6 +247,12 @@ export default {
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
+    },
+    openImgPreviewPop (img) {
+      console.log('img!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(img)
+      this.selectImgObject = img
+      this.previewPopShowYn = true
     },
     handleScroll () {
       var currentTime = new Date()
@@ -581,8 +591,11 @@ export default {
       loadMoreDESCYn: null,
       targetCKey: null,
       failPopYn: false,
-      errorText: ''
-
+      errorText: '',
+      previewPopShowYn: false,
+      selectImgMfilekey: null,
+      selectImgIndex: 0,
+      selectImgObject: {}
     }
   }
 }
