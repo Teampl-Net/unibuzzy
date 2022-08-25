@@ -283,11 +283,12 @@
 ① 본 약관은 2022년 2월 10일부터 적용됩니다.
       </textarea>
     </div>
-    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" id="agreeOut"><label  for="agreeOut">동의합니다</label></div>
+    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">동의합니다</label></div>
     <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" style="width:100%; height:3rem; line-height:3rem; font-size:20px;" class="mtop-2" />
   </div>
-
+<smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn=false"/>
 </div>
+
 </template>
 
 <script>
@@ -296,8 +297,12 @@ import leaveResultPop from '../info/Tal_leaveTheAlimResultPop.vue'
 export default {
   data () {
     return {
+      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       completeBtnTitle: '완료',
-      resultPopShowYn: false
+      resultPopShowYn: false,
+      agreeOut: false,
+      smallPopYn: false,
+      confirmMsg: ''
     }
   },
   mounted () {
@@ -306,7 +311,27 @@ export default {
   },
   methods: {
     requestLeave () {
-      this.resultPopShowYn = true
+      if (this.agreeOut === true) {
+        this.resultPopShowYn = true
+        var param = {}
+        param.actKey = 'DEL'
+        param.targetType = 'A'
+        param.targetKey = this.creUser
+        param.creUserKey = this.creUser
+        this.saveActAxiosFunc(param)
+      } else {
+        this.confirmMsg = '위 내용을 읽고 동의합니다 에 체크해주세요.'
+        this.smallPopYn = true
+      }
+    },
+    async saveActAxiosFunc (param) {
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveActLog',
+        param: param
+      })
+      if (result.data.result === true) {
+        this.resultPopShowYn = true
+      }
     },
     closeXPop () {
       this.resultPopShowYn = false

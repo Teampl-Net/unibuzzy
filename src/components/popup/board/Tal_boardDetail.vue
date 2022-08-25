@@ -101,7 +101,8 @@
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     </transition>
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
-    <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" />
+    <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
+    <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
   </div>
 </template>
 <script>
@@ -154,8 +155,10 @@ export default {
       contentType: '',
       contentOwner: false,
       tempData: {},
-      changeData: 1
-
+      changeData: 1,
+      currentConfirmType: '',
+      smallPopYn: false,
+      confirmMsg: ''
     }
   },
   props: {
@@ -235,19 +238,59 @@ export default {
       }
     },
     report (type) {
+      var targetKind
+      var targetKey
       if (type === 'alim') {
+        targetKind = 'C'
+        targetKey = this.tempData.contentsKey
         this.confirmText = '해당 알림이 신고되었습니다.'
       } else if (type === 'board') {
+        targetKind = 'C'
+        targetKey = this.tempData.contentsKey
         this.confirmText = '해당 게시글이 신고되었습니다.'
       } else if (type === 'memo') {
+        targetKind = 'C'
+        targetKey = this.tempData.memoKey
         this.confirmText = '해당 댓글이 신고되었습니다.'
       } else if (type === 'channel') {
+        targetKind = 'T'
+        targetKey = this.tempData.creTeamKey
         this.confirmText = '해당 채널이 신고되었습니다.'
       } else if (type === 'user') {
+        targetKind = 'U'
+        targetKey = this.tempData.creUserKey
         this.confirmText = '해당 유저가 신고되었습니다.'
       }
-      this.confirmPopShowYn = true
+
+      var param = {}
+      param.actType = 'REPO'
+      param.targetKind = targetKind
+      param.targetKey = parseInt(targetKey)
+      param.creUserKey = this.creUser
+      this.saveActAxiosFunc(param)
     },
+    /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
+    async saveActAxiosFunc (param) {
+      this.reportYn = false
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveActLog',
+        param: param
+      })
+      console.log(result.data.result)
+      if (result.data.result === true) {
+        this.confirmMsg = this.confirmText
+        this.smallPopYn = true
+        // this.confirmPopShowYn = true
+      }
+    },
+    bloc (type) {
+      var typeText = type === 'user' ? '유저를' : '게시글을'
+      this.confirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
+      this.currentConfirmType = 'BLOC'
+    },
+
     contentMenuClick (params) {
       this.contentOwner = params.ownerYn
       this.contentType = params.type
@@ -341,20 +384,21 @@ export default {
       this.boardFuncType = type
       if (type === 'BOAR') {
         this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.currentConfirmType = 'deleteBoar'
       } else if (type === 'REPORT') {
         this.confirmText = '해당 게시글을 신고 하시겠습니까?'
       }
       this.confirmPopShowYn = true
     },
     async confirmOk () {
-      this.confirmPopShowYn = false
       this.confirmType = false
-      var inParam = {}
-      // console.log(this.alimDetail)
-      inParam.contentsKey = this.alimDetail[0].contentsKey
-      inParam.jobkindId = 'BOAR'
-      inParam.teamKey = this.alimDetail[0].creTeamKey
-      if (this.boardFuncType === 'BOAR') {
+      this.confirmPopShowYn = false
+      if (this.currentConfirmType === 'deleteBoar') {
+        var inParam = {}
+        // console.log(this.alimDetail)
+        inParam.contentsKey = this.alimDetail[0].contentsKey
+        inParam.jobkindId = 'BOAR'
+        inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
           url: '/tp.saveContents',
@@ -362,10 +406,23 @@ export default {
         })
         this.$emit('closeXPop', true)
         // console.log('Delete Content Result' + result)
-      } else if (this.boardFuncType === 'REPORT') {
-        inParam.reportYn = true
-        this.confirmPopShowYn = true
-        this.confirmText = '신고되었습니다.'
+      } else if (this.currentConfirmType === 'BLOC') {
+        this.currentConfirmType = ''
+        console.log(this.tempData)
+        var param = {}
+        param.actType = 'BLOC'
+        if (this.tempData.memoKey) {
+          param.targetKind = 'U'
+          param.targetKey = this.tempData.creUserKey
+        } else if (this.tempData.contentsKey) {
+          param.targetKind = 'C'
+          param.targetKey = this.tempData.contentsKey
+        } else {
+          this.errorBoxText = '알수 없는 오류입니다.'
+        }
+        param.creUserKey = this.creUser
+        this.errorBoxText = '해당 유저를 차단했습니다.'
+        this.saveActAxiosFunc(param)
       }
     },
     mememoCancel () {

@@ -5,27 +5,27 @@
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
           <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
-            <div v-if="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
+            <div v-show="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
               <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
+                <img src="../../../assets/images/channel/channer_addressBook.svg" class="img-w23" alt="">
               </div>
-              <input  :id="index" v-model="cabinetInputText"   style="border:none;width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+              <input :id="'commonBookInput'+index" v-model="cabinetInputText" style="border:none; width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
               <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
                 <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
                 <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
               </div>
             </div>
-            <div v-else @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
-              <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl" style="width:23px; margin-left: 10px; margin-top: 10px;" >
+            <div v-show="editIndex !== index" @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
+              <img src="../../../assets/images/channel/channer_addressBook.svg"  class="fl img-w23" style="margin-left: 10px; margin-top: 10px;" >
               <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{data.cabinetNameMtext}}</p>
             </div>
             <div v-if="!selectPopYn" class="fl cursorP" style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-              <img src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="changedText(data,index)" >
-              <img src="../../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="deleteCabinet(data,index)" >
+              <img src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="changedText(data,index)" >
+              <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinet(data,index)" >
             </div>
             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1 cursorP" style="position: relative; height: 100%;">
-              <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
-              <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
+              <img class="img-w30" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
+              <img class="img-w30" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
             </div>
           </div>
         </template>
@@ -121,6 +121,9 @@ export default {
             // this.editYn = true
             this.cabinetInputText = data.cabinetNameMtext
             this.editIndex = index
+            if (index !== null){
+                document.getElementById('commonBookInput'+index).focus
+            }
         },
         changeSelectedList () {
             if(this.parentSelectList) {

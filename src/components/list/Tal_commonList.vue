@@ -4,7 +4,7 @@
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo">
-        <template v-for="(alim, index0) in this.contentsList" :change="changeData" :key="index0" >
+        <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
           <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
@@ -85,6 +85,7 @@
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
         </template>
+
       </div>
       <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
       <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
@@ -94,8 +95,9 @@
       <transition name="showMemoPop">
         <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
-      <gConfirmPop  :draggable="true" :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false, this.reportYn = false'  />
-      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report"  @editable="editable" />
+      <gConfirmPop  :draggable="true" :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
+      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
+      <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 </template>
 <script>
 /* eslint-disable */
@@ -124,6 +126,10 @@ export default {
       contentType: '',
       contentOwner: false,
       tempData: {},
+      confirmType: 'timeout',
+      currentConfirmType: '',
+      smallPopYn: false,
+      confirmMsg: '',
       selectImgIndex: 0,
       clickImgList: [],
       selectFileKey: null
@@ -138,6 +144,7 @@ export default {
     if (this.targetContentsKey) {
       this.targetCKey = this.targetContentsKey
     }
+
     // if (this.contentsList.length) {
     //   if (this.targetContentsKey) {
     //     this.contentsWich()
@@ -157,23 +164,9 @@ export default {
       }
     }
   },
-  mounted() { 
+  mounted() {
   },
   methods: {
-    report (type) {
-      if (type === 'alim') {
-        this.confirmText = '해당 알림이 신고되었습니다.'
-      } else if (type === 'board') {
-        this.confirmText = '해당 게시글이 신고되었습니다.'
-      } else if (type === 'memo') {
-        this.confirmText = '해당 댓글이 신고되었습니다.'
-      } else if (type === 'channel') {
-        this.confirmText = '해당 채널이 신고되었습니다.'
-      } else if (type === 'user') {
-        this.confirmText = '해당 유저가 신고되었습니다.'
-      }
-      this.confirmPopShowYn = true
-    },
     contentMenuClick(params){
       this.contentOwner = params.ownerYn
       this.contentType = params.type
@@ -221,6 +214,82 @@ export default {
           }
         }
       }
+    },
+    report (type) {
+      var targetKind
+      var targetKey
+      if (type === 'alim') {
+        targetKind = 'C'
+        targetKey = this.tempData.contentsKey
+        this.confirmText = '해당 알림이 신고되었습니다.'
+      } else if (type === 'board') {
+        targetKind = 'C'
+        targetKey = this.tempData.contentsKey
+        this.confirmText = '해당 게시글이 신고되었습니다.'
+      } else if (type === 'memo') {
+        targetKind = 'C'
+        targetKey = this.tempData.memoKey
+        this.confirmText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'channel') {
+        targetKind = 'T'
+        targetKey = this.tempData.creTeamKey
+        this.confirmText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'user') {
+        targetKind = 'U'
+        targetKey =  this.tempData.creUserKey
+        this.confirmText = '해당 유저가 신고되었습니다.'
+      }
+
+      var param = {}
+      param.actType = 'REPO'
+      param.targetKind = targetKind
+      param.targetKey = parseInt(targetKey)
+      param.creUserKey = this.commonListCreUserKey
+      this.saveActAxiosFunc(param)
+    },
+    /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
+    async saveActAxiosFunc (param) {
+      this.reportYn = false
+      var result = await this.$commonAxiosFunction({
+        url: '/tp.saveActLog',
+        param: param
+      })
+      console.log(result.data.result)
+      if (result.data.result === true) {
+        this.confirmMsg = this.confirmText
+        this.smallPopYn = true
+        // this.confirmPopShowYn = true
+      }
+    },
+    bloc (type) {
+      var typeText = type === 'user' ? '유저를' : '게시글을'
+      this.confirmText = '해당 ' + typeText +' 차단하시겠습니까?'
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
+      this.currentConfirmType = 'BLOC'
+    },
+    confirmOk () {
+      this.confirmType = 'timeout'
+      if (this.currentConfirmType === 'BLOC'){
+        this.currentConfirmType = ''
+        console.log(this.tempData);
+        var param = {}
+        param.actType = 'BLOC'
+        if (this.tempData.memoKey) {
+          param.targetKind = 'U'
+          param.targetKey = this.tempData.creUserKey
+        } else if (this.tempData.contentsKey) {
+          param.targetKind = 'C'
+          param.targetKey = this.tempData.contentsKey
+        } else {
+          this.confirmText = '알수 없는 오류입니다.'
+        }
+        param.creUserKey = this.commonListCreUserKey
+        this.confirmText = '해당 유저를 차단했습니다.'
+        this.saveActAxiosFunc(param)
+      }
+      this.currentConfirmType = ''
+      this.confirmPopShowYn = false
     },
     // cardInfo (alim) {
     //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
@@ -375,7 +444,7 @@ export default {
       document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
       document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
       document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
-      
+
       var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
       for (let m = 0; m < imgList.length; m++) {
         imgList[m].addEventListener('click', () => {

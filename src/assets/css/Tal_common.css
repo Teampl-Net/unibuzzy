@@ -61,6 +61,29 @@ input, select {
   .font11{font-size: 9px !important}
   .font10{font-size: 8px !important}
 
+  .img-w30{width: 28px !important}
+  .img-w29{width: 27px !important}
+  .img-w28{width: 26px !important}
+  .img-w27{width: 25px !important}
+  .img-w26{width: 24px !important}
+  .img-w25{width: 23px !important}
+  .img-w24{width: 22px !important}
+  .img-w23{width: 21px !important}
+  .img-w22{width: 20px !important}
+  .img-w21{width: 19px !important}
+  .img-w20{width: 18px !important}
+  .img-w19{width: 17px !important}
+  .img-w18{width: 16px !important}
+  .img-w17{width: 15px !important}
+  .img-w16{width: 14px !important}
+  .img-w15{width: 13px !important}
+  .img-w14{width: 12px !important}
+  .img-w13{width: 11px !important}
+  .img-w12{width: 10px !important}
+  .img-w11{width: 9px !important}
+  .img-w10{width: 8px !important}
+
+
   .pagePaddingWrap {
     padding: 0 0.7rem;
   }
@@ -130,6 +153,28 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .font8{font-size: 8px}
 
 .fontBold{font-weight: bold;}
+.img-w30{width: 30px}
+.img-w29{width: 29px}
+.img-w28{width: 28px}
+.img-w27{width: 27px}
+.img-w26{width: 26px}
+.img-w25{width: 25px}
+.img-w24{width: 24px}
+.img-w23{width: 23px}
+.img-w22{width: 22px}
+.img-w21{width: 21px}
+.img-w20{width: 20px}
+.img-w19{width: 19px}
+.img-w18{width: 18px}
+.img-w17{width: 17px}
+.img-w16{width: 16px}
+.img-w15{width: 15px}
+.img-w14{width: 14px}
+.img-w13{width: 13px}
+.img-w12{width: 12px}
+.img-w11{width: 11px}
+.img-w10{width: 10px}
+
 
 
 .whiteColor{color: #fff;}
@@ -176,7 +221,15 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mtop-02{margin-top: 0.2rem;}
 .mtop-03{margin-top: 0.3rem;}
 .mtop-05{margin-top: 0.5rem;}
+.mtop-06{margin-top: 0.6rem;}
+.mtop-07{margin-top: 0.7rem;}
+.mtop-08{margin-top: 0.8rem;}
+.mtop-09{margin-top: 0.9rem;}
 .mtop-1{margin-top: 1rem;}
+.mtop-11{margin-top: 1.1rem;}
+.mtop-12{margin-top: 1.2rem;}
+.mtop-13{margin-top: 1.3rem;}
+.mtop-14{margin-top: 1.4rem;}
 .mtop-15{margin-top: 1.5rem;}
 .mtop-2{margin-top: 2rem;}
 .mtop-3{margin-top: 3rem;}

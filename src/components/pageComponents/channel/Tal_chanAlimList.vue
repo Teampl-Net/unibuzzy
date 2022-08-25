@@ -6,7 +6,7 @@
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="chanItem" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="okMember" />
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
-    <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
+  <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
       <div class="chanImgRound" :style="'background-image: url(' + this.chanItem.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 -->
         <!-- <img id="chanImg" :style="setProfileSize" :src="chanItem.logoPathMtext" style="width: 90%" alt="채널사진" /> -->

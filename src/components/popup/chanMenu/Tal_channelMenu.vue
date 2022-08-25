@@ -5,30 +5,32 @@
 <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
     <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
-    <p :class="{editColor: editYn === true }" class="fontBold font20 fl" >{{menuHeaderTitle}}</p>
+    <p :class="{editColor: editYn === true }" class="fontBold font20 fl" style="white-space: nowrap;" >{{menuHeaderTitle}}</p>
     <img v-if="ownerYn || adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
     <div v-else />
   </div>
   <div v-if="true" style="overflow:auto">
-    <div v-if="adminYn" class="fl"  style="margin-top:calc(50px); width:100%; display: flex; flex-direction: row; justify-content: space-between;" >
-      <div class="fl" style="margin-top:20px; width:50%;" >
-        <img class="fl cursorP" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
-        <p class="fl cursorP font16 mleft-05 commonBlack fontBold"  @click="bookDropDown">주소록</p>
-        <p v-if="this.cabinetList.length !== 0" class="fl cursorP fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
-      </div>
-      <div class="boardBox fr" style="overflow: hidden scroll; width:50%;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
+    <div v-if="adminYn" class="fl w-100P"  style="margin-top:50px;" >
+      <p class="fl cursorP font14 commonColor fontBold mtop-13" style="white-space: nowrap;"  @click="bookDropDown">
+        <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
+        주소록
+        ({{this.cabinetList.length}})
+      </p>
+      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="groupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
         <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
 
-    <div class="fl" :style="!adminYn ? 'margin-top:50px !important;' : 'margin-top:1rem;'" style=" width:100%; display: flex; flex-direction: row; justify-content: space-between;"  >
-      <div class="fl" style="margin-top:20px; width:50%;" >
-        <img class="fl cursorP" style="width:20px;" alt="주소록 이미지"  src="../../../assets/images/channel/channer_board_color.png">
+    <div v-if="adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
 
-          <p class="fl font16 mleft-05 cursorP commonBlack fontBold"  @click="boardDropDown">게시판</p>
-        <p v-if="this.myBoardList.length !== 0" class="fl mleft-05 cursorP fontBold commonColor textLeft font16" @click="boardDropDown"> ({{this.myBoardList.length}})</p>
-      </div>
-      <div class="fl boardBox" style="overflow: hidden scroll; width:50%;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}">
+    <div class="fl w-100P mtop-2" :style="!adminYn ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
+      <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
+        <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
+        게시판
+        ({{this.myBoardList.length}})
+      </p>
+
+      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
         <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
@@ -104,9 +106,6 @@ export default {
     },
     historyStack (value, old) {
     },
-    cabinetList() {
-      this.setDrop()
-    }
 
   },
   created() {
@@ -119,17 +118,16 @@ export default {
     // this.cabinetList = this.$groupDummyList()
     this.getTeamCabList().then(response => {
       this.getTeamMenuList()
-      this.setDrop()
-      this.bookListLength()
+
       this.boardListLength()
+      this.bookListLength()
     })
-    
-    
+
+
     // this. myBoardList =
   },
-  async mounted () {
-    // this.bookListLength()
-    // this.boardListLength()
+  mounted () {
+
   },
   data () {
     return {
@@ -148,8 +146,6 @@ export default {
       selectManagerListYn:false,
       selectedList : [],
       selectAdminList : [],
-      book:true,
-      board:false,
       teamNameText:'',
       closeYn:false
     }
@@ -172,26 +168,6 @@ export default {
     refresh (){
       this.getTeamCabList()
       this.getTeamMenuList()
-      this.setDrop()
-      this.bookListLength()
-      this.boardListLength()
-    },
-    setDrop () {
-      if(this.cabinetList.length === 0){
-        this.book = false
-        this.bookDropDownYn = true
-      }else {
-        this.book = true
-        this.bookDropDownYn = true
-      }
-      if(this.myBoardList.length === 0){
-        this.board = false
-        this.boardDropDownYn = true
-        }else {
-        this.board = true
-        this.boardDropDownYn = true
-      }
-
     },
     async getFollowerList () {
       var params = new Object()
@@ -318,44 +294,26 @@ export default {
       var result = await this.$getTeamMenuList(paramMap)
       this.myBoardList = result
     },
-    bookListLength () {
-      // this.$refs.groupRef.style.setProperty('--menuHeight', (this.cabinetList.length === 0 ? 1 : this.cabinetList.length ) * 50 + 20 + 'px')
-      var bookListLength = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 50 + 20
-      // if (this.cabinetList.length === 0) {
-      //   bookListLength = 50
-      // } else if (bookListLength >= 250) {
-      //   bookListLength = 250
-      // } else {
-      //   bookListLength = this.cabinetList.length * 50 + 20
-      // }
-      this.$refs.groupRef.style.setProperty('--menuHeight', (bookListLength + 'px'))
-    },
+    /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength() {
-      // var boardListLength = (this.screenHeight - 300) + 'px'
-      var boardListLength = this.myBoardList.length * 50 + 60
-      // var boardListLength = this.$refs.menuBoardListRef.$el.clientHeight
-      // console.log('게시판 리스트의 높이는 : ' + boardListLength);
+      var boardListLength = this.myBoardList.length === 0 ? 1 : this.myBoardList.length * 45 + 10
       this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
-      // this.$refs.boardRef.style.setProperty('--menuHeight', (this.myBoardList.length === 0 ? 1 : this.myBoardList.length ) * 50 + 20 + 'px')
     },
     boardDropDown () {
-      if(this.board === true){
+      if (this.myBoardList.length !== 0) {
         this.boardListLength()
-        if(this.boardDropDownYn){
-          this.boardDropDownYn = false
-        }else{
-          this.boardDropDownYn = true
-        }
+        if (this.boardDropDownYn) { this.boardDropDownYn = false } else { this.boardDropDownYn = true }
       }
     },
+    /** 화면상 주소록의 높이를 cabinetList.length를 통해 구해주는 함수 */
+    bookListLength () {
+      var bookListLength = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
+      this.$refs.groupRef.style.setProperty('--menuHeight', (bookListLength + 'px'))
+    },
     bookDropDown () {
-      if(this.book === true){
+      if (this.cabinetList.length !== 0) {
         this.bookListLength()
-        if(this.bookDropDownYn){// 이미지 변경
-          this.bookDropDownYn = false
-        }else{
-          this.bookDropDownYn = true
-        }
+        if (this.bookDropDownYn) { this.bookDropDownYn = false } else { this.bookDropDownYn = true }
       }
     },
     goPage (link) {
@@ -519,8 +477,5 @@ export default {
   margin-right:10px;
   /* transition : .3s */
 }
-.dropupBtn{
-  transform: rotate( 90deg );
 
-}
 </style>

@@ -173,10 +173,10 @@ export default {
             var me = new Object()
             me.userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
             if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc) {
-               me.userPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc 
+               me.userPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
             }
             if (JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) {
-               me.userDispMtext = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext 
+               me.userDispMtext = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext
             }
             await this.saveMemberDirectly(me)
             this.plusMenuShowYn = false
@@ -208,7 +208,7 @@ export default {
                     debugger
                     await this.getBookMemberList()
                 }
-            }    
+            }
         },
         async getBookMemberList () {
             this.imInYn = false
@@ -306,12 +306,12 @@ export default {
                     this.excelUploadShowYn = false
                 } else {
                     if (backYn) {
-                        
+
                     }   else {
                         this.$emit('closeXPop')
                     }
                 }
-            }/* 
+            }/*
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
             if (this.selectPopId === hStack[hStack.length - 1]) {
@@ -338,7 +338,7 @@ export default {
                 this.excelUploadShowYn = false
             } else {
                 if (backYn === true) {
-                    
+
                 } else {
                     this.$emit('closeXPop')
                 }
