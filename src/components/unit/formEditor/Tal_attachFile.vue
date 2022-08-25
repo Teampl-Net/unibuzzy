@@ -61,6 +61,7 @@ export default {
         // 0 번째 파일을 가져 온다.
 
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+          var file
           this.selectFile = null
           this.gAttachKey += 1
           console.log(this.$refs.selectFile.files[k])
@@ -76,8 +77,6 @@ export default {
           if (
             ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
           ) {
-            // eslint-disable-next-line no-debugger
-            debugger
             var reader = new FileReader()
             var thisthis = this
             reader.onload = async e => {
@@ -103,9 +102,18 @@ export default {
                 canvas.height = height
 
                 canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                thisthis.preImgUrl = canvas.toDataURL('image/png', 0.8)
-                thisthis.sFileList.push({ preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: thisthis.selectFile })
-                thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: thisthis.selectFile }])
+                const imgBase64 = canvas.toDataURL('image/png', 0.8)
+                thisthis.preImgUr = imgBase64
+                const decodImg = atob(imgBase64.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                file = new File([Bfile], thisthis.selectFile.name)
+                thisthis.selectFile = file
+                thisthis.sFileList.push({ preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: file })
+                thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: file }])
                 thisthis.uploadCnt += 1
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

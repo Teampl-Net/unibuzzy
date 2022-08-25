@@ -32,7 +32,7 @@
         <div  :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
         </div>
-        <imgPreviewPop :mFileKey="this.selectImgObject.mfileKey" :startIndex="selectImgObject.imgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgObject.title" :creUserName="selectImgObject.creUserName" :creDate="selectImgObject.creDate"  />
+        <imgPreviewPop :mFileKey="this.selectImgObject.mfileKey" :startIndex="selectImgObject.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgObject.title" :creUserName="selectImgObject.creUserName" :creDate="selectImgObject.creDate"  />
     </div>
   <!-- </div> -->
 </template>
@@ -146,6 +146,11 @@ export default {
     },
     readCheckBoxYn () {
       this.changeTab(this.viewTab)
+    },
+    pageUpdate (value, old) {
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
     }
   },
   computed: {
@@ -154,8 +159,11 @@ export default {
         '--paddingTopLength': (this.paddingTop) + 'px'
       }
     },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    },
     historyStack () {
-      return this.$store.state.historyStack
+      return this.$store.getters.hRPage
     },
     currentPage () {
       return this.$store.getters.hCPage
@@ -173,6 +181,9 @@ export default {
     }
   },
   methods: {
+    backClick () {
+      this.previewPopShowYn = false
+    },
     async getMCabContYn (contentsKey) {
       var paramMap = new Map()
       paramMap.set('targetKey', contentsKey)
@@ -248,7 +259,7 @@ export default {
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
-    openImgPreviewPop (img) {
+    async openImgPreviewPop (img) {
       console.log('img!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       console.log(img)
       this.selectImgObject = img
@@ -595,7 +606,8 @@ export default {
       previewPopShowYn: false,
       selectImgMfilekey: null,
       selectImgIndex: 0,
-      selectImgObject: {}
+      selectImgObject: {},
+      subPopId: ''
     }
   }
 }

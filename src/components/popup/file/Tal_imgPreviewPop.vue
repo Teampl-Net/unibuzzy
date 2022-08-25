@@ -4,7 +4,7 @@
     <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; top: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
       <p style="color: white;margin-bottom: 5px;" class="font16  fontBold">{{creUserName}}</p>
       <a style="color: #fff; float: left;" href="/resource/stickerIcon/sticker_robot.svg"></a>
-      <img @click="this.$emit('closePop')" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
+      <img @click="backClick" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
       <img src="../../../assets/images/common/download.svg"  @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
     </div>
     <Splide :options="{ rewind: false, start: startIndex || 0 }" aria-label="Vue Splide Example">
@@ -43,11 +43,18 @@ export default {
       imgList: [],
       mobileYn: this.$getMobileYn(),
       saveOkPopShowYn: false,
-      popText: '저장되었습니다!'
+      popText: '저장되었습니다!',
+      popId: ''
     }
   },
   created () {
     this.getImgList()
+    var history = this.$store.getters.hStack
+    this.popId = 'previewImgPop' + history.length
+    console.log(history)
+    history.push(this.popId)
+    this.$store.commit('updateStack', history)
+    console.log(this.$store.getters.hStack)
   },
   methods: {
     async getImgList () {
@@ -64,6 +71,18 @@ export default {
       })
       console.log(result)
       this.imgList = result.data.mmFileList
+    },
+    backClick () {
+      var hStack = this.$store.getters.hStack
+      var removePage = hStack[hStack.length - 1]
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
+        this.$emit('closePop')
+      } else {
+
+      }
     },
     extractDownloadFilename (response) {
       const disposition = response.headers['content-disposition']
@@ -89,6 +108,22 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    }
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
     }
   }
 }

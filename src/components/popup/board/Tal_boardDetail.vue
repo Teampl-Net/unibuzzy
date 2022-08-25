@@ -1,6 +1,6 @@
 <template>
   <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
-    <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.previewPopShowYn = false" v-if="previewPopShowYn && alimDetail[0].attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
+    <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && alimDetail[0].attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
@@ -158,7 +158,8 @@ export default {
       changeData: 1,
       currentConfirmType: '',
       smallPopYn: false,
-      confirmMsg: ''
+      confirmMsg: '',
+      subPopId: null
     }
   },
   props: {
@@ -327,6 +328,9 @@ export default {
       }
       // 파일서버 fileServer fileserver FileServer Fileserver
       iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+    },
+    backClick () {
+      this.previewPopShowYn = false
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
