@@ -46,6 +46,7 @@
                           <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
                               <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                               <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
+                              <formVideo v-else-if="value.type === 'video'" />
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
                               <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
@@ -85,6 +86,7 @@
 import { VueDraggableNext } from 'vue-draggable-next'
 import formText from './Tal_formText.vue'
 import formImage from './Tal_formImage.vue'
+import formVideo from './Tal_formVideo.vue'
 import formBlock from './Tal_formBlock.vue'
 import formDot from './Tal_formDotLine.vue'
 import formLine from './Tal_formLine.vue'
@@ -139,7 +141,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     formLine,
     // formLink,
-    draggable: VueDraggableNext
+    draggable: VueDraggableNext,
+    formVideo
   },
   computed: {
     /* toolBoxTop () {
@@ -205,7 +208,11 @@ export default {
         this.toolBoxShowYn = false
         // eslint-disable-next-line no-new-object
         formElement.src = src
+      } else if (type === 'video') {
+        this.toolBoxShowYn = false
+        formElement.src = src
       }
+      console.log(formElement)
       this.formCardList.push(formElement)
       this.selectRow = this.formCardList.length - 1
       this.resizeFormArea()

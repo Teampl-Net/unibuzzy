@@ -1,6 +1,6 @@
 <template>
 <div id="alimWrap" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 14px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
+  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -18,7 +18,7 @@
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
           </div> -->
           <p class="font15 textLeft fl">
-            <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
+            <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
             {{teamTypeText}}
           </p>
           </div>
@@ -28,7 +28,7 @@
             <!-- <img class="fl" style="width:20px; margin-top:2px; src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
           <!-- </div> -->
           <p class="font14 textLeft fl " style="word-break:break-all" >
-            <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
+            <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
             {{this.$changeText(chanItem.memoMtext)}}
           </p>
         </div>
@@ -77,26 +77,26 @@
             <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
             <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >내정보공개</p> -->
           </div>
-          <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
-          <img style="width:20px;" class="cursorP" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
+          <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+          <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
               :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanItem.teamKey
                 + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                 class="copyTextIcon cursorP">
-            <img style="width:20px;" src="../../../assets/images/common/icon_share_square.svg" alt="">
+            <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
           </div>
         </div>
 
         <div v-if="followYn === false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <!-- <p class="font20 fontBold">구독하기</p> -->
           <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(chanItem.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
-          <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold" btnTitle="구독하기" />
+          <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
         </div>
 
     </div>
 
-    <div id="followerCancelArea" v-if="followYn && !adminYn" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
+    <div id="followerCancelArea" v-if="followYn && !ownerYn" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
       <p v-if="chanItem.teamKey !== 377" @click="changeFollowYn" class="fl font14 fontBold" :style="followYn ? 'color:white' : '' " >구독취소</p>
     </div>
     <!-- <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
@@ -271,7 +271,7 @@ export default {
         var blockBox = document.getElementById('summaryWrap')
         blockBox.style.height = 50 + 'px'
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
-        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
         document.getElementById('channelCardWrap').classList.add('displayNIm')
         document.getElementById('userCardWrap').classList.add('displayNIm')
@@ -605,7 +605,7 @@ export default {
         // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
         // document.getElementById('chanInfoArea').classList.add('displayNIm')
         // document.getElementById('memberInfoArea').classList.add('displayNIm')
-        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
 
@@ -618,7 +618,7 @@ export default {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         // document.getElementById('chanInfoArea').classList.remove('displayNIm')
         // document.getElementById('memberInfoArea').classList.remove('displayNIm')
-        if (this.followYn && !this.adminYn) document.getElementById('followerCancelArea').classList.remove('displayNIm')
+        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.remove('displayNIm')
 
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.remove('displayNIm')
 

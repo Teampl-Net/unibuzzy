@@ -393,6 +393,10 @@ const methods = {
     } catch (error) {
       console.log(error)
     } */
+  },
+  /** 문자열로 되어있는 전화번호 11자리를 입력해주면 -(하이픈)을 넣어서 반환해주는 함수 */
+  setPhone (string) {
+    return string.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3')
   }
 
 }
@@ -422,5 +426,6 @@ export default {
     Vue.config.globalProperties.$getFileExt = methods.getFileExt
     Vue.config.globalProperties.$downloadFile = methods.downloadFile
     Vue.config.globalProperties.$commonAx = methods.commonAx
+    Vue.config.globalProperties.$setPhone = methods.setPhone
   }
 }

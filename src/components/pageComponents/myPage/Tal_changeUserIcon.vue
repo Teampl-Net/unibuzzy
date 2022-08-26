@@ -9,12 +9,14 @@
           </div>
         </div>
         <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
-          <div @click="this.$refs.selectFile.click()"  style="cursor: pointer; width: 100px; margin: 0 auto; height: 100px; border: 1px solid #ccc; overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 5px; margin-bottom: 10px; float: left; ">
+          <div @click="this.$refs.selectFile.click()"  style="cursor: pointer; width: 90%; margin: 0 auto; height: 90%; border: 1px solid #ccc; overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 5px; margin-bottom: 10px; float: left; ">
             <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="">
           </div>
-          <form  @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
+
+          <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
               <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
           </form>
+          <p class="fl fontBold textLeft font14 w-100P mleft-2">터치해서 이미지를 변경할 수 있습니다.</p>
         </div>
         <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
           <gBtnSmall @click="this.$emit('no')" btnTitle="닫기" btnThema="light"/>

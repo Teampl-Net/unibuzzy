@@ -16,7 +16,7 @@
         주소록
         ({{this.cabinetList.length}})
       </p>
-      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="groupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
+      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
         <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div v-else>
+  <!-- <div v-else>
     <div style="margin-top:calc(70px); width:100%; " class="fl" >
       <div v-if="adminYn" class="fl" style="width:100%;">
         <div class="fl" style="width:100%; height: 30px;">
@@ -48,7 +48,7 @@
           <p v-if="this.cabinetList.length !== 0" class="fl fontBold mleft-05 commonColor textLeft font16" @click="bookDropDown"> ({{this.cabinetList.length}})</p>
           <gBtnSmall class="fr" @click="receiverClick(propData)" btnTitle="관리" style="" v-if="adminYn"/>
         </div>
-        <div class="boardBox fl" style="overflow: hidden scroll;" ref="groupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
+        <div class="boardBox fl" style="overflow: hidden scroll;" ref="addressBookGroupRef" :class="{boardBoxUp : bookDropDownYn === false, boardBoxDown:bookDropDownYn === true}" >
           <addressBookList :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
         </div>
       </div>
@@ -68,7 +68,7 @@
         <menuBoardList :listData="myBoardList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
 <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
 <!-- <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' /> -->
@@ -113,6 +113,9 @@ export default {
     history.push('chanMenu' + this.chanAlimListTeamKey)
     this.$store.commit('updateStack', history)
     this.screenHeight = window.innerHeight
+    // this. myBoardList =
+  },
+  mounted () {
     this.getFollowerList().then(response => {
     })
     // this.cabinetList = this.$groupDummyList()
@@ -122,11 +125,6 @@ export default {
       this.boardListLength()
       this.bookListLength()
     })
-
-
-    // this. myBoardList =
-  },
-  mounted () {
 
   },
   data () {
@@ -307,8 +305,11 @@ export default {
     },
     /** 화면상 주소록의 높이를 cabinetList.length를 통해 구해주는 함수 */
     bookListLength () {
-      var bookListLength = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
-      this.$refs.groupRef.style.setProperty('--menuHeight', (bookListLength + 'px'))
+      var bookListHeight = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
+      this.$nextTick(()=> {
+        this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+      })
+
     },
     bookDropDown () {
       if (this.cabinetList.length !== 0) {

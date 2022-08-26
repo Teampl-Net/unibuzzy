@@ -7,7 +7,7 @@
         </div>
         <div class="" style="height: 40%;" >
             <span v-if="this.uItem === '이메일'" class="fl">{{getUserInform.userEmail}}</span>
-            <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{getUserInform.phoneLast}}</span>
+            <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{this.$setPhone(getUserInform.phoneEnc)}}</span>
             <!-- <gBtnSmall style="float: right;" btnTitle="변경" v-on:click="openChangePop(uItem)" /> -->
         </div>
     </div>

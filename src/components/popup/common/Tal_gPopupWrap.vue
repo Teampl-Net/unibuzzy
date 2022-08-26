@@ -33,7 +33,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
 
-      <boardDetail @openLoading='this.loadingYn = true' @closeLoading='this.loadingYn = false'   :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" style="" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
+      <boardDetail @openLoading='this.loadingYn = true' @closeLoading='this.loadingYn = false' :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />

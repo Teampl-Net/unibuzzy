@@ -3,7 +3,7 @@
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
   <div id="boardWrap" :style="mCabinetContentsDetail.picBgPath? 'background: ' + mCabinetContentsDetail.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" class="boardListWrap">
     <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
-    <p class="font20 fontBold" style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
+    <p class="font20 fontBold" :style="mCabinetContentsDetail.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
     <div id="summaryHeader" class="summaryHeader">
       <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
@@ -21,26 +21,26 @@
           <div class="fl font16  w-100P">
             <div style="width:50px;" >
               <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
+              <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
             </div>
-            <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeText(this.propData.nameMtext) }}</p>
+            <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(this.propData.nameMtext) }}</p>
           </div>
           <div class="fl font16  w-100P">
             <div style="width:50px;" >
               <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
+              <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
             </div>
-            <p class="font16 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(mCabinetContentsDetail.creDate)}}</p>
+            <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(mCabinetContentsDetail.creDate)}}</p>
           </div>
 
-          <div class="fl font16  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
-            <div class="fl font16  w-100P">
+          <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+            <div class="fl font15  w-100P">
               <div style="width:100%" class="fl" >
                 <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-                <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
+                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
               </div>
-              <p class="mleft-05 fl font14 commonBlack" v-if="mCabinetContentsDetail.replyYn === 1">댓글</p>
-              <p class="fl font14 mleft-05 commonBlack" v-if="mCabinetContentsDetail.fileYn === 0">파일업로드</p>
+              <p class="mleft-05 fl font12 commonBlack" v-if="mCabinetContentsDetail.replyYn === 1">댓글</p>
+              <p class="fl font12 mleft-05 commonBlack" v-if="mCabinetContentsDetail.fileYn === 0">파일업로드</p>
             </div>
             <!-- <p class="fl font14">{{mCabinetContentsDetail.blindYn === 1? '파일업로드O/': '파일업로드X/'}}</p> -->
           </div>
@@ -59,8 +59,8 @@
           </div>
         </div> -->
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
-          <p class="cBlack fl font16" style="width: 100%; ">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
-          <p class="cBlack fl font16" style="width: 100%; border-left: 1px solid white">게시글 {{totalElements}}개</p>
+          <p class="cBlack fl font15" style="width: 100%; ">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
+          <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{totalElements}}개</p>
         </div>
 
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
@@ -78,14 +78,14 @@
           </div>
           <div style="display:flex; align-items: center; justify-content: space-around; max-width:100px; width:40%;">
 
-            <img style="width:20px;" v-if="shareAuth.W === true" class="fr" src="../../../assets/images/board/icon_square_pen.svg" alt="">
-            <img style="width:20px;" v-else class="fr" src="../../../assets/images/board/icon_square_pen_solid.svg" alt="">
+            <img v-if="shareAuth.W === true" class="fr img-w20" src="../../../assets/images/board/icon_square_pen.svg" alt="">
+            <img v-else class="fr img-w20" src="../../../assets/images/board/icon_square_pen_solid.svg" alt="">
 
-            <img style="width:20px;" v-if="shareAuth.V === true" class="fr" src="../../../assets/images/board/icon_eyes.svg" alt="">
-            <img style="width:20px;" v-else class="fr" src="../../../assets/images/board/icon_eyes_solid.svg" alt="">
+            <img v-if="shareAuth.V === true" class="fr img-w20" src="../../../assets/images/board/icon_eyes.svg" alt="">
+            <img v-else class="fr img-w20" src="../../../assets/images/board/icon_eyes_solid.svg" alt="">
 
-            <img style="width:20px;" v-if="shareAuth.R === true" class="fr" src="../../../assets/images/common/icon_comment.svg" alt="">
-            <img style="width:20px;" v-else class="fr" src="../../../assets/images/common/icon_comment_solid.svg" alt="">
+            <img v-if="shareAuth.R === true" class="fr img-w20" src="../../../assets/images/common/icon_comment.svg" alt="">
+            <img v-else class="fr img-w20" src="../../../assets/images/common/icon_comment_solid.svg" alt="">
           </div>
         </div>
 
@@ -638,8 +638,11 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
+      console.log(resultList)
+      if (this.viewTab === 'N') {
+        this.totalElements = resultList.totalElements
+      }
 
-      this.totalElements = resultList.totalElements
       return resultList
     },
     closeSearchPop () {

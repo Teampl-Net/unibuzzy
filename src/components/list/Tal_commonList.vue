@@ -79,7 +79,7 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn='alim.replayYn' @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -324,6 +324,9 @@ export default {
     async scrollMove (wich) {
       await this.$nextTick(() => {
         var a = document.getElementById('memoCard'+this.currentContentsKey).offsetTop
+        if (wich === -1){
+          wich = document.getElementById(this.currentMemoList[this.currentMemoList.length - 1].memoKey).offsetTop
+        }
         this.$emit('scrollMove', wich+a)
       })
     },
@@ -370,7 +373,15 @@ export default {
         // await this.getBoardMemoList(true)
         // this.currentMemoList = []
         this.currentMemoList = await this.getContentsMemoList(this.currentContentsKey)
+        console.log(this.currentMemoList)
+        this.memoSetCount()
         this.scrollMove(-1)
+      }
+    },
+    memoSetCount () {
+      var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      if (indexOf !== -1 ){
+        this.contentsList[indexOf].memoCount = this.currentMemoList.length
       }
     },
     mememoCancel(){
@@ -400,13 +411,8 @@ export default {
         this.mememoValue = new Object()
         this.mememoValue = data
         this.memoShowYn = true
-      // } else {
-      //   this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
-      //   this.confirmPopShowYn = true
-      // }
     },
     async memoOpenClick (key) {
-
       var findIndex = this.openMemoList.indexOf(key)
       this.currentMemoList = []
       // var div = document.getElementById('memoList'+key)

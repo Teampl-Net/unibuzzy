@@ -25,23 +25,22 @@
           <!-- <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/> -->
         </div>
         <div class="w-100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
-          <!-- <div style="width:100%; height: 30px" class="mtop-1 fl">
-            <p class="textLeft font16 fl" style="line-height: 30px;">채널명</p>
-            <input style="background: ghostwhite;" v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
-          </div> -->
 
-          <!-- <p class="fontBold font20 fl w-100P textCenter" >채널이름 <img src="../../../assets/images/push/noticebox_edit.png" style="" alt=""></p> -->
-          <input style="text-align:center ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
-          <img class="cursorP" src="../../../assets/images/push/noticebox_edit.png" style="" alt="">
+          <div style="width:100%;" class="mtop-1 fl">
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널명</p>
+            <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
+          </div>
+          <!-- <input style="text-align:center ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
+          <img class="cursorP" src="../../../assets/images/push/noticebox_edit.png" style="" alt=""> -->
 
           <div style="width:100%;" class="mtop-1 fl ">
             <div class="fr w-100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
-            <!-- <p v-show="chanMemoYn" class="textLeft font16 fl" style="line-height: 30px;">소개글</p> -->
+            <p v-show="chanMemoYn" class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">소개글</p>
             <!-- <textarea v-show="chanMemoYn" style="background: ghostwhite;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/> -->
             <textarea v-show="chanMemoYn" style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
           </div>
           <div style="width:100%; height: 30px" class="mtop-1 fl" >
-            <p class="textCenter font16 fl fontBold w-100P" style="line-height: 30px;">산업군</p>
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">산업군</p>
             <!-- <div class="changeChanTypeBtnWrap" style="background: ghostwhite;" @click="channelTypeClick">
               <p class="textLeft font14 fl mleft-05 commonBlack" style="line-height:30px;" >{{selectTypeText}}</p>
             </div> -->
@@ -325,10 +324,14 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 
 #channelName{
   /* padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px; */
-  padding-left: 5px; width: 40%;  height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
+  padding-left: 5px; height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
+  width: 100%;
+  background: white !important;
+  float: left;
 }
 .channelMemo{
-  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none;border: 1px solid #ccc;resize:none; padding-left: 5px;
+  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none; border: 1px solid #ccc;resize:none; padding-left: 5px;
+  outline: none;
 }
 
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
@@ -353,7 +356,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 .createChanWrap{width: 100%;display: flex; flex-direction: column; height: 100%; top:50px;}
 .createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
 
-#channelName::placeholder {
+/* #channelName::placeholder {
   color: rgb(103, 104, 167) !important;
-}
+} */
 </style>

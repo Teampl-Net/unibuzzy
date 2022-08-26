@@ -91,7 +91,7 @@ export default {
       this.$emit('contentMenuClick', param)
     },
     infoMemo (memo) {
-      // console.log(memo)
+      console.log(memo)
     },
     loadMore () {
       // this.memoLoadingShow()
@@ -121,6 +121,7 @@ export default {
       var memo = new Object()
       // memo = data
       memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
+      memo.bodyHtmlYn = true
       // memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
       memo.targetKey = data.targetKey
       memo.targetKind = data.targetKind

@@ -53,6 +53,10 @@ import Iconwink from './components/Tal_winkAlimLogo.vue'
 import gEmty from './components/unit/Tal_commonEmty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 
+// import Gapi from 'vue-googleapis'
+
+// import youtubeAuth from './components/unit/Tal_youtubeAuth'
+
 // import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 
@@ -97,6 +101,11 @@ app.use(axiosFunction)
 app.use(store)
 app.use(uploadFile)
 // app.use(massage)
+
+// app.use(youtubeAuth)
+// app.use(Gapi)
+// clientId: '777053173385-hp7otdoios6a7c0eb924bftbhoeuaat7.apps.googleusercontent.com',
+// scope: 'https://www.googleapis.com/auth/youtube'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'

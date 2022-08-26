@@ -85,8 +85,7 @@
                   <div id="textMsgBoxPush" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
                   <!-- <div  style="border: 1px solid #6768a745; border-radius: 5px; width: 100%; height: 100%; float: left; overflow: hidden;">
                   -->
-                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
-                  <!-- </div> -->
+                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>                  <!-- </div> -->
                   <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
                   <!-- <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
                   <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
@@ -352,7 +351,7 @@ export default {
       }
     },
     async sendMsg () {
-      
+
       var paramImgList = []
       if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
         this.checkPopYn = false
@@ -462,7 +461,7 @@ export default {
         }else{
           this.$emit('closeXPop',true)
         }
-      
+
       }
 
     },

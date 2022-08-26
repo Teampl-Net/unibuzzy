@@ -190,10 +190,10 @@ export default {
     },
     async getUserInform () {
       this.userInfo = await this.$getUserInform()
-
+      console.log(this.userInfo)
       if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
       if (this.userInfo.phoneLast); else this.userInfo.phoneLast = null || '등록된 번호가 없습니다.'
-      if (!this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userNameMtext } else {this.userInfo.phoneLast = '등록된 이름이 없습니다.'}
+      if (!this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userDispMtext } else {this.userInfo.userDispMtext = this.userInfo.userNameMtext}
 
       // console.log(this.userInfo.creDate)
     },

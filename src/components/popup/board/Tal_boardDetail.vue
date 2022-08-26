@@ -97,9 +97,9 @@
 
     </div>
     <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div>
-    <transition name="showMemoPop">
+    <!-- <transition name="showMemoPop"> -->
       <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
-    </transition>
+    <!-- </transition> -->
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
@@ -842,18 +842,36 @@ export default {
       min-height: 22rem;
       padding-bottom: 3rem;
   }
-
+.showMemoPop-enter {
+  bottom: 0;
+  animation: showMemoPop-dialog-fade-in 0.2s ease;
+}
+.showMemoPop-leave{
+  bottom: 100px;
+}
+/* @keyframes showMemoPop-dialog-fade-in {
+  0% {bottom: -100px};
+  100% {top: 0px;}
+}
+@keyframes showMemoPop-dialog-fade-out {
+    0% {top: 0px}
+    100% { bottom: -100px}
+}*/
 .showMemoPop-enter {animation: showMemoPop-dialog-fade-in 0.2s ease;}
 .showMemoPop-leave {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
 .showMemoPop-enter-active {animation: showMemoPop-dialog-fade-in 0.2s ease;}
 .showMemoPop-leave-active {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
 @keyframes showMemoPop-dialog-fade-in {
-    0% {transform: translateY(var(--widndowHeight));}
-    100% {transform: translateY(0);}
+    /* 0% {transform: translateY(var(--widndowHeight));}
+    100% {transform: translateY(0);} */
+    0% {bottom: -100px;}
+    100% {bottom: 0;}
 }
 @keyframes showMemoPop-dialog-fade-out {
-    0% {transform: translateY(0);}
-    100% { transform: translateY(var(--widndowHeight));}
+    /* 0% {transform: translateY(0);}
+    100% { transform: translateY(var(--widndowHeight));} */
+    0% {bottom: 0;}
+    100% {bottom: -100px;}
 }
 .memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
 .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}

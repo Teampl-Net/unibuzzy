@@ -14,12 +14,13 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="this.$refs.selectFile.click()" :style="'width: ' + (this.popWidth * 0.5) + 'px; height: ' + (this.popWidth * 0.5) + 'px;' "  style="cursor: pointer; border: 1px solid #ccc; overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 5px; margin-bottom: 10px; float: left; ">
+              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; cursor: pointer; border: 1px solid #ccc; overflow: hidden; border-radius: 5px; margin-bottom: 10px; float: left; ">
                 <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="">
               </div>
-              <form  @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
+              <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                   <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
               </form>
+              <p class="fl fontBold textLeft font14 w-100P mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
             </div>
           </div>
           <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">

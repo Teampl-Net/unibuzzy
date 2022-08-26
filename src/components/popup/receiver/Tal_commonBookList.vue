@@ -9,10 +9,10 @@
               <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                 <img src="../../../assets/images/channel/channer_addressBook.svg" class="img-w23" alt="">
               </div>
-              <input :id="'commonBookInput'+index" v-model="cabinetInputText" style="border:none; width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
+              <input :ref="'commonBookInput'+index" @blur="inputFocusOut(data, null)" :id="'commonBookInput'+index" v-model="cabinetInputText" style="border:none; width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
               <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-                <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p>
-                <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p>
+                <!-- <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p> -->
+                <!-- <p class="fl font14 cursorP" style=" margin: 0 5px;" @click="changedText(data,null)" >취소</p> -->
               </div>
             </div>
             <div v-show="editIndex !== index" @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
@@ -20,7 +20,9 @@
               <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{data.cabinetNameMtext}}</p>
             </div>
             <div v-if="!selectPopYn" class="fl cursorP" style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-              <img src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="changedText(data,index)" >
+              <img v-if="editIndex !== index" src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="changedText(data,index)" >
+              <!-- <p v-else class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p> -->
+
               <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinet(data,index)" >
             </div>
             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1 cursorP" style="position: relative; height: 100%;">
@@ -116,13 +118,32 @@ export default {
             }
         }
     },
+
     methods:{
-        changedText(data, index){
+        inputFocusOut(data, index){
+            if (data.cabinetNameMtext !== this.cabinetInputText ) {
+                this.updateCabinet(data)
+            }
+            // this.changedText(data,index)
+            this.editIndex = null
+        },
+        async changedText(data, index){
             // this.editYn = true
-            this.cabinetInputText = data.cabinetNameMtext
-            this.editIndex = index
+            this.cabinetInputText = await data.cabinetNameMtext
+            this.editIndex = await index
+            // setTimeout(()=>{
+            return new Promise(()=>{
+                this.focusInput(index)
+            })
+            // },1000)
+        },
+        focusInput (index) {
             if (index !== null){
-                document.getElementById('commonBookInput'+index).focus
+                this.$nextTick(()=>{
+                    this.$refs["commonBookInput" + index][0].focus()
+                })
+                // document.getElementById('commonBookInput' + index).focus()
+                // this.$refs["commonBookInput" + index].focus()
             }
         },
         changeSelectedList () {
@@ -251,24 +272,23 @@ export default {
             }, 800);
         },
         async updateCabinet(data, index){
+            var cabinet = new Object()
+            cabinet.cabinetNameMtext = 'KO$^$'+this.cabinetInputText
+            cabinet.currentTeamKey = data.currentTeamKey
+            cabinet.sysCabinetCode = data.sysCabinetCode
+            cabinet.cabinetKey = data.cabinetKey
+            var paramSet = new Object()
+            paramSet.creMenuYn = false
+            paramSet.cabinet = cabinet
 
-                var cabinet = new Object()
-                cabinet.cabinetNameMtext = 'KO$^$'+this.cabinetInputText
-                cabinet.currentTeamKey = data.currentTeamKey
-                cabinet.sysCabinetCode = data.sysCabinetCode
-                cabinet.cabinetKey = data.cabinetKey
-                var paramSet = new Object()
-                paramSet.creMenuYn = false
-                paramSet.cabinet = cabinet
-
-                var result = null
-                var response = await this.$commonAxiosFunction({
+            var result = null
+            var response = await this.$commonAxiosFunction({
                 url: '/tp.saveCabinet',
                 param: paramSet
-                })
-                result = response.data
-                data.cabinetNameMtext =this.cabinetInputText
-                this.editIndex = null
+            })
+            result = response.data
+            data.cabinetNameMtext =this.cabinetInputText
+            this.editIndex = null
 
         },
         async changePosTeamMenu(event) {
