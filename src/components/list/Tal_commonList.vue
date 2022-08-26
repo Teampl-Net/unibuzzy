@@ -14,12 +14,11 @@
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p style="width: 100%; " class="font16 fl textOverdot fontBold commonBlack">
+                  <p style="width: 100%; " class="font16 fl fontBold commonBlack">
                     <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: 'alim', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
-
                   </p>
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
