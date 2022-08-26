@@ -78,7 +78,7 @@ export default {
     }
   },
   updated () {
-    if (this.pSearchFilterList.length > 0) {
+    if (this.pSearchFilterList) {
       this.searchFilterList = this.pSearchFilterList
     }
   },
@@ -89,7 +89,7 @@ export default {
     this.propData.managerOpenYn = true
   },
   created () {
-    if (this.pSearchFilterList.length > 0) {
+    if (this.pSearchFilterList) {
       this.searchFilterList = this.pSearchFilterList
     }
     // eslint-disable-next-line vue/no-mutating-props
