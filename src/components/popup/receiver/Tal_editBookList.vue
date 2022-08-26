@@ -8,11 +8,26 @@
                 <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
                 <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
             <!-- </div> -->
-            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:10px 0; overflow: hidden; " v-if="cabinetName !== ''" >
+            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="cabinetName !== ''" >
                 <!-- <span @click="goCabinetList" style="width: calc(100%); max-width: calc(100% - 350px);" class="fl mright-05 font18 h-100P colorBlack">
                     <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
                     <p class="fl mleft-05 font18 textLeft colorBlack" style="width: calc(100% - 50px)" >{{this.cabinetName}}</p>
                 </span> -->
+                <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.searchFilterList.length > 0">
+                    <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">세부필터</p>
+                    <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
+                        <div  v-for="(value, index) in this.searchFilterList" style="width: 20%; min-width: 90px; padding: 0 3px; height: 30px; float: right; " :key="index">
+                        <!-- @click="getMCabGroupList(index)"  -->
+                            <select :style="''"  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" style="    background: #fff !important; border: none!important;border-right: #6768a745!important; width: calc(100% ); height: 30px; float: left; text-align:center;" id="">
+                                <option value="all" @click="changeValue('all')">{{value.text + '전체'}}</option>
+                                <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
+                            </select>
+                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background: #6768a745; float: left;" v-if="index < 2"> </div> -->
+                        <!-- {{value.selectGroup}} -->
+                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background: #6768a745; float: left;"></div> -->
+                        </div>
+                    </div>
+                </div>
                 <div style="width: calc(100%); min-width: 120px; float: right;">
                     <div style=" margin-left: 5px; float: right; max-width: 200px; min-height: 30px; position: relative; width: 100%;">
                         <img @click="cabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; right: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
@@ -31,13 +46,13 @@
                         <option value="creDate">등록순</option>
                         <option value="userDispMtext">이름순</option>
                     </select>
-                </div>
+                </div> <!-- display: flex; justify-content: space-around; align-items: center; -->
                 <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
             </div>
             <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
                 <transition name="showGroup">
-                    <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
                 <!-- <div v-if="plusMenuShowYn"  @click="plusMenuShowYn = !plusMenuShowYn" style="background: #00000026; height: 100%; width: 100%; position: fixed; left: 0; z-index: 999; top: 0;"></div> -->
@@ -63,7 +78,7 @@ import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
-import excelUploadPop from './Tal_exelUpload.vue'
+import excelUploadPop from './Tal_excelUpload.vue'
 export default {
     props: {
         chanInfo: {},
@@ -126,10 +141,48 @@ export default {
             confirmPopShowYn: false,
             confirmText: '',
             plusMenuShowYn: false,
-            imInYn: false
+            imInYn: false,
+            searchFilterList: []
         }
     },
     methods: {
+        setBookSearchFilter () {
+            console.log('%%%%%%%%%%%%%%%')
+            if (this.selectBookDetail.sSub) {
+                if (this.selectBookDetail.sSub === 'STUD') {
+                    this.searchFilterList = [{ text: '학번', groupList: [], selectGroup: 'all' }, { text: '학과', groupList: [], selectGroup: 'all' }, { text: '직책', groupList: [], selectGroup: 'all' }]
+                    this.searchFilterList = this.searchFilterList.reverse()
+                /* this.searchFilter() */
+                } else if (this.selectBookDetail.sSub === 'EMPL') {
+                    this.searchFilterList = [{ text: '직무', groupList: [], selectGroup: 'all' }, { text: '직책', groupList: [], selectGroup: 'all' }, { text: '직급', groupList: [], selectGroup: 'all' }]
+                    this.searchFilterList = this.searchFilterList.reverse()
+                }
+                this.getMCabGroupList(0)
+                this.getMCabGroupList(1)
+                this.getMCabGroupList(2)
+            }
+            
+            console.log(this.searchFilterList)
+            debugger
+        },
+        async getMCabGroupList (index) {
+            var paramMap = new Map()
+            paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
+            paramMap.set('searchKeyStr', 'sSub' + (index + 1))
+            var result = await this.$commonAxiosFunction({
+            url: '/tp.getMCabUserGroupList',
+            param: Object.fromEntries(paramMap)
+        })
+        console.log(result)
+        if (result.data.length > 0) {
+            this.searchFilterList = this.searchFilterList.reverse()
+            this.searchFilterList[index].groupList = result.data
+            this.searchFilterList = this.searchFilterList.reverse()
+        }
+      /* // eslint-disable-next-line no-debugger
+      debugger */
+      //
+    },
         changeOrderBy () {
             // this.orderByText = order
             // this.orderByPopShowYn = false
@@ -218,6 +271,17 @@ export default {
             if (this.orderByText === 'userDispMtext') {
                 orderText = 'u.userDispMtext'
             }
+            console.log(this.searchFilterList)
+            debugger
+            this.searchFilterList = this.searchFilterList.reverse()
+            if (this.searchFilterList.length > 0) {
+                for (var s = 0; s < this.searchFilterList.length; s++) {
+                    if (this.searchFilterList[s].selectGroup !== 'all') {
+                        paramMap.set('sSub' + (s + 1), this.searchFilterList[s].selectGroup)
+                    }
+                }
+            }
+            this.searchFilterList = this.searchFilterList.reverse()
             paramMap.set('orderbyStr', orderText)
             paramMap.set('userDispMtext', this.searchKeyword)
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
@@ -274,13 +338,20 @@ export default {
             var hStack = this.$store.getters.hStack
             var removePage = hStack[hStack.length - 1]
             if (this.propData.value.clickData) {
-                this.searchKeyword = ''
-                hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
-                this.detailOpenYn = false
-                this.cabinetName = ''
-                this.$emit('closeXPop')
+                if (this.excelPopId === hStack[hStack.length - 1]) {
+                    hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                    this.$store.commit('setRemovePage', removePage)
+                    this.$store.commit('updateStack', hStack)
+                    this.excelUploadShowYn = false
+                } else {
+                    this.searchKeyword = ''
+                    hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                    this.$store.commit('setRemovePage', removePage)
+                    this.$store.commit('updateStack', hStack)
+                    this.detailOpenYn = false
+                    this.cabinetName = ''
+                    this.$emit('closeXPop')
+                }
             } else {
                 if (this.selectPopId === hStack[hStack.length - 1]) {
                     this.searchKeyword = ''
@@ -348,6 +419,7 @@ export default {
             this.searchKeyword = ''
             this.receiverTitle = data.cabinetNameMtext /* + ' 멤버 관리' */
             this.selectBookDetail = data
+            this.setBookSearchFilter()
             var history = this.$store.getters.hStack
             this.selectPopId = 'selectMemeberPopup' + history.length
             history.push(this.selectPopId)
@@ -358,6 +430,10 @@ export default {
         },
         closeSearchPop (){
             this.findPopShowYn = false
+        },
+        searchFilter () {
+            // this.searchFilterList = param
+            this.getBookMemberList()
         },
         async requestSearchList (param) {
             if (param) {

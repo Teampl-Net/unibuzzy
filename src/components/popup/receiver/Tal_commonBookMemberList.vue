@@ -4,12 +4,15 @@
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
-                    <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; height:60px; position: relative;"  >
+                    <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; min-height:60px; position: relative;"  >
                         <div v-if="data.userProfileImg" :style="'background-image: url(' + data.userProfileImg + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                           <!-- <img :src="data.userProfileImg" /> -->
                         </div>
                         <div v-else style="background-image: url('../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
-                        </div>
+                        </div><!--
+                        <div style="width: 100px;float: left; height: 100%;">
+
+                        </div> -->
                         <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
                             <p class="fl font16 commonBlack">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <p class="fl font12 commonBlack" v-if="data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true)">{{this.setPhone(data.phoneEnc)}}</p>
@@ -26,6 +29,13 @@
                             <img style="width: 30px; flex-shrink: 0; flex-grow: 0; " src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn" @click="addSelectedList(data,index)" >
                             <img style="width: 25px; height: 20px; margin-top: 5px; flex-shrink: 0; flex-grow: 0; " src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
                         </div>
+                        <div v-if="this.searchFilterList.length > 0" style="width: calc(100% - 30px); margin-bottom: 2px; min-height: 25px; display: flex; margin-top: 5px; justify-content: space-around; align-items: center; float: right;">
+                          <div class="filterWrap font12"><div  class="filterTagBox">{{ data.sSub1?  '#' + data.sSub1 : ''}}</div></div>
+                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
+                          <div class="filterWrap font12"><div  class="filterTagBox" style="  ">{{data.sSub2? '#' + data.sSub2 : ''}} </div></div>
+                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
+                          <div class="filterWrap font12"><div   class="filterTagBox" style="  ">{{data.sSub3? '#' + data.sSub3 : ''}}</div></div>
+                        </div> <!-- :style="data.sSub3 ? 'background:ghostWhite;': ''" -->
                     </div>
                 </template>
             </transition-group>
@@ -44,7 +54,9 @@ export default {
     listData: {},
     propData: {},
     selectPopYn: {},
-    parentSelectList: {}
+    parentSelectList: {},
+    bookType: {},
+    pSearchFilterList: {}
   },
   data () {
     return {
@@ -58,7 +70,16 @@ export default {
       selectedMemberList: [],
       pageTopBtnTitle: '편집',
       systemName: 'iOS',
-      mobileYn: this.$getMobileYn()
+      mobileYn: this.$getMobileYn(),
+      searchFilterList: [],
+      search1: '',
+      search2: '',
+      search3: ''
+    }
+  },
+  updated () {
+    if (this.pSearchFilterList.length > 0) {
+      this.searchFilterList = this.pSearchFilterList
     }
   },
   beforeUnmount () {
@@ -68,6 +89,9 @@ export default {
     this.propData.managerOpenYn = true
   },
   created () {
+    if (this.pSearchFilterList.length > 0) {
+      this.searchFilterList = this.pSearchFilterList
+    }
     // eslint-disable-next-line vue/no-mutating-props
     if (!this.propData.value) this.propData.value = {}
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
@@ -174,6 +198,13 @@ export default {
     },
     updateData (obj) {
       this.addMemberPopYn = false
+    },
+    searchFilter () {
+      // eslint-disable-next-line no-undef
+      /* var param = new Obejct()
+      param.searchKeyStr = 'sSub' + idx
+      param.searchKeyword = selectedValue */
+      this.$emit('searchFilter', this.searchFilterList)
     }
 
   }
@@ -200,5 +231,7 @@ export default {
 
 .memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
-.receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px;}
+.receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px; padding-bottom: 0;}
+.filterTagBox {/* border: 1px solid #6768a745;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
+.filterWrap{width: 33.3%; display: flex; justify-content: center;}
 </style>

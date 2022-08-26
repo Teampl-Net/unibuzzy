@@ -53,10 +53,7 @@ import Iconwink from './components/Tal_winkAlimLogo.vue'
 import gEmty from './components/unit/Tal_commonEmty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 
-// import Gapi from 'vue-googleapis'
-
-// import youtubeAuth from './components/unit/Tal_youtubeAuth'
-
+import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
 // import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 
@@ -93,7 +90,7 @@ app.component('gSvg', gSvg)
 app.component('iconWink', Iconwink)
 app.component('gEmty', gEmty)
 app.component('gReport', gReport)
-
+app.component('gStepProgress', gStepProgress)
 app.use(webViewBridge)
 app.use(axiosFunction)
 // app.use(htmlParser)
