@@ -40,12 +40,12 @@
               <template v-if="nonMemYn !== true">
                 <div @click="changeAct(userDo, board.contentsKey, index0)"  class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(board.userDoList)" :key="index">
                   <template v-if="userDo.doType === 'ST'">
-                    <img class="mright-05 fl" style="width: 1.5rem" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                    <img class="mright-05 fl" style="width: 1.5rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                    <img class="mright-05 fl img-w20" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                    <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                   </template>
                   <template v-else-if="userDo.doType === 'LI'">
-                    <img class="fl" style="margin-top: 2px;width: 1.3rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                    <img class="fl" style="margin-top: 3px;width: 1.3rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                    <img class="fl img-w20" style="margin-top: 2px;" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                    <img class="fl img-w20" style="margin-top: 3px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
                   </template>
                 </div>
               </template>
@@ -265,6 +265,8 @@ export default {
           temp.push({ doType: act.doType, doKey: result.doKey })
           this.commonBoardListData[idx].userDoList = temp
           this.changeData += 1
+          console.log(JSON.stringify(act.doType === 'LI'))
+          this.commonBoardListData[idx].likeCount += 1
         }
       }
       if (result === true) {
@@ -343,7 +345,6 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 .chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;}
 .pushMbox{margin-bottom: 20px;}
-.userDoWrap img {width: 1rem;}
 
 .commonBoardListContentBox{
     position: relative;

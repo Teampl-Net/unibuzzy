@@ -47,19 +47,19 @@
 
                   <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
                     <template v-if="userDo.doType === 'LI'">
-                      <img class="fl" style="margin-top: 2px;width: 1.15rem" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                      <img class="fl" style="margin-top: 2px;width: 1.15rem" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
+                      <img class="fl img-w20" style="margin-top: 2px;"  v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
+                      <img class="fl img-w20" style="margin-top: 2px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
                     </template>
                     <template v-else-if="userDo.doType === 'ST'">
-                      <img class="mright-05 fl" style="width: 1.25rem;" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                      <img class="mright-05 fl" style="width: 1.25rem"  v-else src="../../assets/images/common/starIcon.svg" alt="">
+                      <img class="mright-05 fl img-w20" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
+                      <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
                   <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                       :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey + '?' + alim.creTeamKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
-                    <img style="width:20px;" class=" fl" src="../../assets/images/common/icon_share_square.svg" alt="">
+                    <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1'">
@@ -725,7 +725,7 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 .pushChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 .pushMbox{margin-bottom: 20px;}
-.userDoWrap img {width: 1rem;}
+/* .userDoWrap img {width: 1rem;} */
 .commonListContentBox{
     position: relative;
     width: calc(100% - 1rem);

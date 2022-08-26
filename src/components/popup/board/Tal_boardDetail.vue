@@ -750,8 +750,6 @@ export default {
         param.actYn = true
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
-        console.log('resultresultresultresultresultresultresultresultresultresultresult')
-        console.log(result)
         if (result.result === true) {
           temp = this.alimDetail[0].userDoList
           if (!temp) {
@@ -761,6 +759,8 @@ export default {
           this.alimDetail[0].userDoList = temp
           this.settingUserDo(temp)
           this.changeData += 1
+          // this.alimDetail[0].likeCount += 1
+          this.getContentsList()
         }
         console.log(this.alimDetail[0])
       }
