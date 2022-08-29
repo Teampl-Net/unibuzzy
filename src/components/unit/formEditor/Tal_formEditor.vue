@@ -73,12 +73,14 @@
                 </div>
               </div>
           </div>
+          <gConfirmPop  :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
           <!-- <div class="formEditorWhitePaperEffect" style="position: absolute; top:0; right:0; "></div> -->
           <!-- <p>{{formCardList}}</p> -->
           <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
                           </div> -->
       </div>
     </div>
+
 </template>
 
 <script>
@@ -128,7 +130,10 @@ export default {
       progressBarList: [],
       uploadFileKeyList: [],
       uploadFileList: [],
-      showBlockTypeYn: false
+      showBlockTypeYn: false,
+      confirmText: '',
+      confirmPopShowYn: false
+
     }
   },
   components: {
@@ -211,6 +216,9 @@ export default {
       } else if (type === 'video') {
         this.toolBoxShowYn = false
         formElement.src = src
+        // this.confirmText = '업데이트를 기다려주세요!'
+        // this.confirmPopShowYn = true
+        // return false
       }
       console.log(formElement)
       this.formCardList.push(formElement)

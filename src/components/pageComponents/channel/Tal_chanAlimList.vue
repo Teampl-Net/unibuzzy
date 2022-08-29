@@ -96,8 +96,8 @@
 
     </div>
 
-    <div id="followerCancelArea" v-if="followYn && !ownerYn" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
-      <p v-if="chanItem.teamKey !== 377" @click="changeFollowYn" class="fl font14 fontBold" :style="followYn ? 'color:white' : '' " >구독취소</p>
+    <div id="followerCancelArea" v-if="followYn && !ownerYn && chanItem.teamKey !== 377" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
+      <p @click="changeFollowYn" class="fl font14 fontBold" :style="followYn ? 'color:white' : '' " >구독취소</p>
     </div>
     <!-- <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
         <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>

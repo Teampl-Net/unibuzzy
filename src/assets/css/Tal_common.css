@@ -23,6 +23,19 @@ body {
   margin: 0 auto !important;
   max-height: 1200px;
 }
+.cursorDragAll {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-use-select: all !important;
+  user-select: all !important;
+}
+.cursorDragText {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-use-select: text !important;
+  user-select: text !important;
+}
+
 
 .editableContent {
   -webkit-user-select: auto !important;

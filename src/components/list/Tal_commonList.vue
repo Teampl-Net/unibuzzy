@@ -14,7 +14,7 @@
                 </div>
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p style="width: 100%; " class="font16 fl fontBold commonBlack">
+                  <p style="width: 100%; word-wrap:break-word; " class="font16 fl fontBold commonBlack cursorDragText">
                     <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: 'alim', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
@@ -37,7 +37,7 @@
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
 <!-- @click="goDetail(alim)" -->
-                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragAll" v-html="setBodyLength(alim.bodyFullStr)"></div>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">

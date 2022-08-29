@@ -16,7 +16,7 @@
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl img-w20" src="../../../assets/images/formEditor/videoIcon.svg" style="width: 20px;"  alt="">
             </div>
-            <input class="formVideoFile" type="file" title ="선택" accept="video/*"  ref="selectFile" id="input-file" @change="testVideo"/>
+            <input class="formVideoFile" type="file" title ="선택" accept="video/*"  ref="selectFileVideo" id="input-file" @change="testVideo"/>
 
             <div ref="videoBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
                 <div v-for="(value, index) in selectFileList"  :key="index" class="fl mright-05" :style="settingImgSize" style="width:var(--imgWidth);">
@@ -86,16 +86,30 @@ export default {
   },
   methods: {
     testVideo () {
-      var video = document.getElementById('video')
+      // var video = document.getElementById('video')
       var inputfile = document.getElementById('input-file')
       var file = inputfile.files[0]
       var videoUrl = URL.createObjectURL(file)
-
-      video.setAttribute('src', videoUrl)
-      video.play()
-
-      // // eslint-disable-next-line no-debugger
+      console.log(file)
+      console.log(videoUrl)
+      // eslint-disable-next-line no-debugger
       // debugger
+
+      var reader = new FileReader()
+      reader.onload = e => {
+
+      }
+
+      // var thisthis = this
+      // reader.onload = e => {
+      //   var imager = new Image()
+      //   var video = new Video()
+      //   var image = new Image()
+      //   image.onload = function () {
+      //   }
+      // }
+      // video.setAttribute('src', videoUrl)
+      // video.play()
     },
     youtube () {
       // Gapi.goo
@@ -104,15 +118,15 @@ export default {
       this.selectFile = null
       this.previewImgUrl = null
       // 선택된 파일이 있는가?
-      if (this.$refs.selectFile.files.length > 0) {
+      if (this.$refs.selectFileVideo.files.length > 0) {
         // 0 번째 파일을 가져 온다.
+        for (var k = 0; k < this.$refs.selectFileVideo.files.length; k++) {
+          this.selectFile = this.$refs.selectFileVideo.files[k]
 
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-          this.selectFile = this.$refs.selectFile.files[k]
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
           // eslint-disable-next-line no-unused-vars
           var tt = this.selectFile
 
+          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
           let fileExt = this.selectFile.name.substring(
             this.selectFile.name.lastIndexOf('.') + 1
           )

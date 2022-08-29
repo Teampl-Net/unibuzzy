@@ -9,7 +9,7 @@
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index" :change="changeData">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor">
+            <p class=" font18 fontBold commonColor cursorDragText">
               <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type:'board', ownerYn: creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0), tempData: alim})" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{alim.title}}
             </p>
@@ -24,7 +24,8 @@
           </div>
 
         </div>
-        <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; ">
+        <!-- <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; "> -->
+          <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; ">
           <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
           <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
           <div v-if="filePopShowYn" style="width: 70%; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
@@ -40,7 +41,7 @@
             <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
           </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragAll" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -690,7 +691,9 @@ export default {
       }
       await this.settingAddFalseList(true)
 
-      this.fileDownloadAreaYn = this.attachTrueFileList.length !== 0
+      // this.fileDownloadAreaYn = this.attachTrueFileList.length !== 0
+      // 파일리스트에서 attachYn이 한개라도 있으면 true로 다운로드가 보이게 하였습니다!
+      this.fileDownloadAreaYn = (this.attachTrueFileList.findIndex(i => i.attachYn === true)) !== -1
       // await this.settingUserDo(tempuserDoList)
 
       // console.log(this.alimDetail)
@@ -826,22 +829,24 @@ export default {
 
 .pushMbox{margin-bottom: 20px;}
 
-  .content {
-      position: relative;
-      width: 100%;
-      margin: auto;
-      border-radius: 0.8rem;
-      background-color: #ffffff;
-      color: #363c5f;
-      padding: 1.5rem;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
-      min-height: 22rem;
-      padding-bottom: 3rem;
-  }
+.content {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  border-radius: 0.8rem;
+  background-color: #ffffff;
+  color: #363c5f;
+  padding: 1.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+  min-height: 22rem;
+  padding-bottom: 3rem;
+
+}
+
 .showMemoPop-enter {
   bottom: 0;
   animation: showMemoPop-dialog-fade-in 0.2s ease;

@@ -18,7 +18,7 @@
                 <p class="fontBold commonColor font20 fl">알림작성</p>
                 <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
               </div>
-              <div style="width: 100%; height: calc(100% - 39px);  padding-top: 1.5rem; float: left; overflow: hidden auto; ">
+              <div style="width: 100%; height: calc(100% - 30px); padding: 1.5rem 0 !important; float: left; overflow: hidden auto;" :style="viewTab === 'complex' ? 'height: calc(100% - 50px)' : ''">
                 <div class="pageTopArea fl">
                   <!-- {{receiverList}} -->
                   <div class="fl" style="margin-bottom: 5px; width:100%;">
@@ -562,7 +562,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form/* ,
+            .post('https://mo.d-alim.com:12443/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

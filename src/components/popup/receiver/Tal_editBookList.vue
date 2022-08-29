@@ -161,7 +161,7 @@ export default {
                 this.getMCabGroupList(1)
                 this.getMCabGroupList(2)
             }
-            
+
             console.log(this.searchFilterList)
             debugger
         },
