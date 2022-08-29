@@ -66,7 +66,7 @@ export default {
       param.fileType = 'I'
       param.attachYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMMFileList',
+        url: 'tp.getMMFileList',
         param: param
       })
       console.log(result)

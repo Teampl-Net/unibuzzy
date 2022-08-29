@@ -128,9 +128,10 @@ export default {
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
       memo.creUserKey = data.creUserKey
+      // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

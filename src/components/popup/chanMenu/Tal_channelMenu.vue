@@ -172,7 +172,7 @@ export default {
       params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'tp.getFollowerList',
         param: params
       })
       if (result.data) {
@@ -270,7 +270,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: '/tp.getTeamMenuList',
+          url: 'tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data

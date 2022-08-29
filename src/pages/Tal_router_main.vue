@@ -126,7 +126,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -183,14 +183,13 @@ export default {
           } else {
             this.notiDetail = JSON.parse(message.pushMessage).noti.data
           }
-          if (this.notiDetail.targetKind === 'CONT') {
-            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-              return
-            }
-            var currentPage = this.$store.getters.hCPage
-            if (this.notiDetail.actYn === true) {
-              if ((currentPage === 0 || currentPage === undefined)) {
-                // alert(JSON.stringify(this.notiDetail.targetKey))
+          var currentPage = this.$store.getters.hCPage
+          if ((currentPage === 0 || currentPage === undefined)) {
+            if (this.notiDetail.targetKind === 'CONT') {
+              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
+              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
                 if (this.notiDetail.actType === 'WR') {
                   this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
                 } else {
@@ -199,27 +198,16 @@ export default {
                   }
                 }
               } else {
-              }
-            } else {
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                if ((currentPage === 0 || currentPage === undefined)) {
+                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   this.notiDetailShowYn = true
-                }
-              } else {
-                if ((currentPage === 0 || currentPage === undefined)) {
-                  /* this.$router.replace({ path: '/pushList' }) */
-                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
                 } else {
                   this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
                 }
               }
-            }
-          } else if (this.notiDetail.targetKind === 'TEAM') {
-            if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-              return
-            }
-            currentPage = this.$store.getters.hCPage
-            if ((currentPage === 0 || currentPage === undefined)) {
+            } else if (this.notiDetail.targetKind === 'TEAM') {
+              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
               this.$router.replace({ path: '/' })
               if (this.notiDetail.actType === 'FL') {
                 this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
@@ -228,7 +216,16 @@ export default {
               } else if (this.notiDetail.actType === 'MA') {
                 this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
               }
-            } else {
+            } else if (this.notiDetail.targetKind === 'MEMO') {
+              if (this.notiDetail.actYn === true) {
+                if (this.notiDetail.actType === 'WR') {
+                  this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+                } else {
+                  if (this.notiDetail.actType === 'LI') {
+                    this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+                  }
+                }
+              }
             }
           }
         }
