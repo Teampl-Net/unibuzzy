@@ -10,8 +10,10 @@
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div> -->
             <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
-                <div style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: data.picBgPath || '#ffffff' }"></div>
-                <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" style="" class="boardNameText" />
+              <!-- <img v-if="!data.picBgPath" class="img-w20 mright-05" src="../../assets/images/board/icon_lock.svg" alt=""> -->
+              <img v-if="!data.picBgPath" class="img-w20 mright-05" src="../../assets/images/board/icon_lock_gray.svg" alt="">
+              <div v-else style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: data.picBgPath || '#ffffff' }"></div>
+              <div v-html="data.cabinetNameMtext" :id="'boardName' + data.cabinetKey" :style="!data.picBgPath ? 'color:#999' : ''" class="boardNameText" />
             </div>
 
             <div class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
@@ -134,6 +136,7 @@ export default {
         result[i].cabinetNameMtext = this.$changeText(changeText)
       }
       this.boardList = result
+      console.log(this.boardList)
     },
     goPage (link) {
       this.$emit('goPage', link)

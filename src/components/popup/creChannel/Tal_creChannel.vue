@@ -47,7 +47,27 @@
             <div class="fl mtop-05" style="width: 100%;">
               <!-- <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:2.5rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; background: #eee; "> -->
                 <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; justify-content: center; align-items: center; ">
-                  <p class="font15 commonBlack fl" >{{value.teamNameMtext}}</p>
+                  <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && selectedType !== 'C'" src="../../../assets/images/channel/icon_office.svg"/>
+                  <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && selectedType === 'C'" src="../../../assets/images/channel/icon_office_white.svg" >
+                  <img class="img-w18 fl mright-05" v-if="value.teamType === 'G' && selectedType !== 'G'" src="../../../assets/images/channel/icon_Government.svg"/>
+                  <img class="img-w18 fl mright-05" v-if="value.teamType === 'G' && selectedType === 'G'" src="../../../assets/images/channel/icon_Government_white.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'S' && selectedType !== 'S'" src="../../../assets/images/channel/icon_school.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'S' && selectedType === 'S'" src="../../../assets/images/channel/icon_school_white.svg"/>
+                  <img class="img-w20 fl" v-if="value.teamType === 'H' && selectedType !== 'H'" src="../../../assets/images/channel/icon_church.svg"/>
+                  <img class="img-w20 fl" v-if="value.teamType === 'H' && selectedType === 'H'" src="../../../assets/images/channel/icon_church_white.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'D' && selectedType !== 'D'" src="../../../assets/images/channel/icon_society.jpg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'D' && selectedType === 'D'" src="../../../assets/images/channel/icon_society_white.jpg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'Q' && selectedType !== 'Q'" src="../../../assets/images/channel/icon_hospital.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'Q' && selectedType === 'Q'" src="../../../assets/images/channel/icon_hospital_white.svg"/>
+                  <img class="img-w14 fl mright-05" v-if="value.teamType === 'V' && selectedType !== 'V'" src="../../../assets/images/channel/icon_pharmacy.svg"/>
+                  <img class="img-w14 fl mright-05" v-if="value.teamType === 'V' && selectedType === 'V'" src="../../../assets/images/channel/icon_pharmacy_white.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'A' && selectedType !== 'A'" src="../../../assets/images/channel/icon_store.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'A' && selectedType === 'A'" src="../../../assets/images/channel/icon_store_white.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && selectedType !== 'F'" src="../../../assets/images/channel/icon_familly.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && selectedType === 'F'" src="../../../assets/images/channel/icon_familly_white.svg"/>
+                  <p class="font15 commonBlack fl" style="word-break: keep-all;" >
+                  {{value.teamNameMtext}}
+                  </p>
               </div>
             </div>
           </div>
@@ -129,7 +149,7 @@ export default {
         { teamNameMtext: '병원', teamType: 'Q' },
         { teamNameMtext: '약국', teamType: 'V' },
         { teamNameMtext: '매장', teamType: 'A' },
-        { teamNameMtext: '식당', teamType: 'P' },
+        { teamNameMtext: '가족', teamType: 'F' },
         { teamNameMtext: '기타', teamType: 'E' }
       ],
       selectedType: ''
@@ -151,10 +171,14 @@ export default {
 
       this.inputChannelName = this.$changeText(this.modiTeamData.data.content[0].nameMtext)
       this.inputChannelMemo = this.$changeText(this.modiTeamData.data.content[0].memoMtext)
+      console.log(this.modiTeamData.data.content[0].bgPathMtext.length > 30)
+      console.log(this.modiTeamData.data.content[0].logoPathMtext.length > 30)
       this.selectBg.selectedId = this.modiTeamData.data.content[0].picMfilekey
       this.selectBg.selectPath = this.modiTeamData.data.content[0].bgPathMtext
+      this.selectBg.iconType = this.modiTeamData.data.content[0].bgPathMtext.length > 30 ? 'img' : 'icon'
       this.selectIcon.selectedId = this.modiTeamData.data.content[0].logoFilekey
       this.selectIcon.selectPath = this.modiTeamData.data.content[0].logoPathMtext
+      this.selectIcon.iconType = this.modiTeamData.data.content[0].logoPathMtext.length > 30 ? 'img' : 'icon'
       var param = {}
       param.teamType = this.modiTeamData.data.content[0].teamType
       this.setTypeData(param)
@@ -193,10 +217,8 @@ export default {
     setIconOrBGData (param) {
       if (this.iconBgPopupYn === 'iconPop') {
         this.selectIcon = param
-
       } else if (this.iconBgPopupYn === 'bgPop') {
         this.selectBg = param
-
       }
       this.iconBgPopupYn = false
     },

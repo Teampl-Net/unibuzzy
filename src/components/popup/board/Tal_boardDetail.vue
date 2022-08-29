@@ -41,7 +41,7 @@
             <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
           </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragAll" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -58,27 +58,35 @@
             <div v-else class="mbottom-05 fl" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{alim.memoCount > 0? '답변완료' : '답변대기'}}</div>
             </div>
-            <template v-if="!detailVal.nonMemYn">
-              <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
-                <template v-if="userDo.doType === 'ST'">
-                  <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
-                  <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
-                </template>
-                <template v-else-if="userDo.doType === 'LI'">
-                  <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
-                  <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
-                </template>
-              </div>
-            </template>
+            <div class="fl" style="display:flex;">
+              <template v-if="!detailVal.nonMemYn">
+                <div @click="changeAct(userDo, alim.contentsKey)"  class="fl" v-for="(userDo, index) in this.userDoList" :key="index">
+                  <template v-if="userDo.doType === 'ST'">
+                    <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../../assets/images/common/colorStarIcon.svg" alt="">
+                    <img class="mright-05 mtop-01 fl" v-else src="../../../assets/images/common/starIcon.svg" alt="">
+                  </template>
+                  <template v-else-if="userDo.doType === 'LI'">
+                    <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../../assets/images/common/likeIcon.svg" alt="">
+                    <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../../assets/images/common/light_likeIcon.svg" alt="">
+                  </template>
+                </div>
+              </template>
+              <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
+              data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
+                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">
+            </div>
             <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
-            <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
-                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                  class="copyTextWrap">
-              <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt="">
-            </div>
+            <!-- <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText" -->
+            <!-- <div class="copyTextWrap"> -->
+              <!-- <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt=""> -->
+            <!-- <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
+            data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
+                  + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
+            <!-- </div> -->
           </div>
           <div v-if='!detailVal.nonMemYn && !replyYn' class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
@@ -879,5 +887,5 @@ export default {
     100% {bottom: -100px;}
 }
 .memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
-.copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
+/* .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
 </style>

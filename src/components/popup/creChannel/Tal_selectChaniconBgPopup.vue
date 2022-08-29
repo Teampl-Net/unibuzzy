@@ -14,12 +14,13 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; cursor: pointer; border: 1px solid #ccc; overflow: hidden; border-radius: 5px; margin-bottom: 10px; float: left; ">
-                <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="">
+              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; ">
+                <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="" class="preview">
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                   <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
               </form>
+
               <p class="fl fontBold textLeft font14 w-100P mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
             </div>
           </div>
@@ -39,11 +40,16 @@
       <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
 
   </div>
+  <crop v-if="cropYn" @no="cropYn=false" :imgUrl="previewImgUrl" />
 </template>
 
 <script>
 // import a from ' resource/channeliconbg/CHAR01.png'\
+import crop from './Tal_cropTest.vue'
 export default {
+  components: {
+    crop
+  },
   props: {
     opentype: {},
     selectIcon: {},
@@ -68,34 +74,11 @@ export default {
     }
   },
   created () {
-    if (this.opentype === 'bgPop') {
-      if (this.selectBg.iconType === 'icon' || this.selectBg.selectedId < 16) {
-        console.log(this.selectBg)
-        this.viewTab = 'icon'
-        this.selectedId = this.selectBg.selectedId
-        this.selectPath = this.selectBg.selectPath
-      } else if (this.selectBg.iconType === 'img') {
-        this.viewTab = 'img'
-        this.previewImgUrl = this.selectBg.selectPath
-        this.selectedImgPath = this.selectBg.selectPath
-        this.selectedImgFilekey = this.selectBg.selectedId
-      }
-    } else {
-      if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
-        this.viewTab = 'icon'
-        this.selectedId = this.selectIcon.selectedId
-        this.selectPath = this.selectIcon.selectPath
-      } else if (this.selectIcon.iconType === 'img') {
-        this.viewTab = 'img'
-        this.previewImgUrl = this.selectIcon.selectPath
-        this.selectedImgPath = this.selectIcon.selectPath
-        this.selectedImgFilekey = this.selectIcon.selectedId
-      }
-    }
     console.log(this.selectIcon)
-    console.log(this.opentype)
+    // console.log(this.opentype)
     this.getCodeList()
     this.setDefaultData()
+    this.dataSetting()
   },
   data () {
     return {
@@ -114,12 +97,57 @@ export default {
       viewTab: 'icon',
       selectedImgPath: '',
       selectedImgFilekey: '',
-      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }]
+      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }],
+      cropper: {},
+      image: {},
+      cropYn: false
     }
   },
   methods: {
+    dataSetting () {
+      if (this.opentype === 'bgPop') {
+        // alert(JSON.stringify(this.selectBg))
+        if (this.selectBg.iconType === 'icon' || this.selectBg.selectedId < 16) {
+          this.viewTab = 'icon'
+          this.selectedId = this.selectBg.selectedId
+          this.selectPath = this.selectBg.selectPath
+        } else if (this.selectBg.iconType === 'img') {
+          this.viewTab = 'img'
+          this.previewImgUrl = this.selectBg.selectPath
+          this.selectedImgPath = this.selectBg.selectPath
+          this.selectedImgFilekey = this.selectBg.selectedId
+        }
+      } else if (this.opentype === 'iconPop') {
+        // alert(JSON.stringify(this.selectIcon))
+        if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
+          this.viewTab = 'icon'
+          this.selectedId = this.selectIcon.selectedId
+          this.selectPath = this.selectIcon.selectPath
+        } else if (this.selectIcon.iconType === 'img') {
+          this.viewTab = 'img'
+          this.previewImgUrl = this.selectIcon.selectPath
+          this.selectedImgPath = this.selectIcon.selectPath
+          this.selectedImgFilekey = this.selectIcon.selectedId
+        }
+      }
+    },
     async changeTab (data) {
       this.viewTab = data
+      if (this.opentype === 'bgPop') {
+        if (data === 'img') {
+          this.previewImgUrl = this.selectBg.selectPath
+          this.selectedImgPath = this.selectBg.selectPath
+          this.selectedImgFilekey = this.selectBg.selectedId
+        // } else if (data === 'icon'){
+        }
+      } else {
+        if (data === 'img') {
+          this.previewImgUrl = this.selectIcon.selectPath
+          this.selectedImgPath = this.selectIcon.selectPath
+          this.selectedImgFilekey = this.selectIcon.selectedId
+        }
+      }
+      // this.dataSetting()
     },
     async getCodeList () {
       var resultList = null
@@ -169,6 +197,7 @@ export default {
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
+        console.log(param)
         this.$emit('makeParam', param)
       }
     },
@@ -182,76 +211,74 @@ export default {
       this.selectFile = null
       this.previewImgUrl = null
       // 선택된 파일이 있는가?
+      // this.image = this.$refs.selectFile
+      // this.cropper = new Cropper(this.image, {
+      //   preview: '.preview'
+      // })
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
+        // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+        // this.selectFile = this.$refs.selectFile.files[k]
+        this.selectFile = this.$refs.selectFile.files[0]
+        // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
+        // eslint-disable-next-line no-unused-vars
+        var tt = this.selectFile
+        // eslint-disable-next-line no-debugger
+        // debugger
 
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-          this.selectFile = this.$refs.selectFile.files[k]
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-          // eslint-disable-next-line no-unused-vars
-          var tt = this.selectFile
-
-          let fileExt = this.selectFile.name.substring(
-            this.selectFile.name.lastIndexOf('.') + 1
-          )
-          // 소문자로 변환
-          fileExt = fileExt.toLowerCase()
-          if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
-          ) {
-          // FileReader 를 활용하여 파일을 읽는다
-            var reader = new FileReader()
-            var thisthis = this
-            reader.onload = e => {
-              var image = new Image()
-              image.onload = function () {
-                // Resize image
-                var previewCanvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                if (width > height) { // 가로모드
-                  thisthis.imgMode = 'W'
-                  if (width > 600) {
-                    height *= 600 / width
-                    width = 600
-                  }
-                } else { // 세로모드
-                  thisthis.imgMode = 'H'
-                  if (height > 600) {
-                    width *= 600 / height
-                    height = 600
-                  }
+        let fileExt = this.selectFile.name.substring(
+          this.selectFile.name.lastIndexOf('.') + 1
+        )
+        // 소문자로 변환
+        fileExt = fileExt.toLowerCase()
+        if (
+          ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ) {
+        // FileReader 를 활용하여 파일을 읽는다
+          var reader = new FileReader()
+          var thisthis = this
+          reader.onload = e => {
+            var image = new Image()
+            image.onload = function () {
+              // Resize image
+              var previewCanvas = document.createElement('canvas')
+              var width = image.width
+              var height = image.height
+              if (width > height) { // 가로모드
+                thisthis.imgMode = 'W'
+                if (width > 600) {
+                  height *= 600 / width
+                  width = 600
                 }
-                previewCanvas.width = width
-                previewCanvas.height = height
-
-                previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
-                thisthis.previewImgUrl = imgBase64
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
+              } else { // 세로모드
+                thisthis.imgMode = 'H'
+                if (height > 600) {
+                  width *= 600 / height
+                  height = 600
                 }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var file = new File([Bfile], thisthis.selectFile.name)
-
-                // eslint-disable-next-line no-debugger
-                debugger
-                thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               }
-              image.onerror = function () {
+              previewCanvas.width = width
+              previewCanvas.height = height
 
-              }
-              image.src = e.target.result
-              this.previewImgUrl = e.target.result
+              previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
+              thisthis.previewImgUrl = previewCanvas.toDataURL('image/png', 0.8)
+              // eslint-disable-next-line no-debugger
+              // debugger
+              thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: thisthis.selectFile })
+              // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+              // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             }
-            reader.readAsDataURL(this.selectFile)
-            // await this.$editorImgResize(this.selectFile)
+            image.onerror = function () {
+
+            }
+            image.src = e.target.result
+            this.previewImgUrl = e.target.result
           }
+          reader.readAsDataURL(this.selectFile)
+          // await this.$editorImgResize(this.selectFile)
+          // this.cropYn = true
         }
+        // }
       } else {
         this.selectFile = null
         this.previewImgUrl = null

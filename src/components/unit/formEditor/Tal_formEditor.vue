@@ -50,7 +50,7 @@
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
                               <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
-                              <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px;" alt=""></div>
+                              <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
                               <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                           </div>
                           <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>

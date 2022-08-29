@@ -37,7 +37,7 @@
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
 <!-- @click="goDetail(alim)" -->
-                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragAll" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(alim.bodyFullStr)"></div>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">

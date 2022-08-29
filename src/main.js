@@ -54,6 +54,10 @@ import gEmty from './components/unit/Tal_commonEmty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 
 import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
+
+import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
+
 // import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics'
 
@@ -91,12 +95,14 @@ app.component('iconWink', Iconwink)
 app.component('gEmty', gEmty)
 app.component('gReport', gReport)
 app.component('gStepProgress', gStepProgress)
+app.component(VueCropper)
 app.use(webViewBridge)
 app.use(axiosFunction)
 // app.use(htmlParser)
 
 app.use(store)
 app.use(uploadFile)
+
 // app.use(massage)
 
 // app.use(youtubeAuth)

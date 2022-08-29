@@ -514,7 +514,16 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   transform: rotate(-2deg);
   -ms-user-select: none;    -moz-user-select: -moz-none;   -khtml-user-select: none;   -webkit-user-select: none;   user-select: none;
 }
+/*  */
+#eContentsWrap .sortable-chosen {
+  height: 4rem;
+  overflow: hidden;
+  text-align: center;
+}
+#eContentsWrap .sortable-chosen img{
+  width: 100px !important;
 
+}
 
 #loading {
   width: 100%;
