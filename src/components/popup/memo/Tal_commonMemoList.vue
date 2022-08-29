@@ -131,7 +131,7 @@ export default {
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

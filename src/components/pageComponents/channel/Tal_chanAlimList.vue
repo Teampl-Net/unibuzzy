@@ -424,7 +424,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
