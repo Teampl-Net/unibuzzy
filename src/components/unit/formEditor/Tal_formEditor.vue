@@ -46,7 +46,7 @@
                           <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
                               <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                               <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
-                              <formVideo v-else-if="value.type === 'video'" />
+                              <formVideo v-else-if="false" />
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
                               <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
@@ -216,9 +216,9 @@ export default {
       } else if (type === 'video') {
         this.toolBoxShowYn = false
         formElement.src = src
-        // this.confirmText = '업데이트를 기다려주세요!'
-        // this.confirmPopShowYn = true
-        // return false
+        this.confirmText = '업데이트를 기다려주세요!'
+        this.confirmPopShowYn = true
+        return false
       }
       console.log(formElement)
       this.formCardList.push(formElement)
