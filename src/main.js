@@ -137,3 +137,4 @@ app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
 app.mount('#app')
+document.title = '더알림'

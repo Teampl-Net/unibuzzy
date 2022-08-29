@@ -14,7 +14,7 @@
           </div>
 
           <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
-              <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+              <input class="formImageFile"  capture="camera" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
           </form>
           <p class="fl fontBold textLeft font14 w-100P mleft-2">터치해서 이미지를 변경할 수 있습니다.</p>
         </div>
@@ -114,10 +114,19 @@ export default {
                 previewCanvas.height = height
 
                 previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                thisthis.previewImgUrl = previewCanvas.toDataURL('image/png', 0.8)
+                const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+                thisthis.previewImgUrl = imgBase64
+                const decodImg = atob(imgBase64.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var file = new File([Bfile], thisthis.selectFile.name)
+
                 // eslint-disable-next-line no-debugger
                 debugger
-                thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: thisthis.selectFile })
+                thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               }
