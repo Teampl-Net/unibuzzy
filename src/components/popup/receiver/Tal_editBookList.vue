@@ -61,6 +61,7 @@
                 <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'직접<br>추가'"></p></div>
                 <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'유저<br>선택'"></p></div>
                 <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div>
+                <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
                 <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn" >
                     <img style="width: 20px; margin-bottom: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
                 </div>
@@ -74,6 +75,7 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
+
 import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
@@ -163,7 +165,6 @@ export default {
             }
 
             console.log(this.searchFilterList)
-            debugger
         },
         async getMCabGroupList (index) {
             var paramMap = new Map()
@@ -254,11 +255,9 @@ export default {
                 mCabContents.inPhone = selectMem.userPhone
                 mCabContents.inUserName = this.$changeText(selectMem.userDispMtext || selectMem.userNameMtext)
                 param.mCabContents = mCabContents
-                debugger
                 result = await this.$saveMCabContents(param)
                 if (result.data.result) {
                     console.log(result)
-                    debugger
                     await this.getBookMemberList()
                 }
             }
@@ -272,7 +271,6 @@ export default {
                 orderText = 'u.userDispMtext'
             }
             console.log(this.searchFilterList)
-            debugger
             this.searchFilterList = this.searchFilterList.reverse()
             if (this.searchFilterList.length > 0) {
                 for (var s = 0; s < this.searchFilterList.length; s++) {

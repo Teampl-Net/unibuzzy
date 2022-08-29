@@ -37,10 +37,11 @@
   <div v-else>
       <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
   </div>
+  <creAddressPop v-if="creAddressPopYn" @closePop="creAddressPopYn = false" />
 </template>
 
 <script>
-
+import creAddressPop from './Tal_creAddressBook.vue'
 // import loadingCompo from '../../../components/Tal_loading.vue'
 // import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -67,7 +68,8 @@ export default {
             selectedBookList: [],
             selectedMemberList: [],
             editIndex:null,
-            cabinetInputText:''
+            cabinetInputText:'',
+            creAddressPopYn: false
         }
     },
     async created () {
@@ -109,6 +111,7 @@ export default {
     components: {
         // loadingCompo,
         draggable: VueDraggableNext,
+        creAddressPop
         // pageTopCompo
     },
     computed: {
@@ -231,6 +234,9 @@ export default {
                 alert('중복선택')
             }
         },
+        creAddressPop(){
+            this.creAddressPopYn = tru
+        },
         async addNewBook () {
             var param = new Object()
             param.creMenuYn = true
@@ -247,7 +253,6 @@ export default {
             result = await this.$saveCabinet(param)
             if (result != null) {
                 // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-
                 this.$emit('refreshList')
                 // if(this.addressBookList.length > 0){
                     // this.anima()
