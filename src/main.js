@@ -54,11 +54,13 @@ import gEmty from './components/unit/Tal_commonEmty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 
 import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
+import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
 
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
 // import { initializeApp } from 'firebase/app'
+
 // import { getAnalytics } from 'firebase/analytics'
 
 // import gToggle from 'vue-toggle-btn';
@@ -68,6 +70,7 @@ const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 const app = createApp(moTheAlim).use(router)
 app.use(commonjs)
 app.use(BootstrapVue3)
+
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
@@ -95,6 +98,7 @@ app.component('iconWink', Iconwink)
 app.component('gEmty', gEmty)
 app.component('gReport', gReport)
 app.component('gStepProgress', gStepProgress)
+app.component('imgLongClickPop', imgLongClickPop)
 app.component(VueCropper)
 app.use(webViewBridge)
 app.use(axiosFunction)

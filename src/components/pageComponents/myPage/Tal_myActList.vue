@@ -34,14 +34,14 @@ export default {
       findPopShowYn: false,
       clickStatus: '',
       myActTitle: '내가 작성한 게시글',
-      myActTabType: 'mw',
+      myActTabType: 'mwb',
       offsetInt: 0,
       myActContentsList: [],
       mCabContentsList: [],
       endListYn: false,
       myActTabList: [
         // { myActTabType: 'mi', name: '관심있는' },
-        { tabType: 'mw', name: '작성한' }, { tabType: 'mc', name: '댓글 단' }, { tabType: 'ml', name: '좋아한' }, { tabType: 'ms', name: '스크랩한' }]
+        { tabType: 'mwb', name: '작성한' }, { tabType: 'mcb', name: '댓글 단' }, { tabType: 'mlb', name: '좋아한' }, { tabType: 'msb', name: '스크랩한' }]
     }
   },
   async created () {
@@ -164,15 +164,15 @@ export default {
         }
       }
       param.jobkindId = 'BOAR'
-      if (this.myActTabType === 'mw') {
+      if (this.myActTabType === 'mwb') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      } else if (this.myActTabType === 'mc') {
+      } else if (this.myActTabType === 'mcb') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActMemoYn = true
-      } else if (this.myActTabType === 'ml') {
+      } else if (this.myActTabType === 'mlb') {
         param.findActYn = true
         param.findActLikeYn = true
-      } else if (this.myActTabType === 'ms') {
+      } else if (this.myActTabType === 'msb') {
         param.findActYn = true
         param.findActStarYn = true
       }

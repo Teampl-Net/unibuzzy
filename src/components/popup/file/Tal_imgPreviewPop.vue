@@ -7,12 +7,16 @@
       <img @click="backClick" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
       <img src="../../../assets/images/common/download.svg"  @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
     </div>
-    <Splide :options="{ rewind: false, start: startIndex || 0 }" aria-label="Vue Splide Example">
+    <Splide :options="{ rewind: false, drag: true, pauseOnHover: true, start: startIndex}" aria-label="Vue Splide Example">
         <SplideSlide v-for="(value, index) in imgList" :key="index">
             <!-- <p style="position: absolute; bottom: 0; color: rgb(255 255 255 / 38%);" class="font14">{{value.fileName}}</p> -->
-            <img class="imgList" @click="infoShown = !this.infoShown" :src="value.pathMtext" :fileKey="value.fileKey" :mmFilekey="value.mmFilekey" :mfileKey="value.mfilekey" alt="Sample 1">
+
+                <img class="imgList" :id="'img' + value.fileKey"  @click="infoShown = !this.infoShown" :src="value.pathMtext" :fileKey="value.fileKey" :mmFilekey="value.mmFilekey" :mfileKey="value.mfilekey" alt="Sample 1">
         </SplideSlide>
     </Splide>
+    <!-- <inner-image-zoom style="width: 100vw; height: 100vh; position: fixed; left: 0; top: 0;"
+                :src="imgList[0].pathMtext"
+                :zoomSrc="imgList[0].pathMtext" /> -->
   <!-- <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; bottom: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
     <img @click="this.$emit('closePop')" src="../../../assets/images/common/download.svg" class="" style="position: absolute; width: 30px; right: 20px; bottom: 25px;" alt="">
   </div> -->
@@ -23,11 +27,15 @@ import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-default.min.css'
 import { onMessage } from '../../../assets/js/webviewInterface'
+/* import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css'
+import InnerImageZoom from 'vue-inner-image-zoom' */
 export default {
   components: {
     Splide,
     SplideSlide,
     commonConfirmPop
+    /* InnerImageZoom */
+    // VZoomerGallery: VueZoomer.Gallery,
   },
   props: {
     contentsTitle: {},

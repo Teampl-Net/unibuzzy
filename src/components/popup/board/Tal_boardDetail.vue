@@ -112,10 +112,12 @@
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
+    <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
   </div>
 </template>
 <script>
 import imgPreviewPop from '../file/Tal_imgPreviewPop.vue'
+import { onMessage } from '../../../assets/js/webviewInterface'
 import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
@@ -131,6 +133,7 @@ export default {
       selectedImgContentsIndex: 0,
       alimDetail: [],
       filePopShowYn: false,
+      imgDetailAlertShowYn: false,
       previewPopShowYn: false,
       // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
@@ -168,7 +171,13 @@ export default {
       currentConfirmType: '',
       smallPopYn: false,
       confirmMsg: '',
-      subPopId: null
+      subPopId: null,
+      clickTime: 0,
+      selectImgObject: {},
+      fileDownloadAreaYn: false,
+      mobileYn: this.$getMobileYn(),
+      clickEndYn: false,
+      alertPopId: null
     }
   },
   props: {
@@ -214,17 +223,56 @@ export default {
     } else {
       setTimeout(() => {
         thisthis.addImgEvnt()
-      }, 3000)
+      }, 1000)
     }
   },
   computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    },
     getWindowSize () {
       return {
         '--widndowHeight': window.innerHeight + 'px'
       }
     }
   },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
+    }
+  },
   methods: {
+    longClickAlertClick (btnType) {
+      if (btnType === 'download') this.imgDownload()
+      else if (btnType === 'share');
+      else if (btnType === 'preview') {
+        this.backClick()
+        this.clickEndYn = false
+        this.previewPopShowYn = true
+      }
+    },
+    async imgDownload () {
+      try {
+        if (this.mobileYn) {
+          onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
+        } else {
+          var result = await this.$downloadFile(this.selectImgObject.fileKey)
+          console.log(result)
+        }
+        this.confirmText = '저장되었습니다!'
+        this.confirmType = false
+        this.backClick()
+        this.confirmPopShowYn = true
+      } catch (error) {
+        console.log(error)
+      }
+    },
     editable (type) {
       this.reportYn = false
       if (this.tempData) {
@@ -338,21 +386,89 @@ export default {
       // 파일서버 fileServer fileserver FileServer Fileserver
       iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
     },
-    backClick () {
-      this.previewPopShowYn = false
-    },
     addImgEvnt () {
       console.log(this.alimDetail[0])
       // eslint-disable-next-line no-debugger
       // debugger
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
-        this.clickImgList[m].addEventListener('click', () => {
-          this.selectImgIndex = m
-          this.previewPopShowYn = true
+        var thisthis = this
+        thisthis.clickImgList[m].addEventListener('touchstart', () => {
+          thisthis.clickTime = Date.now()
+          thisthis.clickEndYn = false
+          thisthis.clickImgList[m].style.opacity = 0.8
+          setTimeout(() => {
+            if (thisthis.clickEndYn === false) {
+              thisthis.selectImgObject.path = thisthis.clickImgList[m].src
+              thisthis.selectImgObject.fileKey = Number(thisthis.clickImgList[m].attributes.filekey.value)
+              thisthis.selectImgIndex = m
+              thisthis.clickImgList[m].style.opacity = 1
+              this.openImgDetailAlert(thisthis.clickImgList[m])
+            }
+          }, 1000)
+          // thisthis.previewPopShowYn = true
+        })
+        thisthis.clickImgList[m].addEventListener('touchend', () => {
+          thisthis.clickEndYn = true
+          thisthis.clickImgList[m].style.opacity = 1
+        })
+
+        thisthis.clickImgList[m].addEventListener('mousedown', () => {
+          thisthis.clickTime = Date.now()
+          thisthis.clickEndYn = false
+          thisthis.clickImgList[m].style.opacity = 0.8
+          setTimeout(() => {
+            if (thisthis.clickEndYn === false) {
+              thisthis.selectImgObject.path = thisthis.clickImgList[m].src
+              thisthis.selectImgObject.fileKey = Number(thisthis.clickImgList[m].attributes.filekey.value)
+              this.openImgDetailAlert(thisthis.clickImgList[m])
+              thisthis.selectImgIndex = m
+              thisthis.clickImgList[m].style.opacity = 1
+            }
+          }, 2000)
+        })
+        thisthis.clickImgList[m].addEventListener('mouseup', () => {
+          thisthis.clickEndYn = true
+          thisthis.clickImgList[m].style.opacity = 1
         })
       }
       this.settingAddFalseList(false)
+    },
+    backClick () {
+      var hStack = this.$store.getters.hStack
+      var removePage = hStack[hStack.length - 1]
+      if (this.alertPopId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
+        this.imgDetailAlertShowYn = false
+      } else {
+        this.previewPopShowYn = false
+      }
+    },
+    openImgDetailAlert (img) {
+      var history = this.$store.getters.hStack
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      history.push(this.alertPopId)
+      this.$store.commit('updateStack', history)
+      console.log(this.$store.getters.hStack)
+      this.imgDetailAlertShowYn = true
+      this.clickEndYn = false
+      // eslint-disable-next-line no-debugger
+      /* debugger
+      var innerHtml = ''
+      if (document.getElementById('imgDetailAlertWrap')) {
+      } else {
+      }
+      innerHtml += '<div id="imgDetailAlert" style="width: 100%;min-height: 100px;position: fixed;left: 0;bottom: 0;background: #FFF;border-radius: 0.8rem 0.8rem 0 0;z-index: 9999;display: flex;flex-direction: column;align-items: center;justify-content: center;">'
+      innerHtml += '    <div style="width" ></div>'
+      innerHtml += ''
+      innerHtml += '</div>'
+      var pop = document.createElement('div')
+
+      pop.innerHTML = innerHtml
+      var app = document.getElementById('app')
+      app.appendChild(pop) */
     },
     async checkUserAuth () {
       if (this.detailVal) { this.shareAuth = this.detailVal.shareAuth }

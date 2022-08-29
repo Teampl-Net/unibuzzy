@@ -44,8 +44,7 @@ export default {
     return {
       myPageTabType: 'ma',
       // ma: my act (내가 작성한, 내가 댓글 단..) / m1: my log (이력) / mi: my info (내 정보)
-      myPageTabList: [{ myPageTabType: 'ma', name: '게시글 활동' }
-        // { myPageTabType: 'ml', name: '나의 이력' }
+      myPageTabList: [{ myPageTabType: 'ma', name: '게시글 활동' } /* { myPageTabType: 'MP', name: '알림 활동' } */
         // { myPageTabType: 'mi', name: '내 정보' }
       ],
       userInfo: {}
@@ -117,8 +116,8 @@ export default {
 .profileSetting {font-weight: bold; box-shadow: 0 0 7px 3px #b7b4b440; border-radius: 15px; background-color: #6768A7; color: #fff; float: left}
 
 .myPageTabList {width: 100%; height: 45px; line-height: 45px; float: left;}
-.myPageTab {border-radius: 0.8rem 0.8rem 0 0; border-bottom: 0 !important; width: 70px; height: 100%; float: left; color: #303030; background-color: rgba(186, 187, 215); margin-right: 5px;}
-.activeMyPageTabList {background-color: #fff !important; width: 90px !important; font-weight: bold; color: #6768A7;}
+.myPageTab {border-radius: 0.8rem 0.8rem 0 0; border-bottom: 0 !important; min-width: 70px; padding: 0 15px; height: 100%; float: left; color: #303030; background-color: rgba(186, 187, 215); margin-right: 5px;}
+.activeMyPageTabList {background-color: #fff !important; min-width: 90px !important; font-weight: bold; color: #6768A7;}
 .myPageContentsWrap {border-radius: 0 0.8rem 0 0; padding: 5px 10px 0 10px; width: 100%; height: calc(100% - 133px); background-color: #fff; display: inline-block; }
 
 .commonBigBtn{cursor: pointer; width: 90px;height: 30px;line-height: 30px;margin-top: 5px;float: right;background-color: #6768A7;border-radius: 0.8rem;color: #fff;}

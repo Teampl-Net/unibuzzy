@@ -26,13 +26,14 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @clickImg="openImgPreviewPop" :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
+          <commonList @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @goDetail="openPop" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <div  :class="this.scrolledYn || !this.pushListReloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
         </div>
-        <imgPreviewPop :mFileKey="this.selectImgObject.mfileKey" :startIndex="selectImgObject.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgObject.title" :creUserName="selectImgObject.creUserName" :creDate="selectImgObject.creDate"  />
+        <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
+        <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
     </div>
   <!-- </div> -->
 </template>
@@ -41,12 +42,15 @@
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
+import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
+import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   name: 'pushList',
   components: {
     findContentsList,
     commonConfirmPop,
-    imgPreviewPop
+    imgPreviewPop,
+    imgLongClickPop
     // searchResult
   },
   props: {
@@ -148,6 +152,7 @@ export default {
       this.changeTab(this.viewTab)
     },
     pageUpdate (value, old) {
+      this.backClick()
       /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */
@@ -182,7 +187,16 @@ export default {
   },
   methods: {
     backClick () {
-      this.previewPopShowYn = false
+      var hStack = this.$store.getters.hStack
+      var removePage = hStack[hStack.length - 1]
+      if (this.alertPopId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
+        this.imgDetailAlertShowYn = false
+      } else {
+        this.previewPopShowYn = false
+      }
     },
     async getMCabContYn (contentsKey) {
       var paramMap = new Map()
@@ -259,11 +273,39 @@ export default {
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
-    async openImgPreviewPop (img) {
-      console.log('img!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(img)
-      this.selectImgObject = img
-      this.previewPopShowYn = true
+    imgLongClick (param) {
+      var history = this.$store.getters.hStack
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      history.push(this.alertPopId)
+      this.$store.commit('updateStack', history)
+      console.log(this.$store.getters.hStack)
+      this.selectImgObject = param.selectObj
+      this.selectImgParam = param.previewParam
+      this.selectImgIndex = param.selectImgIndex
+      this.imgDetailAlertShowYn = true
+    },
+    longClickAlertClick (btnType) {
+      if (btnType === 'download') this.imgDownload()
+      else if (btnType === 'share');
+      else if (btnType === 'preview') {
+        this.backClick()
+        this.previewPopShowYn = true
+      }
+    },
+    async imgDownload () {
+      try {
+        if (this.mobileYn) {
+          onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
+        } else {
+          var result = await this.$downloadFile(this.selectImgObject.fileKey)
+          console.log(result)
+        }
+        this.errorText = '저장되었습니다!'
+        this.backClick()
+        this.failPopYn = true
+      } catch (error) {
+        console.log(error)
+      }
     },
     handleScroll () {
       var currentTime = new Date()
@@ -607,7 +649,11 @@ export default {
       selectImgMfilekey: null,
       selectImgIndex: 0,
       selectImgObject: {},
-      subPopId: ''
+      subPopId: '',
+      imgDetailAlertShowYn: false,
+      mobileYn: this.$getMobileYn(),
+      alertPopId: null,
+      selectImgParam: {}
     }
   }
 }

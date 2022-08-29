@@ -130,6 +130,8 @@ export default {
       smallPopYn: false,
       confirmMsg: '',
       selectImgIndex: 0,
+      clickEndYn: false,
+      selectImgObject: {},
       clickImgList: [],
       selectFileKey: null
 
@@ -452,7 +454,58 @@ export default {
 
       var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
       for (let m = 0; m < imgList.length; m++) {
-        imgList[m].addEventListener('click', () => {
+        var thisthis = this
+        imgList[m].addEventListener('touchstart', () => {
+          thisthis.clickTime = Date.now()
+          imgList[m].style.opacity = 0.8
+          thisthis.clickEndYn = false
+          setTimeout(() => {
+            if (thisthis.clickEndYn === false) {
+              thisthis.selectImgObject.path = imgList[m].src
+              thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
+              var param = new Object
+              param.mfileKey = alim.attachMfilekey
+              param.creUserName = alim.creUserName
+              param.title = alim.title
+              param.creDate = alim.creDate
+              param.imgIndex = m
+              this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
+              thisthis.selectImgIndex = m
+              imgList[m].style.opacity = 1
+            }
+          }, 1000)
+        })
+        imgList[m].addEventListener('touchend', () => {
+          thisthis.clickEndYn = true
+          imgList[m].style.opacity = 1
+        })
+
+        imgList[m].addEventListener('mousedown', () => {
+          thisthis.clickTime = Date.now()
+          imgList[m].style.opacity = 0.8
+          thisthis.clickEndYn = false
+          setTimeout(() => {
+            if (thisthis.clickEndYn === false) {
+              thisthis.selectImgObject.path = imgList[m].src
+              thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
+              var param = new Object
+              param.mfileKey = alim.attachMfilekey
+              param.creUserName = alim.creUserName
+              param.title = alim.title
+              param.creDate = alim.creDate
+              param.imgIndex = m
+              this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
+              thisthis.selectImgIndex = m
+              imgList[m].style.opacity = 1
+            }
+          }, 2000)
+        })
+        imgList[m].addEventListener('mousedown', () => {
+            thisthis.clickEndYn = true
+            imgList[m].style.opacity = 1
+        })
+
+        /* imgList[m].addEventListener('click', () => {
           var param = new Object
           param.mfileKey = alim.attachMfilekey
           param.creUserName = alim.creUserName
@@ -460,10 +513,19 @@ export default {
           param.creDate = alim.creDate
           param.imgIndex = m
           this.$emit('clickImg', param)
-        })
+        }) */
       }
 
     },
+    /* openImgDetailAlert () {
+      var history = this.$store.getters.hStack
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      history.push(this.alertPopId)
+      this.$store.commit('updateStack', history)
+      console.log(this.$store.getters.hStack)
+      this.imgDetailAlertShowYn = true
+      this.clickEndYn = false
+    }, */
     async getContentsMemoList (key) {
       var memo = {}
       memo.targetKind = 'C'
