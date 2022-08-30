@@ -116,7 +116,7 @@ export default {
       this.myActTabType = tab.tabType
       var resultList = await this.getMyActContentsList()
       this.myActContentsList = resultList.content
-      // this.listShowYn = true
+      this.listShowYn = true
       this.endListSetFunc(resultList)
       this.findPopShowYn = false
     },
@@ -182,6 +182,9 @@ export default {
         }
       }
       if (this.myPageTabType === 'ALIM') {
+        if (this.myActTabType === 'mwb') {
+          param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        }
         param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       param.jobkindId = this.myPageTabType
