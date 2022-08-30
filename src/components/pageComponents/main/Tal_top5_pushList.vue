@@ -33,7 +33,8 @@ export default {
       viewTab: 'A',
       listShowYn: true,
       currentTabName: '알림',
-      emptyYn: true
+      emptyYn: true,
+      notiDetail: null
     }
   },
   props: {
@@ -73,8 +74,17 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          this.$refs.activeBarPushListTop5.switchtab(0)
-          this.$refs.activeBarPushListTop5.selectTab('N')
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+          var currentPage = this.$store.getters.hCPage
+          if ((currentPage === 0 || currentPage === undefined)) {
+            if (this.notiDetail.targetKind === 'CONT') {
+              this.getContentsList()
+            }
+          }
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
@@ -159,7 +169,7 @@ export default {
         } */
       } else if (this.viewTab === 'B') {
         // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        param.allYn = true
+        param.boardYn = true
         param.jobkindId = 'BOAR'
       } else if (this.viewTab === 'A') {
         param.allYn = true

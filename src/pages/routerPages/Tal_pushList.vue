@@ -523,13 +523,18 @@ export default {
       if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
-      if (this.viewTab === 'L') {
+      if (this.viewTab === 'N') {
+        param.creTeamKey = this.chanDetailKey
+      } else if (this.viewTab === 'L') {
+        param.creTeamKey = this.chanDetailKey
         param.findActYn = true
         param.findActLikeYn = true
       } else if (this.viewTab === 'S') {
+        param.creTeamKey = this.chanDetailKey
         param.findActYn = true
         param.findActStarYn = true
       } else if (this.viewTab === 'M') {
+        param.creTeamKey = this.chanDetailKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       // eslint-disable-next-line no-debugger
@@ -540,7 +545,7 @@ export default {
       } else if (this.viewMainTab === 'B') {
         param.jobkindId = 'BOAR'
         if (this.viewTab === 'N') {
-          param.allYn = true
+          param.boardYn = true
         } else {
           param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         }

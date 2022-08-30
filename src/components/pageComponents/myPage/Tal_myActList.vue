@@ -1,19 +1,26 @@
 <template>
   <!-- 내가 쓴 / 내가 댓글 단 / 내 like / 내 star -->
   <div class="w-100P h-100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
-    <div id="myActHeader" class="myActHeader" :class="this.scrolledYn? 'myActHeader--unpinned': 'myActHeader--pinned'" v-on="handleScroll">
-    <!-- <div id="myActHeader" class="myActHeader"> -->
-      <!-- <div class="font16 textLeft commonBlack fontBold" style="padding-left: 5px;height: 30px; line-height: 30px; width: 100%; float: left; ">내가 </div> -->
-      <div class="w-100P fl" style="height: 40px; line-height: 40px;">
-        <roundTab @tabChange="changeTab" :tabType="this.myActTabType" :tabList="this.myActTabList" id="myActTabId"  />
-      </div>
+    <div class="myPageTabList">
+      <div class="myPageTab font14" :class="{activeMyPageTabList: this.myPageTabType === tab.myPageTabType}" @click="myPageTabClick(tab, index)" v-for="(tab, index) in myPageTabList" :key="index">{{tab.name}}</div>
+      <div class="font14 fontBold commonBigBtn" @click="goMyChanList" style="">내 채널 ></div>
     </div>
-    <div class="fl myActContentsWrap" id="myActContentsWrap" ref="myActContentsWrap" style="overflow: hidden scroll; height: calc(100% - 5px); padding-top: 50px;">
-      <!-- <div v-if="listShowYn" style="width: 100%; height: 30px; line-height: 30px; margin-top: 10px;" class="fl fontBold font18 commonColor textLeft">{{myActTitle}}</div> -->
-      <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
-      <findContentsList contentsListTargetType="myActList" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
-      <myActContentList v-if="listShowYn" :endListYn="this.endListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :myActTabType="this.myActTabType" :myActContentsList="this.myActContentsList" />
+    <div class="myPageContentsWrap">
+        <div id="myActHeader" class="myActHeader" :class="this.scrolledYn? 'myActHeader--unpinned': 'myActHeader--pinned'" v-on="handleScroll">
+            <!-- <div id="myActHeader" class="myActHeader"> -->
+            <!-- <div class="font16 textLeft commonBlack fontBold" style="padding-left: 5px;height: 30px; line-height: 30px; width: 100%; float: left; ">내가 </div> -->
+            <div class="w-100P fl" style="height: 40px; line-height: 40px;">
+                <roundTab @tabChange="changeTab" :tabType="this.myActTabType" :tabList="this.myActTabList" id="myActTabId"  />
+            </div>
+        </div>
+        <div class="fl myActContentsWrap" id="myActContentsWrap" ref="myActContentsWrap" style="overflow: hidden scroll; height: calc(100% - 5px); padding-top: 0;">
+        <!-- <div v-if="listShowYn" style="width: 100%; height: 30px; line-height: 30px; margin-top: 10px;" class="fl fontBold font18 commonColor textLeft">{{myActTitle}}</div> -->
+        <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
+        <findContentsList contentsListTargetType="myActList" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
+        <myActContentList v-if="listShowYn" :endListYn="this.endListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :myActTabType="this.myActTabType" :myActContentsList="this.myActContentsList" />
+        </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -21,6 +28,9 @@ import myActContentList from './Tal_myActContentsList.vue'
 import findContentsList from '../../popup/common/Tal_findContentsList.vue'
 import roundTab from '../../unit/selectBox/Tal_roundTab.vue'
 export default {
+  props: {
+    viewTab: {}
+  },
   data () {
     return {
       listShowYn: true,
@@ -41,7 +51,12 @@ export default {
       endListYn: false,
       myActTabList: [
         // { myActTabType: 'mi', name: '관심있는' },
-        { tabType: 'mwb', name: '작성한' }, { tabType: 'mcb', name: '댓글 단' }, { tabType: 'mlb', name: '좋아한' }, { tabType: 'msb', name: '스크랩한' }]
+        { tabType: 'mwb', name: '작성한' }, { tabType: 'mcb', name: '댓글 단' }, { tabType: 'mlb', name: '좋아한' }, { tabType: 'msb', name: '스크랩한' }],
+      myPageTabType: 'ALIM',
+      // ma: my act (내가 작성한, 내가 댓글 단..) / m1: my log (이력) / mi: my info (내 정보)
+      myPageTabList: [{ myPageTabType: 'ALIM', name: '알림' }, { myPageTabType: 'BOAR', name: '게시글' }
+        // { myPageTabType: 'mi', name: '내 정보' }
+      ]
     }
   },
   async created () {
@@ -60,6 +75,11 @@ export default {
     }
   },
   methods: {
+    async myPageTabClick (tab, index) {
+      this.myPageTabType = tab.myPageTabType
+      this.refreshList()
+      // await this.getMyActContentsList()
+    },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -96,7 +116,7 @@ export default {
       this.myActTabType = tab.tabType
       var resultList = await this.getMyActContentsList()
       this.myActContentsList = resultList.content
-      this.listShowYn = true
+      // this.listShowYn = true
       this.endListSetFunc(resultList)
       this.findPopShowYn = false
     },
@@ -133,8 +153,6 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-      console.log('resultList')
-      console.log(resultList)
     },
     myActOpenPop (value) {
       this.$emit('openPop', value)
@@ -163,7 +181,12 @@ export default {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
         }
       }
-      param.jobkindId = 'BOAR'
+      if (this.myPageTabType === 'ALIM') {
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      }
+      param.jobkindId = this.myPageTabType
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.myActTabType === 'mwb') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       } else if (this.myActTabType === 'mcb') {
@@ -176,6 +199,7 @@ export default {
         param.findActYn = true
         param.findActStarYn = true
       }
+      console.log(param)
       var result = await this.$getContentsList(param)
       if (result.empty) {
         this.endListYn = true
@@ -184,6 +208,7 @@ export default {
         }
       }
       var resultList = result
+      console.log(resultList)
       return resultList
     },
     async castingSearchMap (param) {
@@ -261,9 +286,14 @@ export default {
 }
 </script>
 <style>
-.myActHeader {z-index: 9; will-change: transform; transition: transform 0.3s linear; width: 100%; height: 50px; background-color: #fff; float: left; position: absolute; top: 0; left: 0;}
+.myActHeader {min-width: 100%; overflow: scroll hidden; float: left; min-height: 40px;}
 .myActHeader--pinned {transform: translateY(0%);}
 .myActHeader--unpinned {transform: translateY(-100%);}
 .myActContentsWrap {float: left; width: 100%; padding: 10px; padding-top: 0; background-color: #f8f8ff; border-radius: 0.8rem;}
+.myPageTabList {width: 100%; height: 45px; line-height: 45px; float: left;}
+.myPageTab {border-radius: 0.8rem 0.8rem 0 0; border-bottom: 0 !important; min-width: 70px; padding: 0 15px; height: 100%; float: left; color: #303030; background-color: rgba(186, 187, 215); margin-right: 5px;}
+.activeMyPageTabList {background-color: #fff !important; min-width: 90px !important; font-weight: bold; color: #6768A7;}
+.myPageContentsWrap {border-radius: 0 0.8rem 0 0; padding: 5px 10px 0 10px; width: 100%; height: calc(100% - 133px); background-color: #fff; display: inline-block; }
+
 /* .myActTab {width: 50px; height: 40px; line-height: 40px; border-radius: 0.8rem; margin-right: 3px; float: left; background-color: #f8f8ff; color: #303030;} */
 </style>

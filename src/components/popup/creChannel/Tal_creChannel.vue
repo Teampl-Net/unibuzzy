@@ -267,7 +267,7 @@ export default {
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       gParam.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       var params = new Object()
-      if(delYn === true && this.chanDetail.modiYn === true){
+      if(delYn === true){
         params.deleteYn = true
         gParam.deleteYn = true || 1
 

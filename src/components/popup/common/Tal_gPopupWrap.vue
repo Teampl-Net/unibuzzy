@@ -599,12 +599,12 @@ export default {
       /* } */
     },
     successCreChan (params) {
-      if (params.deleteYn === true && params.modiYn === true) {
+      if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
         this.$emit('parentClose', true)
         // this.closeXPop()
         return
       }
-      if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
+      if ((params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) || (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true)) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)
       } else {

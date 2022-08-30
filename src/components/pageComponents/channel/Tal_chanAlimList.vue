@@ -180,7 +180,9 @@ export default {
       writePushData: {},
       writePushYn: false,
       writePopId: '',
-      titleLongYn: false
+      titleLongYn: false,
+      notiDetail: null,
+      systemName: ''
       // errorPopYn: false
     }
   },
@@ -632,7 +634,7 @@ export default {
         this.reloadShowYn = false
       }
     },
-    recvNoti (e) {
+    async recvNoti (e) {
       var message
       try {
         if (this.$isJsonString(e.data) === true) {
@@ -649,18 +651,34 @@ export default {
           } else {
             this.notiDetail = JSON.parse(message.pushMessage).noti.data
           }
-          if (this.notiDetail.targetKind === 'TEAM') {
-            if (Number(this.notiDetail.targetKey) === this.chanItem.teamKey) {
-              this.getChanDetail(true)
+
+          var currentPage = this.$store.getters.hCPage
+
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (this.notiDetail.targetKind === 'TEAM') {
+              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
+              await this.getChanDetail()
             }
           }
-        } else if (message.type === 'pushBar') {
-          if (this.notiDetail.targetKind === 'TEAM') {
-            if (Number(this.notiDetail.targetKey) === this.chanItem.teamKey) {
-              this.getChanDetail(true)
+        } /* else if (this.notiDetail.targetKind === 'CONT') {
+          if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+            return
+          }
+          currentPage = this.$store.getters.hCPage
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (this.notiDetail.actType === 'WR') {
+              this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+            } else {
+              if (this.notiDetail.actType === 'LI') {
+                this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
+              }
             }
           }
-        }
+        } */
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
       }

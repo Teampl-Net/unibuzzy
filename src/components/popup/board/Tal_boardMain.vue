@@ -618,7 +618,6 @@ export default {
         }
       }
       param.jobkindId = 'BOAR'
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
 
       if (this.readCheckBoxYn) {
         param.findLogReadYn = false
@@ -626,15 +625,18 @@ export default {
 
       if (this.viewTab === 'L') {
         param.findActYn = true
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActLikeYn = true
       } else if (this.viewTab === 'S') {
         param.findActYn = true
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActStarYn = true
       // } else if (this.viewTab === 'R') {
       //   param.findLogReadYn = false
       // }
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
 
       var resultList = await this.$getContentsList(param)

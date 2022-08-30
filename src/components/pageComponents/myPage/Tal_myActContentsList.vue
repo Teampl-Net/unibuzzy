@@ -1,18 +1,20 @@
 <template>
 <!-- 내가 쓴 / 내가 댓글 단 / 내가 좋아한 / 내가 스크랩한 게시물 -->
-  <div @click="myActBoardContentDetail(value)" class="myActContentsBox" v-for="(value, index) in myActContentsList" :key="index">
-    <!-- <div class="myActChanLogoImg fl" style="margin-right: 10px; width: 30px; height: 100%;"></div> -->
-    <div class="myActContentTitle commonBlack font16 textOverdot">{{value.title}}</div>
-    <div class="font14" style="width: 40px; height: 30px; line-height: 30px; color: #aaa; float: left;">{{this.$changeDateFormat(value.creDate)}}</div>
-    <!-- <img src="../../../assets/images/channel/channer_board.png" style="padding: 1px; width: 25px; height: 25px; margin-right: 5px; float: left;"> -->
-    <div style="width: 100%; min-height: 25px; float: left; text-align: left; ">
-      <span class="myActSmallInfo font14  textOverdot" ># {{this.$changeText(value.nameMtext)}}&nbsp;</span>
-      <span class="myActSmallInfo font14 textOverdot">> {{this.$changeText(value.cabinetNameMtext)}}</span>
+  <div style="width: 100%; height: 100%; float: left;">
+    <div @click="myActBoardContentDetail(value)" class="myActContentsBox" v-for="(value, index) in actList" :key="index">
+        <!-- <div class="myActChanLogoImg fl" style="margin-right: 10px; width: 30px; height: 100%;"></div> -->
+        <div class="myActContentTitle commonBlack font16 textOverdot">{{value.title}}</div>
+        <div class="font14" style="width: 40px; height: 30px; line-height: 30px; color: #aaa; float: left;">{{this.$changeDateFormat(value.creDate)}}</div>
+        <!-- <img src="../../../assets/images/channel/channer_board.png" style="padding: 1px; width: 25px; height: 25px; margin-right: 5px; float: left;"> -->
+        <div style="width: 100%; min-height: 25px; float: left; text-align: left; ">
+        <span class="myActSmallInfo font14  textOverdot" ># {{this.$changeText(value.nameMtext)}}&nbsp;</span>
+        <span class="myActSmallInfo font14 textOverdot">> {{this.$changeText(value.cabinetNameMtext)}}</span>
+        </div>
     </div>
-  </div>
-  <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-  <div v-if="!this.endListYn" class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
-    <gLoadingS ref="myActsLoadingPush" class="fl"/>
+    <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
+    <div v-if="!this.endListYn" class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+        <gLoadingS ref="myActsLoadingPush" class="fl"/>
+    </div>
   </div>
 </template>
 <script>
@@ -24,14 +26,23 @@ export default {
   },
   data () {
     return {
+      actList: [],
       shareAuth: { R: true, W: true, V: true }
     }
   },
   created () {
-
+    if (this.myActContentsList) {
+      this.actList = this.myActContentsList
+    }
+  },
+  updated () {
+    if (this.myActContentsList) {
+      this.actList = this.myActContentsList
+    }
   },
   watch: {
     myActContentsList () {
+      this.actList = this.myActContentsList
       this.myPageLoadingRefHide()
     }
   },
@@ -57,10 +68,20 @@ export default {
       console.log(data.cabinetNameMtext)
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = 'boardDetail'
-      params.contentsKey = data.contentsKey
-      params.targetKey = data.contentsKey
-      params.cabinetNameMtext = data.cabinetNameMtext
+      if (data.jobkindId === 'ALIM') {
+        params.targetType = 'chanDetail'
+        params.teamKey = data.creTeamKey
+        params.targetKey = data.creTeamKey
+        params.nameMtext = data.nameMtext
+        params.chanName = data.nameMtext
+        params.targetContentsKey = data.contentsKey
+      } else {
+        params.targetType = 'boardDetail'
+        params.contentsKey = data.contentsKey
+        params.targetKey = data.contentsKey
+        params.cabinetNameMtext = data.cabinetNameMtext
+      }
+
       this.$emit('goDetail', params)
     }
     // myActBoardDetail (data) {
