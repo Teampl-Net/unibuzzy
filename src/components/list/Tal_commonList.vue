@@ -8,7 +8,7 @@
           <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
-                <div @click="goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + alim.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                <div  @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + alim.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
@@ -37,8 +37,8 @@
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
 <!-- @click="goDetail(alim)" -->
-                <div @click="alimBigView(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(alim.bodyFullStr)"></div>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <div @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <p @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
@@ -593,21 +593,26 @@ export default {
       this.$emit('currentScroll', this.currentScroll)
     },
     goChanDetail (data) {
+      console.log(data)
       // eslint-disable-next-line no-new-object
-      // console.log(data)
       var param = new Object()
-      param.targetType = 'chanDetail'
-      param.teamKey = data.creTeamKey
-      param.targetKey = data.creTeamKey
-      param.nameMtext = data.nameMtext
-      param.chanName = data.nameMtext
-      param.readYn = data.readYn
-      // 세션에서 유저키 받아오기
-      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (data.creUserKey === userKey) {
-        param.ownerYn =  true
+      if (data.jobkindId === 'ALIM') {
+        param.targetType = 'chanDetail'
+        param.teamKey = data.creTeamKey
+        param.targetKey = data.creTeamKey
+        param.nameMtext = data.nameMtext
+        param.chanName = data.nameMtext
+        param.targetContentsKey = data.contentsKey
+        // 세션에서 유저키 받아오기
+        if (data.creUserKey === this.creUserKey) {
+          param.ownerYn = true
+        }
+      } else {
+        param.targetType = 'boardDetail'
+        param.cabinetNameMtext = data.cabinetNameMtext
+        param.targetKey = data.contentsKey
+        param.value = data
       }
-      // console.log(param);
       this.$emit('goDetail', param)
     },
     goDetail (value) {

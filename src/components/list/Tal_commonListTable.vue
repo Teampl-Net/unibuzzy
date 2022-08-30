@@ -3,7 +3,7 @@
   <!-- <div v-if="this.commonListData.length === 0">
     <img src="/resource/common/placeholder_white.png" style="height: 150px; width: 150px;" />
   </div> -->
-  <div style="width: 100%; height: 100%;">
+  <div style="width: 100%; height: 100%; float: left">
     <table class="w-100P">
         <colgroup>
             <col class="listHeader" style="width: 65px; float: left;">
@@ -20,12 +20,12 @@
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             <!-- </td> -->
             <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  sessionUserKey === value.creUserKey}">
-                <p v-html="resizeText(value.title, value.nameMtext)" class="commonBlack mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+                <p v-html="value.title" class="commonBlack textOverdot mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <!-- <div> -->
                 <!-- <div style="display: flex; align-items: center; justify-content: space-between;"> -->
                   <!-- <div style="display: flex; align-items: center; "> -->
                     <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" />
-                    <span style="max-width: 75%;" v-html="(value.showCreNameYn) ? (this.$changeText(value.nameMtext) + '&nbsp;(' + this.$changeText(value.creUserName)) : (this.$changeText(value.nameMtext))" class="textOverdot fl commonBlack font12"></span>
+                    <span style="max-width: 75%;" v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
                     <span v-if="value.showCreNameYn" v-html="')'" class="fl commonBlack font12"></span>
                     <!-- <span :style="{width: calc(100% - calcSpanWidth(index))}"  v-html="'&nbsp;(' + this.$changeText(value.creUserName) + ')'" v-if="value.showCreNameYn" class="textOverdot fl commonBlack font12"></span> -->
                     <!-- <span v-html="')'" class="fl commonBlack font12"></span> -->
@@ -50,15 +50,22 @@ export default {
       console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'chanDetail'
-      param.teamKey = data.creTeamKey
-      param.targetKey = data.creTeamKey
-      param.nameMtext = data.nameMtext
-      param.chanName = data.nameMtext
-      param.targetContentsKey = data.contentsKey
-      // 세션에서 유저키 받아오기
-      if (data.creUserKey === this.creUserKey) {
-        param.ownerYn = true
+      if (data.jobkindId === 'ALIM') {
+        param.targetType = 'chanDetail'
+        param.teamKey = data.creTeamKey
+        param.targetKey = data.creTeamKey
+        param.nameMtext = data.nameMtext
+        param.chanName = data.nameMtext
+        param.targetContentsKey = data.contentsKey
+        // 세션에서 유저키 받아오기
+        if (data.creUserKey === this.creUserKey) {
+          param.ownerYn = true
+        }
+      } else {
+        param.targetType = 'boardDetail'
+        param.cabinetNameMtext = data.cabinetNameMtext
+        param.targetKey = data.contentsKey
+        param.value = data
       }
       this.$emit('goDetail', param)
     },
@@ -80,6 +87,16 @@ export default {
     cutStickerName (value) {
       var cutName = value.substr(0, 1)
       return cutName
+    },
+    setSendNameStr (value) {
+      var nameStr = this.$changeText(value.nameMtext)
+      if (value.cabinetNameMtext) {
+        nameStr += ('[' + this.$changeText(value.cabinetNameMtext) + ']')
+      }
+      if (value.creUserName) {
+        nameStr += ('(' + this.$changeText(value.creUserName) + ')')
+      }
+      return nameStr
     }
   },
   data: function () {

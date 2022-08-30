@@ -299,7 +299,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 /* .pagePaddingWrap{padding: 0px 1.5rem; box-sizing: border-box; width: 100%; height: 100vh; padding-top: 60px; margin-bottom: 60px;} */
 .mt-header{margin-top: 50px;}
  /* .profileTitle{font-size: 15px; font-weight: bold; color: #6768A7;} */
- .top5TitleWrap{margin-top: 1.5rem; border-bottom: 1px solid #6768A7; height: 35px; margin-bottom: 0.4rem}
+ .top5TitleWrap{margin-top: 1rem; border-bottom: 1px solid #6768A7; height: 35px; margin-bottom: 8px}
 
  .pushDetailPaperEffect {
   content: '';

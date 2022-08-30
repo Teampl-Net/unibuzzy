@@ -130,6 +130,7 @@ export default {
 
       var params = {}
       params.userKey = param.userKey
+      // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       params.teamKey = this.propData.teamKey
       if (param.manager) {
         await this.saveManager(params)
@@ -165,10 +166,9 @@ export default {
       follower.inEmail = params.userEmail
       follower.inPhone = params.userPhone
       follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext)
-      follower.userName
+      // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       param.follower = follower
 
-      debugger
 
       var result = await this.$commonAxiosFunction({
           url: '/tp.saveManager',

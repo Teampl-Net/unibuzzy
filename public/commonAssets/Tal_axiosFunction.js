@@ -220,7 +220,7 @@ const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
 
     var result = await commonAxiosFunction({

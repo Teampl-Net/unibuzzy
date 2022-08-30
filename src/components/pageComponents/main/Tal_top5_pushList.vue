@@ -1,7 +1,10 @@
 <template>
-  <listTitle :alimTabType="this.viewTab" style="margin-bottom: 1rem" listTitle= "알림" :activeTabList="this.activeTabList" :moreLink="this.moreLink" @openPop= "openPop"/>
-    <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-    <div class="pushListWrap">
+  <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style="margin-bottom: 1rem; float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop= "openPop"/>
+    <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
+        <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
+        <gBtnSmall btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
+    </div>
+    <div class="pushListWrap fl">
       <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
       <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
     </div>
@@ -26,10 +29,10 @@ export default {
       mainYn: true,
       moreLink: 'push',
       // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 보낸', name: 'M' }],
-      viewTab: 'N',
+      activeTabList: [{ display: '전체', name: 'A' }, { display: '알림', name: 'P' }, { display: '게시글', name: 'B' }],
+      viewTab: 'A',
       listShowYn: true,
-      currentTabName: '최신',
+      currentTabName: '알림',
       emptyYn: true
     }
   },
@@ -50,17 +53,14 @@ export default {
   },
   methods: {
     introTop5PushPageTab () {
-      if (this.viewTab === 'N') {
-        this.currentTabName = '최신'
+      if (this.viewTab === 'A') {
+        this.currentTabName = '전체'
         this.imgUrl = '/resource/common/placeholder_white.png'
-      } else if (this.viewTab === 'M') {
-        this.currentTabName = '내가 보낸'
+      } else if (this.viewTab === 'P') {
+        this.currentTabName = '알림'
         this.imgUrl = '/resource/common/placeholder_white.png'
-      } else if (this.viewTab === 'L') {
-        this.currentTabName = '좋아요'
-        this.imgUrl = '/resource/common/placeholder_white.png'
-      } else if (this.viewTab === 'S') {
-        this.currentTabName = '스크랩'
+      } else if (this.viewTab === 'B') {
+        this.currentTabName = '게시글'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
@@ -81,7 +81,6 @@ export default {
       }
     },
     openPop (value) {
-      // alert(JSON.stringify(value))
       // eslint-disable-next-line no-new-object
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
@@ -95,6 +94,8 @@ export default {
           // params.cIdx = value.index
           // params.targetContentsKey = value.contentsKey
           params.chanName = value.nameMtext
+        } else if (value.targetType === 'boardDetail') {
+          params = value
         } else {
           params.targetType = value.targetType
           params.alimTabType = this.viewTab
@@ -138,22 +139,30 @@ export default {
       var resultData = null
       param.offsetInt = 0
       param.pageSize = 5
-      param.jobkindId = 'ALIM'
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if (this.viewTab === 'L') {
-        param.findActYn = true
-        param.findActLikeYn = true
-      }
-      if (this.viewTab === 'S') {
-        param.findActYn = true
-        param.findActStarYn = true
-      }
-      // if (this.viewTab === 'R') {
-      //   param.findLogReadYn = false
-      // }
-      if (this.viewTab === 'M') {
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      if (this.viewTab === 'P') {
+        param.jobkindId = 'ALIM'
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        /* if (this.viewTab === 'L') {
+          param.findActYn = true
+          param.findActLikeYn = true
+        }
+        if (this.viewTab === 'S') {
+          param.findActYn = true
+          param.findActStarYn = true
+        }
+        // if (this.viewTab === 'R') {
+        //   param.findLogReadYn = false
+        // }
+        if (this.viewTab === 'M') {
+          param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // console.log(param)
+        } */
+      } else if (this.viewTab === 'B') {
+        // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.allYn = true
+        param.jobkindId = 'BOAR'
+      } else if (this.viewTab === 'A') {
+        param.allYn = true
       }
       resultData = await this.$getContentsList(param)
       return resultData

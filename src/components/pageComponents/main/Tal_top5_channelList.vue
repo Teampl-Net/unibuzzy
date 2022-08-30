@@ -1,7 +1,7 @@
 <template>
-  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" @openPop= "openPop" />
-  <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1" @changeTab="changeTab" />
-  <div class="chanTop5Wrap" >
+  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" class="fl w-100P" @openPop= "openPop" />
+  <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1 fl" @changeTab="changeTab" />
+  <div class="chanTop5Wrap fl" >
     <div v-if="emptyYn && this.chanList.length === 0" class="w-100P">
       <!-- 다른 이미지로 대체하면 된다 -->
       <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />

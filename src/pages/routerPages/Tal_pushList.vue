@@ -7,6 +7,10 @@
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <!-- <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" /> -->
+        <div style="width: 100%; height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 15px; display: flex; align-items: flex-end;">
+            <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
+            <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
+        </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
       </div>
       <transition name="showModal">
@@ -68,7 +72,7 @@ export default {
   async created () {
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
-        this.viewTab = this.propData.alimTabType
+        this.viewMainTab = this.propData.alimTabType
       }
     }
     if (this.targetContentsKey) {
@@ -186,6 +190,10 @@ export default {
     }
   },
   methods: {
+    changeMainTab (tab) {
+      this.viewMainTab = tab
+      this.refreshList()
+    },
     backClick () {
       var hStack = this.$store.getters.hStack
       var removePage = hStack[hStack.length - 1]
@@ -228,7 +236,7 @@ export default {
     },
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')
-      this.paddingTop = element.clientHeight
+      this.paddingTop = element.clientHeight + 50
     },
     checkShowReload () {
       if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
@@ -504,7 +512,6 @@ export default {
       // param.findActYn = false
       param.findActLikeYn = false
       param.findActStarYn = false
-      param.jobkindId = 'ALIM'
       // if (this.loadMoreDESCYn === true) {
       //   param.DESCYn = this.loadMoreDESCYn
       // } else
@@ -513,8 +520,6 @@ export default {
         param.targetContentsKey = this.targetCKey
         param.DESCYn = this.loadMoreDESCYn
       }
-      param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-
       if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
@@ -526,6 +531,19 @@ export default {
         param.findActStarYn = true
       } else if (this.viewTab === 'M') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (this.viewMainTab === 'P') {
+        param.jobkindId = 'ALIM'
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      } else if (this.viewMainTab === 'B') {
+        param.jobkindId = 'BOAR'
+        if (this.viewTab === 'N') {
+          param.allYn = true
+        } else {
+          param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        }
       }
       console.log('getContentsList')
       console.log(param)
@@ -628,8 +646,9 @@ export default {
       findPopShowYn: false,
       subHistoryList: [],
       stickerList: [],
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 보낸', name: 'M' }],
+      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }],
       viewTab: 'N',
+      viewMainTab: 'P',
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: [],
@@ -666,10 +685,11 @@ export default {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
+.mainTabStyle {border-radius: 10px 10px 0 0; min-width: 80px; margin-bottom: -1px; float: left; border: 1px solid #6768A7;  border-bottom: none; background: rgba(186, 187, 215, 0.5); padding: 5px 10px; margin-left: 10px;}
+.mainTabActive {background: #FFF!important; border-bottom: none;}
 .pushListHeader {
     width: 100%;
     /* min-height: 132px; */
-    padding-top: 0.5rem;
     min-height: 50px;
     position: absolute;
     background-color: #FFF;

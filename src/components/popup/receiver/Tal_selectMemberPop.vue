@@ -136,7 +136,6 @@ export default {
           userKeyList.push(this.memberList[i].userKey)
         }
       }
-
       if (this.propData.selectMemberType === 'manager') {
         param.teamKey = this.propData.currentTeamKey
         if (userKeyList && userKeyList.length > 0) {
