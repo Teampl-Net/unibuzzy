@@ -2,7 +2,7 @@
   <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style="margin-bottom: 1rem; float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop= "openPop"/>
     <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
         <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-        <gBtnSmall btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
+        <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
     </div>
     <div class="pushListWrap fl">
       <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />

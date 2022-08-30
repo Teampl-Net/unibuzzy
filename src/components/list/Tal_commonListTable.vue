@@ -9,9 +9,14 @@
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" >
+        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" >
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
-              <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+              <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+                <!-- <div style="background:#ffffff50; width:20px; height:20px; border-radius:100%; border:1px solid #ccc; overflow: hidden; position:absolute; bottom:-10px; right:-10px; display: flex; justify-content: center; align-items: center;"> -->
+                <div style="background:#ffffff50; border-radius:100%; width:20px; height:20px; position:absolute; bottom:-5px; right:-5px; display: flex; justify-content: center; align-items: center;">
+                  <img v-if="value.jobkindId === 'ALIM'" class="cursorP" style="width:15px !important;" src="../../assets/images/common/icon_bell.svg" alt="">
+                  <img v-if="value.jobkindId === 'BOAR'" class="cursorP" style="width:13px !important;" src="../../assets/images/channel/channer_board_color.png" alt="">
+                </div>
               </div>
             </td>
             <!-- <td class="textCenter" v-if="mainYn === true"> -->
@@ -41,6 +46,7 @@
 <script>
 export default {
   created () {
+    console.log(this.commonListData)
   },
   mounted () {
   },

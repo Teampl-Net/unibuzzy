@@ -144,7 +144,7 @@ export default {
         focusInput (index) {
             if (index !== null){
                 this.$nextTick(()=>{
-                    this.$refs["commonBookInput" + index][0].focus()
+                    this.$refs["commonBookInput" + index][0].focusInput()
                 })
                 // document.getElementById('commonBookInput' + index).focus()
                 // this.$refs["commonBookInput" + index].focus()

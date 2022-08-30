@@ -522,13 +522,13 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 /*  */
 #eContentsWrap .sortable-chosen {
-  height: 4rem;
-  overflow: hidden;
-  text-align: center;
+  max-height: 10rem;
+
 }
 #eContentsWrap .sortable-chosen img{
-  width: 100px !important;
-
+  max-width: 8rem;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #loading {

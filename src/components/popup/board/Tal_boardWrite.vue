@@ -8,7 +8,8 @@
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-        <div class="boardWritePaperBack" @click="this.$emit('closeXPop')"></div>
+        <!-- <div class="boardWritePaperBack" @click="this.$emit('closeXPop')"></div> -->
+        <div class="boardWritePaperBack" ></div>
           <div class="whitePaperBoard">
             <div class="overFlowYScroll boardInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">

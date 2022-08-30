@@ -65,7 +65,8 @@ export default {
     console.log(this.$store.getters.hStack)
   },
   mounted () {
-    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=2.0')
+    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
+    // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=2.0')
   },
   unmounted () {
     document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')

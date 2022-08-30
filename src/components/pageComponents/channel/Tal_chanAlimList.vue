@@ -18,7 +18,9 @@
             <img class="fl" style="width:20px; margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
           </div> -->
           <p class="font15 textLeft fl">
+            <!-- <pp class="fl" style="width:50px;"> -->
             <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
+            <!-- </pp> -->
             {{teamTypeText}}
           </p>
           </div>
@@ -27,8 +29,11 @@
           <!-- <div style="width:20px;" class="fl"> -->
             <!-- <img class="fl" style="width:20px; margin-top:2px; src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
           <!-- </div> -->
+
           <p class="font14 textLeft fl " style="word-break:break-all" >
+            <!-- <pp class="fl" style="width:50px;"> -->
             <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
+            <!-- </pp> -->
             {{this.$changeText(chanItem.memoMtext)}}
           </p>
         </div>
@@ -39,7 +44,7 @@
             <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘"> -->
             <!-- <p class="font16 commonColor textLeft fl mleft-05" style="color:#6768a7"> 설명  </p> -->
 
-          <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$changeDateFormat(chanItem.creDate)}}</p>
+          <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$dayjs(chanItem.creDate).format('YYYY-MM-DD')}}</p>
           </div>
 
       </div>
@@ -273,7 +278,8 @@ export default {
         var blockBox = document.getElementById('summaryWrap')
         blockBox.style.height = 50 + 'px'
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
-        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+
+        if (this.followYn && !this.ownerYn && this.chanItem.teamKey !== 377) document.getElementById('followerCancelArea').classList.add('displayNIm')
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
         document.getElementById('channelCardWrap').classList.add('displayNIm')
         document.getElementById('userCardWrap').classList.add('displayNIm')
@@ -607,7 +613,7 @@ export default {
         // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
         // document.getElementById('chanInfoArea').classList.add('displayNIm')
         // document.getElementById('memberInfoArea').classList.add('displayNIm')
-        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.add('displayNIm')
+        if (this.followYn && !this.ownerYn && this.chanItem.teamKey !== 377) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
 
@@ -620,7 +626,7 @@ export default {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         // document.getElementById('chanInfoArea').classList.remove('displayNIm')
         // document.getElementById('memberInfoArea').classList.remove('displayNIm')
-        if (this.followYn && !this.ownerYn) document.getElementById('followerCancelArea').classList.remove('displayNIm')
+        if (this.followYn && !this.ownerYn && this.chanItem.teamKey !== 377) document.getElementById('followerCancelArea').classList.remove('displayNIm')
 
         if (this.ownerYn) document.getElementById('ownerChannelEditArea').classList.remove('displayNIm')
 

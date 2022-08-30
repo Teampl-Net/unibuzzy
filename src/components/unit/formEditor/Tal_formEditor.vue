@@ -39,18 +39,18 @@
 
           <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
           <div style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
-              <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging">
+              <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging"  delay="200" handle=".movePoint">
                   <transition-group>
                           <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                           --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
-                          <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05">
-                              <formText v-if="value.type === 'text'" style="" ref="textForm" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
+                          <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05" @click="clickForm(value, index)">
+                              <formText v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                               <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                               <formVideo v-else-if="false" />
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
                               <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
-                              <div class="" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
+                              <div class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
                               <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                           </div>
                           <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
@@ -305,14 +305,21 @@ export default {
     },
     clickImg (idx) {
       this.tools.boldYn = false
-      this.selectRow = idx
       this.tools.underLineYn = false
       this.tools.italicYn = false
       this.toolBoxShowYn = false
     },
-    clickTextArea (idx) {
+    clickForm (value, idx) {
+      console.log(value)
       this.selectedCardKey = idx
       this.selectRow = idx
+      if (value.type === 'text') {
+        this.$nextTick(() => {
+          this.$refs['textForm' + idx][0].focusInput()
+        })
+      }
+    },
+    clickTextArea (idx) {
       this.tools.boldYn = false
       this.tools.underLineYn = false
       this.tools.italicYn = false

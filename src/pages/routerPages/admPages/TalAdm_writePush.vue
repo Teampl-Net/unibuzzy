@@ -11,7 +11,8 @@
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
         <!-- <div  :style="setColor" class="paperBackground"> -->
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
-        <div class="paperBackground" @click="this.$emit('closeXPop')"></div>
+        <!-- <div class="paperBackground" @click="this.$emit('closeXPop')"></div> -->
+        <div class="paperBackground"></div>
           <div class="whitePaper">
             <div class="overFlowYScroll pushInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">

@@ -283,7 +283,7 @@ export default {
 
 <style >
 table {
-    table-layout: absolute;
+    table-layout: fixed;
     word-break: break-all;
 }
 .memberTable td {
