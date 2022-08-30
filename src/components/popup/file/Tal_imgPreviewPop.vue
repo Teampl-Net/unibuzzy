@@ -64,6 +64,12 @@ export default {
     this.$store.commit('updateStack', history)
     console.log(this.$store.getters.hStack)
   },
+  mounted () {
+    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=2.0')
+  },
+  unmounted () {
+    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
+  },
   methods: {
     async getImgList () {
       // eslint-disable-next-line no-new-object

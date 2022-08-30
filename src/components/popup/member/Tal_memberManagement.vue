@@ -1,6 +1,6 @@
 <template>
-<div class="w-100P h-100P" style="position: absolute; top: 0; padding:1rem;">
-    <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);"/>
+<div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
+    <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <!-- <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
       멤버 신청서 만들기
@@ -32,7 +32,8 @@ export default {
       errorPopYn : false,
       errorText: '',
       activeTabList: [{ display: '공개', name: 'Mem' }, { display: '매니저', name: 'Admin' }],
-      // tab:'Mem',
+      // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Mem' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
+
       tab: 'Mem',
       managingList: [],
       smallPopYn:false,
@@ -47,12 +48,14 @@ export default {
     this.getManagingList(this.tab)
   },
   mounted () {
-    if (this.propData.ownerYn) {
-      this.ownerYn = true
-      this.activeTabList = [{ display: '공개', name: 'Mem' }, { display: '매니저', name: 'Admin' }]
-    } else {
-      this.activeTabList = [{ display: '공개', name: 'Mem' }]
-    }
+    this.ownerYn = true
+    // if (this.propData.ownerYn) {
+    //   this.ownerYn = true
+    //   this.activeTabList = [{ display: '공개', name: 'Mem' }, { display: '매니저', name: 'Admin' }]
+    //   // this.activeTabList = [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Mem' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }]
+    // } else {
+    //   this.activeTabList = [{ display: '공개', name: 'Mem' }]
+    // }
   },
   methods: {
     memberFormClick(){
@@ -112,7 +115,10 @@ export default {
         })
 
         this.managingList =await result.data.managerList
+      } else {
+        alert('바보')
       }
+
       // paramMap.set('followerType', 'M')
 
 

@@ -20,7 +20,8 @@
               <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{data.cabinetNameMtext}}</p>
             </div>
             <div v-if="!selectPopYn" class="fl cursorP" style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-              <img v-if="editIndex !== index" src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="changedText(data,index)" >
+              <!-- <img v-if="editIndex !== index" src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="changedText(data,index)" > -->
+              <img v-if="editIndex !== index" src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="editAddressBook(data)" >
               <!-- <p v-else class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p> -->
 
               <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinet(data,index)" >
@@ -234,8 +235,26 @@ export default {
                 alert('중복선택')
             }
         },
-        creAddressPop(){
-            this.creAddressPopYn = tru
+        editAddressBook (data) {
+            var param = {}
+            param.targetType = 'creAddressBook'
+            param.newAddressYn = false
+            param.cabinet = data
+            this.$emit('openPop', param)
+        },
+        async creAddressPop(){
+            var cabinet = {}
+            var param = {}
+            param.targetType = 'creAddressBook'
+            param.newAddressYn = true
+            cabinet.cabinetNameMtext = await this.$checkSameName(this.addressBookList, '주소록')
+            cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
+            cabinet.sysCabinetCode = 'USER'
+            cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
+            cabinet.menuType = 'G'
+            param.cabinet = cabinet
+            this.$emit('openPop', param)
+            // this.creAddressPopYn = tru
         },
         async addNewBook () {
             var param = new Object()
@@ -253,7 +272,7 @@ export default {
             result = await this.$saveCabinet(param)
             if (result != null) {
                 // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-                this.$emit('refreshList')
+                this.$emit('')
                 // if(this.addressBookList.length > 0){
                     // this.anima()
                 // }

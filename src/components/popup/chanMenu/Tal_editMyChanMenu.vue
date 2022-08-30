@@ -24,15 +24,17 @@
         <th class="font16">
           <div class="myChanMenuImgArea">
             <img class="fl img-w25" src="../../../assets/images/common/icon_manager.svg">
+            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
-          <p class="font16 fl mleft-05">매니저</p>
+          <p class="font16 fl mleft-05">공개/매니저</p>
+          <!-- <p class="font16 fl mleft-05">공개{{managerYn ? '/매니저' : ''}}</p> -->
         </th>
         <td class="">
           <gBtnSmall class="fr" @click="managerEditClick('manager')" btnTitle="관리" />
           <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
         </td>
       </tr>
-      <tr >
+      <!-- <tr >
         <th class="font16">
           <div class="myChanMenuImgArea">
             <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg">
@@ -41,9 +43,8 @@
         </th>
         <td class="">
           <gBtnSmall class="fr" @click="managerEditClick('member')" btnTitle="관리" />
-          <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
         </td>
-      </tr>
+      </tr> -->
 
       <tr >
         <th class="font16">
@@ -105,7 +106,8 @@ export default {
     return {
       editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동 응답' }],
       param: {},
-      teamInfo: {}
+      teamInfo: {},
+      managerYn: false
 
     }
   },
@@ -127,6 +129,7 @@ export default {
       var result = await this.$getTeamList(paramMap)
       this.teamInfo = result.data.content[0]
       console.log(this.teamInfo)
+      // if (this.teamInfo) if (this.teamInfo.userTeamInfo) if (this.teamInfo.userTeamInfo.managerKey) this.managerYn = true
     },
     addressEditClick () {
       this.param.targetType = 'editBookList'

@@ -346,7 +346,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 
 #channelName{
   /* padding-left: 5px; width: 80%; height: 30px; float: right; border: 1px solid #ccc; border-radius: 5px; */
-  padding-left: 5px; height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
+  padding-left: 10px !important; height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
   width: 100%;
   background: white !important;
   float: left;

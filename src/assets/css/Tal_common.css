@@ -35,6 +35,12 @@ body {
   -ms-use-select: text !important;
   user-select: text !important;
 }
+.cursorDragText img{
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-use-select: none !important;
+  user-select: none !important;
+}
 
 
 .editableContent {

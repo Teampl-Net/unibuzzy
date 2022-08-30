@@ -52,10 +52,12 @@
       <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeMemberYn='changeMemberYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
       <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" @openPop="openPop"  />
       <memberForm v-if="this.targetType === 'memberForm'" :propData="this.params" @closeXPop="closeXPop" @openPop="openPop" />
-      <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" />
+      <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
 
       <memberFormPreView v-if="this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
       <errorPage v-if="this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
+
+      <creAddressBook v-if="this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop"  />
 
     </div>
 </template>
@@ -105,6 +107,9 @@ import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
 import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
 
 import errorPage from '../../popup/common/Tal_errorPage.vue'
+
+import creAddressBook from '../receiver/Tal_creAddressBook.vue'
+
 export default {
   async created () {
     await this.settingPop()
@@ -197,7 +202,8 @@ export default {
     memberForm,
     memberFormList,
     memberFormPreView,
-    errorPage
+    errorPage,
+    creAddressBook
   },
   updated () {
   },
@@ -501,6 +507,12 @@ export default {
         this.headerTitle = '공개신청서 템플릿 목록'
       } else if (this.targetType === 'mQPreview') {
         this.headerTitle = '공개신청서 미리보기'
+      } else if (this.targetType === 'creAddressBook') {
+        if (target.newAddressYn === true) {
+          this.headerTitle = '주소록 만들기'
+        } else {
+          this.headerTitle = '주소록 수정'
+        }
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -532,7 +544,9 @@ export default {
     changePop (params) {
       this.$emit('parentClose')
     },
-    async closePop (reloadYn) { // 자식 팝업닫기
+    /** 자식 팝업을 닫는 함수
+     * @param {reloadYn} Boolean true 보내면 리로드 */
+    async closePop (reloadYn) {
       console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       this.popShowYn = false

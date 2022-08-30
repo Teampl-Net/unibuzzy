@@ -12,17 +12,23 @@
         <p class="fl font16 commonBlack" style="text-align:left; padding-left:5px; width:calc(100% - 40px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
       </div>
       <div class="fr  memberItemBox" >
-        <img class="fl" @click="openPop('writePush', member)" src="../../../assets/images/common/icon_message_solid.svg" style=" width:20px; height:18px; margin:0.6rem"  />
-        <img class="fl" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="width:20px; margin:0.6rem" >
+        <img class="fl img-w20" @click="openPop('writePush', member)" src="../../../assets/images/common/icon_message_solid.svg" style="height:18px; margin:0.6rem"  />
+        <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" >
         <!-- <gToggle :toggleId='member.userKey' :isChecked="(member.managerKey !== undefined && member.managerKey !== null && member.managerKey !== '')" class="fl mtop-01" style="margin:0.5rem; padding-top:0.3rem" /> -->
         <!-- <div v-if="currentTab == 'Admin'"> -->
-        <div v-if="currentOwner">
-          <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px; margin:0.6rem 0.8rem; " class="fl">
-          <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
+        <div v-if="ownerYn">
+          <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="margin:0.6rem 0.8rem; " class="fl img-w20">
+          <!-- <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" > -->
+
+          <div v-if="!member.ownerYn && member.userKey !== userKey" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
             <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0)" class="fl" />
             <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >매니저</label>
-
           </div>
+
+          <div v-if="!member.ownerYn && member.userKey === userKey" class="fl" style="width:46px; height:40px; position: relative; display: flex; justify-content: flex-end; flex-direction: column; align-items: center;" >
+            <img class="img-w15" src="../../../assets/images/main/mypageIcon.svg"/><p class="font10" >My</p>
+          </div>
+
           <div v-if="!member.ownerYn && !member.followerKey" style="margin: 0 0.6rem;" class="fl" @click="this.$emit('match')">
             <!-- <p class="commonBlack font10">팔로우</p> -->
             <match :color="'#6768a7'" size='5px' style="width:10px;" />
@@ -48,11 +54,15 @@ export default {
   },
   data () {
     return {
-      // currentTab:''
+      // ownerYn: false
+      ownerYn: true,
+      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey
     }
   },
+  mounted () {
+    if (this.currentOwner === true) this.ownerYn = true
+  },
   methods: {
-
     openPop (targetType, member) {
       var param = {}
       param.targetType = targetType

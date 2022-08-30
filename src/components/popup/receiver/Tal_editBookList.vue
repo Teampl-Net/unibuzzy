@@ -50,7 +50,7 @@
                 <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
             </div>
             <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
-                <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' />
+                <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" />
                 <transition name="showGroup">
                     <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
@@ -60,8 +60,8 @@
                 <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!editYn && !imInYn && detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'나를<br>추가'"></p></div>
                 <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'직접<br>추가'"></p></div>
                 <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'유저<br>선택'"></p></div>
-                <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div>
-                <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
+                <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
+                <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div>
                 <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn" >
                     <img style="width: 20px; margin-bottom: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
                 </div>
@@ -213,6 +213,9 @@ export default {
                 this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
             }
             //
+        },
+        openPop (params) {
+            this.$emit('openPop',params)
         },
         newAddMember(){
             this.plusMenuShowYn = false
