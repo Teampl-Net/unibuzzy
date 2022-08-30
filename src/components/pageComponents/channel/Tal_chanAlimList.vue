@@ -549,8 +549,8 @@ export default {
       if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
         //  && param.targetKey !== this.chanDetail.teamKey
         param.openActivity = 'chanAlimList'
-        this.$emit('openPop', param)
       }
+      this.$emit('openPop', param)
     },
     // async changeFollowYn (fYn) {
     //   this.$emit('openLoading')
