@@ -37,11 +37,12 @@
 
                 </div>
 
-                <gBtnSmall class="commonColor writeBoardBtn font16" style="font-weight:bold; font-size: 16px; bottom: 1rem; margin-top: 20px; margin-bottom: 60px;" btnTitle='작성하기' @click="clickPageTopBtn()" />
+                <!-- <gBtnSmall class="commonColor writeBoardBtn font16" style="font-weight:bold; font-size: 16px; bottom: 1rem; margin-top: 20px; margin-bottom: 60px;" btnTitle='작성하기' @click="clickPageTopBtn()" /> -->
               </div>
+          </div>
 
           </div>
-          </div>
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:1rem; left:50%; transform: translateX(-50%);" btnTitle='발송하기' @click="clickPageTopBtn()" />
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
@@ -552,25 +553,21 @@ export default {
 </script>
 <style scoped>
 .whitePaperBoard {
-      /* position: relative;
-      width: 100%;
-      margin: 0 auto;
-      margin-top: 1rem; */
-      position: absolute;
+     position: absolute;
+      /* left: 5%; */
+      /* bottom: 0; */
+      top: 5%;
       left: 5%;
-      bottom: 0%;
       /* transform: translate(-50%, -50%); */
-      /* width: 100%; */
       width: 90%;
 
-      border-radius: 0.8rem 0.8rem 0 0;
-      height: 90%;
-      /* height: calc(100% - 60px); */
-      min-height: 500px;
+      /* border-radius: 0.8rem 0.8rem 0 0; */
+      border-radius: 0.8rem;
       /* height: 90%; */
-      /* height: 85%; */
-      /* background-color: #fafafa; */
-      background-color: #f9f9f9;
+      height: 85%;
+
+      /* background-color: #f9f9f9; */
+      background-color: #f5f5f5;
       color: #363c5f;
       padding: 1.5rem;
       text-align: left;
@@ -580,8 +577,7 @@ export default {
       justify-content: flex-start;
       /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
   }
-
- /*  .whitePaperBoard:after {
+/*  .whitePaperBoard:after {
       content: '';
       position: absolute;
       display: block;
@@ -660,6 +656,9 @@ export default {
   animation: spinner .8s ease infinite;
 }
 
+.writePushBtn{
+ float: left; margin: 0 auto!important; margin-top: 20px !important; width: 30% !important; min-width: 100px !important; max-width: 250px; height: 6% !important; font-size: 16px; display: flex; justify-content: center; align-items: center;
+}
 @media screen and (max-width: 300px) {
   .boardWriteTitleText {
     display: none !important;

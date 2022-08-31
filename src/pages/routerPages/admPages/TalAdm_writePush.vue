@@ -6,18 +6,18 @@
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
       <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
-      <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
+      <gConfirmPop @click="closeXPop(true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
         <!-- <div  :style="setColor" class="paperBackground"> -->
           <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
         <!-- <div class="paperBackground" @click="this.$emit('closeXPop')"></div> -->
         <div class="paperBackground"></div>
-          <div class="whitePaper">
+          <div class="whitePaper" :style="viewTab === 'complex' ? 'height: 80%' : ''">
             <div class="overFlowYScroll pushInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">알림작성</p>
-                <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
+                <img style="width: 1rem;" @click="closeXPop" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
               </div>
               <div style="width: 100%; height: calc(100% - 30px); padding: 1.5rem 0 !important; float: left; overflow: hidden auto;" :style="viewTab === 'complex' ? 'height: calc(100% - 50px)' : ''">
                 <div class="pageTopArea fl">
@@ -94,11 +94,12 @@
                     {{msgData}}
                   </div> -->
                   </div>
-                  <gBtnSmall class="mright-05 font20 writePushBtn " style="float: right; font-weight:bold;margin-bottom: 60px; " btnTitle='발송하기' @click="clickPageTopBtn()" />
+                  <!-- <gBtnSmall class="mright-05 font20 writePushBtn " style="float: right; font-weight:bold;margin-bottom: 60px; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
                 </div>
               </div>
             <!-- <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div> -->
           </div>
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  btnTitle='발송하기' @click="clickPageTopBtn()" />
           <!-- <div style="width: 100%;" >
                   <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
                   <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
@@ -137,6 +138,13 @@ export default {
     sendOk: function () {
       this.clickPageTopBtn()
     },
+    // pageUpdate값이 달라지면 watch에서 이를 감지하고 함수를 실행함
+    pageUpdate (value, old) {
+      var history = this.$store.getters.hStack
+      if (history[history.length - 1] === this.popId) { // 글로벌 히스토리 리스트 변수의 마지막 값과 현 페이지의 아이디가 같은 값일때 (= 마지막 페이지가 내 페이지 일 때) close 함수 실행되도록
+        this.closeXPop()
+      }
+    }
   },
   mounted() {
     // var screenSize = document.querySelector('#alimWrap')
@@ -151,6 +159,14 @@ export default {
         document.querySelector('#alimWrap').style.width = this.screenInnerWidth
       })
     }
+    //  // 1)해당 페이지(팝업)의 유니크한 아이디값을 정의
+    // this.popId = 'gPopup' + 9999
+    // // 2) index.js (store) vuex에 저장된 글로벌 히스토리 리스트 변수를 불러옴
+    // var history = this.$store.getters.hStack
+    // // 3) 현 페이지(팝업)을 글로벌 히스토리 리스트 변수에 추가하여 업데이트 시켜줌
+    // history.push(this.popId)
+
+    // this.$store.commit('updateStack', history)
   },
   data () {
     return {
@@ -199,8 +215,11 @@ export default {
       titleShowYn: false,
       uploadFileList: [],
       receiverTotalNum: 0,
-      complexOkYn: false
+      complexOkYn: false,
+      thisPopN: 'writePush',
+      popId: {}
       // formCardHeight: 0
+
     }
   },
   computed: {
@@ -228,7 +247,7 @@ export default {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     if (this.params.replyPopYn) {
-      this.replyPopYn = true
+      this.replyPopYn = true1
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
       this.showCreNameYn = true
@@ -460,11 +479,21 @@ export default {
           this.$emit('changePop', param)
 
         }else{
-          this.$emit('closeXPop',true)
+          // this.$emit('closeXPop',true)
+          this.closeXPop(true)
         }
 
       }
 
+    },
+    closeXPop (reloadYn) {
+      var history = this.$store.getters.hStack
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('updateStack', history)
+        //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
+      this.$emit('closeXPop',true)
     },
     setAttachFileList () {
       var newAttachFileList = new Array()
@@ -628,22 +657,20 @@ export default {
 
 .whitePaper {
       position: absolute;
+      /* left: 5%; */
+      /* bottom: 0; */
+      top: 5%;
       left: 5%;
-      bottom: 0;
       /* transform: translate(-50%, -50%); */
-      /* width: 100%; */
       width: 90%;
-      margin: 0 auto;
-      /* margin-top: 1rem; */
-      border-radius: 0.8rem 0.8rem 0 0;
-      /* height: calc(100% - 60px); */
-      height: 90%;
-      /* height: 90%; */
-      /* height: 85%; */
 
-      /* overflow: auto; */
-      /* background-color: #fafafa; */
-      background-color: #f9f9f9;
+      /* border-radius: 0.8rem 0.8rem 0 0; */
+      border-radius: 0.8rem;
+      /* height: 90%; */
+      height: 85%;
+
+      /* background-color: #f9f9f9; */
+      background-color: #f5f5f5;
       color: #363c5f;
       padding: 1.5rem;
       text-align: left;
@@ -676,7 +703,7 @@ export default {
 
 /* add by_jeong */
 /* .pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; float: left;} */
-.pageMsgArea{ min-height: 300px; float: left; width: 100%;}
+.pageMsgArea{ min-height: 300px; float: left; width: 100%; height: calc(100% - 160px);}
 .pageMsgArea p{font-size: 16px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ padding:7px; overflow: hidden scroll; margin-bottom: 60px; width: 100%; min-height: 240px; height: 90%;; border-radius: 5px; background: #fff; border:1px solid #BFBFDA; font-size: 16px; text-align: left;}
 

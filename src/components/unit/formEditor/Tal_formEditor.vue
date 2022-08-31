@@ -38,12 +38,13 @@
       <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
 
           <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-          <div style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
-              <draggable  ref="editableArea" class="ghostClass" :v-model="formCradList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging"  delay="200" handle=".movePoint">
+          <div v-if="formEditReloadYn" style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
+              <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" @end="changePosTeamMenu" delay="200" handle=".movePoint">
                   <transition-group>
                           <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                           --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
-                          <div v-for="(value, index) in formCardList" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #A9AACD;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05" @click="clickForm(value, index)">
+                          <!-- A9AACD -->
+                          <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #6768a7;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05 commonFormCard" @click="clickForm(value, index)">
                               <formText v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                               <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                               <formVideo v-else-if="false" />
@@ -96,13 +97,14 @@ import formLine from './Tal_formLine.vue'
 export default {
   created () {
     // this.$refs.activeBar.switchtab(1)
-    this.formCardList = [{ type: 'text', targetKey: 0 }]
+    // this.formCardList = [{ type: 'text', targetKey: 0, originalType: 'text' }]
     if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
       console.log('zzzzzzzzzzzzzzzz' + this.propFormData)
       this.formCardList = this.propFormData
     }
   },
   mounted () {
+    this.addFormCard('text')
   },
   props: {
     propFormData: {},
@@ -116,7 +118,8 @@ export default {
       enabled: true,
       myArray: [{ type: 'text', targetKey: 0, model0: '' }],
       plusBtnShowYn: true,
-      formCardList: [{ type: 'text', targetKey: 0 }],
+      // formCardList: [{ type: 'text', targetKey: 0, originalType: 'text' }],
+      formCardList: [],
       dragging: false,
       toolBoxShowYn: false,
       tools: { boldYn: false, italicYn: false, underLineYn: false, ftSize: 16 },
@@ -132,8 +135,8 @@ export default {
       uploadFileList: [],
       showBlockTypeYn: false,
       confirmText: '',
-      confirmPopShowYn: false
-
+      confirmPopShowYn: false,
+      formEditReloadYn: true
     }
   },
   components: {
@@ -157,6 +160,56 @@ export default {
     } */
   },
   methods: {
+    async changePosTeamMenu (event) {
+      var oldIndex = event.oldIndex
+      var newIndex = event.newIndex
+      // console.log(oldIndex)
+      // console.log(newIndex)
+      var tempList = this.formCardList
+      if (oldIndex < newIndex) {
+        // 선택한 값이 아래로 이동 (인덱스가 큰 쪽으로)
+        tempList.splice(newIndex + 1, 0, tempList[oldIndex])
+        tempList.splice(oldIndex, 1)
+      } else if (oldIndex > newIndex) {
+        // 선택한 값이 위로 이동 (인덱스가 작은 쪽으로)
+        tempList.splice(newIndex, 0, tempList[oldIndex])
+        tempList.splice(oldIndex + 1, 1)
+      }
+
+      // var selectList = tempList[oldIndex]
+
+      // var baseData = tempList.splice(newIndex, 1, selectList)
+      // if (oldIndex > newIndex) {
+      //   // 선택한 값이 우측으로 이동
+      //   --newIndex
+      // }
+      // tempList.splice(newIndex, 1, ...baseData)
+
+      this.formEditReloadYn = await false
+      this.formCardList = await []
+      this.formCardList = await tempList
+      this.formEditReloadYn = await true
+
+      // var teamMenuList = []
+      // var menu = {}
+      // var cardList = document.getElementsByClassName('commonFormCard')
+      // var index = null
+      // for (var s = cardList.length - 1; s >= 0; s--) {
+      //   index = Number(cardList[s].getAttribute('index'))
+      //   for (var i = 0; i < this.formCardList.length; i++) {
+      //     if (index === i) {
+      //       menu = {}
+      //       menu = this.formCardList[i]
+      //       console.log(menu)
+      //       teamMenuList.push(menu)
+      //     }
+      //   }
+      // }
+      // console.log(teamMenuList)
+      // this.formCardList = []
+      // this.formCardList = teamMenuList
+      console.log(this.formCardList)
+    },
     clickSelectBox () {
       if (this.fontSelectBoxShowYn) {
         this.fontSelectBoxShowYn = false
@@ -220,7 +273,7 @@ export default {
         this.confirmPopShowYn = true
         return false
       }
-      console.log(formElement)
+
       this.formCardList.push(formElement)
       this.selectRow = this.formCardList.length - 1
       this.resizeFormArea()
@@ -419,6 +472,7 @@ export default {
       for (var i = 0; i < this.formCardList.length; i++) {
         if (this.selectedCardKey === this.formCardList[i].targetKey) {
           this.formCardList[i].inputHtml = data.value
+          this.formCardList[i].innerHtml = data.value
           break
         }
       }

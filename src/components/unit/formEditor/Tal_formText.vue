@@ -69,9 +69,9 @@ export default {
       // this.resize()
     },
     inputResize (value) {
-      /*
-      this.formTextArea = document.getElementById(value).outerHTML
-      this.$emit('updateCard', { value: this.formTextArea, type: 'updateInput' }) */
+      // this.formTextArea = document.getElementById(value).outerHTML
+      this.formTextArea = this.$refs.formTextArea.innerHTML
+      this.$emit('updateCard', { value: this.formTextArea, type: 'updateInput' })
       // this.resize()
     }
     // eslint-disable-next-line no-unused-vars

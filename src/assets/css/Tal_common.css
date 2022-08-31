@@ -523,12 +523,13 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 /*  */
 #eContentsWrap .sortable-chosen {
   max-height: 10rem;
-
+  width: auto;
 }
 #eContentsWrap .sortable-chosen img{
-  max-width: 8rem;
-  text-align: center;
-  margin: 0 auto;
+  max-height: 10rem;
+  max-width: 10rem;
+  height: auto;
+  display: block;
 }
 
 #loading {
