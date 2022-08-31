@@ -41,7 +41,7 @@ import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_a
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
-
+/* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
 
@@ -148,3 +148,4 @@ localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
 app.mount('#app')
 document.title = '더알림'
+// onMessage('REQ', 'removeAllNoti') // 앱이 시작되면 모든 알림 삭제

@@ -779,6 +779,7 @@ export default {
 </script>
 <style scoped>
 .bodyFullStr {
+    word-break: break-all;
   max-height: 400px;
   overflow: hidden;
 

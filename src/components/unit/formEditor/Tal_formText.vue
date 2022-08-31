@@ -1,5 +1,5 @@
 <template>
-        <span contenteditable style="padding: 0 5px; display:inline-block; width: calc(100% - 30px); border-right: #ccc;" autofocus :formIdx="targetKey" @focus="this.$emit('showToolBox', {tools: tools})" ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent" @input="inputResize('formTextArea'+targetKey)"></span>
+        <span contenteditable style="padding: 0 5px; display:inline-block; width: calc(100% - 30px); border-right: #ccc;     word-break: break-all;" autofocus :formIdx="targetKey" @focus="this.$emit('showToolBox', {tools: tools})" ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent" @input="inputResize('formTextArea'+targetKey)"></span>
         <!-- <div class="" style="width: 30px; background: #BFBFDA; float: right border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center;"><img class="fl" src="../../../assets/images/formEditor/scroll.svg" alt=""></div> -->
 </template>
 

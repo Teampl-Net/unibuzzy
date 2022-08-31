@@ -31,7 +31,7 @@
                 <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
                 <div class="pageMsgArea" style="">
                   <!-- <p class="">내용</p> -->
-                  <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px;    min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                  <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; word-break: break-all; min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
                   <formEditor ref="complexEditor" @changeUploadList="changeUploadList" v-show="viewTab === 'complex'" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
                   <div id="msgBox" @click="formEditorShowYn = true" v-show="previewContentsShowYn"  class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 

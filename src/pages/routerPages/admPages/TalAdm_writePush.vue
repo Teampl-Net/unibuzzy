@@ -83,7 +83,7 @@
                 <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
                 <div class="pageMsgArea" style="">
                   <!-- <p class="">내용</p> -->
-                  <div id="textMsgBoxPush" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
+                  <div id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
                   <!-- <div  style="border: 1px solid #6768a745; border-radius: 5px; width: 100%; height: 100%; float: left; overflow: hidden;">
                   -->
                   <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>                  <!-- </div> -->

@@ -48,6 +48,7 @@ export default {
     testYn: {}
   },
   async created () {
+    // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
     await this.$userLoginCheck(true)
     /* localStorage.setItem('popHistoryStack', '') */
