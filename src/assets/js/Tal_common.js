@@ -338,6 +338,21 @@ const methods = {
       if (size < 1024) return size.toFixed(1) + byteUnits[i]
     }
   },
+  showToastPop (html) {
+    var app = document.getElementById('app')
+    var innerHTML = ''
+    var toastDiv = document.createElement('div')
+    innerHTML += '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 999999999999;">'
+    innerHTML += html
+    innerHTML += '</div>'
+    toastDiv.innerHTML = innerHTML
+
+    app.appendChild(toastDiv)
+    // var thisthis = this
+    setTimeout(() => {
+      document.getElementById('toastPop').remove()
+    }, 2000)
+  },
   getFileExt (fileName) {
     let fileExt = fileName.substring(
       fileName.lastIndexOf('.') + 1
@@ -426,5 +441,6 @@ export default {
     Vue.config.globalProperties.$downloadFile = methods.downloadFile
     Vue.config.globalProperties.$commonAx = methods.commonAx
     Vue.config.globalProperties.$setPhone = methods.setPhone
+    Vue.config.globalProperties.$showToastPop = methods.showToastPop
   }
 }

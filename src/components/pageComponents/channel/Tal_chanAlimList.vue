@@ -395,14 +395,20 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.followerKey = this.chanItem.userTeamInfo.followerKey
+      var toastText = ''
       if (this.recvAlimYn === true) {
         param.notiYn = false
         this.recvAlimYn = false
+        toastText = '채널 알림이 비활성화 되었습니다'
       } else {
         param.notiYn = true
         this.recvAlimYn = true
+        toastText = '채널 알림이 활성화 되었습니다'
       }
       this.$changeRecvAlimYn({ follower: param })
+      setTimeout(() => {
+        this.$showToastPop(toastText)
+      }, 500)
     },
     settingTeamType (teamType) {
       if (teamType === 'C') { this.teamTypeText = '기업' } else if (teamType === 'G') { this.teamTypeText = '정부' } else if (teamType === 'S') { this.teamTypeText = '학교' } else if (teamType === 'H') { this.teamTypeText = '종교' } else if (teamType === 'D') { this.teamTypeText = '동호회' } else if (teamType === 'Q') { this.teamTypeText = '병원' } else if (teamType === 'V') { this.teamTypeText = '약국' } else if (teamType === 'P') { this.teamTypeText = '식당' } else if (teamType === 'A') { this.teamTypeText = '매장' } else if (teamType === 'E') { this.teamTypeText = '기타' } else { this.teamTypeText = '기타' }

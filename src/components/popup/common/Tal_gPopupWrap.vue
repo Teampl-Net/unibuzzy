@@ -601,13 +601,22 @@ export default {
     successCreChan (params) {
       if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
         this.$emit('parentClose', true)
+        setTimeout(() => {
+          this.$showToastPop('채널이 삭제되었습니다.')
+        }, 500)
         // this.closeXPop()
         return
       }
       if ((params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) || (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true)) {
         this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop(true)
+        setTimeout(() => {
+          this.$showToastPop('채널정보가 수정되었습니다.')
+        }, 500)
       } else {
+        setTimeout(() => {
+          this.$showToastPop('채널이 생성되었습니다.')
+        }, 500)
         this.$emit('reloadPop')
         this.successChanParam = params
         this.settingPop(true)
