@@ -132,6 +132,7 @@ export default {
       params.userKey = param.userKey
       // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       params.teamKey = this.propData.teamKey
+      /* var toastText =  */
       if (param.manager) {
         await this.saveManager(params)
       } else {

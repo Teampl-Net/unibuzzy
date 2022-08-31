@@ -5,7 +5,7 @@
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
-    <div class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
+    <div id="boardDetailScrollArea" class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index" :change="changeData">
         <div class="pushDetailTopArea">
           <div class="pushDetailHeaderTextArea">
@@ -177,7 +177,8 @@ export default {
       fileDownloadAreaYn: false,
       mobileYn: this.$getMobileYn(),
       clickEndYn: false,
-      alertPopId: null
+      alertPopId: null,
+      clickImg: null
     }
   },
   props: {
@@ -225,6 +226,10 @@ export default {
         thisthis.addImgEvnt()
       }, 1000)
     }
+    var pushListWrap = document.getElementById('boardDetailScrollArea')
+    pushListWrap.addEventListener('scroll', () => {
+      this.clickEndYn = true
+    })
   },
   computed: {
     historyStack () {
@@ -405,7 +410,7 @@ export default {
               thisthis.clickImgList[m].style.opacity = 1
               this.openImgDetailAlert(thisthis.clickImgList[m])
             }
-          }, 1000)
+          }, 300)
           // thisthis.previewPopShowYn = true
         })
         thisthis.clickImgList[m].addEventListener('touchend', () => {
@@ -425,7 +430,7 @@ export default {
               thisthis.selectImgIndex = m
               thisthis.clickImgList[m].style.opacity = 1
             }
-          }, 2000)
+          }, 1000)
         })
         thisthis.clickImgList[m].addEventListener('mouseup', () => {
           thisthis.clickEndYn = true
@@ -777,6 +782,8 @@ export default {
 
         for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
           var attFile = this.alimDetail[0].attachFileList[s]
+          // eslint-disable-next-line no-debugger
+          debugger
           if (!attachYn) {
             for (var i = 0; i < addFalseImgList.length; i++) {
               if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
@@ -785,7 +792,9 @@ export default {
               }
             }
           } else {
-            this.attachTrueFileList.push(attFile)
+            if (attFile.attachYn) {
+              this.attachTrueFileList.push(attFile)
+            }
           }
         }
       }

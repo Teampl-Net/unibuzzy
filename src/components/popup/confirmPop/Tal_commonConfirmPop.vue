@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100vh; position: absolute; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+  <div style="width: 100%; height: 100vh; position: fixed; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
   <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
     <div class="confirmPopHeader" >

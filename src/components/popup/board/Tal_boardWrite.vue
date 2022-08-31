@@ -104,12 +104,12 @@ export default {
         newArr.push(jsonObj)
       }
       this.propFormData = newArr
+      this.$refs.complexEditor.setFormCard(this.propFormData)
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
       this.viewTab = 'complex'
       this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-      // eslint-disable-next-line no-debugger
-      debugger
+      console.log('this.propData.parentAttachTrueFileList')
       console.log(this.propData.parentAttachTrueFileList)
       // this.formEditorShowYn = true
     } else {
@@ -177,6 +177,7 @@ export default {
   },
   created () {
     if (this.propData.bodyFullStr) {
+      console.log(this.propData)
       this.bodyString = this.decodeContents(this.propData.bodyFullStr)
       this.modiYn = true
       console.log('WOW!!!!' + this.decodeContents(this.bodyString))
@@ -254,8 +255,6 @@ export default {
       console.log(imgItemList)
       console.log(this.addFalseList)
       console.log(this.delAddFalseFileList)
-      // eslint-disable-next-line no-debugger
-      debugger
       // eslint-disable-next-line no-undef
       var delList = []
       for (var f = this.addFalseList.length - 1; f > -1; f--) {
@@ -317,8 +316,6 @@ export default {
           newAttachFileList.push(setObj)
         }
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       console.log(newAttachFileList)
       return newAttachFileList
     },
@@ -489,8 +486,6 @@ export default {
               })
             .then(res => {
               console.log(res)
-              // eslint-disable-next-line no-debugger
-              debugger
               if (res.data.length > 0) {
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true

@@ -12,14 +12,22 @@
             selectFileList : {{ selectFileList }}
         </div> -->
         </div>
+        <div v-else-if="multiFileSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 60px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
+            <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px); height: var(--cardHeight)">
+              <div class="fl mright-05" style="width:100%;">
+                  <img  class="editorImg addTrue" style="width:100%;" :src="multiFileSrc" />
+                  <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
+              </div>
+          </div>
+        </div>
         <form v-else :style="settingCardHeight" @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
-            <input class="formImageFile" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+            <input class="formImageFile" multiple type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
-                <div v-for="(value, index) in selectFileList"  :key="index" class="fl mright-05" :style="settingImgSize" style="width:var(--imgWidth);">
-                    <img  class="editorImg" style="width:100%;" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
+                <div  class="fl mright-05" :style="settingImgSize" style="width:100%;">
+                    <img  class="editorImg" style="width:100%;" :class="{addTrue :  firstFile.addYn}" :src="firstFile.previewImgUrl" />
                     <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
                 </div>
             </div>
@@ -50,7 +58,9 @@ export default {
     selectFileListProp: {},
     targetKey: {},
     pSrc: {},
-    pFilekey: {}
+    pFilekey: {},
+
+    multiFileSrc: {}
   },
   data () {
     return {
@@ -60,7 +70,9 @@ export default {
       isUploading: false, // 파일 업로드 체크
       response: null, // 파일 업로드후 응답값
       imageWidth: 100,
-      cardHeight: 0
+      cardHeight: 0,
+      fileCnt: 0,
+      firstFile: {}
     }
   },
   computed: {
@@ -72,6 +84,10 @@ export default {
     },
     settingCardHeight () {
       if (this.pSrc) {
+        return {
+          '--cardHeight': this.$refs.i + 'px'
+        }
+      } else if (this.multiFileSrc) {
         return {
           '--cardHeight': this.$refs.i + 'px'
         }
@@ -89,7 +105,6 @@ export default {
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -130,7 +145,9 @@ export default {
 
                 canvas.getContext('2d').drawImage(image, 0, 0, width, height)
                 const imgBase64 = canvas.toDataURL('image/png', 0.8)
-                this.previewImgUrl = imgBase64
+                if (thisthis.$refs.selectFile.files.length === 1) {
+                  this.previewImgUrl = imgBase64
+                }
                 const decodImg = atob(imgBase64.split(',')[1])
                 const array = []
                 for (let i = 0; i < decodImg.length; i++) {
@@ -140,12 +157,26 @@ export default {
                 var file = new File([Bfile], thisthis.selectFile.name)
 
                 thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-
-                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: thisthis.selectFileList, originalType: 'image' })
+                // eslint-disable-next-line no-debugger
+                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }], originalType: 'image' })
+                if (thisthis.$refs.selectFile.files.length === 1) {
+                  thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }
+                } else {
+                  // if (thisthis.$refs.selectFile.files.length > 1) {
+                  if (thisthis.fileCnt > 0) {
+                    // eslint-disable-next-line no-debugger
+                    debugger
+                    thisthis.$emit('setMultiFile', { file, previewImgUrl: canvas.toDataURL('image/png', 0.8) })
+                  } else {
+                    thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }
+                  }
+                  // }
+                }
                 // this.$emit('updateImgForm', this.previewImgUrl)
                 setTimeout(() => {
                   thisthis.cardHeight = thisthis.$refs.imageBox.scrollHeight
                 }, 10)
+                thisthis.fileCnt += 1
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               }
@@ -153,7 +184,7 @@ export default {
 
               }
               image.src = e.target.result
-              this.previewImgUrl = e.target.result
+              // this.previewImgUrl = e.target.result
             }
             reader.readAsDataURL(this.selectFile)
             // await this.$editorImgResize(this.selectFile)
@@ -165,6 +196,9 @@ export default {
         this.selectFile = null
         this.previewImgUrl = null
       }
+      /* if (thisthis.$refs.selectFile.files.length > 1) {
+        thisthis.$emit('setMultiFile', thisthis.selectFileList)
+      } */
       console.log(this.selectFileList)
     },
     deleteFile (idx) {

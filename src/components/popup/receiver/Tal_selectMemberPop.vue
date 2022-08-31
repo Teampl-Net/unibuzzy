@@ -129,8 +129,6 @@ export default {
       var param = new Object()
       // eslint-disable-next-line no-unused-vars
       var result = null
-      // eslint-disable-next-line no-unused-vars
-      var tt = this.memberList
       for (var i = 0; i < this.memberList.length; i++) {
         if (this.memberList[i].selectedYn) {
           userKeyList.push(this.memberList[i].userKey)

@@ -46,7 +46,7 @@
                           <!-- A9AACD -->
                           <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #6768a7;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05 commonFormCard" @click="clickForm(value, index)">
                               <formText v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
-                              <formImage v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
+                              <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                               <formVideo v-else-if="false" />
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
@@ -96,12 +96,6 @@ import formLine from './Tal_formLine.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
-    // this.$refs.activeBar.switchtab(1)
-    // this.formCardList = [{ type: 'text', targetKey: 0, originalType: 'text' }]
-    if (this.propFormData !== undefined && this.propFormData !== null && this.propFormData !== [] && this.propFormData !== '' && this.propFormData.length > 0) {
-      console.log('zzzzzzzzzzzzzzzz' + this.propFormData)
-      this.formCardList = this.propFormData
-    }
   },
   mounted () {
     this.addFormCard('text')
@@ -160,6 +154,9 @@ export default {
     } */
   },
   methods: {
+    setFormCard (data) {
+      this.formCardList = data
+    },
     async changePosTeamMenu (event) {
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex
@@ -231,6 +228,9 @@ export default {
       this.tools.ftSize = fontSize
       this.changeTextStyle('font')
     },
+    setMultiFile (file) {
+      this.addFormCard('image', file.previewImgUrl, true)
+    },
     setParamInnerHtml () {
       var formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
       // var formCardpadding = document.querySelectorAll('#eContentsWrap .formDiv')
@@ -252,7 +252,9 @@ export default {
       } */
       // this.$saveContents(param)
     },
-    addFormCard (type, src) {
+    addFormCard (type, src, multiAddYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
       this.plusBtnShowYn = true
       this.showBlockTypeYn = false
       // eslint-disable-next-line no-new-object
@@ -264,8 +266,10 @@ export default {
       this.toolBoxShowYn = true
       if (type === 'image') {
         this.toolBoxShowYn = false
+        if (multiAddYn) {
+          formElement.multiFileSrc = src
+        } else formElement.src = src
         // eslint-disable-next-line no-new-object
-        formElement.src = src
       } else if (type === 'video') {
         this.toolBoxShowYn = false
         formElement.src = src

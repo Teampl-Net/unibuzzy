@@ -133,7 +133,8 @@ export default {
       clickEndYn: false,
       selectImgObject: {},
       clickImgList: [],
-      selectFileKey: null
+      selectFileKey: null,
+      clickImg: null,
 
     }
   },
@@ -141,6 +142,9 @@ export default {
 
   },
   created () {
+    /* document.addEventListener('touchstart', () => {
+      this.clickEndYn = true
+    }) */
     this.contentsList = this.commonListData
     if (this.targetContentsKey) {
       this.targetCKey = this.targetContentsKey
@@ -166,6 +170,12 @@ export default {
     }
   },
   mounted() {
+    var pushListWrap = document.getElementById('pushListWrap')
+    if (pushListWrap) {
+        pushListWrap.addEventListener('scroll', () => {
+            this.clickEndYn = true
+        })
+    }
   },
   methods: {
     contentMenuClick(params){
@@ -459,8 +469,9 @@ export default {
           thisthis.clickTime = Date.now()
           imgList[m].style.opacity = 0.8
           thisthis.clickEndYn = false
+          thisthis.clickImg = imgList[m]
           setTimeout(() => {
-            if (thisthis.clickEndYn === false) {
+            if (thisthis.clickEndYn === false && thisthis.clickImg === imgList[m]) {
               thisthis.selectImgObject.path = imgList[m].src
               thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
               var param = new Object
@@ -473,7 +484,7 @@ export default {
               thisthis.selectImgIndex = m
               imgList[m].style.opacity = 1
             }
-          }, 1000)
+          }, 300)
         })
         imgList[m].addEventListener('touchend', () => {
           thisthis.clickEndYn = true
@@ -498,7 +509,7 @@ export default {
               thisthis.selectImgIndex = m
               imgList[m].style.opacity = 1
             }
-          }, 2000)
+          }, 1000)
         })
         imgList[m].addEventListener('mousedown', () => {
             thisthis.clickEndYn = true
