@@ -79,9 +79,11 @@ export default {
       }
     },
     checkOwnerYn () {
-      for (var i = 0; i < this.chanList.length; i++) {
-        if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanList[i].creUserKey) {
-          this.chanList[i].ownerYn = true
+      if (this.chanList) {
+        for (var i = 0; i < this.chanList.length; i++) {
+          if (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanList[i].creUserKey) {
+            this.chanList[i].ownerYn = true
+          }
         }
       }
     },

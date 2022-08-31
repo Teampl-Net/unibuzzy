@@ -34,7 +34,8 @@ export default {
       listShowYn: true,
       currentTabName: '알림',
       emptyYn: true,
-      notiDetail: null
+      notiDetail: null,
+      pushList: []
     }
   },
   props: {
@@ -185,7 +186,7 @@ export default {
           /* ['soAccessToken', 'a1234'] */
         ]
       )
-      this.$axios.post('https://mo.d-alim.com:10443/tp.getContentsList', Object.fromEntries(paramMap)
+      this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
       ).then(response => {
         this.pushList = response.data
       }).catch((error) => {

@@ -261,10 +261,18 @@ export default {
               previewCanvas.height = height
 
               previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
-              thisthis.previewImgUrl = previewCanvas.toDataURL('image/png', 0.8)
+              const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+              thisthis.previewImgUrl = imgBase64
+              const decodImg = atob(imgBase64.split(',')[1])
+              const array = []
+              for (let i = 0; i < decodImg.length; i++) {
+                array.push(decodImg.charCodeAt(i))
+              }
+              const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+              var file = new File([Bfile], thisthis.selectFile.name)
               // eslint-disable-next-line no-debugger
               // debugger
-              thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: thisthis.selectFile })
+              thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             }
@@ -297,7 +305,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

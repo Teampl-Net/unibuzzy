@@ -85,7 +85,7 @@ export default {
       if ((currentPage === 0 || currentPage === undefined)) {
         this.$emit('openDetailPop', { nameMtext: this.detailVal.creTeamName, targetKey: this.detailVal.creTeamKey, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.pushDetail })
       } else {
-        this.$emit('openDetailPop', { targetKey: this.detailVal.creTeamKey, nameMtext: this.detailVal.creTeamName, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.detailVal })
+        this.$emit('openDetailPop', { nameMtext: this.detailVal.creTeamName, targetKey: this.detailVal.creTeamKey, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.pushDetail })
       }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },

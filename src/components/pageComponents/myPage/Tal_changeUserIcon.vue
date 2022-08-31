@@ -14,7 +14,7 @@
           </div>
 
           <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
-              <input class="formImageFile"  capture="camera" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+              <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
           </form>
           <p class="fl fontBold textLeft font14 w-100P mleft-2">터치해서 이미지를 변경할 수 있습니다.</p>
         </div>
@@ -176,7 +176,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

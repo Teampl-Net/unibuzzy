@@ -188,17 +188,19 @@ export default {
         param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
       param.jobkindId = this.myPageTabType
-      // eslint-disable-next-line no-debugger
-      debugger
+
       if (this.myActTabType === 'mwb') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       } else if (this.myActTabType === 'mcb') {
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActMemoYn = true
       } else if (this.myActTabType === 'mlb') {
         param.findActYn = true
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActLikeYn = true
       } else if (this.myActTabType === 'msb') {
+        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         param.findActYn = true
         param.findActStarYn = true
       }

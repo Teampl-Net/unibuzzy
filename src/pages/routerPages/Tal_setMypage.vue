@@ -5,7 +5,7 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="this.changeUserIconShowYn = false" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
           <div @click="changeUserImg()" class="cursorP imgSize">
@@ -104,7 +104,8 @@ export default {
       tempUserDispName: '',
       changeYn: false,
       errorBoxYn:false,
-      errorBoxText : '관리자에게 문의하세요.'
+      errorBoxText : '관리자에게 문의하세요.',
+      changeUserIconPop: null
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -118,6 +119,20 @@ export default {
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
+    historyStack () {
+      return this.$store.getters.hRPage
+    },
+    pageUpdate () {
+      return this.$store.getters.hUpdate
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
+    }
   },
   mounted () {
     this.$emit('closeLoading')
@@ -128,6 +143,12 @@ export default {
         ;
       } else {
         this.changeUserIconShowYn = true
+        var history = this.$store.getters.hStack
+        this.changeUserIconPop = 'changeUserIconPop' + history.length
+        console.log(history)
+        history.push(this.changeUserIconPop)
+        this.$store.commit('updateStack', history)
+        console.log(this.$store.getters.hStack)
       }
     },
     async setDispName () {
@@ -196,6 +217,18 @@ export default {
       if (!this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userDispMtext } else {this.userInfo.userDispMtext = this.userInfo.userNameMtext}
 
       // console.log(this.userInfo.creDate)
+    },
+    backClick () {
+      var hStack = this.$store.getters.hStack
+      var removePage = hStack[hStack.length - 1]
+      if (this.changeUserIconPop === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', hStack)
+        this.changeUserIconShowYn = false
+      } else {
+
+      }
     },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
