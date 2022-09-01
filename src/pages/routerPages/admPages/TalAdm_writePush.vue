@@ -5,24 +5,41 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
-      <gConfirmPop confirmText='알림을 발송 하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
-      <gConfirmPop @click="closeXPop(true)" confirmText='발송되었습니다.' confirmType='timeout' v-if="okPopYn" />
+      <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop @no="closeXPop" confirmText='신청되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-        <!-- <div  :style="setColor" class="paperBackground"> -->
-          <!-- <div class="fr changePaperBtn font13" style="color:white; border-radius:0.3em; padding: 4px 10px;" @click="clickPageTopBtn('sendPushMsg')" >발송하기</div> -->
-        <!-- <div class="paperBackground" @click="this.$emit('closeXPop')"></div> -->
         <div class="paperBackground"></div>
           <div class="whitePaper" :style="viewTab === 'complex' ? 'height: 80%' : ''">
             <div class="overFlowYScroll pushInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
-                <p class="fontBold commonColor font20 fl">알림작성</p>
+                <p class="fontBold commonColor font20 fl">알림 {{requestPushYn === false ? '작성' : '신청' }}</p>
                 <img style="width: 1rem;" @click="closeXPop" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
               </div>
               <div style="width: 100%; height: calc(100% - 30px); padding: 1.5rem 0 !important; float: left; overflow: hidden auto;" :style="viewTab === 'complex' ? 'height: calc(100% - 50px)' : ''">
+                <div v-if="requestPushYn === true" class="fl w-100P">
+                  <p class="fontBold commonColor font16">사유</p>
+                  <textarea ref="textAreaRequestTitle" type="text" style="min-height: 50px; background-color:white !important; resize: none; border: 1px solid #ccc; border-radius: 5px; outline: none;" v-model="requestTitle" class="w-100P mtop-03 commmonBlack"/>
+                </div>
+                <div v-if="requestPushYn === true && answerRequsetYn === true" class="fl w-100P ">
+                  <p class="fontBold commonColor font16 fl w-100P">응답메시지</p>
+                  <div v-if="requestAgreeYn === false" class="fl w-100P mtop-03" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-bottom: 0.5rem;">
+                    <textarea  type="text" v-model="answerRequestMsg" class="fl commmonBlack" style="width:calc(100% - 70px); min-height: 70px; background-color:white !important; resize: none; border: 1px solid #ccc; border-radius: 5px; outline: none;"/>
+                    <div class="fr" style="width: 70px; height: 70px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+                      <gBtnSmall btnTitle="승인" class="fl" @click="requestPushAgreeClick" />
+                      <gBtnSmall btnTitle="거절" class="fl" style="background-color: #f9f9f9 !important; border: 1px solid #ccc;" @click="requestPushDisagreeClick" btnThema="light" />
+                    </div>
+                  </div>
+                <div v-else class="w-100P fl mtop-05 mbottom-05" style="padding: 10px 0; border:1px solid #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: space-evenly; ">
+                  <p class="fl commonColor font14 textCenter fontBold" style=""> 승인되었습니다. </p>
+                  <gBtnSmall btnTitle="거절" class="fl" @click="requestPushDisagreeClick" />
+                </div>
+
+                </div>
+
                 <div class="pageTopArea fl">
                   <!-- {{receiverList}} -->
-                  <div class="fl" style="margin-bottom: 5px; width:100%;">
+                  <div v-if="requestPushYn === false || answerRequsetYn === true" class="fl" style="margin-bottom: 5px; width:100%;">
                     <p class="fontBold commonColor font16">수신</p>
                     <div style="min-height: 2rem; float: left;" v-if="!this.replyPopYn">
                       <div class="fl" style="border: 1px solid #ccc; margin-bottom: 10px; margin-left: 5px; overflow: hidden; border-radius: 5px;">
@@ -31,7 +48,6 @@
                       </div>
                       <!-- <input type="radio" name="receiveAllYn" style="margin-left: 5px; margin-top: 4px;" class="mright-05 fl" @change="selectRecvType(true)" :checked="allRecvYn"  id="allTrue" :value="true">
                       <label class="mright-1 fl" for="allTrue">전체</label>
-
                       <input class="mright-05 fl" type="radio" style="margin-left: 5px; margin-top: 4px;" name="receiveAllYn" @change="selectRecvType(false)" id="allFalse" :value="false" :checked="!allRecvYn">
                       <label class="mright-1 fl" for="allFalse">선택</label> -->
 
@@ -49,10 +65,7 @@
 
                   </div>
 
-                  <!-- <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;" v-if="!this.replyPopYn"> -->
                   <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
-                    <!-- <div style="width: 120px; height: 100%; float: left; margin-right: 30px;"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" for="creNameInput">작성자 공개</label></div>
-                    <div style="width: 85px; height: 100%; float: left;"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" for="replyInput">답변 허용</label></div> -->
                     <div class="fl mright-1"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
                     <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
                     <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
@@ -82,49 +95,26 @@
                 </div>
                 <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
                 <div class="pageMsgArea" style="">
-                  <!-- <p class="">내용</p> -->
                   <div id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
-                  <!-- <div  style="border: 1px solid #6768a745; border-radius: 5px; width: 100%; height: 100%; float: left; overflow: hidden;">
-                  -->
-                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>                  <!-- </div> -->
+
+                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
                   <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
-                  <!-- <div @click="formEditorShowYn = true" v-show="viewTab === 'complex'" class="msgArea" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
-                  <!-- <textArea style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border: 1px solid #ccc; border-radius: 5px;">test</textArea> -->
-                  <!-- <div class="msgArea" @click="messageAreaClick" style="padding:5px; overflow: auto;">
-                    {{msgData}}
-                  </div> -->
-                  </div>
-                  <!-- <gBtnSmall class="mright-05 font20 writePushBtn " style="float: right; font-weight:bold;margin-bottom: 60px; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
+
                 </div>
+                  <!-- <gBtnSmall class="mright-05 font20 writePushBtn " style="float: right; font-weight:bold;margin-bottom: 60px; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
               </div>
+            </div>
             <!-- <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div> -->
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  btnTitle='발송하기' @click="clickPageTopBtn()" />
-          <!-- <div style="width: 100%;" >
-                  <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickPageTopBtn('sendPushMsg')" />
-                  <gBtnSmall class="mright-05" btnTitle='임시저장' @click="clickPageTopBtn('requestTS')" />
-          </div> -->
-        <!-- </div> -->
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" />
       </div>
     </div>
-      <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
-      <!-- <msgPop @no='popNo' v-if="msgPopYn" @save='popSave' :propMsgData='msgData'/> -->
   </div>
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-  <!-- <div id="complexWriteWrap" v-show="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
-    <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="블로그형 작성" />
-    <formEditor @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
-  </div> -->
-  <!-- <div v-if="receiverPopYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999"  >
-      <selectReceivPop  :selectPopYn='true' :propData='params' @closeXPop='receiverPopYn= false' @sendReceivers='setSelectedList' @openPop='openPop' />
-  </div> -->
+
 </template>
 <script>
 /* eslint-disable */
-// eslint-disable-next-line
-// import msgPop from '../admPages/TalAdm_writePush/TalAdm_msgPopup.vue'
-// import writePushPageTitle from '../admPages/TalAdm_writePush/TalAdm_writePushTop.vue'
-// import gPageTitle from '../../../components/unit/admUnit/TalAdm_gPageTitle.vue'
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../../components/unit/formEditor/Tal_formEditor.vue'
 import selectReceivPop from '../../../components/popup/receiver/Tal_selectBookList.vue'
@@ -167,6 +157,13 @@ export default {
     // history.push(this.popId)
 
     // this.$store.commit('updateStack', history)
+
+    // 알림신청 건을 승인 또는 취소를 하기 위함.
+    // this.answerRequsetYn = true
+    if (this.answerRequsetYn) {
+      this.$refs.textAreaRequestTitle.style.backgroundColor = '#00000010'
+      this.$refs.textAreaRequestTitle.readOnly = true
+    }
   },
   data () {
     return {
@@ -217,8 +214,15 @@ export default {
       receiverTotalNum: 0,
       complexOkYn: false,
       thisPopN: 'writePush',
-      popId: {}
+      popId: {},
+      requestPushYn: false,
+      requestTitle: '',
+      // 요청 받은 알림신청 건이면 true로 변경
+      answerRequsetYn: false,
+      answerRequestMsg: '',
+      requestAgreeYn: false
       // formCardHeight: 0
+
 
     }
   },
@@ -254,8 +258,62 @@ export default {
       this.canReplyYn = true
       // document.getElementById('replyInput')
     }
+    if (this.params.requestPushYn){
+      this.requestPushYn = true
+    }
   },
   methods: {
+    async requestPushAgreeClick () {
+      if (this.checkRequstAgree() === true){
+        var param = {}
+        param.requestKey = this.params.requestKey
+        param.answerRequestMsg = this.answerRequestMsg
+        param.teamName = this.$changeText(this.params.targetNameMtext)
+        param.creTeamKey = this.params.targetKey
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        // var response = await this.$commonAxiosFunction({
+        //   url: '/tp.승인 처리',
+        //   param: param
+        // })
+        // if (response.data === true){
+
+        // }
+        this.errorText = '알림 신청이 승인 처리되었습니다.'
+        this.failPopYn = true
+        // this.requestAgreeYn = true
+      }
+    },
+    async requestPushDisagreeClick () {
+      if (this.checkRequstAgree() === true){
+        var param = {}
+        param.requestKey = this.params.requestKey
+        param.answerRequestMsg = this.answerRequestMsg
+        param.teamName = this.$changeText(this.params.targetNameMtext)
+        param.creTeamKey = this.params.targetKey
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        // var response = await this.$commonAxiosFunction({
+        //   url: '/tp.거절 처리',
+        //   param: param
+        // })
+        // if (response.data === true){
+
+        // }
+        this.errorText = '알림 신청이 거절 처리되었습니다.'
+        this.failPopYn = true
+        // this.requestAgreeYn = true
+      }
+    },
+    checkRequstAgree () {
+      var checkYn = false
+      if (this.answerRequestMsg.replaceAll(' ', '') !== '') {
+        checkYn = true
+      }else {
+        this.errorText = '응답메시지를 입력해주세요.'
+        this.failPopYn = true
+        return
+      }
+      return checkYn
+    },
     changeUploadList (upList) {
       if (this.uploadFileList.length > 0) {
         var temp = this.uploadFileList
@@ -371,7 +429,6 @@ export default {
       }
     },
     async sendMsg () {
-
       var paramImgList = []
       if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
         this.checkPopYn = false
@@ -466,7 +523,18 @@ export default {
       param.showCreNameYn = this.showCreNameYn
       param.canReplyYn = this.canReplyYn
       //
-      var result = await this.$saveContents(param)
+      var result
+      if (this.requestPushYn === true) {
+        param.requestTitle = this.requestTitle
+
+        // result = this.$saveContents(param)
+        // this.closeXPop(true)
+        this.sendLoadingYn = false
+        this.okPopYn = true
+        return
+      }
+
+      result = await this.$saveContents(param)
       if (result.result === true) {
 
         this.sendLoadingYn = false
@@ -527,6 +595,14 @@ export default {
           if (title !== undefined && title !== null && title !== '') {
           } else {
             this.errorText = '제목을 입력해주세요'
+            this.failPopYn = true
+            return
+          }
+        }
+
+        if (this.requestPushYn === true) {
+          if (this.requestTitle.replace(' ', '') === '') {
+            this.errorText = '알림을 신청하는 사유를 입력해주세요'
             this.failPopYn = true
             return
           }
@@ -708,7 +784,7 @@ export default {
 .pageMsgArea .msgArea{ padding:7px; overflow: hidden scroll; margin-bottom: 60px; width: 100%; min-height: 240px; height: 90%;; border-radius: 5px; background: #fff; border:1px solid #BFBFDA; font-size: 16px; text-align: left;}
 
 .pageTopArea{
-  width: 100%; min-height: 3.5rem;
+  width: 100%; ;
 }
 .pageTopArea >div{
   width: 100%; min-height: 2rem;
@@ -766,6 +842,6 @@ export default {
   .titleAddArea{
     top: -1.5rem;
   }
-
 }
+
 </style>

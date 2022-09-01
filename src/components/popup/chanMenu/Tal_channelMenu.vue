@@ -2,21 +2,21 @@
 <!-- <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
 <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
 
-<div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
-  <div class="menuHeader" :class="{editmenuHeader: editYn === true}" style="width:100%; display:flex;flex-direction: row; justify-content: space-between; align-items: center;">
+<div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" style="overflow: hidden scroll;">
+  <div class="menuHeader" :class="{editmenuHeader: editYn === true}">
     <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
     <p :class="{editColor: editYn === true }" class="fontBold font20 fl" style="white-space: nowrap;" >{{menuHeaderTitle}}</p>
     <img v-if="ownerYn || adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
     <div v-else />
   </div>
-  <div v-if="true" style="overflow:auto">
-    <div v-if="adminYn" class="fl w-100P"  style="margin-top:50px;" >
+  <div v-if="true" class="fl w-100P" style="overflow: hidden scroll;">
+    <div v-if="adminYn" class="fl w-100P" style="margin-top:50px;" >
       <p class="fl cursorP font14 commonColor fontBold mtop-13" style="white-space: nowrap;"  @click="bookDropDown">
         <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
         주소록
         ({{this.cabinetList.length}})
       </p>
-      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
+      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
         <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="cabinetList" @openDetail='openTeamDetailPop' />
       </div>
     </div>
@@ -30,8 +30,17 @@
         ({{this.myBoardList.length}})
       </p>
 
-      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px);" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
+      <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
         <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+      </div>
+    </div>
+
+    <div class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
+
+    <div class="w-100P fl mtop-1" style="margin-bottom:3rem">
+      <p class="fl font14 cursorP commonColor fontBold mtop-07 w-100P textLeft"><img class="fl cursorP img-w20 mright-05" src="../../../assets/images/channel/icon_heart.svg" alt="편리기능 아이콘"> 편리기능 </p>
+      <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class="fl mleft-05 mtop-1" style="" >
+        <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (this.adminYn === true || this.ownerYn === true))" :btnTitle="data.title" style="padding: 0 15px;" />
       </div>
     </div>
   </div>
@@ -145,13 +154,33 @@ export default {
       selectedList : [],
       selectAdminList : [],
       teamNameText:'',
-      closeYn:false
+      closeYn:false,
+      convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
     }
   },
   components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
   },
   emits: ['openPop', 'goPage'],
   methods: {
+    /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
+    convenienceFunc (targetType) {
+      var param = {}
+      param.targetType = targetType
+      // 알림신청의 경우 신청 사유를 작성 해야하기에 Yn을 추가하였습니다.
+      if (targetType === 'requestPush'){
+        param.targetType = 'writePush'
+        param.requestPushYn = true
+      // 게시글 작성의 경우 작성하는 게시판을 지정해야하기에 Yn을 추가하였습니다.
+      } else if (targetType === 'writeBoard') {
+        param.selectBoardYn = true
+      }
+      param.teamKey = this.propData.teamKey || this.propData.targetKey
+      param.targetKey = this.chanAlimListTeamKey
+      param.currentTeamKey = this.chanAlimListTeamKey
+
+      this.$emit('openItem', param)
+      this.goNo()
+    },
     myChanEdit(){
       var param = {}
       // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -305,11 +334,12 @@ export default {
     },
     /** 화면상 주소록의 높이를 cabinetList.length를 통해 구해주는 함수 */
     bookListLength () {
-      var bookListHeight = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
-      this.$nextTick(()=> {
-        this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
-      })
-
+      if (this.adminYn === true) {
+        var bookListHeight = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
+        this.$nextTick(()=> {
+          this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+        })
+      }
     },
     bookDropDown () {
       if (this.cabinetList.length !== 0) {
@@ -410,7 +440,21 @@ export default {
 
 <style scoped>
 .calcMarginLeft { margin-left: 2rem !important; }
-.menuHeader {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;}
+.menuHeader {
+  padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;
+  width: 80%;
+  border-top-left-radius: 10px;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 99;
+  background-color: white;
+  transform: translateX(25%);
+}
 .menuHeader p{color: #FFFFFF; text-align: center;}
 
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }

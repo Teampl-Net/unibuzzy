@@ -1,23 +1,31 @@
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea" style="margin-top:50px">
-
+<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="userProfileImg" :parentSelectedIconFileKey="picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+    <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
         <div v-if="userProfileImg" :style="'background-image: url(' + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
             <img :src="userProfileImg" />
         </div>
+        <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
         <!-- <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " /> -->
     </div>
-
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB detailLabelText" >이름</p>
-            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memName}}</p>
-            <input v-else type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
+            <input v-if="!readOnlyYn && !changeYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+            <img v-if="readOnlyYn && !changeYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
 
+            <div v-show="changeYn" class="fl creChanInput" style="">
+                <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
+                <div class="fl" style="width: 100px">
+                    <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
+                    <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+               </div>
+            </div>
         </div>
 
         <div style="width:100%; height: 30px; position: relative;" class="mtop-2 fl memberItemRow">
@@ -96,9 +104,11 @@
 // eslint-disable-next-line
 import popUp from '../confirmPop/Tal_commonConfirmPop.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import userImgSelectCompo from '../../../components/pageComponents/myPage/Tal_changeUserIcon.vue'
 export default {
     components: {
-        popUp
+        popUp,
+        userImgSelectCompo
     },
     props:{
         propData: {},
@@ -109,7 +119,7 @@ export default {
         this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
     },
     created(){
-
+        console.log(this.propData);
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
                 this.userProfileImg = this.propData.userProfileImg
@@ -125,8 +135,10 @@ export default {
                 if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
                 if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
                 if (this.propData.selfYn) {
+                    this.selfYn = this.propData.selfYn
                     if(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg){
                         this.userProfileImg = JSON.parse(localStorage.getItem('sessionUser')).userProfileImg
+                        this.picMfilekey = JSON.parse(localStorage.getItem('sessionUser')).picMfilekey
                     }
                     if (JSON.parse(localStorage.getItem('sessionUser')).userEmail)
                         this.memEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
@@ -158,10 +170,69 @@ export default {
             userProfileImg : undefined,
             systemName: 'iOS',
             mobileYn: this.$getMobileYn(),
-            popSize: 0
+            popSize: 0,
+            changeUserIconShowYn: false,
+            changeUserIconPop: null,
+            picMfilekey: null,
+            selfYn: false,
+            changeYn: false,
+            tempUserDispName: ''
+
         }
     },
     methods:{
+        async setDispName () {
+            // KO$^$수망고$#$EN$^$sumango
+            var param = {}
+            var user = {}
+            user.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+            user.userDispMtext = 'KO$^$' + this.memName
+            param.user = user
+            param.updateYn = true
+            var result = await this.$changeDispName(param)
+            console.log(result)
+            if (result.data.message === 'OK') {
+                // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
+                var tempLocalStorage = JSON.parse(localStorage.getItem('sessionUser'))
+                tempLocalStorage.userDispMtext = 'KO$^$' + this.memName
+                localStorage.setItem('sessionUser', JSON.stringify(tempLocalStorage))
+                this.changeYn = false
+                this.$emit('closeXPop', true)
+                // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
+            }
+        },
+        changeUserDispMtext () {
+            this.changeYn = true
+            this.tempUserDispName = this.memName
+        },
+        closeXPop () {
+            this.$emit('closeXPop', true)
+        },
+        changeUserImg () {
+            if(this.changeUserIconShowYn) {
+                ;
+            } else {
+                this.changeUserIconShowYn = true
+                var history = this.$store.getters.hStack
+                this.changeUserIconPop = 'changeUserIconPop' + history.length
+                console.log(history)
+                history.push(this.changeUserIconPop)
+                this.$store.commit('updateStack', history)
+                console.log(this.$store.getters.hStack)
+            }
+        },
+        backClick () {
+            var hStack = this.$store.getters.hStack
+            var removePage = hStack[hStack.length - 1]
+            if (this.changeUserIconPop === hStack[hStack.length - 1]) {
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('setRemovePage', removePage)
+                this.$store.commit('updateStack', hStack)
+                this.changeUserIconShowYn = false
+            } else {
+
+            }
+        },
         callPhone (num) {
             if (num != undefined && num != null && num != '') {
                 if(this.systemName === 'iOS' || this.systemName === 'ios')

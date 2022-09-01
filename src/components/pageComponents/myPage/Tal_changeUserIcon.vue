@@ -187,6 +187,17 @@ export default {
                 var path = res.data[0].pathMtext
                 this.selectedImgPath = path
                 this.selectedImgFilekey = res.data[0].fileKey
+                var tempLocalStorage = JSON.parse(localStorage.getItem('sessionUser'))
+                tempLocalStorage.userProfileImg = this.selectedImgPath
+                tempLocalStorage.picMfilekey = this.selectedImgFilekey
+                localStorage.setItem('sessionUser', JSON.stringify(tempLocalStorage))
+                // localStorage.getItem('sessionUser').userProfileImg = this.selectedImgPath
+                // localStorage.getItem('sessionUser').picMfilekey = this.selectedImgFilekey
+                // local.userProfileImg = this.selectedImgPath
+                // local.picMfilekey = this.selectedImgFilekey
+                // console.log('locallocallocallocallocal')
+                // console.log(local)
+                // localStorage.setItem('sessionUser', JSON.parse(local))
               }
             })
             .catch(error => {
@@ -207,6 +218,9 @@ export default {
       // param.user = this.userInfo
       user.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (this.viewTab === 'img') {
+        console.log('filefilefilefilefilefile')
+        // console.log(this.selectedImgPath)
+        // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath
         if (this.selectedImgFilekey === '' || this.selectedImgFilekey === undefined) {
           await this.formSubmit()
         }
@@ -218,11 +232,11 @@ export default {
       param.updateYn = true
 
       var result = await this.$changeDispName(param)
-      // console.log(result)
-
+      console.log(result)
       if (result.data.message === 'OK') {
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
         this.$router.replace({ path: '/' })
+        this.$userLoginCheck()
         this.$emit('closeXPop')
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {

@@ -46,7 +46,7 @@
             </div> -->
             <div class="fl mtop-05" style="width: 100%;">
               <!-- <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" style="display:;  width: var(--chanBoxSize);margin-right: 10px;height:2.5rem; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;display: flex; align-items: center; justify-content: center; background: #eee; "> -->
-                <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; justify-content: center; align-items: center; ">
+                <div :class="{activeTypeBox: selectedType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in businessTypeList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
                   <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && selectedType !== 'C'" src="../../../assets/images/channel/icon_office.svg"/>
                   <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && selectedType === 'C'" src="../../../assets/images/channel/icon_office_white.svg" >
                   <img class="img-w18 fl mright-05" v-if="value.teamType === 'G' && selectedType !== 'G'" src="../../../assets/images/channel/icon_Government.svg"/>
@@ -65,6 +65,8 @@
                   <img class="img-w20 fl mright-05" v-if="value.teamType === 'A' && selectedType === 'A'" src="../../../assets/images/channel/icon_store_white.svg"/>
                   <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && selectedType !== 'F'" src="../../../assets/images/channel/icon_familly.svg"/>
                   <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && selectedType === 'F'" src="../../../assets/images/channel/icon_familly_white.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'T' && selectedType !== 'T'" src="../../../assets/images/channel/icon_team.svg"/>
+                  <img class="img-w20 fl mright-05" v-if="value.teamType === 'T' && selectedType === 'T'" src="../../../assets/images/channel/icon_team_white.svg"/>
                   <p class="font15 commonBlack fl" style="word-break: keep-all;" >
                   {{value.teamNameMtext}}
                   </p>
@@ -150,6 +152,7 @@ export default {
         { teamNameMtext: '약국', teamType: 'V' },
         { teamNameMtext: '매장', teamType: 'A' },
         { teamNameMtext: '가족', teamType: 'F' },
+        { teamNameMtext: '팀', teamType: 'T' },
         { teamNameMtext: '기타', teamType: 'E' }
       ],
       selectedType: ''
@@ -191,27 +194,7 @@ export default {
     setTypeData (param) {
       this.selectType = param.teamType
       this.selectedType = param.teamType
-      if (param.teamType === 'C') {
-        this.selectTypeText = '기업'
-      } else if (param.teamType === 'G') {
-        this.selectTypeText = '정부'
-      } else if (param.teamType === 'S') {
-        this.selectTypeText = '학교'
-      } else if (param.teamType === 'H') {
-        this.selectTypeText = '종교'
-      } else if (param.teamType === 'D') {
-        this.selectTypeText = '동호회'
-      } else if (param.teamType === 'Q') {
-        this.selectTypeText = '병원'
-      } else if (param.teamType === 'V') {
-        this.selectTypeText = '약국'
-      } else if (param.teamType === 'P') {
-        this.selectTypeText = '식당'
-      } else if (param.teamType === 'A') {
-        this.selectTypeText = '매장'
-      } else if (param.teamType === 'E') {
-        this.selectTypeText = '기타'
-      }
+      this.selectTypeText = this.$teamTypeString(param.teamType)
       this.typePopYn = false
     },
     setIconOrBGData (param) {

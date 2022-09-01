@@ -38,7 +38,7 @@
       <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
 
           <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
-          <div v-if="formEditReloadYn" style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
+          <div style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
               <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" @end="changePosTeamMenu" delay="200" handle=".movePoint">
                   <transition-group>
                           <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
@@ -129,8 +129,7 @@ export default {
       uploadFileList: [],
       showBlockTypeYn: false,
       confirmText: '',
-      confirmPopShowYn: false,
-      formEditReloadYn: true
+      confirmPopShowYn: false
     }
   },
   components: {
@@ -182,10 +181,10 @@ export default {
       // }
       // tempList.splice(newIndex, 1, ...baseData)
 
-      this.formEditReloadYn = await false
-      this.formCardList = await []
-      this.formCardList = await tempList
-      this.formEditReloadYn = await true
+      // this.formEditReloadYn = await false
+      // this.formCardList = await []
+      // this.formCardList = await tempList
+      // this.formEditReloadYn = await true
 
       // var teamMenuList = []
       // var menu = {}
@@ -253,8 +252,8 @@ export default {
       // this.$saveContents(param)
     },
     addFormCard (type, src, multiAddYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
+      // // eslint-disable-next-line no-debugger
+      // debugger
       this.plusBtnShowYn = true
       this.showBlockTypeYn = false
       // eslint-disable-next-line no-new-object

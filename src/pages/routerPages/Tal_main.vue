@@ -3,14 +3,14 @@
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
-  <div class="userProfileWrap">
+  <div class="userProfileWrap"  v-if="userInfoChangeYn">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" :style="'background-image: url('+userInfo.userProfileImg+')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
+    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+userInfo.userProfileImg+')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
     </div>
     <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
     </div>
-    <div class="userProfileTextWrap">
+    <div class="userProfileTextWrap" >
       <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
       <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
@@ -45,7 +45,8 @@ import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   name: '',
   props: {
-    testYn: {}
+    testYn: {},
+    routerReloadKey: {}
   },
   async created () {
     // onMessage('REQ', 'removeAllNoti')
@@ -80,7 +81,8 @@ export default {
       renderOk: false,
 
       popYn: true,
-      userKey: null
+      userKey: null,
+      userInfoChangeYn: true
     }
   },
   components: {
@@ -247,6 +249,7 @@ export default {
       return this.$store.getters.hUpdate
     }
   },
+
   watch: {
     pageUpdate (value, old) {
       var history = this.$store.getters.hStack
@@ -257,6 +260,14 @@ export default {
       }
     },
     historyStack (value, old) {
+    },
+    routerReloadKey () {
+      this.$nextTick(() => {
+        this.$userLoginCheck(true)
+        this.userInfo = this.$getUserInform()
+        console.log(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg)
+        this.$refs.mainImgAreaRef.style.backgroundImage = 'url(' + JSON.parse(localStorage.getItem('sessionUser')).userProfileImg + ')'
+      })
     }
   }
   // onMessage (data) {

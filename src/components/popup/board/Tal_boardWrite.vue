@@ -10,20 +10,29 @@
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
         <!-- <div class="boardWritePaperBack" @click="this.$emit('closeXPop')"></div> -->
         <div class="boardWritePaperBack" ></div>
-          <div class="whitePaperBoard">
+          <div class="whitePaperBoard" :style="viewTab === 'complex' ? 'height: 80%' : ''">
             <div class="overFlowYScroll boardInputArea">
               <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">{{this.modiYn?'게시글 수정' : '게시글 작성'}}</p>
                 <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../../assets/images/common/popup_close.png"/>
               </div>
               <div style="width: 100%; height: calc(100% - 39px); float: left; padding-top:1.5rem; overflow: hidden auto; ">
+                <div v-if="selectBoardYn === true" class="w-100P fl " >
+                  <p class="fontBold font15 fl ">게시판 선택 </p> <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p>
+                  <div class="w-100P fl" style="margin:0.5rem 0; overflow: auto; white-space: nowrap;">
+                    <div v-for="(data, index) in selectBoardList" :key="index" class=" mleft-05 font12 fontBold" @click="selectBoard(data, index)" style="padding:5px 10px; border-radius:10px;  display: inline-block;" :style="'background:'+data.picBgPath" :class="{selectBoard : selectBoardIndex === index}">
+                      <img class="img-w20" v-if="selectBoardIndex === index" src="../../../assets/images/common/icon_check_commonColor.svg" alt="">
+                      {{this.$changeText(data.cabinetNameMtext)}}
+                    </div>
+                  </div>
+                </div>
                 <div class="writeBoardPageTopArea font15">
-                  <div class=""><p class="boardWriteTitleText font15 fontBold" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="font15 pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
+                  <div class=""><p class="boardWriteTitleText font15 fontBold commonColor" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="font15 pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                   <div class="" v-if="propData.nonMemYn"><p class="font15 boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
                   <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
                     <div style="width: 100%; min-height: 30px;">
                       <!-- <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
-                      <p class="boardWriteTitleText fontBold font15 fl commonBlack" style="margin-top: 4px;">첨부파일</p>
+                      <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
                       <attachFileList style="min-width:80px;" :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
                     </div>
                   </div>
@@ -42,7 +51,7 @@
           </div>
 
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:1rem; left:50%; transform: translateX(-50%);" btnTitle='발송하기' @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" btnTitle='발송하기' @click="clickPageTopBtn()" />
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
@@ -122,6 +131,11 @@ export default {
       ]
     }
     console.log(this.addFalseList)
+
+    if (this.propData.selectBoardYn === true) {
+      this.selectBoardYn = true
+      this.getTeamMenuList()
+    }
   },
   data () {
     return {
@@ -160,7 +174,12 @@ export default {
       uploadFileList: [],
       attachTrueFileList: [],
       delAddFalseFileList: [],
-      complexOkYn: false
+      complexOkYn: false,
+      selectBoardList: [],
+      selectBoardYn: false,
+      selectBoardIndex: null,
+      selectBoardCabinetKey: null,
+      writeBoardPlaceHolder: '작성불가'
     }
   },
   computed: {
@@ -190,6 +209,49 @@ export default {
     }
   },
   methods: {
+    async selectBoard (data, index) {
+      this.selectBoardIndex = index
+
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.currentTeamKey)
+      paramMap.set('currentTeamKey', this.propData.currentTeamKey)
+      paramMap.set('cabinetKey', data.cabinetKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('shareType', 'W')
+      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      console.log(paramMap)
+      var response = await this.$commonAxiosFunction({
+        url: '/tp.getCabinetDetail',
+        param: Object.fromEntries(paramMap)
+      })
+      var mCabinetShare = response.data.mCabinet.mShareItemList
+      console.log(mCabinetShare)
+      if (mCabinetShare[0]) {
+        if (mCabinetShare[0].shareType) {
+          this.selectBoardCabinetKey = mCabinetShare[0].cabinetKey
+          this.cabinetName = data.cabinetNameMtext
+          this.writeBoardPlaceHolder = '작성가능'
+        } else {
+          this.selectBoardCabinetKey = null
+          this.writeBoardPlaceHolder = '작성불가'
+        }
+      } else {
+        this.selectBoardCabinetKey = null
+        this.writeBoardPlaceHolder = '작성불가'
+      }
+    },
+    async getTeamMenuList () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.currentTeamKey)
+      paramMap.set('currentTeamKey', this.propData.currentTeamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('shareType', 'W')
+      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      console.log(paramMap)
+      var result = await this.$getTeamMenuList(paramMap)
+      this.selectBoardList = result
+      console.log(result)
+    },
     delAttachFile (dFile) {
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
@@ -357,9 +419,14 @@ export default {
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
       param.jobkindId = 'BOAR'
-      param.cabinetKey = this.propData.cabinetKey
+      if (this.selectBoardYn === true) {
+        param.cabinetKey = this.selectBoardCabinetKey
+        param.actorList = []
+      } else {
+        param.cabinetKey = this.propData.cabinetKey
+        param.actorList = this.propData.actorList
+      }
       param.creTeamKey = this.propData.currentTeamKey
-      param.actorList = this.propData.actorList
 
       if (this.propData.attachMfilekey) {
         param.attachMfilekey = this.propData.attachMfilekey
@@ -373,8 +440,7 @@ export default {
         param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-
-      param.cabinetName = this.propData.cabinetNameMtext
+      param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
       param.title = this.writePushTitle
       param.showCreNameYn = true
 
@@ -430,6 +496,19 @@ export default {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
           return
+        }
+        if (this.selectBoardYn === true) {
+          if (this.selectBoardIndex !== undefined && this.selectBoardIndex !== null && this.selectBoardIndex !== '') {
+            if (this.selectBoardCabinetKey === null) {
+              this.errorText = '해당 게시판에 작성 권한이 없습니다. 다른 게시판을 선택해주세요.'
+              this.failPopYn = true
+              return
+            }
+          } else if (this.selectBoardIndex === undefined || this.selectBoardIndex === null || this.selectBoardIndex === '') {
+            this.errorText = '게시글을 작성할 게시판을 선택해주세요.'
+            this.failPopYn = true
+            return
+          }
         }
         this.checkPopYn = true
       }
@@ -598,13 +677,17 @@ export default {
 .pageMsgArea p{color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; height:calc(100%); border:1px solid #BFBFDA; border-radius: 5px; background-color: white;}
 
+.selectBoard{
+  /* border: 2px solid white; */
+}
+
 .writeBoardPageTopArea{
   width: 100%; height: 3rem;
 }
 .writeBoardPageTopArea >div{
   width: 100%; min-height: 2.5rem;
 }
-.writeBoardPageTopArea p{width: 60px; color: #3A3A3A; float: left; line-height: 30px;}
+.writeBoardPageTopArea p{width: 60px; float: left; line-height: 30px;}
 .writeBoardPageTopArea .inputArea{width: calc(100% - 60px); box-sizing: border-box;  overflow: hidden;}
 
 /* .writeArea{padding: 2rem 0; width: 100%; float: left; height: calc(100% - 5rem); min-height: 600px;     height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0;} */

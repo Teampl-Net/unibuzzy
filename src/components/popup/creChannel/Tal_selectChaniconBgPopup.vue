@@ -14,8 +14,10 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; ">
+              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef">
                 <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="" class="preview">
+                <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
+                <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                   <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
@@ -79,6 +81,17 @@ export default {
     this.getCodeList()
     this.setDefaultData()
     this.dataSetting()
+    if (this.previewImgUrl) {
+      this.$nextTick(() => {
+        var w = document.getElementById('profileImg').clientWidth
+        var h = document.getElementById('profileImg').clientHeight
+        if (w > h) { // 가로모드
+          this.imgMode = 'W'
+        } else {
+          this.imgMode = 'H'
+        }
+      })
+    }
   },
   data () {
     return {
@@ -190,6 +203,9 @@ export default {
           if (this.selectedImgFilekey !== undefined && this.selectedImgFilekey !== null && this.selectedImgFilekey !== '') {
           }
         } else {
+          // this.cropYn = true
+          // console.log(this.previewImgUrl)
+          // return
           await this.formSubmit()
         }
         // eslint-disable-next-line no-new-object
@@ -292,6 +308,23 @@ export default {
         this.previewImgUrl = null
       }
     },
+    imgSet () {
+      var div = this.$refs.selectImgPopRef // 이미지를 감싸는 div
+      var img = this.$refs.profileImg // 이미지
+      var divAspect = 90 / 120 // div의 가로세로비는 알고 있는 값이다
+      var imgAspect = img.height / img.width
+
+      if (imgAspect <= divAspect) {
+        // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
+        var imgWidthActual = div.offsetHeight / imgAspect
+        var imgWidthToBe = div.offsetHeight / divAspect
+        var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2)
+        img.style.cssText = 'width: auto; height: 100%; margin-left:' + marginLeft + 'px;'
+      } else {
+        // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
+        img.style.cssText = 'width: 100%; height: auto; margin-left: 0;'
+      }
+    },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
         console.log('this.uploadFileList')
@@ -305,7 +338,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

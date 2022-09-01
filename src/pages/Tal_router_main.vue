@@ -11,7 +11,7 @@
     </transition>
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="pagePaddingWrap" style="height: calc(100vh - 60px); overflow: hidden;">
-      <router-view :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
+      <router-view :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" />
     </div>
     <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999"/>
   </div>
@@ -84,6 +84,9 @@ export default {
       return this.$store.getters.deepLinkQueue
     }
   },
+  // beforeUpdate () {
+  //   console.log(true)
+  // },
   watch: {
     async deepLinkQueue (value, old) {
       var history = this.$store.getters.hStack
@@ -279,6 +282,7 @@ export default {
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
       // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
+
       if (reloadYn) {
         this.routerReloadKey += 1
       }
