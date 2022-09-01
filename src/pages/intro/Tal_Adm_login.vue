@@ -45,7 +45,7 @@
         data-logo_alignment="left">
       </div> -->
 
-      <div v-if="this.systemName === 'iOS' || this.systemName === 'ios'" class="admLoginBtn font20" v-on:click="AppleLoginBtn">
+      <div v-if="this.systemName !== 'Android' && this.systemName !== 'android'" class="admLoginBtn font20" v-on:click="AppleLoginBtn">
         <img src="../../assets/images/intro/login/login_apple.png">
         Apple 로그인
       </div>

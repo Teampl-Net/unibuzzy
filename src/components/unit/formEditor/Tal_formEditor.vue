@@ -45,7 +45,7 @@
                           --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
                           <!-- A9AACD -->
                           <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #6768a7;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05 commonFormCard" @click="clickForm(value, index)">
-                              <formText v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
+                              <formText @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @click="clickTextArea(index)"  contenteditable  />
                               <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                               <formVideo v-else-if="false" />
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
@@ -156,6 +156,9 @@ export default {
     setFormCard (data) {
       this.formCardList = data
     },
+    inputScroll (param) {
+      this.$emits('inputScroll', param)
+    },
     async changePosTeamMenu (event) {
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex
@@ -252,8 +255,6 @@ export default {
       // this.$saveContents(param)
     },
     addFormCard (type, src, multiAddYn) {
-      // // eslint-disable-next-line no-debugger
-      // debugger
       this.plusBtnShowYn = true
       this.showBlockTypeYn = false
       // eslint-disable-next-line no-new-object

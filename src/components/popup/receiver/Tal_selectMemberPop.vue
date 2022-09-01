@@ -41,7 +41,6 @@ export default {
   components: { memberListCompo, selectedListCompo },
   methods: {
     async changeDirectMemList (data) {
-      // eslint-disable-next-line no-debugger
       this.directAddMemList.push(data)
       if (this.selectedList.memberList) {
       } else {

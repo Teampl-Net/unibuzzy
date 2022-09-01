@@ -9,7 +9,6 @@
 import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 /* eslint-disable no-undef */
-/* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 
@@ -23,7 +22,7 @@ export default {
   },
   mounted () {
     // eslint-disable-next-line new-cap
-    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'http://mo.d-alim.com:18080/#/naverCallback')
+    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com:9443/#/naverCallback')
     this.initF()
     // var paramList = hashData.split('&')
     // window.close()

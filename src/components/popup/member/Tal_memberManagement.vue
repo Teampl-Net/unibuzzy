@@ -116,7 +116,6 @@ export default {
 
         this.managingList =await result.data.managerList
       } else {
-        alert('바보')
       }
 
       // paramMap.set('followerType', 'M')

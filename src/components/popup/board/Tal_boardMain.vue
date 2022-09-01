@@ -565,8 +565,6 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       this.mCabinetContentsDetail = resultList.mCabinet
-      // eslint-disable-next-line no-debugger
-      // debugger
       // eslint-disable-next-line no-unused-vars
 
       if (this.propData.ownerYn === 1) {

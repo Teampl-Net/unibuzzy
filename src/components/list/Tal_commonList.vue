@@ -135,6 +135,8 @@ export default {
       clickImgList: [],
       selectFileKey: null,
       clickImg: null,
+      systemName: localStorage.getItem('systemName'),
+      selectedConentsKey: null
 
     }
   },
@@ -149,7 +151,8 @@ export default {
     if (this.targetContentsKey) {
       this.targetCKey = this.targetContentsKey
     }
-
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     // if (this.contentsList.length) {
     //   if (this.targetContentsKey) {
     //     this.contentsWich()
@@ -168,6 +171,7 @@ export default {
         this.contentsWich()
       }
     }
+    this.settingAtag()
   },
   mounted() {
     var pushListWrap = document.getElementById('pushListWrap')
@@ -176,8 +180,20 @@ export default {
             this.clickEndYn = true
         })
     }
+    this.settingAtag()
   },
   methods: {
+    settingAtag () {
+      if (this.systemName !== 'Android' && this.systemName !== 'android') {
+        return
+      }
+      var contentsATagList = document.querySelectorAll('#pushListWrap a')
+      if (contentsATagList && contentsATagList.length > 0) {
+        for (var i = 0; i < contentsATagList.length; i++) {
+          contentsATagList[i].target = '_blank'
+        }
+      }
+    },
     contentMenuClick(params){
       this.contentOwner = params.ownerYn
       this.contentType = params.type
@@ -188,9 +204,12 @@ export default {
       this.tempData = params.tempData
       this.reportYn = true
     },
-    async deleteAlim(){
+    async deleteAlim(allYn){
       console.log(this.tempData)
       if (this.tempData.jobkindId === 'ALIM') {
+        if (allYn) {
+
+        }
         var inParam = {}
         inParam.mccKey = this.tempData.mccKey
         inParam.jobkindId = 'ALIM'
@@ -205,7 +224,11 @@ export default {
         this.$emit('refresh')
       }
     },
-    editable (type) {
+    async deleteAlimAll () {
+        var contents
+        // this.tempData.contentsKey
+    },
+    editable (type, allYn) {
       this.reportYn = false
       // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
       if (this.tempData) {
@@ -213,7 +236,11 @@ export default {
           if (type === 'edit') {
             //
           } else if (type === 'delete') {
-            this.deleteAlim()
+            if (allYn) {
+                this.deleteAlimAll()
+            } else {
+                this.deleteAlim()
+            }
           }
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
@@ -424,6 +451,7 @@ export default {
         this.memoShowYn = true
     },
     async memoOpenClick (key) {
+      this.selectedConentsKey = key
       var findIndex = this.openMemoList.indexOf(key)
       this.currentMemoList = []
       // var div = document.getElementById('memoList'+key)
@@ -461,20 +489,19 @@ export default {
       document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
       document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
       document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
-
+      var thisthis = this
       var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
       for (let m = 0; m < imgList.length; m++) {
-        var thisthis = this
         imgList[m].addEventListener('touchstart', () => {
-          thisthis.clickTime = Date.now()
           imgList[m].style.opacity = 0.8
+          thisthis.clickTime = Date.now()
           thisthis.clickEndYn = false
-          thisthis.clickImg = imgList[m]
           setTimeout(() => {
-            if (thisthis.clickEndYn === false && thisthis.clickImg === imgList[m]) {
+            if (thisthis.clickEndYn === false) {
+                
               thisthis.selectImgObject.path = imgList[m].src
               thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
-              var param = new Object
+              var param = new Object()
               param.mfileKey = alim.attachMfilekey
               param.creUserName = alim.creUserName
               param.title = alim.title
@@ -496,10 +523,11 @@ export default {
           imgList[m].style.opacity = 0.8
           thisthis.clickEndYn = false
           setTimeout(() => {
+            console.log(thisthis.clickEndYn)
             if (thisthis.clickEndYn === false) {
               thisthis.selectImgObject.path = imgList[m].src
               thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
-              var param = new Object
+              var param = new Object()
               param.mfileKey = alim.attachMfilekey
               param.creUserName = alim.creUserName
               param.title = alim.title
@@ -507,12 +535,14 @@ export default {
               param.imgIndex = m
               this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
               thisthis.selectImgIndex = m
-              imgList[m].style.opacity = 1
+            imgList[m].style.opacity = 1
             }
           }, 1000)
         })
-        imgList[m].addEventListener('mousedown', () => {
+        imgList[m].addEventListener('mouseup', () => {
+            console.log(thisthis.clickEndYn)
             thisthis.clickEndYn = true
+            
             imgList[m].style.opacity = 1
         })
 
@@ -686,7 +716,6 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
         if (result.result === true) {
-          // debugger
           if (act.doType === 'LI') {
             this.contentsList[idx].likeCount += 1
           }
@@ -749,6 +778,42 @@ export default {
         str.substring(0, 130)
       }
       return str
+    },
+    async recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+
+          var currentPage = this.$store.getters.hCPage
+
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
+              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
+              if (this.selectedConentsKey) {
+                await this.getMemoList(this.selectedConentsKey)
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
     }
     /* changeMode () {
       this.clickImgList = document.querySelectorAll('.bodyFullStr img')

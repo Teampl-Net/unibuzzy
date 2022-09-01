@@ -4,7 +4,7 @@
         <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
         <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
     </div>
-    <div class="pushListWrap fl">
+    <div id="top5ListWrap" class="pushListWrap fl">
       <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
       <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
     </div>
@@ -35,7 +35,8 @@ export default {
       currentTabName: '알림',
       emptyYn: true,
       notiDetail: null,
-      pushList: []
+      pushList: [],
+      systemName: localStorage.getItem('systemName')
     }
   },
   props: {
@@ -44,16 +45,31 @@ export default {
   mounted () {
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
+    this.settingAtag()
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
+  },
+  updated () {
+    this.settingAtag()
   },
   components: {
     listTitle,
     commonListTable
   },
   methods: {
+    settingAtag () {
+      if (this.systemName !== 'Android' && this.systemName !== 'android') {
+        return
+      }
+      var contentsATagList = document.querySelectorAll('#top5ListWrap a')
+      if (contentsATagList && contentsATagList.length > 0) {
+        for (var i = 0; i < contentsATagList.length; i++) {
+          contentsATagList[i].target = '_blank'
+        }
+      }
+    },
     introTop5PushPageTab () {
       if (this.viewTab === 'A') {
         this.currentTabName = '전체'

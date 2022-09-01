@@ -348,8 +348,6 @@ export default {
       await this.$axios.post('https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
         .then(function (response) {
           result = response.data.shortLink
-          // eslint-disable-next-line no-debugger
-          debugger
         })
       return result
     }

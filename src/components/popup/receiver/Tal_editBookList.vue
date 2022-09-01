@@ -180,9 +180,6 @@ export default {
             this.searchFilterList[index].groupList = result.data
             this.searchFilterList = this.searchFilterList.reverse()
         }
-      /* // eslint-disable-next-line no-debugger
-      debugger */
-      //
     },
         changeOrderBy () {
             // this.orderByText = order

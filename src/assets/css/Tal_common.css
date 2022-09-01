@@ -622,3 +622,7 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 #pushListWrap span, #boardBodyArea span {
     word-break: break-all;
 }
+
+.vel-img-title, .btn__close {
+    display: none!important;
+}

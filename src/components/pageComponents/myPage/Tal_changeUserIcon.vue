@@ -99,15 +99,15 @@ export default {
                 var height = image.height
                 if (width > height) { // 가로모드
                   thisthis.imgMode = 'W'
-                  if (width > 600) {
-                    height *= 600 / width
-                    width = 600
+                  if (width > 900) {
+                    height *= 900 / width
+                    width = 900
                   }
                 } else { // 세로모드
                   thisthis.imgMode = 'H'
-                  if (height > 600) {
-                    width *= 600 / height
-                    height = 600
+                  if (height > 900) {
+                    width *= 900 / height
+                    height = 900
                   }
                 }
                 previewCanvas.width = width
@@ -124,8 +124,6 @@ export default {
                 const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
                 var file = new File([Bfile], thisthis.selectFile.name)
 
-                // eslint-disable-next-line no-debugger
-                debugger
                 thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

@@ -1,5 +1,6 @@
 <template>
     <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
+      <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
           <img :src="member.userProfileImg" />
@@ -12,8 +13,8 @@
         <p class="fl font16 commonBlack" style="text-align:left; padding-left:5px; width:calc(100% - 40px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
       </div>
       <div class="fr  memberItemBox" >
-        <img class="fl img-w20" @click="openPop('writePush', member)" src="../../../assets/images/common/icon_message_solid.svg" style="height:18px; margin:0.6rem"  />
-        <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" >
+        <img class="fl img-w20" @click="openCommonAlertPop(member)" src="../../../assets/images/common/icon_message_solid.svg" style="height:18px; margin:0.6rem"  />
+       <!--  <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" > -->
         <!-- <gToggle :toggleId='member.userKey' :isChecked="(member.managerKey !== undefined && member.managerKey !== null && member.managerKey !== '')" class="fl mtop-01" style="margin:0.5rem; padding-top:0.3rem" /> -->
         <!-- <div v-if="currentTab == 'Admin'"> -->
         <div v-if="ownerYn">
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+import { onMessage } from '../../../assets/js/webviewInterface'
 import match from './Tal_matching.vue'
 // eslint-disable-next-line
 export default {
@@ -56,13 +58,53 @@ export default {
     return {
       // ownerYn: false
       ownerYn: true,
-      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey
+      selectedMember: null,
+      mobileYn: this.$getMobileYn(),
+      openCommonAlertPopShowYn: false,
+      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+      systemName: localStorage.getItem('systemName'),
+      interfaceBtnList: [{ text: '알림 보내기', event: 'sendPush' }, { text: '이메일 보내기', event: 'sendEmail' }, { text: '전화 걸기', event: 'callPhone' }, { text: '메세지 보내기', event: 'sendSms' }]
     }
   },
   mounted () {
     if (this.currentOwner === true) this.ownerYn = true
   },
   methods: {
+    openCommonAlertPop (member) {
+      this.selectedMember = member
+      this.openCommonAlertPopShowYn = true
+    },
+    closeCommonAlertPop () {
+      this.openCommonAlertPopShowYn = false
+    },
+    clickAlertPopBtn (eventType) {
+      if (eventType === 'sendPush') this.openPop('writePush', this.selectedMember)
+      else if (eventType === 'sendEmail') this.sendMail()
+      else if (eventType === 'callPhone') this.callPhone()
+      else if (eventType === 'sendSms') this.sendSms()
+      this.closeCommonAlertPop()
+    },
+    callPhone () {
+      if (this.selectedMember.phoneEnc !== undefined && this.selectedMember.phoneEnc !== null && this.selectedMember.phoneEnc !== '') {
+        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'tel:' + this.selectedMember.phoneEnc } else { onMessage('REQ', 'callphone', this.selectedMember.phoneEnc) }
+      } else {
+        alert('전화번호 정보가 없습니다')
+      }
+    },
+    sendMail (email) {
+      if (this.selectedMember.userEmail !== undefined && this.selectedMember.userEmail !== null && this.selectedMember.userEmail !== '') {
+        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'mailto:' + this.selectedMember.userEmail } else { onMessage('REQ', 'sendMail', this.selectedMember.userEmail) }
+      } else {
+        alert('이메일 정보가 없습니다')
+      }
+    },
+    sendSms () {
+      if (this.selectedMember.phoneEnc !== undefined && this.selectedMember.phoneEnc !== null && this.selectedMember.phoneEnc !== '') {
+        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'sms:' + this.selectedMember.phoneEnc } else { onMessage('REQ', 'sendSms', this.selectedMember.phoneEnc) }
+      } else {
+        alert('전화번호 정보가 없습니다')
+      }
+    },
     openPop (targetType, member) {
       var param = {}
       param.targetType = targetType

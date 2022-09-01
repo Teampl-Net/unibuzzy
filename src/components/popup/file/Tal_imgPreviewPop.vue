@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/no-deprecated-v-bind-sync -->
 <template>
-  <div style="display: flex; align-items: center; justify-content: center;"  class="">
+  <div style="display: flex; align-items: center; color: #FFF; justify-content: center;"  class="">
     <commonConfirmPop v-if="saveOkPopShowYn" @no="this.saveOkPopShowYn=false" confirmType="timeout" :confirmText="popText" />
     <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; top: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
       <p style="color: white;margin-bottom: 5px;" class="font16  fontBold">{{creUserName}}</p>
@@ -7,32 +8,35 @@
       <img @click="backClick" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
       <img src="../../../assets/images/common/download.svg"  @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
     </div>
-    <Splide :options="{ rewind: false, drag: true, pauseOnHover: true, start: startIndex}" aria-label="Vue Splide Example">
-        <SplideSlide v-for="(value, index) in imgList" :key="index">
-            <!-- <p style="position: absolute; bottom: 0; color: rgb(255 255 255 / 38%);" class="font14">{{value.fileName}}</p> -->
-
-                <img class="imgList" :id="'img' + value.fileKey"  @click="infoShown = !this.infoShown" :src="value.pathMtext" :fileKey="value.fileKey" :mmFilekey="value.mmFilekey" :mfileKey="value.mfilekey" alt="Sample 1">
-        </SplideSlide>
-    </Splide>
-    <!-- <inner-image-zoom style="width: 100vw; height: 100vh; position: fixed; left: 0; top: 0;"
-                :src="imgList[0].pathMtext"
-                :zoomSrc="imgList[0].pathMtext" /> -->
-  <!-- <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; bottom: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
-    <img @click="this.$emit('closePop')" src="../../../assets/images/common/download.svg" class="" style="position: absolute; width: 30px; right: 20px; bottom: 25px;" alt="">
-  </div> -->
+    <div class="previewWrap">
+       <!-- <div
+        v-for="(src, index) in imgs"
+        :key="index"
+        class="pic"
+        @click="() => showImg(index)"
+        >
+            <img :src="src">
+        </div> -->
+        <!-- {{indexRef}} -->
+        <vue-easy-lightbox :zoomScale="0.4" :initIndex="startIndex" :indexRef="indexRef" :swipeTolerance="5" :visible="true" :imgs="imgList" :index="index" @hide="handleHide">
+            <!-- <template style="position: absolute; bottom: 0;"  v-slot:toolbar="{ toolbarMethods }">
+                <button @click="toolbarMethods.zoomIn">zoom in</button>
+                <button @click="toolbarMethods.zoomOut">zoom out</button>
+                <button @click="toolbarMethods.rotateLeft">Anticlockwise rotation</button>
+                <button @click="toolbarMethods.rotateRight">clockwise rotation</button>
+            </template> -->
+        </vue-easy-lightbox>
+    </div>
   </div>
 </template>
 <script>
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
-import { Splide, SplideSlide } from '@splidejs/vue-splide'
 import '@splidejs/splide/dist/css/themes/splide-default.min.css'
 import { onMessage } from '../../../assets/js/webviewInterface'
 /* import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css'
 import InnerImageZoom from 'vue-inner-image-zoom' */
 export default {
   components: {
-    Splide,
-    SplideSlide,
     commonConfirmPop
     /* InnerImageZoom */
     // VZoomerGallery: VueZoomer.Gallery,
@@ -52,32 +56,56 @@ export default {
       mobileYn: this.$getMobileYn(),
       saveOkPopShowYn: false,
       popText: '저장되었습니다!',
-      popId: ''
+      popId: '',
+      zoomed: false,
+      imgs: [],
+      visible: false,
+      index: 0, // default: 0,
+      indexRef: 0
     }
   },
   created () {
+    if (this.startIndex) {
+      this.index = this.startIndex
+    }
     this.getImgList()
     var history = this.$store.getters.hStack
     this.popId = 'previewImgPop' + history.length
     console.log(history)
     history.push(this.popId)
     this.$store.commit('updateStack', history)
-    console.log(this.$store.getters.hStack)
+    console.log(this.imgList)
+    // this.imgs.push(this.imgList[0].pathMtext)
+  },
+  updated () {
+    var clickImg = document.querySelector('.vel-img')
+    if (!clickImg) return
+    clickImg.addEventListener('click', (event) => {
+    })
   },
   mounted () {
-    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
+    var clickImg = document.querySelector('.vel-img')
+    if (!clickImg) return
+    clickImg.addEventListener('click', (event) => {
+    })
+    // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
     // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=2.0')
   },
   unmounted () {
-    document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
+    // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
   },
   methods: {
+    showImg (index) {
+      this.index = index
+      this.visible = true
+    },
+    handleHide () {
+      this.visible = false
+    },
     async getImgList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.mFilekey = this.mFileKey
-      // eslint-disable-next-line no-debugger
-      debugger
       param.fileType = 'I'
       param.attachYn = false
       var result = await this.$commonAxiosFunction({
@@ -86,6 +114,13 @@ export default {
       })
       console.log(result)
       this.imgList = result.data.mmFileList
+      for (var i = 0; i < this.imgList.length; i++) {
+        console.log(this.imgList[i].pathMtext)
+        this.imgList[i].src = this.imgList[i].pathMtext
+        this.imgList[i].title = this.imgList[i].fileKey
+        /* this.imgs.push(this.imgList[i].pathMtext) */
+      }
+      console.log(this.imgs)
     },
     backClick () {
       var hStack = this.$store.getters.hStack
@@ -111,11 +146,13 @@ export default {
     async download () {
       try {
         // var pom = document.createElement('a')
-        var selectImg = document.querySelectorAll('.is-active > .imgList')[0]
+        // var selectImg = document.querySelectorAll('.is-active > .imgList')[0]
+        var selectImg = Number(document.querySelector('.vel-img-title').textContent)
+        var selectImgPath = document.querySelector('.vel-img').src
         if (this.mobileYn) {
-          onMessage('REQ', 'saveCameraRoll', selectImg.src)
+          onMessage('REQ', 'saveCameraRoll', selectImgPath)
         } else {
-          var fKey = selectImg.attributes.fileKey.value
+          var fKey = selectImg
           var result = await this.$downloadFile(fKey)
           console.log(result)
         }
@@ -148,4 +185,13 @@ export default {
 .splide__slide {background: #000;}
 .splide__slide {display: flex; justify-content: center; align-items: center;}
 .splide__slide img {width: 100%; height: 100%; object-fit: scale-down;}
+.previewWrap {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 15px;
+}
 </style>

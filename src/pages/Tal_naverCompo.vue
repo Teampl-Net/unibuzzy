@@ -16,7 +16,7 @@ export default {
     },
     callbackUrl: {
       required: true,
-      default: 'http://mo.d-alim.com:18080/#/naverCallback'
+      default: 'https://mo.d-alim.com:9443/#/naverCallback'
     },
     callbackFunction: {
       required: true

@@ -251,7 +251,7 @@ export default {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     if (this.params.replyPopYn) {
-      this.replyPopYn = true1
+      this.replyPopYn = true
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
       this.showCreNameYn = true

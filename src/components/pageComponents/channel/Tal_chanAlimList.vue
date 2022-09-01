@@ -224,13 +224,10 @@ export default {
     localStorage.setItem('notiReloadPage', this.chanItem.teamKey)
 
     /* var img = document.querySelector('#chanImg')
-    // eslint-disable-next-line no-debugger
-    debugger
+
     if (img) {
       var width = img.scrollWidth
       var height = img.scrollHeight
-      // eslint-disable-next-line no-debugger
-      debugger
       if (width > height) {
         img.style.width = '100%'
       } else {
@@ -439,7 +436,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

@@ -130,14 +130,14 @@ export default {
                 var width = image.width
                 var height = image.height
                 if (width > height) { // 가로모드
-                  if (width > 600) {
-                    height *= 600 / width
-                    width = 600
+                  if (width > 900) {
+                    height *= 900 / width
+                    width = 900
                   }
                 } else { // 세로모드
-                  if (height > 600) {
-                    width *= 600 / height
-                    height = 600
+                  if (height > 900) {
+                    width *= 900 / height
+                    height = 900
                   }
                 }
                 canvas.width = width
@@ -157,15 +157,12 @@ export default {
                 var file = new File([Bfile], thisthis.selectFile.name)
 
                 thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-                // eslint-disable-next-line no-debugger
                 thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }], originalType: 'image' })
                 if (thisthis.$refs.selectFile.files.length === 1) {
                   thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }
                 } else {
                   // if (thisthis.$refs.selectFile.files.length > 1) {
                   if (thisthis.fileCnt > 0) {
-                    // eslint-disable-next-line no-debugger
-                    debugger
                     thisthis.$emit('setMultiFile', { file, previewImgUrl: canvas.toDataURL('image/png', 0.8) })
                   } else {
                     thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }

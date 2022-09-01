@@ -187,8 +187,6 @@ export default {
         this.$emit('success')
       }
       console.log(result)
-      // eslint-disable-next-line no-debugger
-      debugger
     }
   }
 }

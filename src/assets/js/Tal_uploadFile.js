@@ -39,14 +39,14 @@ const methods = {
         var width = image.width
         var height = image.height
         if (width > height) { // 가로모드
-          if (width > 400) {
-            height *= 400 / width
-            width = 400
+          if (width > 900) {
+            height *= 900 / width
+            width = 900
           }
         } else { // 세로모드
-          if (height > 400) {
-            width *= 400 / height
-            height = 400
+          if (height > 900) {
+            width *= 900 / height
+            height = 900
           }
         }
         canvas.width = width

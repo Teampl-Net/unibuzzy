@@ -411,7 +411,6 @@ export default {
       } else if (this.viewTab === 'text') {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        // debugger
         innerHtml = document.getElementById('textMsgBox').innerHTML
         // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
         // innerHtml = text

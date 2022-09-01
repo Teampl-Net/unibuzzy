@@ -89,6 +89,7 @@ export default {
       boardList: {},
       currentScroll: 0,
       creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+      systemName: localStorage.getItem('systemName')
     }
   },
   props: {
@@ -116,10 +117,12 @@ export default {
   updated () {
     // this.boardListWrap.scrollTop = this.currentScroll
     // this.box = document.getElementsByClassName('commonBoardListWrap')[0]
+    this.settingAtag()
   },
   mounted () {
     this.boardListWrap = document.getElementById('boardListWrap')
     this.boardListWrap.addEventListener('scroll', this.saveScroll)
+    // this.settingAtag()
     // this.box = document.getElementsByClassName('commonBoardListWrap')[0]
     // this.box.addEventListener('scroll', this.handleScroll)
   },
@@ -128,6 +131,19 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
+    settingAtag () {
+        if (this.systemName !== 'Android' && this.systemName !== 'android') {
+            return
+        }
+        if (this.commonBoardListData) {
+            var contentsATagList = document.querySelectorAll('#boardListWrap a')
+            if (contentsATagList && contentsATagList.length > 0) {
+                for (var i = 0; i < contentsATagList.length; i++) {
+                contentsATagList[i].target = '_blank'
+                }
+            }
+        }
+    },
     contentMenuClick (type, ownerYn, board) {
       var param = {}
       param.type = type
@@ -256,7 +272,6 @@ export default {
         param.targetKind = 'C'
         result = await this.$saveUserDo(param, 'save')
         if (result.result === true) {
-          // debugger
           console.log(result)
           var temp = this.commonBoardListData[idx].userDoList
           if (!temp) {

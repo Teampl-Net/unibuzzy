@@ -41,6 +41,9 @@ import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_a
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
+
+import VueEasyLightbox from 'vue-easy-lightbox'
+
 /* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
@@ -56,6 +59,7 @@ import gReport from './components/unit/Tal_commonReport.vue'
 import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
 import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
 
+import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
@@ -70,7 +74,8 @@ const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 const app = createApp(moTheAlim).use(router)
 app.use(commonjs)
 app.use(BootstrapVue3)
-
+app.use(VueEasyLightbox)
+app.component('gAlertPop', gAlertPop)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)

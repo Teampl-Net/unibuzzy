@@ -105,7 +105,7 @@ export default {
     },
     callPhone (num) {
       if (num !== undefined && num !== null && num !== '') {
-        if (this.systemName === 'iOS' || this.systemName === 'ios') { document.location.href = 'tel:' + num } else { onMessage('REQ', 'callphone', num) }
+        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'tel:' + num } else { onMessage('REQ', 'callphone', num) }
       } else {
         alert('전화번호 정보가 없습니다')
       }

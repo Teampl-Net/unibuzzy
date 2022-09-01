@@ -70,8 +70,7 @@ export default {
     },
     async getUserInform () {
       this.userInfo = await this.$getUserInform()
-      // eslint-disable-next-line no-debugger
-      // debugger
+
       if (this.userInfo !== undefined && this.userInfo !== null) {
         if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (this.userInfo.phoneLast) {

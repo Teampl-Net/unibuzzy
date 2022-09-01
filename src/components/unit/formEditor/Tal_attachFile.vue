@@ -32,8 +32,6 @@ export default {
       this.sFileList = this.attachTrueAddFalseList
       for (var i = 0; i < this.sFileList.length; i++) {
         console.log(this.sFileList)
-        // eslint-disable-next-line no-debugger
-        debugger
         this.sFileList[i].addYn = false
         this.sFileList[i].attachYn = true
         this.sFileList[i].file = { name: this.sFileList[i].fileName, size: this.sFileList[i].fileSizeKb }
@@ -88,14 +86,14 @@ export default {
                 var width = image.width
                 var height = image.height
                 if (width > height) { // 가로모드
-                  if (width > 600) {
-                    height *= 600 / width
-                    width = 600
+                  if (width > 900) {
+                    height *= 900 / width
+                    width = 900
                   }
                 } else { // 세로모드
-                  if (height > 600) {
-                    width *= 600 / height
-                    height = 600
+                  if (height > 900) {
+                    width *= 900 / height
+                    height = 900
                   }
                 }
                 canvas.width = width

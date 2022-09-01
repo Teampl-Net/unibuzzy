@@ -39,6 +39,7 @@
         </div>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
         <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+        <!-- <cancelPop/> -->
     </div>
   <!-- </div> -->
 </template>
@@ -48,6 +49,7 @@ import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
 import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
+/* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   name: 'pushList',
@@ -56,6 +58,7 @@ export default {
     commonConfirmPop,
     imgPreviewPop,
     imgLongClickPop
+    /* cancelPop */
     // searchResult
   },
   props: {
@@ -539,8 +542,7 @@ export default {
         param.creTeamKey = this.chanDetailKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-      // // eslint-disable-next-line no-debugger
-      // debugger
+      //
       if (this.viewMainTab === 'P') {
         param.jobkindId = 'ALIM'
         param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey

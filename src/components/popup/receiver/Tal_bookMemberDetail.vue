@@ -18,7 +18,6 @@
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
             <input v-if="!readOnlyYn && !changeYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
             <img v-if="readOnlyYn && !changeYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
-
             <div v-show="changeYn" class="fl creChanInput" style="">
                 <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
                 <div class="fl" style="width: 100px">
@@ -27,7 +26,6 @@
                </div>
             </div>
         </div>
-
         <div style="width:100%; height: 30px; position: relative;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB detailLabelText" >이메일</p>
 
@@ -46,7 +44,13 @@
         </div>
         <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
         <div v-if="readOnlyYn && mobileYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
-            <div class="nativeServiceBtn" @click="sendMail(memEmail)">
+            <div class="nativeServiceBtn" style=""  @click="sendPushAlim()">
+                <div class="nativeServiceBtnWrap">
+                    <img src="../../../assets/images/common/icon_message_solid.svg" style="width: 75%; margin-top: 5px; " alt="">
+                </div>
+                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">알림작성</p>
+            </div>
+            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;" @click="sendMail(memEmail)">
                 <div class="nativeServiceBtnWrap">
                     <img src="../../../assets/images/common/sendMailIcon.svg"  style="width: 100%; " alt="">
                 </div>
@@ -119,7 +123,7 @@ export default {
         this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
     },
     created(){
-        console.log(this.propData);
+        console.log(this.propData)
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
                 this.userProfileImg = this.propData.userProfileImg
@@ -181,6 +185,17 @@ export default {
         }
     },
     methods:{
+        sendPushAlim () {
+            var param = {}
+            param.targetType = 'writePush'
+            param.teamKey =  this.propData.teamKey
+            param.userKey = this.propData.userKey
+            if (this.propData.userDispMtext) { param.userDispMtext = this.propData.userDispMtext } else { param.userNameMtext = this.propData.userNameMtext }
+            param.replyPopYn = true
+            if (this.propData.userDispMtext) { param.creUserName = this.propData.userDispMtext } else { param.creUserName = this.propData.userNameMtext }
+            param.creUserKey = this.propData.userKey
+            this.$emit('openPop', param)
+        },
         async setDispName () {
             // KO$^$수망고$#$EN$^$sumango
             var param = {}
@@ -235,7 +250,7 @@ export default {
         },
         callPhone (num) {
             if (num != undefined && num != null && num != '') {
-                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                if(this.systemName !== 'Android' && this.systemName !== 'android')
                     document.location.href='tel:' + num
                 else
                     onMessage('REQ', 'callphone', num)
@@ -245,7 +260,7 @@ export default {
         },
         sendMail (email) {
             if (email != undefined && email != null && email != '') {
-                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                if(this.systemName !== 'Android' && this.systemName !== 'android')
                     document.location.href='mailto:' + email
                 else
                     onMessage('REQ', 'sendMail', email)
@@ -255,7 +270,7 @@ export default {
         },
         sendSms (num) {
             if (num != undefined && num != null && num != '') {
-                if(this.systemName === 'iOS' || this.systemName === 'ios')
+                if(this.systemName !== 'Android' && this.systemName !== 'android')
                     document.location.href='sms:' + num
                 else
                     onMessage('REQ', 'sendSms', num)
@@ -432,7 +447,7 @@ margin-bottom: 2rem;
 .nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
 
 .detailLabelText {width:10%; min-width: 130px; line-height: 30px;}
-.nativeServiceBtn { float: left; width: calc(100% / 3 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
+.nativeServiceBtn { float: left; width: calc(100% / 4 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
 @media screen and (max-width: 300px) {
   .detailLabelText {
     width:8%!important;

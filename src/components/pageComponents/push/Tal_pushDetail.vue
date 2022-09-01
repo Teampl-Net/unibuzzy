@@ -146,7 +146,7 @@ export default {
       }, 3000)
     }
 
-    /* debugger
+    /* 
     var tets = this.alimDetail
     if (this.alimDetail[0].attachFileList != undefined && this.alimDetail[0].attachFileList.length > 0) {
       var addFalseImgList = document.querySelectorAll('.pushDetailPaper .formCard .editorImg')
@@ -400,7 +400,6 @@ export default {
       param.jobkindId = 'ALIM'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
-      // debugger
 
       if (this.alimDetail[0].childrenContents) {
         if (this.alimDetail[0].creUserKey === this.creUser) {
@@ -463,7 +462,7 @@ export default {
       } catch (e) {};
       var link = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + this.alimDetail[0].contentsKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080'
+      var mainLink = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443'
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null
@@ -482,8 +481,8 @@ export default {
           imageWidth: 1200,
           imageHeight: 750,
           link: {
-            /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-            /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
+            /* mobileWebUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
+            /* webUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
             // webUrl: link,
             mobileWebUrl: link
             /* mobileWebUrl: 'https://thealim.page.link/H3Ed',
@@ -494,8 +493,8 @@ export default {
           {
             title: '더알림 방문하기',
             link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              /* mobileWebUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey */
               // webUrl: link,
               mobileWebUrl: mainLink
             }
@@ -503,8 +502,8 @@ export default {
           {
             title: '확인하러 가기',
             link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              /* mobileWebUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey */
               // webUrl: link,
               mobileWebUrl: link
             }

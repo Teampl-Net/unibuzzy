@@ -33,7 +33,7 @@
             <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
               <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
                 <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
-                <a :fileKey="value.fileKey" style="word-break: break-all;" :filePath="value.pathMtext" @click="download1(value.fileKey)" class="font12 commonBlack"  >
+                <a :fileKey="value.fileKey" @click="download1(value.fileKey)" style="word-break: break-all;" :filePath="value.pathMtext" class="font12 commonBlack"  >
                   {{value.fileName}}
                 </a>
               </div>
@@ -178,7 +178,8 @@ export default {
       mobileYn: this.$getMobileYn(),
       clickEndYn: false,
       alertPopId: null,
-      clickImg: null
+      clickImg: null,
+      systemName: localStorage.getItem('systemName')
     }
   },
   props: {
@@ -216,14 +217,21 @@ export default {
     }
     this.getContentsList()
     this.$emit('closeLoading')
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
+  },
+  updated () {
+    this.settingAtag()
   },
   mounted () {
     var thisthis = this
     if (this.alimDetail.length > 0) {
       this.addImgEvnt()
+      this.settingAtag()
     } else {
       setTimeout(() => {
         thisthis.addImgEvnt()
+        this.settingATag()
       }, 1000)
     }
     var pushListWrap = document.getElementById('boardDetailScrollArea')
@@ -253,6 +261,17 @@ export default {
     }
   },
   methods: {
+    settingAtag () {
+      if (this.systemName !== 'Android' && this.systemName !== 'android') {
+        return
+      }
+      var contentsATagList = document.querySelectorAll('#boardBodyArea a')
+      if (contentsATagList && contentsATagList.length > 0) {
+        for (var i = 0; i < contentsATagList.length; i++) {
+          contentsATagList[i].target = '_blank'
+        }
+      }
+    },
     longClickAlertClick (btnType) {
       if (btnType === 'download') this.imgDownload()
       else if (btnType === 'share');
@@ -380,21 +399,53 @@ export default {
       return false
     },
     download1 (fileKey) {
+      var aTag
       var iframe
-      iframe = document.getElementById('hiddenDownloader')
-      if (iframe == null) {
+      aTag = document.getElementById('hiddenDownloaderForAndroid')
+      iframe = document.getElementById('hiddenDownloaderForIos')
+      if (this.systemName !== 'Android' && this.systemName !== 'android') {
         iframe = document.createElement('iframe')
-        iframe.id = 'hiddenDownloader'
+        iframe.id = 'hiddenDownloaderForIos'
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
+
+        iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+      } else {
+        if (aTag == null) {
+          aTag = document.createElement('a')
+          aTag.id = 'hiddenDownloaderForAndroid'
+          aTag.style.display = 'none'
+          document.body.appendChild(aTag)
+        }
+        aTag.href = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+        aTag.target = '_blank'
+
+        aTag.click()
       }
+
       // 파일서버 fileServer fileserver FileServer Fileserver
-      iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+      /* iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey */
+    },
+    downloadForAndroid (fileKey) {
+      var a
+      a = document.getElementById('hiddenDownloader')
+      if (a == null) {
+        a = document.createElement('a')
+        a.id = 'hiddenDownloader'
+        a.style.display = 'none'
+        document.body.appendChild(a)
+      }
+      a.href = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+      a.target = '_blank'
+      // eslint-disable-next-line no-debugger
+      debugger
+      a.click()
+      // 파일서버 fileServer fileserver FileServer Fileserver
+      /* iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey */
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
-      // eslint-disable-next-line no-debugger
-      // debugger
+
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
         var thisthis = this
@@ -459,8 +510,7 @@ export default {
       console.log(this.$store.getters.hStack)
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
-      // eslint-disable-next-line no-debugger
-      /* debugger
+      /*
       var innerHtml = ''
       if (document.getElementById('imgDetailAlertWrap')) {
       } else {
@@ -705,7 +755,7 @@ export default {
       } catch (e) {};
       var link = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=http://mo.d-alim.com:18080' +
+      var mainLink = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443' +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null
@@ -737,8 +787,8 @@ export default {
           {
             title: '확인하러 가기',
             link: {
-              /* mobileWebUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'http://mo.d-alim.com:18080' + '?chanDetail=' + this.chanDetail.teamKey */
+              /* mobileWebUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey */
               // webUrl: link,
               mobileWebUrl: link
             }
@@ -776,14 +826,12 @@ export default {
       }
     },
     settingAddFalseList (attachYn) {
-      // eslint-disable-next-line no-debugger
       if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
         var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 
         for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
           var attFile = this.alimDetail[0].attachFileList[s]
-          // eslint-disable-next-line no-debugger
-          debugger
+
           if (!attachYn) {
             for (var i = 0; i < addFalseImgList.length; i++) {
               if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
@@ -932,6 +980,40 @@ export default {
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
+    },
+    async recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+
+          var currentPage = this.$store.getters.hCPage
+
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
+              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
+              await this.getMemoList(true)
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
     }
   }
 }
