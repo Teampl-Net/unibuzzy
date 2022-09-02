@@ -33,7 +33,7 @@
             <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
               <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
                 <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
-                <a :fileKey="value.fileKey" @click="download1(value.fileKey)" style="word-break: break-all;" :filePath="value.pathMtext" class="font12 commonBlack"  >
+                <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.pathMtext)" style="word-break: break-all;" :filePath="value.pathMtext" class="font12 commonBlack"  >
                   {{value.fileName}}
                 </a>
               </div>
@@ -413,18 +413,22 @@ export default {
       this.filePopShowYn = false
       return false
     },
-    download1 (fileKey) {
+    download1 (fileKey, path) {
       var aTag
       var iframe
       aTag = document.getElementById('hiddenDownloaderForAndroid')
       iframe = document.getElementById('hiddenDownloaderForIos')
+      var api = path.split('/image')[0]
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.systemName !== 'Android' && this.systemName !== 'android') {
         iframe = document.createElement('iframe')
         iframe.id = 'hiddenDownloaderForIos'
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
-
-        iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+        // 파일서버 fileServer fileserver FileServer Fileserver
+        iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+        // iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
       } else {
         if (aTag == null) {
           aTag = document.createElement('a')
@@ -432,29 +436,12 @@ export default {
           aTag.style.display = 'none'
           document.body.appendChild(aTag)
         }
-        aTag.href = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+        aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
         aTag.target = '_blank'
 
         aTag.click()
       }
 
-      // 파일서버 fileServer fileserver FileServer Fileserver
-      /* iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey */
-    },
-    downloadForAndroid (fileKey) {
-      var a
-      a = document.getElementById('hiddenDownloader')
-      if (a == null) {
-        a = document.createElement('a')
-        a.id = 'hiddenDownloader'
-        a.style.display = 'none'
-        document.body.appendChild(a)
-      }
-      a.href = 'fileServer/tp.downloadFile?fileKey=' + fileKey
-      a.target = '_blank'
-      // eslint-disable-next-line no-debugger
-      debugger
-      a.click()
       // 파일서버 fileServer fileserver FileServer Fileserver
       /* iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey */
     },
