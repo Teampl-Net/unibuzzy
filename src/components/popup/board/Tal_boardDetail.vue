@@ -286,7 +286,7 @@ export default {
         if (this.mobileYn) {
           onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
         } else {
-          var result = await this.$downloadFile(this.selectImgObject.fileKey)
+          var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
           console.log(result)
         }
         this.confirmText = '저장되었습니다!'

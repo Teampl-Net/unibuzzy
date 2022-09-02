@@ -153,7 +153,7 @@ export default {
           onMessage('REQ', 'saveCameraRoll', selectImgPath)
         } else {
           var fKey = selectImg
-          var result = await this.$downloadFile(fKey)
+          var result = await this.$downloadFile(fKey, selectImgPath)
           console.log(result)
         }
         this.saveOkPopShowYn = true

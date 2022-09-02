@@ -383,7 +383,7 @@ const methods = {
     }
     return type
   },
-  downloadFile (fileKey) {
+  downloadFile (fileKey, path) {
     var iframe
     iframe = document.getElementById('hiddenDownloader')
     if (iframe == null) {
@@ -392,8 +392,11 @@ const methods = {
       iframe.style.display = 'none'
       document.body.appendChild(iframe)
     }
+    var api = path.split('/image')[0]
+    // eslint-disable-next-line no-debugger
+    debugger
     // 파일서버 fileServer fileserver FileServer Fileserver
-    iframe.src = 'fileServer/tp.downloadFile?fileKey=' + fileKey
+    iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
     /* try {
       var pom = document.createElement('a')
       pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')

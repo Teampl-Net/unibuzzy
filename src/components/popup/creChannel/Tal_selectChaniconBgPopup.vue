@@ -381,7 +381,7 @@ export default {
           console.log(form)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://passtory.net:19095/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
