@@ -5,7 +5,7 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
-      <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @no='confirmNo(),checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @no="closeXPop" confirmText='신청되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -411,13 +411,18 @@ export default {
       for (var i = 0; i < formCard.length; i++) {
         innerHtml += formCard[i].outerHtml
       }
-      this.propFormData = formCard
+      this.propFormData = []
+      this.propFormData.push(...formCard)
+      // this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
       this.editorType = 'complex'
       this.complexOkYn = true
       this.clickPageTopBtn()
       // this.formEditorShowYn = false
+    },
+    confirmNo(){
+      console.log(this.propFormData)
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -615,11 +620,13 @@ export default {
           msgData = document.getElementById('textMsgBoxPush').innerHTML
         }
         if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
+          debugger
         } else {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
           return
         }
+        debugger
 
         this.checkPopYn = true
       }
@@ -697,7 +704,7 @@ export default {
         }
         console.log(this.uploadFileList)
         for (var i = 0; i < this.uploadFileList.length; i++) {
-          iList[i].src = this.uploadFileList[i].previewImgUrl
+          if (this.uploadFileList[i].previewImgUrl) iList[i].src = this.uploadFileList[i].previewImgUrl
           iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
           iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
           iList[i].classList.remove("addTrue")

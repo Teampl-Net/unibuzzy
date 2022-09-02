@@ -157,7 +157,7 @@ export default {
       this.formCardList = data
     },
     inputScroll (param) {
-      this.$emits('inputScroll', param)
+      this.$emit('inputScroll', param)
     },
     async changePosTeamMenu (event) {
       var oldIndex = event.oldIndex
@@ -235,18 +235,28 @@ export default {
     },
     setParamInnerHtml () {
       var formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
+      var tempList = []
       // var formCardpadding = document.querySelectorAll('#eContentsWrap .formDiv')
       for (var i = 0; i < formCard.length; i++) {
-        this.formCardList[i].outerHtml = formCard[i].outerHTML
-        this.formCardList[i].innerHtml = formCard[i].innerHTML
-        this.formCardList[i].type = formCard[i].originalType
+        // this.formCardList[i].outerHtml = formCard[i].outerHTML
+        // this.formCardList[i].innerHtml = formCard[i].innerHTML
+        // this.formCardList[i].type = formCard[i].originalType
+        var temp = {}
+        temp.outerHtml = formCard[i].outerHTML
+        temp.innerHtml = formCard[i].innerHTML
+        temp.type = formCard[i].originalType
+        tempList.push(temp)
+
         /*  if (formCard[i].originalType !== undefined && formCard[i].originalType !== null && formCard[i].originalType !== '' && formCard[i].originalType === 'image') {
           this.formCardList[i].type = 'image'
         } else {
           this.formCardList[i].type = 'text'
         } */
       }
-      this.$emit('setParamInnerHtml', this.formCardList)
+      // // eslint-disable-next-line no-debugger
+      // debugger
+      // this.$emit('setParamInnerHtml', this.formCardList)
+      this.$emit('setParamInnerHtml', tempList)
       /*
       } else if (this.viewTab === 'text') {
         var innerText = document.getElementById('innerText').innerHTML

@@ -93,7 +93,7 @@
           </div>
           <div class="boardBorder"></div>
           <div class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteMemo' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -313,11 +313,26 @@ export default {
             // this.openUpdateContentsPop()
           } else if (type === 'delete') {
             // alert('메모 삭제')
-            this.deleteMemo({ memoKey: this.tempData.memoKey })
+            this.deleteConfirm('memoDEL')
+            // this.deleteMemo({ memoKey: this.tempData.memoKey })
             // this.boardFuncClick('BOAR')
           }
         }
       }
+    },
+    deleteConfirm (data) {
+      if ((data !== undefined && data !== null && data !== '') || (data !== 'alim' && data !== 'memo')) {
+        console.log(data)
+        this.tempData = data
+      }
+      if (data === 'memo' || this.tempData.memoKey) {
+        this.confirmText = '댓글을 삭제하시겠습니까?'
+        this.currentConfirmType = 'memoDEL'
+      }
+
+      console.log(this.tempData)
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
     },
     report (type) {
       var targetKind
@@ -571,6 +586,8 @@ export default {
         this.currentConfirmType = 'deleteBoar'
       } else if (type === 'REPORT') {
         this.confirmText = '해당 게시글을 신고 하시겠습니까?'
+      } else if (type === 'memoDel') {
+        this.confirmText = '댓글을 삭제하시겠습니까?'
       }
       this.confirmPopShowYn = true
     },
@@ -607,6 +624,8 @@ export default {
         param.creUserKey = this.creUser
         this.errorBoxText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
+      } else if (this.currentConfirmType === 'memoDEL') {
+        this.deleteMemo({ memoKey: this.tempData.memoKey })
       }
     },
     mememoCancel () {

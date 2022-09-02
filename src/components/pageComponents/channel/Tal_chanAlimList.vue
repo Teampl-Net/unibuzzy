@@ -537,7 +537,6 @@ export default {
           this.followYn = true
           this.detailShowYn = false
           this.followTypeText = '구독자'
-
           if (this.chanItem.userTeamInfo.managerKey !== undefined && this.chanItem.userTeamInfo.managerKey !== null && this.chanItem.userTeamInfo.managerKey !== '') {
             if (this.chanItem.userTeamInfo.ownerYn === true || this.chanItem.userTeamInfo.ownerYn === 'true') {
               this.followTypeText = '소유자'
@@ -547,6 +546,7 @@ export default {
             }
             this.adminYn = true
           }
+          this.$emit('followYn')
         }
         var bgblackYn = true // chanItem.blackYn
         this.$emit('bgcolor', bgblackYn)

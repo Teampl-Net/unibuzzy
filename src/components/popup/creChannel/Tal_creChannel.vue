@@ -90,11 +90,11 @@
       </div>
     </div>
   </div>
-  <gConfirmPop :confirmText="'[' + inputChannelName + '] 채널을 ' + pageType + '하겠습니다'" @no='checkPopYn=false' v-if="checkPopYn" @ok='setParam' />
+  <gConfirmPop :confirmText="checkPopText === null ? ('[' + inputChannelName + '] 채널을 ' + pageType + '하겠습니다') : checkPopText" @no='checkPopYn=false, deleteYn=false, checkPopText=null' v-if="checkPopYn" @ok='setParam' />
   <gConfirmPop :confirmText="'채널이' + pageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="okPopYn" />
   <!-- <checkPop v-if='checkPopYn'  @ok='setParam' createText='채널' /> -->
 
-<gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false,checkPopYn=false' />
+  <gConfirmPop :confirmText='errorMsg' confirmType='timeout' v-if="errorPopYn" @no='errorPopYn=false,checkPopYn=false' />
 </template>
 
 <script>
@@ -155,7 +155,9 @@ export default {
         { teamNameMtext: '팀', teamType: 'T' },
         { teamNameMtext: '기타', teamType: 'E' }
       ],
-      selectedType: ''
+      selectedType: '',
+      checkPopText: null,
+      deleteYn: false
     }
   },
   methods: {
@@ -165,7 +167,10 @@ export default {
       this.selectTypeText = value.teamNameMtext
     },
     chanDelete () {
-      this.setParam(true)
+      this.deleteYn = true
+      this.checkPopText = '채널을 삭제하시겠습니까?'
+      this.checkPopYn = true
+      // this.setParam(true)
     },
     async getTeamList () {
       var paramMap = new Map()
@@ -236,7 +241,8 @@ export default {
       }
       this.checkPopYn = true
     },
-    async setParam (delYn) {
+    async setParam () {
+
       // eslint-disable-next-line no-new-object
       var gParam = new Object()
       if (this.chanDetail !== {}) {
@@ -250,7 +256,7 @@ export default {
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       gParam.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       var params = new Object()
-      if(delYn === true){
+      if(this.deleteYn === true){
         params.deleteYn = true
         gParam.deleteYn = true || 1
 

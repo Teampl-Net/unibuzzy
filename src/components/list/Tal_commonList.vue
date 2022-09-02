@@ -15,7 +15,7 @@
                 <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
                   <p style="width: 100%; word-wrap:break-word; " class="font16 fl fontBold commonBlack cursorDragText">
-                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: 'alim', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
@@ -78,7 +78,7 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteMemo' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -94,7 +94,7 @@
       <transition name="showMemoPop">
         <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition>
-      <gConfirmPop  :draggable="true" :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
+      <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
       <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 </template>
@@ -195,6 +195,7 @@ export default {
       }
     },
     contentMenuClick(params){
+      //  :contentType="contentList[0].jobkindId === 'ALIM' ? 'alim' : 'board'"
       this.contentOwner = params.ownerYn
       this.contentType = params.type
       if (params.tempData) {
@@ -222,6 +223,18 @@ export default {
         })
         console.log(result.data)
         this.$emit('refresh')
+      } else if (this.tempData.jobkindId === 'BOAR') {
+        var inParam = {}
+        // console.log(this.alimDetail)
+        inParam.contentsKey = this.tempData.contentsKey
+        inParam.jobkindId = 'BOAR'
+        inParam.teamKey = this.tempData.creTeamKey
+        inParam.deleteYn = true
+        await this.$commonAxiosFunction({
+          url: '/tp.saveContents',
+          param: inParam
+        })
+        this.$emit('refresh')
       }
     },
     async deleteAlimAll () {
@@ -239,7 +252,12 @@ export default {
             if (allYn) {
                 this.deleteAlimAll()
             } else {
-                this.deleteAlim()
+              if (this.tempData.jobkindId === 'ALIM') {
+                this.deleteConfirm('alim')
+              } else if (this.tempData.jobkindId === 'BOAR') {
+                this.deleteConfirm('board')
+              }
+
             }
           }
         } else if (this.tempData.memoKey) {
@@ -247,11 +265,33 @@ export default {
             // 댓글 수정
             this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index)
           } else if (type === 'delete') {
-            // 댓글 수정
-            this.deleteMemo({ memoKey: this.tempData.memoKey })
+            // 댓글 삭제
+            this.deleteConfirm('memo')
           }
         }
       }
+    },
+    deleteConfirm (data) {
+      console.log('datadatadatadatadatadatadatadatadatadatadatadatadatadatadata')
+      console.log(data)
+      if ((data !== undefined && data !== null && data !== '' ) && (data !=='alim' && data !== 'memo' && data !=='board') ) {
+        console.log(data)
+        this.tempData = data
+      }
+
+      if (data === 'memo' || this.tempData.memoKey) {
+        this.confirmText = '댓글을 삭제하시겠습니까?'
+        this.currentConfirmType = 'memoDEL'
+      } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
+        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.currentConfirmType = 'alimDEL'
+      } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
+        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.currentConfirmType = 'boardDEL'
+      }
+      console.log(this.tempData);
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
     },
     report (type) {
       var targetKind
@@ -287,6 +327,7 @@ export default {
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
     async saveActAxiosFunc (param) {
+      console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveActLog',
@@ -325,7 +366,14 @@ export default {
         param.creUserKey = this.commonListCreUserKey
         this.confirmText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
+      } else if (this.currentConfirmType === 'memoDEL') {
+        this.deleteMemo({ memoKey: this.tempData.memoKey })
+      } else if (this.currentConfirmType === 'alimDEL') {
+        this.deleteAlim()
+      } else if (this.currentConfirmType === 'boardDEL') {
+        this.deleteAlim()
       }
+
       this.currentConfirmType = ''
       this.confirmPopShowYn = false
     },
@@ -379,6 +427,7 @@ export default {
         // this.memoList = []
         // await this.getBoardMemoList(true)
         this.currentMemoList = await this.getContentsMemoList(this.currentContentsKey)
+        this.memoSetCount()
       }
     },
 

@@ -24,7 +24,7 @@
 
     <!-- <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" /> -->
     <!-- <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" /> -->
-    <div v-if="chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '' " class="chanMenubar cursorP" @click="openMenu">
+    <div v-if="(chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '') && followYn === true" class="chanMenubar cursorP" @click="openMenu">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
@@ -47,7 +47,8 @@ export default {
     managerBtn: {},
     memberDetailOpen: {},
     targetType: {},
-    helpYn: {}
+    helpYn: {},
+    followYn: {}
   },
   methods: {
     checkOfficialChan () {

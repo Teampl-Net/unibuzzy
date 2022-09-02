@@ -15,15 +15,17 @@
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
               <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea">
-                <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+                <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" @change="changeImg" :src="previewImgUrl" alt="" class="preview hidden">
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                   <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFile" id="input-file" @change="previewFile"/>
               </form>
-
-              <p class="fl fontBold textLeft font14 w-100P mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
+              <div class="fl textLeft w-100P">
+                <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
+                <gBtnSmall class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+              </div>
             </div>
           </div>
           <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
@@ -116,12 +118,22 @@ export default {
       cropper: {},
       refImg: {},
       cropYn: false,
-      cropperYn: false
+      cropperYn: false,
+      changeImgYn: true
     }
   },
   methods: {
     changeImgClick () {
       if (this.cropperYn === false) this.$refs.selectFile.click()
+    },
+    changeBtnClick () {
+      // this.cropper.destroy()
+      // this.selectFile = []
+      // this.uploadFileList = []
+      // this.changeImgYn = false
+      // this.changeImgYn = true
+      this.$refs.selectFile.click()
+      // this.previewFile()
     },
     dataSetting () {
       if (this.opentype === 'bgPop') {
@@ -232,7 +244,6 @@ export default {
       this.selectedImgFilekey = ''
       this.selectFile = null
       this.previewImgUrl = null
-
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
@@ -253,6 +264,7 @@ export default {
         // FileReader 를 활용하여 파일을 읽는다
           var reader = new FileReader()
           var thisthis = this
+          this.cropperYn = true
           reader.onload = e => {
             var image = new Image()
             image.onload = function () {
@@ -293,6 +305,8 @@ export default {
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
+              console.log(this.cropper)
+
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
                 dragMode: 'move',
@@ -302,7 +316,8 @@ export default {
                 wheelZoomRatio: 0.1,
                 movable: false
               })
-              thisthis.cropperYn = true
+
+              thisthis.cropper.replace(thisthis.previewImgUrl)
             }
             image.onerror = function () {
 
@@ -378,8 +393,8 @@ export default {
               if (res.data.length > 0) {
                 var path = res.data[0].pathMtext
                 this.selectedImgPath = path
-                // eslint-disable-next-line no-debugger
-                debugger
+                // // eslint-disable-next-line no-debugger
+                // debugger
                 this.selectedImgFilekey = res.data[0].fileKey
               }
             })

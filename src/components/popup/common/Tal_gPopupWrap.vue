@@ -7,11 +7,11 @@
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"/>
       </transition>
       <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
-      v-if="targetType !=='writeBoard' && targetType !=='writePush'"
+      v-if="targetType !=='writeBoard' && targetType !=='writePush'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
-      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' />
+      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' @followYn="this.headerFollowYn = true" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @openPop="openPop" />
@@ -161,7 +161,8 @@ export default {
       refreshToken: 0,
       delyn: false,
       loadingYn: false,
-      selectedBookNMemberList: {}
+      selectedBookNMemberList: {},
+      headerFollowYn: false
     }
   },
   props: {
@@ -279,6 +280,7 @@ export default {
     }
   },
   methods: {
+    // 헤더에게 현재 chanAlimList에 화면이 구독중인지 확인하기 위해 사용
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
