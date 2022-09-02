@@ -342,6 +342,7 @@ export default {
 .bodyFullStr {
   max-height: 400px;
   overflow: hidden;
+  word-break: break-word;
 }
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}

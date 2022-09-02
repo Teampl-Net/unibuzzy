@@ -425,6 +425,9 @@ export default {
         param.cabinetKey = this.propData.cabinetKey
         param.actorList = this.propData.actorList
       }
+      if (param.cabinetKey === 11015) {
+        param.onlyManagerYn = true
+      }
       param.creTeamKey = this.propData.currentTeamKey
 
       if (this.propData.attachMfilekey) {

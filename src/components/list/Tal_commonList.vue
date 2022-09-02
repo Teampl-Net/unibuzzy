@@ -498,7 +498,7 @@ export default {
           thisthis.clickEndYn = false
           setTimeout(() => {
             if (thisthis.clickEndYn === false) {
-                
+
               thisthis.selectImgObject.path = imgList[m].src
               thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
               var param = new Object()
@@ -542,7 +542,7 @@ export default {
         imgList[m].addEventListener('mouseup', () => {
             console.log(thisthis.clickEndYn)
             thisthis.clickEndYn = true
-            
+
             imgList[m].style.opacity = 1
         })
 

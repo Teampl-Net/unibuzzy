@@ -146,7 +146,7 @@ export default {
       }, 3000)
     }
 
-    /* 
+    /*
     var tets = this.alimDetail
     if (this.alimDetail[0].attachFileList != undefined && this.alimDetail[0].attachFileList.length > 0) {
       var addFalseImgList = document.querySelectorAll('.pushDetailPaper .formCard .editorImg')

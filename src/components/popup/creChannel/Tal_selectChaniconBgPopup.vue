@@ -14,13 +14,13 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="this.$refs.selectFile.click()" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef">
-                <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="" class="preview">
+              <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea">
+                <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFile" id="input-file" @change="previewFile"/>
               </form>
 
               <p class="fl fontBold textLeft font14 w-100P mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
@@ -42,15 +42,17 @@
       <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
 
   </div>
-  <crop v-if="cropYn" @no="cropYn=false" :imgUrl="previewImgUrl" />
+  <!-- <crop v-if="cropYn" @no="cropYn=false" :imgUrl="previewImgUrl" :selectFile="selectFile" :bgYn="opentype === 'bgPop' ? true : false" @cropImage="cropImage" /> -->
 </template>
 
 <script>
 // import a from ' resource/channeliconbg/CHAR01.png'\
-import crop from './Tal_cropTest.vue'
+// import crop from './Tal_cropTest.vue'
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 export default {
   components: {
-    crop
+    // crop
   },
   props: {
     opentype: {},
@@ -112,11 +114,15 @@ export default {
       selectedImgFilekey: '',
       activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }],
       cropper: {},
-      image: {},
-      cropYn: false
+      refImg: {},
+      cropYn: false,
+      cropperYn: false
     }
   },
   methods: {
+    changeImgClick () {
+      if (this.cropperYn === false) this.$refs.selectFile.click()
+    },
     dataSetting () {
       if (this.opentype === 'bgPop') {
         // alert(JSON.stringify(this.selectBg))
@@ -226,11 +232,7 @@ export default {
       this.selectedImgFilekey = ''
       this.selectFile = null
       this.previewImgUrl = null
-      // 선택된 파일이 있는가?
-      // this.image = this.$refs.selectFile
-      // this.cropper = new Cropper(this.image, {
-      //   preview: '.preview'
-      // })
+
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
@@ -275,6 +277,7 @@ export default {
               previewCanvas.height = height
 
               previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
+
               const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
               thisthis.previewImgUrl = imgBase64
               const decodImg = atob(imgBase64.split(',')[1])
@@ -285,8 +288,21 @@ export default {
               const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
               var file = new File([Bfile], thisthis.selectFile.name)
               thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
+              console.log('###########이거###############')
+              console.log(thisthis.uploadFileList)
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+              thisthis.refImg = thisthis.$refs.image
+              thisthis.cropper = new Cropper(thisthis.refImg, {
+                viewMode: '1',
+                dragMode: 'move',
+                preview: '.cropperPreviewImg',
+                aspectRatio: (thisthis.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
+                cropBoxResizable: true,
+                wheelZoomRatio: 0.1,
+                movable: false
+              })
+              thisthis.cropperYn = true
             }
             image.onerror = function () {
 
@@ -304,46 +320,66 @@ export default {
         this.previewImgUrl = null
       }
     },
-    imgSet () {
-      var div = this.$refs.selectImgPopRef // 이미지를 감싸는 div
-      var img = this.$refs.profileImg // 이미지
-      var divAspect = 90 / 120 // div의 가로세로비는 알고 있는 값이다
-      var imgAspect = img.height / img.width
+    async cropImage (img) {
+      if (this.uploadFileList.length > 0) {
+        console.log(img)
+        for (var i = 0; i < this.uploadFileList.length; i++) {
+          this.uploadFileList[i].file = img
+        }
+        await this.formSubmit()
 
-      if (imgAspect <= divAspect) {
-        // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
-        var imgWidthActual = div.offsetHeight / imgAspect
-        var imgWidthToBe = div.offsetHeight / divAspect
-        var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2)
-        img.style.cssText = 'width: auto; height: 100%; margin-left:' + marginLeft + 'px;'
-      } else {
-        // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
-        img.style.cssText = 'width: 100%; height: auto; margin-left: 0;'
+        var param = {}
+        param.selectedId = this.selectedImgFilekey
+        param.selectPath = this.selectedImgPath
+        param.iconType = this.viewTab
+        console.log(param)
+        this.$emit('makeParam', param)
       }
+    },
+    async crop () {
+      var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false, imageSmoothingQuality: 'high' })
+      var dataURL = cropImg.toDataURL('image/png', 0.8)
+      // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+      const decodImg = atob(dataURL.split(',')[1])
+      const array = []
+      for (let i = 0; i < decodImg.length; i++) {
+        array.push(decodImg.charCodeAt(i))
+      }
+      const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+      const files = new File([Bfile], this.selectFile.name)
+
+      return files
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
         console.log('this.uploadFileList')
         console.log(this.uploadFileList)
         var form = new FormData()
-        var thisthis = this
+        // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
           form = new FormData()
+          if (this.cropperYn === true) this.uploadFileList[i].file = await this.crop()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i]).file)
+          form.append('files[0]', (this.uploadFileList[i]).file)
+          console.log(';;;;;;;;;;;;;;;;;;;;')
+          console.log(form)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mo.d-alim.com:12443/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
               })
             .then(res => {
+              console.log('res')
+              console.log(res)
               if (res.data.length > 0) {
                 var path = res.data[0].pathMtext
                 this.selectedImgPath = path
+                // eslint-disable-next-line no-debugger
+                debugger
                 this.selectedImgFilekey = res.data[0].fileKey
               }
             })
@@ -409,4 +445,13 @@ export default {
   align-items: center;
   justify-content: space-around;
 }
+.hidden{
+  display:none
+}
+.cropperImgArea img{
+  display: block;
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%
+}
+
 </style>

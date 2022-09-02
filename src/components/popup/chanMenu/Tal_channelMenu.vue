@@ -40,7 +40,7 @@
     <div class="w-100P fl mtop-1" style="margin-bottom:3rem">
       <p class="fl font14 cursorP commonColor fontBold mtop-07 w-100P textLeft"><img class="fl cursorP img-w20 mright-05" src="../../../assets/images/channel/icon_heart.svg" alt="편리기능 아이콘"> 편리기능 </p>
       <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class="fl mleft-05 mtop-1" style="" >
-        <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (this.adminYn === true || this.ownerYn === true))" :btnTitle="data.title" style="padding: 0 15px;" />
+        <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (this.adminYn === true || this.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" />
       </div>
     </div>
   </div>
@@ -156,6 +156,7 @@ export default {
       teamNameText:'',
       closeYn:false,
       convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
+      // convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }]
     }
   },
   components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
@@ -441,8 +442,14 @@ export default {
 <style scoped>
 .calcMarginLeft { margin-left: 2rem !important; }
 .menuHeader {
-  padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1px solid #fff;
-  width: 80%;
+  padding: 0.5rem 0;
+  position: absolute;
+  top: 0rem;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #fff;
+  /* width: 80%; */
   border-top-left-radius: 10px;
   right: 0;
   top: 0;
@@ -450,10 +457,14 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  /* position: fixed; */
   z-index: 99;
   background-color: white;
-  transform: translateX(25%);
+  /* transform: translateX(25%); */
+  /* position: fixed;
+  right: 0;
+  width: 80%; */
+  max-width:500px;
 }
 .menuHeader p{color: #FFFFFF; text-align: center;}
 
