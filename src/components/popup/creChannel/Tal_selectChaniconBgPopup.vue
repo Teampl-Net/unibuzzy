@@ -24,7 +24,7 @@
               </form>
               <div class="fl textLeft w-100P">
                 <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
-                <gBtnSmall class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+                <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
               </div>
             </div>
           </div>
@@ -377,11 +377,9 @@ export default {
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (this.uploadFileList[i]).file)
-          console.log(';;;;;;;;;;;;;;;;;;;;')
-          console.log(form)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://passtory.net:19095/tp.uploadFile', form,
+            .post('http://m.passtory.net:19095/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

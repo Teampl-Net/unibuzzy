@@ -10,7 +10,7 @@
     <div v-else />
   </div>
   <div v-if="true" class="fl w-100P" style="overflow: hidden scroll;">
-    <div v-if="adminYn" class="fl w-100P" style="margin-top:50px;" >
+    <div v-if="ownerYn || adminYn" class="fl w-100P" style="margin-top:50px;" >
       <p class="fl cursorP font14 commonColor fontBold mtop-13" style="white-space: nowrap;"  @click="bookDropDown">
         <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
         주소록
@@ -21,9 +21,9 @@
       </div>
     </div>
 
-    <div v-if="adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
+    <div v-if="ownerYn || adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
 
-    <div class="fl w-100P mtop-2" :style="!adminYn ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
+    <div class="fl w-100P mtop-2" :style="!ownerYn || adminYns ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
       <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
         <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
         게시판
@@ -155,8 +155,8 @@ export default {
       selectAdminList : [],
       teamNameText:'',
       closeYn:false,
-      convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
-      // convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }]
+      // convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
+      convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }]
     }
   },
   components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
@@ -202,7 +202,7 @@ export default {
       params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: params
       })
       if (result.data) {
@@ -300,7 +300,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: '/tp.getTeamMenuList',
+          url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data

@@ -272,7 +272,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: '/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -292,7 +292,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: '/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -675,7 +675,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://passtory.net:19095/tp.uploadFile', form/* ,
+            .post('http://m.passtory.net:19095/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -704,11 +704,13 @@ export default {
         }
         console.log(this.uploadFileList)
         for (var i = 0; i < this.uploadFileList.length; i++) {
-          if (this.uploadFileList[i].previewImgUrl) iList[i].src = this.uploadFileList[i].previewImgUrl
-          iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
-          iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
-          iList[i].classList.remove("addTrue")
-          iList[i].classList.add('addFalse')
+          if (this.uploadFileList[i].previewImgUrl) {
+            iList[i].src = this.uploadFileList[i].previewImgUrl
+            iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
+            iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
+            iList[i].classList.remove("addTrue")
+            iList[i].classList.add('addFalse')
+          }
         }
       } else {
         alert('파일을 선택해 주세요.')
