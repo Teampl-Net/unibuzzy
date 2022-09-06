@@ -268,7 +268,7 @@ export default {
         this.$userLoginCheck(true)
         this.userInfo = this.$getUserInform()
         console.log(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg)
-        this.$refs.mainImgAreaRef.style.backgroundImage = 'url(' + JSON.parse(localStorage.getItem('sessionUser')).domainPath + JSON.parse(localStorage.getItem('sessionUser')).userProfileImg + ')'
+        this.$refs.mainImgAreaRef.style.backgroundImage = 'url(' + JSON.parse(localStorage.getItem('sessionUser')).userProfileImg + ')'
       })
     }
   }

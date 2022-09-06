@@ -87,17 +87,17 @@
                 </div>
 
                 <div style="width: 100%;float: left; min-height: 50px; position: relative;">
-                  <gActiveBar modeType="write" :tabList="this.activeTabList" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+                  <gActiveBar modeType="write" :tabList="this.activeTabList" ref="actBar" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
                   <!-- <div class="titleAddArea" >
                     <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
                     <label class="fl" for="titleShow">제목 추가</label>
                   </div> -->
                 </div>
                 <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
-                <div class="pageMsgArea" style="">
+                <div id="pageMsgAreaWrap" class="pageMsgArea" style="">
                   <div id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
 
-                  <formEditor v-show="viewTab === 'complex'" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+                  <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
                   <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
 
                 </div>
@@ -137,6 +137,24 @@ export default {
     }
   },
   mounted() {
+    document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
+        var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        for (let i of items) {
+            var item = i;
+            if (item.type.indexOf("image") != -1) {
+                if (this.viewTab != 'complex') {
+                    this.$refs.actBar.switchtab(1)
+                    this.viewTab = 'complex'
+                        
+                }
+                /* this.editorType = 'complex' */
+                var file = item.getAsFile();
+                this.previewFile(file)
+                console.log(file);
+            //uploadFile(file);
+            }
+        }
+    })
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
     if (textArea) {
@@ -593,7 +611,7 @@ export default {
     },
     async clickPageTopBtn () {
       if(this.viewTab === 'complex' && this.complexOkYn === false) {
-        this.$refs.complexEditor.setParamInnerHtml()
+        await this.$refs.complexEditor.setParamInnerHtml()
       } else {
         var title = this.writePushTitle
         if (this.titleShowYn) {
@@ -657,6 +675,69 @@ export default {
     },
     openSelectFilePop () {
       this.$refs.selectFile.click()
+    },
+    async previewFile (file) {
+        let fileExt = file.name.substring(
+        file.name.lastIndexOf('.') + 1
+        )
+          // 소문자로 변환
+        fileExt = fileExt.toLowerCase()
+        if (
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ) {
+          // FileReader 를 활용하여 파일을 읽는다
+            var reader = new FileReader()
+            var thisthis = this
+            reader.onload = e => {
+                var image = new Image()
+                image.onload = function () {
+                // Resize image
+                var canvas = document.createElement('canvas')
+                var width = image.width
+                var height = image.height
+                if (width > height) { // 가로모드
+                    if (width > 900) {
+                        height *= 900 / width
+                        width = 900
+                    }
+                } else { // 세로모드
+                    if (height > 900) {
+                        width *= 900 / height
+                        height = 900
+                    }
+                }
+                var fileUrl = null
+                canvas.width = width
+                canvas.height = height
+
+                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+                const imgBase64 = canvas.toDataURL('image/png', 0.8)
+                fileUrl = imgBase64
+                const decodImg = atob(imgBase64.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], file.name)
+                thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll("#eContentsWrap .formDiv").length, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
+                thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
+                // this.$emit('updateImgForm', this.previewImgUrl)
+                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+              }
+              image.onerror = function () {
+
+              }
+              image.src = e.target.result
+              // this.previewImgUrl = e.target.result
+            }
+            reader.readAsDataURL(file)
+            // await this.$editorImgResize(this.selectFile)
+          }
+      /* if (thisthis.$refs.selectFile.files.length > 1) {
+        thisthis.$emit('setMultiFile', thisthis.selectFileList)
+      } */
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {

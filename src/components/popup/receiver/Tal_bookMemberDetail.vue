@@ -126,7 +126,7 @@ export default {
         console.log(this.propData)
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
-                this.userProfileImg = this.propData.userProfileImg
+                this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
             }
             if(this.propData.readOnlyYn){this.readOnlyYn = true}
 
@@ -140,7 +140,9 @@ export default {
                 if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
                 if (this.propData.selfYn) {
                     this.selfYn = this.propData.selfYn
+                    console.log(JSON.parse(localStorage.getItem('sessionUser')))
                     if(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg){
+                        console.log(JSON.parse(localStorage.getItem('sessionUser')))
                         this.userProfileImg = JSON.parse(localStorage.getItem('sessionUser')).userProfileImg
                         this.picMfilekey = JSON.parse(localStorage.getItem('sessionUser')).picMfilekey
                     }

@@ -18,6 +18,16 @@ export default {
     inputHtml: {}
   },
   mounted () {
+    document.querySelector('#formCard' + this.targetKey).addEventListener('paste', (e) => {
+      var items = (e.clipboardData || e.originalEvent.clipboardData).items
+      for (const i of items) {
+        var item = i
+        if (item.type.indexOf('image') !== -1) {
+          e.preventDefault()
+          // uploadFile(file);
+        }
+      }
+    })
     this.init()
     if (this.inputHtml) {
       document.querySelectorAll('.formDiv #' + 'formTextArea' + this.targetKey)[0].innerHTML = this.inputHtml
@@ -79,6 +89,69 @@ export default {
       this.formTextArea = this.$refs.formTextArea.innerHTML
       this.$emit('updateCard', { value: this.formTextArea, type: 'updateInput' })
       // this.resize()
+    },
+    async previewFile (file) {
+      let fileExt = file.name.substring(
+        file.name.lastIndexOf('.') + 1
+      )
+      // 소문자로 변환
+      fileExt = fileExt.toLowerCase()
+      if (
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+      ) {
+        // FileReader 를 활용하여 파일을 읽는다
+        var reader = new FileReader()
+        var thisthis = this
+        reader.onload = e => {
+          var image = new Image()
+          image.onload = function () {
+            // Resize image
+            var canvas = document.createElement('canvas')
+            var width = image.width
+            var height = image.height
+            if (width > height) { // 가로모드
+              if (width > 900) {
+                height *= 900 / width
+                width = 900
+              }
+            } else { // 세로모드
+              if (height > 900) {
+                width *= 900 / height
+                height = 900
+              }
+            }
+            var fileUrl = null
+            canvas.width = width
+            canvas.height = height
+
+            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+            const imgBase64 = canvas.toDataURL('image/png', 0.8)
+            fileUrl = imgBase64
+            const decodImg = atob(imgBase64.split(',')[1])
+            const array = []
+            for (let i = 0; i < decodImg.length; i++) {
+              array.push(decodImg.charCodeAt(i))
+            }
+            const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+            var newFile = new File([Bfile], file.name)
+            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
+            thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
+            // this.$emit('updateImgForm', this.previewImgUrl)
+            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+          }
+          image.onerror = function () {
+
+          }
+          image.src = e.target.result
+          // this.previewImgUrl = e.target.result
+        }
+        reader.readAsDataURL(file)
+        // await this.$editorImgResize(this.selectFile)
+      }
+      /* if (thisthis.$refs.selectFile.files.length > 1) {
+        thisthis.$emit('setMultiFile', thisthis.selectFileList)
+      } */
     }
     // eslint-disable-next-line no-unused-vars
     /* blurEvnt () {
