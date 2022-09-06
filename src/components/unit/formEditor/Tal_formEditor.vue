@@ -44,13 +44,13 @@
                           <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                           --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
                           <!-- A9AACD -->
-                          <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === index? 'border: 2px solid #6768a7;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05 commonFormCard" @click="clickForm(value, index)">
-                              <formText @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+index" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="index" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
-                              <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="index" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
+                          <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === value.targetKey? 'border: 2px solid #6768a7;':''" style="position: relative;margin-bottom: 2px;" :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv mtop-05 commonFormCard" @click="clickForm(value, value.targetKey)">
+                              <formText @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
+                              <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable />
                               <formVideo v-else-if="false" />
-                              <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="index"/>
-                              <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="index"/>
-                              <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="index"/>
+                              <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
+                              <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="value.targetKey"/>
+                              <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="value.targetKey"/>
                               <div class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
                               <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                           </div>
@@ -129,7 +129,8 @@ export default {
       uploadFileList: [],
       showBlockTypeYn: false,
       confirmText: '',
-      confirmPopShowYn: false
+      confirmPopShowYn: false,
+      formCount: 0
     }
   },
   components: {
@@ -270,7 +271,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var formElement = new Object()
       formElement.type = type
-      formElement.targetKey = this.formCardList.length
+      formElement.targetKey = this.formCount
       formElement.originalType = type
       this.selectedCardKey = formElement.targetKey
       this.toolBoxShowYn = true
@@ -289,8 +290,9 @@ export default {
       }
 
       this.formCardList.push(formElement)
-      this.selectRow = this.formCardList.length - 1
+      this.selectRow = formElement.targetKey
       this.resizeFormArea()
+      this.formCount += 1
       /* if (formElement.targetKey === 0) {
         this.selectFromScrollH = 100
       } else {
@@ -313,19 +315,20 @@ export default {
           ...tempList,
           target.selectFileList
         ]
-
         this.uploadFileKeyList = [
           ...tempKeyList,
-          target.targetKey
+          this.formCount
         ]
       } else {
         this.uploadFileList.push(target.selectFileList)
-        this.uploadFileKeyList.push(target.targetKey)
+        this.uploadFileKeyList.push(this.formCount)
       }
       console.log(this.uploadFileList)
       this.$emit('changeUploadList', target.selectFileList)
-      this.formCardList[target.targetKey].selectFileList = target.selectFileList
-      this.formCardList[target.targetKey].addYn = true
+      if (this.formCardList[this.formCount].selectFileList) {
+        this.formCardList[this.formCount].selectFileList = target.selectFileList
+        this.formCardList[this.formCount].addYn = true
+      }
     },
     /* addFormCard2 (type, src) {
       const selection = document.getSelection()

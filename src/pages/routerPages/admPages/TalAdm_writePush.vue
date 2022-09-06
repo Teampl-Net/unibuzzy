@@ -720,8 +720,10 @@ export default {
                 }
                 const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
                 var newFile = new File([Bfile], file.name)
-                thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll("#eContentsWrap .formDiv").length, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
+                var formList = document.querySelectorAll("#eContentsWrap .formDiv")
                 thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
+                thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
+                
                 // this.$emit('updateImgForm', this.previewImgUrl)
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
