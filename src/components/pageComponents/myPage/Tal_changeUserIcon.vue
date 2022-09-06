@@ -9,14 +9,18 @@
           </div>
         </div>
         <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
-          <div @click="this.$refs.selectFile.click()"  style="cursor: pointer; width: 90%; margin: 0 auto; height: 90%; border: 1px solid #ccc; overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 5px; margin-bottom: 10px; float: left; ">
-            <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="profileImg" :src="previewImgUrl" alt="">
+          <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; " class="cropperImgArea">
+            <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
+            <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
           </div>
 
           <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
               <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
           </form>
-          <p class="fl fontBold textLeft font14 w-100P mleft-2">터치해서 이미지를 변경할 수 있습니다.</p>
+          <div class="fl textLeft w-100P">
+            <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
+            <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+          </div>
         </div>
         <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
           <gBtnSmall @click="this.$emit('no')" btnTitle="닫기" btnThema="light"/>
@@ -25,6 +29,8 @@
       </div>
 </template>
 <script>
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 export default {
   data () {
     return {
@@ -36,7 +42,10 @@ export default {
       uploadFileList: [],
       selectedImgPath: '',
       selectedImgFilekey: '',
-      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }]
+      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }],
+      cropper: {},
+      refImg: {},
+      cropperYn: false
     }
   },
   props: {
@@ -64,83 +73,103 @@ export default {
     }
   },
   methods: {
+    imgClickToInput () {
+      if (this.cropperYn === false) this.$refs.selectFile.click()
+    },
+    changeBtnClick () {
+      this.$refs.selectFile.click()
+    },
     async previewFile () {
-      this.selectedImgPath = ''
-      this.selectedImgFilekey = ''
-      this.selectFile = null
-      this.previewImgUrl = null
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-          this.selectFile = this.$refs.selectFile.files[k]
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-          // eslint-disable-next-line no-unused-vars
-          var tt = this.selectFile
-
-          let fileExt = this.selectFile.name.substring(
-            this.selectFile.name.lastIndexOf('.') + 1
-          )
-          // 소문자로 변환
-          fileExt = fileExt.toLowerCase()
-          if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
-          ) {
-          // FileReader 를 활용하여 파일을 읽는다
-            var reader = new FileReader()
-            var thisthis = this
-            reader.onload = e => {
-              var image = new Image()
-              image.onload = function () {
-                // Resize image
-                var previewCanvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                if (width > height) { // 가로모드
-                  thisthis.imgMode = 'W'
-                  if (width > 900) {
-                    height *= 900 / width
-                    width = 900
-                  }
-                } else { // 세로모드
-                  thisthis.imgMode = 'H'
-                  if (height > 900) {
-                    width *= 900 / height
-                    height = 900
-                  }
-                }
-                previewCanvas.width = width
-                previewCanvas.height = height
-
-                previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
-                thisthis.previewImgUrl = imgBase64
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var file = new File([Bfile], thisthis.selectFile.name)
-
-                thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-              }
-              image.onerror = function () {
-
-              }
-              image.src = e.target.result
-              this.previewImgUrl = e.target.result
-            }
-            reader.readAsDataURL(this.selectFile)
-            // await this.$editorImgResize(this.selectFile)
-          }
-        }
-      } else {
+        this.selectedImgPath = ''
+        this.selectedImgFilekey = ''
         this.selectFile = null
         this.previewImgUrl = null
+        this.cropperYn = true
+        // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+        this.selectFile = this.$refs.selectFile.files[0]
+        // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
+        // eslint-disable-next-line no-unused-vars
+        var tt = this.selectFile
+
+        let fileExt = this.selectFile.name.substring(
+          this.selectFile.name.lastIndexOf('.') + 1
+        )
+        // 소문자로 변환
+        fileExt = fileExt.toLowerCase()
+        if (
+          ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ) {
+        // FileReader 를 활용하여 파일을 읽는다
+          var reader = new FileReader()
+          var thisthis = this
+          reader.onload = e => {
+            var image = new Image()
+            image.onload = function () {
+              // Resize image
+              var previewCanvas = document.createElement('canvas')
+              var width = image.width
+              var height = image.height
+              if (width > height) { // 가로모드
+                thisthis.imgMode = 'W'
+                if (width > 900) {
+                  height *= 900 / width
+                  width = 900
+                }
+              } else { // 세로모드
+                thisthis.imgMode = 'H'
+                if (height > 900) {
+                  width *= 900 / height
+                  height = 900
+                }
+              }
+              previewCanvas.width = width
+              previewCanvas.height = height
+
+              previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
+              const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+              thisthis.previewImgUrl = imgBase64
+              const decodImg = atob(imgBase64.split(',')[1])
+              const array = []
+              for (let i = 0; i < decodImg.length; i++) {
+                array.push(decodImg.charCodeAt(i))
+              }
+              const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+              var file = new File([Bfile], thisthis.selectFile.name)
+              thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
+
+              // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+              // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+              thisthis.refImg = thisthis.$refs.image
+              // console.log(this.cropper)
+
+              thisthis.cropper = new Cropper(thisthis.refImg, {
+                viewMode: '1',
+                dragMode: 'move',
+                preview: '.cropperPreviewImg',
+                aspectRatio: 1 / 1,
+                cropBoxResizable: true,
+                wheelZoomRatio: 0.1,
+                movable: false
+              })
+              thisthis.cropper.replace(thisthis.previewImgUrl)
+            }
+            image.onerror = function () {
+
+            }
+            image.src = e.target.result
+            this.previewImgUrl = e.target.result
+          }
+          reader.readAsDataURL(this.selectFile)
+          // await this.$editorImgResize(this.selectFile)
+        }
+        // }
+      } else {
+        return null
+        // this.selectFile = null
+        // this.previewImgUrl = null
       }
     },
     selectIcon (fileKey) {
@@ -161,20 +190,35 @@ export default {
 
       // var a = this.teamImgList
     },
+    async crop () {
+      var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false, imageSmoothingQuality: 'high' })
+      var dataURL = cropImg.toDataURL('image/png', 0.8)
+      // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+      const decodImg = atob(dataURL.split(',')[1])
+      const array = []
+      for (let i = 0; i < decodImg.length; i++) {
+        array.push(decodImg.charCodeAt(i))
+      }
+      const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+      const files = new File([Bfile], this.selectFile.name)
+
+      return files
+    },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
         console.log('this.uploadFileList')
         console.log(this.uploadFileList)
         var form = new FormData()
-        var thisthis = this
+        // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
           form = new FormData()
+          if (this.cropperYn === true) this.uploadFileList[i].file = await this.crop()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i]).file)
+          form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://m.passtory.net:19095/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
@@ -246,5 +290,14 @@ export default {
 </script>
 
 <style scoped>
-    .selectedColor {border: 2px solid #6768a7}
+.selectedColor {border: 2px solid #6768a7}
+
+.hidden{
+  display:none
+}
+.cropperImgArea img{
+  display: block;
+  /* This rule is very important, please don't ignore this */
+  max-width: 100%
+}
 </style>

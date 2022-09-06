@@ -240,11 +240,11 @@ export default {
       this.selectPath = value.pathMtext
     },
     async previewFile () {
-      this.selectedImgPath = ''
-      this.selectedImgFilekey = ''
-      this.selectFile = null
-      this.previewImgUrl = null
       if (this.$refs.selectFile.files.length > 0) {
+        this.selectedImgPath = ''
+        this.selectedImgFilekey = ''
+        this.selectFile = null
+        this.previewImgUrl = null
         // 0 번째 파일을 가져 온다.
         // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
         // this.selectFile = this.$refs.selectFile.files[k]
@@ -300,12 +300,11 @@ export default {
               const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
               var file = new File([Bfile], thisthis.selectFile.name)
               thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-              console.log('###########이거###############')
-              console.log(thisthis.uploadFileList)
+
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
-              console.log(this.cropper)
+              // console.log(this.cropper)
 
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
@@ -331,8 +330,9 @@ export default {
         }
         // }
       } else {
-        this.selectFile = null
-        this.previewImgUrl = null
+        return null
+        // this.selectFile = null
+        // this.previewImgUrl = null
       }
     },
     async cropImage (img) {
@@ -379,7 +379,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://m.passtory.net:19095/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

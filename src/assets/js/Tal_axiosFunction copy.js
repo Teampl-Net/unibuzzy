@@ -58,7 +58,7 @@ export async function userLoginCheck () {
 
 export async function getTeamList (paramMap) {
   var resultList = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getUserTeamList', Object.fromEntries(paramMap)
+  await this.$axios.post('/tp.getUserTeamList', Object.fromEntries(paramMap)
   ).then(response => {
     resultList = response.data
   }).catch((error) => {
@@ -73,7 +73,7 @@ export async function getContentsList (inputMap) {
     paramMap = inputMap
   }
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getContentsList', Object.fromEntries(paramMap)
+  await this.$axios.post('/tp.getContentsList', Object.fromEntries(paramMap)
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -90,7 +90,7 @@ export async function getContentsList (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.getContentsList', param
+  await this.$axios.post('/tp.getContentsList', param
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -132,7 +132,7 @@ export async function saveUser (userProfile) {
   user.countryCode = deviceInfo.contry
   user.areaName = deviceInfo.timeZome
   param.user = user
-  await axios.post('https://mo.d-alim.com:10443/tp.saveUser', param
+  await axios.post('/tp.saveUser', param
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
@@ -150,7 +150,7 @@ export async function saveUserDo (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://mo.d-alim.com:10443/tp.saveUserDo', param
+  await this.$axios.post('/tp.saveUserDo', param
   ).then(response => {
     result = response.data
   }).catch((error) => {

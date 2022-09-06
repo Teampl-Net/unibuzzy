@@ -221,7 +221,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
+        url: '/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinetShare = response.data.mCabinet.mShareItemList
@@ -425,6 +425,7 @@ export default {
         param.cabinetKey = this.propData.cabinetKey
         param.actorList = this.propData.actorList
       }
+      param.onlyManagerYn = false
       if (param.cabinetKey === 11015) {
         param.onlyManagerYn = true
       }
@@ -442,7 +443,10 @@ export default {
         param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
+
       param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
+      console.log(param.cabinetName)
+
       param.title = this.writePushTitle
       param.showCreNameYn = true
 
@@ -553,7 +557,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://m.passtory.net:19095/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

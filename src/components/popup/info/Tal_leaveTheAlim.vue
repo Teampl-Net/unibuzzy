@@ -326,7 +326,7 @@ export default {
     },
     async saveActAxiosFunc (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
+        url: '/tp.saveActLog',
         param: param
       })
       if (result.data.result === true) {
