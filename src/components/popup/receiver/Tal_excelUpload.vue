@@ -102,7 +102,7 @@ export default {
       excelTitleRowList: [],
       activeStep: 0,
       bookType: 'EMPL',
-      uploadTypeList: [{ text: '일반 직원용', type: 'employee', key: 0, filePath: 'https://mo.d-alim.com:9443/commonFile/thealim_member_upload_list_employee.xlsx' }, { text: '학생용', type: 'student', key: 1, filePath: 'https://mo.d-alim.com:9443/commonFile/thealim_member_upload_list_student.xlsx' }]
+      uploadTypeList: [{ text: '일반 직원용', type: 'employee', key: 0, filePath: '/commonFile/thealim_member_upload_list_employee.xlsx' }, { text: '학생용', type: 'student', key: 1, filePath: '/commonFile/thealim_member_upload_list_student.xlsx' }]
     }
   },
   components: {

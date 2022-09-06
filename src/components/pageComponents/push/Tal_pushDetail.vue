@@ -9,7 +9,7 @@
         <div :class="{ alimCreatorColor : creUser === alim.creUserKey}" class="pushDetailPaper pushMbox" v-for="(alim, index) in alimDetail" :key="index">
           <div class="pushDetailTopArea" style="position: relative;">
             <div class="fl" style="width:40px; height:40px; margin-right: 0.5rem;"></div>
-            <div v-if="alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creUser === alim.creUserKey}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoPathMtext">
+            <div v-if="alim.logoDomainPath + alim.logoPathMtext" @click="goChanDetail(alim)" class="chanLogoImgWrap fl" style="width:40px; height:40px; margin-right: 0.5rem;  position: absolute; top:50%;transform: translate(0, -50%); " :class="{creYnTrans : creUser === alim.creUserKey}"><img alt="채널 프로필이미지" style="width:80%;" :src="alim.logoDomainPath + alim.logoPathMtext">
               <div style="width:100%; position: absolute; bottom:-7px; padding:0 2px; background-color:#cccccc90; border-radius: 5px;z-index:1 " v-if="creUser === alim.creUserKey"> <p class="font10" style="text-align:center; color:black; white-space:nowrap;">보낸이</p> </div>
               <img v-if="alim.officialYn" class="fl" src="../../../assets/images/channel/icon_official.svg" style="position: absolute; width:30px; bottom:-1.0rem; left: 50%; transform: translateX(-50%);" alt="">
 

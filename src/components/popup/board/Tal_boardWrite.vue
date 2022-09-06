@@ -576,7 +576,7 @@ export default {
                   this.uploadFileList[i].attachYn = true
                 } else {
                 }
-                var path = res.data[0].pathMtext
+                var path = res.data[0].domainPath + res.data[0].pathMtext
                 this.uploadFileList[i].successSave = true
                 this.uploadFileList[i].filePath = path
                 this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
@@ -682,10 +682,6 @@ export default {
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; height:calc(100%); border:1px solid #BFBFDA; border-radius: 5px; background-color: white;}
-
-.selectBoard{
-  /* border: 2px solid white; */
-}
 
 .writeBoardPageTopArea{
   width: 100%; height: 3rem;

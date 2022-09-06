@@ -5,11 +5,11 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.domainPath + this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
           <div @click="changeUserImg()" class="cursorP imgSize">
-            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + userInfo.domainPath + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
             </div>
             <div v-else class="roundDiv"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             </div>

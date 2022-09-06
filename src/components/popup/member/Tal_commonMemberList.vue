@@ -3,7 +3,7 @@
       <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
-          <img :src="member.userProfileImg" />
+          <img :src=" member.domainPath + member.userProfileImg" />
         </div>
         <img v-else src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
         <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">

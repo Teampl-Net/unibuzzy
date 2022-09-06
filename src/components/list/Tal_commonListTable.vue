@@ -11,7 +11,7 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" >
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
-              <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+              <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + value.domainPath + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
                 <!-- <div style="background:#ffffff50; width:20px; height:20px; border-radius:100%; border:1px solid #ccc; overflow: hidden; position:absolute; bottom:-10px; right:-10px; display: flex; justify-content: center; align-items: center;"> -->
                 <div style="background:#ffffff50; border-radius:100%; width:20px; height:20px; position:absolute; bottom:-5px; right:-5px; display: flex; justify-content: center; align-items: center;">
                   <img v-if="value.jobkindId === 'ALIM'" class="cursorP" style="width:15px !important;" src="../../assets/images/common/icon_bell.svg" alt="">

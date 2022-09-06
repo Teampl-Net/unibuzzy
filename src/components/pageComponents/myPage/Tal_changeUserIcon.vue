@@ -5,7 +5,7 @@
         <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
         <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
           <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
-            <img style="width: 100%;" :src="value.pathMtext"  alt="">
+            <img style="width: 100%;" :src="value.domainPath + value.pathMtext"  alt="">
           </div>
         </div>
         <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
@@ -226,7 +226,7 @@ export default {
               })
             .then(res => {
               if (res.data.length > 0) {
-                var path = res.data[0].pathMtext
+                var path = res.data[0].domainPath + res.data[0].pathMtext
                 this.selectedImgPath = path
                 this.selectedImgFilekey = res.data[0].fileKey
                 var tempLocalStorage = JSON.parse(localStorage.getItem('sessionUser'))

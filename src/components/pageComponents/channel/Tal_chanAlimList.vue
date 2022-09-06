@@ -1,5 +1,5 @@
 <template>
-<div id="alimWrap" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
+<div id="alimWrap" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + chanItem.bgDomainPath + chanItem.bgPathMtext + ')'" class="chanDetailWrap">
   <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: chanItem.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="width:30px;" alt="" /> {{changeText(chanItem.nameMtext)}}</p>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -8,7 +8,7 @@
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
-      <div class="chanImgRound" :style="'background-image: url(' + this.chanItem.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 -->
+      <div class="chanImgRound" :style="'background-image: url(' + this.chanItem.logoDomainPath + this.chanItem.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 -->
         <!-- <img id="chanImg" :style="setProfileSize" :src="chanItem.logoPathMtext" style="width: 90%" alt="채널사진" /> -->
         <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
       </div>
@@ -65,7 +65,7 @@
     <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
 
         <div v-if="followYn" class="fl" style="display: flex; align-items: center;">
-          <div @click="goProfile" :style="'background-image: url(' + currentUserInfo.userProfileImg + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;">
+          <div @click="goProfile" :style="'background-image: url(' + currentUserInfo.domainPath + currentUserInfo.userProfileImg + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;">
             <!-- <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
           </div>
           <div class="mleft-05" style="display:flex; flex-direction: column;">

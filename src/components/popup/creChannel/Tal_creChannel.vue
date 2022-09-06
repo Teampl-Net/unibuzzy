@@ -182,10 +182,10 @@ export default {
       console.log(this.modiTeamData.data.content[0].bgPathMtext.length > 30)
       console.log(this.modiTeamData.data.content[0].logoPathMtext.length > 30)
       this.selectBg.selectedId = this.modiTeamData.data.content[0].picMfilekey
-      this.selectBg.selectPath = this.modiTeamData.data.content[0].bgPathMtext
+      this.selectBg.selectPath = this.modiTeamData.data.content[0].bgDomainPath + this.modiTeamData.data.content[0].bgPathMtext
       this.selectBg.iconType = this.modiTeamData.data.content[0].bgPathMtext.length > 30 ? 'img' : 'icon'
       this.selectIcon.selectedId = this.modiTeamData.data.content[0].logoFilekey
-      this.selectIcon.selectPath = this.modiTeamData.data.content[0].logoPathMtext
+      this.selectIcon.selectPath = this.modiTeamData.data.content[0].logoDomainPath + this.modiTeamData.data.content[0].logoPathMtext
       this.selectIcon.iconType = this.modiTeamData.data.content[0].logoPathMtext.length > 30 ? 'img' : 'icon'
       var param = {}
       param.teamType = this.modiTeamData.data.content[0].teamType

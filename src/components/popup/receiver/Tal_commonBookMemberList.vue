@@ -5,7 +5,7 @@
             <transition-group>
                 <template v-for="(data, index) in listData" :key='data'>
                     <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; min-height:60px; position: relative;"  >
-                        <div v-if="data.userProfileImg" :style="'background-image: url(' + data.userProfileImg + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+                        <div v-if="data.userProfileImg" :style="'background-image: url(' + data.domainPath + data.userProfileImg + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                           <!-- <img :src="data.userProfileImg" /> -->
                         </div>
                         <div v-else style="background-image: url('../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">

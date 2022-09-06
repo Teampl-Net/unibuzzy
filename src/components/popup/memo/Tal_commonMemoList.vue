@@ -22,7 +22,7 @@
         <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
           <div v-if="memo.userProfileImg"  class="memoPicImgWrap">
-            <img :src="memo.userProfileImg" />
+            <img :src="memo.domainPath +memo.userProfileImg" />
           </div>
           <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl font15" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>

@@ -33,7 +33,7 @@
             <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
               <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
                 <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
-                <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.pathMtext)" style="word-break: break-all;" :filePath="value.pathMtext" class="font12 commonBlack"  >
+                <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath + value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath + value.pathMtext" class="font12 commonBlack"  >
                   {{value.fileName}}
                 </a>
               </div>

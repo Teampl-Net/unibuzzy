@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="chanLogoWrap">
-          <img :src="chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
+          <img :src="chanDetail.logoDomainPath + chanDetail.logoPathMtext" style="width: 155px;  margin-right: 5px;" alt="채널사진">
           <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanDetail.officialYn" style="position: absolute; width:50px; bottom:-1.6rem; left: 50%; transform: translateX(-50%);" alt="">
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>

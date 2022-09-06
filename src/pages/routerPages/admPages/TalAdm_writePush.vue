@@ -690,7 +690,7 @@ export default {
             .then(res => {
               console.log(res)
               if(res.data.length > 0) {
-                var path =res.data[0].pathMtext
+                var path =res.data[0].domainPath + res.data[0].pathMtext
                 this.uploadFileList[i].previewImgUrl = path
                 this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
                 this.uploadFileList[i].fileKey = res.data[0].fileKey
