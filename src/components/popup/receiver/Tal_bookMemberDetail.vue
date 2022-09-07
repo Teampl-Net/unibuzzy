@@ -1,13 +1,13 @@
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea" style="margin-top:50px">
-<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="userProfileImg" :parentSelectedIconFileKey="picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.domainPath + userProfileImg" :parentSelectedIconFileKey="picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
     <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
-        <div v-if="userProfileImg" :style="'background-image: url(' + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
-            <img :src="userProfileImg" />
+        <div v-if="userProfileImg" :style="'background-image: url(' + this.domainPath + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
+           <!--  <img :src="this.domainPath + userProfileImg" /> -->
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
         <!-- <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " /> -->
@@ -144,6 +144,7 @@ export default {
                     if(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg){
                         console.log(JSON.parse(localStorage.getItem('sessionUser')))
                         this.userProfileImg = JSON.parse(localStorage.getItem('sessionUser')).userProfileImg
+                        this.domainPath = JSON.parse(localStorage.getItem('sessionUser')).domainPath
                         this.picMfilekey = JSON.parse(localStorage.getItem('sessionUser')).picMfilekey
                     }
                     if (JSON.parse(localStorage.getItem('sessionUser')).userEmail)
@@ -174,6 +175,7 @@ export default {
             confirmText: '',
             readOnlyYn:false,
             userProfileImg : undefined,
+            domainPath : undefined,
             systemName: 'iOS',
             mobileYn: this.$getMobileYn(),
             popSize: 0,
@@ -283,7 +285,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+                url: '/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}
@@ -365,6 +367,11 @@ export default {
             }
             return result
         },
+        async getUserInform () {
+            var test = await this.$getUserInform()
+            debugger
+            return this.userInfo
+        }
     }
 }
 </script>
