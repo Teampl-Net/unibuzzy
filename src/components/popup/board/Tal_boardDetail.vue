@@ -53,7 +53,7 @@
             </div> -->
             <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
                 <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
-                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{alim.memoCount}}개</p>
+                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.totalElements}}개</p>
             </div>
             <div v-else class="mbottom-05 fl" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{alim.memoCount > 0? '답변완료' : '답변대기'}}</div>
@@ -92,7 +92,7 @@
             <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div class="boardBorder"></div>
-          <div class="w-100P fl" style=" min-height: 100px;" >
+          <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
             <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" />
           </div>
         </div>
@@ -231,7 +231,6 @@ export default {
     } else {
       setTimeout(() => {
         thisthis.addImgEvnt()
-        thisthis.settingATag()
       }, 1000)
     }
     var pushListWrap = document.getElementById('boardDetailScrollArea')
@@ -657,16 +656,15 @@ export default {
       if (result.data.result === true) {
         // this.memoList = []
         await this.getContentsList()
-        await this.getMemoList(true)
+        await this.getMemoList()
       }
     },
     async loadMore () {
-      if (this.endListYn === false && this.axiosYn === false) {
+      if (this.totalElements > (this.memoList.length)) {
         await this.getMemoList()
-        this.offsetInt += 1
       }
     },
-    async getMemoList (allYn) {
+    async getMemoList (allYn, recvNotiYn) {
       this.$refs.boardMemoListCompo[0].memoLoadingShow()
       this.axiosYn = true
       // eslint-disable-next-line no-new-object
@@ -679,6 +677,12 @@ export default {
         memo.pageSize = this.totalElements + 1
         memo.offsetInt = 0
       }
+      if (recvNotiYn) {
+        memo.pageSize = this.memoList.length + 1
+        memo.offsetInt = 0
+      }
+      console.log('memo')
+      console.log(memo)
       var result = await this.$commonAxiosFunction({
         url: '/tp.getMemoList',
         param: memo
@@ -687,7 +691,6 @@ export default {
         this.totalElements = result.data.totalElements
         if (allYn) {
           this.memoList = result.data.content
-          this.endListYn = true
         } else {
           const newArr = [
             ...this.memoList,
@@ -695,18 +698,9 @@ export default {
           ]
           this.memoList = newArr
         }
-
+        this.offsetInt = this.memoList.length
         await this.mememoChangeList()
-
         this.axiosYn = false
-        if (this.totalElements < (result.data.pageable.offset + result.data.pageable.pageSize)) {
-          this.endListYn = true
-        } else {
-          this.endListYn = false
-          if (allYn) {
-            this.endListYn = true
-          }
-        }
       }
       this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
@@ -812,7 +806,7 @@ export default {
       memo.targetKey = this.alimDetail[0].contentsKey
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
         url: '/tp.saveMemo',
@@ -824,7 +818,8 @@ export default {
         this.memoShowYn = false
         await this.getContentsList()
         await this.getMemoList(true)
-        this.scrollMove(-1)
+        this.pointAni()
+        /* this.scrollMove(-1) */
       }
     },
     settingAddFalseList (attachYn) {
@@ -882,6 +877,7 @@ export default {
       // console.log(this.alimDetail)
       await this.getLikeCount()
       await this.checkUserAuth()
+      await this.getMemoList()
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
@@ -1006,15 +1002,28 @@ export default {
           if ((currentPage === 0 || currentPage === undefined)) {
           } else {
             if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
+              this.getLikeCount()
               if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
                 return
               }
-              await this.getMemoList(true)
+              await this.getMemoList(true, true)
+              this.pointAni()
             }
           }
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
+      }
+    },
+    pointAni () {
+      var firstMemoCard = document.querySelectorAll('#memoWrap .memoCard')[0]
+      if (firstMemoCard) {
+        firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
+        setTimeout(() => {
+          firstMemoCard.style.boxShadow = 'none'
+        }, 1000)
+      } else {
       }
     }
   }

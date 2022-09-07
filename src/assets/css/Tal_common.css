@@ -7,7 +7,8 @@
     user-select: none; */
 /* } */
 html {
-  max-width: 780px;
+  max-width: 1000px;
+  width: 100%;
   margin: 0 auto !important;
   height: 100%;
   position: relative;
@@ -19,7 +20,8 @@ body {
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  max-width: 780px;
+  max-width: 1000px;
+  width: 100%;
   margin: 0 auto !important;
   max-height: 1200px;
 }

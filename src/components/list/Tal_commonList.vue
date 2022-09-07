@@ -78,7 +78,8 @@
               </div>
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='MemoloadMore' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick"  />
+                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">댓글 더 보기</div>
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -114,7 +115,7 @@ export default {
       memoListShowYn: false,
       memoShowYn: false,
       openMemoList : [],
-      pagesize: 10,
+      pagesize: 5,
       offsetInt: 0,
       currentMemoList: [],
       mememoValue: undefined,
@@ -136,7 +137,9 @@ export default {
       selectFileKey: null,
       clickImg: null,
       systemName: localStorage.getItem('systemName'),
-      selectedConentsKey: null
+      selectedConentsKey: null,
+      currentMemoObj: {},
+      showMoreMemoTextYn: false
 
     }
   },
@@ -150,6 +153,7 @@ export default {
     this.contentsList = this.commonListData
     if (this.targetContentsKey) {
       this.targetCKey = this.targetContentsKey
+      this.memoOpenClick(this.targetCKey)
     }
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
@@ -430,11 +434,25 @@ export default {
       if (result.data.result === true) {
         // this.memoList = []
         // await this.getBoardMemoList(true)
-        this.currentMemoList = await this.getContentsMemoList(this.currentContentsKey)
-        this.memoSetCount()
+        var response = await this.getContentsMemoList(this.currentContentsKey)
+        this.currentMemoList = response.content
+        this.currentMemoObj = response
+        this.offsetInt = this.currentMemoList.length
+        this.memoSetCount(response.totalElements)
       }
     },
+    pointAni () {
+      var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' .memoCard')[0]
+      if (firstMemoCard) {
+        firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
+        setTimeout(() => {
+          firstMemoCard.style.boxShadow = 'none'
+        }, 1000)
+      } else {
 
+      }
+    },
     async saveMemo (text) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
@@ -449,7 +467,7 @@ export default {
       memo.targetKey = this.currentContentsKey
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
@@ -463,16 +481,20 @@ export default {
         // await this.getContentsList()
         // await this.getBoardMemoList(true)
         // this.currentMemoList = []
-        this.currentMemoList = await this.getContentsMemoList(this.currentContentsKey)
-        console.log(this.currentMemoList)
-        this.memoSetCount()
-        this.scrollMove(-1)
+        var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
+        this.currentMemoList = response.content
+        this.currentMemoObj = response
+        this.offsetInt = this.currentMemoList.length
+        console.log(response)
+        this.memoSetCount(response.totalElements)
+        this.pointAni()
+        /* this.scrollMove(-1) */
       }
     },
-    memoSetCount () {
+    memoSetCount (size) {
       var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1 ){
-        this.contentsList[indexOf].memoCount = this.currentMemoList.length
+        this.contentsList[indexOf].memoCount = size
       }
     },
     mememoCancel(){
@@ -504,6 +526,8 @@ export default {
         this.memoShowYn = true
     },
     async memoOpenClick (key) {
+        this.pageSize = 5
+        this.offsetInt = 0
       this.selectedConentsKey = key
       var findIndex = this.openMemoList.indexOf(key)
       this.currentMemoList = []
@@ -525,8 +549,12 @@ export default {
         }
         document.getElementById('alimMemo'+key).style.display = 'block'
         document.getElementById('borderLine'+key).style.display = 'block'
-
-        this.currentMemoList = await this.getContentsMemoList(key)
+        var response = await this.getContentsMemoList(key)
+        this.currentMemoList = response.content
+        this.offsetInt = this.currentMemoList.length
+        this.currentMemoObj = response
+        // this.memoSetCount(response.totalElements)
+        
 
       } else {
         // document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
@@ -620,12 +648,14 @@ export default {
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     }, */
-    async getContentsMemoList (key) {
+    async getContentsMemoList (key, pageSize, offsetInt) {
       var memo = {}
       memo.targetKind = 'C'
       memo.targetKey = key
-      memo.pageSize = this.pagesize
-      memo.offsetInt = this.offsetInt
+      if (pageSize) memo.pageSize = pageSize
+      else  memo.pageSize = this.pagesize
+      if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
+      else  memo.offsetInt = this.offsetInt
       // if (allYn) {
       //   memo.pageSize = this.totalElements + 1
       //   memo.offsetInt = 0
@@ -637,10 +667,13 @@ export default {
       })
       // console.log(result.data.content)
       var list = new Array()
-      list = result.data.content
+      list = result.data
+      console.log(list)
+      
       /* console.log('this.$refs.gMemoRef')
       console.log(this.$refs.gMemoRef)
       this.$refs.gMemoRef.memoLoadingHide() */
+      this.currentMemoObj = result.data
       return list
         // if (allYn) {
         //   this.alimMemoList = result.data.content
@@ -653,6 +686,28 @@ export default {
         //   this.alimMemoList = newArr
         // }
 
+    },
+
+
+    async loadMoreMemo () {
+        this.showMoreMemoTextYn = false
+        if (this.currentMemoObj.totalElements < (this.offsetInt + this.currentMemoObj.pageable.pageSize)) {return}
+        this.showMoreMemoTextYn = true
+    },
+    async yesLoadMore () {
+        this.pageSize = 5
+        /* debugger */
+        var response = await this.getContentsMemoList(this.currentContentsKey)
+        debugger
+        var newArr = []
+        newArr = [
+            ...this.currentMemoList,
+            ...response.content
+        ]
+        this.currentMemoList = newArr
+        this.currentMemoObj = response
+        this.offsetInt = this.currentMemoList.length
+        this.memoSetCount(response.totalElements)
     },
     async copyText () {
       // eslint-disable-next-line no-undef
@@ -841,28 +896,32 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
-            this.systemName = localStorage.getItem('systemName')
-          }
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-
-          var currentPage = this.$store.getters.hCPage
-
-          if ((currentPage === 0 || currentPage === undefined)) {
-          } else {
-            if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
-              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (this.selectedConentsKey) {
-                await this.getMemoList(this.selectedConentsKey)
-              }
+            if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+                this.systemName = localStorage.getItem('systemName')
             }
-          }
+            if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+                this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+            } else {
+                this.notiDetail = JSON.parse(message.pushMessage).noti.data
+            }
+            if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
+                if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+                }
+                if (this.selectedConentsKey === Number(this.notiDetail.targetKey)) {
+                    var pageS = this.currentMemoList.length + 1
+                    if (pageS === 0 ) {
+                        pageS = 5
+                    }
+                    var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
+                    
+                    this.currentMemoObj = response
+                    this.currentMemoList = response.content
+                    this.offsetInt = this.currentMemoList.length
+                    this.pointAni()
+                    this.memoSetCount(response.totalElements)
+                }
+            }
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

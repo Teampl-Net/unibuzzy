@@ -389,11 +389,13 @@ export default {
         }
         if (message.type === 'pushmsg') {
           if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
-            this.refreshList()
+            if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
+            else this.refreshList()
           }
         } else if (message.type === 'pushBar') {
           if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
-            this.refreshList()
+            if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
+            else this.refreshList()
           }
         }
       } catch (err) {

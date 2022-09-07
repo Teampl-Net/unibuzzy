@@ -714,12 +714,16 @@ export default {
                     if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
                       this.$refs.boardMainPop.refresh()
                     } else {
-                      this.notiDetailShowYn = true
+                      if (this.notiDetail.jobkindId !== 'BOAR') {
+                        this.notiDetailShowYn = true
+                      }
                     }
                   } else if (this.targetType === 'writePush') {
                     return
                   } else {
-                    this.notiDetailShowYn = true
+                    if (this.notiDetail.jobkindId !== 'BOAR') {
+                      this.notiDetailShowYn = true
+                    }
                   }
                 } else {
                   if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
@@ -751,12 +755,10 @@ export default {
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                 } else {
-                  if (this.notiDetail.actType === 'WR') {
+                  if (this.notiDetail.jobkindId === 'ALIM') {
+                    this.openPop({ targetKey: this.notiDetail.creTeamKey, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  } else if (this.notiDetail.jobkindId === 'BOAR') {
                     this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                  } else {
-                    if (this.notiDetail.actType === 'LI') {
-                      this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                    }
                   }
                 }
               }
