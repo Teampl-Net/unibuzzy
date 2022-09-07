@@ -175,6 +175,7 @@ export default {
         tempList.splice(newIndex, 0, tempList[oldIndex])
         tempList.splice(oldIndex + 1, 1)
       }
+      this.formCardList = tempList
 
       // var selectList = tempList[oldIndex]
 

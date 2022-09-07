@@ -24,7 +24,9 @@
               <img v-if="editIndex !== index" src="../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="editAddressBook(data)" >
               <!-- <p v-else class="fl font14 cursorP" style=" margin: 0 5px;" @click="updateCabinet(data,index)">확인</p> -->
 
-              <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinet(data,index)" >
+              <!-- <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinet(data,index)" > -->
+              <img src="../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinetClick(data,index)" >
+
             </div>
             <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1 cursorP" style="position: relative; height: 100%;">
               <img class="img-w30" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
@@ -184,7 +186,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getTeamMenuList',
+                url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.cabinetList = result.data
@@ -199,6 +201,13 @@ export default {
             }
 
         },
+        deleteCabinetClick(data, index){
+            var param = {}
+            param.data = data
+            param.index = index
+            param.targetType = 'cabinet'
+            this.$emit('delAddress', param)
+        },
         async deleteCabinet(data,index){
             var param = {}
             param.cabinetKey = data.cabinetKey
@@ -207,7 +216,7 @@ export default {
             try{
                 // this.cabinetList.splice(index, 1)
                 var result = await this.$commonAxiosFunction({
-                    url: '/tp.deleteCabinet',
+                    url: 'https://mo.d-alim.com:10443/tp.deleteCabinet',
                     param: param
                 })
                 if(result.data === 'true' || result.data === true){
@@ -307,7 +316,7 @@ export default {
 
             var result = null
             var response = await this.$commonAxiosFunction({
-                url: '/tp.saveCabinet',
+                url: 'https://mo.d-alim.com:10443/tp.saveCabinet',
                 param: paramSet
             })
             result = response.data
@@ -343,7 +352,7 @@ export default {
             paramSet.teamMenuList = teamMenuList
             var result = await this.$commonAxiosFunction(
                 {
-                url: '/tp.changePosTeamMenu',
+                url: 'https://mo.d-alim.com:10443/tp.changePosTeamMenu',
                 param: paramSet
                 }
             )

@@ -114,6 +114,7 @@ export default {
   },
   methods: {
     downLoadTemplete (path) {
+      console.log(path)
       var iframe
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
@@ -130,7 +131,7 @@ export default {
     },
     async test () {
       var result = await this.$commonAxiosFunction({
-        url: '/tp.uploadTpUserRequireListExcelFile',
+        url: 'https://mo.d-alim.com:10443/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })
@@ -156,7 +157,7 @@ export default {
           this.isUploading = true
 
           this.$axios
-            .post('/tp.uploadTpUserRequireListExcelFile', form, {
+            .post('https://mo.d-alim.com:10443/tp.uploadTpUserRequireListExcelFile', form, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
@@ -226,7 +227,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMUserFromExcelFile',
+        url: 'https://mo.d-alim.com:10443/tp.saveMUserFromExcelFile',
         param: {
           /* cabientType:  */
           bookType: this.bookType,

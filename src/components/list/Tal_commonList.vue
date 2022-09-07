@@ -218,7 +218,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -231,7 +231,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -330,13 +330,14 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.confirmText
         this.smallPopYn = true
+        this.$emit('showToastPop', this.confirmText)
         // this.confirmPopShowYn = true
       }
     },
@@ -368,9 +369,12 @@ export default {
         this.saveActAxiosFunc(param)
       } else if (this.currentConfirmType === 'memoDEL') {
         this.deleteMemo({ memoKey: this.tempData.memoKey })
+        this.$emit('showToastPop', '댓글을 삭제하였습니다.')
       } else if (this.currentConfirmType === 'alimDEL') {
+        this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
         this.deleteAlim()
       } else if (this.currentConfirmType === 'boardDEL') {
+        this.$emit('showToastPop', '게시글을 삭제하였습니다.')
         this.deleteAlim()
       }
 
@@ -420,7 +424,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -449,7 +453,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -628,7 +632,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

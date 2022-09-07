@@ -6,7 +6,7 @@
           <img :src=" member.domainPath + member.userProfileImg" />
         </div>
         <img v-else src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
-        <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0}">
+        <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0 || member.grantDate != null}">
           <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
           <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
         </div>
@@ -22,7 +22,7 @@
           <!-- <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" > -->
 
           <div v-if="!member.ownerYn && member.userKey !== userKey" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
-            <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0)" class="fl" />
+            <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0 || member.grantDate != null)" class="fl" />
             <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >매니저</label>
           </div>
 

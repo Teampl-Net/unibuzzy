@@ -149,7 +149,14 @@ export default {
         this.$emit('editYn', this.editYn)
       }
     },
-    async deleteMemberClick (data, index) {
+    deleteMemberClick (data, index) {
+      var param = {}
+      param.data = data
+      param.index = index
+      param.targetType = 'member'
+      this.$emit('delAddress', param)
+    },
+    async deleteMember (data, index) {
       if (this.propData.value.creUserKey !== data.userKey) {
         if (this.propData.selectMemberType === 'manager') {
           this.$emit('deleteManager', data)
@@ -158,7 +165,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: '/tp.deleteMCabContents',
+            url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {

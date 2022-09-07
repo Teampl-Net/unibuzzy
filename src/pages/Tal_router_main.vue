@@ -129,7 +129,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -200,8 +200,11 @@ export default {
                     this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
                   } else {
                     if (this.notiDetail.actType === 'LI') {
-                      alert(JSON.stringify(this.notiDetail))
-                      this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
+                      if (this.notiDetail.jobkindId === 'ALIM') {
+                        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                      } else if (this.notiDetail.jobkindId === 'BOAR') {
+                        this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
+                      }
                     }
                   }
                 }

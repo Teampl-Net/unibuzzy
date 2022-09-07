@@ -145,7 +145,7 @@ export default {
                 if (this.viewTab != 'complex') {
                     this.$refs.actBar.switchtab(1)
                     this.viewTab = 'complex'
-                        
+
                 }
                 /* this.editorType = 'complex' */
                 var file = item.getAsFile();
@@ -290,7 +290,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -310,7 +310,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -723,7 +723,7 @@ export default {
                 var formList = document.querySelectorAll("#eContentsWrap .formDiv")
                 thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
                 thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
-                
+
                 // this.$emit('updateImgForm', this.previewImgUrl)
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

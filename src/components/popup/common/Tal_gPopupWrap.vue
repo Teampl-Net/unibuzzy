@@ -11,7 +11,7 @@
       @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
-      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' @followYn="this.headerFollowYn = true" />
+      <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @openPop="openPop" />
@@ -35,7 +35,7 @@
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
 
       <boardDetail @openLoading='this.loadingYn = true' @closeLoading='this.loadingYn = false' :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" />
-      <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' />
+      <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" />
@@ -286,7 +286,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -601,6 +601,11 @@ export default {
       }
       /* } */
     },
+    showToastPop (msg) {
+      setTimeout(() => {
+        this.$showToastPop(msg)
+      }, 500)
+    },
     successCreChan (params) {
       if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
         this.$emit('parentClose', true)
@@ -692,8 +697,15 @@ export default {
                     this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
                   } else {
                     if (this.notiDetail.actType === 'LI') {
-                      this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
+                      if (this.notiDetail.jobkindId === 'ALIM') {
+                        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                      } else if (this.notiDetail.jobkindId === 'BOAR') {
+                        this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
+                      }
                     }
+                    // if (this.notiDetail.actType === 'LI') {
+                    //   this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
+                    // }
                   }
                 }
               } else {

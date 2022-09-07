@@ -269,7 +269,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -297,7 +297,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.refresh()

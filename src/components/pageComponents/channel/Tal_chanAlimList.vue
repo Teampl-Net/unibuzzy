@@ -120,7 +120,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; padding: 0 1.5rem; padding-top: 1.5rem!important; overflow: hidden;">
-    <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" />
+    <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" />
     <!-- <div v-else style="">
       <p>구독하고 알림을 받아보세요!</p>
     </div> -->
@@ -130,7 +130,7 @@
   <div v-if="detailShowYn" >
     <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
-  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn = false'  v-if="errorBoxYn"/>
+  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
     <writePush  ref="chanAlimListWritePushRefs" @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
   </div>
@@ -187,7 +187,8 @@ export default {
       writePopId: '',
       titleLongYn: false,
       notiDetail: null,
-      systemName: ''
+      systemName: '',
+      currentConfirmType: ''
       // errorPopYn: false
     }
   },
@@ -329,40 +330,54 @@ export default {
 
       this.followYn = true
     },
-    async changeFollowYn () {
-      if (this.admYn === true) {
-        this.errorBoxText = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
-        this.errorBoxYn = true
-      } else {
-        var fStatus = this.followYn
-        // eslint-disable-next-line no-new-object
-        this.followParam = new Object()
-        this.followParam.teamKey = this.chanItem.teamKey
-        this.followParam.teamName = this.$changeText(this.chanItem.nameMtext)
-        this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-        console.log(this.followParam)
-        var result = false
-        this.sendLoadingYn = true
-        if (fStatus) {
+    async confirmOk () {
+      if (this.currentConfirmType === 'follow') {
+        if (this.admYn === true) {
+          this.errorBoxText = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
+          this.errorBoxYn = true
+        } else {
+          var fStatus = this.followYn
+          // eslint-disable-next-line no-new-object
+          this.followParam = new Object()
+          this.followParam.teamKey = this.chanItem.teamKey
+          this.followParam.teamName = this.$changeText(this.chanItem.nameMtext)
+          this.followParam.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          this.followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
           console.log(this.followParam)
-          result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
-          this.followYn = false
-          console.log(result)
+          var result = false
+          this.sendLoadingYn = true
+          if (fStatus) {
+            console.log(this.followParam)
+            result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
+            this.followYn = false
+            console.log(result)
 
-          if (result.result || result) {
-            this.sendLoadingYn = false
-            this.$emit('pageReload')
+            this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
+
+            if (result.result || result) {
+              this.sendLoadingYn = false
+              this.$emit('pageReload')
+            } else {
+              this.sendLoadingYn = false
+              this.errorBoxText = '실패했습니다. 관리자에게 문의해주세요'
+              this.errorBoxType = 'timeover'
+              this.errorBoxYn = true
+            }
           } else {
             this.sendLoadingYn = false
-            this.errorBoxText = '실패했습니다. 관리자에게 문의해주세요'
-            this.errorBoxType = 'timeover'
-            this.errorBoxYn = true
+            this.openWelcomePopYn = true
           }
-        } else {
-          this.sendLoadingYn = false
-          this.openWelcomePopYn = true
         }
+      }
+    },
+    changeFollowYn () {
+      this.currentConfirmType = 'follow'
+      if (this.followYn === true) {
+        this.errorBoxText = '구독을 취소하시겠습니까?'
+        this.confirmType = 'two'
+        this.errorBoxYn = true
+      } else if (this.followYn === false) {
+        this.confirmOk()
       }
     },
     setGrade () {
@@ -436,7 +451,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

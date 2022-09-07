@@ -176,7 +176,8 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', this.chanDetail.targetKey)
       this.modiTeamData = await this.$getTeamList(paramMap)
-
+      // console.log('this.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamData')
+      // console.log(this.modiTeamData.data.content[0].reqKey)
       this.inputChannelName = this.$changeText(this.modiTeamData.data.content[0].nameMtext)
       this.inputChannelMemo = this.$changeText(this.modiTeamData.data.content[0].memoMtext)
       console.log(this.modiTeamData.data.content[0].bgPathMtext.length > 30)
@@ -247,7 +248,12 @@ export default {
       var gParam = new Object()
       if (this.chanDetail !== {}) {
         gParam.teamKey = this.chanDetail.targetKey
+        if (this.modiTeamData.data){
+          // console.log(this.modiTeamData.data.content[0].reqKey)
+          gParam.reqKey = this.modiTeamData.data.content[0].reqKey
+        }
       }
+
       gParam.nameMtext = 'KO$^$' + this.inputChannelName
       gParam.memoMtext = 'KO$^$' + this.inputChannelMemo
       gParam.teamType = this.selectType
@@ -255,6 +261,8 @@ export default {
       gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       gParam.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+      console.log(gParam)
+
       var params = new Object()
       if(this.deleteYn === true){
         params.deleteYn = true

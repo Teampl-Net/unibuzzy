@@ -236,7 +236,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: '/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinetShare = response.data.mCabinet.mShareItemList

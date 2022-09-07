@@ -1,6 +1,6 @@
 <template>
     <div class="editBookListWrap">
-        <gConfirmPop :confirmText='confirmText' confirmType='timeout' v-if="confirmPopShowYn" @no='confirmPopShowYn=false'  />
+        <gConfirmPop :confirmText='confirmText' :confirmType="confirmType" v-if="confirmPopShowYn" @no='confirmPopShowYn=false' @ok='confirmOk' />
         <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
             <!-- <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
@@ -50,9 +50,9 @@
                 <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
             </div>
             <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
-                <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" />
+                <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" @delAddress="delAddress" />
                 <transition name="showGroup">
-                    <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' />
+                    <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' @delAddress="delAddress" />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
                 <!-- <div v-if="plusMenuShowYn"  @click="plusMenuShowYn = !plusMenuShowYn" style="background: #00000026; height: 100%; width: 100%; position: fixed; left: 0; z-index: 999; top: 0;"></div> -->
@@ -75,7 +75,6 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-
 import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/Tal_findContentsList.vue'
 import bookListCompo from './Tal_commonBookList.vue'
@@ -141,13 +140,32 @@ export default {
             orderByText: 'creDate',
             searchKeyword: '',
             confirmPopShowYn: false,
+            confirmType: 'timeout',
             confirmText: '',
             plusMenuShowYn: false,
             imInYn: false,
-            searchFilterList: []
+            searchFilterList: [],
+            tempData: {},
+            currentConfirmType: ''
         }
     },
     methods: {
+        confirmOk () {
+            if (this.currentConfirmType === 'cabinet') {
+                this.$refs.bookListCompoRef.deleteCabinet(this.tempData.data, this.tempData.index)
+            } else if (this.currentConfirmType === 'member') {
+                this.$refs.memberListRef.deleteMember(this.tempData.data, this.tempData.index)
+            }
+            this.$emit('showToastPop', (this.currentConfirmType === 'cabinet'? '주소록이 삭제되었습니다.' : '주소가 삭제되었습니다.'))
+            this.confirmPopShowYn = false
+        },
+        delAddress (params) {
+            this.currentConfirmType = params.targetType
+            this.tempData = params
+            this.confirmText = (params.targetType === 'cabinet' ? '주소록을' : '주소를' ) + ' 삭제하시겠습니까?'
+            this.confirmType = 'two'
+            this.confirmPopShowYn = true
+        },
         setBookSearchFilter () {
             console.log('%%%%%%%%%%%%%%%')
             if (this.selectBookDetail.sSub) {
@@ -171,7 +189,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('searchKeyStr', 'sSub' + (index + 1))
             var result = await this.$commonAxiosFunction({
-            url: '/tp.getMCabUserGroupList',
+            url: 'https://mo.d-alim.com:10443/tp.getMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
         console.log(result)
@@ -201,7 +219,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getTeamMenuList',
+                url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -285,7 +303,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getMCabContentsList',
+                url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -459,6 +477,7 @@ export default {
                 this.excelUploadShowYn = true
             } else {
                 this.confirmText = '엑셀업로드 기능은<br>더알림 PC버전에서만 가능합니다'
+                this.confirmType = 'timeout'
                 this.confirmPopShowYn = true
             }
         },
@@ -468,7 +487,7 @@ export default {
             params.teamKey = this.propData.currentTeamKey
             params.memberYn = true
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getFollowerList',
+                url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
                 param: params
             })
 
