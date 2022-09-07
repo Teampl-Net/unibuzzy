@@ -87,11 +87,10 @@ export default {
       this.$store.commit('updateStack', history)
 
       var currentPage = this.$store.getters.hCPage
-
       if ((currentPage === 0 || currentPage === undefined)) {
-        this.$emit('openDetailPop', { nameMtext: this.detailVal.creTeamName, targetKey: this.detailVal.creTeamKey, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { nameMtext: this.$changeText(this.pushDetail.nameMtext), targetKey: this.pushDetail.creTeamKey, targetContentsKey: this.pushDetail.contentsKey, targetType: 'chanDetail', value: this.pushDetail })
       } else {
-        this.$emit('openDetailPop', { nameMtext: this.detailVal.creTeamName, targetKey: this.detailVal.creTeamKey, targetContentsKey: this.detailVal.targetKey, targetType: 'chanDetail', value: this.pushDetail })
+        this.$emit('openDetailPop', { nameMtext: this.$changeText(this.pushDetail.nameMtext), targetKey: this.pushDetail.creTeamKey, targetContentsKey: this.pushDetail.contentsKey, targetType: 'chanDetail', value: this.pushDetail })
       }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
@@ -119,7 +118,7 @@ export default {
       // param.contentsKey = 1001172
       param.contentsKey = 1003095
       /* param.contentsKey = this.detailVal.targetKey */
-      param.contentsKey = this.detailVal.contentsKey
+      param.contentsKey = JSON.parse(this.detailVal.userDo).targetKey || this.detailVal.contentsKey
       var resultList = await this.$getContentsList(param)
       return resultList
     }
@@ -140,11 +139,6 @@ export default {
 </script>
 
 <style scoped>
-
-.pushPopUpWrap{
-  /* width: calc(100% - 20px); box-shadow: 0 0 9px 2px #b8b8b8; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto; */
-
-}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 

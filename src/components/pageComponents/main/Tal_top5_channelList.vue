@@ -110,7 +110,7 @@ export default {
           }
           var currentPage = this.$store.getters.hCPage
           if ((currentPage === 0 || currentPage === undefined)) {
-            if (this.notiDetail.targetKind === 'TEAM') {
+            if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
               this.getContentsList()
             }
           }

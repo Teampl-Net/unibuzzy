@@ -221,7 +221,7 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -393,12 +393,12 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
+          if (JSON.parse(JSON.parse(message.pushMessage).noti.data.userDo).targetKind === 'CONT') {
             if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
             else this.refreshList()
           }
         } else if (message.type === 'pushBar') {
-          if (JSON.parse(message.pushMessage).noti.data.targetKind === 'CONT') {
+          if (JSON.parse(JSON.parse(message.pushMessage).noti.data.userDo).targetKind === 'CONT') {
             if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
             else this.refreshList()
           }

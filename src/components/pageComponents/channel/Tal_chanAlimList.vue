@@ -451,7 +451,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -681,8 +681,8 @@ export default {
 
           if ((currentPage === 0 || currentPage === undefined)) {
           } else {
-            if (this.notiDetail.targetKind === 'TEAM') {
-              if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+            if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
+              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
                 return
               }
               await this.getChanDetail()

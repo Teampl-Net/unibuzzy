@@ -244,7 +244,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -257,7 +257,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -356,7 +356,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -450,7 +450,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -493,7 +493,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -550,31 +550,32 @@ export default {
     async memoOpenClick (key) {
         this.pageSize = 5
         this.offsetInt = 0
-      this.selectedConentsKey = key
-      var findIndex = this.openMemoList.indexOf(key)
-      this.currentMemoList = []
-      // var div = document.getElementById('memoList'+key)
-      // console.log('div')
-      // console.log(div)
-      console.log(key)
-      console.log(this.currentContentsKey)
-      console.log(findIndex)
-      if (findIndex === -1) {
-        // this.openMemoList.push(key)
-        var list = new Array
-        list.push(key)
-        this.openMemoList = list
-        // document.getElementById('memoOpen'+key).innerText = '댓글접기'
-        if (this.currentContentsKey !== null ){
-          document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
-          document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
-        }
-        document.getElementById('alimMemo'+key).style.display = 'block'
-        document.getElementById('borderLine'+key).style.display = 'block'
-        var response = await this.getContentsMemoList(key)
-        this.currentMemoList = response.content
-        this.offsetInt = this.currentMemoList.length
-        this.currentMemoObj = response
+        this.selectedConentsKey = key
+        var findIndex = this.openMemoList.indexOf(key)
+        this.currentMemoList = []
+        // var div = document.getElementById('memoList'+key)
+        // console.log('div')
+        if (findIndex === -1) {
+            // this.openMemoList.push(key)
+            console.log('갑니다!!!!111')
+            var list = new Array
+            list.push(key)
+            this.openMemoList = list
+            var response = await this.getContentsMemoList(key)
+            console.log('$$$$$$$$$$$$')
+            console.log(response.content.length)
+            this.currentMemoList = response.content
+            this.offsetInt = this.currentMemoList.length
+            this.currentMemoObj = response
+
+            // document.getElementById('memoOpen'+key).innerText = '댓글접기'
+            if (this.currentContentsKey !== null ){
+            document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
+            document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+            }
+            document.getElementById('alimMemo'+key).style.display = 'block'
+            document.getElementById('borderLine'+key).style.display = 'block'
+            
         // this.memoSetCount(response.totalElements)
 
 
@@ -684,7 +685,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -926,11 +927,11 @@ export default {
             } else {
                 this.notiDetail = JSON.parse(message.pushMessage).noti.data
             }
-            if (this.notiDetail.targetKind === 'CONT' || this.notiDetail.targetKind === 'MEMO') {
-                if (Number(this.notiDetail.creUserKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT' || JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
+                if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
                 return
                 }
-                if (this.selectedConentsKey === Number(this.notiDetail.targetKey)) {
+                if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) {
                     var pageS = this.currentMemoList.length + 1
                     if (pageS === 0 ) {
                         pageS = 5

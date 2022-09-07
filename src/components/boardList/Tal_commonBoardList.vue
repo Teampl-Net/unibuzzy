@@ -285,9 +285,9 @@ export default {
           this.commonBoardListData[idx].likeCount += 1
         }
       }
-      if (result === true) {
+      /* if (result === true) {
         await this.$emit('refresh')
-      }
+      } */
     },
     async loadMore () {
       this.loadingRefShow()
