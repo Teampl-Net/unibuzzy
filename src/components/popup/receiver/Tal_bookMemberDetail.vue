@@ -16,8 +16,8 @@
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB detailLabelText" >이름</p>
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-            <input v-if="!readOnlyYn && !changeYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
-            <img v-if="readOnlyYn && !changeYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+            <input v-if="!readOnlyYn && !changeYn && selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+            <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
             <div v-show="changeYn" class="fl creChanInput" style="">
                 <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
                 <div class="fl" style="width: 100px">
@@ -122,8 +122,9 @@ export default {
     mounted () {
         this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
     },
-    created(){
+    async created(){
         console.log(this.propData)
+        this.$emit('openLoading')
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
                 this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
@@ -155,13 +156,25 @@ export default {
                     if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc)
                         this.memPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
                     else{ this.memPhone= '등록된 번호가 없습니다.' }
+                } else if (this.propData.userKey) {
+                    var userKey = this.propData.userKey
+                    await this.getMemberListGetUserInfo()
+                    // var param = {}
+                    // param.userKey
+                    // var response = await this.$commonAxiosFunction({
+                    // url: '/tp.getUserList',
+                    // param: param
+                    // })
+                    // console.log(response)
+
+                    // var list = await result.data.content
+                    // console.log(list)
                 }
             }
-
-
         }
         if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
         // this.readOnlyYn = false
+        this.$emit('closeLoading')
     },
     data () {
         return {
@@ -189,6 +202,34 @@ export default {
         }
     },
     methods:{
+        async getMemberListGetUserInfo () {
+            var paramMap = new Map()
+            paramMap.set('memberYn', true)
+            paramMap.set('teamKey', this.propData.teamKey)
+            paramMap.set('pageSize', 100)
+            var result = await this.$commonAxiosFunction({
+                url: '/tp.getFollowerList',
+                param: Object.fromEntries(paramMap)
+            })
+            var list = []
+            list = result.data.content
+            console.log(list)
+            var indexOf = list.findIndex(i => i.userKey === this.propData.userKey);
+            console.log(indexOf)
+            if (indexOf !== -1) {
+                var data = list[indexOf]
+                this.userProfileImg = data.userProfileImg
+                if (data.domainPath) {
+                    this.domainPath = data.domainPath
+                }
+                this.memName = this.$changeText(data.userDispMtext)
+                this.memEmail = data.userEmail
+                this.memPhone = data.phoneEnc
+            } else {
+                this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
+                this.closeXPop()
+            }
+        },
         sendPushAlim () {
             var param = {}
             param.targetType = 'writePush'

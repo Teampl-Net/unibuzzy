@@ -29,7 +29,7 @@
                 <div class="writeBoardPageTopArea font15">
                   <div class=""><p class="boardWriteTitleText font15 fontBold commonColor" style="">제목</p><input type="text" id="pushTitleInput" placeholder="제목을 입력해주세요" class="font15 pageTopInputArea font15 inputArea fl" v-model="writePushTitle" style="background-color:white" name="" ></div>
                   <div class="" v-if="propData.nonMemYn"><p class="font15 boardWriteTitleText" style="">문의자</p><input type="text" id="pushTitleInput" placeholder="이름을 입력해주세요" class="pageTopInputArea font15 inputArea fl" v-model="nonMemUserName" style="background-color:white" name="" ></div>
-                  <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
+                  <div v-show="fileYn" style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
                     <div style="width: 100%; min-height: 30px;">
                       <!-- <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
                       <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
@@ -194,7 +194,8 @@ export default {
       selectBoardYn: false,
       selectBoardIndex: null,
       selectBoardCabinetKey: null,
-      writeBoardPlaceHolder: '작성불가'
+      writeBoardPlaceHolder: '작성불가',
+      fileYn: false
     }
   },
   computed: {
@@ -222,15 +223,15 @@ export default {
     if (this.propData.titleStr) {
       this.writePushTitle = this.propData.titleStr
     }
+
+    this.getCabinetDetail(this.propData.cabinetKey)
   },
   methods: {
-    async selectBoard (data, index) {
-      this.selectBoardIndex = index
-
+    async getCabinetDetail (cabinetKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('currentTeamKey', this.propData.currentTeamKey)
-      paramMap.set('cabinetKey', data.cabinetKey)
+      paramMap.set('cabinetKey', cabinetKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
@@ -239,7 +240,28 @@ export default {
         url: '/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
-      var mCabinetShare = response.data.mCabinet.mShareItemList
+      var mCabinet = response.data.mCabinet
+      console.log(mCabinet)
+      this.fileYn = mCabinet.fileYn
+      return mCabinet
+    },
+    async selectBoard (data, index) {
+      this.selectBoardIndex = index
+
+      // var paramMap = new Map()
+      // paramMap.set('teamKey', this.propData.currentTeamKey)
+      // paramMap.set('currentTeamKey', this.propData.currentTeamKey)
+      // paramMap.set('cabinetKey', data.cabinetKey)
+      // paramMap.set('sysCabinetCode', 'BOAR')
+      // paramMap.set('shareType', 'W')
+      // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      // console.log(paramMap)
+      // var response = await this.$commonAxiosFunction({
+      //   url: '/tp.getCabinetDetail',
+      //   param: Object.fromEntries(paramMap)
+      // })
+      var mCabinet = await this.getCabinetDetail(data.cabinetKey)
+      var mCabinetShare = mCabinet.mShareItemList
       console.log(mCabinetShare)
       if (mCabinetShare[0]) {
         if (mCabinetShare[0].shareType) {

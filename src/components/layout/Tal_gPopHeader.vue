@@ -75,7 +75,6 @@ export default {
     closeXPop () {
       // alert('me')
       /* alert(this.memberDetailOpen)
-      alert(this.headerTitle)
       if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
         this.$emit('memberDetailClose')
       // } else if (this.targetType === 'pushDetail') {

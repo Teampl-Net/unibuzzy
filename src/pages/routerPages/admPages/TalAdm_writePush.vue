@@ -68,7 +68,7 @@
                   <div class="fl" style="width: 100%; min-height: 25px; margin-bottom: 15px;" v-if="!this.replyPopYn">
                     <div class="fl mright-1"><input id="creNameInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="showCreNameYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="creNameInput">작성자공개</label></div>
                     <!-- <div class="fl mleft-05"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font14" for="replyInput">답변 허용</label></div> -->
-                    <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">덧글허용</label></div>
+                    <div class="fl mright-1"><input id="replyInput" type="checkbox" style="float: left; margin-top: 6px;" v-model="canReplyYn"><label style="margin-left: 5px;" class="font16 fontBold commonColor" for="replyInput">댓글허용</label></div>
                     <div class="fl " ><input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 6px;" name="" id="titleShow"> <label class="font16 fontBold commonColor" style="margin-left: 5px;" for="titleShow">제목추가</label></div>
                   </div>
 
@@ -189,8 +189,8 @@ export default {
       screenInnerHeight: window.innerHeight,
       receiverClickYn: true,
       replyPopYn: false,
-      showCreNameYn: false,
-      canReplyYn: false,
+      showCreNameYn: true, // 작성자 명 공개
+      canReplyYn: true, // 댓글 허용
       propFormData: [],
       formEditorShowYn: false,
       // msgPopYn:false,

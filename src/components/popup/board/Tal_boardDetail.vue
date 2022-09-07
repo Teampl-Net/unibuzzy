@@ -18,7 +18,7 @@
               <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
             </div> -->
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray">{{alim.showCreNameYn === 1? this.$changeText(alim.creUserName) : ''}}</p>
+            <p class="font12 fl lightGray">{{this.blindYn === true ? '익명' : (alim.showCreNameYn === 1 ? this.$changeText(alim.creUserName) : '')}}</p>
             <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
             <p v-if="alim.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(alim.updDate) + ')'}}</p>
           </div>
@@ -161,7 +161,7 @@ export default {
       picBgPath: '',
       fileYn: false,
       deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
-      blindYn: false,
+      blindYn: true,
       attachTrueFileList: [],
       reportYn: false,
       contentType: '',
@@ -190,6 +190,7 @@ export default {
     imgPreviewPop
   },
   created () {
+    this.$emit('openLoading')
     // console.log(this.detailVal)
     // console.log(this.detailVal.value.value)
     if (this.detailVal.value) {
@@ -538,14 +539,16 @@ export default {
         this.shareAuth.W = true
         this.shareAuth.V = true
       }
-      this.replyYn = true
+
       this.picBgPath = mCabinetContentsDetail.picBgPath
       if (this.detailVal.nonMemYn) {
         this.picBgPath = '#6768A7'
       }
-      this.fileYn = mCabinetContentsDetail.fileYn
-      this.deleteYn = mCabinetContentsDetail.deleteYn // 나중에 삭제된 게시글을 공유하게 된다면
-      this.blindYn = mCabinetContentsDetail.blindYn
+      console.log(mCabinetContentsDetail)
+      this.fileYn = mCabinetContentsDetail.fileYn === 1
+      this.replyYn = mCabinetContentsDetail.replyYn === 1
+      this.deleteYn = mCabinetContentsDetail.deleteYn === 1// 나중에 삭제된 게시글을 공유하게 된다면
+      this.blindYn = mCabinetContentsDetail.blindYn === 1
     },
     openUpdateContentsPop () {
       // eslint-disable-next-line no-new-object

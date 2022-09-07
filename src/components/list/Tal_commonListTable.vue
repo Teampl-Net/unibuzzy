@@ -9,7 +9,7 @@
             <col class="listHeader" style="width: 65px; float: left;">
             <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" >
+        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" @click="clickInfo(value)">
             <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
               <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
                 <!-- <div style="background:#ffffff50; width:20px; height:20px; border-radius:100%; border:1px solid #ccc; overflow: hidden; position:absolute; bottom:-10px; right:-10px; display: flex; justify-content: center; align-items: center;"> -->
@@ -52,6 +52,9 @@ export default {
   },
   emits: ['goDetail'],
   methods: {
+    clickInfo (data) {
+      console.log(data)
+    },
     goChanDetail (data) {
       console.log(data)
       // eslint-disable-next-line no-new-object
@@ -99,8 +102,9 @@ export default {
       if (value.cabinetNameMtext) {
         nameStr += ('[' + this.$changeText(value.cabinetNameMtext) + ']')
       }
+
       if (value.creUserName) {
-        nameStr += ('(' + this.$changeText(value.creUserName) + ')')
+        nameStr += ('(' + (value.blindYn === 1 ? '익명' : this.$changeText(value.creUserName)) + ')')
       }
       return nameStr
     }

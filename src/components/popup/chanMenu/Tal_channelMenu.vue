@@ -208,7 +208,7 @@ export default {
       console.log(result.data.content[0])
       if (result.data) {
         if(result.data.content.length > 0){
-          if(result.data.content[0].adminKey !== undefined && result.data.content[0].adminKey !== null && result.data.content[0].adminKey !== '') {
+          if(result.data.content[0].managerKey !== undefined && result.data.content[0].managerKey !== null && result.data.content[0].managerKey !== '') {
             this.adminYn = true
           }
           if(result.data.content[0].ownerYn)

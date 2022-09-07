@@ -27,9 +27,9 @@
       <div style="text-align: left;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
-    <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="this.functionPopShowYn = false"></div>
+    <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
     <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
-      <popHeader @closeXPop="this.functionPopShowYn = false" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
+      <popHeader @closeXPop="closeFuncPop" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
         <!-- <div class="itemWrite" style="width: 100%;">
           <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
@@ -67,21 +67,30 @@
       <div class="itemWrite">
         <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
-          <input type="checkbox" v-model="replyYnInput" id="toggle1"  @click="replyYnChange"  hidden>
+          <input type="checkbox" v-model="replyYnInput" id="toggle1" hidden>
           <label for="toggle1" class="toggleSwitch">
             <span class="toggleButton"></span>
           </label>
         </div>
       </div>
-      <!-- <div class="itemWrite">
-        <p style = "width: 150px;" class="textLeft font16 fl toggleLine">파일 업로드</p>
+      <div class="itemWrite">
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">파일 업로드</p>
         <div class="toggleInputWrap">
-          <input type="checkbox" v-model="fileYnInput" id="toggle2" :checked="fileYnInput === true" hidden>
+          <input type="checkbox" v-model="fileYnInput" id="toggle2" hidden>
           <label for="toggle2" class="toggleSwitch">
             <span class="toggleButton"></span>
           </label>
         </div>
-      </div> -->
+      </div>
+      <div class="itemWrite">
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">실명/익명</p>
+        <div class="toggleInputWrap">
+          <input type="checkbox" v-model="blindYn" id="toggle3" hidden>
+          <label for="toggle3" class="toggleSwitch">
+            <span class="toggleButton"></span>
+          </label>
+        </div>
+      </div>
       </div>
       <!-- <div style="padding: 0 8px; margin-top: 30px;">
         <div @click="nextStep" class="creChanBigBtn">다음</div>
@@ -334,6 +343,10 @@ export default {
   components: { selectType, selectBookList, receiverAccessList },
   // emits: ['openPop', 'goPage'],
   methods: {
+    closeFuncPop () {
+      this.changeFunc()
+      this.functionPopShowYn = false
+    },
     openPop (param) {
       this.$emit('openPop', param)
     },
@@ -392,7 +405,8 @@ export default {
       this.okFunctionList = ''
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
       if (data.mCabinet.replyYn === 1) { this.replyYnInput = true; this.okFunctionList += '댓글 지원O' } else { this.okFunctionList += '댓글 지원X'; this.replyYnInput = false }
-      // if(data.mCabinet.fileYn=== 1){this.okFunctionList += '파일업로드O/'; this.fileYnInput = true}else{this.okFunctionList += '파일업로드X/'; this.fileYnInput = true}
+      if (data.mCabinet.fileYn === 1) { this.okFunctionList += '/파일업로드O'; this.fileYnInput = true } else { this.okFunctionList += '/파일업로드X'; this.fileYnInput = false }
+      if (data.mCabinet.blindYn === 1) { this.okFunctionList += '/익명'; this.blindYn = true } else { this.okFunctionList += '/실명'; this.blindYn = false }
       if (data.mCabinet.picBgPath) {
         this.selectedColor = data.mCabinet.picBgPath
       }
@@ -808,13 +822,17 @@ export default {
       this.$store.commit('updateStack', history)
       this.selectTypePopShowYn = false
     },
-    replyYnChange () {
-      if (!this.replyYnInput) {
-        this.okFunctionList = '댓글 지원O'
-      } else {
-        this.okFunctionList = '댓글 지원X'
-      }
+    changeFunc () {
+      console.log(this.blindYn)
+      this.okFunctionList = (this.replyYnInput === true ? '댓글O' : '댓글X') + (this.fileYnInput === true ? '/파일O' : '/파일X') + (this.blindYn === true ? '/익명' : '/실명')
     },
+    // replyYnChange () {
+    // if (!this.replyYnInput) {
+    //   this.okFunctionList = '댓글 지원O'
+    // } else {
+    //   this.okFunctionList = '댓글 지원X'
+    // }
+    // },
     click () {
       var toggle0 = document.getElementById('toggle0')
       this.show = !toggle0.checked
@@ -1111,6 +1129,16 @@ input:-internal-autofill-selected {
 }
 
 #toggle2:checked ~ .toggleSwitch .toggleButton {
+  /* 100% -> 끝위치, 2.8rem -> 버튼 크기 */
+  left: calc(100% - 25px);
+  background: #fff;
+}
+/* 세 번째 토글 */
+#toggle3:checked ~ .toggleSwitch {
+  background: #6768A7;
+}
+
+#toggle3:checked ~ .toggleSwitch .toggleButton {
   /* 100% -> 끝위치, 2.8rem -> 버튼 크기 */
   left: calc(100% - 25px);
   background: #fff;

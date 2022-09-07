@@ -23,7 +23,7 @@
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
-                <p class="font12 fl lightGray">{{board.showCreNameYn === 1? this.$changeText(board.creUserName): ''}}</p>
+                <p class="font12 fl lightGray" >{{blindYn === true ? '익명' : (board.showCreNameYn === 1? this.$changeText(board.creUserName): '')}}</p>
                 <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
               <!-- </div> -->
           </div>
@@ -98,7 +98,8 @@ export default {
     activeTabList: {},
     clickEvnt: {},
     commonBoardListData: {},
-    nonMemYn: {} //비회원 문의 게시판
+    nonMemYn: {}, //비회원 문의 게시판,
+    blindYn: {}
   },
   components: {
 

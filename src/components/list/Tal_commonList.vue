@@ -5,7 +5,7 @@
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo">
         <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
-          <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -25,7 +25,8 @@
                   <div class="w-100P fl">
                     <p style="width:65%; " class="font14 fl grayBlack">
                       <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                      {{this.changeText(alim.nameMtext)}}{{alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': ''}}
+                      {{this.changeText(alim.nameMtext)}}
+                      <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
                     </p>
                     <div class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -187,6 +188,27 @@ export default {
     this.settingAtag()
   },
   methods: {
+    clickInfo (data) {
+      console.log(data)
+    },
+    // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
+    userNameClick (userShowYn, userKey, teamKey) {
+      if(userShowYn === true){
+        var param = {}
+        param.targetType = 'bookMemberDetail'
+        param.readOnlyYn = true
+        param.userKey = userKey
+        param.teamKey = teamKey
+        if (userKey === this.commonListCreUserKey) {
+          param.selfYn = true
+        } else {
+          param.contentOpenYn = true
+        }
+
+
+        this.$emit('openPop',param)
+      }
+    },
     settingAtag () {
       if (this.systemName !== 'Android' && this.systemName !== 'android') {
         return
@@ -554,7 +576,7 @@ export default {
         this.offsetInt = this.currentMemoList.length
         this.currentMemoObj = response
         // this.memoSetCount(response.totalElements)
-        
+
 
       } else {
         // document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
@@ -669,7 +691,7 @@ export default {
       var list = new Array()
       list = result.data
       console.log(list)
-      
+
       /* console.log('this.$refs.gMemoRef')
       console.log(this.$refs.gMemoRef)
       this.$refs.gMemoRef.memoLoadingHide() */
@@ -914,7 +936,7 @@ export default {
                         pageS = 5
                     }
                     var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
-                    
+
                     this.currentMemoObj = response
                     this.currentMemoList = response.content
                     this.offsetInt = this.currentMemoList.length

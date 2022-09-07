@@ -72,6 +72,8 @@ export default {
     memberInfo(member){
       // if(this.tab === 'Mem' && member.memberYn){
         var param = {}
+        console.log("@@########!@#!!!!!!!!!!!@@@@@@@@@@@")
+        console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
         param.userKey = member.userKey
