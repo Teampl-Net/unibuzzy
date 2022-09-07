@@ -196,16 +196,10 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   ;
                 } else {
-                  if (this.notiDetail.actType === 'WR') {
+                  if (this.notiDetail.jobkindId === 'ALIM') {
+                    this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  } else if (this.notiDetail.jobkindId === 'BOAR') {
                     this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                  } else {
-                    if (this.notiDetail.actType === 'LI') {
-                      if (this.notiDetail.jobkindId === 'ALIM') {
-                        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                      } else if (this.notiDetail.jobkindId === 'BOAR') {
-                        this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                      }
-                    }
                   }
                 }
               } else {
@@ -235,12 +229,10 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
 
                 } else {
-                  if (this.notiDetail.actType === 'WR') {
+                  if (this.notiDetail.jobkindId === 'ALIM') {
+                    this.openPop({ targetKey: this.notiDetail.creTeamKey, targetContentsKey: this.notiDetail.targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  } else if (this.notiDetail.jobkindId === 'BOAR') {
                     this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                  } else {
-                    if (this.notiDetail.actType === 'LI') {
-                      this.openPop({ targetKey: this.notiDetail.targetKey, targetType: 'boardDetail', cabinetNameMtext: this.notiDetail.targetName, value: this.notiDetail, pushOpenYn: true })
-                    }
                   }
                 }
               }

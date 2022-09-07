@@ -13,8 +13,8 @@
           <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
           <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
         </div> -->
-      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">
-        <div class="chanImgRound" :style="'background-image: url('+  (value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
+      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
+        <div class="chanImgRound" :style="'background-image: url('+  (chanInfo.logoDomainPath? chanInfo.logoDomainPath + chanInfo.logoPathMtext : chanInfo.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
           <!-- <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
         </div>
         <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">

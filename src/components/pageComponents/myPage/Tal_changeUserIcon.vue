@@ -218,7 +218,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://222.233.118.96:19091/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
@@ -230,7 +230,7 @@ export default {
                 this.selectedImgPath = path
                 this.selectedImgFilekey = res.data[0].fileKey
                 var tempLocalStorage = JSON.parse(localStorage.getItem('sessionUser'))
-                tempLocalStorage.userProfileImg = this.selectedImgPath
+                tempLocalStorage.userProfileImg = res.data[0].pathMtext
                 tempLocalStorage.picMfilekey = this.selectedImgFilekey
                 localStorage.setItem('sessionUser', JSON.stringify(tempLocalStorage))
                 // localStorage.getItem('sessionUser').userProfileImg = this.selectedImgPath
