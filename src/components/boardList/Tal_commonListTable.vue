@@ -8,7 +8,7 @@
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft" :key="index" v-on:click="goDetail(value)" >
             <td v-if="mainYn === false">
-                <img :src="value.logoDomainPath + value.logoPathMtext" style="width: 50px;"/>
+                <img :src="(value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext)" style="width: 50px;"/>
             </td>
             <td class="textCenter" v-if="mainYn === true">
                 <img src="../../assets/images/main/icon_notice2.png" style="width:1.5rem">

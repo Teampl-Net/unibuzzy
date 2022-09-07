@@ -9,7 +9,7 @@
       <div class="" >
         <div class="profileWrap ">
           <div @click="changeUserImg()" class="cursorP imgSize">
-            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + userInfo.domainPath + userInfo.userProfileImg + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;">
             </div>
             <div v-else class="roundDiv"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             </div>

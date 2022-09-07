@@ -1,6 +1,6 @@
 <template>
     <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="goDetail(value)" >
-      <div class="gChanPageChanLogoImgWrap" :style="'background-image: url(' + value.logoDomainPath + value.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+      <div class="gChanPageChanLogoImgWrap" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
         <!-- <img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"> -->
       </div>
       <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">

@@ -31,10 +31,10 @@
           <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
             <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
               <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
-              <img v-if="opentype =='iconPop'" :src="value.domainPath + value.pathMtext"  style="width: calc(var(--chanBoxSize) - 20px)"/>
+              <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
               <p class="font15"  v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
 
-              <img v-if="opentype =='bgPop'" :src='value.domainPath + value.pathMtext' style="width: 100%; height: 100%;" >
+              <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
               <!-- <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: calc(var(--chanBoxSize) + 10px);" > -->
 
             </div>
@@ -379,7 +379,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

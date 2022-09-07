@@ -3,7 +3,7 @@
   <gActiveBar :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" />
   <div class="chanTop5Wrap" >
       <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
-          <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="value.logoDomainPath + value.logoPathMtext"></div>
+          <div class="chanLogoImgWrap"><img alt="채널 프로필이미지" class="" :src="(value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : + value.logoPathMtext)"></div>
           <div style="display:flex; width: cacl(100% - 36px); flex-direction: column;">
             <div class=" text-start mr-04" >
               <p class="font15 fl fontBold mNone" v-html="this.$makeMtextMap(value.nameMtext, 'KO')"></p>

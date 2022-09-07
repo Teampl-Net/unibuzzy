@@ -8,7 +8,7 @@
           <div v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
-                <div  @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + alim.domainPath + alim.logoPathMtext + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                <div  @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>

@@ -5,7 +5,7 @@
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap"  v-if="userInfoChangeYn">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+userInfo.domainPath + userInfo.userProfileImg+')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
+    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
     </div>
     <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
 
