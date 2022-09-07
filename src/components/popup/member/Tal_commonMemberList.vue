@@ -6,7 +6,7 @@
           <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
         </div>
         <img v-else src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
-        <div class="fl adminTag" :class="{nonTag: !member.managerKey > 0 || member.grantDate != null}">
+        <div class="fl adminTag" :class="{nonTag: (!member.adminKey > 0 && currentTab === 'Mem') || (!member.managerKey > 0 && currentTab === 'Admin') }">
           <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
           <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
         </div>
@@ -15,14 +15,14 @@
       <div class="fr  memberItemBox" >
         <img class="fl img-w20" @click="openCommonAlertPop(member)" src="../../../assets/images/common/icon_message_solid.svg" style="height:18px; margin:0.6rem"  />
        <!--  <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" > -->
-        <!-- <gToggle :toggleId='member.userKey' :isChecked="(member.managerKey !== undefined && member.managerKey !== null && member.managerKey !== '')" class="fl mtop-01" style="margin:0.5rem; padding-top:0.3rem" /> -->
+        <!-- <gToggle :toggleId='member.userKey' :isChecked="(member.adminKey !== undefined && member.adminKey !== null && member.adminKey !== '')" class="fl mtop-01" style="margin:0.5rem; padding-top:0.3rem" /> -->
         <!-- <div v-if="currentTab == 'Admin'"> -->
         <div v-if="ownerYn">
           <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="margin:0.6rem 0.8rem; " class="fl img-w20">
           <!-- <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" > -->
 
           <div v-if="!member.ownerYn && member.userKey !== userKey" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
-            <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0 || member.grantDate != null)" class="fl" />
+            <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.adminKey > 0 || member.grantDate != null)" class="fl" />
             <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >매니저</label>
           </div>
 
@@ -52,7 +52,8 @@ export default {
   components: { match },
   props: {
     managingList: {},
-    currentOwner: {}
+    currentOwner: {},
+    currentTab: {}
   },
   data () {
     return {

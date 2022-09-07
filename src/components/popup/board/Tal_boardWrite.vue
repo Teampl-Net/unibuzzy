@@ -236,7 +236,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
+        url: '/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinetShare = response.data.mCabinet.mShareItemList
@@ -572,7 +572,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://222.233.118.96:19091/fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

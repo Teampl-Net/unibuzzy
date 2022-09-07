@@ -1,21 +1,27 @@
 <template>
   <div class="pushBackground" @click="goNo"></div>
-  <div class="pushPopUpWrap zoomInOutPop" >
-    <div class="pushPopContent pushMbox">
+  <div class="pushPopUpWrap" >
+    <div class="pushPopContent pushMbox zoomInOutPop">
       <div class="pushDetailTopArea">
-        <img class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+        <div v-if="pushDetail.domainPath" class="fl pushDetailPopChanLogoImgWrap" :style="'background-image: url(' + (pushDetail.domainPath !== null ? pushDetail.domainPath + pushDetail.logoPathMtext : pushDetail.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+        <img v-else class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
+
         <div class="pushDetailHeaderTextArea">
           <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}</p>
-          <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.changeText(pushDetail.creUserName) + ')'}}</p>
+          <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.$changeText(pushDetail.creUserName) + ')'}}</p>
           <p class="font12 fr lightGray">{{this.$changeDateFormat(pushDetail.creDate)}}</p>
 
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(JSON.parse(this.detailVal).sendTime).format('YYYY-MM-DD HH:mm')}}</p> -->
           <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
-      <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto; "></div>
+
+      <!-- <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto; "></div> -->
+      <div class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(pushDetail.bodyFullStr)" style="max-height:300px; overflow:hidden"></div>
+      <p @click="goOk" v-show="pushDetail.bodyFullStr && pushDetail.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+
       <div class="detailPopUpBtnArea">
         <gBtnSmall btnTitle="바로가기" class="mright-05" style="height: 30px;" @click="goOk"/>
         <gBtnSmall btnTitle="닫기" class="mleft-05" style="height: 30px;" @click="goNo"/>
@@ -89,6 +95,16 @@ export default {
       }
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
+    setBodyLength (str) {
+      // eslint-disable-next-line no-undef
+      str = Base64.decode(str)
+      // str = atob(str)
+      str.replace('contenteditable= true', '')
+      if (str.length > 130) {
+        str.substring(0, 130)
+      }
+      return str
+    },
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
@@ -100,7 +116,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
-      param.contentsKey = 1001172
+      // param.contentsKey = 1001172
+      param.contentsKey = 1003095
       /* param.contentsKey = this.detailVal.targetKey */
       param.contentsKey = this.detailVal.contentsKey
       var resultList = await this.$getContentsList(param)
@@ -116,13 +133,18 @@ export default {
     this.popId = 'pushDetailPop' + history.length
     history.push(this.popId)
     this.$store.commit('updateStack', history)
+    // alert(JSON.stringify(this.detailVal))
+    // alert(JSON.stringify(this.pushDetail))
   }
 }
 </script>
 
 <style scoped>
 
-.pushPopUpWrap{width: calc(100% - 20px);left: 10px; position: absolute; box-shadow: 0 0 9px 2px #b8b8b8; z-index: 999999999999999999; top: 30%; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto;}
+.pushPopUpWrap{
+  /* width: calc(100% - 20px); box-shadow: 0 0 9px 2px #b8b8b8; border-radius: 10px; background: #FFFFFF; border: 0.5px solid #CFCFCF; margin: 0 auto; */
+
+}
 
 .detailPopUpBtnArea{display: flex; margin: 0.5rem auto; height: 20px; justify-content:center;}
 
@@ -132,9 +154,13 @@ export default {
 .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
 
 .pushPopContent{
-  position: relative;
-  width: 100%;
-  margin: auto;
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  top: 30%;
+  z-index: 999999999999999999;
+  transform: translateY(-50%);
+  /* margin: auto; */
   border-radius: 0.8rem;
   background-color: #ffffff;
   color: #363c5f;
@@ -156,4 +182,6 @@ export default {
 .stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 
 .pushBackground{width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:99999999999999999;}
+
+.pushDetailPopChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 </style>

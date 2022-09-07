@@ -128,11 +128,11 @@ export default {
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
       memo.creUserKey = data.creUserKey
-      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      // memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

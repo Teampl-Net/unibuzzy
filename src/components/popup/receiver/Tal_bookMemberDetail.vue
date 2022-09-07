@@ -279,7 +279,7 @@ export default {
                 else
                     onMessage('REQ', 'sendSms', num)
             } else {
-                alert('전화번호 정보가 없습니다')
+                alert('전화번호 정  보가 없습니다')
             }
         },
         async deleteManager () {

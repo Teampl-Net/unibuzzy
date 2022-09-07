@@ -6,7 +6,7 @@
       멤버 신청서 만들기
       </div> -->
       <!-- <gBtnSmall v-if="tab === 'Mem'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
-      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' />
+      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
       <div v-if="managingList.length === 0 && ownerYn && tab === 'Mem'" class="mtop-1" style="">
         <p class="font16 " style="">정보를 공개한 대상이 없습니다. <br> <!--채널을 조금 더 홍보해보세요! --> </p>
       </div>
@@ -99,30 +99,26 @@ export default {
         var paramMap = new Map()
         paramMap.set('memberYn', true)
         paramMap.set('teamKey', this.propData.currentTeamKey)
+        paramMap.set('pageSize', 100)
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+          url: '/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.managingList = await result.data.content
-        console.log(this.managingList)
       }else if (typeName === 'Admin') {
         var param = {}
         param.teamKey = this.propData.currentTeamKey
-
+        param.pageSize = 100
         result = await this.$commonAxiosFunction({
-          url : 'https://mo.d-alim.com:10443/tp.getManagerList',
+          url : '/tp.getManagerList',
           param: param
         })
 
         this.managingList =await result.data.managerList
       } else {
       }
-
+      // console.log(this.managingList)
       // paramMap.set('followerType', 'M')
-
-
-
-
     },
 
     async setManager (param) {
@@ -141,7 +137,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+        url: '/tp.deleteManager',
         param: param
       })
 
@@ -150,7 +146,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveManager',
+        url: '/tp.saveManager',
         param: param
       })
     },
@@ -171,7 +167,7 @@ export default {
 
 
       var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveManager',
+          url: '/tp.saveManager',
           param: param
       })
 
