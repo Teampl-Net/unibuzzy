@@ -236,7 +236,8 @@ export default {
       if (result.data.length > 0) {
         return true
       } else {
-        return false
+        // return false 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+        return true
       }
       //
     },
