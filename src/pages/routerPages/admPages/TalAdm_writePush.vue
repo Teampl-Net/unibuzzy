@@ -62,6 +62,18 @@
                     <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
                       <span>{{this.creUserName + '님'}}</span><!-- {{this.replyData.creUserKey}} -->
                     </div>
+                    <div v-if="!allYn && (this.receiverList.memberList.length > 0 || this.receiverList.bookList.length > 0)" style="width: calc(100%); overflow: auto hidden; background: rgb(204 204 204 / 48%); padding: 5px 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
+                      <div :style="setScrollWidth" style="min-width = 100%; height: 100%; float: left;">
+                        <div v-for="(value, index) in this.receiverList.memberList" :key="index" style="min-width: 30px; margin-left: 5px; float: left; padding: 0 10px; height: 25px; border-radius: 5px; background: #fff;">
+                            <span class="font14 fl">{{value.userDispMtext}}</span>
+                            <span @click="delRecvList('m', index)" class="font14 fr mleft-1">x</span>
+                        </div><!-- {{this.replyData.creUserKey}} -->
+                        <div v-for="(value, index) in this.receiverList.bookList" :key="index" style="min-width: 30px; margin-left: 5px; float: left; padding: 0 10px; height: 25px; border-radius: 5px; background: #fff;">
+                            <span class="font14 fl">{{value.cabinetNameMtext}}</span>
+                            <span @click="delRecvList('b', index)" class="font14 fr  mleft-1">x</span>
+                        </div><!-- {{this.replyData.creUserKey}} -->
+                      </div>
+                    </div>
 
                   </div>
 
@@ -117,7 +129,6 @@
 /* eslint-disable */
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../../components/unit/formEditor/Tal_formEditor.vue'
-import selectReceivPop from '../../../components/popup/receiver/Tal_selectBookList.vue'
 export default {
   props: {
     params: {},
@@ -219,7 +230,7 @@ export default {
       progressShowYn: false,
       editorType: 'text',
       receiverPopYn: false,
-      receiverList: '',
+      receiverList: {memberList: [], bookList: []},
       receiverText: '수신자를 선택해주세요',
       allRecvYn: true,
       selectedReceiverList: [],
@@ -245,6 +256,10 @@ export default {
     }
   },
   computed: {
+    setScrollWidth () {
+        var w = 150 * this.receiverTotalNum
+        return 'width: ' + w + 'px'
+    },
     // calcFormCardHeight() {
     //   if (this.formCardHeight) {
     //   } else {
@@ -321,6 +336,14 @@ export default {
         // this.requestAgreeYn = true
       }
     },
+    delRecvList (type, index) {
+        if (type === 'm') {
+            this.receiverList.memberList.splice(index, 1)
+        } else if (type === 'b') {
+            this.receiverList.bookList.splice(index, 1)
+        }
+        this.receiverTotalNum -= 1
+    },
     checkRequstAgree () {
       var checkYn = false
       if (this.answerRequestMsg.replaceAll(' ', '') !== '') {
@@ -363,52 +386,121 @@ export default {
     // this.$changeText(this.params.targetNameMtext)
     // },
     setSelectedList(obj) {
+        var mList = []
+        var bList = []
+        var myMList = []
+        var myBList = []
+        console.log(this.receiverList)
+        if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
+            myMList = this.receiverList.memberList
+        }
+        if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
+            myBList = this.receiverList.bookList
+        }
 
-      this.receiverList = obj
+
+        if (obj.bookList && obj.bookList.length > 0) {
+            bList = obj.bookList
+            if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
+                myBList = this.receiverList.bookList
+                for (var mb = 0; mb < myBList.length; mb ++) {
+                    for (var b = obj.bookList.length - 1; b >= 0; b --) {
+                        debugger
+                        if (obj.bookList[b].cabinetKey === myBList[mb].cabinetKey) {
+                            bList = bList.splice[b, 1]
+                            break
+                        }
+                    }
+                }
+            }
+            if (bList === undefined || bList === null) bList = []
+        }
+
+        if (obj.memberList && obj.memberList.length > 0) {
+            mList = obj.memberList
+            if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
+                mList = this.receiverList.memberList
+                for (var mm = 0; mm < myMList.length; mm ++) {
+                    for (var m = obj.memberList.length - 1; m >= 0; m --) {
+                        if (obj.memberList[m].userKey === myMList[mm].userKey) {
+                            mList = mList.splice[m, 1]
+                            break
+                        }
+                    }
+                }
+            }
+            if (mList === undefined || mList === null) mList = []
+        }
+        debugger
+        if (myMList.length > 0) {
+            if (mList.length > 0) {
+                this.receiverList.memberList = [
+                    ...myMList,
+                    ...mList
+                ]
+            }
+        } else {
+            if(mList.length > 0) {
+                this.receiverList.memberList = mList
+            }
+        }
+        if (myBList.length > 0) {
+            if (bList.length > 0) {
+                this.receiverList.bookList = [
+                    ...myBList,
+                    ...bList
+                ]
+            }
+        } else {
+            if(bList.length > 0) {
+                this.receiverList.bookList = bList
+            }
+        }
+        
+      
       this.list = []
       this.selectedReceiverList = []
-      this.receiverTotalNum = 0
+      this.receiverTotalNum = myMList.length + mList.length + myBList.length + bList.length
       this.receiverText = ''
       console.log(this.receiverList.bookList);
       // var shareItemBookList = []
       // eslint-disable-next-line no-new-object
-      var shareItemBookObject = new Object()
-      if (this.receiverList.bookList) {
-        for (let i = 0; i < this.receiverList.bookList.length; i++) {
-          var selectedBookList = this.receiverList.bookList[i]
 
-          shareItemBookObject = {}
-          shareItemBookObject.accessKind = 'C'
-          shareItemBookObject.accessKey = selectedBookList.cabinetKey
 
-          /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-          // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
-          // this.list.push(shareItemBookObject)
-          this.receiverText += selectedBookList.cabinetNameMtext + ', '
-          this.selectedReceiverList.push(shareItemBookObject)
-          this.receiverTotalNum += 1
+    },
+    settingRecvList () {
+        var shareItemBookObject = new Object()
+        if (this.receiverList.bookList) {
+            for (let i = 0; i < this.receiverList.bookList.length; i++) {
+            var selectedBookList = this.receiverList.bookList[i]
+
+            shareItemBookObject = {}
+            shareItemBookObject.accessKind = 'C'
+            shareItemBookObject.accessKey = selectedBookList.cabinetKey
+
+            /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
+            // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
+            // this.list.push(shareItemBookObject)
+            this.receiverText += selectedBookList.cabinetNameMtext + ', '
+            this.selectedReceiverList.push(shareItemBookObject)
+            }
+            /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+
         }
-        /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-
-      }
-      // var shareItemMemberList = []
-      // eslint-disable-next-line no-new-object
-      var shareItemMemberObject = new Object()
-      if (this.receiverList.memberList) {
-        for (let i = 0; i < this.receiverList.memberList.length; i++) {
-          var selectedMemberList = this.receiverList.memberList[i]
-          shareItemMemberObject = {}
-          shareItemMemberObject.accessKind = 'U'
-          shareItemMemberObject.accessKey = selectedMemberList.userKey
-          /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-          this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
-          this.selectedReceiverList.push(shareItemMemberObject)
-          this.receiverTotalNum += 1
+        // var shareItemMemberList = []
+        // eslint-disable-next-line no-new-object
+        var shareItemMemberObject = new Object()
+        if (this.receiverList.memberList) {
+            for (let i = 0; i < this.receiverList.memberList.length; i++) {
+            var selectedMemberList = this.receiverList.memberList[i]
+            shareItemMemberObject = {}
+            shareItemMemberObject.accessKind = 'U'
+            shareItemMemberObject.accessKey = selectedMemberList.userKey
+            /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+            this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
+            this.selectedReceiverList.push(shareItemMemberObject)
+            }
         }
-      }
-      this.receiverText = this.receiverText.slice(0,-2);
-
-
     },
     openPushReceiverSelect () {
       var param = {}
@@ -416,6 +508,7 @@ export default {
       param.targetKey = this.params.targetKey
       param.teamKey = this.params.targetKey
       param.teamNameMtext = this.params.teamNameMtext
+      param.pSelectedList = this.receiverList
       console.log(this.params);
 
 
@@ -519,6 +612,7 @@ export default {
         param.parentContentsKey = this.params.targetContentsKey
         param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
         } else {
+          await settingRecvList()
           if (this.selectedReceiverList.length > 0) {
             param.actorList = this.selectedReceiverList
           } else {
@@ -804,8 +898,7 @@ export default {
 
   components: {
     commonConfirmPop,
-    formEditor,
-    selectReceivPop
+    formEditor
     // msgPop,
     // writePushPageTitle,
     // pushPop

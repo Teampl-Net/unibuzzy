@@ -11,7 +11,7 @@
     </transition>
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden;">
-      <router-view :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+      <router-view :pepYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
     </div>
     <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999"/>
   </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="manageStickerWrap">
         <popHeader headerTitle="스티커 수정" @closeXPop="closeXPop" class="manageStickerHeader"/>
-        <div class="popBody" style="margin-top: 70px; padding: 0 1.5rem">
+        <div class="popBody" style="margin-top: 70px; padding: 0 1rem">
             <div style="width: 100%; float: left;  height: 150px; margin-bottom: 20px;">
                 <p class="font15 textLeft fontBold mbottom-05">선택된 스티커</p>
                 <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in selectedStickerList " :key="index" style=" margin-bottom: 5px; min-width: 60px; margin-right: 5px; height: 25px; border-radius: 20px; float: left; padding: 0 10px;">

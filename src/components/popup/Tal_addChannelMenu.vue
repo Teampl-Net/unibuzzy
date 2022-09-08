@@ -186,7 +186,7 @@ computed: {
 .channelItemExplain{
     min-height:40%;
     background-color:#6768a735;
-    margin: 0 1.5rem;
+    margin: 0 1rem;
     text-align: left;
     padding: 1rem
     /* border-radius: 10px; */

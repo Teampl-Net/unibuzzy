@@ -118,7 +118,7 @@
 
     <!-- <p class="fl font14 fontBold" @click="openPop" style="">채널 정보 ></p> -->
   </div>
-  <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1.5rem; margin-top: 350px; overflow: hidden;"> -->
+  <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; padding-top: 1.5rem!important; overflow: hidden;">
     <pushList :targetContentsKey="chanDetail.targetContentsKey" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem'/>
     <!-- <div v-else style="">

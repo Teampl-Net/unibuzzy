@@ -42,7 +42,7 @@
       <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
 
       <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
-      <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  @sendReceivers='setManagerSelectedList' />
+      <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop'  />
       <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'setMypage'">

@@ -285,7 +285,7 @@ export default {
 
 <style >
 .selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:999; position:absolute; top:0; left:0}
-.selectBookListContents{width: 100%; height: 50%; position: relative; padding: 0 1.5rem; float: left; margin-top:50px;}
+.selectBookListContents{width: 100%; height: 50%; position: relative; padding: 0 1rem; float: left; margin-top:50px;}
 .bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; width: calc(100% - 3rem) !important; background: #fff;}
 .memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); width: calc(100% - 3rem); background: #fff;}
 .selectedListStyle{float: left; width:100%; height:calc(50% - 50px); position: absolute; bottom:0px; left:0px}

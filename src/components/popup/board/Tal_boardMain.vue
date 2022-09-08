@@ -921,7 +921,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.26); color: white;
 }
 
-.boardItemBox {padding: 0 1.5rem;}
+.boardItemBox {padding: 0 1rem;}
 
 @media screen and (max-width: 300px) {
   .boardItemBox {padding: 0 0.7rem!important;}

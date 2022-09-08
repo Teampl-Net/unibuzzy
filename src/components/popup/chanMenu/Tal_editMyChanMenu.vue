@@ -1,5 +1,5 @@
 <template>
-<div style="padding: 60px 1.5rem 0 1.5rem ;box-sizing: border-box; width: 100%; height: 100%;" >
+<div style="padding: 60px 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%;" >
 <!-- <div v-for="(data, index) in editMenuList" :key="index" class="fl" style="width:100%; height:3rem; padding: 0 2rem; border-bottom:1px solid #ccc; ">
   <p class="fl commonBlack font16" style="line-height:3rem;">{{data.menuName}}</p>
 </div> -->

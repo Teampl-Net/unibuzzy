@@ -4,7 +4,7 @@
 <div class="pagePaddingWrap" style="width: 100%; height: 100%; background : #fff; position: relative;  padding-top: 10px; overflow: hidden; float: left;">
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
     <!-- <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/> -->
-    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="padding: 0 1.5rem ; margin-top: 10px;" @changeTab= "changeTab"></gActiveBar>
+    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="padding: 0 1rem ; margin-top: 10px;" @changeTab= "changeTab"></gActiveBar>
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->

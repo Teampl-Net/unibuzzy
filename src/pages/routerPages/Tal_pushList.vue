@@ -7,7 +7,7 @@
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
         <!-- <img v-on:click="openPushBoxPop()" class="fr" style="width: 1.5rem; margin-top: 1.5rem" src="../../assets/images/push/icon_noticebox.png" alt="검색버튼"> -->
         <!-- <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" /> -->
-        <div style="padding: 0 1.5rem ; padding-top: 10px; width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end;">
+        <div :style="!popYn ? 'padding: 0 1rem ; padding-top: 10px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end;">
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
         </div>
@@ -18,7 +18,7 @@
       </transition>
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
-        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding: 0 1rem; padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
+        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); ">
         <!-- 읽음처리 hold //20220819 수민 -->
         <!-- <div class="fr pushReadCheckAlimArea" :class="this.scrolledYn? 'pushReadCheckAlimArea--unpinned': 'pushReadCheckAlimArea--pinned'" style="border-radius: 5px; height: 20px; padding: 3px 10px; background: rgb(255 255 255 / 70%); position: sticky; top: 10px; z-index: 1; display: flex; align-items: center;" > <input type="checkbox" v-model="readCheckBoxYn" id="alimReadYn" style="" > <label for="alimReadYn" class="mleft-05 cursorP font15">안읽은 알림 보기</label></div> -->
         <!-- <div class="stickerWrap">
