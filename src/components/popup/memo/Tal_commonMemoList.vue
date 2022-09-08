@@ -20,20 +20,22 @@
         </div>
         <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
-          <div v-if="memo.userProfileImg"  class="memoPicImgWrap">
+          <div @click="memoUserNameClick(memo.creUserKey)" v-if="memo.userProfileImg"  class="memoPicImgWrap">
             <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
           </div>
           <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-          <p class="grayBlack fl font15" style="min-height: 30px; line-height: 30px; ">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
-          <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-          <p class="font13 mleft-05 fl" style="margin-right: 10px; color: darkgray; line-height: 30px;">{{this.$changeDateFormat(memo.creDate)}}</p>
-
+          <p @click="memoUserNameClick(memo.creUserKey)" class="grayBlack fl font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
+            <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+            <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
+            {{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}
+          </p>
         </div>
-        <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; ">
+        <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
+        <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
           <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
           <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; height: 100%;" class="commonBlack font14" v-html="memo.bodyFullStr" ></div>
         </div>
-        <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666; margin-top: 10px;" >
+        <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
           <div v-if="editIndex === index">
               <div class="memoActionArea borderLeft font13"  @click="editEnd(memo)" >완료</div>
               <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
@@ -81,6 +83,9 @@ export default {
     }
   },
   methods: {
+    memoUserNameClick (creUser) {
+      this.$emit('memoUserNameClick', creUser)
+    },
     contentMenuClick (type, ownerYn, memo, index) {
       var param = {}
       param.type = type
@@ -172,7 +177,7 @@ export default {
 
 <style scoped>
 .memoCard{
-  width: 100%; min-height: 100px; padding: 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left; margin: 5px 0;
+  width: 100%; min-height: 100px; padding: 5px 10px; padding-right: 0; border-bottom: 0.8px solid #ccc; float: left; margin: 5px 0;
   /* background-color: white; */
   background-color: transparent;
   transition : background-color 0.5s ease-in;

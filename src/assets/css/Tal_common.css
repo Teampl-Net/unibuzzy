@@ -173,6 +173,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .font9{font-size: 9px}
 .font8{font-size: 8px}
 
+.fontNomal{font-weight: normal}
 .fontBold{font-weight: bold;}
 .img-w30{width: 30px}
 .img-w29{width: 29px}
@@ -584,6 +585,9 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 }
 
+.contentTypeTextArea{
+  min-width: 30px; min-height: 20px; border-radius: 10px;margin-top: 0.5px; padding: 0 5px;  margin-right: 5px;
+}
 
 .splide__pagination {bottom: 20px !important; position: fixed!important; z-index: 999999!important}
 

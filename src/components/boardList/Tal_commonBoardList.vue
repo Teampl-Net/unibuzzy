@@ -13,19 +13,24 @@
         <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
         <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
-          <div  class="pushDetailTopArea">
-                <img class="fr mright-03 mleft-03 cursorP" style="width:4.5px;" @click="contentMenuClick('board', board.creUserKey === creUser, board)" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-                <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px)); float: left;">
-                  <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
-                  <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt="">
-                  {{resizeText(board.title)}}
-                </p>
-              <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-                <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
-                <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
-                <p class="font12 fl lightGray" @click="userNameClick(board.creUserKey, board.creTeamKey, board.blindYn === 1)" >{{blindYn === true ? '익명' : (board.showCreNameYn === 1? this.$changeText(board.creUserName): '')}}</p>
-                <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
-              <!-- </div> -->
+          <div class="pushDetailTopArea">
+            <div class="boardChanLogoImgWrap fl" :style="'background-image: url(' + (board.domainPath ? board.domainPath + board.logoPathMtext : board.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+            </div>
+            <img class="fr mright-03 mleft-03 cursorP" style="width:4.5px;" @click="contentMenuClick('board', board.creUserKey === creUser, board)" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+            <!-- <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" :class="{commonBlue : board.readYn === 0}" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px)); float: left;"> -->
+            <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px + 48px)); float: left;">
+              <!-- <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
+              <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
+              <pp v-if="board.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
+              <pp v-else-if="board.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
+              {{resizeText(board.title)}}
+            </p>
+          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
+            <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
+            <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
+            <p class="font12 fl lightGray" @click="userNameClick(board.creUserKey, board.creTeamKey, board.blindYn === 1)" >{{blindYn === true ? '익명' : (board.showCreNameYn === 1? this.$changeText(board.creUserName): '')}}</p>
+            <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
+          <!-- </div> -->
           </div>
           <div @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
           <div id="alimCheckArea">
@@ -396,5 +401,6 @@ export default {
     animation-name: fadein;
     animation-duration: 0.3s;
     }
+.boardChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 
 </style>

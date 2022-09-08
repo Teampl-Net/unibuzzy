@@ -9,8 +9,12 @@
     <div id="boardDetailScrollArea" class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index" :change="changeData">
         <div class="pushDetailTopArea">
+          <div class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+          </div>
           <div class="pushDetailHeaderTextArea">
             <p class=" font18 fontBold commonColor cursorDragText">
+              <pp v-if="alim.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
+              <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
               <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type:'board', ownerYn: creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0), tempData: alim})" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{alim.title}}
             </p>
@@ -94,7 +98,7 @@
           </div>
           <div class="boardBorder"></div>
           <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -265,6 +269,9 @@ export default {
     }
   },
   methods: {
+    memoUserNameClick (userKey) {
+      this.userNameClick(userKey, this.alimDetail[0].creTeamKey, false)
+    },
     userNameClick (userKey, teamKey, blindYn) {
       console.log('zzz')
       if (blindYn === false) {
@@ -1068,7 +1075,7 @@ export default {
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */
-.pushDetailHeaderTextArea{width: 100%; cursor: pointer; float: left;margin-top: 0.2rem;}
+.pushDetailHeaderTextArea{width: calc(100% - 48px); cursor: pointer; float: left;margin-top: 0.2rem;}
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; min-height: 30px;}
@@ -1132,4 +1139,5 @@ export default {
 }
 .memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
 /* .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
+.boardDetailChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 </style>

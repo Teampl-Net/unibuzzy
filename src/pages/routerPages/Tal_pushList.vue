@@ -30,7 +30,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetContentsKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -71,7 +71,7 @@ export default {
     chanDetailKey: {},
     pushListAndDetailYn: {},
     propData: {},
-    targetContentsKey: {}
+    targetContents: {}
   },
   async created () {
     if (this.propData) {
@@ -79,8 +79,14 @@ export default {
         this.viewMainTab = this.propData.alimTabType
       }
     }
-    if (this.targetContentsKey) {
-      this.targetCKey = this.targetContentsKey
+    console.log(this.targetContents)
+    if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
+      console.log('으아아targetContentstargetContentstargetContents으아아ㅏ')
+      this.targetCKey = this.targetContents.targetContentsKey
+      this.targetJobkindId = this.targetContents.jobkindId
+      if (this.targetJobkindId === 'BOAR') {
+        this.viewMainTab = 'B'
+      }
     }
     if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
       this.pushListReloadShowYn = this.reloadShowYn
@@ -407,7 +413,6 @@ export default {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
     },
-    topLoadMore () { console.log('#!@#!#!#@!@#!@#!@#!@') },
     async loadMore (descYn) {
       if (this.endListYn === false) {
         this.loadMoreDESCYn = descYn
@@ -488,11 +493,14 @@ export default {
       this.scrollMove()
     },
     scrollMove (wich) {
-      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
+      // var middle = (document.innerHeight || window.innerHeight) / 2 - 100
+      // var ScrollWrap = this.$refs.pushListWrapWrapCompo
+      // if (wich === undefined || wich === null || wich === '') { wich = 0 }
+      // ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
+
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
-      // ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
-      ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
+      ScrollWrap.scrollTo({ top: wich - 100, behavior: 'smooth' })
     },
 
     async getPushContentsList (pageSize, offsetInput) {
@@ -691,7 +699,8 @@ export default {
       imgDetailAlertShowYn: false,
       mobileYn: this.$getMobileYn(),
       alertPopId: null,
-      selectImgParam: {}
+      selectImgParam: {},
+      targetJobkindId: null
     }
   }
 }

@@ -63,23 +63,25 @@ export default {
       console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      if (data.jobkindId === 'ALIM') {
-        param.targetType = 'chanDetail'
-        param.teamKey = data.creTeamKey
-        param.targetKey = data.creTeamKey
-        param.nameMtext = data.nameMtext
-        param.chanName = data.nameMtext
-        param.targetContentsKey = data.contentsKey
-        // 세션에서 유저키 받아오기
-        if (data.creUserKey === this.creUserKey) {
-          param.ownerYn = true
-        }
-      } else {
-        param.targetType = 'boardDetail'
-        param.cabinetNameMtext = data.cabinetNameMtext
-        param.targetKey = data.contentsKey
-        param.value = data
+      // if (data.jobkindId === 'ALIM') {
+      param.targetType = 'chanDetail'
+      param.teamKey = data.creTeamKey
+      param.targetKey = data.creTeamKey
+      param.nameMtext = data.nameMtext
+      param.chanName = data.nameMtext
+      param.targetContentsKey = data.contentsKey
+      // if (data.jobkindId === 'BOAR') {}
+      param.jobkindId = data.jobkindId
+      // 세션에서 유저키 받아오기
+      if (data.creUserKey === this.creUserKey) {
+        param.ownerYn = true
       }
+      // } else {
+      //   param.targetType = 'boardDetail'
+      //   param.cabinetNameMtext = data.cabinetNameMtext
+      //   param.targetKey = data.contentsKey
+      //   param.value = data
+      // }
       this.$emit('goDetail', param)
     },
     resizeText (text, name) {

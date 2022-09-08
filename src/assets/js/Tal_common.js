@@ -40,19 +40,28 @@ const methods = {
     str = str.replace('&quot;', '"')
     return str
   },
-
-  // decodeHTMLEntitles (str) {
-  //   if (str !== undefined && str !== null && str !== '') {
-  //     str = String(str)
-  //     str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
-  //     str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '')
-  //     var element = document.createElement('div')
-  //     element.innerHTML = str
-  //     str = element.textContent
-  //     element.textContent = ''
-  //   }
-  //   return str
-  // },
+  changeDateMemoFormat (date) {
+    var compareDate = new Date(date)
+    var toDate = new Date()
+    var format = ''
+    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
+      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
+        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+          format = 'HH:mm'
+        } else {
+          format = 'MM/DD'
+        }
+      } else {
+        format = 'MM/DD'
+      }
+    } else {
+      format = 'YYYY/MM/DD'
+    }
+    if (format !== 'HH:mm') {
+      format += ' HH:mm'
+    }
+    return this.$dayjs(compareDate).add(9, 'hour').format(format)
+  },
   changeDateFormat (date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
@@ -475,5 +484,6 @@ export default {
     Vue.config.globalProperties.$setPhone = methods.setPhone
     Vue.config.globalProperties.$teamTypeString = methods.teamTypeString
     Vue.config.globalProperties.$showToastPop = methods.showToastPop
+    Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
   }
 }

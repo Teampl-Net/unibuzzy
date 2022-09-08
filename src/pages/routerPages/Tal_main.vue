@@ -203,8 +203,8 @@ export default {
       }
       this.userInfo = userInfo
       console.log(this.userInfo)
-      // eslint-disable-next-line no-debugger
-      debugger
+      // // eslint-disable-next-line no-debugger
+      // debugger
       /* setTimeout(() => {
         this.$emit('closeLoading')
       }, 300) */
