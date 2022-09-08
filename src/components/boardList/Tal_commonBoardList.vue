@@ -23,7 +23,7 @@
               <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}</p> -->
                 <!-- <p class="font12 fl lightGray">{{this.changeText(board.nameMtext)}}{{board.showCreNameYn === 1? '(' + this.$changeText(board.creUserName) + ')': ''}}</p> -->
-                <p class="font12 fl lightGray" >{{blindYn === true ? '익명' : (board.showCreNameYn === 1? this.$changeText(board.creUserName): '')}}</p>
+                <p class="font12 fl lightGray" @click="userNameClick(board.creUserKey, board.creTeamKey, board.blindYn === 1)" >{{blindYn === true ? '익명' : (board.showCreNameYn === 1? this.$changeText(board.creUserName): '')}}</p>
                 <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
               <!-- </div> -->
           </div>
@@ -132,6 +132,23 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
+    userNameClick ( userKey, teamKey, blindYn) {
+      if(blindYn === false){
+        var param = {}
+        param.targetType = 'bookMemberDetail'
+        param.readOnlyYn = true
+        param.userKey = userKey
+        param.teamKey = teamKey
+        if (userKey === this.creUser) {
+          param.selfYn = true
+        } else {
+          param.contentOpenYn = true
+        }
+        this.$emit('openPop',param)
+      } else {
+        this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
+      }
+    },
     settingAtag () {
         if (this.systemName !== 'Android' && this.systemName !== 'android') {
             return

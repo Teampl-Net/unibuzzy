@@ -1,5 +1,6 @@
 <template>
   <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
+    <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
     <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && alimDetail[0].attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
@@ -18,8 +19,8 @@
               <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
             </div> -->
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray">{{this.blindYn === true ? '익명' : (alim.showCreNameYn === 1 ? this.$changeText(alim.creUserName) : '')}}</p>
-            <p class="font12 fl lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
+            <p class="font12 fl lightGray"  @click="userNameClick(alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{this.blindYn === true ? '익명' : (alim.showCreNameYn === 1 ? this.$changeText(alim.creUserName) : '')}}</p>
+            <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(alim.creDate)}}</p>
             <p v-if="alim.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(alim.updDate) + ')'}}</p>
           </div>
 
@@ -116,6 +117,7 @@
   </div>
 </template>
 <script>
+import loadingCompo from '../../layout/Tal_loading.vue'
 import imgPreviewPop from '../file/Tal_imgPreviewPop.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
@@ -179,7 +181,8 @@ export default {
       clickEndYn: false,
       alertPopId: null,
       clickImg: null,
-      systemName: localStorage.getItem('systemName')
+      systemName: localStorage.getItem('systemName'),
+      loadingYn: false
     }
   },
   props: {
@@ -187,10 +190,11 @@ export default {
   },
   components: {
     manageStickerPop,
-    imgPreviewPop
+    imgPreviewPop,
+    loadingCompo
   },
   created () {
-    this.$emit('openLoading')
+    this.loadingYn = true
     // console.log(this.detailVal)
     // console.log(this.detailVal.value.value)
     if (this.detailVal.value) {
@@ -217,7 +221,7 @@ export default {
       }
     }
     this.getContentsList()
-    this.$emit('closeLoading')
+    this.loadingYn = false
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
   },
@@ -261,6 +265,25 @@ export default {
     }
   },
   methods: {
+    userNameClick (userKey, teamKey, blindYn) {
+      console.log('zzz')
+      if (blindYn === false) {
+        var param = {}
+        param.targetType = 'bookMemberDetail'
+        param.readOnlyYn = true
+        param.userKey = userKey
+        param.teamKey = teamKey
+        if (userKey === this.creUser) {
+          param.selfYn = true
+        } else {
+          param.contentOpenYn = true
+        }
+        console.log(param)
+        this.$emit('openPop', param)
+      } else {
+        this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
+      }
+    },
     settingAtag () {
       if (this.systemName !== 'Android' && this.systemName !== 'android') {
         return
@@ -370,7 +393,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -587,7 +610,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -653,7 +676,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -687,7 +710,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       if (result.data.content) {
@@ -716,7 +739,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
         param: param
       })
     },
@@ -812,7 +835,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

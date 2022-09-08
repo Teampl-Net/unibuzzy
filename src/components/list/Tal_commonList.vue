@@ -26,7 +26,7 @@
                     <p style="width:65%; " class="font14 fl grayBlack">
                       <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                       {{this.changeText(alim.nameMtext)}}
-                      <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
+                      <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
                     </p>
                     <div class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
@@ -192,8 +192,8 @@ export default {
       console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
-    userNameClick (userShowYn, userKey, teamKey) {
-      if(userShowYn === true){
+    userNameClick (userShowYn, userKey, teamKey, blindYn) {
+      if(userShowYn === true && blindYn === false){
         var param = {}
         param.targetType = 'bookMemberDetail'
         param.readOnlyYn = true
@@ -204,9 +204,9 @@ export default {
         } else {
           param.contentOpenYn = true
         }
-
-
         this.$emit('openPop',param)
+      } else {
+        this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
       }
     },
     settingAtag () {
@@ -244,7 +244,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -257,7 +257,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -267,12 +267,32 @@ export default {
         var contents
         // this.tempData.contentsKey
     },
+    openPop(value){
+      this.$emit('openPop', value)
+    },
+    editBoard(){
+      console.log();
+      var param = {}
+      param.targetKey = this.tempData.contentsKey
+      param.targetType = 'writeBoard'
+      param.creTeamKey = this.tempData.creTeamKey
+      if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
+      param.bodyFullStr = this.tempData.bodyFullStr
+      param.modiContentsKey = this.tempData.contentsKey
+      param.titleStr = this.tempData.title
+      // param.parentAttachTrueFileList = this.attachTrueFileList
+      this.openPop(param)
+    },
     editable (type, allYn) {
       this.reportYn = false
       // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
       if (this.tempData) {
         if (this.tempData.contentsKey) {
           if (type === 'edit') {
+            if (this.tempData.jobkindId === 'BOAR') {
+              // this.deleteConfirm('board')
+              this.editBoard()
+            }
             //
           } else if (type === 'delete') {
             if (allYn) {
@@ -356,7 +376,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -450,7 +470,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -493,7 +513,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -560,7 +580,7 @@ export default {
             list.push(key)
             this.openMemoList = list
             var response = await this.getContentsMemoList(key)
-            
+
             this.currentMemoList = response.content
             this.offsetInt = this.currentMemoList.length
             this.currentMemoObj = response
@@ -682,7 +702,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

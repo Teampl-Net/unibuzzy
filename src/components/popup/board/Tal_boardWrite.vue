@@ -51,7 +51,7 @@
           </div>
 
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" btnTitle='발송하기' @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" :btnTitle="modiYn === true ? '수정하기' : '발송하기'" @click="clickPageTopBtn()" />
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
@@ -237,7 +237,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: '/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -257,7 +257,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: '/tp.getCabinetDetail',
+      //   url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -594,7 +594,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
