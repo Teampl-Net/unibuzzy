@@ -2,11 +2,10 @@
     <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" :style="index === (memoList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
       <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" > -->
       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
-        <!--       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% + 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem; margin-left: -1rem;" > -->
-          <!-- <div class="fl w-100P" > -->
-          <div v-if="memo.pmemo" >
-            <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText(memo.pmemo.userDispMtext || memo.pmemo.userDispMtext)}}</p>
-            <div  class="fl commonBlack font12" style="margin: 0.5rem" v-html="memo.pmemo.bodyMinStr"></div>
+
+          <div v-if="memo.pmemoBodyStr" >
+            <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText( memo.pmemoUserNameMtext)}}</p>
+            <div  class="fl commonBlack font12" style="margin: 0.5rem" v-html="memo.pmemoBodyStr"></div>
           </div>
           <!-- </div> -->
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mleft-1 mbottom-05 mtop-02" alt=""> -->

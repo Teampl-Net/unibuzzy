@@ -556,14 +556,11 @@ export default {
         // var div = document.getElementById('memoList'+key)
         // console.log('div')
         if (findIndex === -1) {
-            // this.openMemoList.push(key)
-            console.log('갑니다!!!!111')
             var list = new Array
             list.push(key)
             this.openMemoList = list
             var response = await this.getContentsMemoList(key)
-            console.log('$$$$$$$$$$$$')
-            console.log(response.content.length)
+            
             this.currentMemoList = response.content
             this.offsetInt = this.currentMemoList.length
             this.currentMemoObj = response
