@@ -51,7 +51,7 @@
       <editMyChanMenu v-if="this.targetType === 'myChanMenuEdit'" :propData="this.params" @openPop="openPop"  />
       <editBoardPop v-if="this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
 
-      <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeMemberYn='changeMemberYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
+      <chanInfoComp ref="gPopChanDetailRef" v-if="this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeshowProfileYn='changeshowProfileYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentshowProfileYn="showProfileYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
       <autoAnswerList v-if="this.targetType === 'autoAnswer'" :propData="this.params" @openPop="openPop"  />
       <memberForm v-if="this.targetType === 'memberForm'" :propData="this.params" @closeXPop="closeXPop" @openPop="openPop" />
       <memberFormList v-if="this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
@@ -287,7 +287,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+        url: '/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)

@@ -72,15 +72,15 @@
             <p @click="goProfile" class="font16">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
             <div>
               <p class="fl font14 commonBlack">{{followTypeText}}</p>
-              <p class="fl commonBlack font14 cursorP" v-if="memberYn">(공개)</p>
+              <p class="fl commonBlack font14 cursorP" v-if="showProfileYn">(공개)</p>
             </div>
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
         <div v-if="followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
-            <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >공개</p>
-            <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="memberYn ? 'color:white' : '' " >내정보공개</p> -->
+          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="showProfileYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
+            <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >공개</p>
+            <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >내정보공개</p> -->
           </div>
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
@@ -106,7 +106,7 @@
     </div>
     <!-- <div style="width: fit-content; height: 24px; padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">
         <p class="fl fontBold font16 commonBlack">{{followTypeText}}</p>
-        <p class="fl commonBlack font16" v-if="memberYn">(멤버)</p>
+        <p class="fl commonBlack font16" v-if="showProfileYn">(멤버)</p>
       </div> -->
 
     <!-- <div id="memberInfoArea" class="chanTextBox" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="height: 30px; float: right; position: absolute; bottom: 3rem; right: 1rem;" >
@@ -128,7 +128,7 @@
   <div class="btnPlus" v-show="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div>
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="detailShowYn" >
-    <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeMemberYn='changeMemberYn' :parentMemberYn="memberYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
+    <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="showProfileYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.chanItem" style="background-color: #fff;"></chanDetailComp>
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
@@ -170,7 +170,7 @@ export default {
       adminYn: false,
       // detailShowYn: true,
       detailShowYn: false,
-      memberYn: false,
+      showProfileYn: false,
       myContentsCount: null,
       greetingType: 'follow',
       teamTypeText: '기타',
@@ -299,10 +299,10 @@ export default {
       param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanItem.creUserKey)
       this.$emit('openPop', param)
     },
-    async okMember (inMemberYn) {
+    async okMember (inshowProfileYn) {
       var result = null
-      if (inMemberYn) {
-        this.followParam.memberYn = inMemberYn
+      if (inshowProfileYn) {
+        this.followParam.showProfileYn = inshowProfileYn
         this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
         this.$emit('closeLoading')
@@ -382,7 +382,7 @@ export default {
     },
     setGrade () {
       if (this.chanItem.userTeamInfo) {
-        if (this.chanItem.userTeamInfo.memberYn) {
+        if (this.chanItem.userTeamInfo.showProfileYn) {
           this.userGrade = '(공개)'
         }
         if (this.chanItem.userTeamInfo.managerKey) {
@@ -428,7 +428,7 @@ export default {
     },
     async saveMemberButton () {
       this.smallPopYn = true
-      if (this.memberYn || this.memberYn === 1) {
+      if (this.showProfileYn || this.showProfileYn === 1) {
         this.confirmMsg = '내 정보 공개가 취소 완료되었습니다.'
         this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanItem.nameMtext) + ' 의 정보 공개를 할 수 있습니다.)'
       } else {
@@ -441,24 +441,24 @@ export default {
       param.teamKey = this.chanItem.teamKey
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) || this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.memberYn = true
+      param.showProfileYn = true
       param.teamName = this.$changeText(this.chanItem.nameMtext)
-      if (this.memberYn || this.memberYn === 1) {
-        param.memberYn = false
+      if (this.showProfileYn || this.showProfileYn === 1) {
+        param.showProfileYn = false
         params = { follower: param }
       } else {
         params = { follower: param, doType: 'ME' }
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
-        if (this.memberYn || this.memberYn === 1) {
-          this.memberYn = false
+        if (this.showProfileYn || this.showProfileYn === 1) {
+          this.showProfileYn = false
         } else {
-          this.memberYn = true
+          this.showProfileYn = true
         }
       }
       this.openWelcomePopYn = false
@@ -472,23 +472,23 @@ export default {
     //   followParam.followerKey = this.chanItem.userTeamInfo.followerKey
     //   followParam.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
-    //   if (this.memberYn) {
+    //   if (this.showProfileYn) {
     //     // 멤버 취소
-    //     followParam.memberYn = false
+    //     followParam.showProfileYn = false
     //     result = await this.$changeFollower({ follower: followParam, doType: 'FL' }, 'save')
-    //     this.memberYn = false
+    //     this.showProfileYn = false
     //   } else {
     //     // 멤버 신청
-    //     followParam.memberYn = true
+    //     followParam.showProfileYn = true
     //     result = await this.$changeFollower({ follower: followParam, doType: 'FM' }, 'save')
-    //     this.memberYn = true
+    //     this.showProfileYn = true
     //   }
     // },
     numberOfElements (num) {
       this.myContentsCount = num
     },
-    changeMemberYn (data) {
-      this.memberYn = data
+    changeshowProfileYn (data) {
+      this.showProfileYn = data
     },
     closeDetailPop () {
       var history = this.$store.getters.hStack
@@ -523,7 +523,7 @@ export default {
       // this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {
-      // this.memberYn = false
+      // this.showProfileYn = false
       // this.adminYn = false
       var paramMap = new Map()
       if (this.chanDetail.targetKey !== undefined && this.chanDetail.targetKey !== null && this.chanDetail.targetKey !== '') {
@@ -546,8 +546,8 @@ export default {
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
-          if (this.chanItem.userTeamInfo.memberYn === 1) {
-            this.memberYn = true
+          if (this.chanItem.userTeamInfo.showProfileYn === 1) {
+            this.showProfileYn = true
           }
           this.followYn = true
           this.detailShowYn = false

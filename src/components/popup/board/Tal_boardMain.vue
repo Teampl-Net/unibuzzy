@@ -73,7 +73,7 @@
               <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(currentUserInfo.userDispMtext)}}</p>
               <div>
                 <p class="fl font14 commonBlack">{{followTypeText}}</p>
-                <p class="fl commonBlack font14 " v-if="memberYn">(내정보공개)</p>
+                <p class="fl commonBlack font14 " v-if="showProfileYn">(내정보공개)</p>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
+        url: '/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -298,7 +298,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveContents',
+          url: '/tp.saveContents',
           param: inParam
         })
         this.refresh()
@@ -419,7 +419,7 @@ export default {
       this.$emit('successSave')
     },
     async getChanInfo () {
-      // this.memberYn = false
+      // this.showProfileYn = false
       // this.adminYn = false
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey)

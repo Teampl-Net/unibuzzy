@@ -25,7 +25,7 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && this.followTypeText !== '소유자'" class="mtop-05">
-          <gBtnSmall @click="saveMember" class="fl" :btnTitle="this.memberYn === 1 || this.memberYn? '멤버취소': '멤버신청'"/>
+          <gBtnSmall @click="saveMember" class="fl" :btnTitle="this.showProfileYn === 1 || this.showProfileYn? '멤버취소': '멤버신청'"/>
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall v-if="chanDetail.teamKey !== 377" @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
@@ -93,13 +93,13 @@ export default {
       teamTypeText: '',
       sendLoadingYn: false,
       errorBoxType: false,
-      memberYn: false,
+      showProfileYn: false,
       followParam: null
     }
   },
   props: {
     chanDetail: {},
-    parentMemberYn: {},
+    parentshowProfileYn: {},
     alimSubPopYn: {} // 구독자일 경우, 채널메인을통해 open되는 풀팝업,
   },
   components: {
@@ -128,8 +128,8 @@ export default {
   },
   async created () {
     this.$emit('openLoading')
-    if (this.parentMemberYn) {
-      this.memberYn = this.parentMemberYn
+    if (this.parentshowProfileYn) {
+      this.showProfileYn = this.parentshowProfileYn
     }
     if (this.alimSubPopYn) {
       var history = this.$store.getters.hStack
@@ -157,7 +157,7 @@ export default {
   methods: {
     async saveMember () {
       this.smallPopYn = true
-      if (this.memberYn || this.memberYn === 1) {
+      if (this.showProfileYn || this.showProfileYn === 1) {
         this.confirmMsg = '멤버 취소가 완료되었습니다.'
         this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanDetail.nameMtext) + '의 멤버가 될 수 있습니다.)'
       } else {
@@ -170,27 +170,27 @@ export default {
       param.teamKey = this.chanDetail.teamKey
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) || this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.memberYn = true
+      param.showProfileYn = true
       param.teamName = this.$changeText(this.chanDetail.nameMtext)
-      if (this.memberYn || this.memberYn === 1) {
-        param.memberYn = false
+      if (this.showProfileYn || this.showProfileYn === 1) {
+        param.showProfileYn = false
         params = { follower: param }
       } else {
         params = { follower: param, doType: 'ME' }
       }
       // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
+        url: '/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
-        if (this.memberYn || this.memberYn === 1) {
-          this.memberYn = false
+        if (this.showProfileYn || this.showProfileYn === 1) {
+          this.showProfileYn = false
         } else {
-          this.memberYn = true
+          this.showProfileYn = true
         }
         // param = {}
-        this.$emit('changeMemberYn', this.memberYn)
+        this.$emit('changeshowProfileYn', this.showProfileYn)
       }
     },
     editChan () {
@@ -242,10 +242,10 @@ export default {
         }
       }
     },
-    async okMember (inMemberYn) {
+    async okMember (inshowProfileYn) {
       var result = null
-      if (inMemberYn) {
-        this.followParam.memberYn = inMemberYn
+      if (inshowProfileYn) {
+        this.followParam.showProfileYn = inshowProfileYn
         this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
         this.$emit('closeLoading')

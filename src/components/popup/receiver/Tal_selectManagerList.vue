@@ -66,7 +66,7 @@ export default {
         paramMap.set('managerYn', true)
         // paramMap.set('followerType', 'M')
         var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+            url: '/tp.getFollowerList',
             param: Object.fromEntries(paramMap)
         })
         this.managerList = result.data.content
@@ -102,7 +102,7 @@ export default {
       param.userKey = data.userKey
       param.teamKey = data.teamKey
       var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+          url: '/tp.deleteManager',
           param: param
       })
       this.refresh()
@@ -117,10 +117,10 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.teamKey = this.propData.currentTeamKey
-      params.memberYn = true
-      // params.managerKey = null MemberYn이 true이면서 매니저키가 없는 리스트가 필요
+      params.showProfileYn = true
+      // params.managerKey = null showProfileYn이 true이면서 매니저키가 없는 리스트가 필요
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+        url: '/tp.getFollowerList',
         param: params
       })
 

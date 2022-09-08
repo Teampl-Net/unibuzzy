@@ -59,10 +59,10 @@ export default {
       var paramMap = new Map()
 
       paramMap.set('teamKey', this.propData.currentTeamKey)
-      paramMap.set('memberYn', true)
+      paramMap.set('showProfileYn', true)
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+        url: '/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data.content
@@ -138,7 +138,7 @@ export default {
         if (userKeyList && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:10443/tp.saveManager',
+            url: '/tp.saveManager',
             param: param
           })
         }
@@ -158,7 +158,7 @@ export default {
             follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
             result = await this.$commonAxiosFunction({
-              url: 'https://mo.d-alim.com:10443/tp.saveManager',
+              url: '/tp.saveManager',
               param: param
             })
           }
