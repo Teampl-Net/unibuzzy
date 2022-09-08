@@ -1,7 +1,7 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;">
+    <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left; background: white;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
@@ -229,7 +229,7 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -814,5 +814,8 @@ background: #fbfbfb;
 #alimReadYn[type="checkbox"]:checked::before {
   border-radius: 2px;
   transform: scale(1) translate(-50%, -50%)
+}
+.back{
+  background: #dcddeb !important;
 }
 </style>

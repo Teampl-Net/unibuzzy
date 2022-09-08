@@ -108,19 +108,22 @@ export default {
       param.mFilekey = this.mFileKey
       param.fileType = 'I'
       param.attachYn = false
+      this.imgs = []
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMMFileList',
+        url: 'https://mo.d-alim.com:10443/tp.getMMFileList',
         param: param
       })
       console.log(result)
       this.imgList = result.data.mmFileList
       for (var i = 0; i < this.imgList.length; i++) {
         console.log(this.imgList[i].pathMtext)
-        this.imgList[i].src = this.imgList[i].pathMtext
+        // this.imgList[i].src = this.imgList[i].pathMtext
+        this.imgList[i].src = this.imgList[i].domainPath + this.imgList[i].pathMtext
         this.imgList[i].title = this.imgList[i].fileKey
-        /* this.imgs.push(this.imgList[i].pathMtext) */
+        // var imgUrl = this.imgList[i].domainPath + this.imgList[i].pathMtext
+        // this.imgs.push(imgUrl)
       }
-      console.log(this.imgs)
+      // console.log(this.imgs)
     },
     backClick () {
       var hStack = this.$store.getters.hStack

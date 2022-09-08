@@ -76,6 +76,9 @@ export default {
     }
   },
   methods: {
+    goMyChanList () {
+      this.$emit('goMyChanList')
+    },
     async myPageTabClick (tab, index) {
       this.myPageTabType = tab.myPageTabType
       this.refreshList()

@@ -18,7 +18,7 @@
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
       <pushBox @closeLoading="this.loadingYn = false" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'chanList'">
+      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative; padding: 0px 0.5rem; " v-if="this.targetType === 'chanList'">
         <chanList :propData="this.params" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.loadingYn = false" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
@@ -287,7 +287,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
