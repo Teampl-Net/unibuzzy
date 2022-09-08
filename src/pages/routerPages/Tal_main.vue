@@ -1,5 +1,5 @@
 <template>
-<div :key="componentKey" v-if="renderOk" style="padding-bottom: 10px; height: 100%; overflow: hidden scroll;">
+<div :key="componentKey" class="pagePaddingWrap" v-if="renderOk" style="padding-bottom: 10px; padding-top: 10px; background: #FFF; height: 100%; overflow: hidden scroll;">
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
@@ -128,7 +128,7 @@ export default {
       //   this.$emit('closeLoading')
       // }, 2000)
 
-      // await this.$axios.post('https://mo.d-alim.com:10443/tp.getMainBoard', Object.fromEntries(paramMap)
+      // await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       // ).then(response => {
       //   if (response.status === 200 || response.status === '200') {
       //     console.log(response);
@@ -217,7 +217,7 @@ export default {
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
 
-      await this.$axios.post('https://mo.d-alim.com:10443/tp.getMainBoard', Object.fromEntries(paramMap)
+      await this.$axios.post('/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         if (response.status === 200 || response.status === '200') {
           this.alimList = []

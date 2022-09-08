@@ -6,7 +6,7 @@
       <div class="font14 fontBold commonBigBtn" @click="goMyChanList" style="">내 채널 ></div>
     </div>
     <div class="myPageContentsWrap">
-        <div id="myActHeader" class="myActHeader" :class="this.scrolledYn? 'myActHeader--unpinned': 'myActHeader--pinned'" v-on="handleScroll">
+        <div id="myActHeader" class="myActHeader" >
             <!-- <div id="myActHeader" class="myActHeader"> -->
             <!-- <div class="font16 textLeft commonBlack fontBold" style="padding-left: 5px;height: 30px; line-height: 30px; width: 100%; float: left; ">내가 </div> -->
             <div class="w-100P fl" style="height: 40px; line-height: 40px;">

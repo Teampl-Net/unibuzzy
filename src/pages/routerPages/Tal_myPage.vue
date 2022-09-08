@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P">
+  <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0;">
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
         <!-- <div class="myPagePicImgWrap">

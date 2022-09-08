@@ -6,16 +6,16 @@
   <div style="width: 100%; height: 100%; float: left">
     <table class="w-100P">
         <colgroup>
-            <col class="listHeader" style="width: 65px; float: left;">
-            <col style="width: calc(100% - 45px); margin-left: 10px; float: left;">
+            <col class="listHeader" style="width: 50px; float: left;">
+            <col style="width: calc(100% - 50px); margin-left: 10px; float: left;">
         </colgroup>
         <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" @click="clickInfo(value)">
-            <td style="padding: 5px 10px; margin-right: 10px; width: 65px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
+            <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
               <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
                 <!-- <div style="background:#ffffff50; width:20px; height:20px; border-radius:100%; border:1px solid #ccc; overflow: hidden; position:absolute; bottom:-10px; right:-10px; display: flex; justify-content: center; align-items: center;"> -->
                 <div style="background:#ffffff50; border-radius:100%; width:20px; height:20px; position:absolute; bottom:-5px; right:-5px; display: flex; justify-content: center; align-items: center;">
-                  <img v-if="value.jobkindId === 'ALIM'" class="cursorP" style="width:15px !important;" src="../../assets/images/common/icon_bell.svg" alt="">
-                  <img v-if="value.jobkindId === 'BOAR'" class="cursorP" style="width:13px !important;" src="../../assets/images/channel/channer_board_color.png" alt="">
+                  <!-- <img v-if="value.jobkindId === 'ALIM'" class="cursorP" style="width:15px !important;" src="../../assets/images/common/icon_bell.svg" alt="">
+                  <img v-if="value.jobkindId === 'BOAR'" class="cursorP" style="width:13px !important;" src="../../assets/images/channel/channer_board_color.png" alt=""> -->
                 </div>
               </div>
             </td>
@@ -25,7 +25,11 @@
                 <img else src="../../assets/images/main/icon_notice2.png" style="width:1.5rem"> -->
             <!-- </td> -->
             <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  sessionUserKey === value.creUserKey}">
-                <p v-html="value.title" class="commonBlack textOverdot mtop-03 font15 fontBold" style="width: 100%; display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+                <div style="width:100%; float: left; padding: 2px 0 ; min-height: 25px;">
+                    <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{'알림'}}</div>
+                    <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</div>
+                    <p v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+                </div>
                 <!-- <div> -->
                 <!-- <div style="display: flex; align-items: center; justify-content: space-between;"> -->
                   <!-- <div style="display: flex; align-items: center; "> -->
