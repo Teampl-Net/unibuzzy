@@ -608,22 +608,27 @@ export default {
 
             // document.getElementById('memoOpen'+key).innerText = '댓글접기'
             if (this.currentContentsKey !== null ){
-            document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
-            document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+                if (document.getElementById('alimMemo'+this.currentContentsKey)) {
+                    document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
+                } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
+                    document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+                }
             }
-            document.getElementById('alimMemo'+key).style.display = 'block'
-            document.getElementById('borderLine'+key).style.display = 'block'
-
-        // this.memoSetCount(response.totalElements)
-
+            if (document.getElementById('alimMemo'+key)) {
+                document.getElementById('alimMemo'+key).style.display = 'block'
+            } else if (document.getElementById('borderLine'+key)) {
+                document.getElementById('borderLine'+key).style.display = 'block'
+            }
 
       } else {
         // document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
         this.openMemoList.splice(findIndex, 1)
-        document.getElementById('alimMemo'+key).style.display = 'none'
-        document.getElementById('borderLine'+key).style.display = 'none'
+        if (document.getElementById('alimMemo'+key)) {
+            document.getElementById('alimMemo'+key).style.display = 'none'
+        } else if (document.getElementById('borderLine'+key)) {
+            document.getElementById('borderLine'+key).style.display = 'none'
+        }
       }
-
       this.currentContentsKey = key
     },
     alimBigView (alim) {
