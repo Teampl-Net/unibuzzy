@@ -60,16 +60,16 @@
                         {{receiverText}}
                     </div> -->
                     <div v-else-if="this.replyPopYn" style="width: calc(100% - 100px); background: rgb(204 204 204 / 48%); padding: 0 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
-                      <span>{{this.creUserName + '님'}}</span><!-- {{this.replyData.creUserKey}} -->
+                      <span>{{this.creUserName + '님'}}</span>
                     </div>
                     <div v-if="!allYn && (this.receiverList.memberList.length > 0 || this.receiverList.bookList.length > 0)" style="width: calc(100%); overflow: auto hidden; background: rgb(204 204 204 / 48%); padding: 5px 5px; margin-left: 5px; margin-top: 3px; border-radius: 5px; height: 100%; float: left;" >
                       <div :style="setScrollWidth" style="min-width = 100%; height: 100%; float: left;">
                         <div v-for="(value, index) in this.receiverList.memberList" :key="index" style="min-width: 30px; margin-left: 5px; float: left; padding: 0 10px; height: 25px; border-radius: 5px; background: #fff;">
-                            <span class="font14 fl">{{value.userDispMtext}}</span>
+                            <span class="font14 fl">{{this.$changeText(value.userDispMtext)}}</span>
                             <span @click="delRecvList('m', index)" class="font14 fr mleft-1">x</span>
                         </div><!-- {{this.replyData.creUserKey}} -->
                         <div v-for="(value, index) in this.receiverList.bookList" :key="index" style="min-width: 30px; margin-left: 5px; float: left; padding: 0 10px; height: 25px; border-radius: 5px; background: #fff;">
-                            <span class="font14 fl">{{value.cabinetNameMtext}}</span>
+                            <span class="font14 fl">{{this.$changeText(value.cabinetNameMtext)}}</span>
                             <span @click="delRecvList('b', index)" class="font14 fr  mleft-1">x</span>
                         </div><!-- {{this.replyData.creUserKey}} -->
                       </div>
@@ -178,6 +178,14 @@ export default {
         document.querySelector('#alimWrap').style.width = this.screenInnerWidth
       })
     }
+    // textArea.addEventListener('paste', () => {
+    //   const paste = (event.clipboardData || window.clipboardData).getData('text');
+    //   const selection = window.getSelection();
+    //   if (!selection.rangeCount) return false;
+    //   selection.deleteFromDocument();
+    //   selection.getRangeAt(0).insertNode(document.createTextNode(paste));
+    //   event.preventDefault();
+    // })
     //  // 1)해당 페이지(팝업)의 유니크한 아이디값을 정의
     // this.popId = 'gPopup' + 9999
     // // 2) index.js (store) vuex에 저장된 글로벌 히스토리 리스트 변수를 불러옴
@@ -287,6 +295,8 @@ export default {
       this.replyPopYn = true
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
+      console.log(this.params)
+      this.creUserName = this.params.userName
       this.showCreNameYn = true
       this.canReplyYn = true
       // document.getElementById('replyInput')
@@ -305,7 +315,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -325,7 +335,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -390,7 +400,10 @@ export default {
         var bList = []
         var myMList = []
         var myBList = []
+        console.log('2!@#!@#!@@@@@2222')
         console.log(this.receiverList)
+        console.log(obj)
+        debugger
         if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
             myMList = this.receiverList.memberList
         }
@@ -398,64 +411,65 @@ export default {
             myBList = this.receiverList.bookList
         }
 
+        // if (obj.bookList && obj.bookList.length > 0) {
+        //     bList = obj.bookList
+        //     if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
+        //         myBList = this.receiverList.bookList
+        //         for (var mb = 0; mb < myBList.length; mb ++) {
+        //             for (var b = obj.bookList.length - 1; b >= 0; b --) {
+        //                 if (obj.bookList[b].cabinetKey === myBList[mb].cabinetKey) {
+        //                   bList = bList.splice(b, 1)
+        //                   // break
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     if (bList === undefined || bList === null) bList = []
+        // }
 
-        if (obj.bookList && obj.bookList.length > 0) {
-            bList = obj.bookList
-            if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
-                myBList = this.receiverList.bookList
-                for (var mb = 0; mb < myBList.length; mb ++) {
-                    for (var b = obj.bookList.length - 1; b >= 0; b --) {
-                        debugger
-                        if (obj.bookList[b].cabinetKey === myBList[mb].cabinetKey) {
-                            bList = bList.splice[b, 1]
-                            break
-                        }
-                    }
-                }
-            }
-            if (bList === undefined || bList === null) bList = []
-        }
+        // if (obj.memberList && obj.memberList.length > 0) {
+        //     mList = obj.memberList
+        //     if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
+        //         console.log('this.receiverList')
+        //         console.log(this.receiverList)
+        //         mList = this.receiverList.memberList
 
-        if (obj.memberList && obj.memberList.length > 0) {
-            mList = obj.memberList
-            if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
-                mList = this.receiverList.memberList
-                for (var mm = 0; mm < myMList.length; mm ++) {
-                    for (var m = obj.memberList.length - 1; m >= 0; m --) {
-                        if (obj.memberList[m].userKey === myMList[mm].userKey) {
-                            mList = mList.splice[m, 1]
-                            break
-                        }
-                    }
-                }
-            }
-            if (mList === undefined || mList === null) mList = []
-        }
-        debugger
-        if (myMList.length > 0) {
-            if (mList.length > 0) {
-                this.receiverList.memberList = [
-                    ...myMList,
-                    ...mList
-                ]
-            }
-        } else {
-            if(mList.length > 0) {
-                this.receiverList.memberList = mList
-            }
-        }
-        if (myBList.length > 0) {
-            if (bList.length > 0) {
-                this.receiverList.bookList = [
-                    ...myBList,
-                    ...bList
-                ]
-            }
-        } else {
-            if(bList.length > 0) {
-                this.receiverList.bookList = bList
-            }
-        }
+        //         for (var mm = 0; mm < myMList.length; mm ++) {
+        //             for (var m = obj.memberList.length - 1; m >= 0; m --) {
+        //                 if (obj.memberList[m].userKey === myMList[mm].userKey) {
+        //                   mList = mList.splice(m, 1)
+        //                   // break
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     if (mList === undefined || mList === null) mList = []
+        // }
+        // if (myMList.length > 0) {
+        //     if (mList.length > 0) {
+        //         this.receiverList.memberList = [
+        //             ...myMList,
+        //             ...mList
+        //         ]
+        //     }
+        // } else {
+        //     if(mList.length > 0) {
+        //         this.receiverList.memberList = mList
+        //     }
+        // }
+
+        // if (myBList.length > 0) {
+        //     if (bList.length > 0) {
+        //         this.receiverList.bookList = [
+        //             ...myBList,
+        //             ...bList
+        //         ]
+        //     }
+        // } else {
+        //     if(bList.length > 0) {
+        //         this.receiverList.bookList = bList
+        //     }
+        // }
 
 
       this.list = []
@@ -509,13 +523,11 @@ export default {
       param.teamKey = this.params.targetKey
       param.teamNameMtext = this.params.teamNameMtext
       param.pSelectedList = this.receiverList
-      console.log(this.params);
-
+      console.log(this.params)
+      console.log(param)
 
       this.$emit('openPop',param)
-
       // this.receiverPopYn = true
-
     },
     setParamInnerHtml (formCard) {
       var innerHtml = ''
@@ -733,14 +745,11 @@ export default {
           msgData = document.getElementById('textMsgBoxPush').innerHTML
         }
         if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
-          debugger
         } else {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
           return
         }
-        debugger
-
         this.checkPopYn = true
       }
     },

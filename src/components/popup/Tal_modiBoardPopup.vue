@@ -845,6 +845,7 @@ export default {
     setSelectedList (datas) {
       // this.selectItemList = []
       // this.selectShareList = []
+      this.selectedShareList = []
       var data = datas.data
       this.selectBookListShowYn = false
       var text = ''

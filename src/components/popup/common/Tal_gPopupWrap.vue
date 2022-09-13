@@ -29,7 +29,7 @@
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
       <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
 
-      <selectBookList v-if="this.targetType === 'selectBookList'" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
+      <selectBookList v-if="this.targetType === 'selectBookList'" :pSelectedList="params.pSelectedList" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
       <chanMenu ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
@@ -287,7 +287,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -300,7 +300,8 @@ export default {
     selectedReceiverBookNMemberList (param) {
       console.log('selectedReceiverBookNMemberList')
       console.log(this.targetType)
-      console.log(param)
+      console.log(param.data.memberList)
+      // alert(JSON.stringify(param.data.memberList))
       if (!param.emit) {
         param.emit = true
         this.$emit('selectedReceiverBookNMemberList', param)

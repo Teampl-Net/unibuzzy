@@ -263,7 +263,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -276,7 +276,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -395,7 +395,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -489,7 +489,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -534,7 +534,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -724,7 +724,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -758,7 +758,7 @@ export default {
         console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
             return
-            
+
         }
         this.showMoreMemoTextYn = true
     },
@@ -864,7 +864,7 @@ export default {
         this.contentsList[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       }
       if (this.contentsList[idx].userDoList) {
-        temp = this.contentsList[idx].userDoList    
+        temp = this.contentsList[idx].userDoList
       }
       for (var i = 0; i < temp.length; i ++) {
         if (temp[i].doType === act.doType) {
@@ -912,7 +912,7 @@ export default {
         if (act.doType === 'LI') {
             this.contentsList[idx].likeCount += 1
         }
-          
+
         // }
       }
       /* if (result === true) {
@@ -969,11 +969,11 @@ export default {
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
 
-        return str 
+        return str
     },
     setCutYn (str) {
         var result = false
-        
+
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
         var temp = document.createElement('div')
@@ -993,7 +993,7 @@ export default {
         if (height > 400) {
             result = true
         }
-        return result 
+        return result
     },
 
     async recvNoti (e) {

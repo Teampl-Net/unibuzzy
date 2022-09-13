@@ -60,7 +60,7 @@
                 <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
                 <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.totalElements}}개</p>
             </div>
-            <div v-else class="mbottom-05 fl" style="min-height: 30px;">
+            <div v-else class="mbottom-05 fr" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{alim.memoCount > 0? '답변완료' : '답변대기'}}</div>
             </div>
             <div class="fl" style="display:flex;">
@@ -128,7 +128,7 @@ import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
     return {
-      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+      creUser: null,
       memoList: [],
       confirmText: '',
       confirmPopShowYn: false,
@@ -199,29 +199,33 @@ export default {
   },
   created () {
     this.loadingYn = true
-    // console.log(this.detailVal)
-    // console.log(this.detailVal.value.value)
-    if (this.detailVal.value) {
-      this.picBgPath = this.detailVal.value.picBgPath
-      if (this.detailVal.value.value) {
-        var temp = this.detailVal.value.value
-        // eslint-disable-next-line vue/no-mutating-props
-        this.detailVal.value = temp
-      }
-    }
-    if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
-      this.replyYn = true
-    } else {
+    // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
+    if (localStorage.getItem('sessionUser')) {
+      this.creUser = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // console.log(this.detailVal)
+      // console.log(this.detailVal.value.value)
       if (this.detailVal.value) {
-        if (this.detailVal.value.value !== undefined && this.detailVal.value.value !== null &&
-              (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
-          this.replyYn = true
+        this.picBgPath = this.detailVal.value.picBgPath
+        if (this.detailVal.value.value) {
+          var temp = this.detailVal.value.value
+          // eslint-disable-next-line vue/no-mutating-props
+          this.detailVal.value = temp
         }
       }
-    }
-    if (this.detailVal.value) {
-      if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
-        this.ownerYn = true
+      if (this.detailVal.replyYn === true || this.detailVal.replyYn === 1) {
+        this.replyYn = true
+      } else {
+        if (this.detailVal.value) {
+          if (this.detailVal.value.value !== undefined && this.detailVal.value.value !== null &&
+                (this.detailVal.value.value.replyYn === true || this.detailVal.value.value.replyYn === 1)) {
+            this.replyYn = true
+          }
+        }
+      }
+      if (this.detailVal.value) {
+        if (this.detailVal.value.creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+          this.ownerYn = true
+        }
       }
     }
     this.getContentsList()
@@ -400,7 +404,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -561,13 +565,18 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       var mCabinetContentsDetail = resultList.mCabinet
+
+      // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
+
       this.shareAuth = await this.$checkUserAuth(mCabinetContentsDetail.mShareItemList)
-      if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
-        this.ownerYn = true
-        this.shareAuth = { R: true, W: true, V: true }
-        this.shareAuth.R = true
-        this.shareAuth.W = true
-        this.shareAuth.V = true
+      if (localStorage.getItem('sessionUser')) {
+        if (this.alimDetail[0].creUserKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+          this.ownerYn = true
+          this.shareAuth = { R: true, W: true, V: true }
+          this.shareAuth.R = true
+          this.shareAuth.W = true
+          this.shareAuth.V = true
+        }
       }
 
       this.picBgPath = mCabinetContentsDetail.picBgPath
@@ -617,7 +626,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -683,7 +692,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -717,7 +726,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       console.log(result)
@@ -747,7 +756,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
         param: param
       })
     },
@@ -843,7 +852,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

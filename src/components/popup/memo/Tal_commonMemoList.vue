@@ -91,7 +91,10 @@ export default {
     nonMemYn: {}
   },
   mounted () {
-    this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
+    if (localStorage.getItem('sessionUser')) {
+      this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    }
   },
   data () {
     return {
@@ -158,7 +161,7 @@ export default {
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

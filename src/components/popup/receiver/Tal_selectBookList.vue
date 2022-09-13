@@ -82,7 +82,7 @@ export default {
         paramMap.set('sysCabinetCode', 'USER')
         paramMap.set('adminYn', true)
         var result = await this.$commonAxiosFunction({
-            url: '/tp.getTeamMenuList',
+            url: 'https://mo.d-alim.com:10443/tp.getTeamMenuList',
             param: Object.fromEntries(paramMap)
         })
         this.bookList = result.data
@@ -98,7 +98,7 @@ export default {
         paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
         paramMap.set('jobkindId', 'USER')
         var result = await this.$commonAxiosFunction({
-            url: '/tp.getMCabContentsList',
+            url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
             param: Object.fromEntries(paramMap)
         })
         this.memberList = result.data
@@ -127,15 +127,25 @@ export default {
       this.$emit('openPop', param)
     }, */
     sendReceivers () {
-      // eslint-disable-next-line no-new-object
-      var obj = new Object()
-      obj.data = this.selectedList
-      this.$emit('sendReceivers', obj)
+      // // eslint-disable-next-line no-new-object
+      var param = {}
+      // console.log(this.selectedList)
+      // console.log(this.selectedList.memberList)
+      console.log('sendReceiver sendReceiver sendReceiver sendReceiver')
+      console.log(this.selectedList)
+      param.data = this.selectedList
+      console.log(param)
+      this.$emit('sendReceivers', param)
       // this.$emit('selectedList', this.selectedList)
     },
     // 유민참고
     changeSelectMemberList (data) {
-      this.selectedList.memberList = data
+      this.selectedList.memberList = []
+      for (let i = 0; i < data.length; i++) {
+        this.selectedList.memberList.push(data[i])
+      }
+      // this.selectedList.memberList = data
+      console.log(this.selectedList)
       this.$refs.selectedListCompo.upDatePage()
     },
     addMe (data) {

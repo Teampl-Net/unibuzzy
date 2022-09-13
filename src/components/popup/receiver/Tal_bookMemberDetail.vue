@@ -162,7 +162,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: '/tp.getUserList',
+                    // url: 'https://mo.d-alim.com:10443/tp.getUserList',
                     // param: param
                     // })
                     // console.log(response)
@@ -197,7 +197,8 @@ export default {
             picMfilekey: null,
             selfYn: false,
             changeYn: false,
-            tempUserDispName: ''
+            tempUserDispName: '',
+            thisUserKey: null
 
         }
     },
@@ -208,7 +209,7 @@ export default {
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
-                url: '/tp.getFollowerList',
+                url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             var list = []
@@ -225,6 +226,7 @@ export default {
                 this.memName = this.$changeText(data.userDispMtext)
                 this.memEmail = data.userEmail
                 this.memPhone = data.phoneEnc
+                this.thisUserKey = data.userKey
             } else {
                 this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
                 this.closeXPop()
@@ -235,6 +237,8 @@ export default {
             param.targetType = 'writePush'
             param.teamKey =  this.propData.teamKey
             param.userKey = this.propData.userKey
+            param.userName = this.memName
+            param.targetUserKey = this.thisUserKey
             if (this.propData.userDispMtext) { param.userDispMtext = this.propData.userDispMtext } else { param.userNameMtext = this.propData.userNameMtext }
             param.replyPopYn = true
             if (this.propData.userDispMtext) { param.creUserName = this.propData.userDispMtext } else { param.creUserName = this.propData.userNameMtext }
@@ -326,7 +330,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: '/tp.deleteManager',
+                url: 'https://mo.d-alim.com:10443/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}

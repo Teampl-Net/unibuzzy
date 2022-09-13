@@ -74,7 +74,8 @@ export default {
       searchFilterList: [],
       search1: '',
       search2: '',
-      search3: ''
+      search3: '',
+      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey
     }
   },
   updated () {
@@ -96,6 +97,11 @@ export default {
     if (!this.propData.value) this.propData.value = {}
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
     // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
+    if (this.parentSelectList) {
+      console.log(this.parentSelectList)
+      this.selectedMemberList = []
+      this.selectedMemberList = this.parentSelectList.memberList
+    }
   },
   methods: {
     setPhone (num) {
@@ -165,7 +171,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: '/tp.deleteMCabContents',
+            url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {
@@ -189,15 +195,21 @@ export default {
       // this.editMember = data
     },
     addSelectedList (data, index) {
+      if (!this.selectedMemberList) this.selectedMemberList = []
       data.shareSeq = data.userKey
       this.selectedMemberList.push(data)
+      console.log('@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#')
+      console.log(this.selectedMemberList)
       this.$emit('changeSelectMemberList', this.selectedMemberList)
+      // // eslint-disable-next-line no-debugger
+      // debugger
       // eslint-disable-next-line vue/no-mutating-props
       this.listData[index].selectedYn = true
+      // console.log(this.listData)
       // var tt = this.listData
     },
     checkClick () {
-      alert('중복선택입니다.')
+      this.$showToastPop('중복 선택입니다.')
     },
     deSelectList (index) {
       // eslint-disable-next-line vue/no-mutating-props

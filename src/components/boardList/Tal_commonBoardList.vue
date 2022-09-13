@@ -10,7 +10,7 @@
     </div> -->
       <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{this.scrollDirection}}, {{this.scrollPosition}}</div> -->
       <template id="boardRow" v-for="(board, index0) in commonBoardListData" :key="index0">
-        <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.userKey}">
+        <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.creUser}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->
         <!-- <div v-if="board.readYn === 0" class="readYnArea"></div> -->
           <div class="pushDetailTopArea">
@@ -80,7 +80,6 @@
 export default {
   data: function () {
     return { // 데이터 정의
-      userKey: '',
       findPopShowYn: false,
       firstContOffsetY: null,
       scrollDirection: null,
@@ -93,7 +92,7 @@ export default {
       boardListWrap: null,
       boardList: {},
       currentScroll: 0,
-      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
+      creUser: null,
       systemName: localStorage.getItem('systemName')
     }
   },
@@ -111,7 +110,12 @@ export default {
   },
   created () {
     // this.boardList = this.commonBoardListData
-    this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+
+    // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
+    if(localStorage.getItem('sessionUser')){
+      this.creUser = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    }
+
   },
   computed: {
   },
@@ -273,10 +277,10 @@ async changeAct (act, contentsKey, idx) {
         this.commonBoardListData[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       }
       if (this.commonBoardListData[idx].userDoList) {
-        temp = this.commonBoardListData[idx].userDoList    
+        temp = this.commonBoardListData[idx].userDoList
       }
       var doList =this.commonBoardListData[idx].userDoList
-      
+
       for (var i = 0; i < doList.length; i ++) {
         if (doList[i].doType === act.doType) {
             if (doList[i].doKey === 1) return
@@ -323,7 +327,7 @@ async changeAct (act, contentsKey, idx) {
         if (act.doType === 'LI') {
             this.commonBoardListData[idx].likeCount += 1
         }
-          
+
         // }
       }
       /* if (result === true) {

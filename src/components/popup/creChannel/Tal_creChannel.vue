@@ -238,7 +238,7 @@ export default {
         return
       }
       if (this.chanMemoYn === false && this.pageType === '생성') {
-        this.inputChannelMemo = this.selectTypeText + '의 산업군을 가진 채널입니다!'
+        this.inputChannelMemo = this.selectTypeText + '의 산업군을 가진 채널입니다.'
       }
       this.checkPopYn = true
     },
@@ -256,6 +256,11 @@ export default {
 
       gParam.nameMtext = 'KO$^$' + this.inputChannelName
       gParam.memoMtext = 'KO$^$' + this.inputChannelMemo
+      if (this.inputChannelMemo === undefined || this.inputChannelMemo === null || this.inputChannelMemo.replace(' ', '') === '') {
+        var teamType = this.$teamTypeString(this.selectType)
+        gParam.memoMtext = 'KO$^$' + teamType + '의 산업군을 가진 채널입니다.'
+      }
+
       gParam.teamType = this.selectType
       gParam.logoFilekey = this.selectIcon.selectedId
       gParam.picMfilekey = this.selectBg.selectedId
