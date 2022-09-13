@@ -12,9 +12,9 @@
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
-                <div @click="goDetail(alim)" class="pushDetailHeaderTextArea ">
+                <div @click="clickCard(alim)" class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p style="width: 100%; word-wrap:break-word; " class="font16 fl fontBold commonBlack cursorDragText">
+                  <p style="width: 100%; word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
                     <pp v-if="alim.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
                     <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
@@ -40,8 +40,8 @@
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
 <!-- @click="goDetail(alim)" -->
-                <div @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(alim.bodyFullStr)"></div>
-                <p @click="alim.jobkindId === 'ALIM' ? alimBigView(alim):goChanDetail(alim)" :id="'bodyMore'+alim.contentsKey" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <div @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <p @click="clickCard(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
@@ -74,7 +74,7 @@
 
                 </div>
               </div>
-              <div class="alimListMemoBorder" :id="'borderLine'+alim.contentsKey" ></div>
+              <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 " :id="'borderLine'+alim.contentsKey" ></div>
               <!-- <div class="w-100P">
                 <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
               </div> -->
@@ -190,6 +190,17 @@ export default {
     this.settingAtag()
   },
   methods: {
+    clickCard (alim) {
+        if (alim.jobkindId === 'ALIM') {
+            if (alim.bigYn) {
+                this.goDetail(alim)
+            } else {
+                this.alimBigView(alim)
+            }
+        } else {
+            this.goChanDetail(alim)
+        }
+    },
     clickInfo (data) {
       console.log(data)
     },
@@ -491,14 +502,16 @@ export default {
         this.memoSetCount(response.totalElements)
       }
     },
-    pointAni () {
-      var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' .memoCard')[0]
+    pointAni (memoKey) {
+      var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' #' + memoKey)[0]
       if (firstMemoCard) {
-        firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
-        firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
         setTimeout(() => {
-          firstMemoCard.style.boxShadow = 'none'
-        }, 1000)
+            firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+            firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
+            setTimeout(() => {
+              firstMemoCard.style.boxShadow = 'none'
+            }, 1000)
+        }, 1000);
       } else {
 
       }
@@ -614,77 +627,78 @@ export default {
       this.currentContentsKey = key
     },
     alimBigView (alim) {
+        alim.bigYn = true
       // contentsKey, alim.attachMfilekey
-      document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
-      document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
-      document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
-      var thisthis = this
-      var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
-      for (let m = 0; m < imgList.length; m++) {
-        imgList[m].addEventListener('touchstart', () => {
-          imgList[m].style.opacity = 0.8
-          thisthis.clickTime = Date.now()
-          thisthis.clickEndYn = false
-          setTimeout(() => {
-            if (thisthis.clickEndYn === false) {
+        document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
+        document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
+        document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+        var thisthis = this
+        var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
+        for (let m = 0; m < imgList.length; m++) {
+            imgList[m].addEventListener('touchstart', () => {
+            imgList[m].style.opacity = 0.8
+            thisthis.clickTime = Date.now()
+            thisthis.clickEndYn = false
+            setTimeout(() => {
+                if (thisthis.clickEndYn === false) {
 
-              thisthis.selectImgObject.path = imgList[m].src
-              thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
-              var param = new Object()
-              param.mfileKey = alim.attachMfilekey
-              param.creUserName = alim.creUserName
-              param.title = alim.title
-              param.creDate = alim.creDate
-              param.imgIndex = m
-              this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
-              thisthis.selectImgIndex = m
-              imgList[m].style.opacity = 1
-            }
-          }, 300)
-        })
-        imgList[m].addEventListener('touchend', () => {
-          thisthis.clickEndYn = true
-          imgList[m].style.opacity = 1
-        })
-
-        imgList[m].addEventListener('mousedown', () => {
-          thisthis.clickTime = Date.now()
-          imgList[m].style.opacity = 0.8
-          thisthis.clickEndYn = false
-          setTimeout(() => {
-            console.log(thisthis.clickEndYn)
-            if (thisthis.clickEndYn === false) {
-              thisthis.selectImgObject.path = imgList[m].src
-              thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
-              var param = new Object()
-              param.mfileKey = alim.attachMfilekey
-              param.creUserName = alim.creUserName
-              param.title = alim.title
-              param.creDate = alim.creDate
-              param.imgIndex = m
-              this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
-              thisthis.selectImgIndex = m
-            imgList[m].style.opacity = 1
-            }
-          }, 1000)
-        })
-        imgList[m].addEventListener('mouseup', () => {
-            console.log(thisthis.clickEndYn)
+                thisthis.selectImgObject.path = imgList[m].src
+                thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
+                var param = new Object()
+                param.mfileKey = alim.attachMfilekey
+                param.creUserName = alim.creUserName
+                param.title = alim.title
+                param.creDate = alim.creDate
+                param.imgIndex = m
+                this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
+                thisthis.selectImgIndex = m
+                imgList[m].style.opacity = 1
+                }
+            }, 300)
+            })
+            imgList[m].addEventListener('touchend', () => {
             thisthis.clickEndYn = true
-
             imgList[m].style.opacity = 1
-        })
+            })
 
-        /* imgList[m].addEventListener('click', () => {
-          var param = new Object
-          param.mfileKey = alim.attachMfilekey
-          param.creUserName = alim.creUserName
-          param.title = alim.title
-          param.creDate = alim.creDate
-          param.imgIndex = m
-          this.$emit('clickImg', param)
-        }) */
-      }
+            imgList[m].addEventListener('mousedown', () => {
+            thisthis.clickTime = Date.now()
+            imgList[m].style.opacity = 0.8
+            thisthis.clickEndYn = false
+            setTimeout(() => {
+                console.log(thisthis.clickEndYn)
+                if (thisthis.clickEndYn === false) {
+                thisthis.selectImgObject.path = imgList[m].src
+                thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
+                var param = new Object()
+                param.mfileKey = alim.attachMfilekey
+                param.creUserName = alim.creUserName
+                param.title = alim.title
+                param.creDate = alim.creDate
+                param.imgIndex = m
+                this.$emit('imgLongClick', {selectImgIndex: m, selectObj: thisthis.selectImgObject, previewParam: param})
+                thisthis.selectImgIndex = m
+                imgList[m].style.opacity = 1
+                }
+            }, 1000)
+            })
+            imgList[m].addEventListener('mouseup', () => {
+                console.log(thisthis.clickEndYn)
+                thisthis.clickEndYn = true
+
+                imgList[m].style.opacity = 1
+            })
+
+            /* imgList[m].addEventListener('click', () => {
+            var param = new Object
+            param.mfileKey = alim.attachMfilekey
+            param.creUserName = alim.creUserName
+            param.title = alim.title
+            param.creDate = alim.creDate
+            param.imgIndex = m
+            this.$emit('clickImg', param)
+            }) */
+        }
 
     },
     /* openImgDetailAlert () {
@@ -819,7 +833,6 @@ export default {
     },
     goDetail (value) {
       // eslint-disable-next-line no-new-object
-      return
       var param = new Object()
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
@@ -942,7 +955,7 @@ export default {
       ]
       this.commonListData = newArr */
     },
-    setBodyLength (str) {
+    setBodyLength1 (str) {
       // eslint-disable-next-line no-undef
       str = Base64.decode(str)
       // str = atob(str)
@@ -952,6 +965,37 @@ export default {
       }
       return str
     },
+    setBodyLength (str) {
+        str = Base64.decode(str)
+        str.replace('contenteditable= true', '')
+
+        return str 
+    },
+    setCutYn (str) {
+        var result = false
+        
+        str = Base64.decode(str)
+        str.replace('contenteditable= true', '')
+        var temp = document.createElement('div')
+        temp.innerHTML = str
+        var cList = temp.childNodes
+        var height = 0
+        for (var i = 0; i < cList.length; i ++) {
+            if (cList[i].childNodes.length > 0) {
+                var imgs = cList[i].querySelector('img')
+                if (imgs){
+                    height += imgs.height
+                } else {
+                    height += 21
+                }
+            }
+        }
+        if (height > 400) {
+            result = true
+        }
+        return result 
+    },
+
     async recvNoti (e) {
       var message
       try {
@@ -973,19 +1017,21 @@ export default {
                 if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
                 return
                 }
-                if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) {
+                /* if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) { */
                     var pageS = this.currentMemoList.length + 1
                     if (pageS === 0 ) {
                         pageS = 5
                     }
                     var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
-
                     this.currentMemoObj = response
                     this.currentMemoList = response.memoList
                     this.offsetInt = this.currentMemoList.length
-                    this.pointAni()
+                    // this.pointAni()
                     this.memoSetCount(response.totalElements)
-                }
+                    if (Number(JSON.parse(this.notiDetail.userDo).ISub) && Number(JSON.parse(this.notiDetail.userDo).ISub)) {
+                        this.pointAni(Number(JSON.parse(this.notiDetail.userDo).ISub))
+                    }
+                /* } */
             }
         }
       } catch (err) {
@@ -1071,9 +1117,10 @@ export default {
     background-color: #f5f5ff !important;
     box-shadow: 0 0 7px 3px #6768a740 !important;
     }
+
 .alimListMemoBorder{
-  width: 100%; height: 1.5px; padding-bottom: 10px; border-bottom: 1.9px dashed #ccc; float: left;
-  display: none;
+  width: calc(100% + 2rem); height: 2px; margin: 10px 0; margin-bottom: 0; margin-left: -1rem;
+  background: #ccc;
 }
 
 .alimListMemoBoxBackground{

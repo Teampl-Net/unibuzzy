@@ -50,20 +50,21 @@
         <div  style="width: 100%; margin-top: 15px; min-height: 50px; float: left;" v-if="memo.cmemoList.length > 0">
             <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex">
                 <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
-                <div style="width: calc(100% - 40px); background:#fff; padding: 10px; border-top: 1px dashed #ccc; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
+                <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
+                <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
                     <div @click="memoUserNameClick(cMemo.creUserKey)" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; ">
+                        </div>
+                        <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+                        <div style="width: 100%; min-height: 25px; margin-bottom: 10px;">
+                            <p class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
+                            <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
+                        </div>
+                        <p class="font14 commonBlack" v-html="cMemo.bodyFullStr"></p>
+                    <div >
+                        <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.userKey))" @click="memoDeleteClick(cMemo, index)">삭제</div>
+                        <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(cMemo, index)">수정</div>
                     </div>
-                    <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-                    <div style="width: 100%; min-height: 25px; margin-bottom: 10px;">
-                        <p class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
-                        <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
-                    </div>
-                    <p class="font14 commonBlack" v-html="cMemo.bodyFullStr"></p>
-                <div >
-                    <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.userKey))" @click="memoDeleteClick(memo, index)">삭제</div>
-                    <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(memo, index)">수정</div>
-                </div>
-                <div class="memoActionArea font13" @click="memoMemoClick(cMemo)" v-if="!nonMemYn">댓글</div>
+                    <!-- <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn">댓글</div> -->
                 </div>
             </div>
         </div>
@@ -71,6 +72,7 @@
           <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
         <!-- </div> -->
       </div>
+      <div class="MemoBorder"></div>
     </div>
     <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
     <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
@@ -180,10 +182,10 @@ export default {
       }
     },
     anima (key) {
-      document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
+      /* document.getElementById(key).style.backgroundColor = 'rgba(186, 187, 215, 0.6)'
       setTimeout(() => {
         document.getElementById(key).style.backgroundColor = ''
-      }, 700)
+      }, 700) */
     }
     // decodeContents (data) {
     //   // eslint-disable-next-line no-undef
@@ -197,7 +199,7 @@ export default {
 
 <style scoped>
 .memoCard{
-  width: 100%; min-height: 100px; padding: 5px 10px; padding-right: 0; border-bottom: 0.8px dashed #6768a7ad; float: left; margin: 5px 0;
+  width: 100%; min-height: 100px; padding: 5px 10px; padding-right: 0; float: left; margin: 5px 0;
   /* background-color: white; */
   background-color: transparent;
   transition : background-color 0.5s ease-in;
@@ -218,4 +220,15 @@ float: right; width: 40px; height: 100%; text-align: center;
 }
 .memoPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
 .memoPicImgWrap img {width: 100%;}
+
+.MemoBorder{
+    margin-top: 5px;
+  width: calc(100%); height: 1px; padding-bottom: 2px;
+  float: left;
+  background-image: linear-gradient(to
+    right, #ccc 33%, rgba(255,255,255,0) 0%);
+    background-position: bottom;
+    background-size: 17px 2px;
+    background-repeat: repeat-x;
+}
 </style>
