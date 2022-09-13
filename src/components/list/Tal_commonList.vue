@@ -64,7 +64,7 @@
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
-                  <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1'">
+                  <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
                     <p class="fl font14" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
@@ -82,7 +82,7 @@
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; background:ghostwhite; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
                 <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" />
-                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">댓글 더 보기</div>
+                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -142,7 +142,8 @@ export default {
       systemName: localStorage.getItem('systemName'),
       selectedConentsKey: null,
       currentMemoObj: {},
-      showMoreMemoTextYn: false
+      showMoreMemoTextYn: false,
+      moreMemoText: '댓글 더보기'
 
     }
   },
@@ -252,7 +253,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
+          url: '/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -265,7 +266,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveContents',
+          url: '/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -384,7 +385,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
+        url: '/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -478,14 +479,14 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
         // this.memoList = []
         // await this.getBoardMemoList(true)
         var response = await this.getContentsMemoList(this.currentContentsKey)
-        this.currentMemoList = response.content
+        this.currentMemoList = response.memoList
         this.currentMemoObj = response
         this.offsetInt = this.currentMemoList.length
         this.memoSetCount(response.totalElements)
@@ -521,7 +522,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -532,7 +533,7 @@ export default {
         // await this.getBoardMemoList(true)
         // this.currentMemoList = []
         var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
-        this.currentMemoList = response.content
+        this.currentMemoList = response.memoList
         this.currentMemoObj = response
         this.offsetInt = this.currentMemoList.length
         console.log(response)
@@ -589,7 +590,7 @@ export default {
             this.openMemoList = list
             var response = await this.getContentsMemoList(key)
 
-            this.currentMemoList = response.content
+            this.currentMemoList = response.memoList
             this.offsetInt = this.currentMemoList.length
             this.currentMemoObj = response
 
@@ -710,7 +711,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -738,19 +739,24 @@ export default {
 
 
     async loadMoreMemo () {
-        this.showMoreMemoTextYn = false
-        if (this.currentMemoObj.totalElements < (this.offsetInt + this.currentMemoObj.pageable.pageSize)) {return}
+        // alert(true)
+        //this.showMoreMemoTextYn = false
+        console.log('offsetInt', this.offsetInt)
+        console.log('this.currentMemoObj', this.currentMemoObj)
+        if (this.currentMemoObj.totalElements <= this.offsetInt ){
+            return
+            
+        }
         this.showMoreMemoTextYn = true
     },
     async yesLoadMore () {
         this.pageSize = 5
         /* debugger */
         var response = await this.getContentsMemoList(this.currentContentsKey)
-        debugger
         var newArr = []
         newArr = [
             ...this.currentMemoList,
-            ...response.content
+            ...response.memoList
         ]
         this.currentMemoList = newArr
         this.currentMemoObj = response
@@ -841,6 +847,18 @@ export default {
     async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
+      var temp = []
+      if (!this.contentsList[idx].userDoList) {
+        this.contentsList[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      }
+      if (this.contentsList[idx].userDoList) {
+        temp = this.contentsList[idx].userDoList    
+      }
+      for (var i = 0; i < temp.length; i ++) {
+        if (temp[i].doType === act.doType) {
+            if (temp[i].doKey === 1) return
+        }
+      }
       // this.pushDetail = JSON.parse(this.detailVal).data
       if (Number(act.doKey) > 0) {
         saveYn = false
@@ -853,16 +871,13 @@ export default {
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
-        result = await this.$saveUserDo(param, 'delete')
+        result = this.$saveUserDo(param, 'delete')
         if (act.doType === 'LI') {
           this.contentsList[idx].likeCount -= 1
         }
-        console.log(this.contentsList[idx])
-        console.log(this.contentsList)
-        var temp = this.contentsList[idx].userDoList
         for (var i = 0; i < temp.length; i++) {
           if(temp[i].doType === act.doType) {
-            temp.splice(i, 1)
+            temp[i].doKey = 0
           }
         }
         this.contentsList[idx].userDoList = temp
@@ -870,20 +885,23 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
-        result = await this.$saveUserDo(param, 'save')
-        if (result.result === true) {
-          if (act.doType === 'LI') {
-            this.contentsList[idx].likeCount += 1
-          }
-          console.log(result)
-          var temp = this.contentsList[idx].userDoList
-          if (!temp) {
-            temp = []
-          }
-          temp.push({ doType: act.doType, doKey: result.doKey })
+        this.$saveUserDo(param, 'save').then(result => {
+          // debugger
+        for (var d = temp.length - 1; d >= 0 ; d--) {
+            if (temp[d].doKey === 1 && temp[d].doType === act.doType) {
+                temp[d].doKey = result.doKey
+            }
+        }
+          // temp.push({ doType: act.doType, doKey: result.doKey })
           this.contentsList[idx].userDoList = temp
           this.changeData += 1
+        })
+        temp.push({ doType: act.doType, doKey: 1 })
+        if (act.doType === 'LI') {
+            this.contentsList[idx].likeCount += 1
         }
+          
+        // }
       }
       /* if (result === true) {
         await this.$emit('refresh')
@@ -964,7 +982,7 @@ export default {
                     var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
 
                     this.currentMemoObj = response
-                    this.currentMemoList = response.content
+                    this.currentMemoList = response.memoList
                     this.offsetInt = this.currentMemoList.length
                     this.pointAni()
                     this.memoSetCount(response.totalElements)

@@ -305,7 +305,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
+        //   url: ''/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -325,7 +325,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
+        //   url: ''/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -632,6 +632,7 @@ export default {
       } else {
         // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
         param.title = this.$titleToBody(targetMsgDiv)
+        debugger
       }
       //
       param.jobkindId = 'ALIM'

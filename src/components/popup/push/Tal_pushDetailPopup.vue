@@ -7,7 +7,7 @@
         <img v-else class="fl mr-04 cursorP pushDetailChanLogo" src="../../../assets/images/channel/tempChanImg.png">
 
         <div class="pushDetailHeaderTextArea">
-          <p class=" font18 fontBold commonColor">{{pushDetail.title}}</p>
+          <p class=" font18 fontBold textOverdot commonColor">{{pushDetail.title}}</p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}</p>
           <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.$changeText(pushDetail.creUserName) + ')'}}</p>
@@ -145,7 +145,7 @@ export default {
 .pushDetailWrap{height: fit-content;}
 .pushDetailTopArea{height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
-.pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;}
+.pushDetailHeaderTextArea{width: calc(100% - 70px); height: 100%; cursor: pointer; float: left;margin-top: 0.2rem;}
 
 .pushPopContent{
   position: absolute;

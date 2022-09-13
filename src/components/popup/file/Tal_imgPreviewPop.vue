@@ -68,7 +68,17 @@ export default {
     if (this.startIndex) {
       this.index = this.startIndex
     }
-    this.getImgList()
+    this.getImgList().then(response => {
+      this.imgList = response
+      for (var i = 0; i < this.imgList.length; i++) {
+        console.log(this.imgList[i].pathMtext)
+        // this.imgList[i].src = this.imgList[i].pathMtext
+        this.imgList[i].src = this.imgList[i].domainPath + this.imgList[i].pathMtext
+        this.imgList[i].title = this.imgList[i].fileKey
+        // var imgUrl = this.imgList[i].domainPath + this.imgList[i].pathMtext
+        // this.imgs.push(imgUrl)
+      }
+    })
     var history = this.$store.getters.hStack
     this.popId = 'previewImgPop' + history.length
     console.log(history)
@@ -110,19 +120,11 @@ export default {
       param.attachYn = false
       this.imgs = []
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMMFileList',
+        url: '/tp.getMMFileList',
         param: param
       })
       console.log(result)
-      this.imgList = result.data.mmFileList
-      for (var i = 0; i < this.imgList.length; i++) {
-        console.log(this.imgList[i].pathMtext)
-        // this.imgList[i].src = this.imgList[i].pathMtext
-        this.imgList[i].src = this.imgList[i].domainPath + this.imgList[i].pathMtext
-        this.imgList[i].title = this.imgList[i].fileKey
-        // var imgUrl = this.imgList[i].domainPath + this.imgList[i].pathMtext
-        // this.imgs.push(imgUrl)
-      }
+      return result.data.mmFileList
       // console.log(this.imgs)
     },
     backClick () {

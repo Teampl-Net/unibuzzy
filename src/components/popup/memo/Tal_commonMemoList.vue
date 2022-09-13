@@ -24,7 +24,7 @@
             <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
           </div>
           <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-          <p @click="memoUserNameClick(memo.creUserKey)" class="grayBlack fl font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
+          <p @click="memoUserNameClick(memo.creUserKey)" class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
             <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
             <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
             {{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}
@@ -46,6 +46,26 @@
           </div>
           <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn &&(replyYn === true && editIndex !== index)">댓글</div>
           <p v-if="memo.cmemoList.length > 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.cmemoList.length}}개</p>
+        </div>
+        <div  style="width: 100%; margin-top: 15px; border-top: 1px dashed #ccc; min-height: 50px; float: left;" v-if="memo.cmemoList.length > 0">
+            <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex">
+                <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
+                <div style="width: calc(100% - 40px); background:#fff; padding: 10px; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
+                    <div @click="memoUserNameClick(cMemo.creUserKey)" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;     background-size: cover; background-position: center; ">
+                    </div>
+                    <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+                    <div style="width: 100%; min-height: 25px; margin-bottom: 10px;">
+                        <p class="font14 grayBlack fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
+                        <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
+                    </div>
+                    <p class="font14 commonBlack" v-html="cMemo.bodyFullStr"></p>
+                <div >
+                    <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.userKey))" @click="memoDeleteClick(memo, index)">삭제</div>
+                    <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(memo, index)">수정</div>
+                </div>
+                <div class="memoActionArea font13" @click="memoMemoClick(cMemo)" v-if="!nonMemYn &&(replyYn === true)">댓글</div>
+                </div>
+            </div>
         </div>
         <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
           <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
@@ -136,7 +156,7 @@ export default {
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

@@ -400,7 +400,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
+        url: '/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -617,7 +617,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveContents',
+          url: '/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -683,7 +683,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
+        url: '/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -717,7 +717,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
+        url: '/tp.getMemoList',
         param: memo
       })
       if (result.data.content) {
@@ -746,7 +746,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getUserDoListPage',
+        url: '/tp.getUserDoListPage',
         param: param
       })
     },
@@ -842,7 +842,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
+        url: '/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -882,7 +882,7 @@ export default {
       var changeText = Base64.decode(data)
       return changeText
     },
-    async getContentsList () {
+    async getContentsList (userDoYn) {
       // eslint-disable-next-line no-new-object
 
       // eslint-disable-next-line no-new-object
@@ -909,8 +909,10 @@ export default {
 
       // console.log(this.alimDetail)
       await this.getLikeCount()
-      await this.checkUserAuth()
-      await this.getMemoList()
+      if (!userDoYn) {
+        await this.checkUserAuth()
+        await this.getMemoList()
+      }
       this.$emit('closeLoading')
     },
     settingUserDo (userDo) {
@@ -936,7 +938,9 @@ export default {
         }
       }
     },
+
     async changeAct (act, contentsKey) {
+      // eslint-disable-next-line no-unused-vars
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -945,50 +949,70 @@ export default {
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      var temp = {}
+      var temp = []
+      if (!this.alimDetail[0].userDoList) {
+        this.alimDetail[0].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      }
+      temp = this.alimDetail[0].userDoList
+
+      for (var i = 0; i < temp.length; i++) {
+        if (temp[i].doType === act.doType) {
+          if (temp[i].doKey === 1) return
+        }
+      }
+
       param.targetKey = contentsKey
       param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       if (param.targetKey === null) { return }
       param.doType = act.doType
       if (saveYn === false) {
         param.doKey = act.doKey
-        result = await this.$saveUserDo(param, 'delete')
-        temp = this.alimDetail[0].userDoList
-        for (var i = 0; i < temp.length; i++) {
+        result = this.$saveUserDo(param, 'delete')
+        for (i = 0; i < temp.length; i++) {
           if (temp[i].doType === act.doType) {
-            temp.splice(i, 1)
+            temp[i].doKey = 0
           }
         }
+        if (act.doType === 'LI') { this.alimDetail[0].likeCount -= 1 }
+
         this.alimDetail[0].userDoList = temp
+        this.settingUserDo(temp)
         this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
-        result = await this.$saveUserDo(param, 'save')
-        if (result.result === true) {
-          temp = this.alimDetail[0].userDoList
-          if (!temp) {
-            temp = []
+        this.$saveUserDo(param, 'save').then(result => {
+          for (var d = temp.length - 1; d >= 0; d--) {
+            if (temp[d].doKey === 1 && temp[d].doType === act.doType) {
+              temp[d].doKey = result.doKey
+            }
           }
-          temp.push({ doType: act.doType, doKey: result.doKey })
           this.alimDetail[0].userDoList = temp
           this.settingUserDo(temp)
-          this.changeData += 1
-          // this.alimDetail[0].likeCount += 1
-          this.getContentsList()
-        }
-        console.log(this.alimDetail[0])
+          this.getContentsList(true)
+          // }
+          console.log(this.alimDetail[0])
+        })
+
+        this.alimDetail[0].userDoList.push({ doType: act.doType, doKey: 1 })
+        if (act.doType === 'LI') { this.alimDetail[0].likeCount += 1 }
+        // this.alimDetail[0].userDoList = temp
+        this.changeData += 1
+        this.settingUserDo(temp)
+        // this.alimDetail[0].likeCount += 1
+        // if (result.result === true) {
       }
       // console.log('resultresult')
       // console.log(result)
-      if (result === true) {
+      /* if (result === true) {
         await this.getContentsList()
+        this.$emit('reloadParent')
         // this.$emit('reloadParent')
         // this.loadYn = false
         // setTimeout(()=>{
         //   this.loadYn = true
         // },200)
-      }
+      } */
     },
     goChanDetail (alim) {
       // eslint-disable-next-line no-new-object

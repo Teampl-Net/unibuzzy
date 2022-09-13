@@ -1,13 +1,16 @@
 <template>
 <div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
-    <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
+    <div style="width: 100%; float: left; position: relative;">
+        <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
+        <gBtnSmall v-if="tab === 'Mem'" btnTitle="신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/>
+    </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
-      <!-- <div v-if="tab === 'Mem'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
+      <!-- <div v-if="tab === 'Show'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
       멤버 신청서 만들기
       </div> -->
-      <!-- <gBtnSmall v-if="tab === 'Mem'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
+      <!-- <gBtnSmall v-if="tab === 'Show'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
       <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
-      <div v-if="managingList.length === 0 && ownerYn && tab === 'Mem'" class="mtop-1" style="">
+      <div v-if="managingList.length === 0 && ownerYn && tab === 'Show'" class="mtop-1" style="">
         <p class="font16 " style="">정보를 공개한 대상이 없습니다. <br> <!--채널을 조금 더 홍보해보세요! --> </p>
       </div>
     </div>
@@ -31,10 +34,10 @@ export default {
     return {
       errorPopYn : false,
       errorText: '',
-      activeTabList: [{ display: '공개', name: 'Mem' }, { display: '매니저', name: 'Admin' }],
-      // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Mem' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
+      activeTabList: [{ display: '공개', name: 'Show' }, { display: '멤버', name: 'Mem' }, { display: '매니저', name: 'Admin' }],
+      // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
 
-      tab: 'Mem',
+      tab: 'Show',
       managingList: [],
       smallPopYn:false,
       confirmMsg:'',
@@ -51,10 +54,10 @@ export default {
     this.ownerYn = true
     // if (this.propData.ownerYn) {
     //   this.ownerYn = true
-    //   this.activeTabList = [{ display: '공개', name: 'Mem' }, { display: '매니저', name: 'Admin' }]
-    //   // this.activeTabList = [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Mem' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }]
+    //   this.activeTabList = [{ display: '공개', name: 'Show' }, { display: '매니저', name: 'Admin' }]
+    //   // this.activeTabList = [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }]
     // } else {
-    //   this.activeTabList = [{ display: '공개', name: 'Mem' }]
+    //   this.activeTabList = [{ display: '공개', name: 'Show' }]
     // }
   },
   methods: {
@@ -70,7 +73,7 @@ export default {
       this.addSmallMsg = '구독 시 자동으로 매니저로 등록됩니다.'
     },
     memberInfo(member){
-      // if(this.tab === 'Mem' && member.showProfileYn){
+      // if(this.tab === 'Show' && member.showProfileYn){
         var param = {}
         console.log("@@########!@#!!!!!!!!!!!@@@@@@@@@@@")
         console.log(member)
@@ -97,22 +100,32 @@ export default {
     async getManagingList (typeName, actionType) {
       if (actionType === 'tab') this.managingList = []
       var result= {}
-      if (typeName === 'Mem') {
+      if (typeName === 'Show') {
         var paramMap = new Map()
         paramMap.set('showProfileYn', true)
         paramMap.set('teamKey', this.propData.currentTeamKey)
         paramMap.set('pageSize', 100)
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.getFollowerList',
+          url: '/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.managingList = await result.data.content
-      }else if (typeName === 'Admin') {
+      } else if (typeName === 'Mem') {
+        var paramMap = new Map()
+        paramMap.set('memberYn', true)
+        paramMap.set('teamKey', this.propData.currentTeamKey)
+        paramMap.set('pageSize', 100)
+        result = await this.$commonAxiosFunction({
+          url: '/tp.getFollowerList',
+          param: Object.fromEntries(paramMap)
+        })
+        this.managingList = await result.data.content
+      } else if (typeName === 'Admin') {
         var param = {}
         param.teamKey = this.propData.currentTeamKey
         param.pageSize = 100
         result = await this.$commonAxiosFunction({
-          url : 'https://mo.d-alim.com:10443/tp.getManagerList',
+          url : '/tp.getManagerList',
           param: param
         })
 
@@ -139,7 +152,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.deleteManager',
+        url: '/tp.deleteManager',
         param: param
       })
 
@@ -148,7 +161,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.saveManager',
+        url: '/tp.saveManager',
         param: param
       })
     },
@@ -169,7 +182,7 @@ export default {
 
 
       var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:10443/tp.saveManager',
+          url: '/tp.saveManager',
           param: param
       })
 

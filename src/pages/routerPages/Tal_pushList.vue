@@ -1,7 +1,7 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
-    <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left; background: white;" >
+    <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
@@ -111,12 +111,12 @@ export default {
     }
     this.introPushPageTab()
     if (this.targetCKey) {
-      this.getMCabContYn(this.targetCKey).then(Response => {
-        if (Response !== true) {
+      this.getMCabContYn(this.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+        /* if (Response !== true) {
           this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
           this.failPopYn = true
           this.targetCKey = null
-        }
+        } */
       })
     }
     this.scrolledYn = false
@@ -229,15 +229,14 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
+        url: '/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
       if (result.data.length > 0) {
         return true
       } else {
-        // return false 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
-        return true
+        return false
       }
       //
     },

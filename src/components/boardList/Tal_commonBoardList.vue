@@ -264,8 +264,73 @@ export default {
       }
       return userDoList
     },
-
-    async changeAct (act, contentsKey, idx) {
+async changeAct (act, contentsKey, idx) {
+      var result = null
+      var saveYn = true
+      var temp = []
+      console.log(this.commonBoardListData)
+      if (!this.commonBoardListData[idx].userDoList) {
+        this.commonBoardListData[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      }
+      if (this.commonBoardListData[idx].userDoList) {
+        temp = this.commonBoardListData[idx].userDoList    
+      }
+      var doList =this.commonBoardListData[idx].userDoList
+      
+      for (var i = 0; i < doList.length; i ++) {
+        if (doList[i].doType === act.doType) {
+            if (doList[i].doKey === 1) return
+        }
+      }
+      // this.pushDetail = JSON.parse(this.detailVal).data
+      if (Number(act.doKey) > 0) {
+        saveYn = false
+      }
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = contentsKey
+      if (param.targetKey === null) { return }
+      param.doType = act.doType
+      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      if (saveYn === false) {
+        param.doKey = act.doKey
+        result = this.$saveUserDo(param, 'delete')
+        if (act.doType === 'LI') {
+          this.commonBoardListData[idx].likeCount -= 1
+        }
+        for (var i = 0; i < temp.length; i++) {
+          if(temp[i].doType === act.doType) {
+            temp[i].doKey = 0
+          }
+        }
+        this.commonBoardListData[idx].userDoList = temp
+        this.changeData += 1
+      } else {
+        param.actYn = true
+        param.targetKind = 'C'
+        this.$saveUserDo(param, 'save').then(result => {
+          // debugger
+        for (var d = temp.length - 1; d >= 0 ; d--) {
+            if (temp[d].doKey === 1 && temp[d].doType === act.doType) {
+                temp[d].doKey = result.doKey
+            }
+        }
+          // temp.push({ doType: act.doType, doKey: result.doKey })
+          this.commonBoardListData[idx].userDoList = temp
+          this.changeData += 1
+        })
+        temp.push({ doType: act.doType, doKey: 1 })
+        if (act.doType === 'LI') {
+            this.commonBoardListData[idx].likeCount += 1
+        }
+          
+        // }
+      }
+      /* if (result === true) {
+        await this.$emit('refresh')
+      } */
+    },
+    /* async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
       // this.pushDetail = JSON.parse(this.detailVal).data
@@ -280,7 +345,7 @@ export default {
       param.doType = act.doType
       if (saveYn === false) {
         param.doKey = act.doKey
-        result = await this.$saveUserDo(param, 'delete')
+        result = this.$saveUserDo(param, 'delete')
 
         var temp = this.commonBoardListData[idx].userDoList
         for (var i = 0; i < temp.length; i++) {
@@ -293,9 +358,8 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
-        result = await this.$saveUserDo(param, 'save')
-        if (result.result === true) {
-          console.log(result)
+        result = this.$saveUserDo(param, 'save')
+        // if (result.result === true) {
           var temp = this.commonBoardListData[idx].userDoList
           if (!temp) {
             temp = []
@@ -305,12 +369,9 @@ export default {
           this.changeData += 1
           console.log(JSON.stringify(act.doType === 'LI'))
           this.commonBoardListData[idx].likeCount += 1
-        }
+        // }
       }
-      /* if (result === true) {
-        await this.$emit('refresh')
-      } */
-    },
+    }, */
     async loadMore () {
       this.loadingRefShow()
       this.$emit('moreList', 10)
