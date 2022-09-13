@@ -15,9 +15,9 @@
 
       <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
         <!-- <div v-if="memo.parentMemoKey" style="width:20px;position: absolute; left: 0; top: 50%; transform: translateY(-50%);" class="fl"> -->
-        <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
+        <!-- <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
           <img  src="../../../assets/images/common/icon-turn-right.svg" style="max-width:20px;" class=" " alt="">
-        </div>
+        </div> -->
         <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
           <div @click="memoUserNameClick(memo.creUserKey)" v-if="memo.userProfileImg"  class="memoPicImgWrap">
@@ -51,7 +51,7 @@
             <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex">
                 <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
                 <div style="width: calc(100% - 40px); background:#fff; padding: 10px; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
-                    <div @click="memoUserNameClick(cMemo.creUserKey)" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;     background-size: cover; background-position: center; ">
+                    <div @click="memoUserNameClick(cMemo.creUserKey)" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; ">
                     </div>
                     <img v-else src="../../../assets/images/main/main_profile.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
                     <div style="width: 100%; min-height: 25px; margin-bottom: 10px;">

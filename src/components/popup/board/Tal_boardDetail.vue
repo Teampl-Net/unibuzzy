@@ -720,14 +720,15 @@ export default {
         url: '/tp.getMemoList',
         param: memo
       })
-      if (result.data.content) {
+      console.log(result)
+      if (result.data.memoList) {
         this.totalElements = result.data.totalElements
         if (allYn) {
-          this.memoList = result.data.content
+          this.memoList = result.data.memoList
         } else {
           const newArr = [
             ...this.memoList,
-            ...result.data.content
+            ...result.data.memoList
           ]
           this.memoList = newArr
         }
