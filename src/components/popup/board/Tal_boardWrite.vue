@@ -4,7 +4,7 @@
     <div class="w-100P" style=" height:100vh;top: 0; position: absolute; overflow:auto">
     <div style="min-height: 400px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='confirmNo(), checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -237,7 +237,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: '/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -257,7 +257,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: '/tp.getCabinetDetail',
+      //   url: 'https://mo.d-alim.com:10443/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -517,8 +517,12 @@ export default {
       this.msgData = obj.admMsg
       this.msgPopYn = false
     },
+    confirmNo () {
+      this.complexOkYn = false
+    },
     async clickPageTopBtn () {
       if (this.viewTab === 'complex' && this.complexOkYn === false) {
+        this.complexOkYn = true
         this.$refs.complexEditor.setParamInnerHtml()
       } else {
         var title = this.writePushTitle
@@ -526,18 +530,21 @@ export default {
         } else {
           this.errorText = '제목을 입력해주세요'
           this.failPopYn = true
+          this.complexOkYn = false
           return
         }
         var msgData = ''
         if (this.viewTab === 'complex') {
-          msgData = document.getElementById('msgBox').innerHTML
+          msgData = document.getElementById('msgBox').innerText
         } else if (this.viewTab === 'text') {
-          msgData = document.getElementById('textMsgBox').innerHTML
+          msgData = document.getElementById('textMsgBox').innerText
         }
-        if (msgData !== undefined && msgData !== null && msgData !== '') {
+        msgData = msgData.trim()
+        if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
         } else {
-          this.errorText = '알림 내용을 입력해주세요'
+          this.errorText = '게시글의 내용을 입력해주세요'
           this.failPopYn = true
+          this.complexOkYn = false
           return
         }
         if (this.selectBoardYn === true) {
@@ -545,11 +552,13 @@ export default {
             if (this.selectBoardCabinetKey === null) {
               this.errorText = '해당 게시판에 작성 권한이 없습니다. 다른 게시판을 선택해주세요.'
               this.failPopYn = true
+              this.complexOkYn = false
               return
             }
           } else if (this.selectBoardIndex === undefined || this.selectBoardIndex === null || this.selectBoardIndex === '') {
             this.errorText = '게시글을 작성할 게시판을 선택해주세요.'
             this.failPopYn = true
+            this.complexOkYn = false
             return
           }
         }
@@ -594,7 +603,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

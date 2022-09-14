@@ -120,7 +120,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-    <pushList :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem'/>
+    <pushList :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.chanDetail.targetKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' />
     <!-- <div v-else style="">
       <p>구독하고 알림을 받아보세요!</p>
     </div> -->
@@ -188,7 +188,8 @@ export default {
       titleLongYn: false,
       notiDetail: null,
       systemName: '',
-      currentConfirmType: ''
+      currentConfirmType: '',
+      currentPushListMainTab: 'P'
       // errorPopYn: false
     }
   },
@@ -237,6 +238,9 @@ export default {
     } */
   },
   methods: {
+    changeMainTab (tab) {
+      this.currentPushListMainTab = tab
+    },
     goProfile () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -450,7 +454,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'https://mo.d-alim.com:10443/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -506,19 +510,29 @@ export default {
       }, 500)
     },
     openWritePushPop () {
+      if (this.currentPushListMainTab === 'P') {
       // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetKey = this.chanItem.teamKey
-      params.targetType = 'writePush'
-      params.targetNameMtext = this.chanItem.nameMtext
-      this.writePushData = {}
-      this.writePushData = params
+        var params = new Object()
+        params.targetKey = this.chanItem.teamKey
+        params.targetType = 'writePush'
+        params.targetNameMtext = this.chanItem.nameMtext
+        this.writePushData = {}
+        this.writePushData = params
 
-      var history = this.$store.getters.hStack
-      this.writePopId = 'writePush' + history.length
-      history.push(this.writePopId)
-      this.$store.commit('updateStack', history)
-      this.writePushYn = true
+        var history = this.$store.getters.hStack
+        this.writePopId = 'writePush' + history.length
+        history.push(this.writePopId)
+        this.$store.commit('updateStack', history)
+        this.writePushYn = true
+      } else if (this.currentPushListMainTab === 'B') {
+        var param = {}
+        param.targetType = 'writeBoard'
+        param.selectBoardYn = true
+        param.teamKey = this.chanItem.teamKey
+        param.targetKey = this.chanItem.teamKey
+        param.currentTeamKey = this.chanItem.teamKey
+        this.$emit('openPop', param)
+      }
       // this.$emit('openPop', params)
     },
     async getChanDetail (addContentsListYn) {

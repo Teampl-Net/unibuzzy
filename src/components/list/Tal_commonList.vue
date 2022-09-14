@@ -2,6 +2,7 @@
   <!-- <div id="chanWrap" class="commonListWrap"> -->
     <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
     <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
+      <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
@@ -46,8 +47,6 @@
                     </div>
                 </div>
               </div>
-              <!-- 밑 1줄이 본문 텍스트  -->
-<!-- @click="goDetail(alim)" -->
                 <div @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></div>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
@@ -150,7 +149,8 @@ export default {
       selectedConentsKey: null,
       currentMemoObj: {},
       showMoreMemoTextYn: false,
-      moreMemoText: '댓글 더보기'
+      moreMemoText: '댓글 더보기',
+      saveMemoLoadingYn: false
 
     }
   },
@@ -272,7 +272,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com:10443/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -285,7 +285,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'https://mo.d-alim.com:10443/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -404,7 +404,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'https://mo.d-alim.com:10443/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -491,6 +491,8 @@ export default {
         if (wich === -1){
           wich = document.getElementById(this.currentMemoList[this.currentMemoList.length - 1].memoKey).offsetTop
         }
+        console.log('Contents Wich : ' + a)
+        console.log('Wich : ' + wich)
         this.$emit('scrollMove', wich+a)
       })
     },
@@ -498,7 +500,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'https://mo.d-alim.com:10443/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -526,6 +528,7 @@ export default {
       }
     },
     async saveMemo (text) {
+      this.saveMemoLoadingYn = true
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.parentMemoKey = null
@@ -543,7 +546,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -562,6 +565,7 @@ export default {
         this.pointAni()
         /* this.scrollMove(-1) */
       }
+      this.saveMemoLoadingYn = false
     },
     memoSetCount (size) {
       var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
@@ -738,7 +742,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'https://mo.d-alim.com:10443/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

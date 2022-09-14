@@ -210,6 +210,7 @@ export default {
     changeMainTab (tab) {
       this.viewMainTab = tab
       this.refreshList()
+      this.$emit('changeMainTab', tab)
     },
     backClick () {
       var hStack = this.$store.getters.hStack
@@ -229,7 +230,7 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com:10443/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -499,10 +500,10 @@ export default {
       // var ScrollWrap = this.$refs.pushListWrapWrapCompo
       // if (wich === undefined || wich === null || wich === '') { wich = 0 }
       // ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
-
+      console.log('scrollMove : ' + wich)
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
-      ScrollWrap.scrollTo({ top: wich - 100, behavior: 'smooth' })
+      ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
     },
 
     async getPushContentsList (pageSize, offsetInput) {

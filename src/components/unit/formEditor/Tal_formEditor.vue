@@ -236,7 +236,9 @@ export default {
       this.addFormCard('image', file.previewImgUrl, true)
     },
     setParamInnerHtml () {
-      var formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
+      console.log(true)
+      var formCard = null
+      formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
       var tempList = []
       // var formCardpadding = document.querySelectorAll('#eContentsWrap .formDiv')
       for (var i = 0; i < formCard.length; i++) {

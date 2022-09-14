@@ -321,7 +321,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -341,7 +341,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -551,6 +551,7 @@ export default {
       // this.formEditorShowYn = false
     },
     confirmNo(){
+      this.complexOkYn = false
       console.log(this.propFormData)
     },
     setParamInnerText (innerText) {
@@ -710,7 +711,7 @@ export default {
         setObj = new Object()
         setObj.addYn = true
         if (this.uploadFileList[i].attachYn) {
-            setObj.attachYn = true    
+            setObj.attachYn = true
         } else {
             setObj.attachYn = false
         }
@@ -731,7 +732,9 @@ export default {
       this.msgPopYn = false
     },
     async clickPageTopBtn () {
+      // 취소를 누르거나 유효성 검사 (이 함수)에 통과하지 못하면 값을 다시 가져와야함. 그러므로 --> this.complexOkYn = false
       if(this.viewTab === 'complex' && this.complexOkYn === false) {
+        this.complexOkYn = true
         await this.$refs.complexEditor.setParamInnerHtml()
       } else {
         var title = this.writePushTitle
@@ -740,6 +743,7 @@ export default {
           } else {
             this.errorText = '제목을 입력해주세요'
             this.failPopYn = true
+            this.complexOkYn = false
             return
           }
         }
@@ -748,20 +752,23 @@ export default {
           if (this.requestTitle.replace(' ', '') === '') {
             this.errorText = '알림을 신청하는 사유를 입력해주세요'
             this.failPopYn = true
+            this.complexOkYn = false
             return
           }
         }
 
         var msgData = ''
         if(this.viewTab === 'complex') {
-          msgData = document.getElementById('msgBox').innerHTML
+          msgData = document.getElementById('msgBox').innerText
         } else if (this.viewTab === 'text') {
-          msgData = document.getElementById('textMsgBoxPush').innerHTML
+          msgData = document.getElementById('textMsgBoxPush').innerText
         }
-        if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요') {
+        msgData = msgData.trim()
+        if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요' || this.uploadFileList.length > 0) {
         } else {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
+          this.complexOkYn = false
           return
         }
         this.checkPopYn = true
@@ -876,7 +883,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form/* ,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

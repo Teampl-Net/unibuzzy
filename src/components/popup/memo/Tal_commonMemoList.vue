@@ -32,8 +32,8 @@
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <div id="editCommentBox" class="editableContent font14" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
-          <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; height: 100%;" class="commonBlack font14" v-html="memo.bodyFullStr" ></div>
+          <div id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index" v-html="inputText"></div>
+          <div v-else style="margin-left: 5px; width: calc(100% - 40px);float: left; height: 100%;" class="commonBlack font14 cursorDragText" v-html="memo.bodyFullStr" ></div>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
           <div v-if="editIndex === index">
@@ -161,7 +161,7 @@ export default {
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'https://mo.d-alim.com:10443/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

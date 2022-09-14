@@ -314,41 +314,53 @@ const methods = {
     return changedBoardName
   },
   titleToBody (inHtml) {
-    // eslint-disable-next-line no-debugger
-    debugger
-    var childNodes = inHtml.childNodes
+    // // eslint-disable-next-line no-debugger
+    // debugger
     var titleText = ''
-    titleText = childNodes[0].textContent
-    if (titleText.indexOf('\n') === -1) {
-      if (titleText.length < 5) {
-        for (var i = 1; i < childNodes.length; i++) {
-          var node = childNodes[i]
-          titleText += node.textContent
-          if (titleText.length > 4) {
-            break
-          }
-        }
-      }
+    var childNodes = inHtml.childNodes
+    for (var i = 0; i < childNodes.length; i++) {
+      titleText += childNodes[i].textContent + ' '
+      titleText = titleText.trimLeft()
       if (titleText.length > 64) {
-        titleText.substring(0, 64)
-      }
-    } else {
-      // eslint-disable-next-line no-debugger
-      debugger
-      var titleNodeList = titleText.split('\n')
-      titleText = titleNodeList[0]
-      if (titleText.length < 5) {
-        for (i = 1; i < titleNodeList.length; i++) {
-          titleText += titleNodeList[i]
-          if (titleText.length > 4) {
-            break
-          }
-        }
-      }
-      if (titleText.length > 64) {
-        titleText.substring(0, 64)
+        titleText = titleText.substring(0, 64) + '..'
+        break
       }
     }
+    // eslint-disable-next-line no-debugger
+    // debugger
+    // var childNodes = inHtml.childNodes
+    // var titleText = ''
+    // titleText = childNodes[0].textContent
+    // if (titleText.indexOf('\n') === -1) {
+    //   if (titleText.length < 5) {
+    //     for (var i = 1; i < childNodes.length; i++) {
+    //       var node = childNodes[i]
+    //       titleText += node.textContent
+    //       if (titleText.length > 4) {
+    //         break
+    //       }
+    //     }
+    //   }
+    //   if (titleText.length > 64) {
+    //     titleText.substring(0, 64)
+    //   }
+    // } else {
+    //   // eslint-disable-next-line no-debugger
+    //   debugger
+    //   var titleNodeList = titleText.split('\n')
+    //   titleText = titleNodeList[0]
+    //   if (titleText.length < 5) {
+    //     for (i = 1; i < titleNodeList.length; i++) {
+    //       titleText += titleNodeList[i]
+    //       if (titleText.length > 4) {
+    //         break
+    //       }
+    //     }
+    //   }
+    //   if (titleText.length > 64) {
+    //     titleText.substring(0, 64)
+    //   }
+    // }
 
     // param.title.split('\n')
 
