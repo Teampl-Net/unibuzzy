@@ -326,9 +326,16 @@ export default {
       }
       console.log(this.uploadFileList)
       this.$emit('changeUploadList', target.selectFileList)
-      if (this.formCardList[this.formCount].selectFileList) {
+      if (this.formCardList[this.formCount] && this.formCardList[this.formCount].selectFileList) {
         this.formCardList[this.formCount].selectFileList = target.selectFileList
         this.formCardList[this.formCount].addYn = true
+      } else {
+        setTimeout(() => {
+          if (this.formCardList[this.formCount] && this.formCardList[this.formCount].selectFileList) {
+            this.formCardList[this.formCount].selectFileList = target.selectFileList
+            this.formCardList[this.formCount].addYn = true
+          }
+        }, 200)
       }
     },
     /* addFormCard2 (type, src) {

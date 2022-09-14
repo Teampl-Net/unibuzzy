@@ -425,10 +425,11 @@ const methods = {
       document.body.appendChild(iframe)
     }
     var api = path.split('/image')[0]
-    // eslint-disable-next-line no-debugger
-    debugger
     // 파일서버 fileServer fileserver FileServer Fileserver
     iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+    console.log(iframe.src)
+    // eslint-disable-next-line no-debugger
+    debugger
     /* try {
       var pom = document.createElement('a')
       pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')

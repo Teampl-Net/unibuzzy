@@ -150,8 +150,6 @@ export default {
     },
     async download () {
       try {
-        // var pom = document.createElement('a')
-        // var selectImg = document.querySelectorAll('.is-active > .imgList')[0]
         var selectImg = Number(document.querySelector('.vel-img-title').textContent)
         var selectImgPath = document.querySelector('.vel-img').src
         if (this.mobileYn) {

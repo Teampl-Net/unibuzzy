@@ -12,30 +12,38 @@
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
-                <div @click="clickCard(alim)" class="pushDetailHeaderTextArea ">
+                <div class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p style="width: 100%; word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
-                    <pp v-if="alim.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
-                    <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                  <p @click="clickCard(alim)" style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
+                    <pp v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</pp>
+                    <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-                    {{resizeText(alim.title, alim.nameMtext)}}
+                     {{resizeText(alim.title, alim.nameMtext)}}
                   </p>
+                  <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
-                  <div class="w-100P fl">
-                    <p style="width:65%; " class="font14 fl grayBlack">
-                      <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                      {{this.changeText(alim.nameMtext)}}
-                      <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
-                    </p>
-                    <div class="fr" style="display: flex; align-items: center;">
-                      <p class="font14 fr lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
-                      <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;" class="fr mleft-05" alt="">
-                      <p class="fr font14 lightGray" :class="{'mleft-05':alim.rUserCount === -1}" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
+                    <div class="w-100P fl" style=" margin-bottom: 5px;">
+                        <p style="width:100%; " class="font14 fl grayBlack">
+                            <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                            {{this.changeText(alim.nameMtext)}}
+                            <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
+                        </p>
                     </div>
-                  </div>
+                    <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
+                        <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                    </div>
+                    <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                    <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
+                        <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
+                        <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
+                    </div>
+                    <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                    <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" class="fr" style="padding: 0 5px;">
+                        <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
+                        <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
+                    </div>
                 </div>
               </div>
               <!-- 밑 1줄이 본문 텍스트  -->
@@ -1101,7 +1109,7 @@ export default {
 .commonListContentBox{
     position: relative;
     width: calc(100% - 1rem);
-    margin: 0.5rem 0.5rem;
+    margin: 0.7rem 0.5rem;
     float: left;
     border-radius: 0.8rem;
     background-color: #ffffff;

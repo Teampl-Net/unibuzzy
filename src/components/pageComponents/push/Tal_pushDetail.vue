@@ -16,7 +16,7 @@
                   <p style="width: 100%; word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
                     <pp v-if="alim.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-                    <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                    <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{alim.title}}
@@ -39,21 +39,21 @@
 
         </div>
         <!-- <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; "> -->
-          <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; ">
-          <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
-          <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
-          <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
-            <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
-            <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
-              <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
-                <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
-                <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
-                  {{value.fileName}}
-                </a>
-              </div>
-            </templete>
-            <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
-          </div>
+        <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; ">
+            <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
+            <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
+            <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
+                <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
+                <templete v-for="(value, index) in this.attachTrueFileList" :key="index">
+                <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
+                    <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
+                    <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
+                    {{value.fileName}}
+                    </a>
+                </div>
+                </templete>
+                <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
+            </div>
         </div>
         <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(alim.bodyFullStr)"></div>
 
@@ -441,33 +441,9 @@ export default {
       this.filePopShowYn = false
       return false
     },
-    download1 (fileKey, path) {
-      var aTag
-      var iframe
-      aTag = document.getElementById('hiddenDownloaderForAndroid')
-      iframe = document.getElementById('hiddenDownloaderForIos')
-      var api = path.split('/image')[0]
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (this.systemName !== 'Android' && this.systemName !== 'android') {
-        iframe = document.createElement('iframe')
-        iframe.id = 'hiddenDownloaderForIos'
-        iframe.style.display = 'none'
-        document.body.appendChild(iframe)
-        // 파일서버 fileServer fileserver FileServer Fileserver
-        iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
-      } else {
-        if (aTag == null) {
-          aTag = document.createElement('a')
-          aTag.id = 'hiddenDownloaderForAndroid'
-          aTag.style.display = 'none'
-          document.body.appendChild(aTag)
-        }
-        aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
-        aTag.target = '_blank'
-
-        aTag.click()
-      }
+    async download1 (fileKey, path) {
+      var result = await this.$downloadFile(fileKey, path)
+      console.log(result)
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])

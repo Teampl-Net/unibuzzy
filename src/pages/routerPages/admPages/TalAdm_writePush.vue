@@ -97,7 +97,13 @@
                   </div>
                   <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
                 </div>
-
+                <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
+                    <div style="width: 100%; min-height: 30px;">
+                        <!-- <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
+                        <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
+                        <attachFileList style="min-width:80px;" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                    </div>
+                </div>
                 <div style="width: 100%;float: left; min-height: 50px; position: relative;">
                   <gActiveBar modeType="write" :tabList="this.activeTabList" ref="actBar" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
                   <!-- <div class="titleAddArea" >
@@ -129,6 +135,7 @@
 /* eslint-disable */
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../../components/unit/formEditor/Tal_formEditor.vue'
+import attachFileList from '../../../components/unit/formEditor/Tal_attachFile.vue'
 export default {
   props: {
     params: {},
@@ -156,7 +163,6 @@ export default {
                 if (this.viewTab != 'complex') {
                     this.$refs.actBar.switchtab(1)
                     this.viewTab = 'complex'
-
                 }
                 /* this.editorType = 'complex' */
                 var file = item.getAsFile();
@@ -557,131 +563,131 @@ export default {
       }
     },
     async sendMsg () {
-      var paramImgList = []
-      if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
-        this.checkPopYn = false
-        this.progressShowYn = true
-      } else {
-        this.sendLoadingYn = true
-      }
-      // this.sendLoadingYn = true
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      var innerHtml =''
-      param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
-      var targetMsgDiv = null
-      if(this.viewTab === 'complex') {
+        var paramImgList = []
+        if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
+            this.checkPopYn = false
+            this.progressShowYn = true
+        } else {
+            this.sendLoadingYn = true
+        }
+        // this.sendLoadingYn = true
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        var innerHtml =''
+        param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
+        var targetMsgDiv = null
+        if (this.uploadFileList.length > 0) {
+            await this.formSubmit()
+            setTimeout(() => {
+            this.progressShowYn = false
+            }, 2000)
+            this.sendLoadingYn = true
+        }
+        if(this.viewTab === 'complex') {
         // this.$refs.complexEditor.setParamInnerHtml()
         param.bodyHtmlYn = true
-        if (this.uploadFileList.length > 0) {
-          await this.formSubmit()
-          setTimeout(() => {
-            this.progressShowYn = false
-          }, 2000)
-          this.sendLoadingYn = true
-        }
         /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
         /* var imgSrc = null
         var imgList = document.querySelectorAll('#msgBox img')
         for (var img=0; img < imgList.length; img ++) {
-          imgSrc = imgList[img].src
-          paramImgList.push(imgSrc)
-          imgList[img].src = 'imgTagSrc' + img
+            imgSrc = imgList[img].src
+            paramImgList.push(imgSrc)
+            imgList[img].src = 'imgTagSrc' + img
+            }
+            param.imgList = imgList
+            */
+            var formList = document.querySelectorAll('#msgBox .formCard')
+            if (formList) {
+            for (var f = 0; f < formList.length; f++) {
+                formList[f].contentEditable = false
+            }
+            param.getBodyHtmlYn = true
+            }
+            targetMsgDiv = document.getElementById('msgBox')
+        } else if (this.viewTab === 'text') {
+            // param.bodyHtmlYn = false
+            document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
+            //
+            targetMsgDiv = document.getElementById('textMsgBoxPush')
+
+
+
         }
-        param.imgList = imgList
-        */
-        var formList = document.querySelectorAll('#msgBox .formCard')
-        if (formList) {
-          for (var f = 0; f < formList.length; f++) {
-            formList[f].contentEditable = false
-          }
-          param.getBodyHtmlYn = true
+        innerHtml = targetMsgDiv.innerHTML
+        // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
+
+        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+        param.allRecvYn = this.allRecvYn
+        var attachFileList = await this.setAttachFileList()
+        if (attachFileList.length > 0) {
+            param.attachFileList = attachFileList
         }
-        targetMsgDiv = document.getElementById('msgBox')
-      } else if (this.viewTab === 'text') {
-        // param.bodyHtmlYn = false
-        document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
-        //
-        targetMsgDiv = document.getElementById('textMsgBoxPush')
+        if (this.allRecvYn === true) {
 
-
-
-      }
-      innerHtml = targetMsgDiv.innerHTML
-      // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
-
-      param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-      param.allRecvYn = this.allRecvYn
-      var attachFileList = await this.setAttachFileList()
-      if (attachFileList.length > 0) {
-        param.attachFileList = attachFileList
-      }
-      if (this.allRecvYn === true) {
-
-      } else {
-        console.log(this.param)
-        if(this.replyPopYn) {
-        param.parentContentsKey = this.params.targetContentsKey
-        param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
         } else {
-          await this.settingRecvList()
-          if (this.selectedReceiverList.length > 0) {
-            param.actorList = this.selectedReceiverList
-          } else {
-            this.errorText = '수신자를 선택해주세요'
-            this.failPopYn = true
+            console.log(this.param)
+            if(this.replyPopYn) {
+            param.parentContentsKey = this.params.targetContentsKey
+            param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
+            } else {
+            await this.settingRecvList()
+            if (this.selectedReceiverList.length > 0) {
+                param.actorList = this.selectedReceiverList
+            } else {
+                this.errorText = '수신자를 선택해주세요'
+                this.failPopYn = true
+                return
+            }
+            }
+        }
+        param.teamName = this.$changeText(this.params.targetNameMtext)
+        param.creTeamKey = this.params.targetKey
+        // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+        // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        if(this.writePushTitle !== '') {
+            param.title = this.writePushTitle
+        } else {
+            // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
+            param.title = this.$titleToBody(targetMsgDiv)
+            debugger
+        }
+        //
+        param.jobkindId = 'ALIM'
+        param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+
+        param.showCreNameYn = this.showCreNameYn
+        param.canReplyYn = this.canReplyYn
+        //
+        var result
+        if (this.requestPushYn === true) {
+            param.requestTitle = this.requestTitle
+
+            // result = this.$saveContents(param)
+            // this.closeXPop(true)
+            this.sendLoadingYn = false
+            this.okPopYn = true
             return
-          }
-        }
-      }
-      param.teamName = this.$changeText(this.params.targetNameMtext)
-      param.creTeamKey = this.params.targetKey
-      // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-      // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      if(this.writePushTitle !== '') {
-        param.title = this.writePushTitle
-      } else {
-        // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
-        param.title = this.$titleToBody(targetMsgDiv)
-        debugger
-      }
-      //
-      param.jobkindId = 'ALIM'
-      param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-
-      param.showCreNameYn = this.showCreNameYn
-      param.canReplyYn = this.canReplyYn
-      //
-      var result
-      if (this.requestPushYn === true) {
-        param.requestTitle = this.requestTitle
-
-        // result = this.$saveContents(param)
-        // this.closeXPop(true)
-        this.sendLoadingYn = false
-        this.okPopYn = true
-        return
-      }
-
-      result = await this.$saveContents(param)
-      if (result.result === true) {
-
-        this.sendLoadingYn = false
-        if (this.replyPopYn) {
-          var param = {}
-          param = this.params
-          param.targetType = 'chanDetail'
-
-
-          this.$emit('changePop', param)
-
-        }else{
-          // this.$emit('closeXPop',true)
-          this.closeXPop(true)
         }
 
-      }
+        result = await this.$saveContents(param)
+        if (result.result === true) {
+
+            this.sendLoadingYn = false
+            if (this.replyPopYn) {
+            var param = {}
+            param = this.params
+            param.targetType = 'chanDetail'
+
+
+            this.$emit('changePop', param)
+
+            }else{
+            // this.$emit('closeXPop',true)
+            this.closeXPop(true)
+            }
+
+        }
 
     },
     closeXPop (reloadYn) {
@@ -691,7 +697,11 @@ export default {
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
         //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
-      this.$emit('closeXPop',true)
+      if (reloadYn === true) {
+        this.$emit('closeXPop',reloadYn)
+      } else {
+        this.$emit('closeXPop')
+      }
     },
     setAttachFileList () {
       var newAttachFileList = new Array()
@@ -699,7 +709,11 @@ export default {
       for (var i = 0; i < this.uploadFileList.length; i++) {
         setObj = new Object()
         setObj.addYn = true
-        setObj.attachYn = false
+        if (this.uploadFileList[i].attachYn) {
+            setObj.attachYn = true    
+        } else {
+            setObj.attachYn = false
+        }
         setObj.fileKey = this.uploadFileList[i].fileKey
         setObj.fileName = (this.uploadFileList[i])[0].file.name
         newAttachFileList.push(setObj)
@@ -849,7 +863,7 @@ export default {
       if (this.uploadFileList.length > 0) {
         var testtest = this.uploadFileList
         console.log(this.uploadFileList)
-        var iList = document.querySelectorAll(".msgArea .formCard .addTrue")
+        var iList = document.querySelectorAll(".formCard .addTrue")
         // Form 필드 생성
         // if (!this.selectFileList.length) return
         var form = new FormData()
@@ -862,7 +876,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
+            .post('fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -877,11 +891,16 @@ export default {
             .then(res => {
               console.log(res)
               if(res.data.length > 0) {
-                var path =res.data[0].domainPath + res.data[0].pathMtext
-                this.uploadFileList[i].previewImgUrl = path
+                debugger
+                if ((this.uploadFileList[i])[0].attachYn === true) {
+                  this.uploadFileList[i].attachYn = true
+                } else {
+                }
+                var path = res.data[0].domainPath + res.data[0].pathMtext
+                this.uploadFileList[i].successSave = true
+                this.uploadFileList[i].filePath = path
                 this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
                 this.uploadFileList[i].fileKey = res.data[0].fileKey
-                this.uploadFileList[i].completeYn = true
               }
             })
             .catch(error => {
@@ -890,13 +909,27 @@ export default {
             })
         }
         console.log(this.uploadFileList)
-        for (var i = 0; i < this.uploadFileList.length; i++) {
-          if (this.uploadFileList[i].previewImgUrl) {
-            iList[i].src = this.uploadFileList[i].previewImgUrl
-            iList[i].setAttribute('fileKey', this.uploadFileList[i].fileKey)
-            iList[i].setAttribute('fileSizeKb', this.uploadFileList[i].fileSizeKb)
-            iList[i].classList.remove("addTrue")
-            iList[i].classList.add('addFalse')
+        var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        if (iList.length > 0) {
+          for (var s = 0; s < this.uploadFileList.length; s++) {
+            var uploadFile = this.uploadFileList[s]
+            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            console.log(uploadFile)
+            if (uploadFile.successSave) {
+              for (var il = 0; il < iList.length; il++) {
+                if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                  iList[il].src = uploadFile.filePath
+                  // eslint-disable-next-line no-unused-vars
+                  iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                  iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                  iList[il].classList.remove('addTrue')
+                  iList[il].classList.add('addFalse')
+                  break
+                }
+              }
+            } else {
+              this.uploadFileList.splice(s, 1)
+            }
           }
         }
       } else {
@@ -904,11 +937,29 @@ export default {
       }
       return true
     },
+    delAttachFile (dFile) {
+      if (dFile.addYn) {
+        for (var d = 0; d < this.uploadFileList.length; d++) {
+          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile[0].attachKey) {
+            this.uploadFileList.splice(d, 1)
+          }
+        }
+      } else {
+        this.delAddFalseFileList.push(dFile)
+      }
+    },
+    setSelectedAttachFileList (sFile) {
+        if (sFile[0].addYn === true) {
+            this.uploadFileList.push(sFile)
+        }
+        console.log(this.uploadFileList)
+    },
   },
 
   components: {
     commonConfirmPop,
-    formEditor
+    formEditor,
+    attachFileList
     // msgPop,
     // writePushPageTitle,
     // pushPop

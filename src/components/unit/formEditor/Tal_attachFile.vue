@@ -132,7 +132,7 @@ export default {
               this.sFileList = []
             }
             console.log(this.sFileList)
-            this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
+            this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
             this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
           }
         }
