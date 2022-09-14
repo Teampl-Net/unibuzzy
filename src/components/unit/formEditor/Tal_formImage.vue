@@ -39,6 +39,7 @@
         </form>
 </template>
 <script>
+/* eslint-disable no-debugger */
 export default {
   name: 'FormValidation',
   components: {},
@@ -129,15 +130,24 @@ export default {
                 var canvas = document.createElement('canvas')
                 var width = image.width
                 var height = image.height
+                var fileSize = thisthis.selectFile.size
+                console.log('thisthis.selectFile')
+                console.log(thisthis.selectFile)
+                var size = 900
+                if (fileSize > 6000000) {
+                  size = 700
+                } else if (fileSize > 3000000) {
+                  size = 800
+                }
                 if (width > height) { // 가로모드
-                  if (width > 900) {
-                    height *= 900 / width
-                    width = 900
+                  if (width > size) {
+                    height *= size / width
+                    width = size
                   }
                 } else { // 세로모드
-                  if (height > 900) {
-                    width *= 900 / height
-                    height = 900
+                  if (height > size) {
+                    width *= size / height
+                    height = size
                   }
                 }
                 canvas.width = width

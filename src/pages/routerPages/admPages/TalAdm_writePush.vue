@@ -321,7 +321,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com:10443/tp.승인 처리',
+        //   url: ''/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -341,7 +341,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com:10443/tp.거절 처리',
+        //   url: ''/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -802,66 +802,11 @@ export default {
       this.$refs.selectFile.click()
     },
     async previewFile (file) {
-        let fileExt = file.name.substring(
-        file.name.lastIndexOf('.') + 1
-        )
-          // 소문자로 변환
-        fileExt = fileExt.toLowerCase()
-        if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
-        ) {
-          // FileReader 를 활용하여 파일을 읽는다
-            var reader = new FileReader()
-            var thisthis = this
-            reader.onload = e => {
-                var image = new Image()
-                image.onload = function () {
-                // Resize image
-                var canvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                if (width > height) { // 가로모드
-                    if (width > 900) {
-                        height *= 900 / width
-                        width = 900
-                    }
-                } else { // 세로모드
-                    if (height > 900) {
-                        width *= 900 / height
-                        height = 900
-                    }
-                }
-                var fileUrl = null
-                canvas.width = width
-                canvas.height = height
-
-                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = canvas.toDataURL('image/png', 0.8)
-                fileUrl = imgBase64
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var newFile = new File([Bfile], file.name)
-                var formList = document.querySelectorAll("#eContentsWrap .formDiv")
-                thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
-                thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
-
-                // this.$emit('updateImgForm', this.previewImgUrl)
-                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-              }
-              image.onerror = function () {
-
-              }
-              image.src = e.target.result
-              // this.previewImgUrl = e.target.result
-            }
-            reader.readAsDataURL(file)
-            // await this.$editorImgResize(this.selectFile)
-          }
+        var thisthis = this
+        await this.$previewFile(file).then(result => {
+            thisthis.$refs.complexEditor.addFormCard('image', result.url, true)
+            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
+        })
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */
@@ -883,7 +828,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
+            .post('fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

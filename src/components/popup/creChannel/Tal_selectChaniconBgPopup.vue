@@ -272,17 +272,22 @@ export default {
               var previewCanvas = document.createElement('canvas')
               var width = image.width
               var height = image.height
+              var fileSize = thisthis.selectFile.size
+              var size = 900
+              if (fileSize > 6000000) {
+                size = 700
+              } else if (fileSize > 3000000) {
+                size = 800
+              }
               if (width > height) { // 가로모드
-                thisthis.imgMode = 'W'
-                if (width > 900) {
-                  height *= 900 / width
-                  width = 900
+                if (width > size) {
+                  height *= size / width
+                  width = size
                 }
               } else { // 세로모드
-                thisthis.imgMode = 'H'
-                if (height > 900) {
-                  width *= 900 / height
-                  height = 900
+                if (height > size) {
+                  width *= size / height
+                  height = size
                 }
               }
               previewCanvas.width = width
@@ -379,7 +384,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

@@ -489,6 +489,73 @@ const methods = {
       text = '기타'
     }
     return text
+  },
+  async previewFile (file) {
+    let fileExt = file.name.substring(
+      file.name.lastIndexOf('.') + 1
+    )
+    // 소문자로 변환
+    fileExt = fileExt.toLowerCase()
+    if (
+      ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+    ) {
+      // FileReader 를 활용하여 파일을 읽는다
+      var reader = new FileReader()
+      reader.onload = async e => {
+        var image = new Image()
+        image.onload = await function () {
+          // Resize image
+          var canvas = document.createElement('canvas')
+          var width = image.width
+          var height = image.height
+          var fileSize = file.size
+          var size = 900
+          if (fileSize > 6000000) {
+            size = 700
+          } else if (fileSize > 3000000) {
+            size = 800
+          }
+          if (width > height) { // 가로모드
+            if (width > size) {
+              height *= size / width
+              width = size
+            }
+          } else { // 세로모드
+            if (height > size) {
+              width *= size / height
+              height = size
+            }
+          }
+          var fileUrl = null
+          canvas.width = width
+          canvas.height = height
+
+          canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+          const imgBase64 = canvas.toDataURL('image/png', 0.8)
+          fileUrl = imgBase64
+          const decodImg = atob(imgBase64.split(',')[1])
+          const array = []
+          for (let i = 0; i < decodImg.length; i++) {
+            array.push(decodImg.charCodeAt(i))
+          }
+          const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+          var newFile = new File([Bfile], file.name)
+          // eslint-disable-next-line no-debugger
+          debugger
+          return { file: newFile, path: fileUrl }
+        }
+        image.onerror = function () {
+
+        }
+        image.src = e.target.result
+        // this.previewImgUrl = e.target.result
+      }
+      reader.readAsDataURL(file)
+      // await this.$editorImgResize(this.selectFile)
+    }
+    /* if (thisthis.$refs.selectFile.files.length > 1) {
+      thisthis.$emit('setMultiFile', thisthis.selectFileList)
+    } */
   }
 }
 
@@ -521,5 +588,6 @@ export default {
     Vue.config.globalProperties.$teamTypeString = methods.teamTypeString
     Vue.config.globalProperties.$showToastPop = methods.showToastPop
     Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
+    Vue.config.globalProperties.$previewFile = methods.previewFile
   }
 }

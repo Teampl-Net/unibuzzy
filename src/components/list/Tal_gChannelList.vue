@@ -11,7 +11,7 @@
         <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
         <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
         </div>
-        <div style=" margin-left: 10px; width: calc(100% - 60px); display:flex;flex-direction: column;">
+        <div style=" margin-left: 10px; width: calc(100% - 70px); display:flex;flex-direction: column;">
           <div class=" text-start mr-04 w-100P">
             <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
             <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px;" :style="value.officialYn ? 'max-width: calc(100% - 60px);' : 'max-width: calc(100% - 33px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
@@ -22,8 +22,8 @@
             </div>
             <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
           </div>
-          <div style="width: 100%; margin-top: 4px; position: relative;">
-            <span class="chanMsgWrap fl font14 grayBlack textOverdot" style="width: calc(100% - 45px); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
+          <div style="width: 100%; margin-right: 0.4rem; margin-top: 4px;">
+            <span class="chanMsgWrap fl font14 grayBlack textOverdot" style="width: calc(100% - 60px); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
             <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; width: 40px" >{{this.$changeDateFormat(value.creDate)}}</p>
           </div>
         </div>
