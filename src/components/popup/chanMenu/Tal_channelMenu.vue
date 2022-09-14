@@ -202,7 +202,7 @@ export default {
       params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: params
       })
       console.log(result.data.content[0])
@@ -301,7 +301,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: 'service/tp.getTeamMenuList',
+          url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data

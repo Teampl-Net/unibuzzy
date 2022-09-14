@@ -275,7 +275,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -288,7 +288,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.saveContents',
+          url: 'https://mo.d-alim.com/service/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -410,7 +410,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -506,7 +506,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -552,7 +552,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -748,7 +748,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

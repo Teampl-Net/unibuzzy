@@ -179,7 +179,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

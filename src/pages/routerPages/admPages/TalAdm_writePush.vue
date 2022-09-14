@@ -321,7 +321,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -341,7 +341,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){

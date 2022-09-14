@@ -11,9 +11,11 @@
     </transition>
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden;">
-      <router-view :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+      <transition :name="transitionName" >
+        <router-view :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+      </transition>
     </div>
-    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999"/>
+    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" @footerAni='footerAni' />
   </div>
 </template>
 
@@ -43,7 +45,8 @@ export default {
       notiDetailShowYn: false,
       reloadYn: false,
       testData: { contentsKey: 1001172, creUserKey: 1 },
-      systemName: 'iOS'
+      systemName: 'iOS',
+      transitionName: 'slide-right'
     }
   },
   props: {},
@@ -124,12 +127,15 @@ export default {
     }
   },
   methods: {
+    footerAni (transitionName) {
+      this.transitionName = transitionName
+    },
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -392,5 +398,52 @@ export default {
     padding-top: 50px !important;
   }
 }
+/*
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s;
+}
+.slide-left-enter-to {
+  position: absolute;
+  right: 0;
+}
+.slide-left-enter-from {
+  position: absolute;
+  right: -100vw;
+}
+.slide-left-leave-to {
+  position: absolute;
+  left: -100vw;
+}
+.slide-left-leave-from {
+  position: absolute;
+  left: 0;
+}
 
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.5s;
+}
+.slide-right-enter-to {
+  position: absolute;
+  left: 0;
+}
+.slide-right-enter-from {
+  position: absolute;
+  left: -100vw;
+}
+.slide-right-leave-to {
+  position: absolute;
+  right: -100vw;
+}
+.slide-right-leave-from {
+  position: absolute;
+  right: 0;
+} */
+/* .slide-right{
+  animation: animate__fadeInRight;
+}
+.slide-left{
+  animation: animate__fadeInLeft;
+} */
 </style>
