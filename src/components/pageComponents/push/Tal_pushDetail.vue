@@ -1,5 +1,6 @@
 <template>
   <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
+    <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
     <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
     <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && alimDetail[0].attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
 
@@ -195,7 +196,8 @@ export default {
       alertPopId: null,
       clickImg: null,
       systemName: localStorage.getItem('systemName'),
-      loadingYn: false
+      loadingYn: false,
+      saveMemoLoadingYn: false
     }
   },
   props: {
@@ -337,11 +339,11 @@ export default {
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
             // alert('메모 수정')
-            this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index)
+            this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
             // this.openUpdateContentsPop()
           } else if (type === 'delete') {
             // alert('메모 삭제')
-            this.deleteConfirm('memoDEL')
+            this.deleteConfirm('memo')
             // this.deleteMemo({ memoKey: this.tempData.memoKey })
             // this.boardFuncClick('BOAR')
           }
@@ -349,12 +351,15 @@ export default {
       }
     },
     deleteConfirm (data) {
-      if ((data !== undefined && data !== null && data !== '') || (data !== 'alim' && data !== 'memo')) {
-        console.log(data)
+      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo')) {
         this.tempData = data
       }
       if (data === 'memo' || this.tempData.memoKey) {
         this.confirmText = '댓글을 삭제하시겠습니까?'
+        console.log(this.tempData)
+        if (this.tempData.parentMemoKey) {
+          this.confirmText = '대댓글을 삭제하시겠습니까?'
+        }
         this.currentConfirmType = 'memoDEL'
       }
 
@@ -421,9 +426,11 @@ export default {
       this.contentType = params.type
       if (params.tempData) {
         params.tempData.index = params.index
+        params.tempData.cIndex = params.cIndex
         // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
+      console.log(this.tempData)
       this.reportYn = true
     },
     download (link, name) {
@@ -587,6 +594,7 @@ export default {
         this.errorBoxText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
       } else if (this.currentConfirmType === 'memoDEL') {
+        console.log(this.tempData)
         this.deleteMemo({ memoKey: this.tempData.memoKey })
       }
     },
@@ -629,6 +637,7 @@ export default {
       // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
+      console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/tp.deleteMemo',
         param: memo
@@ -773,6 +782,7 @@ export default {
       })
     },
     async saveMemo (text) {
+      this.saveMemoLoadingYn = true
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.parentMemoKey = null
@@ -801,6 +811,7 @@ export default {
         // this.pointAni()
         /* this.scrollMove(-1) */
       }
+      this.saveMemoLoadingYn = false
     },
     settingAddFalseList (attachYn) {
       if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {

@@ -217,7 +217,9 @@ export default {
     memoUserNameClick (userKey) {
       var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
-        this.userNameClick(true, userKey, this.contentsList[indexOf].teamKey, false)
+        console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
+        console.log(this.contentsList[indexOf])
+        this.userNameClick(true, userKey, this.contentsList[indexOf].creTeamKey, false)
       }
     },
     userNameClick (userShowYn, userKey, teamKey, blindYn) {
@@ -248,12 +250,13 @@ export default {
         }
       }
     },
-    contentMenuClick(params){
+    contentMenuClick (params) {
       //  :contentType="contentList[0].jobkindId === 'ALIM' ? 'alim' : 'board'"
       this.contentOwner = params.ownerYn
       this.contentType = params.type
       if (params.tempData) {
         params.tempData.index = params.index
+        params.tempData.cIndex = params.cIndex
         // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
@@ -337,7 +340,7 @@ export default {
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
             // 댓글 수정
-            this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index)
+            this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
           } else if (type === 'delete') {
             // 댓글 삭제
             this.deleteConfirm('memo')
@@ -355,6 +358,9 @@ export default {
 
       if (data === 'memo' || this.tempData.memoKey) {
         this.confirmText = '댓글을 삭제하시겠습니까?'
+        if (this.tempData.parentMemoKey){
+          this.confirmText = '대댓글을 삭제하시겠습니까?'
+        }
         this.currentConfirmType = 'memoDEL'
       } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
         this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'

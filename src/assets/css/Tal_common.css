@@ -44,7 +44,6 @@ body {
   user-select: none !important;
 }
 
-
 .editableContent {
   -webkit-user-select: auto !important;
   -moz-user-select: auto !important;
@@ -103,7 +102,6 @@ input, select {
   .img-w12{width: 10px !important}
   .img-w11{width: 9px !important}
   .img-w10{width: 8px !important}
-
 
   .pagePaddingWrap {
     padding: 0 0.7rem;
@@ -197,7 +195,23 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .img-w11{width: 11px}
 .img-w10{width: 10px}
 
+.CDeepColor{ color: #5F61BD !important; }
+.CDeepBgColor{ background-color: #5F61BD !important;}
 
+.CBaseColor{ color: #6768A8 !important; }
+.CBaseBgColor{ background-color: #6768A8 !important;}
+
+.CMiddleColor{ color: #7978BD !important; }
+.CMiddleBgColor{ background-color: #7978BD !important;}
+
+/* .CLightColor{ color: #C0BFF9 !important; }
+.CLightBgColor{ background-color: #C0BFF9 !important;} */
+
+.CLightColor{ color: #D6D6E7 !important; }
+.CLightBgColor{ background-color: #D6D6E7 !important;}
+
+.CWhiteColor{ color: #F1F1FF !important; }
+.CWhiteBgColor{ background-color: #F1F1FF !important;}
 
 .whiteColor{color: #fff;}
 .deepColor{color: #3E3F6A;}

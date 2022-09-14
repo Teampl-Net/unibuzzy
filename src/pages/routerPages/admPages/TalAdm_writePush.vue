@@ -98,10 +98,10 @@
                   <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
                 </div>
                 <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
-                    <div style="width: 100%; min-height: 30px;">
+                    <div style="width: 100%; min-height: 30px;" class="fl w-100P">
                         <!-- <img src="../../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
                         <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
-                        <attachFileList style="min-width:80px;" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                        <attachFileList  @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
                     </div>
                 </div>
                 <div style="width: 100%;float: left; min-height: 50px; position: relative;">
@@ -124,7 +124,7 @@
             </div>
             <!-- <div class="whitePaperEffect" style="position: absolute; bottom:0;"></div> -->
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%); border: 4px solid #D6D6E7;" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" />
       </div>
     </div>
   </div>

@@ -124,7 +124,7 @@ axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true
 axios.defaults.headers.common['Content-Type'] = 'application/json;'
-axios.defaults.timeout = 5000
+axios.defaults.timeout = 10000
 // axios.defaults.timeout = 500
 axios.defaults.withCredentials = true
 // Add a request interceptor

@@ -586,9 +586,17 @@ export default {
       // this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
+      console.log('openPushDetailPop')
+      console.log(param)
       if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
+        console.log('openPushDetailPop')
+        console.log(param)
         //  && param.targetKey !== this.chanDetail.teamKey
         param.openActivity = 'chanAlimList'
+      } else if (param.targetType === 'chanDetail') {
+        if (param.teamKey === this.chanItem.teamKey) {
+          return
+        }
       }
       this.$emit('openPop', param)
     },

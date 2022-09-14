@@ -1,13 +1,13 @@
 <template>
-    <form  @submit.prevent="formSubmit" class="font14" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px;background: #6768A7;width: calc(100% - 200px);height: 27px; margin-top: 2px;border-radius: 8px;float: right;position: relative;color: white; min-width:70px;" method="post">
+    <form  @submit.prevent="formSubmit" class="font14 commonBlack fl mleft-1" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px 8px; background-color: #fff; height: 27px; margin-top: 2px;border-radius: 8px; position: relative; border:1px solid black;" method="post">
          파일 선택
         <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="previewFile"/>
     </form>
     <div v-if="this.sFileList.length > 0" style="width: 100%; min-height: 50px; margin-top: 10px; float: left; overflow: auto hidden;">
         <div :style="attachFileWidth" style="min-width: 100%;float: left; height: 50px; overflow: hiden;">
-          <div style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; background: #6768a782; box-shadow: 1px 3px 3px 0px #e9e7e7;  border: 1px solid #ccc; border-radius: 5px; position: relative;" v-for="(value, index) in this.sFileList" :key="index">
+          <div class="CLightBgColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7;  border: 1px solid #ccc; border-radius: 5px; position: relative;" v-for="(value, index) in this.sFileList" :key="index">
               <p class="commonBlack font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
-              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" style="position: absolute; right: 5px;top: 7px; width: 13px;" alt="">
+              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w13" style="position: absolute; right: 5px;top: 7px;" alt="">
           </div>
         </div>
     </div>
