@@ -438,7 +438,7 @@ const methods = {
     }
     var api = path.split('/image')[0]
     // 파일서버 fileServer fileserver FileServer Fileserver
-    iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+    iframe.src = api + 'service/tp.downloadFile?fileKey=' + fileKey
     console.log(iframe.src)
     // eslint-disable-next-line no-debugger
     debugger

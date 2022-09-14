@@ -1,9 +1,10 @@
 <template>
-  <div v-if="loadYn" class="boardDetailWrap" :style="picBgPath ? 'background: ' + picBgPath + ';' : 'background: #6768A7;'">
+  <div v-if="loadYn" style=" background-size: cover;background-repeat: no-repeat;background-position: center;" class="boardDetailWrap" :style="detailVal.value.bgPathMtext ? 'background-image: url(' + detailVal.value.bgDomainPath + detailVal.value.bgPathMtext + ');' : 'background: #6768A7;'">
+    <!-- <div style="width: 100%; height: 100%; position: absolute; background: #00000026;"></div> -->
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
     <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
     <imgPreviewPop :mFileKey="alimDetail[0].attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && alimDetail[0].attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="alimDetail[selectedImgContentsIndex].title" :creUserName="alimDetail[selectedImgContentsIndex].creUserName" :creDate="alimDetail[selectedImgContentsIndex].dateText"  :imgList="this.clickImgList" />
-
+    <div style="width: 100%; height: 100%; position: absolute; background: #00000026;"></div>
     <manageStickerPop :stickerList="userDoStickerList" v-if="this.manageStickerPopShowYn" @closePop="this.manageStickerPopShowYn = false"/>
     <!-- <div>{{pushKey}}</div> -->
 
@@ -153,14 +154,6 @@ export default {
       previewPopShowYn: false,
       // alimDetail: [{ title: '안녕하세요.', nameMtext: 'KO$^$팀플', bodyFullStr: ' 저는 정재준입니다. ', creDate: '2022-06-02 10:30' }],
       manageStickerPopShowYn: false,
-      tempAlimList: {
-        readYn: false,
-        stickerList: [
-          { stickerName: '공연 및 예술', stickerKey: '0', stickerColor: '#ffc1075e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-          { stickerName: '온라인 쇼핑몰', stickerKey: '1', stickerColor: '#0dcaf05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' },
-          { stickerName: '공연 및 예술', stickerKey: '2', stickerColor: '#0d61f05e', stickerIcon: '/resource/stickerIcon/sticker_robot.svg' }
-        ]
-      },
       userDoList: [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }],
       userDoStickerList: [],
       mememoValue: null,
@@ -175,9 +168,7 @@ export default {
       totalElements: 0,
       shareAuth: { R: true, W: true, V: true },
       picBgPath: '',
-      fileYn: false,
       deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
-      blindYn: true,
       attachTrueFileList: [],
       reportYn: false,
       contentType: '',
@@ -209,6 +200,8 @@ export default {
     loadingCompo
   },
   created () {
+    console.log('this.detailVal.value')
+    console.log(this.detailVal.value)
     this.loadingYn = true
     // console.log(this.detailVal)
     // console.log(this.detailVal.value.value)
@@ -226,7 +219,6 @@ export default {
       }
     }
     this.getContentsList()
-    this.loadingYn = false
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
   },
@@ -238,9 +230,11 @@ export default {
     if (this.alimDetail.length > 0) {
       this.addImgEvnt()
       this.settingAtag()
+      this.loadingYn = false
     } else {
       setTimeout(() => {
         thisthis.addImgEvnt()
+        thisthis.loadingYn = false
       }, 1000)
     }
     var pushListWrap = document.getElementById('boardDetailScrollArea')
@@ -403,7 +397,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -571,7 +565,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -639,7 +633,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -671,7 +665,7 @@ export default {
         memo.offsetInt = 0
       } */
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       console.log('memo')
@@ -702,7 +696,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -799,7 +793,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -1062,7 +1056,7 @@ export default {
     padding-bottom: 50px;
 }
 .boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 70px; width: 100%; background: rgb(236, 230, 204); height: calc(100vh);}
+.boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 50px; width: 100%; background: rgb(236, 230, 204); height: calc(100vh);}
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */

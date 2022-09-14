@@ -231,7 +231,6 @@ export default {
       }
     }
     this.getContentsList()
-    this.loadingYn = false
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))
   },
@@ -243,9 +242,11 @@ export default {
     if (this.alimDetail.length > 0) {
       this.addImgEvnt()
       this.settingAtag()
+      this.loadingYn = false
     } else {
       setTimeout(() => {
         thisthis.addImgEvnt()
+        thisthis.loadingYn = false
       }, 1000)
     }
     var pushListWrap = document.getElementById('boardDetailScrollArea')
@@ -408,7 +409,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -469,7 +470,7 @@ export default {
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
         // 파일서버 fileServer fileserver FileServer Fileserver
-        iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+        iframe.src = api + 'service/tp.downloadFile?fileKey=' + fileKey
       } else {
         if (aTag == null) {
           aTag = document.createElement('a')
@@ -477,7 +478,7 @@ export default {
           aTag.style.display = 'none'
           document.body.appendChild(aTag)
         }
-        aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
+        aTag.href = api + 'service/tp.downloadFile?fileKey=' + fileKey
         aTag.target = '_blank'
 
         aTag.click()
@@ -634,7 +635,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.saveContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -701,7 +702,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       console.log(result)
@@ -736,7 +737,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       console.log(result)
@@ -766,7 +767,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getUserDoListPage',
+        url: 'service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -863,7 +864,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -1117,7 +1118,7 @@ export default {
     padding-bottom: 50px;
 }
 .boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 70px; width: 100%; background: rgb(236, 230, 204); height: calc(100vh);}
+.boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 50px; width: 100%; background: rgb(236, 230, 204); height: calc(100vh);}
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */

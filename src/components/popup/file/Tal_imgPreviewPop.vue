@@ -120,7 +120,7 @@ export default {
       param.attachYn = false
       this.imgs = []
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMMFileList',
+        url: 'service/tp.getMMFileList',
         param: param
       })
       console.log(result)

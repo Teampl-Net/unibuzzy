@@ -454,7 +454,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -619,16 +619,18 @@ export default {
     backClick () {
       var hStack = this.$store.getters.hStack
       if (this.writePopId === hStack[hStack.length - 1]) {
-        this.closeWritePushPop()
+        var history = this.$store.getters.hStack
+        var removePage = history[history.length - 1]
+        history = history.filter((element, index) => index < history.length - 1)
+        this.$store.commit('setRemovePage', removePage)
+        this.$store.commit('updateStack', history)
+        this.closeWritePushPop(true)
       }
     },
-    async closeWritePushPop () {
-      var history = this.$store.getters.hStack
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
-      await this.refreshList()
+    async closeWritePushPop (justCloseYn) {
+      if (!justCloseYn) {
+        await this.refreshList()
+      }
       this.writePushYn = false
     },
     openPop () {
