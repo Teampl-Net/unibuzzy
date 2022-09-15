@@ -419,7 +419,7 @@ export default {
     width: 100%;
     /* min-height: 132px; */
     min-height: 50px;
-    padding-top: 0.5rem;
+    padding-top: 10px;
     position: absolute;
     background-color: #FFF;
     top: 0;

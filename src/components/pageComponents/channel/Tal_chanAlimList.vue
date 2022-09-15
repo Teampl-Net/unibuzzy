@@ -547,7 +547,7 @@ export default {
       if (addContentsListYn === true) {
         paramMap.set('addContentsListYn', true)
       }
-
+      paramMap.set('fUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var resultList = await this.$getTeamList(paramMap)
       console.log(resultList)
       // if (resultList.data) { this.chanItem = resultList.data.content[0] }

@@ -10,6 +10,7 @@
       <div v-if="searchYn">
         <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->
+          <!-- <img class="fl mright-1" style="width: 20px;" src="../../assets/images/common/common_filter.svg" alt=""> -->
           <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
 
