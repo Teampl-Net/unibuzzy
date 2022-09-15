@@ -526,6 +526,7 @@ export default {
         this.$refs.complexEditor.setParamInnerHtml()
       } else {
         var title = this.writePushTitle
+        title = title.trim()
         if (title !== undefined && title !== null && title !== '') {
         } else {
           this.errorText = '제목을 입력해주세요'

@@ -1,6 +1,6 @@
 <template>
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100vh;">
-  <div style="width: 100%; height: 80%; margin-bottom: 3rem;">
+  <div style="width: 100%; height: calc(100% - 4rem); ">
     <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
     </select> -->
@@ -10,7 +10,9 @@
     <div class="pageMsgArea" style="">
       <!-- <p class="">내용</p> -->
       <div id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
-      <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div>
+      <!-- <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
+      <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+      <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
 
     </div>
 
@@ -20,16 +22,16 @@
       <p style="color: #FFFFFF; font-size: 15px; margin-top: 0.5rem">첨부하기</p>
     </div> -->
   </div>
-  <gBtnLarge v-on:click="clickPageTopBtn" :btnTitle="this.completeBtnTitle" />
+  <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
 </div>
 <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-<gConfirmPop confirmText='게시글을 저장하시겠습니까?' @no='checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+<gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
 <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
 <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
+ <!-- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
   <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
   <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
-</div>
+</div> -->
 </template>
 
 <script>
@@ -49,15 +51,91 @@ export default {
       formEditorShowYn: false,
 
       viewTab: 'text',
-      activeTabList: [{ display: '텍스트형', name: 'text' }, { display: '블로그형', name: 'complex' }]
-
+      activeTabList: [{ display: '텍스트형', name: 'text' }, { display: '블로그형', name: 'complex' }],
+      uploadFileList: [],
+      addFalseList: [],
+      selectFileList: [],
+      complexOkYn: false
     }
   },
   mounted () {
+    document.querySelector('#textMsgBox').addEventListener('paste', (e) => {
+      var items = (e.clipboardData || e.originalEvent.clipboardData).items
+      for (const i of items) {
+        var item = i
+        if (item.type.indexOf('image') !== -1) {
+          this.$refs.activeBar.switchtab(1)
+          this.viewTab = 'complex'
+          /* this.editorType = 'complex' */
+          var file = item.getAsFile()
+          this.previewFile(file)
+          console.log(file)
+          // uploadFile(file);
+        }
+      }
+    })
+    var temp = document.createElement('div')
+    temp.innerHTML = this.bodyString
+    if (temp.getElementsByClassName('formCard').length > 0) {
+      this.$refs.activeBar.switchtab(1)
+      var innerHtml = ''
+      var newArr = []
+      var formC = temp.getElementsByClassName('formCard')
+      // eslint-disable-next-line no-new-object
+      var jsonObj = new Object()
+      var imgYn = true
+      for (var i = 0; i < formC.length; i++) {
+        // eslint-disable-next-line no-new-object
+        jsonObj = new Object()
+        imgYn = true
+        innerHtml += formC[i].outerHTML
+        jsonObj.innerHtml = formC[i].innerHTML
+        jsonObj.type = 'image'
+        jsonObj.targetKey = i
+        for (var c = 0; c < formC[i].classList.length; c++) {
+          if (formC[i].classList[c] === 'formText') {
+            jsonObj.type = 'text'
+            imgYn = false
+            break
+          }
+        }
+        if (imgYn) {
+          jsonObj.pSrc = formC[i].querySelector('img').src
+
+          jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
+        }
+        newArr.push(jsonObj)
+      }
+      this.propFormData = newArr
+      this.$refs.complexEditor.setFormCard(this.propFormData)
+      document.getElementById('msgBox').innerHTML = ''
+      document.getElementById('msgBox').innerHTML = innerHtml
+      this.viewTab = 'complex'
+      this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
+    }
+
+    console.log(this.addFalseList)
   },
   props: {
   },
   methods: {
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      var changeText = Base64.decode(data)
+      return changeText
+    },
+    changeUploadList (upList) {
+      if (this.uploadFileList.length > 0) {
+        var temp = this.uploadFileList
+        this.uploadFileList = []
+        this.uploadFileList = [
+          ...temp,
+          upList
+        ]
+      } else {
+        this.uploadFileList.push(upList)
+      }
+    },
     changeTab (tab) {
       this.viewTab = tab
     },
@@ -69,7 +147,9 @@ export default {
       this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
-      this.formEditorShowYn = false
+      /* this.formEditorShowYn = false */
+      this.complexOkYn = true
+      this.clickPageTopBtn()
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -79,34 +159,142 @@ export default {
         this.propFormData = innerText
       }
     },
+    deleteFile (idx) {
+      this.selectFileList.splice(idx, 1)
+    },
     async clickPageTopBtn () {
-      var title = this.askTitle
-      title.trim()
-      if (title !== undefined && title !== null && title !== '') {
+      if (this.viewTab === 'complex' && this.complexOkYn === false) {
+        this.complexOkYn = true
+        this.$refs.complexEditor.setParamInnerHtml()
       } else {
-        this.errorText = '제목을 입력해주세요'
-        this.failPopYn = true
-        return
+        var title = this.askTitle
+        title = title.trim()
+        if (title !== undefined && title !== null && title !== '') {
+        } else {
+          this.errorText = '제목을 입력해주세요'
+          this.failPopYn = true
+          return
+        }
+        var msgData = ''
+        if (this.viewTab === 'complex') {
+          msgData = document.getElementById('msgBox').innerText
+        } else if (this.viewTab === 'text') {
+          msgData = document.getElementById('textMsgBox').innerText
+        }
+        msgData = msgData.trim()
+        // if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
+        if (msgData !== undefined && msgData !== null && msgData !== '') {
+        } else {
+          this.errorText = '게시글의 내용을 입력해주세요'
+          this.failPopYn = true
+          this.complexOkYn = false
+          return
+        }
+        this.checkPopYn = true
       }
-      var msgData = ''
-      if (this.viewTab === 'complex') {
-        msgData = document.getElementById('msgBox').innerHTML
-      } else if (this.viewTab === 'text') {
-        msgData = document.getElementById('textMsgBox').innerHTML
-      }
-      if (msgData !== undefined && msgData !== null && msgData !== '') {
+    },
+    delAttachFile (dFile) {
+      if (dFile.addYn) {
+        for (var d = 0; d < this.uploadFileList.length; d++) {
+          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile[0].attachKey) {
+            this.uploadFileList.splice(d, 1)
+          }
+        }
       } else {
-        this.errorText = '알림 내용을 입력해주세요'
-        this.failPopYn = true
-        return
+        this.delAddFalseFileList.push(dFile)
       }
-      this.checkPopYn = true
+    },
+    setSelectedAttachFileList (sFile) {
+      if (sFile[0].addYn === true) {
+        this.uploadFileList.push(sFile)
+      }
+      console.log(this.uploadFileList)
+    },
+    async setAttachFileList () {
+      var imgItemList = document.querySelectorAll('.msgArea .formCard .editorImg')
+      console.log(imgItemList)
+      console.log(this.addFalseList)
+      console.log(this.delAddFalseFileList)
+      // eslint-disable-next-line no-undef
+      var delList = []
+      for (var f = this.addFalseList.length - 1; f > -1; f--) {
+        if (this.addFalseList[f].attachYn) {
+          for (var af = 0; af < this.delAddFalseFileList.length; af++) {
+            if (this.addFalseList[f].fileKey === this.delAddFalseFileList[af].fileKey) {
+              delList.push(this.addFalseList[f])
+              break
+            }
+          }
+        } else {
+          var delYn = true
+          for (var t = 0; t < imgItemList.length; t++) {
+            if (Number(this.addFalseList[f].attributes.filekey.value) === Number(imgItemList[t].attributes.filekey.value)) {
+              delYn = false
+              break
+            }
+          }
+          if (delYn) {
+            delList.push(this.addFalseList[f])
+          }
+        }
+      }
+      console.log(delList)
+      // eslint-disable-next-line no-array-constructor
+      var newAttachFileList = new Array()
+      // eslint-disable-next-line no-new-object
+      var setObj = new Object()
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
+      console.log(this.addFalseList)
+      if (delList.length > 0) {
+        for (var a = 0; a < delList.length; a++) {
+          // eslint-disable-next-line no-new-object
+          setObj = new Object()
+          setObj.addYn = false
+          setObj.attachYn = false
+          if (delList[a].attachYn) {
+            setObj.fileKey = delList[a].fileKey
+          } else {
+            setObj.fileKey = Number(delList[a].attributes.filekey.value)
+          }
+          newAttachFileList.push(setObj)
+        }
+      }
+      for (var i = 0; i < this.uploadFileList.length; i++) {
+        // eslint-disable-next-line no-new-object
+        setObj = new Object()
+        if (this.uploadFileList[i].successSave) {
+          setObj.addYn = true
+          if (this.uploadFileList[i].attachYn) {
+            setObj.attachYn = this.uploadFileList[i].attachYn
+          } else {
+            setObj.attachYn = false
+          }
+          setObj.fileKey = this.uploadFileList[i].fileKey
+          setObj.fileName = (this.uploadFileList[i])[0].file.name
+          newAttachFileList.push(setObj)
+        }
+      }
+      console.log(newAttachFileList)
+      return newAttachFileList
     },
     async sendMsg () {
-      this.sendLoadingYn = true
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-new-object
       var param = new Object()
-
+      console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+      if (this.uploadFileList.length > 0) {
+        this.checkPopYn = false
+        this.progressShowYn = true
+        await this.uploadFile()
+        setTimeout(() => {
+          this.progressShowYn = false
+        }, 2000)
+        this.sendLoadingYn = true
+      } else {
+        this.sendLoadingYn = true
+      }
+      param.attachFileList = await this.setAttachFileList()
       var innerHtml = ''
       if (this.viewTab === 'complex') {
         param.bodyHtmlYn = true
@@ -128,11 +316,12 @@ export default {
       param.jobkindId = 'BOAR'
       param.creTeamKey = 377 // 더알림 공식 채널 teamKey
       param.cabinetKey = 11015 // 더알림 공식 채널의 문의 게시판 키
-      // param.actorList = this.propData.actorList
+      param.onlyManagerYn = true
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
       param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      param.cabinetName = 'KO$^$문의하기게시판'
       param.title = this.askTitle
       param.showCreNameYn = true
 
@@ -143,15 +332,91 @@ export default {
         this.$emit('closeXPop', true)
       }
       this.sendLoadingYn = false
+    },
+    async uploadFile () {
+      if (this.uploadFileList.length > 0) {
+        console.log('this.uploadFileList')
+        console.log(this.uploadFileList)
+        var form = new FormData()
+        var thisthis = this
+        for (var i = 0; i < this.uploadFileList.length; i++) {
+          thisthis.uploadFileList[i].percentage = 0
+          form = new FormData()
+          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
+          // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
+          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+          await this.$axios
+          // 파일서버 fileServer fileserver FileServer Fileserver
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
+              {
+                onUploadProgress: (progressEvent) => {
+                  var percentage = (progressEvent.loaded * 100) / progressEvent.total
+                  thisthis.uploadFileList[i].percentage = Math.round(percentage)
+                }
+              },
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              })
+            .then(res => {
+              console.log(res)
+              if (res.data.length > 0) {
+                if ((this.uploadFileList[i])[0].attachYn === true) {
+                  this.uploadFileList[i].attachYn = true
+                } else {
+                }
+                var path = res.data[0].domainPath + res.data[0].pathMtext
+                this.uploadFileList[i].successSave = true
+                this.uploadFileList[i].filePath = path
+                this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
+                this.uploadFileList[i].fileKey = res.data[0].fileKey
+              }
+            })
+            .catch(error => {
+              console.log(error)
+            })
+          /* } */
+          // var selFile = this.selectFileList[i].file
+        }
+        console.log(this.uploadFileList)
+        var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        if (iList.length > 0) {
+          for (var s = 0; s < this.uploadFileList.length; s++) {
+            var uploadFile = this.uploadFileList[s]
+            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            console.log(uploadFile)
+            if (uploadFile.successSave) {
+              for (var il = 0; il < iList.length; il++) {
+                if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                  iList[il].src = uploadFile.filePath
+                  // eslint-disable-next-line no-unused-vars
+                  iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                  iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                  iList[il].classList.remove('addTrue')
+                  iList[il].classList.add('addFalse')
+                  break
+                }
+              }
+            } else {
+              this.uploadFileList.splice(s, 1)
+            }
+          }
+        }
+      } else {
+        alert('파일을 선택해 주세요.')
+      }
+      return true
     }
-
   }
 }
 </script>
 <style scoped>
 .askCommonFont{color: #303030; font-size: 15px;}
 .askBoxWrap{width: 100%; min-height: 40px; border-radius: 5px; border: 1px solid #CFCFCF; padding: 0 0.7rem}
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; }
+.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; overflow: hidden auto;
+    float: left;
+    overflow: hidden auto;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */
 .pageMsgArea p{font-size: 15px; color: #3A3A3A;  line-height: 30px; }
 .pageMsgArea .msgArea{ width:100%; min-height: 300px; height:100%; border:1px solid #BFBFDA; border-radius: 5px; background-color: white;font-size: 15px;}

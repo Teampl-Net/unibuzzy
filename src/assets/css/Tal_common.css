@@ -7,11 +7,12 @@
     user-select: none; */
 /* } */
 html {
-  max-width: 1000px;
+  /* max-width: 1000px; */
   width: 100%;
   margin: 0 auto !important;
   height: 100%;
   position: relative;
+  overflow:auto;
 }
 body {
   -webkit-text-size-adjust:none;
@@ -20,10 +21,12 @@ body {
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   width: 100%;
   margin: 0 auto !important;
-  max-height: 1200px;
+  /* max-height: 1200px; */
+  overflow: hidden !important;
+  list-style: none !important;
 }
 .cursorDragAll {
   -webkit-user-select: all !important;

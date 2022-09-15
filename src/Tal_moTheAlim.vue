@@ -85,8 +85,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  overflow: hidden;
+  overflow-x: hidden;
+  box-sizing: border-box;
   height: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px !important;
 }
 
 #nav {

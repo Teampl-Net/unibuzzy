@@ -3,7 +3,7 @@
   <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="this.$emit('closePop')"></div>
   <div class="imgAlertWrap" style="margin: 1rem 0rem;">
     <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-      <p v-for="(value, index) in btnList" :key="index" class="fl font16 w-100P alertRow commonColor" style="min-height:50px; line-height:50px; " @click="this.$emit('clickBtn', value.event)">{{value.text}}</p>
+      <p v-for="(value, index) in btnList" :key="index" class="fl font16 w-100P alertRow commonColor" style="min-height:50px; line-height:50px;" :style="index === 0 ? 'border:none' : '' " @click="this.$emit('clickBtn', value.event)">{{value.text}}</p>
       <!-- <p class="fl font16 w-100P imgAlertMenuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 차단</p> -->
       <!-- <p class="fl font16 w-100P imgAlertMenuListBase" style="border-top: 1px solid #eee;">유저 차단</p> -->
 

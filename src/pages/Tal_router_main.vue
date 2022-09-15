@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P listRefresh" style="background: #dcddeb;  "> <!-- v-if="notiDetailShowYn" -->
+  <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
     <!-- <loadingCompo v-show="loadingYn" /> -->
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
@@ -7,9 +7,9 @@
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
-      <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
+      <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="showMenuYn" />
     </transition>
-    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
+    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
       <!-- <transition :name="transitionName" >
         <router-view :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
@@ -393,31 +393,39 @@ export default {
 }
 
 .show_view-enter {
+  position: absolute;
   animation: show_view-dialog-fade-in 0.5s ease;
 }
 .show_view-leave {
+  position: absolute;
   animation: show_view-dialog-fade-out 0.5s ease forwards;
 }
 .show_view-enter-active {
+  position: absolute;
   animation: show_view-dialog-fade-in 0.5s ease;
 }
 .show_view-leave-active {
+  position: absolute;
   animation: show_view-dialog-fade-out 0.5s ease forwards;
 }
 @keyframes show_view-dialog-fade-in {
   0% {
-    transform: translateX(500px);
+    right: -100%;
+    /* transform: translateX(500px); */
   }
   100% {
-    transform: translateX(0);
+    right: 0;
+    /* transform: translateX(0); */
   }
 }
 @keyframes show_view-dialog-fade-out {
   0% {
-    transform: translateX(0);
+    right: 0;
+    /* transform: translateX(0); */
   }
   100% {
-    transform: translateX(500px);
+    right: -100%;
+    /* transform: translateX(500px); */
   }
 }
 
