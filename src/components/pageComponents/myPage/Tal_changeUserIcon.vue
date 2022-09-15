@@ -225,7 +225,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
@@ -281,8 +281,8 @@ export default {
 
       var result = await this.$changeDispName(param)
       console.log(result)
-      if (result.data.message === 'OK') {
-        localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
+      if (result.data) {
+        localStorage.setItem('sessionUser', JSON.stringify(result.data))
         this.$router.replace({ path: '/' })
         this.$emit('closeXPop')
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)

@@ -73,8 +73,9 @@ export default {
       this.$emit('openPop', value)
     },
     async getUserInform () {
-      this.userInfo = await this.$getUserInform()
-
+      this.userInfo = JSON.parse(localStorage.getItem('sessionUser'))
+      console.log(this.userInfo)
+      console.log(this.userInfo)
       if (this.userInfo !== undefined && this.userInfo !== null) {
         if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (this.userInfo.phoneLast) {
