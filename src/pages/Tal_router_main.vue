@@ -17,6 +17,7 @@
       <router-view v-slot="{ Component, route }">
         <!-- <transition :name="transitionName" > -->
         <transition
+        mode="in-out"
         :enter-active-class="route.meta.enterClass"
         :leave-active-class="route.meta.leaveClass"
         >
@@ -137,17 +138,13 @@ export default {
     $route (to, from) {
       console.log(from.meta.page + ' ' + to.meta.page)
       console.log()
-      if (to.meta.page > from.meta.page) {
-        to.meta.enterClass = 'animate__animated animate__fadeInRightBig'
-        from.meta.leaveClass = 'animate__animated animate__fadeOutLeftBig'
-        // to.meta.enterClass = 'slide-right-in'
-        // from.meta.leaveClass = 'slide-left-Out'
-      } else if (to.meta.page < from.meta.page) {
-        to.meta.enterClass = 'animate__animated animate__fadeInLeftBig'
-        from.meta.leaveClass = 'animate__animated animate__fadeOutRightBig'
-        // to.meta.enterClass = 'slide-left-in'
-        // from.meta.leaveClass = 'slide-right-Out'
-      }
+      // if (to.meta.page > from.meta.page) {
+      //   to.meta.enterClass = 'animate__animated animate__fadeInRightBig'
+      //   from.meta.leaveClass = 'animate__animated animate__fadeOutLeftBig'
+      // } else if (to.meta.page < from.meta.page) {
+      //   to.meta.enterClass = 'animate__animated animate__fadeInLeftBig'
+      //   from.meta.leaveClass = 'animate__animated animate__fadeOutRightBig'
+      // }
     }
   },
   methods: {

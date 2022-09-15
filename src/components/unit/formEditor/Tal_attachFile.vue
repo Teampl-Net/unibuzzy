@@ -87,7 +87,7 @@ export default {
                 var canvas = document.createElement('canvas')
                 var width = image.width
                 var height = image.height
-                var fileSize = this.selectFile.size
+                var fileSize = thisthis.selectFile.size
                 var size = 900
                 if (fileSize > 6000000) {
                   size = 700

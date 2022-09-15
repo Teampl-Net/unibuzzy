@@ -118,6 +118,7 @@ export async function saveUser (userProfile) {
   if (result.data.message === 'OK') {
     if (result.data.userInfo) {
       localStorage.setItem('user', JSON.stringify(result.data.userInfo))
+      localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
       localStorage.setItem('testYn', false)
       await methods.userLoginCheck(true)
       router.replace({ path: '/' })
@@ -169,7 +170,7 @@ const methods = {
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('https://mo.d-alim.com/service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     if (result.data.resultCode === 'OK') {
-      localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+      // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)
       if (maingoYn) {
         router.replace({ name: 'main', params: { testYn: true } })
