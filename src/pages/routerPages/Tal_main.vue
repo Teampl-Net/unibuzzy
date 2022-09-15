@@ -53,7 +53,7 @@ export default {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
     this.loadingYn = true
-    this.getMainBoard(JSON.parse(localStorage.getItem('sessionUser')).userKey)
+    this.getMainBoard()
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     // onMessage('REQ', 'getUserInfo')
@@ -217,7 +217,8 @@ export default {
       return userInfo
     },
 
-    async getMainBoard (userKey) {
+    async getMainBoard () {
+      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       var paramMap = new Map()
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
