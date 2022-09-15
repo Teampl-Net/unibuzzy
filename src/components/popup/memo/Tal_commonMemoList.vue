@@ -176,10 +176,8 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
-      // eslint-disable-next-line no-debugger
-      debugger
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

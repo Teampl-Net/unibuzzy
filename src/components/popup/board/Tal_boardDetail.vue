@@ -79,7 +79,7 @@
               </template>
               <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
               data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
+                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey
                     + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">
             </div>
             <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
@@ -90,7 +90,7 @@
               <!-- <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt=""> -->
             <!-- <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
             data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey
+              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey
                   + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
             <!-- </div> -->
           </div>
@@ -409,7 +409,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -635,7 +635,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -702,7 +702,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       console.log(result)
@@ -737,7 +737,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       console.log(result)
@@ -767,7 +767,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
+        url: 'service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -803,9 +803,9 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443?boardDetail=' + this.alimDetail[0].contentsKey +
+      var link = 'https://thealim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=https://mo.d-alim.com:9443' +
+      var mainLink = 'https://thealim.page.link/?link=https://mo.d-alim.com' +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null
@@ -837,8 +837,8 @@ export default {
           {
             title: '확인하러 가기',
             link: {
-              /* mobileWebUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey, */
-              /* webUrl: 'https://mo.d-alim.com:9443' + '?chanDetail=' + this.chanDetail.teamKey */
+              /* mobileWebUrl: 'https://mo.d-alim.com' + '?chanDetail=' + this.chanDetail.teamKey, */
+              /* webUrl: 'https://mo.d-alim.com' + '?chanDetail=' + this.chanDetail.teamKey */
               // webUrl: link,
               mobileWebUrl: link
             }
@@ -864,7 +864,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

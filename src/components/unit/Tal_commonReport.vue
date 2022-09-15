@@ -3,13 +3,13 @@
   <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="this.$emit('closePop')"></div>
   <div v-show="reportPopStep === 0" class="reportCompoArea" style="margin: 1rem 0rem;">
     <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+     <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'alim'" >알림으로 공유</p> -->
       <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('edit')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}} 수정</p>
       <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'alim' ? 'border: none  !important;' : '' " @click="emit('delete')" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '나에게서만 ': ''}}{{contentText}} 삭제</p>
       <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'alim' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->
       <p class="fl font16 w-100P menuListBase" :style="contentType === 'alim' ? 'border-top: 1px solid #eee;' : ''" @click="report('content')" v-if="!contentOwner" >해당 {{contentText}} 신고</p>
       <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 신고</p>
-      <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('user')" v-if="this.contentType === 'board' && !contentOwner">유저 신고</p>
-      <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('user')" v-if="this.contentType === 'memo' && !contentOwner">유저 신고</p>
+      <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('user')" v-if="(this.contentType === 'memo' || this.contentType === 'board') && !contentOwner">유저 신고</p>
       <!-- <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 차단</p> -->
       <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('user')" v-if="(this.contentType === 'memo' || this.contentType === 'board') && !contentOwner">유저 차단</p>
 

@@ -86,7 +86,7 @@
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanItem.teamKey
+              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanItem.teamKey
                 + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                 class="copyTextIcon cursorP">
             <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
@@ -454,7 +454,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

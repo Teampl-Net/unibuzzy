@@ -22,7 +22,7 @@ export default {
   },
   mounted () {
     // eslint-disable-next-line new-cap
-    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com:9443/#/naverCallback')
+    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com/#/naverCallback')
     this.initF()
     // var paramList = hashData.split('&')
     // window.close()

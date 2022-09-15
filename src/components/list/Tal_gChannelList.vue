@@ -1,31 +1,58 @@
 <template>
-    <div style="width: 100%; height: 100%;">
+    <div style="width: 100%; height: 100%; padding: 0 10px; padding-top: 15px;">
       <div v-if="this.chanList.length === 0" class="w-100P h-100P">
         <!-- chanList.vue 에서 introChanPageTab() 수정 -->
         <img :src="this.imgUrl" style="float: left;" />
       </div>
       <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
-      <div v-else class="chanRow w-100P fl channelRow cursorP" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
-        <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
-        <!-- <img alt="채널 프로필이미지" class="" :src="value.logoPathMtext"> -->
-        <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
-        <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" />
-        </div>
-        <div style=" margin-left: 10px; width: calc(100% - 70px); display:flex;flex-direction: column;">
-          <div class=" text-start mr-04 w-100P">
-            <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 30px; float: left;" alt="" />
-            <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px;" :style="value.officialYn ? 'max-width: calc(100% - 60px);' : 'max-width: calc(100% - 33px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
-            <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px; width: calc(100% - var(--calcWidth)) " :style="value.officialYn ? '--calcWidth : 60px' : '--calcWidth : 40px' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p> -->
-            <div style="height: 30px; float: left; padding-top: 1px; margin-left: 8px;">
-                <img style="width: 0.8rem; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
-                <span class="commonColor font14" >{{value.followerCount}}</span>
+      <div v-else class="chanRow w-100P fl channelRow cursorP" style="border: none; border-radius: 8px; background: #FFF; padding: 10px 10px; padding-bottom: 5px;" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
+        <div style="width: 100%; display: flex; min-height: 40px; float: left; ">
+            <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                <!-- <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
+                <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" /> -->
             </div>
-            <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
-          </div>
-          <div style="width: 100%; margin-right: 0.4rem; margin-top: 4px;">
-            <span class="chanMsgWrap fl font14 grayBlack textOverdot" style="width: calc(100% - 60px); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
-            <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; width: 40px" >{{this.$changeDateFormat(value.creDate)}}</p>
-          </div>
+            <div style=" margin-left: 10px; width: calc(100% - 40px); min-height: 40px; display:flex;flex-direction: column;">
+                <div class=" text-start mr-04 w-100P" style="height: 23px; line-height:25px;">
+                    <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 25px; float: left;" alt="" />
+                    <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" :style="value.officialYn ? 'max-width: calc(100% - 150px);' : 'max-width: calc(100% - 140px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+                    <div style="line-height: 0.05rem; float: left; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
+                        <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
+                        <span class="commonColo font12" >{{value.followerCount}}</span>
+                    </div>
+                    <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px; width: calc(100% - var(--calcWidth)) " :style="value.officialYn ? '--calcWidth : 60px' : '--calcWidth : 40px' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p> -->
+                    <!-- <div style="height: 23px; float: left; margin-left: 8px;">
+                        <img style="width: 0.8rem; float: left; margin-top: 5px; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
+                        <span class="commonColor font14" >{{value.followerCount}}</span>
+                    </div> -->
+                    <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; height: 100%; line-height: 25px; min-width: 40px" >{{'최근활동 ' + this.$changeDateFormat(value.updDate)}}</p>
+                    <!-- <div class="fr" style="display: flex; margin-right: 5px; height: 23px; justify-content: space-around; align-items: center;">
+                        <div style="line-height: 0.05rem; float: right; margin-top: 0px; margin-right: 5px;">
+                            <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
+                            <span class="commonColo font12" >{{value.followerCount}}</span>
+                        </div>
+                        <div style="padding: 3px 8px; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:#6768a7' : 'background-color:#eee; border: 1px solid #ccc;' " >
+                            <p class="fl font12 cursorP fontBold"  @click="saveMemberButton" :style="value.followerKey || value.followYn ? 'color:white' : '' " >{{value.followerKey || value.followYn ? '구독중' : '구독 +'}}</p>
+                        </div>
+                    </div> -->
+                    <!-- <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width:30px; margin-top: -2px; float: left;" alt=""> -->
+                </div>
+                <div style="width: 100%; margin-top: 5px; min-height: 25px; position: relative;">
+                    <span class="chanMsgWrap fl font14 grayBlack " style="width: calc(100%); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
+                </div>
+                <div style="width: 100%; float: left;">
+                    <div class="fr" style="display: flex; height: 23px; justify-content: space-around; align-items: center;">
+                        <div v-if="value.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:rgb(220, 221, 235);"  >
+                            <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{value.ownerYn ? '소유자' : '관리자'}}</p>
+                        </div>
+                        <div v-if="value.managerKey" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:rgb(220, 221, 235);"  >
+                            <p class="fr font12 cursorP fontBold commonBlack"  @click="saveMemberButton" >{{'관리자'}}</p>
+                        </div>
+                        <!-- <div style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:rgb(220, 221, 235)' : 'background-color:#eee; border: 1px solid #ccc;' " >
+                            <p class="fl font12 cursorP fontBold"  @click="saveMemberButton" :style="value.followerKey || value.followYn ? 'color:white' : '' " >{{value.followerKey || value.followYn ? '구독중' : '구독 +'}}</p>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       <myObserver @triggerIntersected="loadMore" class="fl wich" />
@@ -123,9 +150,9 @@ td {
 .chanMsg{line-height: 18px; width: 100%; float: left;}
 .ownerChannelRow {position: relative;}
 .ownerChannelRowColor {background-color: #6768a712}
-.channelRow{display: flex; align-items: center; padding: 15px 5px; min-height: 70px;  border-bottom: 1px solid #E4E4E4; }
+.channelRow{/* display: flex;  */align-items: center; padding: 10px 5px; min-height: 50px; margin-bottom : 15px; box-shadow: 0 0 7px 3px #6768a740 !important; }
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
-.gChanPageChanLogoImgWrap {width: 60px; height:60px; padding: 5px; border-radius: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative; flex-shrink: 0}
+.gChanPageChanLogoImgWrap {width: 40px; height:40px; padding: 5px; border-radius: 100%; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative; flex-shrink: 0}
 .gChanPageChanLogoImgWrap img{width: 80%; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
 .chanRow{

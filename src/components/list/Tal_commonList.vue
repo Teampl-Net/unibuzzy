@@ -65,7 +65,7 @@
                     </template>
                   </div>
                   <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?pushDetail=' + alim.contentsKey + '?' + alim.creTeamKey
+                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?pushDetail=' + alim.contentsKey + '?' + alim.creTeamKey
                         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                         class="copyTextIcon mleft-05 fl" style="width:20px;" >
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
@@ -275,7 +275,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
+          url: 'service/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -288,7 +288,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -410,7 +410,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -506,7 +506,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -552,7 +552,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -748,7 +748,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)

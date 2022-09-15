@@ -107,7 +107,7 @@ const isJsonString = (str) => {
           store.commit('changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
           // alert(message.url)
-          const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com:9443', ''))
+          const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com', ''))
           var queList = []
           for (const param of params) {
             console.log('targetKind: ' + param[0])

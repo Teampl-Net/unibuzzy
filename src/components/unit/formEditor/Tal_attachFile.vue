@@ -1,4 +1,5 @@
 <template>
+    <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
     <form  @submit.prevent="formSubmit" class="font14 commonBlack fl mleft-1" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px 8px; background-color: #fff; height: 27px; margin-top: 2px;border-radius: 8px; position: relative; border:1px solid black;" method="post">
          파일 선택
         <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="previewFile"/>
@@ -21,7 +22,8 @@ export default {
       preImgUrl: null,
       sFileList: [],
       gAttachKey: 0,
-      uploadCnt: 0
+      uploadCnt: 0,
+      errorShowYn: false
     }
   },
   props: {
@@ -85,15 +87,22 @@ export default {
                 var canvas = document.createElement('canvas')
                 var width = image.width
                 var height = image.height
+                var fileSize = this.selectFile.size
+                var size = 900
+                if (fileSize > 6000000) {
+                  size = 700
+                } else if (fileSize > 3000000) {
+                  size = 800
+                }
                 if (width > height) { // 가로모드
-                  if (width > 900) {
-                    height *= 900 / width
-                    width = 900
+                  if (width > size) {
+                    height *= size / width
+                    width = size
                   }
                 } else { // 세로모드
-                  if (height > 900) {
-                    width *= 900 / height
-                    height = 900
+                  if (height > size) {
+                    width *= size / height
+                    height = size
                   }
                 }
                 canvas.width = width
@@ -125,10 +134,12 @@ export default {
             reader.readAsDataURL(this.selectFile)
             // await this.$editorImgResize(this.selectFile)
           } else {
+            if (this.selectFile.size > 10000000) {
+              this.errorShowYn = true
+              return true
+            }
             console.log('#####')
-            if (this.sFileList) {
-              ;
-            } else {
+            if (!this.sFileList) {
               this.sFileList = []
             }
             console.log(this.sFileList)

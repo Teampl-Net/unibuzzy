@@ -48,7 +48,10 @@ const routes = [
         path: '/',
         name: 'main',
         props: true,
-        component: main
+        component: main,
+        meta: {
+          page: 1
+        }
         /* ,
         beforeEnter: (to, from, next) => {
           // 만약 로그인 상태라면
@@ -65,9 +68,8 @@ const routes = [
         name: 'myPage',
         props: true,
         component: myPage,
-        beforeEnter: (to, from, next) => {
-        // 만약 로그인 상태라면
-          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+        meta: {
+          page: 4
         }
       },
       {
@@ -75,10 +77,8 @@ const routes = [
         name: 'pushList',
         props: true,
         component: pushList,
-        beforeEnter: (to, from, next) => {
-          // 만약 로그인 상태라면
-
-          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+        meta: {
+          page: 2
         }
       },
       {
@@ -86,9 +86,8 @@ const routes = [
         name: 'chanList',
         props: true,
         component: chanList,
-        beforeEnter: (to, from, next) => {
-          // 만약 로그인 상태라면
-          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+        meta: {
+          page: 3
         }
       },
       {
