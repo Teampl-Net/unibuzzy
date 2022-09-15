@@ -408,7 +408,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -469,7 +469,7 @@ export default {
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
         // 파일서버 fileServer fileserver FileServer Fileserver
-        iframe.src = api + 'service/tp.downloadFile?fileKey=' + fileKey
+        iframe.src = api + 'https://mo.d-alim.com/service/tp.downloadFile?fileKey=' + fileKey
       } else {
         if (aTag == null) {
           aTag = document.createElement('a')
@@ -477,7 +477,7 @@ export default {
           aTag.style.display = 'none'
           document.body.appendChild(aTag)
         }
-        aTag.href = api + 'service/tp.downloadFile?fileKey=' + fileKey
+        aTag.href = api + 'https://mo.d-alim.com/service/tp.downloadFile?fileKey=' + fileKey
         aTag.target = '_blank'
 
         aTag.click()
@@ -634,7 +634,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -701,7 +701,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       console.log(result)
@@ -736,7 +736,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       console.log(result)
@@ -766,7 +766,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -863,7 +863,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

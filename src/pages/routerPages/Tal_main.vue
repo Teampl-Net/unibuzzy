@@ -132,7 +132,7 @@ export default {
       //   this.$emit('closeLoading')
       // }, 2000)
 
-      // await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      // await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
       // ).then(response => {
       //   if (response.status === 200 || response.status === '200') {
       //     console.log(response);
@@ -222,7 +222,7 @@ export default {
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
 
-      return await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      return await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         if (response.status === 200 || response.status === '200') {
           this.alimList = []

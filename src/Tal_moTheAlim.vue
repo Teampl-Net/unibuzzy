@@ -5,6 +5,7 @@
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
+
   </div>
 </template>
 <script>
@@ -38,6 +39,18 @@ export default {
         this.popShowYn = false
       }, 1000) */
     },
+    createToggle () {
+      // var body = document.getElementsByTagName('body')
+      // var innerHTML = ''
+      // var toastDiv = document.createElement('div')
+      // innerHTML += '<div style="position: fixed; right:20px; bottom:60px;"> '
+      // innerHTML += '<gToggle toggleId="fullScreenYn" :isChecked="false" @changeToggle="setManager"/> 토글 </div>'
+      // innerHTML += '</div>'
+      // toastDiv.innerHTML = innerHTML
+
+      // document.body.append(toastDiv)
+      // alert(true)
+    },
     /* openPushPop (params) {
       this.pushPopParams = params
       this.pushPopShowYn = true
@@ -55,6 +68,7 @@ export default {
   },
 
   mounted () {
+    this.createToggle()
     window.addEventListener('beforeunload', (event) => {
       // 표준에 따라 기본 동작 방지
       event.preventDefault()
@@ -92,7 +106,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 1000px !important;
+  max-width: 1000px ;
 }
 
 #nav {

@@ -321,7 +321,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.승인 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -341,7 +341,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -827,7 +827,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://222.233.118.96:19091/tp.uploadFile', form/* ,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
