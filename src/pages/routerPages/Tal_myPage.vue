@@ -53,7 +53,6 @@ export default {
   async created () {
     this.loadingYn = true
     this.$emit('changePageHeader', '마이페이지')
-    this.$emit('closeLoading')
     await this.getUserInform()
   },
   methods: {

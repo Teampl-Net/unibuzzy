@@ -20,7 +20,7 @@
         :enter-active-class="route.meta.enterClass"
         :leave-active-class="route.meta.leaveClass"
         >
-          <component :is="Component" :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+          <component :is="Component" :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
         </transition>
       </router-view>
 
@@ -233,6 +233,9 @@ export default {
               } else {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   if (this.notiDetail.jobkindId !== 'BOAR') {
+                    if (this.$route.path === '/') {
+                      this.$refs.mainRouterView.getMainBoard()
+                    }
                     this.notiDetailShowYn = true
                   }
                 } else {
@@ -345,6 +348,8 @@ export default {
         this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
       } else if (param[0] === 'boardDetail') {
         this.openPop({ targetKey: param[1], targetType: 'boardDetail', contentsKey: param[1], pushOpenYn: true })
+      } else if (param[0] === 'pushDetail') {
+        this.openPop({ targetKey: param[1], targetType: 'pushDetail', contentsKey: param[1], pushOpenYn: true })
       }
       console.log('targetKey: ' + param[1])
     }

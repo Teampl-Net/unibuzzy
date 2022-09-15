@@ -1,10 +1,10 @@
 <template>
-<div :key="componentKey" class="pagePaddingWrap" v-if="renderOk" style="padding-bottom: 10px; padding-top: 10px; background: #FFF; height: 100%; overflow: hidden scroll;">
+<div :key="componentKey" class="pagePaddingWrap" v-if="renderOk" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
   <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
-  <div class="userProfileWrap"  v-if="userInfoChangeYn">
+  <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
     <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
     </div>
@@ -27,8 +27,8 @@
     </div>
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim :alimList="alimList"  @openPop="openPop" ref="topAlim" />
-  <top5Channel :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
+  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;     box-shadow: 0 0 7px 3px #b7b4b440;" :alimList="alimList"  @openPop="openPop" ref="topAlim" />
+  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;     box-shadow: 0 0 7px 3px #b7b4b440;"  :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -49,10 +49,11 @@ export default {
     testYn: {},
     routerReloadKey: {}
   },
-  async created () {
+  created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
     this.loadingYn = true
+    this.getMainBoard(JSON.parse(localStorage.getItem('sessionUser')).userKey)
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     // onMessage('REQ', 'getUserInfo')
@@ -63,7 +64,7 @@ export default {
     } else {
       localStorage.setItem('loginYn', false)
     }
-    await this.getUserInform()
+    this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
     // <%= ${sessionName} != null %>
@@ -193,7 +194,6 @@ export default {
     async getUserInform () {
       var userInfo = await this.$getUserInform()
       this.userKey = userInfo.userKey
-      this.getMainBoard(this.userKey)
       if (userInfo !== undefined && userInfo !== null) {
         if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null) {
@@ -222,7 +222,7 @@ export default {
       paramMap.set('userKey', userKey)
       paramMap.set('jobkindId', 'ALIM')
 
-      await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      return await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       ).then(response => {
         if (response.status === 200 || response.status === '200') {
           this.alimList = []

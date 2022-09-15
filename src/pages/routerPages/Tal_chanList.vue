@@ -94,6 +94,7 @@ export default {
     } else if (this.viewTab === 'mychannel') {
       this.$refs.activeBar.switchtab(2)
     }
+    this.$emit('closeLoading')
   },
   async created () {
     this.loadingYn = true
@@ -115,7 +116,6 @@ export default {
     } else {
       this.endListYn = false
     }
-    this.$emit('closeLoading')
     this.introChanPageTab()
     this.scrolledYn = false
     this.findPaddingTopChan()

@@ -1,35 +1,38 @@
 <template>
-  <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" class="fl w-100P" @openPop= "openPop" />
-  <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" mtop-1 fl" @changeTab="changeTab" />
-  <div class="chanTop5Wrap fl" >
-    <div v-if="emptyYn && this.chanList.length === 0" class="w-100P">
-      <!-- 다른 이미지로 대체하면 된다 -->
-      <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
-      <!-- <img src="/resource/common/placeholder_white.png" /> -->
-    </div>
-    <!-- <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}"> -->
-    <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
-      <div class="top5ChanLogoImgWrap" :style="'background-image: url(' + ( value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; position: relative; background-position: center;">
-        <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: -15px;"  alt="소유주 아이콘"/>
-        <img src="../../../assets/images/common/icon_setting_gear.svg" v-else-if="value.managerKey > 0" style="width: 18px; height: 18px; position: absolute; top: -10px;" alt="매니저 아이콘">
-      </div>
-        <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
-          <div class=" text-start mr-04 w-100P" style="height: 25px;" >
-            <!-- <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p> -->
-            <img src="../../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style="height:20px; padding: 3px;" class='fl' />
-            <p class="font15 fl fontBold mNone textOverdot commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
+  <div style="width: 100%; float: left;">
+    <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" class="fl w-100P" @openPop= "openPop" />
+    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
+    <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" fl" @changeTab="changeTab" />
+    <div class="chanTop5Wrap fl" >
+        <div v-if="emptyYn && this.chanList.length === 0" class="w-100P">
+        <!-- 다른 이미지로 대체하면 된다 -->
+        <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
+        <!-- <img src="/resource/common/placeholder_white.png" /> -->
+        </div>
+        <!-- <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}"> -->
+        <div class="w-100P top5ChannelRow" :style="index === chanList.length - 1 ? 'border: none!important;' : ''"  v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
+        <div class="top5ChanLogoImgWrap" :style="'background-image: url(' + ( value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; position: relative; background-position: center;">
+            <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: -15px;"  alt="소유주 아이콘"/>
+            <img src="../../../assets/images/common/icon_setting_gear.svg" v-else-if="value.managerKey > 0" style="width: 18px; height: 18px; position: absolute; top: -10px;" alt="매니저 아이콘">
+        </div>
+            <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
+            <div class=" text-start mr-04 w-100P" style="height: 25px;" >
+                <!-- <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p> -->
+                <img src="../../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style="height:20px; padding: 3px;" class='fl' />
+                <p class="font15 fl fontBold mNone textOverdot commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
 
-            <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
-                <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
-                <span class="commonColo font12" >{{value.followerCount}}</span>
+                <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
+                    <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
+                    <span class="commonColo font12" >{{value.followerCount}}</span>
+                </div>
             </div>
-          </div>
-          <div style="width: 100%; margin-top: 4px; position: relative; min-height: 0.9rem;">
-            <span class="chanMsgWrap w-70P fl font12 commonBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" >
-            </span>
-            <span class="commonBlack font12 fr" style="position: absolute; bottom: 0; right: 0;">{{this.$changeDateFormat(value.creDate)}}</span>
-          </div>
-      </div>
+            <div style="width: 100%; margin-top: 4px; position: relative; min-height: 0.9rem;">
+                <span class="chanMsgWrap w-70P fl font12 commonBlack "  v-html="this.$makeMtextMap(value.memoMtext, 'KO')" >
+                </span>
+                <span class="commonBlack font12 fr" style="position: absolute; bottom: 0; right: 0;">{{this.$changeDateFormat(value.creDate)}}</span>
+            </div>
+        </div>
+        </div>
     </div>
   </div>
 </template>

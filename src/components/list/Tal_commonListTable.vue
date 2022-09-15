@@ -9,7 +9,7 @@
             <col class="listHeader" style="width: 50px; float: left;">
             <col style="width: calc(100% - 50px); margin-left: 10px; float: left;">
         </colgroup>
-        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :key="index" @click="clickInfo(value)">
+        <tr v-for="(value, index) in commonListData" class="commonListTr textLeft " :style="index === commonListData.length - 1 ? 'border: none!important;' : ''" :key="index" @click="clickInfo(value)">
             <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: sessionUserKey === value.creUserKey}">
               <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
                 <!-- <div style="background:#ffffff50; width:20px; height:20px; border-radius:100%; border:1px solid #ccc; overflow: hidden; position:absolute; bottom:-10px; right:-10px; display: flex; justify-content: center; align-items: center;"> -->
@@ -141,4 +141,5 @@ animation-duration: 0.3s;
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; padding: 5px 10px;}
 .listHeader {text-align: center;}
 .listBodyRow{width: calc(100% - 60px);}
+
 </style>

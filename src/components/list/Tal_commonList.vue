@@ -64,10 +64,8 @@
                       <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-                      :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?pushDetail=' + alim.contentsKey + '?' + alim.creTeamKey
-                        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                        class="copyTextIcon mleft-05 fl" style="width:20px;" >
+                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.contentsKey" @click="copyText(alim.contentsKey, alim.jobkindId, index0)"
+                      data-clipboard-text="" >
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
@@ -198,6 +196,23 @@ export default {
     this.settingAtag()
   },
   methods: {
+    async makeShareLink (key) {
+      var result = null
+      var thisthis = this
+      var params = {
+        dynamicLinkInfo: {
+          dynamicLinkDomain: 'dalim.page.link',
+          link: 'https://mo.d-alim.com?pushDetail=' + key +
+                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+        },
+        suffix: { option: 'SHORT' }
+      }
+      await this.$axios.post('firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
+        .then(function (response) {
+          result = response.data.shortLink
+        })
+      return result
+    },
     clickCard (alim) {
         if (alim.jobkindId === 'ALIM') {
             this.goDetail(alim)
@@ -288,7 +303,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.saveContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -800,14 +815,27 @@ export default {
         this.offsetInt = this.currentMemoList.length
         this.memoSetCount(response.totalElements)
     },
-    async copyText () {
-      // eslint-disable-next-line no-undef
-      var clip = new ClipboardJS('#copyTextBody')
-      var _this = this
-      clip.on('success', function (e) {
-        _this.confirmText = '알림링크가 복사되었습니다!'
-        _this.confirmPopShowYn = true
-      })
+    async copyText (contentsKey, jobkindId, index) {
+        var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
+        if (!text) {
+            if (jobkindId === 'BOAR') {
+                var link = await this.$makeShareLink(contentsKey, 'boardDetail')
+            } else {
+                var link = await this.$makeShareLink(contentsKey, 'pushDetail')
+            }
+            if (link) { document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText = link }
+            
+            // this.contentsList[index].copyText = link
+        }
+        setTimeout(() => {
+            var clip = new ClipboardJS('#copyTextBody' + contentsKey)
+            var _this = this
+            clip.on('success', function (e) {
+                _this.confirmText = '알림링크가 복사되었습니다!'
+                _this.confirmPopShowYn = true
+            })
+        }, 300)
+
     },
     loadingRefShow(){
       // console.log('show');

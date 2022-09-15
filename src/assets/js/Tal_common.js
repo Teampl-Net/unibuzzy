@@ -201,7 +201,20 @@ const methods = {
   diffInt (a, b) {
     return Math.abs(a - b)
   },
+  async makeShareLink (key, type) {
+    var paramMap = new Map()
+    paramMap.set('pageType', type)
+    paramMap.set('targetKey', key)
 
+    var result = await this.$commonAxiosFunction({
+      url: 'service/tp.getShortDynamicLink',
+      param: Object.fromEntries(paramMap)
+    })
+    console.log(JSON.parse(result.data.shortLink))
+    var response = JSON.parse(result.data.shortLink).shortLink
+
+    return response
+  },
   addHistoryStack (n) {
     // eslint-disable-next-line no-array-constructor
     /* var historyS = ''
@@ -589,5 +602,6 @@ export default {
     Vue.config.globalProperties.$showToastPop = methods.showToastPop
     Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
     Vue.config.globalProperties.$previewFile = methods.previewFile
+    Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
   }
 }

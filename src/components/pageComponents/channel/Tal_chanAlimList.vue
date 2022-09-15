@@ -86,9 +86,7 @@
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
-              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanItem.teamKey
-                + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
-                class="copyTextIcon cursorP">
+              :data-clipboard-text="copyTextStr">
             <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
           </div>
         </div>
@@ -189,7 +187,8 @@ export default {
       notiDetail: null,
       systemName: '',
       currentConfirmType: '',
-      currentPushListMainTab: 'P'
+      currentPushListMainTab: 'P',
+      copyTextStr: ''
       // errorPopYn: false
     }
   },
@@ -556,6 +555,7 @@ export default {
       if (this.chanItem) {
         this.chanItem.totalElements = resultList.data.totalElements
       }
+      this.copyTextMake()
 
       if (addContentsListYn !== undefined && addContentsListYn !== null && addContentsListYn !== true) {
         if (this.chanItem.userTeamInfo !== undefined && this.chanItem.userTeamInfo !== null && this.chanItem.userTeamInfo !== '') {
@@ -731,6 +731,9 @@ export default {
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
       }
+    },
+    async copyTextMake () {
+      this.copyTextStr = await this.$makeShareLink(this.chanItem.teamKey, 'chanDetail')
     }
     /*
     recvNoti (e) {

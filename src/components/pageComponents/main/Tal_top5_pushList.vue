@@ -1,12 +1,18 @@
 <template>
-  <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style="margin-bottom: 1rem; float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop= "openPop"/>
-    <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
-        <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-        <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
-    </div>
-    <div id="top5ListWrap" class="pushListWrap fl">
-      <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
-      <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
+    <div style="width: 100%; float: left; margin-top: 10px;">
+        <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style=" float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop= "openPop"/>
+        <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
+        <div style=" float: left; width: 100%; ">
+            <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
+                <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
+                <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
+            </div>
+            <div id="top5ListWrap" class="pushListWrap fl">
+            <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
+            <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
+            </div>
+        </div>
+
     </div>
 </template>
 

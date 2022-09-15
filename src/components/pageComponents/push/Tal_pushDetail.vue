@@ -89,8 +89,7 @@
               </template>
               <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
               data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-                :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?pushDetail=' + this.alimDetail[0].contentsKey
-                    + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">
+                :data-clipboard-text="copyTextStr">
             </div>
             <gBtnSmall v-if="alim.canReplyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.canReplyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
@@ -100,7 +99,7 @@
               <!-- <img src="../../../assets/images/common/copyLink.svg" class="w-100P" alt=""> -->
             <!-- <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
             data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-              :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey
+              :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey
                   + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
             <!-- </div> -->
           </div>
@@ -188,7 +187,8 @@ export default {
       clickImg: null,
       systemName: localStorage.getItem('systemName'),
       loadingYn: false,
-      saveMemoLoadingYn: false
+      saveMemoLoadingYn: false,
+      copyTextStr: ''
     }
   },
   props: {
@@ -264,6 +264,9 @@ export default {
     }
   },
   methods: {
+    async copyTextMake () {
+      this.copyTextStr = await this.$makeShareLink(this.alimDetail[0].contentsKey, 'pushDetail')
+    },
     memoUserNameClick (userKey) {
       this.userNameClick(userKey, this.alimDetail[0].creTeamKey, false)
     },
@@ -565,7 +568,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.saveContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -732,9 +735,9 @@ export default {
           Kakao.init('ad73ad189dfce70f1a9c3b77c9924c45')
         };
       } catch (e) {};
-      var link = 'https://thealim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey +
+      var link = 'https://dalim.page.link/?link=https://mo.d-alim.com?boardDetail=' + this.alimDetail[0].contentsKey +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-      var mainLink = 'https://thealim.page.link/?link=https://mo.d-alim.com' +
+      var mainLink = 'https://dalim.page.link/?link=https://mo.d-alim.com' +
                         '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
       var titleText = this.alimDetail[0].title
       var newText = null
@@ -861,7 +864,7 @@ export default {
         this.settingUserDo()
       }
       await this.settingAddFalseList(true)
-
+      this.copyTextMake()
       // this.fileDownloadAreaYn = this.attachTrueFileList.length !== 0
       // 파일리스트에서 attachYn이 한개라도 있으면 true로 다운로드가 보이게 하였습니다!
       this.fileDownloadAreaYn = (this.attachTrueFileList.findIndex(i => i.attachYn === true)) !== -1

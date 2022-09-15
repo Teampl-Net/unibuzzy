@@ -17,13 +17,13 @@
       <p class="commonBlack fontBold font16 textLeft"><br>*Tip<br>멤버를 신청하여 채널의 구성원이 되어보고, 친구에게 채널을 공유하여 함께 즐겨보세요!</p> -->
       <p class="commonBlack fontBold font22 textLeft">환영합니다!<br><br></p>
       <p class="commonBlack font16 textLeft"><b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널을 구독하였습니다.<br><br></p>
-      <p class="commonBlack font16 fontBold textLeft fl mbottom-1" data-clipboard-action="copy" id="copyTextBody" style="height: 30px; border-bottom: 1px solid black; line-height: 30px;" @click="copyText" :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
+      <p class="commonBlack font16 fontBold textLeft fl mbottom-1" data-clipboard-action="copy" id="copyTextBody" style="height: 30px; border-bottom: 1px solid black; line-height: 30px;" @click="copyText" :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">채널 링크를 공유</p>
       <p class="commonBlack font16 textLeft fl mbottom-1" style="height: 30px; line-height: 30px;">해 친구들을 초대하세요!</p>
       <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
         <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="내정보 공개하기" />
         <gBtnSmall @click="closePop" class="greetingApplyMemberBtn" btnTitle="구독하기" />
-        <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
+        <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" btnTitle="채널링크 복사하기" /> -->
       </div>
     </div>
