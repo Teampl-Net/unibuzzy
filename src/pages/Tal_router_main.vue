@@ -1,6 +1,6 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb;  "> <!-- v-if="notiDetailShowYn" -->
-    <loadingCompo v-show="loadingYn" />
+    <!-- <loadingCompo v-show="loadingYn" /> -->
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
@@ -10,12 +10,22 @@
       <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle" v-if="showMenuYn" />
     </transition>
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; z-index: 999"/>
-    <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden;">
-      <transition :name="transitionName" >
+    <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
+      <!-- <transition :name="transitionName" >
         <router-view :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
-      </transition>
+      </transition> -->
+      <router-view v-slot="{ Component, route }">
+        <!-- <transition :name="transitionName" > -->
+        <transition
+        :enter-active-class="route.meta.enterClass"
+        :leave-active-class="route.meta.leaveClass"
+        >
+          <component :is="Component" :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+        </transition>
+      </router-view>
+
     </div>
-    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" @footerAni='footerAni' />
+    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
   </div>
 </template>
 
@@ -45,8 +55,7 @@ export default {
       notiDetailShowYn: false,
       reloadYn: false,
       testData: { contentsKey: 1001172, creUserKey: 1 },
-      systemName: 'iOS',
-      transitionName: 'slide-right'
+      systemName: 'iOS'
     }
   },
   props: {},
@@ -123,6 +132,21 @@ export default {
             this.openPop(param)
           }
         }
+      }
+    },
+    $route (to, from) {
+      console.log(from.meta.page + ' ' + to.meta.page)
+      console.log()
+      if (to.meta.page > from.meta.page) {
+        to.meta.enterClass = 'animate__animated animate__fadeInRightBig'
+        from.meta.leaveClass = 'animate__animated animate__fadeOutLeftBig'
+        // to.meta.enterClass = 'slide-right-in'
+        // from.meta.leaveClass = 'slide-left-Out'
+      } else if (to.meta.page < from.meta.page) {
+        to.meta.enterClass = 'animate__animated animate__fadeInLeftBig'
+        from.meta.leaveClass = 'animate__animated animate__fadeOutRightBig'
+        // to.meta.enterClass = 'slide-left-in'
+        // from.meta.leaveClass = 'slide-right-Out'
       }
     }
   },
@@ -334,6 +358,10 @@ export default {
 </script>
 
 <style scoped>
+.page {
+  position: absolute;
+  top: 30px;
+}
 .myPageBgColor {background-color: #dcddeb;}
 .test {
   display: flex;
@@ -401,7 +429,7 @@ export default {
 /*
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .slide-left-enter-to {
   position: absolute;
@@ -446,4 +474,70 @@ export default {
 .slide-left{
   animation: animate__fadeInLeft;
 } */
+  @keyframes bg1_slide-left-In{
+    from{
+      left: -100%;
+    }
+    to{
+      left: 0%;
+    }
+  }
+  @keyframes bg1_slide-left-Out{
+    from{
+      left: 0%;
+    }
+    to{
+      left: -100%;
+    }
+  }
+  @keyframes bg1_slide-right-In{
+    from{
+      right: -100%;
+    }
+    to{
+      right: 0%;
+    }
+  }
+  @keyframes bg1_slide-right-Out{
+    from{
+      right: 0%;
+    }
+    to{
+      right: -100%;
+    }
+  }
+
+  .slide-left-in{
+    animation-duration: 0.3s;
+    animation-name: bg1_slide-left-In;
+    animation-fill-mode: both;
+  }
+  .slide-left-Out{
+    animation-duration: 0.3s;
+    animation-name: bg1_slide-left-Out;
+    animation-fill-mode: both;
+  }
+  .slide-right-in{
+    animation-duration: 0.3s;
+    animation-name: bg1_slide-right-In;
+    animation-fill-mode: both;
+  }
+  .slide-right-Out{
+    animation-duration: 0.3s;
+    animation-name: bg1_slide-right-Out;
+    animation-fill-mode: both;
+  }
+
+  .animate__fadeInRightBig{
+    animation-duration: 0.5s
+  }
+  .animate__fadeOutLeftBig{
+    animation-duration: 0.5s
+  }
+  .animate__fadeInLeftBig{
+    animation-duration: 0.5s
+  }
+  .animate__fadeOutRightBig{
+    animation-duration: 0.5s
+  }
 </style>

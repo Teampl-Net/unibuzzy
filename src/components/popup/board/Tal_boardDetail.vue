@@ -470,7 +470,7 @@ export default {
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
         // 파일서버 fileServer fileserver FileServer Fileserver
-        iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+        iframe.src = api + 'service/tp.downloadFile?fileKey=' + fileKey
       } else {
         if (aTag == null) {
           aTag = document.createElement('a')
@@ -478,7 +478,7 @@ export default {
           aTag.style.display = 'none'
           document.body.appendChild(aTag)
         }
-        aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
+        aTag.href = api + 'service/tp.downloadFile?fileKey=' + fileKey
         aTag.target = '_blank'
 
         aTag.click()
@@ -635,7 +635,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)

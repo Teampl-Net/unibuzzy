@@ -288,7 +288,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.$emit('refresh')

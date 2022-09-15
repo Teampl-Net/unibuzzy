@@ -565,7 +565,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.$emit('closeXPop', true)

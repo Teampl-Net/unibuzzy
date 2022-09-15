@@ -1,5 +1,6 @@
 <template>
 <div :key="componentKey" class="pagePaddingWrap" v-if="renderOk" style="padding-bottom: 10px; padding-top: 10px; background: #FFF; height: 100%; overflow: hidden scroll;">
+  <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
@@ -38,7 +39,7 @@ import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfir
 import top5Channel from '../../components/pageComponents/main/Tal_top5_channelList.vue'
 import top5Alim from '../../components/pageComponents/main/Tal_top5_pushList.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
-
+import loadingCompo from '../../components/layout/Tal_loading.vue'
 // import { onMessage } from '../../assets/js/webviewInterface'
 // import initModal from '../../components/popup/Tal_mainInitModal'
 
@@ -48,9 +49,10 @@ export default {
     testYn: {},
     routerReloadKey: {}
   },
-  created () {
+  async created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
+    this.loadingYn = true
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     // onMessage('REQ', 'getUserInfo')
@@ -61,12 +63,11 @@ export default {
     } else {
       localStorage.setItem('loginYn', false)
     }
-    // eslint-disable-next-line no-debugger
-    debugger
-    this.getUserInform()
+    await this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
     // <%= ${sessionName} != null %>
+    this.loadingYn = false
   },
   mounted () {
   },
@@ -82,14 +83,16 @@ export default {
 
       popYn: true,
       userKey: null,
-      userInfoChangeYn: true
+      userInfoChangeYn: true,
+      loadingYn: false
     }
   },
   components: {
     // initModal,
     commonConfirmPop,
     top5Channel,
-    top5Alim
+    top5Alim,
+    loadingCompo
     // top5
     // top5Title
   },
@@ -144,9 +147,11 @@ export default {
       // })
 
       this.$emit('openLoading')
-      this.$refs.topChan.reLoad()
-      this.$refs.topAlim.reLoad()
+      this.loadingYn = true
+      await this.$refs.topChan.reLoad()
+      await this.$refs.topAlim.reLoad()
       setTimeout(() => {
+        this.loadingYn = false
         this.$emit('closeLoading')
       }, 500)
 

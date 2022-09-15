@@ -298,7 +298,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'service/tp.saveContents',
           param: inParam
         })
         this.refresh()

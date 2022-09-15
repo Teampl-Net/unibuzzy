@@ -1,6 +1,6 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap" >
-        <div @click="routePage('/', 0)" class="footerRouter col-3">
+        <div @click="routePage('/')" class="footerRouter col-3">
           <div v-if="this.$route.path === '/'" class="commonColor fontBold text-center font12" >
             <img src="../../assets/images/footer/icon_home_fillin.svg"/><p class="font12 fontBold activeFooterMenu" >홈</p>
           </div>
@@ -8,15 +8,15 @@
             <img src="../../assets/images/footer/icon_home.svg"/><p class="font12">홈</p>
           </div>
         </div>
-        <div @click="routePage('/pushList', 1)" class="footerRouter col-3">
+        <div @click="routePage('/pushList')" class="footerRouter col-3">
           <div v-if="this.$route.path === '/pushList'" class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_alim_fillin.svg"/> <p class="font12 activeFooterMenu">알림</p></div>
           <div v-else class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_alim.svg"/> <p class="font12" >알림</p></div>
         </div>
-        <div @click="routePage('/chanList', 2)" class="footerRouter col-3">
+        <div @click="routePage('/chanList')" class="footerRouter col-3">
           <div v-if="this.$route.path === '/chanList'" class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_channel_fillin.svg"/> <p class="font12 activeFooterMenu">채널</p></div>
           <div v-else class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_channel.svg"/> <p class="font12" >채널</p></div>
         </div>
-        <div @click="routePage('/myPage', 3)" class="footerRouter col-3">
+        <div @click="routePage('/myPage')" class="footerRouter col-3">
           <div v-if="this.$route.path === '/myPage'" class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_people_fillin.svg"/> <p class="font12 activeFooterMenu">내정보</p></div>
           <div v-else class="commonColor fontBold text-center font12"><img src="../../assets/images/footer/icon_people.svg"/> <p class="font12" >내정보</p></div>
         </div>
@@ -26,28 +26,22 @@
 export default {
   name: 'TalFooter',
   methods: {
-    routePage (page, index) {
+    async routePage (page) {
       if (page === this.$router.currentRoute._rawValue.path) {
         return
       }
-      // console.log(index < this.activeFooterIndex ? 'slide-right' : 'slide-left')
-      // console.log(index < this.activeFooterIndex ? 'slide-right' : 'slide-left')
-      this.$emit('footerAni', index < this.activeFooterIndex ? 'slide-right' : 'slide-left')
-      // this.$router.afterEach((to, from) => {
-      //   to.meta.enterClass = index < this.activeFooterIndex ? 'slide-right' : 'slide-left'
-      // })
+      await this.$router.push(page)
+
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */
-      this.$router.push(page)
-      this.activeFooterIndex = index
       this.activeFooter = page
       this.$emit('openLoading')
     }
+
   },
   data () {
     return {
-      activeFooter: '/',
-      activeFooterIndex: 0
+      activeFooter: '/'
     }
   }
 }

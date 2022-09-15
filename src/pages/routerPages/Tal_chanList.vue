@@ -1,7 +1,7 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-
 <div class="" style="width: 100%; height: 100%; position: relative; padding: 0 1rem; padding-top: 10px; overflow: hidden; float: left;">
+  <loadingCompo v-show="loadingYn === true"/>
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
     <!-- <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/> -->
     <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="padding: 0 1rem ; margin-top: 10px;" @changeTab= "changeTab"></gActiveBar>
@@ -26,6 +26,7 @@
 <script>
 /* eslint-disable */
 import findChannelList from '../../components/popup/common/Tal_findChannelList.vue'
+import loadingCompo from '../../components/layout/Tal_loading.vue'
 
 export default {
   /* metaInfo: {
@@ -44,7 +45,8 @@ export default {
   }, */
   name: 'user',
   components: {
-    findChannelList
+    findChannelList,
+    loadingCompo
     // searchChannel
     // myChanList
   },
@@ -94,6 +96,7 @@ export default {
     }
   },
   async created () {
+    this.loadingYn = true
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
         this.viewTab = this.propData.channelTabType
@@ -116,6 +119,7 @@ export default {
     this.introChanPageTab()
     this.scrolledYn = false
     this.findPaddingTopChan()
+    this.loadingYn = false
   },
   methods: {
     findPaddingTopChan () {
@@ -125,13 +129,15 @@ export default {
     async refreshAll () {
       // 새로고침
       this.$emit('openLoading')
+      this.loadingYn = true
       this.resultSearchKeyList = []
       this.changeTab('user')
-      this.$refs.activeBar.switchtab(0)
-      var chanListWrap = this.$refs.chanListWrap
-      chanListWrap.scrollTo({ top: 0 })
+      await this.$refs.activeBar.switchtab(0)
+      var chanListWrap = await this.$refs.chanListWrap
+      await chanListWrap.scrollTo({ top: 0 })
       setTimeout(() => {
         this.$emit('closeLoading')
+        this.loadingYn = false
       }, 500)
     },
     scrollMove () {
@@ -394,7 +400,8 @@ export default {
       scrollCheckSec: 0,
       listShowYn: true,
       currentTabName: '구독중',
-      emptyYn: true
+      emptyYn: true,
+      loadingYn: false
     }
   },
   props: {

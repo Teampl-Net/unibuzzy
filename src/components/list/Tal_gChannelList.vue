@@ -14,16 +14,18 @@
             <div style=" margin-left: 10px; width: calc(100% - 40px); min-height: 40px; display:flex;flex-direction: column;">
                 <div class=" text-start mr-04 w-100P" style="height: 23px; line-height:20px;">
                     <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 25px; float: left;" alt="" />
-                    <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" :style="value.officialYn ? 'max-width: calc(100% - 150px);' : 'max-width: calc(100% - 140px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
+                    <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" :style="value.officialYn ? 'max-width: calc(100% - 140px);' : 'max-width: calc(100% - 120px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
                     <div style="line-height: 0.05rem; float: left; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
                         <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
                         <span class="commonColo font12" >{{value.followerCount}}</span>
                     </div>
-                    <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 30px; width: calc(100% - var(--calcWidth)) " :style="value.officialYn ? '--calcWidth : 60px' : '--calcWidth : 40px' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p> -->
-                    <!-- <div style="height: 23px; float: left; margin-left: 8px;">
-                        <img style="width: 0.8rem; float: left; margin-top: 5px; margin-right: 3px;" src="../../assets/images/main/main_subscriber.png"/>
-                        <span class="commonColor font14" >{{value.followerCount}}</span>
-                    </div> -->
+                    <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" >
+                      <pp style="line-height: 0.05rem; float: right; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
+                        <img class="img-w13" style="margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
+                        <span class="commonColo font12" >{{value.followerCount}}</span>
+                      </pp>
+                      {{this.resizeText(this.$changeText(value.nameMtext))}}
+                    </p> -->
                     <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; height: 100%; line-height: 20px; min-width: 40px" >{{'최근활동 ' + this.$changeDateFormat(value.updDate)}}</p>
                     <!-- <div class="fr" style="display: flex; margin-right: 5px; height: 23px; justify-content: space-around; align-items: center;">
                         <div style="line-height: 0.05rem; float: right; margin-top: 0px; margin-right: 5px;">

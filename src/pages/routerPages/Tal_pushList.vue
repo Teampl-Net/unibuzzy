@@ -2,6 +2,7 @@
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
+      <loadingCompo v-show="loadingYn === true && isOpen !== 'chanAlim'"/>
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
@@ -44,7 +45,7 @@
   <!-- </div> -->
 </template>
 <script>
-
+import loadingCompo from '../../components/layout/Tal_loading.vue'
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
@@ -57,7 +58,8 @@ export default {
     findContentsList,
     commonConfirmPop,
     imgPreviewPop,
-    imgLongClickPop
+    imgLongClickPop,
+    loadingCompo
     /* cancelPop */
     // searchResult
   },
@@ -71,9 +73,12 @@ export default {
     chanDetailKey: {},
     pushListAndDetailYn: {},
     propData: {},
-    targetContents: {}
+    targetContents: {},
+    // 라우터로 이동과 gPop에서 채널메인 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
+    isOpen: {}
   },
   async created () {
+    this.loadingYn = true
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewMainTab = this.propData.alimTabType
@@ -584,6 +589,7 @@ export default {
       }
       var resultList = result
       this.$emit('closeLoading')
+      this.loadingYn = false
       return resultList
     },
     async requestSearchList (param) {
@@ -703,7 +709,8 @@ export default {
       mobileYn: this.$getMobileYn(),
       alertPopId: null,
       selectImgParam: {},
-      targetJobkindId: null
+      targetJobkindId: null,
+      loadingYn: false
     }
   }
 }

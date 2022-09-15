@@ -168,8 +168,6 @@ const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    // eslint-disable-next-line no-debugger
-    debugger
     if (result.data.resultCode === 'OK') {
       localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)

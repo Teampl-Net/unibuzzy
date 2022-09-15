@@ -40,9 +40,8 @@
       <div class="subPaddingWrap">
         <table>
           <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
-          <!-- <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY-MM-DD')}}</td></tr> -->
-          <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(userInfo.creDate)}}</td></tr>
-          <!-- <tr><th>가입일</th><td class="textRight">{{this.$changeDateFormat('2021-06-22 14:22')}}</td></tr> -->
+          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY/MM/DD')}}</td></tr>
+          <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(userInfo.creDate, true)}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">이용약관</th></tr>
           <tr>
@@ -214,7 +213,7 @@ export default {
       console.log(this.userInfo)
       if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
       if (this.userInfo.phoneLast); else this.userInfo.phoneLast = null || '등록된 번호가 없습니다.'
-      if (!this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userDispMtext } else {this.userInfo.userDispMtext = this.userInfo.userNameMtext}
+      if (this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userDispMtext } else {this.userInfo.userDispMtext = this.userInfo.userNameMtext}
 
       // console.log(this.userInfo.creDate)
     },

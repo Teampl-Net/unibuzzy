@@ -1,5 +1,6 @@
 <template>
   <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0;">
+    <loadingCompo v-show="loadingYn === true"/>
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
         <!-- <div class="myPagePicImgWrap">
@@ -32,24 +33,28 @@
   </div>
 </template>
 <script>
+import loadingCompo from '../../components/layout/Tal_loading.vue'
 import myActList from '../../components/pageComponents/myPage/Tal_myActList.vue'
 import logList from '../../pages/routerPages/Tal_logList.vue'
 // import userItem from '../../components/unit/Tal_userItem.vue'
 export default {
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      loadingYn: false
     }
   },
   components: {
     // userItem,
     myActList,
-    logList
+    logList,
+    loadingCompo
   },
-  created () {
+  async created () {
+    this.loadingYn = true
     this.$emit('changePageHeader', '마이페이지')
     this.$emit('closeLoading')
-    this.getUserInform()
+    await this.getUserInform()
   },
   methods: {
     goMyChanList () {
@@ -83,6 +88,7 @@ export default {
         }
       }
       this.$emit('closeLoading')
+      this.loadingYn = false
       return this.userInfo
     }
   }
