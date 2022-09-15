@@ -61,6 +61,8 @@ export default {
     naver
   },
   created () {
+    localStorage.setItem('sessionUser', '')
+    localStorage.setItem('user', '')
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {
