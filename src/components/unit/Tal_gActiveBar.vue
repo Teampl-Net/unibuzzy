@@ -106,11 +106,11 @@ export default {
       this.tabwidth = 4.8
     }
 
-    // if (window.innerWidth < 360) {
-    //   this.tabwidth = 4
-    //   if (window.innerWidth < 290) {
-    //     this.tabwidth = 3.5
-    //   }
+    if (window.innerWidth < 400) {
+      this.tabwidth = 4
+    } if (window.innerWidth < 290) {
+      this.tabwidth = 3
+    }
     // }
   }
 }
