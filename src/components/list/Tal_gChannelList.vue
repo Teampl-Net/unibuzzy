@@ -45,7 +45,7 @@
                             <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{value.ownerYn ? '소유자' : '관리자'}}</p>
                         </div>
                         <div v-if="value.managerKey" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:rgb(220, 221, 235);"  >
-                            <p class="fr font12 cursorP fontBold commonBlack"  @click="saveMemberButton" >{{'관리자'}}</p>
+                            <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'관리자'}}</p>
                         </div>
                         <!-- <div style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:rgb(220, 221, 235)' : 'background-color:#eee; border: 1px solid #ccc;' " >
                             <p class="fl font12 cursorP fontBold"  @click="saveMemberButton" :style="value.followerKey || value.followYn ? 'color:white' : '' " >{{value.followerKey || value.followYn ? '구독중' : '구독 +'}}</p>
