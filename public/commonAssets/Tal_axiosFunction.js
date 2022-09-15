@@ -20,10 +20,7 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 
 export async function commonAxiosFunction (setItem) {
-  var sessionYn = await checkSession()
-  if (sessionYn.data !== true) {
-    await methods.userLoginCheck()
-  }
+  methods.userLoginCheck()
   var result = false
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
@@ -120,9 +117,10 @@ export async function saveUser (userProfile) {
   }) */
   if (result.data.message === 'OK') {
     if (result.data.userInfo) {
-      router.replace({ path: '/' })
       localStorage.setItem('user', JSON.stringify(result.data.userInfo))
       localStorage.setItem('testYn', false)
+      await methods.userLoginCheck(true)
+      router.replace({ path: '/' })
     }
   } else {
     alert('세션이 만료되어 메인으로 이동합니다.')
@@ -170,7 +168,8 @@ const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-
+    // eslint-disable-next-line no-debugger
+    debugger
     if (result.data.resultCode === 'OK') {
       localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)

@@ -48,10 +48,9 @@ export default {
     testYn: {},
     routerReloadKey: {}
   },
-  async created () {
+  created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
-    await this.$userLoginCheck(true)
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     // onMessage('REQ', 'getUserInfo')
@@ -61,9 +60,10 @@ export default {
       ;
     } else {
       localStorage.setItem('loginYn', false)
-      await this.$userLoginCheck(true)
     }
-    await this.getUserInform()
+    // eslint-disable-next-line no-debugger
+    debugger
+    this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
     // <%= ${sessionName} != null %>

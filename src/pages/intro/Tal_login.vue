@@ -4,10 +4,6 @@
     <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
-      <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
-      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        더알림계정으로 로그인
-      </div>
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
@@ -32,6 +28,10 @@
           <img src="../../assets/images/intro/login/login_apple.png">
           Apple 로그인
         </div>
+      </div>
+      <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
+      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+        더알림계정으로 로그인
       </div>
   </div>
 </template>

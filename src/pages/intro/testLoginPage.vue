@@ -5,11 +5,11 @@
   <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
     <div class="introWhiteCard" style=" min-height: 450px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
-        <div class="mbottom-3 mtop-1">
+        <div class="mbottom-1 mtop-1">
           <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 5rem" alt="">
-          <p class="font20 mbottom-1 fontBold">환영합니다!</p>
+          <p class="font20 mbottom-05 fontBold">환영합니다!</p>
         </div>
-        <div class="mtop-1 introText">
+        <div class="mtop-05 introText" style="height: 40px;">
             <p>더알림서비스 아이디와 패스워드를 입력해주세요</p>
         </div>
        <!--  <div class="textLeft">]
@@ -17,13 +17,14 @@
             <option>대한민국(+82)</option>
           </select>
         </div> -->
-        <div class="inputWrap mtop-1">
+        <div class="inputWrap mtop-5">
           <input type="text" v-model="userId" placeholder="아이디 입력" name="" id="" >
         </div>
         <div class="inputWrap mtop-1">
           <input type="password" @keyup.enter="saveUser" v-model="userPw" placeholder="비밀번호 입력" name="" id="" >
         </div>
         <div class="startBigBtn" @click="saveUser"><p>시작하기</p></div>
+        <div class="startBigBtn backBtn" @click="back" style="background: #F5F5F9; color: #6768A7"><p>뒤로가기</p></div>
       <!--   <div class="inputWrap">
           <input type="number" placeholder="인증번호 입력" name="" id="" >
         </div> -->
@@ -55,6 +56,9 @@ export default {
     // pushDetail
   },
   methods: {
+    back () {
+      this.$router.replace({ path: 'login' })
+    },
     async saveUser () {
       var uId = this.userId
       var uPw = this.userPw
@@ -93,4 +97,5 @@ select{height: 40px; width: 160px; border: none;}
 
   .startBigBtn{background-color: #6768A7; margin-top: 10px; color:#ffff; height: 40px; box-sizing: border-box; padding: 5px 10px; width: 100%; border-radius: 5px; text-align: center; }
   .startBigBtn p{color:#ffff; text-decoration: none; font-size: 15px; line-height: 28px;}
+  .backBtn p {color: #6768A7;}
 </style>
