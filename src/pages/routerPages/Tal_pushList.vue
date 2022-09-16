@@ -31,7 +31,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -40,6 +40,7 @@
         </div>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
         <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+        <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
     </div>
   <!-- </div> -->
@@ -78,12 +79,14 @@ export default {
     isOpen: {}
   },
   async created () {
+    this.$emit('changePageHeader', '알림')
     this.loadingYn = true
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewMainTab = this.propData.alimTabType
       }
     }
+    this.refreshList()
     console.log(this.targetContents)
     if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
       console.log('으아아targetContentstargetContentstargetContents으아아ㅏ')
@@ -101,7 +104,6 @@ export default {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
     }
-    this.$emit('changePageHeader', '알림')
     // var resultList = await this.getPushContentsList()
     // this.commonListData = resultList.content
     // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -207,6 +209,15 @@ export default {
     }
   },
   methods: {
+    moveOrCopyContent (data) {
+      this.selectBoardType = data.type
+      this.boardDetailValue = data
+      this.selectBoardPopShowYn = true
+    },
+    closeSelectBoardPop () {
+      this.refreshList()
+      this.selectBoardPopShowYn = false
+    },
     openUserProfile (params) {
       console.log('############')
       console.log(params)
@@ -235,7 +246,7 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
+        url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -710,7 +721,10 @@ export default {
       alertPopId: null,
       selectImgParam: {},
       targetJobkindId: null,
-      loadingYn: false
+      loadingYn: false,
+      selectBoardType: null,
+      selectBoardPopShowYn: false,
+      boardDetailValue: null
     }
   }
 }

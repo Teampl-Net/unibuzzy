@@ -79,7 +79,7 @@
               </template>
               <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
               data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
-                :data-clipboard-text="this.$makeShareLink(this.alimDetail[0].contentsKey, 'boardDetail')">
+                :data-clipboard-text="copyTextStr">
             </div>
             <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
@@ -118,6 +118,7 @@
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
     <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+    <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="alimDetail[0]" :boardValue="detailVal" />
   </div>
 </template>
 <script>
@@ -128,6 +129,8 @@ import manageStickerPop from '../sticker/Tal_manageStickerPop.vue'
 export default {
   data () {
     return {
+      selectBoardPopShowYn: false,
+      selectBoardType: 'move',
       creUser: null,
       memoList: [],
       confirmText: '',
@@ -187,7 +190,8 @@ export default {
       clickImg: null,
       systemName: localStorage.getItem('systemName'),
       loadingYn: false,
-      saveMemoLoadingYn: false
+      saveMemoLoadingYn: false,
+      copyTextStr: ''
     }
   },
   props: {
@@ -275,6 +279,11 @@ export default {
     }
   },
   methods: {
+    async copyTextMake () {
+      var title = '[' + this.$changeText(this.alimDetail[0].nameMtext) + ']' + this.$changeText(this.alimDetail[0].cabinetNameMtext)
+      var message = this.alimDetail[0].title
+      this.copyTextStr = await this.$makeShareLink(this.alimDetail[0].contentsKey, 'boardDetail', message, title)
+    },
     memoUserNameClick (userKey) {
       this.userNameClick(userKey, this.alimDetail[0].creTeamKey, false)
     },
@@ -333,6 +342,14 @@ export default {
         console.log(error)
       }
     },
+    openSelectBoardPop (type) {
+      this.selectBoardType = type
+      this.selectBoardPopShowYn = true
+    },
+    closeSelectBoardPop (value) {
+      this.selectBoardPopShowYn = false
+      this.$emit('closeAndNewPop', value)
+    },
     editable (type) {
       this.reportYn = false
       if (this.tempData) {
@@ -341,6 +358,8 @@ export default {
             this.openUpdateContentsPop()
           } else if (type === 'delete') {
             this.boardFuncClick('BOAR')
+          } else if (type === 'move' || type === 'copy') {
+            this.openSelectBoardPop(type)
           }
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
@@ -408,7 +427,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -469,7 +488,7 @@ export default {
         iframe.style.display = 'none'
         document.body.appendChild(iframe)
         // 파일서버 fileServer fileserver FileServer Fileserver
-        iframe.src = api + 'https://mo.d-alim.com/service/tp.downloadFile?fileKey=' + fileKey
+        iframe.src = api + 'service/tp.downloadFile?fileKey=' + fileKey
       } else {
         if (aTag == null) {
           aTag = document.createElement('a')
@@ -477,7 +496,7 @@ export default {
           aTag.style.display = 'none'
           document.body.appendChild(aTag)
         }
-        aTag.href = api + 'https://mo.d-alim.com/service/tp.downloadFile?fileKey=' + fileKey
+        aTag.href = api + 'service/tp.downloadFile?fileKey=' + fileKey
         aTag.target = '_blank'
 
         aTag.click()
@@ -634,7 +653,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -701,7 +720,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       console.log(result)
@@ -736,7 +755,7 @@ export default {
       console.log('memo')
       console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       console.log(result)
@@ -766,7 +785,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
+        url: 'service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -863,7 +882,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -910,7 +929,11 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(this.detailVal)
       param.contentsKey = this.detailVal.targetKey
+      param.mccKey = this.detailVal.value.mccKey
       param.jobkindId = 'BOAR'
       var resultList = await this.$getContentsList(param)
       this.alimDetail = resultList.content
@@ -923,6 +946,7 @@ export default {
         this.settingUserDo()
       }
       await this.settingAddFalseList(true)
+      this.copyTextMake()
 
       // this.fileDownloadAreaYn = this.attachTrueFileList.length !== 0
       // 파일리스트에서 attachYn이 한개라도 있으면 true로 다운로드가 보이게 하였습니다!

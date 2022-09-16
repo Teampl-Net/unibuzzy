@@ -32,7 +32,8 @@
             <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
           <!-- </div> -->
           </div>
-          <div @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
+          <div v-if="(shareAuth && shareAuth.V === false) && board.creUserKey !== userKey" @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="'열람 권한이 없는 컨텐츠 입니다.'"></div>
+          <div v-else @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
           <div id="alimCheckArea">
             <div class="alimCheckContents">
               <!-- <div class="pushDetailStickerWrap">
@@ -93,7 +94,8 @@ export default {
       boardList: {},
       currentScroll: 0,
       creUser: null,
-      systemName: localStorage.getItem('systemName')
+      systemName: localStorage.getItem('systemName'),
+      userKey: localStorage.getItem('sessionUser')? JSON.parse(localStorage.getItem('sessionUser')).userKey : null
     }
   },
   props: {
@@ -103,7 +105,8 @@ export default {
     clickEvnt: {},
     commonBoardListData: {},
     nonMemYn: {}, //비회원 문의 게시판,
-    blindYn: {}
+    blindYn: {},
+    shareAuth: {}
   },
   components: {
 
@@ -239,6 +242,7 @@ export default {
       var param = new Object()
       param.targetType = 'boardDetail'
       param.contentsKey = value.contentsKey
+      param.creUserKey = value.creUserKey
       param.targetKey = value.contentsKey
       param.value = value
       value.readYn = 1

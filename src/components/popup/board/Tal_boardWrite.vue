@@ -237,7 +237,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+        url: 'service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -257,7 +257,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+      //   url: 'service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -679,45 +679,10 @@ export default {
         var thisthis = this
         reader.onload = e => {
           var image = new Image()
-          image.onload = function () {
-            // Resize image
-            var canvas = document.createElement('canvas')
-            var width = image.width
-            var height = image.height
-            var fileSize = file.size
-            var size = 900
-            if (fileSize > 6000000) {
-              size = 700
-            } else if (fileSize > 3000000) {
-              size = 800
-            }
-            if (width > height) { // 가로모드
-              if (width > size) {
-                height *= size / width
-                width = size
-              }
-            } else { // 세로모드
-              if (height > size) {
-                width *= size / height
-                height = size
-              }
-            }
-            var fileUrl = null
-            canvas.width = width
-            canvas.height = height
-
-            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-            const imgBase64 = canvas.toDataURL('image/png', 0.8)
-            fileUrl = imgBase64
-            const decodImg = atob(imgBase64.split(',')[1])
-            const array = []
-            for (let i = 0; i < decodImg.length; i++) {
-              array.push(decodImg.charCodeAt(i))
-            }
-            const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-            var newFile = new File([Bfile], file.name)
-            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
-            thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
+          image.onload = async function () {
+            var result = await thisthis.$saveFileSize(image, file)
+            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
             // this.$emit('updateImgForm', this.previewImgUrl)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

@@ -109,7 +109,7 @@
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:20px; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
-          <boardList :blindYn="(mCabinetContentsDetail.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' @openPop="openPop" />
+          <boardList :shareAuth="shareAuth" :blindYn="(mCabinetContentsDetail.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' @openPop="openPop" />
           <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
         </div>
         <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
@@ -130,6 +130,7 @@
 </div>
 <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
+<gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
 </template>
 <script>
 // import findContentsList from '../Tal_findContentsList.vue'
@@ -237,6 +238,9 @@ export default {
       currentConfirmType: '',
       smallPopYn: false,
       confirmMsg: '',
+      selectBoardType: null,
+      boardDetailValue: null,
+      selectBoardPopShowYn: false,
       creUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey
     }
   },
@@ -257,6 +261,9 @@ export default {
       } else if (type === 'delete') {
         this.reportYn = false
         this.boardFuncClick()
+      } else if (type === 'move' || type === 'copy') {
+        this.reportYn = false
+        this.moveOrCopyContent(type)
       }
     },
     bloc (type) {
@@ -270,7 +277,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -279,6 +286,16 @@ export default {
         this.smallPopYn = true
         // this.confirmPopShowYn = true
       }
+    },
+    moveOrCopyContent (type) {
+      this.selectBoardType = type
+      this.boardDetailValue = this.tempData
+      console.log(this.tempData)
+      this.selectBoardPopShowYn = true
+    },
+    closeSelectBoardPop () {
+      this.refresh()
+      this.selectBoardPopShowYn = false
     },
     boardFuncClick () {
       this.confirmType = true
@@ -298,7 +315,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -651,7 +668,7 @@ export default {
       /* this.subHistoryList.splice(-1, 1) */
     },
     goDetail (value) {
-      if (this.shareAuth.V === false) {
+      if (this.shareAuth.V === false && value.creUserKey !== JSON.parse(localStorage.getItem('sessionUser')).userKey) {
         this.errorBoxText = '권한이 없습니다.'
         this.errorBoxYn = true
       } else {

@@ -139,37 +139,12 @@ export default {
             reader.onload = e => {
               // var video = new VideoPlaybackQuality()
               var image = new Image()
-              image.onload = function () {
+              image.onload = async function () {
                 // Resize image
-                var canvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                if (width > height) { // 가로모드
-                  if (width > 900) {
-                    height *= 900 / width
-                    width = 900
-                  }
-                } else { // 세로모드
-                  if (height > 900) {
-                    width *= 900 / height
-                    height = 900
-                  }
-                }
-                canvas.width = width
-                canvas.height = height
+                var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
 
-                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = canvas.toDataURL('image/png', 0.8)
-                this.previewImgUrl = imgBase64
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var file = new File([Bfile], thisthis.selectFile.name)
-
-                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file })
+                this.previewImgUrl = result.path
+                thisthis.selectFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
 
                 thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: thisthis.selectFileList, originalType: 'image' })
                 // this.$emit('updateImgForm', this.previewImgUrl)
@@ -183,7 +158,7 @@ export default {
 
               }
               image.src = e.target.result
-              this.previewImgUrl = e.target.result
+              // this.previewImgUrl = e.target.result
             }
             reader.readAsDataURL(this.selectFile)
             // await this.$editorImgResize(this.selectFile)

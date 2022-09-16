@@ -64,7 +64,7 @@
                       <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.contentsKey" @click="copyText(alim.contentsKey, alim.jobkindId, index0)"
+                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.contentsKey" @click="copyText(alim.contentsKey, alim.jobkindId, index0, alim.title, alim.nameMtext, alim.cabinetNameMtext)"
                       data-clipboard-text="" >
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
@@ -290,7 +290,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
+          url: 'service/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -303,7 +303,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.$emit('refresh')
@@ -329,6 +329,13 @@ export default {
       // param.parentAttachTrueFileList = this.attachTrueFileList
       this.openPop(param)
     },
+    moveOrCopyContent(type){
+      console.log('this.tempData');
+      console.log(this.tempData);
+      this.tempData.type = type
+      // param.parentAttachTrueFileList = this.attachTrueFileList
+      this.$emit('moveOrCopyContent', this.tempData)
+    },
     editable (type, allYn) {
       this.reportYn = false
       // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
@@ -351,6 +358,8 @@ export default {
               }
 
             }
+          } else if (type === 'move' || type === 'copy') {
+            this.moveOrCopyContent(type)
           }
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
@@ -425,7 +434,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -521,7 +530,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -567,7 +576,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -763,7 +772,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -815,13 +824,18 @@ export default {
         this.offsetInt = this.currentMemoList.length
         this.memoSetCount(response.totalElements)
     },
-    async copyText (contentsKey, jobkindId, index) {
+    async copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
         var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
+        var title = '[' + this.$changeText(teamName) + ']'
+        if (cabName) {
+            title += cabName
+        }
+        var message = titleMsg
         if (!text) {
             if (jobkindId === 'BOAR') {
-                var link = await this.$makeShareLink(contentsKey, 'boardDetail')
+                var link = await this.$makeShareLink(contentsKey, 'boardDetail', message, title)
             } else {
-                var link = await this.$makeShareLink(contentsKey, 'pushDetail')
+                var link = await this.$makeShareLink(contentsKey, 'pushDetail', message, title)
             }
             if (link) { document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText = link }
 

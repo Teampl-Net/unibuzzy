@@ -201,13 +201,23 @@ const methods = {
   diffInt (a, b) {
     return Math.abs(a - b)
   },
-  async makeShareLink (key, type) {
+  async makeShareLink (key, type, message, title) {
     var paramMap = new Map()
     paramMap.set('pageType', type)
     paramMap.set('targetKey', key)
+    if (message) {
+      paramMap.set('message', message)
+    } else {
+      paramMap.set('message', '더알림, 구독형 알림')
+    }
+    if (title) {
+      paramMap.set('title', title)
+    } else {
+      paramMap.set('title', '더알림')
+    }
 
     var result = await this.$commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
+      url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -440,6 +450,60 @@ const methods = {
     }
     return type
   },
+  getCanvasNewFile (image, file) {
+    var previewCanvas = document.createElement('canvas')
+    var width = image.width
+    var height = image.height
+    var fileSize = file.size
+    var size = 900
+    if (fileSize > 6000000) {
+      size = 700
+    } else if (fileSize > 3000000) {
+      size = 800
+    }
+    if (width > height) { // 가로모드
+      if (width > size) {
+        height *= size / width
+        width = size
+      }
+    } else { // 세로모드
+      if (height > size) {
+        width *= size / height
+        height = size
+      }
+    }
+    previewCanvas.width = width
+    previewCanvas.height = height
+
+    previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
+    const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
+    const decodImg = atob(imgBase64.split(',')[1])
+    const array = []
+    for (let i = 0; i < decodImg.length; i++) {
+      array.push(decodImg.charCodeAt(i))
+    }
+    const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+    var newFile = new File([Bfile], file.name)
+    return { path: imgBase64, file: newFile }
+  },
+  async saveFileSize (image, file) {
+    var result = await methods.getCanvasNewFile(image, file)
+    if (result.file.size > 1000000) {
+      var reader = new FileReader()
+      reader.onload = e => {
+        var newImg = new Image()
+        newImg.onload = async function () {
+          result = await methods.getCanvasNewFile(newImg, result.file)
+        }
+        newImg.onerror = function () {}
+        newImg.src = e.target.result
+        // this.previewImgUrl = e.target.result
+      }
+      reader.readAsDataURL(result.file)
+    }
+
+    return { path: result.path, file: result.file }
+  },
   downloadFile (fileKey, path) {
     var iframe
     iframe = document.getElementById('hiddenDownloader')
@@ -603,5 +667,6 @@ export default {
     Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
     Vue.config.globalProperties.$previewFile = methods.previewFile
     Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
+    Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
   }
 }

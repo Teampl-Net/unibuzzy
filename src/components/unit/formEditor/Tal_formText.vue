@@ -104,38 +104,11 @@ export default {
         var thisthis = this
         reader.onload = e => {
           var image = new Image()
-          image.onload = function () {
+          image.onload = async function () {
             // Resize image
-            var canvas = document.createElement('canvas')
-            var width = image.width
-            var height = image.height
-            if (width > height) { // 가로모드
-              if (width > 900) {
-                height *= 900 / width
-                width = 900
-              }
-            } else { // 세로모드
-              if (height > 900) {
-                width *= 900 / height
-                height = 900
-              }
-            }
-            var fileUrl = null
-            canvas.width = width
-            canvas.height = height
-
-            canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-            const imgBase64 = canvas.toDataURL('image/png', 0.8)
-            fileUrl = imgBase64
-            const decodImg = atob(imgBase64.split(',')[1])
-            const array = []
-            for (let i = 0; i < decodImg.length; i++) {
-              array.push(decodImg.charCodeAt(i))
-            }
-            const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-            var newFile = new File([Bfile], file.name)
-            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: newFile }], originalType: 'image' })
-            thisthis.$refs.complexEditor.addFormCard('image', fileUrl, true)
+            var result = await thisthis.$saveFileSize(image, file)
+            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
             // this.$emit('updateImgForm', this.previewImgUrl)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

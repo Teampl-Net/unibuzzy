@@ -267,44 +267,10 @@ export default {
           this.cropperYn = true
           reader.onload = e => {
             var image = new Image()
-            image.onload = function () {
-              // Resize image
-              var previewCanvas = document.createElement('canvas')
-              var width = image.width
-              var height = image.height
-              var fileSize = thisthis.selectFile.size
-              var size = 900
-              if (fileSize > 6000000) {
-                size = 700
-              } else if (fileSize > 3000000) {
-                size = 800
-              }
-              if (width > height) { // 가로모드
-                if (width > size) {
-                  height *= size / width
-                  width = size
-                }
-              } else { // 세로모드
-                if (height > size) {
-                  width *= size / height
-                  height = size
-                }
-              }
-              previewCanvas.width = width
-              previewCanvas.height = height
-
-              previewCanvas.getContext('2d').drawImage(image, 0, 0, width, height)
-
-              const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
-              thisthis.previewImgUrl = imgBase64
-              const decodImg = atob(imgBase64.split(',')[1])
-              const array = []
-              for (let i = 0; i < decodImg.length; i++) {
-                array.push(decodImg.charCodeAt(i))
-              }
-              const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-              var file = new File([Bfile], thisthis.selectFile.name)
-              thisthis.uploadFileList.push({ previewImgUrl: previewCanvas.toDataURL('image/png', 0.8), addYn: true, file: file })
+            image.onload = async function () {
+              var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
+              thisthis.previewImgUrl = result.path
+              thisthis.uploadFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
 
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
@@ -327,7 +293,7 @@ export default {
 
             }
             image.src = e.target.result
-            this.previewImgUrl = e.target.result
+            // this.previewImgUrl = e.target.result
           }
           reader.readAsDataURL(this.selectFile)
           // await this.$editorImgResize(this.selectFile)

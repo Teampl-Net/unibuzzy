@@ -125,57 +125,24 @@ export default {
             var thisthis = this
             reader.onload = e => {
               var image = new Image()
-              image.onload = function () {
+              image.onload = async function () {
                 // Resize image
-                var canvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                var fileSize = thisthis.selectFile.size
-                console.log('thisthis.selectFile')
-                console.log(thisthis.selectFile)
-                var size = 900
-                if (fileSize > 6000000) {
-                  size = 700
-                } else if (fileSize > 3000000) {
-                  size = 800
-                }
-                if (width > height) { // 가로모드
-                  if (width > size) {
-                    height *= size / width
-                    width = size
-                  }
-                } else { // 세로모드
-                  if (height > size) {
-                    width *= size / height
-                    height = size
-                  }
-                }
-                canvas.width = width
-                canvas.height = height
+                var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
 
-                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = canvas.toDataURL('image/png', 0.8)
                 if (thisthis.$refs.selectFile.files.length === 1) {
-                  this.previewImgUrl = imgBase64
+                  this.previewImgUrl = result.path
                 }
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var file = new File([Bfile], thisthis.selectFile.name)
 
-                thisthis.selectFileList.push({ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file })
-                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }], originalType: 'image' })
+                thisthis.selectFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
+                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
                 if (thisthis.$refs.selectFile.files.length === 1) {
-                  thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }
+                  thisthis.firstFile = { previewImgUrl: result.path, addYn: true, file: result.file }
                 } else {
                   // if (thisthis.$refs.selectFile.files.length > 1) {
                   if (thisthis.fileCnt > 0) {
-                    thisthis.$emit('setMultiFile', { file, previewImgUrl: canvas.toDataURL('image/png', 0.8) })
+                    thisthis.$emit('setMultiFile', { file: result.file, previewImgUrl: result.path })
                   } else {
-                    thisthis.firstFile = { previewImgUrl: canvas.toDataURL('image/png', 0.8), addYn: true, file: file }
+                    thisthis.firstFile = { previewImgUrl: result.path, addYn: true, file: result.file }
                   }
                   // }
                 }

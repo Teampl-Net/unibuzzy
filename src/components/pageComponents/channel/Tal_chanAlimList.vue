@@ -453,7 +453,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -733,7 +733,9 @@ export default {
       }
     },
     async copyTextMake () {
-      this.copyTextStr = await this.$makeShareLink(this.chanItem.teamKey, 'chanDetail')
+      var title = '[더알림]' + this.$changeText(this.chanItem.nameMtext)
+      var message = this.$changeText(this.chanItem.memoMtext)
+      this.copyTextStr = await this.$makeShareLink(this.chanItem.teamKey, 'chanDetail', message, title)
     }
     /*
     recvNoti (e) {

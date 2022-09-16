@@ -63,6 +63,7 @@ import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
+import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
 // import { initializeApp } from 'firebase/app'
 
 // import { getAnalytics } from 'firebase/analytics'
@@ -105,6 +106,7 @@ app.component('gReport', gReport)
 app.component('gStepProgress', gStepProgress)
 app.component('imgLongClickPop', imgLongClickPop)
 app.component(VueCropper)
+app.component('gSelectBoardPop', gSelectBoardPop)
 app.use(webViewBridge)
 app.use(axiosFunction)
 // app.use(htmlParser)

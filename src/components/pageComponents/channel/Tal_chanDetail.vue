@@ -180,7 +180,7 @@ export default {
       }
       // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

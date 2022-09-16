@@ -35,7 +35,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
 
-      <boardDetail :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <boardDetail @closeAndNewPop="closeAndNewPop" :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
@@ -245,7 +245,11 @@ export default {
           var target = value[value.length - 1]
           // eslint-disable-next-line no-new-object
           var param = new Object()
-          if (target.targetKind === 'pushDetail') {
+          param.targetType = target.targetKind
+          param.targetKey = target.targetKey
+          this.$store.commit('changeDeepLinkQueue', [])
+          this.openPop(param)
+          /* if (target.targetKind === 'pushDetail') {
             var t = target.targetKey
             var paramList = []
             paramList = t.split('?')
@@ -255,11 +259,6 @@ export default {
             if (followYn) {
               param.targetContentsKey = paramList[0]
             } else {
-              /* // eslint-disable-next-line no-new-object
-              param = new Object()
-              param.targetType = 'errorPage'
-              this.$store.commit('changeDeepLinkQueue', [])
-              this.openPop(param) */
             }
             this.$store.commit('changeDeepLinkQueue', [])
             this.openPop(param)
@@ -268,7 +267,7 @@ export default {
             param.targetKey = target.targetKey
             this.$store.commit('changeDeepLinkQueue', [])
             this.openPop(param)
-          }
+          } */
           /* target.splice(0, 1)
           this.$store.commit('changeDeepLinkQueue', target) */
         }
@@ -287,7 +286,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -635,6 +634,15 @@ export default {
         this.successChanParam = params
         this.settingPop(true)
       }
+    },
+    closeAndNewPop (params) {
+      // eslint-disable-next-line no-new-object
+      /* var param = new Object()
+      param.targetType = 'boardMain'
+      param.tagetKey = params.cabinetKey
+      this.successChanParam = param
+      this.settingPop(true) */
+      this.closeXPop(true)
     },
     async closeXPop (reloadYn) { // 내 팝업 닫기
       // if (this.targetType === 'pushDetail') {

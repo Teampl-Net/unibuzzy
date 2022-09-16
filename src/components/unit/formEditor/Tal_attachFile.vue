@@ -61,7 +61,6 @@ export default {
         // 0 번째 파일을 가져 온다.
 
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-          var file
           this.selectFile = null
           this.gAttachKey += 1
           console.log(this.$refs.selectFile.files[k])
@@ -81,46 +80,14 @@ export default {
             var thisthis = this
             reader.onload = async e => {
               var image = new Image()
-              image.onload = await function () {
+              image.onload = async function () {
                 // Resize image
                 thisthis.selectFile = thisthis.$refs.selectFile.files[thisthis.uploadCnt]
-                var canvas = document.createElement('canvas')
-                var width = image.width
-                var height = image.height
-                var fileSize = thisthis.selectFile.size
-                var size = 900
-                if (fileSize > 6000000) {
-                  size = 700
-                } else if (fileSize > 3000000) {
-                  size = 800
-                }
-                if (width > height) { // 가로모드
-                  if (width > size) {
-                    height *= size / width
-                    width = size
-                  }
-                } else { // 세로모드
-                  if (height > size) {
-                    width *= size / height
-                    height = size
-                  }
-                }
-                canvas.width = width
-                canvas.height = height
-
-                canvas.getContext('2d').drawImage(image, 0, 0, width, height)
-                const imgBase64 = canvas.toDataURL('image/png', 0.8)
-                thisthis.preImgUr = imgBase64
-                const decodImg = atob(imgBase64.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                file = new File([Bfile], thisthis.selectFile.name)
-                thisthis.selectFile = file
-                thisthis.sFileList.push({ preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: file })
-                thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: canvas.toDataURL('image/png', 0.8), attachKey: thisthis.gAttachKey, addYn: true, file: file }])
+                var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
+                thisthis.preImgUr = result.path
+                thisthis.selectFile = result.file
+                thisthis.sFileList.push({ preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file })
+                thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file }])
                 thisthis.uploadCnt += 1
                 // editorImgResize1(canvas.toDataURL('image/png', 0.8))
                 // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
@@ -129,7 +96,7 @@ export default {
 
               }
               image.src = e.target.result
-              this.preImgUrl = e.target.result
+              // this.preImgUrl = e.target.result
             }
             reader.readAsDataURL(this.selectFile)
             // await this.$editorImgResize(this.selectFile)
