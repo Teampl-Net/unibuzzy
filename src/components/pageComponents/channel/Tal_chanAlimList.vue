@@ -130,7 +130,7 @@
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
-    <writePush  ref="chanAlimListWritePushRefs" @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
+    <writePush  ref="chanAlimListWritePushRefs"  @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
   </div>
 
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
@@ -453,7 +453,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
@@ -630,9 +630,8 @@ export default {
     async closeWritePushPop (reloadYn) {
       if (reloadYn) {
         await this.refreshList()
-      } else {
-        this.writePushYn = false
       }
+      this.writePushYn = false
     },
     openPop () {
       this.alimListToDetail = true
