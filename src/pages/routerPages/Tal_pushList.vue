@@ -80,6 +80,7 @@ export default {
   created () {
     this.$emit('changePageHeader', '알림')
     this.loadingYn = true
+    this.$emit('changePageHeader', '알림')
     if (this.propData) {
       if (this.propData.alimTabType !== undefined && this.propData.alimTabType !== null && this.propData.alimTabType !== '') {
         this.viewMainTab = this.propData.alimTabType
