@@ -262,7 +262,7 @@ const methods = {
     }
 
     var result = await this.$commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
