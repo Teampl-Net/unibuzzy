@@ -96,18 +96,8 @@ import formLine from './Tal_formLine.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
-    const ele = document.getElementById('dragenter')
-    if (ele) {
-      ele.addEventListener('click', function (e) {
-      })
-    }
   },
   updated () {
-    const ele = document.getElementById('dragenter')
-    if (ele) {
-      ele.addEventListener('click', function (e) {
-      })
-    }
   },
   mounted () {
     this.addFormCard('text')

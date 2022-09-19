@@ -120,6 +120,9 @@ export default {
         this.loadMore(true)
       }
       this.scrolledYn = false
+      if (this.commonListData.length > 0) {
+        this.canLoadYn = true
+      }
     })
   },
 

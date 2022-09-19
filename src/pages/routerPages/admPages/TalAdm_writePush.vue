@@ -647,7 +647,7 @@ export default {
             }
             }
         }
-        param.teamName = this.$changeText(this.params.targetNameMtext)
+        // param.teamName = this.$changeText(this.params.targetNameMtext)
         param.creTeamKey = this.params.targetKey
         // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
         // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
@@ -901,18 +901,25 @@ export default {
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
-            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            console.log(uploadFile)
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
+                
+                console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                console.log(uploadFile[0].previewImgUrl)
+                console.log(iList[il].src)
+                console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
-                  iList[il].src = uploadFile.filePath
-                  // eslint-disable-next-line no-unused-vars
-                  iList[il].setAttribute('fileKey', uploadFile.fileKey)
-                  iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
-                  iList[il].classList.remove('addTrue')
-                  iList[il].classList.add('addFalse')
-                  break
+                    if (iList[il].src === uploadFile[0].previewImgUrl) {
+                        iList[il].src = uploadFile.filePath
+                        // eslint-disable-next-line no-unused-vars
+                        iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                        iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                        iList[il].classList.remove('addTrue')
+                        iList[il].classList.add('addFalse')
+                        break
+                    } else {
+                        
+                    }
                 }
               }
             } else {

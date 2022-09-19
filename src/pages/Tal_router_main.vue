@@ -7,13 +7,13 @@
     <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
-      <TalMenu @openLoading="this.loadingYn = true" transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="showMenuYn" />
+      <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="showMenuYn" />
     </transition>
-    <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
+    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-      <transition :name="transitionName" >
+      <!-- <transition :name="transitionName" > -->
         <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
-      </transition>
+      <!-- </transition> -->
       <!-- <router-view v-slot="{ Component, route }">
         <transition
         :enter-active-class="route.meta.enterClass"
@@ -23,7 +23,7 @@
         </transition>
       </router-view> -->
     </div>
-    <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
+    <TalFooter class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
   </div>
 </template>
 
@@ -144,15 +144,15 @@ export default {
     }
   },
   methods: {
-    footerAni (transitionName) {
+    /* footerAni (transitionName) {
       this.transitionName = transitionName
-    },
+    }, */
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com//https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)

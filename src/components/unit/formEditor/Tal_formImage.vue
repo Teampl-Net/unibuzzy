@@ -134,7 +134,7 @@ export default {
                 }
 
                 thisthis.selectFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
-                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: result.path, originalFile: thisthis.selectFile, addYn: true, file: result.file }], originalType: 'image' })
                 if (thisthis.$refs.selectFile.files.length === 1) {
                   thisthis.firstFile = { previewImgUrl: result.path, addYn: true, file: result.file }
                 } else {

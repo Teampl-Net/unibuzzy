@@ -610,13 +610,11 @@ export default {
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
-          thisthis.uploadFileList[i].percentage = 0
+          this.uploadFileList[i].percentage = 0
           form = new FormData()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
-          // eslint-disable-next-line no-debugger
-          debugger
+          form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
@@ -656,18 +654,22 @@ export default {
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
-            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            console.log(uploadFile)
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
+                console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                console.log(uploadFile[0].previewImgUrl)
+                console.log(iList[il].src)
+                console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
-                  iList[il].src = uploadFile.filePath
-                  // eslint-disable-next-line no-unused-vars
-                  iList[il].setAttribute('fileKey', uploadFile.fileKey)
-                  iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
-                  iList[il].classList.remove('addTrue')
-                  iList[il].classList.add('addFalse')
-                  break
+                  if (iList[il].src === uploadFile[0].previewImgUrl) {
+                    iList[il].src = uploadFile.filePath
+                    // eslint-disable-next-line no-unused-vars
+                    iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                    iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                    iList[il].classList.remove('addTrue')
+                    iList[il].classList.add('addFalse')
+                    break
+                  }
                 }
               }
             } else {

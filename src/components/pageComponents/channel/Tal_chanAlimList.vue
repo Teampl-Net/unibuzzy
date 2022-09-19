@@ -453,7 +453,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
+        url: 'https://mo.d-alim.com/service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {
