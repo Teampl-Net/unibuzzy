@@ -26,7 +26,10 @@ export default {
       userInfo: [],
       alimList: [],
       chanList: [],
-      modalParam: {}
+      modalParam: {},
+      fullScreenYn: false,
+      screenWidth: '1000px'
+
     }
   },
   methods: {
@@ -39,6 +42,27 @@ export default {
         this.popShowYn = false
       }, 1000) */
     },
+    createToggle () {
+      var app = document.getElementById('app')
+      var toastDiv = document.createElement('div')
+
+      toastDiv.id = 'FullScreenToggle'
+      toastDiv.style.cssText = 'position: fixed; /* left: calc(50% + 520px); */ right:1%; bottom:10px; cursor: pointer; width: fit-content; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center; background-color: #6768a7; color: #FFFFFF; white-space: nowrap;'
+      toastDiv.onclick = function () {
+        var toggle = false
+        if (toggle === true) {
+          app.style.maxWidth = '1000px'
+        } else {
+          app.style.maxWidth = '100%'
+          if (document.getElementById('FullScreenToggle') !== undefined) {
+            document.getElementById('FullScreenToggle').remove()
+          }
+        }
+      }
+      toastDiv.innerHTML = '전체화면'
+      // app.append(toastDiv)
+      document.body.append(toastDiv)
+    },
     /* openPushPop (params) {
       this.pushPopParams = params
       this.pushPopShowYn = true
@@ -49,20 +73,41 @@ export default {
     },
     closePop () {
       this.popShowYn = false
+    },
+    handleResize () {
+      setTimeout(() => {
+        this.screenWidth = window.innerWidth
+      }, 500)
+    }
+  },
+  watch: {
+    screenWidth () {
+      var toggle = document.getElementById('FullScreenToggle')
+      if (this.screenWidth < 1250 && (toggle !== undefined && toggle !== null && toggle !== '')) {
+        document.getElementById('FullScreenToggle').remove()
+      }
+      if (this.screenWidth > 1250 && (toggle === undefined || toggle === null || toggle === '')) {
+        var appMax = document.getElementById('app').style.maxWidth
+        if (appMax !== '100%') {
+          this.createToggle()
+        }
+      }
     }
   },
   beforeUnmount () {
+    document.getElementById('FullScreenToggle').remove()
     // PullToRefresh.destroyAll()
   },
-
   mounted () {
+    this.createToggle()
     window.addEventListener('beforeunload', (event) => {
       // 표준에 따라 기본 동작 방지
       event.preventDefault()
       // Chrome에서는 returnValue 설정이 필요함
       event.returnValue = ''
     })
-
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
     // PullToRefresh.init({
     //   mainElement: 'listRefresh',
     //   distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
@@ -75,6 +120,9 @@ export default {
     //     window.location.reload()
     //   }
     // })
+  },
+  unmounted () {
+    window.removeEventListener('resize', this.handleResize)
   }
 }
 </script>

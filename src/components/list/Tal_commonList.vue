@@ -7,6 +7,12 @@
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
           <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+            <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
+            <div v-if="cancelTimerShowCheck(alim)" class="w-100P fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
+              <!-- <p :id="'timerBtn'+alim.contentsKey" v-if="false" class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" @click="cancelConfirm(alim)"> {{cancelTimerBtnArea(alim.creDate, alim.contentsKey) ? '' : ''}}</p> -->
+              <!-- <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/> -->
+              <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
+            </div>
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -20,7 +26,7 @@
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-                     {{resizeText(alim.title, alim.nameMtext)}}
+                    {{resizeText(alim.title, alim.nameMtext)}}
                   </p>
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
@@ -70,7 +76,7 @@
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
+                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
@@ -79,7 +85,7 @@
 
                 </div>
               </div>
-              <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 " :id="'borderLine'+alim.contentsKey" ></div>
+              <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 && currentMemoList.length > 0" :id="'borderLine'+alim.contentsKey" ></div>
               <!-- <div class="w-100P">
                 <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
               </div> -->
@@ -107,6 +113,7 @@
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 </template>
 <script>
+import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
 export default {
     data: function () {
@@ -296,8 +303,11 @@ export default {
         console.log(result.data)
         this.$emit('refresh')
       } else if (this.tempData.jobkindId === 'BOAR') {
+        console.log(this.tempData)
+        console.log(this.tempData.mccKey)
         var inParam = {}
         // console.log(this.alimDetail)
+        inParam.mccKey = this.tempData.mccKey
         inParam.contentsKey = this.tempData.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.tempData.creTeamKey
@@ -306,6 +316,8 @@ export default {
           url: 'service/tp.deleteContents',
           param: inParam
         })
+        console.log('sssssssssssssss')
+        console.log(inParam)
         this.$emit('refresh')
       }
     },
@@ -358,6 +370,8 @@ export default {
               }
 
             }
+          }else if (type === 'alimBloc'){
+            // alert('ss')
           } else if (type === 'move' || type === 'copy') {
             this.moveOrCopyContent(type)
           } else if (type === 'write') {
@@ -485,6 +499,9 @@ export default {
       } else if (this.currentConfirmType === 'boardDEL') {
         this.$emit('showToastPop', '게시글을 삭제하였습니다.')
         this.deleteAlim()
+      } else if (this.currentConfirmType === 'alimCancel'){
+        // this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+        this.alimCancle()
       }
 
       this.currentConfirmType = ''
@@ -548,6 +565,36 @@ export default {
         this.memoSetCount(response.totalElements)
       }
     },
+    setIntervalTimer(date, contentsKey){
+      var time = this.$cancelTimer(date)
+      // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
+      if (time !== false){
+        nextTick(() => {
+          // document.getElementById('timerText'+contentsKey).innerHTML = innerHTML
+          setInterval(() => {
+            time = this.$cancelTimer(date)
+            if (time !== false){
+            if (document.getElementById('timerText'+contentsKey)) document.getElementById('timerText'+contentsKey).innerHTML = time
+            } else {
+              clearInterval()
+              if (document.getElementById('timerBtn'+contentsKey)) document.getElementById('timerBtn'+contentsKey).innerText = ''
+              if (document.getElementById('timerText'+contentsKey)) document.getElementById('timerText'+contentsKey).innerText = ''
+              if (document.getElementById('timerArea'+contentsKey)) document.getElementById('timerArea'+contentsKey).innerText = ''
+            }
+          }, 1000)
+        })
+      }
+    },
+    cancelTimerShowCheck (alim) {
+      var result = false
+      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.commonListCreUserKey){
+        var time = this.$cancelTimer(alim.creDate)
+        if (time !== false) {
+          result = true
+        }
+      }
+      return result
+    },
     pointAni (memoKey) {
       var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' #' + memoKey)[0]
       if (firstMemoCard) {
@@ -560,6 +607,36 @@ export default {
         }, 1000);
       } else {
 
+      }
+    },
+    cancelConfirm (alim) {
+      this.tempData = alim
+      this.confirmText = '알림 발송을 취소 하시겠습니까?'
+      this.currentConfirmType = 'alimCancel'
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
+    },
+    async alimCancle () {
+      //현재 시간과 비교하며 3분이 지났으면 false가 오고있음 혹시 모르니 한번 더 체크하는 중
+      var checkTime = this.$cancelTimer(this.tempData.creDate)
+      console.log(checkTime)
+      if (checkTime !== false) {
+        this.saveMemoLoadingYn = true
+        try{
+          var param = {}
+          param = this.tempData
+          console.log(param)
+          await this.$commonAxiosFunction({
+            url: 'service/tp.deleteContents',
+            param: param
+          })
+          this.$emit('refresh')
+          this.$showToastPop('알림 발송을 취소하였습니다.')
+        } finally {
+          this.saveMemoLoadingYn = false
+        }
+      } else {
+        this.$showToastPop('3분이 지나 취소가 불가능합니다. 알림을 회수하고 싶으시면 해당 알림 우측에 메뉴를 눌러 사유 입력 후 취소를 눌러주세요')
       }
     },
     async saveMemo (text) {
@@ -602,11 +679,14 @@ export default {
       }
       this.saveMemoLoadingYn = false
     },
-    memoSetCount (size) {
-      var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+    memoSetCount (size, key) {
+      var contentsKey = this.currentContentsKey
+      if (key !== undefined && key !== null && key !== '' ) contentsKey = key
+      var indexOf = this.contentsList.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1 ){
         this.contentsList[indexOf].memoCount = size
       }
+
     },
     mememoCancel(){
       this.mememoValue = null
@@ -802,8 +882,6 @@ export default {
         // }
 
     },
-
-
     async loadMoreMemo () {
         //this.showMoreMemoTextYn = false
         console.log('offsetInt', this.offsetInt)
@@ -1085,23 +1163,38 @@ export default {
             }
             if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT' || JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
                 if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
+                  return
                 }
                 /* if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) { */
-                    var pageS = this.currentMemoList.length + 1
-                    if (pageS === 0 ) {
-                        pageS = 5
-                    }
-                    var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
-                    this.currentMemoObj = response
-                    this.currentMemoList = response.memoList
-                    this.offsetInt = this.currentMemoList.length
-                    // this.pointAni()
-                    this.memoSetCount(response.totalElements)
-                    if (Number(JSON.parse(this.notiDetail.userDo).ISub) && Number(JSON.parse(this.notiDetail.userDo).ISub)) {
-                        this.pointAni(Number(JSON.parse(this.notiDetail.userDo).ISub))
-                    }
-                /* } */
+                var notiContentsKey = Number(JSON.parse(this.notiDetail.userDo).targetKey)
+                var pageS = this.currentMemoList.length + 1
+                if (pageS === 0 ) {
+                    pageS = 5
+                }
+                // alert(JSON.stringify(this.notiDetail))
+                // alert(JSON.stringify(this.notiDetail.userDo))
+                // alert(notiContentsKey)
+                var targetKey = this.currentContentsKey
+                if (this.currentContentsKey === notiContentsKey){
+                  var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
+                  this.currentMemoObj = response
+                  this.currentMemoList = response.memoList
+                  this.offsetInt = this.currentMemoList.length
+                  // this.pointAni()
+                  this.memoSetCount(response.totalElements)
+                } else {
+                  var response = await this.getContentsMemoList(notiContentsKey, pageS, 0)
+                  // this.currentMemoObj = response
+                  // this.currentMemoList = response.memoList
+                  // this.offsetInt = this.currentMemoList.length
+                  // this.pointAni()
+                  this.memoSetCount(response.totalElements, notiContentsKey)
+                }
+
+                if (Number(JSON.parse(this.notiDetail.userDo).ISub) && Number(JSON.parse(this.notiDetail.userDo).ISub)) {
+                    this.pointAni(Number(JSON.parse(this.notiDetail.userDo).ISub))
+                }
+            /* } */
             }
         }
       } catch (err) {

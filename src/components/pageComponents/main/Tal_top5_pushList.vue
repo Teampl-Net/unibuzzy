@@ -142,10 +142,7 @@ export default {
       // alert(JSON.stringify(params))
       this.$emit('openPop', params)
     },
-    async changeTab (tabName) {
-      // this.pushList = [] ///######
-      this.viewTab = tabName
-      this.introTop5PushPageTab()
+    async refreshList () {
       this.listShowYn = false
       this.emptyYn = false
       var resultList = await this.getContentsList()
@@ -153,10 +150,26 @@ export default {
       if (this.pushList.length === 0) {
         this.emptyYn = true
       }
-
       this.listShowYn = true
     },
+    async changeTab (tabName) {
+      // this.pushList = [] ///######
+      this.viewTab = tabName
+      this.introTop5PushPageTab()
+      this.refreshList()
+      // this.listShowYn = false
+      // this.emptyYn = false
+      // var resultList = await this.getContentsList()
+      // this.pushList = resultList.content
+      // if (this.pushList.length === 0) {
+      //   this.emptyYn = true
+      // }
+
+      // this.listShowYn = true
+    },
     async reLoad () {
+      // this.$refs.activeBarPushListTop5.switchtab(0)
+      // this.changeTab('A')
       await this.$refs.activeBarPushListTop5.switchtab(0)
       await this.$refs.activeBarPushListTop5.selectTab('N')
       // var resultList = await this.getContentsList()

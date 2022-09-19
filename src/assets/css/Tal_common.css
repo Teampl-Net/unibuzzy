@@ -206,7 +206,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .CMiddleColor{ color: #7978BD !important; }
 .CMiddleBgColor{ background-color: #7978BD !important;}
-
+.CErrorColor{ color: #BE4D4D;}
+.CErrorBgColor{ color: #BE4D4D;}
 /* .CLightColor{ color: #C0BFF9 !important; }
 .CLightBgColor{ background-color: #C0BFF9 !important;} */
 

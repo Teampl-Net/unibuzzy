@@ -199,7 +199,6 @@ export default {
             if(this.editIndex !== index){ // if(this.editIndex === null){
                 this.$emit('openMCabUserList',data)
             }
-
         },
         deleteCabinetClick(data, index){
             var param = {}

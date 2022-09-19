@@ -630,8 +630,9 @@ export default {
     async closeWritePushPop (reloadYn) {
       if (reloadYn) {
         await this.refreshList()
+      } else {
+        this.writePushYn = false
       }
-      this.writePushYn = false
     },
     openPop () {
       this.alimListToDetail = true

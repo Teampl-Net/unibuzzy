@@ -11,20 +11,17 @@
     </transition>
     <TalHeader @openLoading="this.loadingYn = true" @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-      <!-- <transition :name="transitionName" >
-        <router-view :popYn="false" :ref="dlrpmain" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
-      </transition> -->
-      <router-view v-slot="{ Component, route }">
-        <!-- <transition :name="transitionName" > -->
+      <transition :name="transitionName" >
+        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+      </transition>
+      <!-- <router-view v-slot="{ Component, route }">
         <transition
-        mode="in-out"
         :enter-active-class="route.meta.enterClass"
         :leave-active-class="route.meta.leaveClass"
         >
           <component :is="Component" :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
         </transition>
-      </router-view>
-
+      </router-view> -->
     </div>
     <TalFooter @openLoading="this.loadingYn = true" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
   </div>
@@ -36,7 +33,7 @@
 // import chanMenu from '../components/popup/chanMenu/Tal_channelMenu.vue'
 import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/common/Tal_menu.vue'
-import loadingCompo from '../components/layout/Tal_loading.vue'
+// import loadingCompo from '../components/layout/Tal_loading.vue'
 // import PullToRefresh from 'pulltorefreshjs'
 
 export default {
@@ -63,7 +60,7 @@ export default {
   name: 'mainRouter',
   components: {
     TalMenu,
-    loadingCompo,
+    // loadingCompo,
     pushPop
     // chanMenu
   },
@@ -135,8 +132,8 @@ export default {
       }
     },
     $route (to, from) {
-      console.log(from.meta.page + ' ' + to.meta.page)
-      console.log()
+      // console.log(from.meta.page + ' ' + to.meta.page)
+      // console.log()
       // if (to.meta.page > from.meta.page) {
       //   to.meta.enterClass = 'animate__animated animate__fadeInRightBig'
       //   from.meta.leaveClass = 'animate__animated animate__fadeOutLeftBig'
@@ -155,7 +152,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -229,10 +226,10 @@ export default {
               } else {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   if (this.notiDetail.jobkindId !== 'BOAR') {
-                    if (this.$route.path === '/') {
-                      this.$refs.mainRouterView.getMainBoard()
-                    }
-                    this.notiDetailShowYn = true
+                    this.notiDetailShowYn = true // wowns
+                    // if (this.$route.path === '/') {
+                    //   this.$refs.mainRouterView.getMainBoard()
+                    // }
                   }
                 } else {
                   this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })

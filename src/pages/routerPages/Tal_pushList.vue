@@ -75,7 +75,7 @@ export default {
     pushListAndDetailYn: {},
     propData: {},
     targetContents: {},
-    // 라우터로 이동과 gPop에서 채널메인 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
+    // 라우터메인에서 여는 푸시화면과 gPop에서 여는 푸시화면 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
     isOpen: {}
   },
   created () {
@@ -86,7 +86,7 @@ export default {
         this.viewMainTab = this.propData.alimTabType
       }
     }
-
+    console.log(this.targetContents)
     if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
       this.targetCKey = this.targetContents.targetContentsKey
       if (this.targetContents.jobkindId === 'BOAR') {

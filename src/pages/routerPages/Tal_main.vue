@@ -6,11 +6,8 @@
   <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
     <!-- <img src="../../assets/images/main/main_profile.png" style="width: 5em; margin-right: 1rem"/> -->
-    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
-    </div>
-    <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-
-    </div>
+    <div @click="goProfile" v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +')'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+    <div v-else class="picImgWrap"  style="background-image: url('../../assets/images/main/main_profile.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
     <div class="userProfileTextWrap" >
       <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
       <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
@@ -52,11 +49,15 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     this.loadingYn = true
     this.getMainBoard()
+
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
     localStorage.setItem('loginYn', false)
+    this.$userLoginCheck(true)
     this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
@@ -74,11 +75,12 @@ export default {
       chanList: [],
       userInfo: [],
       renderOk: false,
-
       popYn: true,
       userKey: null,
       userInfoChangeYn: true,
-      loadingYn: false
+      loadingYn: false,
+      notiDetail: {},
+      systemName: {}
     }
   },
   components: {
@@ -91,10 +93,50 @@ export default {
     // top5Title
   },
   methods: {
+    refresh () {
+      this.$refs.topAlim.refreshList()
+    },
+    async recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+
+          var currentPage = this.$store.getters.hCPage
+
+          if ((currentPage === 0 || currentPage === undefined)) {
+            this.getMainBoard()
+            this.refresh()
+          } else {
+            if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
+              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                return
+              }
+              await this.getChanDetail()
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
+    },
     goProfile () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'bookMemberDetail'
+      // param.targetType = 'bookMemberDetail'
+      param.targetType = 'setMypage'
       param.readOnlyYn = true
       param.selfYn = true
       this.$emit('openPop', param)
@@ -122,7 +164,6 @@ export default {
     openPop (params) {
       // eslint-disable-next-line no-new-object
       this.$emit('openPop', params)
-      // alert(JSON.stringify(params))
       // 아래라인 모달창에서 로딩화면보여주고싶으면 풀기
       // this.$emit('openLoading')
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })

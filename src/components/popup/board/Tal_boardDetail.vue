@@ -10,10 +10,10 @@
     <div id="boardDetailScrollArea" class="pagePaddingWrap root mtop-1 overflowYScroll" ref="memoarea" >
       <div class="content pushMbox" v-for="(alim, index) in alimDetail" :key="index" :change="changeData">
         <div class="pushDetailTopArea">
-          <div class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+          <div @click="goChanDetail(alim)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
           </div>
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor cursorDragText">
+            <p class=" font18 fontBold commonColor cursorDragText" style="word-break: break-word;">
               <pp v-if="alim.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
               <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
               <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type:'board', ownerYn: creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0), tempData: alim})" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
@@ -929,8 +929,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
-      // eslint-disable-next-line no-debugger
-      debugger
       console.log(this.detailVal)
       param.contentsKey = this.detailVal.targetKey
       param.mccKey = this.detailVal.value.mccKey

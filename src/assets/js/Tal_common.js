@@ -40,6 +40,55 @@ const methods = {
     str = str.replace('&quot;', '"')
     return str
   },
+  cancelTimer (creTime) {
+    // const setDate = new Date(creTime)
+    // setDate.setMinutes (setDate.getMinutes()+3)
+    // const now = new Date();
+    // console.log(this.$dayjs(creTime).format('YYYYMMDD HH:mm:ss'))
+    // console.log(this.$dayjs(now).format('YYYYMMDD HH:mm:ss'))
+    var compareDate = new Date(creTime)
+    var now = new Date()
+    var format = ''
+    var text = ''
+    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(now).format('YYYY')) {
+      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')) {
+        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(now).format('DD')) {
+          // compareDate.setHours(compareDate.getHours() + 9)
+          compareDate.setMinutes(compareDate.getMinutes() + 3)
+          // console.log(this.$dayjs(compareDate).format('MM/DD HH:mm:ss'))
+          // console.log(this.$dayjs(now).format('MM/DD HH:mm:ss'))
+          this.$dayjs(compareDate).add(9, 'hour').format(format)
+          const distance = compareDate.getTime() - now.getTime()
+          if (distance > 0) {
+            // Math.floor 함수를 이용해서 근접한 정수값을 가져온다.
+            // 밀리초 값이기 때문에 1000을 곱한다.
+            // 1000*60 => 60초(1분)*60 => 60분(1시간)*24 = 24시간(하루)
+            // 나머지 연산자(%)를 이용해서 시/분/초를 구한다.
+            const day = Math.floor(distance / (1000 * 60 * 60 * 24))
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+            text = '발송 취소 가능 시간까지 ' + day + '일 '
+            text += (hours < 10 ? '0' + hours : hours) + '시간'
+            text += (minutes < 10 ? '0' + minutes : minutes) + '분'
+            text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
+            var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" > 발송취소 </p> <p class="font12 fr textRight">' + text + '</p>'
+            text = innerHTML
+          } else {
+            text = false
+          }
+        }
+      }
+    }
+    // D-Day 날짜에서 현재 날짜의 차이를 getTime 메서드를 사용해서 밀리초의 값으로 가져온다.
+    // const distance = setDate.getTime() - now.getTime();
+    // var text = ''
+    // var result = {}
+    // result.showYn = distance > 0 ? true : false
+    // result.timer = text
+
+    return text
+  },
   changeDateMemoFormat (date) {
     var compareDate = new Date(date)
     var toDate = new Date()
@@ -341,9 +390,15 @@ const methods = {
     // debugger
     var titleText = ''
     var childNodes = inHtml.childNodes
+    var valueTextIdx = 0
     for (var i = 0; i < childNodes.length; i++) {
       titleText += childNodes[i].textContent + ' '
       titleText = titleText.trimLeft()
+      if (titleText === '') valueTextIdx += 1
+      if (titleText.length >= 6 && valueTextIdx < 2) {
+        titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
+        break
+      }
       if (titleText.length > 64) {
         titleText = titleText.substring(0, 64) + '..'
         break
@@ -617,9 +672,12 @@ const methods = {
           }
           const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
           var newFile = new File([Bfile], file.name)
-          // eslint-disable-next-line no-debugger
-          debugger
-          return { file: newFile, path: fileUrl }
+
+          var result = {}
+          result.file = newFile
+          result.path = fileUrl
+          // return { file: newFile, path: fileUrl }
+          return result
         }
         image.onerror = function () {
 
@@ -667,6 +725,7 @@ export default {
     Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
     Vue.config.globalProperties.$previewFile = methods.previewFile
     Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
+    Vue.config.globalProperties.$cancelTimer = methods.cancelTimer
     Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
   }
 }

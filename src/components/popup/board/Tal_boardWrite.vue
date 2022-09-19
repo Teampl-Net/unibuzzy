@@ -18,11 +18,14 @@
               </div>
               <div style="width: 100%; height: calc(100% - 39px); float: left; padding-top:1.5rem; overflow: hidden auto; ">
                 <div v-if="selectBoardYn === true" class="w-100P fl " >
-                  <p class="fontBold font15 fl ">게시판 선택 </p> <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p>
+                  <p class="fontBold font15 fl ">게시판을 선택 해주세요</p>
+                  <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p>
                   <div class="w-100P fl" style="margin:0.5rem 0; overflow: auto; white-space: nowrap;">
-                    <div v-for="(data, index) in selectBoardList" :key="index" class=" mleft-05 font12 fontBold" @click="selectBoard(data, index)" style="padding:5px 10px; border-radius:10px;  display: inline-block;" :style="'background:'+data.picBgPath" :class="{selectBoard : selectBoardIndex === index}">
-                      <img class="img-w20" v-if="selectBoardIndex === index" src="../../../assets/images/common/icon_check_commonColor.svg" alt="">
-                      {{this.$changeText(data.cabinetNameMtext)}}
+                    <div v-for="(data, index) in selectBoardList" :key="index" class=" mleft-05 font12 fontBold" @click="selectBoard(data, index)" style="padding:5px; border-radius:10px; display: inline-flex;" :style="'background:'+data.picBgPath" :class="{selectBoard : selectBoardIndex === index}">
+                      <!-- <img class="img-w20" v-if="selectBoardIndex === index" src="../../../assets/images/common/icon_check_commonColor.svg" alt=""> -->
+                      <input type="radio" :id="'selectBoardCheckBox'+index" name="selectBoardCheckBox" style="line-height:18px">
+                      <label class="mleft-03" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
+
                     </div>
                   </div>
                 </div>
@@ -51,7 +54,7 @@
           </div>
 
           </div>
-          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" :btnTitle="modiYn === true ? '수정하기' : '발송하기'" @click="clickPageTopBtn()" />
+          <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%); border: 4px solid #D6D6E7;" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" :btnTitle="modiYn === true ? '수정하기' : '게시하기'" @click="clickPageTopBtn()" />
           <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
@@ -69,6 +72,7 @@ import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
 import progressBar from '../common/Tal_commonProgressBar.vue'
 import attachFileList from '../../unit/formEditor/Tal_attachFile.vue'
+// import { nextTick } from '@vue/runtime-core'
 export default {
   props: {
     propData: {},
@@ -194,7 +198,7 @@ export default {
       selectBoardYn: false,
       selectBoardIndex: null,
       selectBoardCabinetKey: null,
-      writeBoardPlaceHolder: '작성불가',
+      writeBoardPlaceHolder: '',
       fileYn: false
     }
   },
@@ -271,14 +275,14 @@ export default {
         if (mCabinetShare[0].shareType) {
           this.selectBoardCabinetKey = mCabinetShare[0].cabinetKey
           this.cabinetName = data.cabinetNameMtext
-          this.writeBoardPlaceHolder = '작성가능'
+          this.writeBoardPlaceHolder = ''
         } else {
           this.selectBoardCabinetKey = null
-          this.writeBoardPlaceHolder = '작성불가'
+          this.writeBoardPlaceHolder = '권한없음'
         }
       } else {
         this.selectBoardCabinetKey = null
-        this.writeBoardPlaceHolder = '작성불가'
+        this.writeBoardPlaceHolder = '권한없음'
       }
     },
     async getTeamMenuList () {
@@ -291,6 +295,12 @@ export default {
       console.log(paramMap)
       var result = await this.$getTeamMenuList(paramMap)
       this.selectBoardList = result
+      if (this.selectBoardList.length > 0) {
+        this.$nextTick(() => {
+          document.getElementById('selectBoardCheckBox0').checked = true
+          this.selectBoard(this.selectBoardList[0], 0)
+        })
+      }
       console.log(result)
     },
     delAttachFile (dFile) {
@@ -605,9 +615,11 @@ export default {
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+          // eslint-disable-next-line no-debugger
+          debugger
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -622,15 +634,15 @@ export default {
             .then(res => {
               console.log(res)
               if (res.data.length > 0) {
-                if ((this.uploadFileList[i])[0].attachYn === true) {
-                  this.uploadFileList[i].attachYn = true
+                if ((thisthis.uploadFileList[i])[0].attachYn === true) {
+                  thisthis.uploadFileList[i].attachYn = true
                 } else {
                 }
                 var path = res.data[0].domainPath + res.data[0].pathMtext
-                this.uploadFileList[i].successSave = true
-                this.uploadFileList[i].filePath = path
-                this.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
-                this.uploadFileList[i].fileKey = res.data[0].fileKey
+                thisthis.uploadFileList[i].successSave = true
+                thisthis.uploadFileList[i].filePath = path
+                thisthis.uploadFileList[i].fileSizeKb = res.data[0].fileSizeKb
+                thisthis.uploadFileList[i].fileKey = res.data[0].fileKey
               }
             })
             .catch(error => {
@@ -798,6 +810,10 @@ export default {
   left:0;
   z-index: 999999;
   background: #0101014b;
+}
+
+input[name="selectBoardCheckBox"] {
+  accent-color: #6768a7;
 }
 
 @keyframes spinner {

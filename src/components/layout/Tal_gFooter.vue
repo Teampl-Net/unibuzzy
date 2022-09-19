@@ -30,7 +30,8 @@ export default {
       if (page === this.$router.currentRoute._rawValue.path) {
         return
       }
-      await this.$router.push(page)
+      // await this.$router.push(page)
+      this.$router.replace(page)
 
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */

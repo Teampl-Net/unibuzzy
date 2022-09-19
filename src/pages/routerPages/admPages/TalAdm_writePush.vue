@@ -156,21 +156,27 @@ export default {
   },
   mounted() {
     document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
-        var items = (e.clipboardData || e.originalEvent.clipboardData).items;
-        for (let i of items) {
-            var item = i;
-            if (item.type.indexOf("image") != -1) {
-                if (this.viewTab != 'complex') {
-                    this.$refs.actBar.switchtab(1)
-                    this.viewTab = 'complex'
-                }
-                /* this.editorType = 'complex' */
-                var file = item.getAsFile();
-                this.previewFile(file)
-                console.log(file);
-            //uploadFile(file);
-            }
-        }
+      console.log(e)
+      var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+
+      for (let i of items) {
+          var item = i;
+          if (item.type.indexOf("image") !== -1) {
+              if (this.viewTab != 'complex') {
+                  this.$refs.actBar.switchtab(1)
+                  this.viewTab = 'complex'
+              }
+              /* this.editorType = 'complex' */
+              var file = item.getAsFile();
+              this.previewFile(file)
+              console.log(file);
+          //uploadFile(file);
+          } else {
+            e.preventDefault()
+            const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+            document.execCommand("insertHTML", false, text);
+          }
+      }
     })
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
@@ -671,7 +677,7 @@ export default {
         }
 
         result = await this.$saveContents(param)
-        debugger
+        console.log(result)
         if (result.result === true) {
 
             this.sendLoadingYn = false
@@ -832,6 +838,11 @@ export default {
         reader.readAsDataURL(file)
         // await this.$editorImgResize(this.selectFile)
       }
+        // var result = await this.$previewFile(file)
+        // if (result !== undefined && result !== null && result !== ''){
+        //   this.$refs.complexEditor.addFormCard('image', result.url, true)
+        //   this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
+        // }
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */
@@ -853,7 +864,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form/* ,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

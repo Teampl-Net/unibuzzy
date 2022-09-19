@@ -57,7 +57,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" style="word-break: break-word;" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -68,8 +68,8 @@
               </div>
             </div> -->
             <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
-                <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
-                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.totalElements}}개</p>
+              <p class="commonBlack font13" style="float: right;">좋아요 {{alim.likeCount}}개</p>
+              <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.totalElements}}개</p>
             </div>
             <div v-else class="mbottom-05 fl" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{alim.memoCount > 0? '답변완료' : '답변대기'}}</div>
@@ -690,7 +690,7 @@ export default {
         await this.mememoChangeList()
         this.axiosYn = false
       }
-      this.$refs.boardMemoListCompo[0].memoLoadingHide()
+      if (this.$refs.boardMemoListCompo[0]) this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
     async getLikeCount () {
       // eslint-disable-next-line no-new-object
@@ -813,22 +813,24 @@ export default {
       this.saveMemoLoadingYn = false
     },
     settingAddFalseList (attachYn) {
-      if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
-        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
+      if (this.alimDetail) {
+        if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
+          var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 
-        for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
-          var attFile = this.alimDetail[0].attachFileList[s]
+          for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
+            var attFile = this.alimDetail[0].attachFileList[s]
 
-          if (!attachYn) {
-            for (var i = 0; i < addFalseImgList.length; i++) {
-              if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-                addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-                break
+            if (!attachYn) {
+              for (var i = 0; i < addFalseImgList.length; i++) {
+                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+                  break
+                }
               }
-            }
-          } else {
-            if (attFile.attachYn) {
-              this.attachTrueFileList.push(attFile)
+            } else {
+              if (attFile.attachYn) {
+                this.attachTrueFileList.push(attFile)
+              }
             }
           }
         }
