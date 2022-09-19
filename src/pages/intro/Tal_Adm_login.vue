@@ -127,7 +127,6 @@ export default {
       console.log(profile)
     }, */
     naverCallbackFunction (log) {
-      // alert(true)
       console.log(log)
     },
     handleCredentialResponse (response) {

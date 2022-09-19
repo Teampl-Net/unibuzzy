@@ -27,8 +27,8 @@
     </div>
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;     box-shadow: 0 0 7px 3px #b7b4b440;" :alimList="alimList"  @openPop="openPop" ref="topAlim" />
-  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;     box-shadow: 0 0 7px 3px #b7b4b440;"  :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
+  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :alimList="alimList"  @openPop="openPop" ref="topAlim" />
+  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -56,21 +56,14 @@ export default {
     this.getMainBoard()
     /* localStorage.setItem('popHistoryStack', '') */
     this.$emit('changePageHeader', '더알림')
-    // onMessage('REQ', 'getUserInfo')
-    // await this.saveUserPhone()
     localStorage.setItem('loginYn', false)
-    if (this.testYn !== undefined && this.testYn !== null && this.testYn !== '' && (this.testYn === true || this.testYn === 'true')) {
-      ;
-    } else {
-      localStorage.setItem('loginYn', false)
-    }
     this.getUserInform()
     this.$store.commit('setRemovePage', 0)
     this.$store.commit('updateStack', [0])
     // <%= ${sessionName} != null %>
-    this.loadingYn = false
   },
   mounted () {
+    this.loadingYn = false
   },
   data () {
     return {
@@ -106,57 +99,12 @@ export default {
       param.selfYn = true
       this.$emit('openPop', param)
     },
-    /* checkSession () {
-      var iframe
-      iframe = document.getElementById('sessionHidden')
-      if (iframe == null) {
-        iframe = document.createElement('iframe')
-        iframe.id = 'sessionHidden'
-        iframe.style.visibility = 'none'
-        document.body.appendChild(iframe)
-      }
-      iframe.src = '/Tal_checkSession.jsp'
-      // iframe.download = name
-      this.filePopShowYn = false
-      return false
-    }, */
     async reloadPage () {
-      // this.$forceUpdate()
-      // window.location.replace(window.opener.documｅnt.location.href);
-      // this.$router.push({ name: "main" })
-      // this.$router.push('/')
-
-      // this.$emit('openLoading')
-      // this.$router.go(0)
-      // setTimeout(() => {
-      //   this.$emit('closeLoading')
-      // }, 2000)
-
-      // await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-      // ).then(response => {
-      //   if (response.status === 200 || response.status === '200') {
-      //     console.log(response);
-      //     this.alimList = response.data.alimList
-      //     this.chanList = response.data.teamList
-      //     this.renderOk = true
-      //     this.$emit('closeLoading')
-      //   }
-      //   // response.data.userMap
-      // }).catch((error) => {
-      //   console.warn('ERROR!!!!! : ', error)
-      //   // return 'error'
-      // })
-
-      this.$emit('openLoading')
       this.loadingYn = true
-      await this.$refs.topChan.reLoad()
-      await this.$refs.topAlim.reLoad()
-      setTimeout(() => {
-        this.loadingYn = false
-        this.$emit('closeLoading')
-      }, 500)
-
-      // this.$refs.topChan.reLoad()
+      await this.getMainBoard()
+      /* await this.$refs.topAlim.reLoad()
+      await this.$refs.topChan.reLoad() */
+      this.loadingYn = false
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -208,12 +156,6 @@ export default {
       }
       this.userInfo = userInfo
       console.log(this.userInfo)
-      // // eslint-disable-next-line no-debugger
-      // debugger
-      /* setTimeout(() => {
-        this.$emit('closeLoading')
-      }, 300) */
-      this.$emit('closeLoading')
       return userInfo
     },
 
@@ -230,7 +172,7 @@ export default {
           this.alimList = response.data.alimList
           this.chanList = response.data.teamList
           this.renderOk = true
-          this.$emit('closeLoading')
+          console.log(response)
         }
         // response.data.userMap
       }).catch((error) => {

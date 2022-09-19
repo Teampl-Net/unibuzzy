@@ -35,7 +35,7 @@ export default {
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */
       this.activeFooter = page
-      this.$emit('openLoading')
+      /* this.$emit('openLoading') */
     }
 
   },

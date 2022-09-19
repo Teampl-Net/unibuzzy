@@ -39,7 +39,7 @@
 
           <!-- <gActiveBar :activetabProp="this.editorType" ref="activeBar" :tabList="this.activeTabList" class="mbottom-05 mtop-1" @changeTab= "changeTab" /> -->
           <div style="width: 100%; height: 100%; padding:0 10px 10px 10px; box-shadow: 0px 3px 9px 0px #ccc; min-height: 300px;border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; ">
-              <draggable  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" @end="changePosTeamMenu" delay="200" handle=".movePoint">
+              <draggable id="dragCompp"  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" style="padding-top: 10px; 0" :dragging="dragging" @end="changePosTeamMenu" delay="200" handle=".movePoint">
                   <transition-group>
                           <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                           --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
@@ -51,7 +51,7 @@
                               <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
                               <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="value.targetKey"/>
                               <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="value.targetKey"/>
-                              <div class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
+                              <div @click="moveClick(value, value.type)" class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0 "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" style="width: 10px !important; height:6.83px !important; flex-shrink: 0; flex-grow: 0" alt=""></div>
                               <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                           </div>
                           <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
@@ -96,6 +96,18 @@ import formLine from './Tal_formLine.vue'
 // import formLink from './cAd_formLink.vue'
 export default {
   created () {
+    const ele = document.getElementById('dragenter')
+    if (ele) {
+      ele.addEventListener('click', function (e) {
+      })
+    }
+  },
+  updated () {
+    const ele = document.getElementById('dragenter')
+    if (ele) {
+      ele.addEventListener('click', function (e) {
+      })
+    }
   },
   mounted () {
     this.addFormCard('text')
@@ -154,6 +166,8 @@ export default {
     } */
   },
   methods: {
+    moveClick (value, type) {
+    },
     setFormCard (data) {
       this.formCardList = data
     },
@@ -397,7 +411,10 @@ export default {
         this.$nextTick(() => {
           this.$refs['textForm' + idx][0].focusInput()
         })
-      }
+      } /* else if (value.type === 'image') {
+        var form = document.querySelector('#formCard' + idx)
+        form.classList.add('ghost')
+      } */
     },
     clickTextArea (idx) {
       this.tools.boldYn = false

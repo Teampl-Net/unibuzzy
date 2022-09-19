@@ -154,12 +154,11 @@ export default {
         this.emptyYn = true
       }
 
-      // this.userDoList = resultList.userDo
       this.listShowYn = true
     },
     async reLoad () {
-      this.$refs.activeBarPushListTop5.switchtab(0)
-      this.$refs.activeBarPushListTop5.selectTab('N')
+      await this.$refs.activeBarPushListTop5.switchtab(0)
+      await this.$refs.activeBarPushListTop5.selectTab('N')
       // var resultList = await this.getContentsList()
       // this.listShowYn = false
       // this.pushList = resultList.content

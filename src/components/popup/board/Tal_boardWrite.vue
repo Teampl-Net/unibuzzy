@@ -212,10 +212,14 @@ export default {
   },
   created () {
     if (this.propData.bodyFullStr) {
-      console.log(this.propData)
-      this.bodyString = this.decodeContents(this.propData.bodyFullStr)
-      this.modiYn = true
-      console.log('WOW!!!!' + this.decodeContents(this.bodyString))
+      if (this.propData.UseAnOtherYn) {
+        this.bodyString = this.propData.bodyFullStr
+        this.selectBoardYn = true
+      } else {
+        this.bodyString = this.decodeContents(this.propData.bodyFullStr)
+        console.log('WOW!!!!' + this.decodeContents(this.bodyString))
+        this.modiYn = true
+      }
     }
     if (this.propData.parentAttachTrueFileList && this.propData.parentAttachTrueFileList.length > 0) {
       this.attachTrueFileList = this.propData.parentAttachTrueFileList
@@ -466,8 +470,7 @@ export default {
       if (param.cabinetKey === 11015) {
         param.onlyManagerYn = true
       }
-      param.creTeamKey = this.propData.currentTeamKey
-
+      param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
       if (this.propData.attachMfilekey) {
         param.attachMfilekey = this.propData.attachMfilekey
       }
@@ -482,7 +485,7 @@ export default {
       }
 
       param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
-      console.log(param.cabinetName)
+      console.log(param)
 
       param.title = this.writePushTitle
       param.showCreNameYn = true
@@ -500,7 +503,7 @@ export default {
         newP.cabinetNameMtext = this.propData.cabinetNameMtext
         newP.value = this.propData
         this.progressShowYn = false
-        if (!this.modiYn) {
+        if (!this.modiYn && !this.UseAnOtherYn) {
           this.$emit('successWrite', newP)
         } else {
           this.$emit('closeXPop', true)
@@ -604,7 +607,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

@@ -39,6 +39,24 @@ export default {
   },
   methods: {
     async testClick () {
+      var t = '0314294216'
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.smsNo = t
+      param.smsKind = 'SMS'
+      param.bodyString = '인증번호는 1234입니다.'
+      param.mmsTitle = '더알림 인증번호'
+      param.trId = '1663545628988'
+      param.recvListStr = '01084860734'
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.sendSms',
+        param: param
+      })
+      console.log(result)
+      // eslint-disable-next-line no-debugger
+      debugger
+    },
+    async testClick1 () {
       var t = 'suman9o@susoft.co.kr'
       // eslint-disable-next-line no-new-object
       var param = new Object()

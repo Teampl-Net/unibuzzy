@@ -16,7 +16,7 @@
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
             <p class="textLeft font16 fl cBlack tB detailLabelText" >이름</p>
             <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-            <input v-if="!readOnlyYn && !changeYn && selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+            <input v-if="!readOnlyYn && !selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
             <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
             <div v-show="changeYn" class="fl creChanInput" style="">
                 <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />

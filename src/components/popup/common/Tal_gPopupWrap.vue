@@ -19,7 +19,7 @@
       </div>
       <pushBox @closeLoading="this.loadingYn = false" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative; padding: 0px 0.5rem; " v-if="this.targetType === 'chanList'">
-        <chanList :propData="this.params" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
+        <chanList :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.loadingYn = false" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
       <askTal @closeLoading="this.loadingYn = false" v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
@@ -572,6 +572,11 @@ export default {
           setTimeout(() => {
             this.reloadYn = false
           }, 100)
+          if (this.targetType === 'pushList') {
+            this.$refs.gPopChan.refreshList()
+          } else if (this.targetType === 'chanList') {
+            this.$refs.gPopPush.refreshList()
+          }
           // this.reloadYn = false
         } else if (this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
@@ -589,7 +594,7 @@ export default {
         } else if (this.targetType === 'boardMain') {
           this.$refs.boardMainPop.getContentsList()
           await this.$refs.boardMainPop.refresh()
-        } else if (this.targetType === 'chanDetail' && this.delyn !== true) {
+        } else if (this.targetType === 'chanDetail' && !this.delyn) {
           if (this.openChanMenuYn) {
             await this.$refs.chanMenuCompo.refresh()
           }

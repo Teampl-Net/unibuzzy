@@ -671,20 +671,21 @@ export default {
         }
 
         result = await this.$saveContents(param)
+        debugger
         if (result.result === true) {
 
             this.sendLoadingYn = false
             if (this.replyPopYn) {
-            var param = {}
-            param = this.params
-            param.targetType = 'chanDetail'
+                var param = {}
+                param = this.params
+                param.targetType = 'chanDetail'
 
 
-            this.$emit('changePop', param)
+                this.$emit('changePop', param)
 
             }else{
             // this.$emit('closeXPop',true)
-            this.closeXPop(true)
+              this.closeXPop(true)
             }
 
         }
@@ -801,11 +802,36 @@ export default {
       this.$refs.selectFile.click()
     },
     async previewFile (file) {
+      let fileExt = file.name.substring(
+        file.name.lastIndexOf('.') + 1
+      )
+      // 소문자로 변환
+      fileExt = fileExt.toLowerCase()
+      if (
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+      ) {
+        // FileReader 를 활용하여 파일을 읽는다
+        var reader = new FileReader()
         var thisthis = this
-        await this.$previewFile(file).then(result => {
-            thisthis.$refs.complexEditor.addFormCard('image', result.url, true)
-            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
-        })
+        reader.onload = e => {
+          var image = new Image()
+          image.onload = async function () {
+            var result = await thisthis.$saveFileSize(image, file)
+            thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
+            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            // this.$emit('updateImgForm', this.previewImgUrl)
+            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+          }
+          image.onerror = function () {
+
+          }
+          image.src = e.target.result
+          // this.previewImgUrl = e.target.result
+        }
+        reader.readAsDataURL(file)
+        // await this.$editorImgResize(this.selectFile)
+      }
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */
@@ -827,7 +853,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
+            .post('fileServer/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

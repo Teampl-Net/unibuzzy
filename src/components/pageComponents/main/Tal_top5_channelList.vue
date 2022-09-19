@@ -169,8 +169,8 @@ export default {
       this.checkOwnerYn()
     },
     async reLoad () {
-      this.$refs.activeBarChanListTop5.switchtab(0)
-      this.$refs.activeBarChanListTop5.selectTab('user')
+      await this.$refs.activeBarChanListTop5.switchtab(0)
+      await this.$refs.activeBarChanListTop5.selectTab('user')
     }
   }
 

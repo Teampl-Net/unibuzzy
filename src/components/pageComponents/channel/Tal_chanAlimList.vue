@@ -270,7 +270,7 @@ export default {
       if (this.chanItem.userTeamInfo === null) {
         this.followYn = false
       }
-      this.$emit('closeLoading')
+      /* this.$emit('closeLoading') */
     },
     targetContentScrollMove (wich) {
       if (this.chanDetail.targetContentsKey) {
@@ -624,11 +624,11 @@ export default {
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('setRemovePage', removePage)
         this.$store.commit('updateStack', history)
-        this.closeWritePushPop(true)
+        this.closeWritePushPop()
       }
     },
-    async closeWritePushPop (justCloseYn) {
-      if (!justCloseYn) {
+    async closeWritePushPop (reloadYn) {
+      if (reloadYn) {
         await this.refreshList()
       }
       this.writePushYn = false

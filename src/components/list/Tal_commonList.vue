@@ -360,6 +360,8 @@ export default {
             }
           } else if (type === 'move' || type === 'copy') {
             this.moveOrCopyContent(type)
+          } else if (type === 'write') {
+            this.makeNewContents(type)
           }
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
@@ -371,6 +373,9 @@ export default {
           }
         }
       }
+    },
+    makeNewContents () {
+      this.$emit('makeNewContents', this.tempData)  
     },
     deleteConfirm (data) {
       console.log('datadatadatadatadatadatadatadatadatadatadatadatadatadatadata')
@@ -800,7 +805,6 @@ export default {
 
 
     async loadMoreMemo () {
-        // alert(true)
         //this.showMoreMemoTextYn = false
         console.log('offsetInt', this.offsetInt)
         console.log('this.currentMemoObj', this.currentMemoObj)
@@ -1004,13 +1008,13 @@ export default {
       }
       return userDoList
     },
-    async loadUpMore() {
+    /* async loadUpMore() {
       if (this.targetContentsKey){
         // console.log('@@@topLoadMore@@@');
         // this.$emit('moreList', false)
         this.$emit('topLoadMore', false)
       }
-    },
+    }, */
     async loadMore() {
       this.loadingRefShow()
       /* this.$emit('moreList', false) */

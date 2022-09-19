@@ -31,7 +31,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' v-show="listShowYn" :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
           <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -78,7 +78,7 @@ export default {
     // 라우터로 이동과 gPop에서 채널메인 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
     isOpen: {}
   },
-  async created () {
+  created () {
     this.$emit('changePageHeader', '알림')
     this.loadingYn = true
     if (this.propData) {
@@ -86,59 +86,50 @@ export default {
         this.viewMainTab = this.propData.alimTabType
       }
     }
-    this.refreshList()
-    console.log(this.targetContents)
+
     if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
-      console.log('으아아targetContentstargetContentstargetContents으아아ㅏ')
       this.targetCKey = this.targetContents.targetContentsKey
-      this.targetJobkindId = this.targetContents.jobkindId
-      if (this.targetJobkindId === 'BOAR') {
+      if (this.targetContents.jobkindId === 'BOAR') {
         this.viewMainTab = 'B'
       }
     }
-    if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
-      this.pushListReloadShowYn = this.reloadShowYn
-    } else {
-      this.pushListReloadShowYn = true
-    }
-    if (this.popYn === false) {
-      localStorage.setItem('notiReloadPage', 'none')
-    }
-    // var resultList = await this.getPushContentsList()
-    // this.commonListData = resultList.content
-    // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-    //   this.endListYn = true
-    // } else {
-    //   this.endListYn = false
-    // }
-    // this.$emit('numberOfElements', resultList.totalElements)
-    this.findPopShowYn = false
-    if (this.readySearchList) {
-      this.requestSearchList(this.readySearchList)
-    }
-    this.introPushPageTab()
-    if (this.targetCKey) {
-      this.getMCabContYn(this.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+    this.getPushContentsList().then(response => {
+      this.commonListData = response.content
+      if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
+        this.pushListReloadShowYn = this.reloadShowYn
+      } else {
+        this.pushListReloadShowYn = true
+      }
+      if (this.popYn === false) {
+        localStorage.setItem('notiReloadPage', 'none')
+      }
+      this.findPopShowYn = false
+      if (this.readySearchList) {
+        this.requestSearchList(this.readySearchList)
+      }
+      this.introPushPageTab()
+      if (this.targetCKey) {
+        this.getMCabContYn(this.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
         /* if (Response !== true) {
           this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
           this.failPopYn = true
           this.targetCKey = null
         } */
-      })
-    }
-    this.scrolledYn = false
+        })
+        this.canLoadYn = true
+        this.loadMore(true)
+      }
+      this.scrolledYn = false
+    })
   },
 
   updated () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
-    if (this.findPopShowYn) {
-      this.findPaddingTopPush()
-    }
   },
   mounted () {
+    /* alert('okMOunt') */
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
     this.box.addEventListener('scroll', this.handleScroll)
-    this.findPaddingTopPush()
     if (this.viewTab === 'N') {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'R') {
@@ -169,9 +160,9 @@ export default {
     reloadShowYn () {
       this.checkShowReload()
     },
-    readCheckBoxYn () {
+    /* readCheckBoxYn () {
       this.changeTab(this.viewTab)
-    },
+    }, */
     pageUpdate (value, old) {
       this.backClick()
       /* if (this.popId === hStack[hStack.length - 1]) {
@@ -195,8 +186,8 @@ export default {
     },
     currentPage () {
       return this.$store.getters.hCPage
-    },
-    setStickerWidth () {
+    }
+    /* setStickerWidth () {
       var stickerCnt = this.stickerList.length
       var textWidth = 16
       var stickerDivWidth = 0
@@ -206,9 +197,27 @@ export default {
       return {
         '--stickerDivWidth': stickerDivWidth + 'px'
       }
-    }
+    } */
   },
   methods: {
+    makeNewContents (data) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = data.contentsKey
+      param.targetType = 'writeBoard'
+      param.creTeamKey = data.creTeamKey
+      if (data.attachMfilekey) { param.attachMfilekey = data.attachMfilekey }
+      // eslint-disable-next-line no-undef
+      param.bodyFullStr = Base64.decode(data.bodyFullStr)
+      param.UseAnOtherYn = true
+      param.selectBoardYn = true
+      // eslint-disable-next-line no-debugger
+      debugger
+      param.modiContentsKey = data.contentsKey
+      param.titleStr = data.title
+      // param.parentAttachTrueFileList = this.attachTrueFileList
+      this.$emit('openPop', param)
+    },
     moveOrCopyContent (data) {
       this.selectBoardType = data.type
       this.boardDetailValue = data
@@ -281,7 +290,6 @@ export default {
     },
     async refreshAll () {
       // 새로고침
-      this.$emit('openLoading')
       this.targetCKey = null
       this.loadMoreDESCYn = true
       this.findKeyList.searchKey = null
@@ -316,45 +324,10 @@ export default {
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
-    imgLongClick (param) {
-      var history = this.$store.getters.hStack
-      this.alertPopId = 'imgDetailAlertPop' + history.length
-      history.push(this.alertPopId)
-      this.$store.commit('updateStack', history)
-      console.log(this.$store.getters.hStack)
-      this.selectImgObject = param.selectObj
-      this.selectImgParam = param.previewParam
-      this.selectImgIndex = param.selectImgIndex
-      this.imgDetailAlertShowYn = true
-    },
-    longClickAlertClick (btnType) {
-      if (btnType === 'download') this.imgDownload()
-      else if (btnType === 'share');
-      else if (btnType === 'preview') {
-        this.backClick()
-        this.previewPopShowYn = true
-      }
-    },
-    async imgDownload () {
-      try {
-        if (this.mobileYn) {
-          onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
-        } else {
-          var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
-          console.log(result)
-        }
-        this.errorText = '저장되었습니다!'
-        this.backClick()
-        this.failPopYn = true
-      } catch (error) {
-        console.log(error)
-      }
-    },
     handleScroll () {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      var parentElement = element.parentElement
       // console.log(this.getAbsoluteTop(element))
       // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       this.firstContOffsetY = this.getAbsoluteTop(element)
@@ -364,8 +337,6 @@ export default {
         this.scrolledYn = false
       }
       if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
-        var test = document.getElementById('pageHeader')
-        this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.scrollCheckSec = currentTime
 
         if (this.firstContOffsetY < 0) {
@@ -387,10 +358,8 @@ export default {
       }
       this.targetCKey = null
       this.loadMoreDESCYn = true
-
       var resultList = await this.getPushContentsList(pSize, 0)
       this.commonListData = resultList.content
-
       this.endListSetFunc(resultList)
     },
     endListSetFunc (resultList) {
@@ -401,13 +370,7 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-    },
-    async refreshPage () {
-      this.targetCKey = null
-      this.loadMoreDESCYn = true
-      var resultList = await this.getPushContentsList(10, 0)
-      this.commonListData = resultList.content
-      this.endListSetFunc(resultList)
+      console.log(this.endListYn, '', this.offsetInt)
     },
     async recvNoti (e) {
       var message
@@ -433,8 +396,10 @@ export default {
       }
     },
     async loadMore (descYn) {
-      if (this.endListYn === false) {
+      console.log('this.canLoadYn' + this.canLoadYn + 'this.endListYn' + this.endListYn)
+      if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
+        this.canLoadYn = false
         var resultList = await this.getPushContentsList()
         var newArr = []
         if (descYn) {
@@ -459,7 +424,9 @@ export default {
           ]
         }
         this.commonListData = await newArr
-        this.endListSetFunc(resultList)
+        await this.endListSetFunc(resultList)
+        this.canLoadYn = true
+        console.log('this.offsetInt' + this.offsetInt)
         this.$emit('numberOfElements', resultList.totalElements)
         // if (this.targetContentsKey !== undefined && this.targetContentsKey !== null && this.targetContentsKey !== '') {
         //   var a = this.$refs.pushListChangeTabLoadingComp.contentsWich(this.targetContentsKey)
@@ -476,9 +443,6 @@ export default {
     closeSearchPop () {
       this.findPopShowYn = false
     },
-    reload () {
-      this.getPushContentsList()
-    },
     openPop (value) {
       this.$emit('openPop', value)
     },
@@ -490,32 +454,21 @@ export default {
     },
     async changeTab (tabName) {
       this.targetCKey = null
-      if (this.viewTab !== tabName) {
+      /* if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
-      }
+      } */
       this.viewTab = tabName
-      this.listShowYn = false
+
       this.offsetInt = 0
-      // document.getElementById('pushListWrap').className += ' fadeOutAnimation'
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
       this.commonListData = resultList.content
       if (this.commonListData.length === 0) this.emptyYn = true
-      this.listShowYn = true
-
-      this.endListSetFunc(resultList)
-
-      // document.getElementById('pushListWrap').className += ' fadeInAnimation'
       this.findPopShowYn = false
-      this.headerTop = 150 // 탭 변경시 해더의 크기를 못 가져와서 문제가 발생 함 --> 150으로 지정
       this.introPushPageTab()
       this.scrollMove()
     },
     scrollMove (wich) {
-      // var middle = (document.innerHeight || window.innerHeight) / 2 - 100
-      // var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      // if (wich === undefined || wich === null || wich === '') { wich = 0 }
-      // ScrollWrap.scrollTo({ top: (wich - middle), behavior: 'smooth' })
       console.log('scrollMove : ' + wich)
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
@@ -529,16 +482,10 @@ export default {
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       }
-      if (offsetInput !== undefined) {
-        param.offsetInt = offsetInput
-      } else {
-        param.offsetInt = this.offsetInt
-      }
-      if (pageSize) {
-        param.pageSize = pageSize
-      } else {
-        pageSize = 10
-      }
+      if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
+
+      if (pageSize) { param.pageSize = pageSize } else { pageSize = 10 }
+
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
           param.title = this.findKeyList.searchKey
@@ -551,20 +498,18 @@ export default {
         }
       }
       param.findLogReadYn = null
-      // param.findActYn = false
       param.findActLikeYn = false
       param.findActStarYn = false
-      // if (this.loadMoreDESCYn === true) {
-      //   param.DESCYn = this.loadMoreDESCYn
-      // } else
       param.DESCYn = true
+
       if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
         param.targetContentsKey = this.targetCKey
         param.DESCYn = this.loadMoreDESCYn
       }
-      if (this.readCheckBoxYn) {
+
+      /* if (this.readCheckBoxYn) { //읽지않음 읽음
         param.findLogReadYn = false
-      }
+      } */
       if (this.viewTab === 'N') {
         param.creTeamKey = this.chanDetailKey
       } else if (this.viewTab === 'L') {
@@ -579,7 +524,6 @@ export default {
         param.creTeamKey = this.chanDetailKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       }
-      //
       if (this.viewMainTab === 'P') {
         param.jobkindId = 'ALIM'
         param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -591,18 +535,17 @@ export default {
           param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         }
       }
-      console.log('getContentsList')
-      console.log(param)
+
       var result = await this.$getContentsList(param)
       // console.log(result)
       if (result.empty) {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
       var resultList = result
-      this.$emit('closeLoading')
       this.loadingYn = false
       return resultList
     },
+    /* 검색 */
     async requestSearchList (param) {
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
@@ -617,14 +560,10 @@ export default {
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       this.offsetInt = 0
+      this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
       this.commonListData = resultList.content
       this.endListSetFunc(resultList)
-      // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-      //   this.endListYn = true
-      // } else {
-      //   this.endListYn = false
-      // }
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -665,16 +604,44 @@ export default {
       // getPushContentsList (pageSize, offsetInput)
       var pageSize = 10
       this.offsetInt = 0
+      this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       this.commonListData = resultList.content
-      this.findPaddingTopPush()
       this.endListSetFunc(resultList)
-      // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-      //   this.endListYn = true
-      // } else {
-      //   this.endListYn = false
-      // }
-      // this.findPopShowYn = false
+    },
+    /* 이미지 다운로드 */
+    imgLongClick (param) {
+      var history = this.$store.getters.hStack
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      history.push(this.alertPopId)
+      this.$store.commit('updateStack', history)
+      console.log(this.$store.getters.hStack)
+      this.selectImgObject = param.selectObj
+      this.selectImgParam = param.previewParam
+      this.imgDetailAlertShowYn = true
+    },
+    longClickAlertClick (btnType) {
+      if (btnType === 'download') this.imgDownload()
+      else if (btnType === 'share');
+      else if (btnType === 'preview') {
+        this.backClick()
+        this.previewPopShowYn = true
+      }
+    },
+    async imgDownload () {
+      try {
+        if (this.mobileYn) {
+          onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
+        } else {
+          var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
+          console.log(result)
+        }
+        this.errorText = '저장되었습니다!'
+        this.backClick()
+        this.failPopYn = true
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   data () {
@@ -683,7 +650,6 @@ export default {
       pushListReloadShowYn: false,
       imgUrl: '',
       firstContOffsetY: null,
-      headerTop: 0,
       scrollDirection: null,
       box: null,
       scrolledYn: false,
@@ -691,20 +657,16 @@ export default {
       endListYn: false,
       scrollPosition: 0,
       findPopShowYn: false,
-      subHistoryList: [],
-      stickerList: [],
+      /* stickerList: [], */
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }],
       viewTab: 'N',
       viewMainTab: 'P',
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: [],
-      transition: 'slide-next',
-      tabIdx: 0,
       scrollCheckSec: 0,
       axiosResultTempList: [],
-      listShowYn: true,
-      readCheckBoxYn: false,
+      /* readCheckBoxYn: false, */
       currentTabName: '최신',
       emptyYn: true,
       loadMoreDESCYn: null,
@@ -712,19 +674,16 @@ export default {
       failPopYn: false,
       errorText: '',
       previewPopShowYn: false,
-      selectImgMfilekey: null,
-      selectImgIndex: 0,
       selectImgObject: {},
-      subPopId: '',
       imgDetailAlertShowYn: false,
       mobileYn: this.$getMobileYn(),
       alertPopId: null,
       selectImgParam: {},
-      targetJobkindId: null,
       loadingYn: false,
       selectBoardType: null,
       selectBoardPopShowYn: false,
-      boardDetailValue: null
+      boardDetailValue: null,
+      canLoadYn: false
     }
   }
 }
