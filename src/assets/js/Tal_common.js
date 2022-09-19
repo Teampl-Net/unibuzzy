@@ -48,28 +48,24 @@ const methods = {
     // console.log(this.$dayjs(now).format('YYYYMMDD HH:mm:ss'))
     var compareDate = new Date(creTime)
     var now = new Date()
-    var format = ''
     var text = ''
     if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(now).format('YYYY')) {
       if (this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')) {
         if (this.$dayjs(compareDate).format('DD') === this.$dayjs(now).format('DD')) {
-          // compareDate.setHours(compareDate.getHours() + 9)
+          compareDate.setHours(compareDate.getHours() + 9)
           compareDate.setMinutes(compareDate.getMinutes() + 3)
           // console.log(this.$dayjs(compareDate).format('MM/DD HH:mm:ss'))
           // console.log(this.$dayjs(now).format('MM/DD HH:mm:ss'))
-          this.$dayjs(compareDate).add(9, 'hour').format(format)
+          // this.$dayjs(compareDate).add(9, 'hour').format(format)
           const distance = compareDate.getTime() - now.getTime()
           if (distance > 0) {
             // Math.floor 함수를 이용해서 근접한 정수값을 가져온다.
             // 밀리초 값이기 때문에 1000을 곱한다.
             // 1000*60 => 60초(1분)*60 => 60분(1시간)*24 = 24시간(하루)
             // 나머지 연산자(%)를 이용해서 시/분/초를 구한다.
-            const day = Math.floor(distance / (1000 * 60 * 60 * 24))
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
             const seconds = Math.floor((distance % (1000 * 60)) / 1000)
-            text = '발송 취소 가능 시간까지 ' + day + '일 '
-            text += (hours < 10 ? '0' + hours : hours) + '시간'
+            text = '발송 취소 가능 시간까지 '
             text += (minutes < 10 ? '0' + minutes : minutes) + '분'
             text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
             var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" > 발송취소 </p> <p class="font12 fr textRight">' + text + '</p>'

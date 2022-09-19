@@ -69,6 +69,7 @@ export default {
   mounted () {
     this.box = document.getElementById('myActContentsWrap')
     this.box.addEventListener('scroll', this.handleScroll)
+    // this.$emit('closeLoading')
   },
   watch: {
     routerReloadKey () {
@@ -218,6 +219,7 @@ export default {
       }
       var resultList = result
       console.log(resultList)
+      this.$emit('closeLoading')
       return resultList
     },
     async castingSearchMap (param) {

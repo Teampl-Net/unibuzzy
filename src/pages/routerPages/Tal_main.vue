@@ -143,6 +143,8 @@ export default {
     },
     async reloadPage () {
       this.loadingYn = true
+      this.$refs.topAlim.refreshList()
+      this.$refs.topChan.reLoad()
       await this.getMainBoard()
       /* await this.$refs.topAlim.reLoad()
       await this.$refs.topChan.reLoad() */

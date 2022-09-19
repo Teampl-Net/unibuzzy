@@ -270,7 +270,7 @@ export default {
       if (this.chanItem.userTeamInfo === null) {
         this.followYn = false
       }
-      /* this.$emit('closeLoading') */
+      this.$emit('closeLoading')
     },
     targetContentScrollMove (wich) {
       if (this.chanDetail.targetContentsKey) {

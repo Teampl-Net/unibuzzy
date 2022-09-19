@@ -2,7 +2,7 @@
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
-      <loadingCompo v-show="loadingYn === true && isOpen !== 'chanAlim'"/>
+      <loadingCompo  style="width: 100%; height: 100%; position: fixed; top: 0; left: 0" v-show="loadingYn === true"/>
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gSearchBox  @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
@@ -127,7 +127,6 @@ export default {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
   },
   mounted () {
-    /* alert('okMOunt') */
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
     this.box.addEventListener('scroll', this.handleScroll)
     if (this.viewTab === 'N') {
