@@ -5,7 +5,6 @@
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view @openPop="openPop" />
-
   </div>
 </template>
 <script>

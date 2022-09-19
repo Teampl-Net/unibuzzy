@@ -1,5 +1,5 @@
 <template>
-    <div class="py-3 px-4 TalFooterWrap" >
+    <div class="py-3 px-4 TalFooterWrap">
         <div @click="routePage('/')" class="footerRouter col-3">
           <div v-if="this.$route.path === '/'" class="commonColor fontBold text-center font12" >
             <img :src="footerIcon[0].fullIcon"/><p class="font12 fontBold activeFooterMenu" >홈</p>
@@ -13,7 +13,7 @@
           <div v-else class="commonColor fontBold text-center font12"><img :src="footerIcon[1].icon"/> <p class="font12" >알림</p></div>
         </div>
         <div @click="routePage('/chanList')" class="footerRouter col-3">
-          <div v-if="this.$route.path === '/chanList'" class="commonColor fontBold text-center font12"><img :src="footerIcon[2].fullIcon"/> <p class="font12 activeFooterMenu">채널</p></div>
+          <div v-if="this.$route.path === '/chanList'" class="commonColor fontBold text-center font12"><img :src="footerIcon[2].fullIcon" /> <p class="font12 activeFooterMenu">채널</p></div>
           <div v-else class="commonColor fontBold text-center font12"><img :src="footerIcon[2].icon"/> <p class="font12" >채널</p></div>
         </div>
         <div @click="routePage('/myPage')" class="footerRouter col-3">
@@ -41,9 +41,11 @@ export default {
       if (page === this.$router.currentRoute._rawValue.path) {
         return
       }
+      // alert(page)
       this.activeFooter = page
       // await this.$router.push(page)
-      await this.$router.replace(page)
+      // alert(JSON.stringify(this.$router.currentRoute._rawValue.path))
+      await this.$router.push(page)
 
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */

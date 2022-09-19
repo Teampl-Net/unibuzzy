@@ -543,9 +543,12 @@ export default {
     },
     setParamInnerHtml (formCard) {
       var innerHtml = ''
+      // eslint-disable-next-line no-debugger
+
       for (var i = 0; i < formCard.length; i++) {
         innerHtml += formCard[i].outerHtml
       }
+
       this.propFormData = []
       this.propFormData.push(...formCard)
       // this.propFormData = formCard
@@ -586,7 +589,7 @@ export default {
         if (this.uploadFileList.length > 0) {
             await this.formSubmit()
             setTimeout(() => {
-            this.progressShowYn = false
+              this.progressShowYn = false
             }, 2000)
             this.sendLoadingYn = true
         }
@@ -680,19 +683,19 @@ export default {
         console.log(result)
         if (result.result === true) {
 
-            this.sendLoadingYn = false
-            if (this.replyPopYn) {
-                var param = {}
-                param = this.params
-                param.targetType = 'chanDetail'
+          this.sendLoadingYn = false
+          if (this.replyPopYn) {
+              var param = {}
+              param = this.params
+              param.targetType = 'chanDetail'
 
 
-                this.$emit('changePop', param)
+              this.$emit('changePop', param)
 
-            }else{
-            // this.$emit('closeXPop',true)
-              this.closeXPop(true)
-            }
+          }else{
+          // this.$emit('closeXPop',true)
+            this.closeXPop(true)
+          }
 
         }
 
@@ -903,7 +906,7 @@ export default {
             var uploadFile = this.uploadFileList[s]
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-                
+
                 console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 console.log(uploadFile[0].previewImgUrl)
                 console.log(iList[il].src)
@@ -918,7 +921,7 @@ export default {
                         iList[il].classList.add('addFalse')
                         break
                     } else {
-                        
+
                     }
                 }
               }

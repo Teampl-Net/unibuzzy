@@ -165,10 +165,12 @@ export default {
       this.$emit('inputScroll', param)
     },
     async changePosTeamMenu (event) {
+      console.log(event)
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex
       // console.log(oldIndex)
       // console.log(newIndex)
+
       var tempList = this.formCardList
       if (oldIndex < newIndex) {
         // 선택한 값이 아래로 이동 (인덱스가 큰 쪽으로)
@@ -179,6 +181,7 @@ export default {
         tempList.splice(newIndex, 0, tempList[oldIndex])
         tempList.splice(oldIndex + 1, 1)
       }
+      this.formCardList = []
       this.formCardList = tempList
 
       // var selectList = tempList[oldIndex]
@@ -249,6 +252,7 @@ export default {
         // this.formCardList[i].outerHtml = formCard[i].outerHTML
         // this.formCardList[i].innerHtml = formCard[i].innerHTML
         // this.formCardList[i].type = formCard[i].originalType
+        console.log(formCard[i])
         var temp = {}
         temp.outerHtml = formCard[i].outerHTML
         temp.innerHtml = formCard[i].innerHTML

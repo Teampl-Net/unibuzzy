@@ -12,12 +12,12 @@ export default {
   },
   methods: {
     show () {
-      if (document.getElementsByClassName('spinner')) {
+      if (document.getElementsByClassName('spinner')[0]) {
         document.getElementsByClassName('spinner')[0].style.display = 'block'
       }
     },
     hide () {
-      if (document.getElementsByClassName('spinner')) {
+      if (document.getElementsByClassName('spinner')[0]) {
         document.getElementsByClassName('spinner')[0].style.display = 'none'
       }
     }

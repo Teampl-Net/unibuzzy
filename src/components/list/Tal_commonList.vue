@@ -113,7 +113,7 @@
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 </template>
 <script>
-import { nextTick } from '@vue/runtime-core'
+// import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
 export default {
     data: function () {
@@ -569,7 +569,7 @@ export default {
       var time = this.$cancelTimer(date)
       // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
       if (time !== false){
-        nextTick(() => {
+        this.$nextTick(() => {
           // document.getElementById('timerText'+contentsKey).innerHTML = innerHTML
           setInterval(() => {
             time = this.$cancelTimer(date)
