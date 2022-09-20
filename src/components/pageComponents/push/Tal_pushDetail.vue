@@ -57,7 +57,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" style="word-break: break-word;" v-html="this.$findUrlChangeAtag(decodeContents(alim.bodyFullStr))"></div>
+        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" style="word-break: break-word;" v-html="decodeContents(alim.bodyFullStr)"></div>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -88,8 +88,11 @@
                 </div>
               </template>
               <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
-              data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+              data-clipboard-action="copy" id="boardDetailCopyBody" @click="openSelectSharePop"
                 :data-clipboard-text="copyTextStr">
+                <!-- <img src="../../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
+              data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText"
+                :data-clipboard-text="copyTextStr"> -->
             </div>
             <gBtnSmall v-if="alim.canReplyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
             <!-- <div v-if="detailVal.canReplyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
@@ -128,6 +131,7 @@
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
     <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+    <!-- <gSharePop /> -->
   </div>
 </template>
 <script>
@@ -264,6 +268,38 @@ export default {
     }
   },
   methods: {
+    openSelectSharePop () {
+      // alert(navigator.userAgent)
+      if (navigator.share) {
+        navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
+      } else alert('지원하지 않는 브라우저입니다.')
+
+      /* window.navigator.share({
+        title: '더알림', // 공유될 제목
+        text: 'test', // 공유될 설명
+        url: this.copyTextStr// 공유될 URL
+      }).then(() => {
+        alert('공유 성공')
+      }).catch(() => {
+        alert('지원 되지 않는 api')
+      }) ||  */
+      /*  navigator.share({
+        title: '더알림', // 공유될 제목
+        text: 'test', // 공유될 설명
+        url: 'https://mo.d-alim.com'// 공유될 URL
+      }).then(() => {
+        alert('공유 성공')
+      }).catch(() => {
+        alert('지원 되지 않는 api')
+      }) */
+    },
+    shareText (type) {
+      if (type === 'sms') {
+        this.$sendSms(undefined, this.copyTextStr)
+      } else if (type === 'copy') {
+        this.copyText()
+      }
+    },
     async copyTextMake () {
       var title = '[' + this.$changeText(this.alimDetail[0].nameMtext) + ']'
       var message = this.alimDetail[0].title
@@ -402,7 +438,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -570,7 +606,7 @@ export default {
         inParam.teamKey = this.alimDetail[0].creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -638,7 +674,7 @@ export default {
       memo.memoKey = param.memoKey
       console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -670,7 +706,7 @@ export default {
         memo.offsetInt = 0
       } */
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       console.log('memo')
@@ -701,7 +737,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     },
@@ -798,7 +834,7 @@ export default {
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {

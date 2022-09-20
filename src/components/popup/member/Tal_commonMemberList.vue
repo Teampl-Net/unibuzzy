@@ -5,7 +5,7 @@
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
           <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
         </div>
-        <img v-else src="../../../assets/images/main/main_profile.png" style=" width: 30px; float: left; " />
+        <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style=" width: 30px; float: left; " />
         <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
           <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
           <p v-else class="font8 commonBlack fontBold" style="">매니저</p>

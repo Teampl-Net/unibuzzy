@@ -23,7 +23,7 @@
         </transition>
       </router-view> -->
     </div>
-    <TalFooter class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
+    <TalFooter @changePath="changePath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
   </div>
 </template>
 
@@ -130,20 +130,12 @@ export default {
           } */
         }
       }
-    },
-    $route (to, from) {
-      // console.log(from.meta.page + ' ' + to.meta.page)
-      // console.log()
-      // if (to.meta.page > from.meta.page) {
-      //   to.meta.enterClass = 'animate__animated animate__fadeInRightBig'
-      //   from.meta.leaveClass = 'animate__animated animate__fadeOutLeftBig'
-      // } else if (to.meta.page < from.meta.page) {
-      //   to.meta.enterClass = 'animate__animated animate__fadeInLeftBig'
-      //   from.meta.leaveClass = 'animate__animated animate__fadeOutRightBig'
-      // }
     }
   },
   methods: {
+    async changePath (page) {
+      await this.$router.replace(page)
+    },
     /* footerAni (transitionName) {
       this.transitionName = transitionName
     }, */
@@ -152,7 +144,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -318,6 +310,9 @@ export default {
 
       if (reloadYn) {
         this.routerReloadKey += 1
+        if (this.$route.path === '/') {
+          this.$refs.mainRouterView.reloadPage()
+        }
       }
       this.popShowYn = false
     },
@@ -329,7 +324,7 @@ export default {
     },
     goPage (page) {
       this.showMenuYn = false
-      this.$router.push({ path: '/' + page })
+      this.$router.replace({ path: '/' + page })
     }
   },
   created () {

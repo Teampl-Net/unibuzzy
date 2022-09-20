@@ -1,24 +1,28 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap">
         <div @click="routePage('/')" class="footerRouter col-3">
-          <div v-if="this.$route.path === '/'" class="commonColor fontBold text-center font12" >
-            <img :src="footerIcon[0].fullIcon"/><p class="font12 fontBold activeFooterMenu" >홈</p>
-          </div>
-          <div v-else class="commonColor fontBold text-center font12" >
-            <img :src="footerIcon[0].icon"/><p class="font12">홈</p>
+          <div class="commonColor fontBold text-center font12">
+            <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
+            <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">홈</p>
           </div>
         </div>
         <div @click="routePage('/pushList')" class="footerRouter col-3">
-          <div v-if="this.$route.path === '/pushList'" class="commonColor fontBold text-center font12"><img :src="footerIcon[1].fullIcon"/> <p class="font12 activeFooterMenu">알림</p></div>
-          <div v-else class="commonColor fontBold text-center font12"><img :src="footerIcon[1].icon"/> <p class="font12" >알림</p></div>
+          <div class="commonColor fontBold text-center font12">
+            <img v-if="this.$route.path === '/pushList'" :src="footerIcon[1].fullIcon"/> <img v-else :src="footerIcon[1].icon"/>
+            <p :class="this.$route.path === '/pushList'? 'activeFooterMenu' : 'font12'">알림</p>
+          </div>
         </div>
         <div @click="routePage('/chanList')" class="footerRouter col-3">
-          <div v-if="this.$route.path === '/chanList'" class="commonColor fontBold text-center font12"><img :src="footerIcon[2].fullIcon" /> <p class="font12 activeFooterMenu">채널</p></div>
-          <div v-else class="commonColor fontBold text-center font12"><img :src="footerIcon[2].icon"/> <p class="font12" >채널</p></div>
+          <div class="commonColor fontBold text-center font12">
+            <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon"/> <img v-else :src="footerIcon[2].icon"/>
+            <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
+          </div>
         </div>
         <div @click="routePage('/myPage')" class="footerRouter col-3">
-          <div v-if="this.$route.path === '/myPage'" class="commonColor fontBold text-center font12"><img :src="footerIcon[3].fullIcon"/> <p class="font12 activeFooterMenu">내정보</p></div>
-          <div v-else class="commonColor fontBold text-center font12"><img :src="footerIcon[3].icon"/> <p class="font12" >내정보</p></div>
+          <div class="commonColor fontBold text-center font12">
+            <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
+            <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">내정보</p>
+          </div>
         </div>
     </div>
 </template>
@@ -44,8 +48,7 @@ export default {
       // alert(page)
       this.activeFooter = page
       // await this.$router.push(page)
-      // alert(JSON.stringify(this.$router.currentRoute._rawValue.path))
-      await this.$router.push(page)
+      this.$emit('changePath', page)
 
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */

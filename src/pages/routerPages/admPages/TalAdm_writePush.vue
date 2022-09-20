@@ -155,6 +155,8 @@ export default {
     }
   },
   mounted() {
+    debugger
+    console.log(this.params)
     document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
       console.log(e)
       var items = (e.clipboardData || e.originalEvent.clipboardData).items;
@@ -172,6 +174,9 @@ export default {
               console.log(file);
           //uploadFile(file);
           } else {
+            // e.preventDefault()
+            /* const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+            document.execCommand("insertHTML", false, text); */
             // const getText = (e.originalEvent || e).clipboardData.getData('text/plain')
             // var pastedData = event.clipboardData ||  window.clipboardData;
 
@@ -291,7 +296,8 @@ export default {
       // 요청 받은 알림신청 건이면 true로 변경
       answerRequsetYn: false,
       answerRequestMsg: '',
-      requestAgreeYn: false
+      requestAgreeYn: false,
+      creTeamKey: 0
       // formCardHeight: 0
 
 
@@ -330,6 +336,9 @@ export default {
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
       console.log(this.params)
+      if (this.params.targetKey) {
+        this.creTeamKey = this.params.targetKey
+      }
       this.creUserName = this.params.userName
       this.showCreNameYn = true
       this.canReplyYn = true
@@ -349,7 +358,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.승인 처리',
+        //   url: 'https://mo.d-alim.com/service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -369,7 +378,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -596,25 +605,25 @@ export default {
     },
     async sendMsg () {
         var paramImgList = []
-        if (this.viewTab === 'complex' && this.uploadFileList.length > 0) {
-            this.checkPopYn = false
-            this.progressShowYn = true
-        } else {
-            this.sendLoadingYn = true
-        }
         // this.sendLoadingYn = true
         // eslint-disable-next-line no-new-object
         var param = new Object()
         var innerHtml =''
         param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
         var targetMsgDiv = null
+        console.log('업로드할 개수는!!!' + this.uploadFileList.length)
         if (this.uploadFileList.length > 0) {
+            this.checkPopYn = false
+            this.progressShowYn = true
             await this.formSubmit()
             setTimeout(() => {
-              this.progressShowYn = false
+            this.progressShowYn = false
             }, 2000)
             this.sendLoadingYn = true
+        } else {
+            this.sendLoadingYn = true
         }
+        
         if(this.viewTab === 'complex') {
         // this.$refs.complexEditor.setParamInnerHtml()
         param.bodyHtmlYn = true
@@ -672,8 +681,8 @@ export default {
             }
             }
         }
-        // param.teamName = this.$changeText(this.params.targetNameMtext)
-        param.creTeamKey = this.params.targetKey
+        param.teamName = this.$changeText(this.params.targetNameMtext)
+        param.creTeamKey = this.params.targetKey || this.creTeamKey
         // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
         // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -702,10 +711,8 @@ export default {
         }
 
         result = await this.$saveContents(param)
-        console.log(result)
-        if (result.result === true) {
-
-          this.sendLoadingYn = false
+        console.log('ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        /* if (result.result === true) { */
           if (this.replyPopYn) {
               var param = {}
               param = this.params
@@ -719,7 +726,7 @@ export default {
             this.closeXPop(true)
           }
 
-        }
+       /*  } */
 
     },
     closeXPop (reloadYn) {
@@ -769,6 +776,7 @@ export default {
         await this.$refs.complexEditor.setParamInnerHtml()
       } else {
         var title = this.writePushTitle
+        title = title.trim()
         if (this.titleShowYn) {
           if (title !== undefined && title !== null && title !== '') {
           } else {
@@ -889,13 +897,13 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('http://222.233.118.96:19091/tp.uploadFile', form/* ,
-              {
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+                /* {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
-                  thisthis.progressBarList[i].percentage = Math.round(percentage)
+                  thisthis.uploadFileList[i].percentage = Math.round(percentage)
                 }
-              } */,
+              }, */
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

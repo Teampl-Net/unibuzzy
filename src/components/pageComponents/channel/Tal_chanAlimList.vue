@@ -398,13 +398,16 @@ export default {
     },
     async copyText () {
       // eslint-disable-next-line no-undef
-      var clip = new ClipboardJS('#copyTextBody')
+      /* var clip = new ClipboardJS('#copyTextBody')
       var _this = this
       clip.on('success', function (e) {
         _this.errorBoxText = '채널링크가 복사되었습니다!'
         _this.errorBoxType = 'timeout'
         _this.errorBoxYn = true
-      })
+      }) */
+      if (navigator.share) {
+        navigator.share({ title: '더알림', text: this.chanItem.nameMtext, url: this.copyTextStr })
+      } else alert('지원하지 않는 브라우저입니다.')
     },
     changeRecvAlimYn () {
       // eslint-disable-next-line no-new-object
@@ -453,7 +456,7 @@ export default {
         params = { follower: param, doType: 'ME' }
       }
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
+        url: 'https://mo.d-alim.com/service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

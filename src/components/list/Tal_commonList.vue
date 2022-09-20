@@ -53,7 +53,7 @@
                     </div>
                 </div>
               </div>
-                <div @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="this.$findUrlChangeAtag(setBodyLength(alim.bodyFullStr))"></div>
+                <div @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></div>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
@@ -297,7 +297,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
         console.log(result.data)
@@ -313,7 +313,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         console.log('sssssssssssssss')
@@ -453,7 +453,7 @@ export default {
       console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       console.log(result.data.result)
@@ -552,7 +552,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -627,7 +627,7 @@ export default {
           param = this.tempData
           console.log(param)
           await this.$commonAxiosFunction({
-            url: 'service/tp.deleteContents',
+            url: 'https://mo.d-alim.com/service/tp.deleteContents',
             param: param
           })
           this.$emit('refresh')
@@ -658,7 +658,7 @@ export default {
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       if (result.data.result === true || result.data.result === 'true') {
@@ -857,7 +857,7 @@ export default {
       // }
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       // console.log(result.data.content)
@@ -907,30 +907,34 @@ export default {
         this.memoSetCount(response.totalElements)
     },
     async copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
-        var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
+        // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
         var title = '[' + this.$changeText(teamName) + ']'
         if (cabName) {
             title += cabName
         }
         var message = titleMsg
-        if (!text) {
+        // if (!text) {
             if (jobkindId === 'BOAR') {
                 var link = await this.$makeShareLink(contentsKey, 'boardDetail', message, title)
             } else {
                 var link = await this.$makeShareLink(contentsKey, 'pushDetail', message, title)
             }
-            if (link) { document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText = link }
+            if (link) { 
+                if (navigator.share) {
+                    navigator.share({ title: '더알림', text: title, url: link })
+                } else alert('지원하지 않는 브라우저입니다.') 
+            }
 
             // this.contentsList[index].copyText = link
-        }
-        setTimeout(() => {
+        // }
+        /* setTimeout(() => {
             var clip = new ClipboardJS('#copyTextBody' + contentsKey)
             var _this = this
             clip.on('success', function (e) {
                 _this.confirmText = '알림링크가 복사되었습니다!'
                 _this.confirmPopShowYn = true
             })
-        }, 300)
+        }, 300) */
 
     },
     loadingRefShow(){

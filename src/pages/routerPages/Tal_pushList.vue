@@ -257,7 +257,7 @@ export default {
       paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)

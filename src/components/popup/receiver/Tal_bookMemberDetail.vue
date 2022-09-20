@@ -10,7 +10,7 @@
            <!--  <img :src="this.domainPath + userProfileImg" /> -->
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
-        <!-- <img v-else src="../../../assets/images/main/main_profile.png" style="  float: left; " /> -->
+        <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
     </div>
     <div class="addMemberTextArea">
         <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
@@ -162,7 +162,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: 'service/tp.getUserList',
+                    // url: 'https://mo.d-alim.com/service/tp.getUserList',
                     // param: param
                     // })
                     // console.log(response)
@@ -209,7 +209,7 @@ export default {
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getFollowerList',
+                url: 'https://mo.d-alim.com/service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             var list = []
@@ -327,7 +327,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.deleteManager',
+                url: 'https://mo.d-alim.com/service/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}

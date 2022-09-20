@@ -21,7 +21,7 @@
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative; padding: 0px 0.5rem; " v-if="this.targetType === 'chanList'">
         <chanList :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
-      <changeInfo @closeLoading="this.loadingYn = false" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
+      <changeInfo @closeLoading="this.loadingYn = false"  @successUpdate="successchangeUserInfo" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
       <askTal @closeLoading="this.loadingYn = false" v-if="this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
       <talInfo @closeLoading="this.loadingYn = false" v-if="this.targetType === 'theAlimInfo'" />
       <question @closeLoading="this.loadingYn = false" v-if="this.targetType === 'question'" @openPop = "openPop"/>
@@ -286,7 +286,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       console.log(result)
@@ -386,6 +386,9 @@ export default {
     BackPopClose (e) {
       this.closeXPop()
     },
+    successchangeUserInfo () {
+      this.closeXPop(true)
+    },
     async settingPop (successChanYn) {
       this.chanFollowYn = false
       var target = this.params
@@ -438,8 +441,8 @@ export default {
         this.targetType = 'changeInfo'
         this.headerTitle = '휴대폰 번호 수정'
       } else if (this.targetType === 'changeEmail') {
-        this.targetType = 'changeInfo'
         this.changInfoType = this.targetType
+        this.targetType = 'changeInfo'
         this.headerTitle = '이메일 수정'
       } else if (this.targetType === 'createChannel') {
         if (target.modiYn === true) {
@@ -580,6 +583,8 @@ export default {
           // this.reloadYn = false
         } else if (this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
+        } else if (this.targetType === 'setMypage') {
+          this.closeXPop()
         } else if (this.targetType === 'editManagerList') {
           /* if (this.params.selectMemberType = 'manager')
             await this.$refs.selectManagerCompo.refresh()
@@ -598,6 +603,7 @@ export default {
           if (this.openChanMenuYn) {
             await this.$refs.chanMenuCompo.refresh()
           }
+          console.log('closing...')
           await this.$refs.gPopChanAlimList.refreshList()
           // await this.$refs.gPopChanAlimList.refresh()
         } else if (this.targetType === 'pushListAndDetail') {

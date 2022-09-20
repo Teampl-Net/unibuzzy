@@ -97,6 +97,7 @@ export default {
     this.$emit('closeLoading')
   },
   async created () {
+    this.$emit('changePageHeader', '채널')
     this.loadingYn = true
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
@@ -108,7 +109,6 @@ export default {
       /* var history = localStorage.getItem('popHistoryStack').split('$#$')
       this.pageHistoryName = 'page' + (history.length - 1) */
     }
-    this.$emit('changePageHeader', '채널')
     var resultList = await this.getChannelList()
     this.chanList = resultList.content
     if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {

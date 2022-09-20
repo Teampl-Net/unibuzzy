@@ -1,33 +1,51 @@
 <template>
-<div class="pagePaddingWrap" >
-  <div class="mt-header introText">
-      <p v-html="this.introText"></p>
-  </div>
-  <div class="textLeft" v-if="this.kind === 'changeMobile'">
-    <select>
-      <option>대한민국(+82)</option>
-    </select>
-  </div>
-  <div class="inputWrap">
-    <input type="number" :placeholder="this.kindText + ' 입력'" name="" id="" >
-    <gBtnSmall :btnTitle="this.sendNumberBtn" class="inputBtn" />
-  </div>
-  <div class="inputWrap">
-    <input type="number" placeholder="인증번호 입력" name="" id="" >
+<div class="pagePaddingWrap" style="background: rgb(220, 221, 235);">
+  <div style="border-radius: 0.8rem; background: #FFF; box-shadow: 0 0 7px 3px hsl(0deg 2% 71% / 25%); width: 100%; float: left; margin-top: 15px; padding: 10px 10px; padding-top: 5px;">
+    <div class=" introText" style="border-bottom: 1.5px solid hsl(0deg 2% 71% / 25%); padding-bottom: 10px; margin-bottom: 10px;" >
+        <p class="font18" v-html="this.introText"></p>
     </div>
+    <div class="textLeft" v-if="this.kind === 'changeMobile'">
+        <select>
+        <option>대한민국(+82)</option>
+        </select>
+    </div>
+    <div class="inputWrap ">
+        <p class="font18 textLeft fontBold">변경할 {{kindText}} 인증</p>
+        <div style="width: 100%; min-height: 30px; position: relative; float:left;">
+            <input v-model="infoValue" type="" ref="valueBox" :placeholder="this.kindText + ' 입력'" name="" id="" >
+            <gBtnSmall @click="sendMsg" :btnTitle="this.sendNumberBtn" class="inputBtn" />
+        </div>
+    </div>
+    <div class="inputWrap">
+        <div style="width: 100%; min-height: 30px; position: relative; float:left;">
+            <input type="" v-model="token" :placeholder="TimerStr" name="" id="" >
+            <gBtnSmall @click="checkValidation" v-if="sendOk" :btnTitle="'인증하기'" class="inputBtn" />
+        </div>
+    </div>
+  </div>
 </div>
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 export default {
   data () {
     return {
-      sendNumberBtn: '인증하기',
+      sendNumberBtn: '인증번호발송',
       introText: '',
       targetKind: '',
       kindText: '',
       beforeEmail: '',
-      beforePhone: ''
+      beforePhone: '',
+      infoValue: '',
+      token: '',
+      sendOk: false,
+      timeText: '',
+      holdingEmail: '',
+      Timer: null,
+      TimeCounter: 300,
+      TimerStr: "인증번호 입력"
     }
   },
   created () {
@@ -37,6 +55,91 @@ export default {
     kind: {}
   },
   methods: {
+    validTimeCheck (alim) {
+      var result = false
+      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.commonListCreUserKey){
+        var time = this.$checkValidTime(alim.creDate)
+        if (time !== false) {
+          result = true
+        }
+      }
+      return result
+    },
+    regEmail (text) {
+      var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+      if (regemail.test(text) === true) {
+        return true
+      } else {
+        return false
+      }
+    },
+    sendMsg () {
+        if (this.regEmail(this.infoValue.trim())) {
+            if (JSON.parse(localStorage.getItem('sessionUser')).userEmail === this.infoValue) {
+                alert('현재이메일과 변경이메일이 동일합니다')
+                return
+            }
+            this.sendEmail()
+        }else {
+            alert('이메일 형식이 올바르지 않습니다')
+        }
+    },
+    async sendEmail () {
+      // var t = 'suman9o@susoft.co.kr'
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.address = this.infoValue
+      this.holdingEmail = this.infoValue
+      var result = await this.$commonAxiosFunction({
+        url: 'https://mo.d-alim.com/service/tp.sendMail',
+        param: param
+      })
+      if (result.data.result) {
+        console.log(result.data.result)
+        if(this.Timer != null){
+            this.timerStop(this.Timer)
+            this.Timer = null;
+        }
+        this.Timer = this.timerStart()
+        this.sendOk = true
+        this.$refs.valueBox.readOnly = true
+      } else {
+            alert(result.data.message)
+            this.token = ''
+            this.holdingEmail = ''
+            this.sendOk = false
+            this.infoValue = ''
+            this.timerStop(this.Timer)
+            this.Timer = null
+            TimerStr= '인증번호 입력'
+      }
+    },
+    timerStart () {
+      // 1초에 한번씩 start 호출
+      this.TimeCounter = 300;
+      var this_ = this
+      var interval = setInterval(() => {
+        this_.TimeCounter-- //1초씩 감소
+        this_.TimerStr = this_.prettyTime()
+        if (this_.TimeCounter <= 0) this_.timerStop(interval)
+      }, 1000)
+      return interval
+    },
+    timerStop (Timer) {
+      clearInterval(Timer)
+      this.TimeCounter = 0
+    },
+    prettyTime () {
+      // 시간 형식으로 변환 리턴
+      let time = this.TimeCounter / 60
+      let minutes = parseInt(time)
+      let secondes = Math.round((time - minutes) * 60)
+      return (
+        minutes.toString().padStart(2, "0") +
+        ":" +
+        secondes.toString().padStart(2, "0")
+      )
+    },
     checkMyInfo () {
       if (this.kind === 'changeMobile') {
         this.kindText = '휴대전화 번호'
@@ -51,24 +154,54 @@ export default {
       } else if (this.kind === 'changeEmail') {
         this.kindText = '이메일 주소'
         var userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
-        if (userEmail !== undefined && userEmail !== 'undefined' && userEmail !== null && userEmail !== 'null' && userEmail !== '' && localStorage.getItem('userEmail').length > 7) {
+        if (userEmail !== undefined && userEmail !== 'undefined' && userEmail !== null && userEmail !== 'null' && userEmail !== '') {
           this.targetKind = 'change'
-          this.introText = '기존 이메일은 ' + localStorage.getItem('userEmail') + ' 입니다.<br>변경할 이메일로 인증 메일 받기'
+          this.introText = '현재 등록된 이메일<br> <span class="commonBlack font16 mleft-05" style="font-weight: normal;"> ' + userEmail + '</span>'
         } else {
           this.targetKind = 'new'
-          this.introText = '현재 등록되어 있는 이메일이 없습니다.<br>추가할 이메일로 인증 메일 받기'
+          this.introText = '현재 등록되어 있는 이메일이 없습니다.'
         }
       }
+    }, 
+    async checkValidation () {
+        var param = new Object()
+        param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        if (this.token === undefined || this.token === null || this.token === '') {
+            alert('인증번호를 입력해 주세요')
+            return
+        }
+        param.token = this.token
+        param.address = this.holdingEmail
+        var result = await this.$commonAxiosFunction({
+            url: 'https://mo.d-alim.com/service/tp.checkValidation',
+            param: param
+        })
+        
+        console.log(result)
+        if (result.data.userInfo) {
+            localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
+            this.$router.replace({ path: '/' })
+            this.$emit('successUpdate')
+        } else {
+            alert(result.data.message)
+            this.token = ''
+            this.holdingEmail = ''
+            this.sendOk = false
+            this.infoValue = ''
+            this.timerStop(this.Timer)
+            this.Timer = null
+            TimerStr= '인증번호 입력'
+        }
     }
   }
 }
 </script>
 <style scoped>
-.introText{width: 100%; height: 4rem;}
-.introText p{text-align: left; font-weight: bold; color: #6768A7; font-size: 15px;}
+.introText{width: 100%; min-height: 50px; margin-top: 10px;}
+.introText p{text-align: left; font-weight: bold; color: #6768A7;}
 .changeInfoWrap{height: 100vh; width: 100%;}
 input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid #6768A7;}
-.inputWrap{margin-top: 0.5rem; width: 100%; position: relative;}
+.inputWrap{margin-top: 0.5rem; float: left; min-height: 50px; width: 100%; position: relative;}
 select{height: 40px; width: 160px; border: none;}
 .inputBtn{position: absolute; right: 0.1rem; top: 0.3rem;}
 </style>

@@ -85,6 +85,39 @@ const methods = {
 
     return text
   },
+  checkTokenValidTime () {
+    var compareDate = new Date()
+    var now = new Date()
+    var text = ''
+    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(now).format('YYYY')) {
+      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')) {
+        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(now).format('DD')) {
+          compareDate.setHours(compareDate.getHours() + 9)
+          compareDate.setMinutes(compareDate.getMinutes() + 5)
+          const distance = compareDate.getTime() - now.getTime()
+          if (distance > 0) {
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+            text = '인증 유효시간 '
+            text += (minutes < 10 ? '0' + minutes : minutes) + '분'
+            text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
+            var innerHTML = ' <p class="font12 fr grayBlack textRight">' + text + '</p>'
+            text = innerHTML
+          } else {
+            text = false
+          }
+        }
+      }
+    }
+    // D-Day 날짜에서 현재 날짜의 차이를 getTime 메서드를 사용해서 밀리초의 값으로 가져온다.
+    // const distance = setDate.getTime() - now.getTime();
+    // var text = ''
+    // var result = {}
+    // result.showYn = distance > 0 ? true : false
+    // result.timer = text
+
+    return text
+  },
   changeDateMemoFormat (date) {
     var compareDate = new Date(date)
     var toDate = new Date()
@@ -262,7 +295,7 @@ const methods = {
     }
 
     var result = await this.$commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -411,6 +444,8 @@ const methods = {
         titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
         break
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       if (titleText.length > 64) {
         titleText = titleText.substring(0, 64) + '..'
         break
@@ -739,6 +774,7 @@ export default {
     Vue.config.globalProperties.$previewFile = methods.previewFile
     Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
     Vue.config.globalProperties.$cancelTimer = methods.cancelTimer
+    Vue.config.globalProperties.$checkTokenValidTime = methods.checkTokenValidTime
     Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
     Vue.config.globalProperties.$findUrlChangeAtag = methods.findUrlChangeAtag
   }
