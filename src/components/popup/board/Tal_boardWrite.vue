@@ -41,9 +41,9 @@
                   </div>
                 </div>
                 <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
-                <div class="pageMsgArea" style="">
+                <div id="pageMsgBoardAreaWrap" class="pageMsgArea" style="">
                   <!-- <p class="">내용</p> -->
-                  <div id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; word-break: break-all; min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+                  <pre id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; word-break: break-all; min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre>
                   <formEditor ref="complexEditor" @changeUploadList="changeUploadList" v-show="viewTab === 'complex'" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
                   <div id="msgBox" @click="formEditorShowYn = true" v-show="previewContentsShowYn"  class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >클릭하여 내용을 작성해주세요</div>
 
@@ -84,7 +84,7 @@ export default {
     }
   },
   mounted () {
-    document.querySelector('#textMsgBox').addEventListener('paste', (e) => {
+    document.querySelector('#pageMsgBoardAreaWrap').addEventListener('paste', (e) => {
       var items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const i of items) {
         var item = i
@@ -98,6 +98,9 @@ export default {
           // uploadFile(file);
         }
       }
+      e.preventDefault()
+      var textData = (e.originalEvent || e).clipboardData.getData('Text')
+      document.execCommand('insertHTML', false, textData)
     })
     var temp = document.createElement('div')
     temp.innerHTML = this.bodyString
@@ -245,7 +248,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+        url: 'service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -265,7 +268,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+      //   url: 'service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -617,7 +620,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

@@ -113,7 +113,7 @@
                 </div>
                 <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
                 <div id="pageMsgAreaWrap" class="pageMsgArea" style="">
-                  <div id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></div>
+                  <pre id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></pre>
 
                   <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
                   <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
@@ -172,11 +172,33 @@ export default {
               console.log(file);
           //uploadFile(file);
           } else {
-            e.preventDefault()
-            const text = (e.originalEvent || e).clipboardData.getData('text/plain');
-            document.execCommand("insertHTML", false, text);
+            // const getText = (e.originalEvent || e).clipboardData.getData('text/plain')
+            // var pastedData = event.clipboardData ||  window.clipboardData;
+
+            // const selection = document.getSelection();
+            // const range = selection.getRangeAt(0);
+            // const start = range.startOffset; // 텍스트 선택 시작 위치
+            // const end = range.endOffset; // 텍스트 선택 마지막 위치
+            // if (this.viewTab != 'complex') {
+              // const text = document.getElementById('textMsgBoxPush').textContent
+              // const before = text.slice(0, start)
+              // const after = text.slice(end)
+
+              // console.log(start)
+              // console.log(before)
+              // console.log(after)
+              // document.getElementById('textMsgBoxPush').textContent = before + getText + after;
+              // document.getElementById('textMsgBoxPush').textContent = getText;
+              // const text = (e.originalEvent || e).clipboardData.getData('text/html')
+            // }
+            // e.preventDefault()
+            // const text = (e.originalEvent || e).clipboardData.getData('text/html');
+            // document.execCommand("insertHTML", false, text);
           }
       }
+      e.preventDefault()
+      var textData = (e.originalEvent || e).clipboardData.getData('Text')
+      document.execCommand('insertHTML', false, textData)
     })
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
@@ -327,7 +349,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com/service/tp.승인 처리',
+        //   url: ''service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -347,7 +369,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
+        //   url: ''service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -867,7 +889,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form/* ,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form/* ,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

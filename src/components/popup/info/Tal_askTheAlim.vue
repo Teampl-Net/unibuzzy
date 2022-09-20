@@ -6,10 +6,10 @@
     </select> -->
     <input type="text" class="askBoxWrap askCommonFont mtop-1" v-model="askTitle" placeholder="제목"/>
 
-    <gActiveBar :tabList="this.activeTabList" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
-    <div class="pageMsgArea" style="">
+    <gActiveBar :tabList="this.activeTabList" style="" ref="activeBar" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+    <div id="textMsgAskBox" class="pageMsgArea" style="">
       <!-- <p class="">내용</p> -->
-      <div id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></div>
+      <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre>
       <!-- <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
       <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
       <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted () {
-    document.querySelector('#textMsgBox').addEventListener('paste', (e) => {
+    document.querySelector('#textMsgAskBox').addEventListener('paste', (e) => {
       var items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const i of items) {
         var item = i
@@ -71,8 +71,13 @@ export default {
           this.previewFile(file)
           console.log(file)
           // uploadFile(file);
+        } else {
+
         }
       }
+      e.preventDefault()
+      var textData = (e.originalEvent || e).clipboardData.getData('Text')
+      document.execCommand('insertHTML', false, textData)
     })
     var temp = document.createElement('div')
     temp.innerHTML = this.bodyString
@@ -119,6 +124,46 @@ export default {
   props: {
   },
   methods: {
+    async previewFile (file) {
+      let fileExt = file.name.substring(
+        file.name.lastIndexOf('.') + 1
+      )
+      // 소문자로 변환
+      fileExt = fileExt.toLowerCase()
+      if (
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+      ) {
+        // FileReader 를 활용하여 파일을 읽는다
+        var reader = new FileReader()
+        var thisthis = this
+        reader.onload = e => {
+          var image = new Image()
+          image.onload = async function () {
+            var result = await thisthis.$saveFileSize(image, file)
+            thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
+            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            // this.$emit('updateImgForm', this.previewImgUrl)
+            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+          }
+          image.onerror = function () {
+
+          }
+          image.src = e.target.result
+          // this.previewImgUrl = e.target.result
+        }
+        reader.readAsDataURL(file)
+        // await this.$editorImgResize(this.selectFile)
+      }
+      // var result = await this.$previewFile(file)
+      // if (result !== undefined && result !== null && result !== ''){
+      //   this.$refs.complexEditor.addFormCard('image', result.url, true)
+      //   this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
+      // }
+      /* if (thisthis.$refs.selectFile.files.length > 1) {
+        thisthis.$emit('setMultiFile', thisthis.selectFileList)
+      } */
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
@@ -347,7 +392,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

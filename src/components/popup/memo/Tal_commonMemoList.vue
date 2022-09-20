@@ -32,8 +32,8 @@
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <div id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></div>
-          <div v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></div>
+          <pre id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
+          <div v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="this.$findUrlChangeAtag(memo.bodyFullStr)" ></div>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
           <div v-if="editIndex === index && editCIndex === ''">
@@ -59,7 +59,7 @@
                         <p @click="memoUserNameClick(cMemo.creUserKey)" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
-                    <div id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></div>
+                    <pre id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
                     <p v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr"></p>
                     <div v-if="editIndex === index && editCIndex === cIndex">
                       <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
@@ -99,6 +99,14 @@ export default {
     // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
     if (localStorage.getItem('sessionUser')) {
       this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    }
+    // document.querySelector('#editCommentBox').addEventListener('paste', (e) => {
+    if (document.getElementById('editCommentBox')) {
+      document.getElementById('editCommentBox').addEventListener('paste', (e) => {
+        e.preventDefault()
+        var textData = (e.originalEvent || e).clipboardData.getData('Text')
+        document.execCommand('insertHTML', false, textData)
+      })
     }
   },
   data () {
@@ -161,6 +169,7 @@ export default {
       this.editCIndex = ''
       this.cMemoEditYn = false
     },
+
     async editEnd (data) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
@@ -177,7 +186,7 @@ export default {
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       console.log(result)

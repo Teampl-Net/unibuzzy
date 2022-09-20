@@ -262,7 +262,7 @@ const methods = {
     }
 
     var result = await this.$commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
+      url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -381,6 +381,22 @@ const methods = {
     }
     return changedBoardName
   },
+  findUrlChangeAtag (inputText) {
+    const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
+    var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
+    console.log('rplcdTxt : ', rplcdTxt)
+    // const urlRegex = /(http:|https:)?(\/\/)?(www\.)?()\/(watch|embed)?(\?v=|\/)?(\S+)?/g
+
+    // var text = 'ref="https://example.com" targ 여기 짱이야 ! '
+    // text.replace(urlRegex, "<a href='$1' target='_blank' >$1</a>")
+    // console.log(text)
+
+    // inputText.replace(urlRegex, "<a href='$1' target='_blank' >$1</a>")
+    return rplcdTxt
+    // inputText.replace(urlRegex, (url) => {
+    //   return '<a href="' + url + '">' + url + '</a>'
+    // })
+  },
   titleToBody (inHtml) {
     // // eslint-disable-next-line no-debugger
     // debugger
@@ -391,7 +407,7 @@ const methods = {
       titleText += childNodes[i].textContent + ' '
       titleText = titleText.trimLeft()
       if (titleText === '') valueTextIdx += 1
-      if (titleText.length >= 6 && valueTextIdx < 2) {
+      if (titleText.length >= 6 && i === valueTextIdx) {
         titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
         break
       }
@@ -564,12 +580,13 @@ const methods = {
       iframe.style.display = 'none'
       document.body.appendChild(iframe)
     }
+
     var api = path.split('/image')[0]
-    // 파일서버 fileServer fileserver FileServer Fileserver
     iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
     console.log(iframe.src)
     // eslint-disable-next-line no-debugger
     debugger
+
     /* try {
       var pom = document.createElement('a')
       pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')
@@ -723,5 +740,6 @@ export default {
     Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
     Vue.config.globalProperties.$cancelTimer = methods.cancelTimer
     Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
+    Vue.config.globalProperties.$findUrlChangeAtag = methods.findUrlChangeAtag
   }
 }
