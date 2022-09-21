@@ -295,7 +295,7 @@ const methods = {
     }
 
     var result = await this.$commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
+      url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -304,40 +304,7 @@ const methods = {
     return response
   },
   addHistoryStack (n) {
-    // eslint-disable-next-line no-array-constructor
-    /* var historyS = ''
-    var history = localStorage.getItem('popHistoryStack')
-    if (history) {
-      historyS = history
-    }
-    historyS += '$#$' + n
-    localStorage.setItem('popHistoryStack', historyS)
-    localStorage.setItem('curentPage', n)
-    return localStorage.getItem('popHistoryStack').split('$#$').length */
   },
-
-  /* removeHistoryStack () {
-    var history = localStorage.getItem('popHistoryStack').split('$#$')
-    history.splice(-1, 1)
-    // eslint-disable-next-line no-array-constructor
-    var historyS = ''
-
-    for (var i = 0; i < history.length; i++) {
-      if (history[i].length > 0) { historyS += '$#$' + history[i] }
-    }
-    localStorage.setItem('popHistoryStack', historyS)
-    localStorage.setItem('curentPage', history[history.length - 1])
-    localStorage.setItem('pageDeleteYn', false)
-  }, */
-  /* removeHistoryStackForPage (pageHistoryName) {
-    if (localStorage.getItem('popHistoryStack')) {
-      var history = localStorage.getItem('popHistoryStack').split('$#$')
-      if (history[history.length - 1] === pageHistoryName) {
-        this.$removeHistoryStack()
-        this.$router.go(-1)
-      }
-    }
-  }, */
   isJsonString (str) {
     try {
       var json = JSON.parse(str)
@@ -346,29 +313,6 @@ const methods = {
       return false
     }
   },
-  // PullToRefreshInit () {
-  //   PullToRefresh.init({
-  //     mainElement: 'body',
-  //     // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-  //     distThreshold: '90',
-  //     // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-  //     distMax: '100',
-  //     // 새로고침 후 갖고있는 영역의 크기
-  //     distReload: '80',
-  //     // 최소 새로고침에 도달 했을 때 문구
-  //     instructionsReleaseToRefresh: ' ',
-  //     // 끌고 있을 때 문구
-  //     instructionsPullToRefresh: ' ',
-  //     // 새로고침 중 문구
-  //     instructionsRefreshing: ' ',
-  //     onRefresh () {
-  //       window.location.reload()
-  //     }
-  //   })
-  // },
-  // PullToRefreshDestroy () {
-  //   PullToRefresh.destroyAll()
-  // },
   checkUserAuth (data) {
     //
     var authList = { R: false, W: false, V: false }
@@ -451,44 +395,6 @@ const methods = {
         break
       }
     }
-    // eslint-disable-next-line no-debugger
-    // debugger
-    // var childNodes = inHtml.childNodes
-    // var titleText = ''
-    // titleText = childNodes[0].textContent
-    // if (titleText.indexOf('\n') === -1) {
-    //   if (titleText.length < 5) {
-    //     for (var i = 1; i < childNodes.length; i++) {
-    //       var node = childNodes[i]
-    //       titleText += node.textContent
-    //       if (titleText.length > 4) {
-    //         break
-    //       }
-    //     }
-    //   }
-    //   if (titleText.length > 64) {
-    //     titleText.substring(0, 64)
-    //   }
-    // } else {
-    //   // eslint-disable-next-line no-debugger
-    //   debugger
-    //   var titleNodeList = titleText.split('\n')
-    //   titleText = titleNodeList[0]
-    //   if (titleText.length < 5) {
-    //     for (i = 1; i < titleNodeList.length; i++) {
-    //       titleText += titleNodeList[i]
-    //       if (titleText.length > 4) {
-    //         break
-    //       }
-    //     }
-    //   }
-    //   if (titleText.length > 64) {
-    //     titleText.substring(0, 64)
-    //   }
-    // }
-
-    // param.title.split('\n')
-
     return titleText
   },
   /**

@@ -66,7 +66,6 @@ import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
-import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
 // import { getAnalytics } from 'firebase/analytics'
@@ -81,7 +80,6 @@ app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
 app.component('gAlertPop', gAlertPop)
-app.component('gSharePop', gSharePop)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
