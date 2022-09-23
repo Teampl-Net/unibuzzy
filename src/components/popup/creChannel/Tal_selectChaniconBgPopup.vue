@@ -14,7 +14,7 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea">
+              <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
                 <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" @change="changeImg" :src="previewImgUrl" alt="" class="preview hidden">
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
@@ -350,7 +350,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

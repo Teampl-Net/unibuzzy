@@ -482,12 +482,15 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
+    console.log(param)
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.updateUser',
+      url: 'service/tp.saveUser',
       param: param
     })
+    console.log(response)
     result = response
+    console.log(result)
     return result
   }
 }

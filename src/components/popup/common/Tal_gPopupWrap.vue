@@ -4,7 +4,7 @@
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params"
+                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose'
                                         />
       </transition>
       <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
@@ -27,7 +27,7 @@
       <question @closeLoading="this.loadingYn = false" v-if="this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal @closeLoading="this.loadingYn = false" v-if="this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel  v-if="this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
-      <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' />
+      <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
 
       <selectBookList v-if="this.targetType === 'selectBookList'" :pSelectedList="params.pSelectedList" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
@@ -126,6 +126,7 @@ export default {
   },
   data () {
     return {
+      toAlimFromBoardYn: false,
       helpYn: false,
       notiDetail: {},
       notiDetailShowYn: false,
@@ -280,6 +281,7 @@ export default {
     }
   },
   methods: {
+
     // 헤더에게 현재 chanAlimList에 화면이 구독중인지 확인하기 위해 사용
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
@@ -300,7 +302,6 @@ export default {
       console.log('selectedReceiverBookNMemberList')
       console.log(this.targetType)
       console.log(param.data.memberList)
-      // alert(JSON.stringify(param.data.memberList))
       if (!param.emit) {
         param.emit = true
         this.$emit('selectedReceiverBookNMemberList', param)
@@ -617,6 +618,19 @@ export default {
       }
       /* } */
     },
+    toAlimFromBoard () {
+      // alert(1)
+      // if (this.toAlimFromBoardYn === false) {
+      // alert(2)
+      // this.toAlimFromBoardYn = true
+      this.$emit('toAlimFromBoard')
+      // } else {
+      // alert(3)
+    },
+    toAlimThisPageClose () {
+      this.$refs.gPopChanAlimList.toAlimFromBoard('P')
+      this.popShowYn = false
+    },
     showToastPop (msg) {
       setTimeout(() => {
         this.$showToastPop(msg)
@@ -660,6 +674,8 @@ export default {
       // //   this.pushListAndDetailYn = false
       //   reloadYn = true
       // }
+      // eslint-disable-next-line no-debugger
+      debugger
       console.log(reloadYn)
       this.$emit('closePop', reloadYn)
     },

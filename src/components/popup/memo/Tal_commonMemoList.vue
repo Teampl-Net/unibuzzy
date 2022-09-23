@@ -1,5 +1,5 @@
 <template>
-    <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="memo.memoKey" :style="index === (memoList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
+    <div class="memoCard" v-for="(memo, index) in memoDataList" :key="index" :id="'rowMemoCard'+memo.memoKey" :style="index === (memoDataList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
       <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" > -->
       <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
 
@@ -33,7 +33,7 @@
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
           <pre id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
-          <div v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></div>
+          <pre v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
           <div v-if="editIndex === index && editCIndex === ''">
@@ -45,10 +45,10 @@
             <div v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.userKey) && cMemoEditYn === false" class="memoActionArea borderLeft font13" @click="editMemoClick(memo, index)">수정</div>
           </div>
           <div  v-if="!nonMemYn &&(editIndex !== index)" class="memoActionArea font13" @click="memoMemoClick(memo)" >댓글</div>
-          <p v-if="memo.cmemoList.length > 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.cmemoList.length}}개</p>
+          <!-- <p v-if="memo.cmemoList.length > 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.cmemoList.length}}개</p> -->
         </div>
         <div  style="width: 100%; margin-top: 15px; min-height: 50px; float: left;" v-if="memo.cmemoList.length > 0">
-            <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex">
+            <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex" :id="'rowMemoCard'+cMemo.memoKey">
                 <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
                 <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
                 <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
@@ -60,14 +60,15 @@
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
                     <pre id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
-                    <p v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr"></p>
+                    <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr"></pre>
                     <div v-if="editIndex === index && editCIndex === cIndex">
                       <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
                       <div class="memoActionArea font13"  @click="cancelEdit(cMemo, index)" >취소</div>
                     </div>
                     <div v-else>
                       <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.userKey))" @click="memoDeleteClick(cMemo, index, cIndex)">삭제</div>
-                      <div class="memoActionArea font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
+                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
+                      <div class="memoActionArea font13" v-if="!nonMemYn &&(editIndex !== index)"  @click="meMemoMemoClick(cMemo)" >댓글</div>
                     </div>
                     <!-- <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn">댓글</div> -->
                 </div>
@@ -77,7 +78,7 @@
           <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
         <!-- </div> -->
       </div>
-      <div class="MemoBorder"></div>
+      <div class="MemoBorder" v-if="memoList.length - 1 !== index"></div>
     </div>
     <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
     <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
@@ -96,6 +97,7 @@ export default {
     nonMemYn: {}
   },
   mounted () {
+    if (this.memoList) this.memoDataList = this.memoList
     // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
     if (localStorage.getItem('sessionUser')) {
       this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -108,10 +110,26 @@ export default {
         document.execCommand('insertHTML', false, textData)
       })
     }
+    this.settingNameTagEvent()
+    // for (let i = 0; i < this.memoDataList.length - 1; i++) {
+    //   if (this.memoDataList[i].cmemoList.length > 0) {
+    //     for (let mememoIdx = 0; mememoIdx < this.memoDataList[i].cmemoList.length; mememoIdx++) {
+    //       if (this.memoDataList[i].cmemoList[mememoIdx].parentMemoKey) {
+    //         this.$nextTick(() => {
+    //           document.getElementById('parentKey' + this.memoDataList[i].cmemoList[mememoIdx].memoKey).addEventListener('click', (e) => {
+    //             alert('Z' + this.memoDataList[i].cmemoList[mememoIdx].memoKey)
+    //           // console.log('안녕 : ' + this.memoDataList[i].cmemoList.parentMemoKey)
+    //           })
+    //         })
+    //       }
+    //     }
+    //   }
+    // }
   },
   data () {
     return {
       userKey: '',
+      memoDataList: [],
       editIndex: '',
       editCIndex: '',
       cMemoEditYn: false
@@ -120,9 +138,44 @@ export default {
   watch: {
     memoList () {
       this.memoLoadingHide()
+      this.memoDataList = this.memoList
+      this.settingNameTagEvent()
     }
   },
   methods: {
+    settingNameTagEvent () {
+      // eslint-disable-next-line no-debugger
+      // debugger
+      var memoNameCardList = window.document.querySelectorAll('.parentNameCard')
+      if (memoNameCardList !== undefined && memoNameCardList !== null && memoNameCardList !== '' && memoNameCardList.length > 0) {
+        for (let i = 0; i < memoNameCardList.length; i++) {
+          memoNameCardList[i].removeEventListener('click')
+        }
+      }
+      this.$nextTick(() => {
+        memoNameCardList = window.document.querySelectorAll('.parentNameCard')
+        for (let i = 0; i < memoNameCardList.length; i++) {
+          memoNameCardList[i].addEventListener('click', (e) => {
+            var id = memoNameCardList[i].id
+            var parentKey = id.split('parentKey')[1]
+            // this.$emit('findMemoAni', parentKey)
+            this.findMemoAni(parentKey)
+          })
+        }
+      })
+    },
+    findMemoAni (memoKey) {
+      var findMemoCard = window.document.getElementById('rowMemoCard' + memoKey)
+      if (findMemoCard) {
+        // setTimeout(() => {
+        findMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        findMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
+        setTimeout(() => {
+          findMemoCard.style.boxShadow = 'none'
+        }, 1000)
+        // }, 500)
+      }
+    },
     memoUserNameClick (creUser) {
       this.$emit('memoUserNameClick', creUser)
     },
@@ -202,6 +255,12 @@ export default {
     memoMemoClick (memo) {
       this.$emit('mememo', memo)
       // this.hoverAnima(memo.memoKey)
+    },
+    meMemoMemoClick (mememo) {
+      console.log('##cMemo##')
+      console.log(mememo)
+      console.log('#########')
+      this.$emit('mememoMemo', mememo)
     },
     scrollMove (key) {
       var location = document.getElementById(key)?.offsetTop

@@ -33,7 +33,7 @@
           <!-- </div> -->
           </div>
           <div v-if="(shareAuth && shareAuth.V === false) && board.creUserKey !== userKey" @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="'열람 권한이 없는 컨텐츠 입니다.'"></div>
-          <div v-else @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="setBodyLength(board.bodyFullStr)"></div>
+          <pre v-else @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(board.bodyFullStr)"></pre>
           <div id="alimCheckArea">
             <div class="alimCheckContents">
               <!-- <div class="pushDetailStickerWrap">

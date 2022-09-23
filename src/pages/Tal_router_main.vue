@@ -310,9 +310,10 @@ export default {
 
       if (reloadYn) {
         this.routerReloadKey += 1
-        if (this.$route.path === '/') {
-          this.$refs.mainRouterView.reloadPage()
-        }
+        console.log(this.$route.path)
+        // if (this.$route.path === '/') {
+        //   this.$refs.mainRouterView.reloadPage()
+        // }
       }
       this.popShowYn = false
     },

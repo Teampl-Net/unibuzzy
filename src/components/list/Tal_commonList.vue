@@ -7,12 +7,6 @@
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
           <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
-            <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
-            <div v-if="cancelTimerShowCheck(alim)" class="w-100P fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
-              <!-- <p :id="'timerBtn'+alim.contentsKey" v-if="false" class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" @click="cancelConfirm(alim)"> {{cancelTimerBtnArea(alim.creDate, alim.contentsKey) ? '' : ''}}</p> -->
-              <!-- <gBtnSmall v-if="!detailVal.nonMemYn && replyYn" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/> -->
-              <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
-            </div>
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -31,29 +25,35 @@
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
-                    <div class="w-100P fl" style=" margin-bottom: 5px;">
-                        <p style="width:100%; " class="font14 fl grayBlack">
-                            <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                            {{this.changeText(alim.nameMtext)}}
-                            <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
-                        </p>
-                    </div>
-                    <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
-                        <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
-                    </div>
-                    <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                    <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
-                        <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
-                        <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
-                    </div>
-                    <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                    <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" class="fr" style="padding: 0 5px;">
-                        <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
-                        <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
-                    </div>
+                  <div class="w-100P fl" style=" margin-bottom: 5px;">
+                      <p style="width:100%; " class="font14 fl grayBlack">
+                          <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                          {{this.changeText(alim.nameMtext)}}
+                          <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
+                      </p>
+                  </div>
+                </div>
+                <div class="fl w-100P">
+                  <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
+                      <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
+                  </div>
+                  <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
+                  <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
+                    <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
+                  </div>
+                  <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
+                    <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
+                    <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
+                  </div>
+                  <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" class="fr" style="padding: 0 5px;">
+                      <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
+                      <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
+                  </div>
                 </div>
               </div>
-                <div @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></div>
+                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
@@ -91,8 +91,8 @@
               </div> -->
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" />
-                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
+                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" />
+                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn === true" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -155,7 +155,8 @@ export default {
       currentMemoObj: {},
       showMoreMemoTextYn: false,
       moreMemoText: '댓글 더보기',
-      saveMemoLoadingYn: false
+      saveMemoLoadingYn: false,
+      currentMemoTotal:0
 
     }
   },
@@ -374,7 +375,9 @@ export default {
             // alert('ss')
           } else if (type === 'move' || type === 'copy') {
             this.moveOrCopyContent(type)
-          } else if (type === 'write') {
+          } else if (type === 'writeBoard') {
+            this.makeNewContents(type)
+          } else if (type === 'writeAlim') {
             this.makeNewContents(type)
           }
         } else if (this.tempData.memoKey) {
@@ -388,8 +391,15 @@ export default {
         }
       }
     },
-    makeNewContents () {
+    makeNewContents (type) {
+      // if (type === 'writeBoard') {
+      //   this.tempData.writeType = 'BOAR'
+      // } else if (type === 'writeAlim') {
+      //   this.tempData.writeType = 'ALIM'
+      // }
+      this.tempData.writeType = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
       this.$emit('makeNewContents', this.tempData)
+
     },
     deleteConfirm (data) {
       console.log('datadatadatadatadatadatadatadatadatadatadatadatadatadatadata')
@@ -561,7 +571,9 @@ export default {
         var response = await this.getContentsMemoList(this.currentContentsKey)
         this.currentMemoList = response.memoList
         this.currentMemoObj = response
-        this.offsetInt = this.currentMemoList.length
+        // this.offsetInt = this.currentMemoList.length
+        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
+        this.settingOffsetIntTotalMemoCount()
         this.memoSetCount(response.totalElements)
       }
     },
@@ -595,16 +607,29 @@ export default {
       }
       return result
     },
+    // findMemoAni (memoKey) {
+    //   var findMemoCard = document.getElementById('rowMemoCard'+memoKey)
+    //   if (findMemoCard) {
+    //     setTimeout(() => {
+    //         findMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+    //         findMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
+    //         setTimeout(() => {
+    //           findMemoCard.style.boxShadow = 'none'
+    //         }, 1000)
+    //     }, 1000)
+    //   }
+    // },
     pointAni (memoKey) {
+      // alert(memoKey)
       var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' #' + memoKey)[0]
       if (firstMemoCard) {
-        setTimeout(() => {
+        // setTimeout(() => {
             firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
             firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
             setTimeout(() => {
               firstMemoCard.style.boxShadow = 'none'
             }, 1000)
-        }, 1000);
+        // }, 1000);
       } else {
 
       }
@@ -671,7 +696,9 @@ export default {
         var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
         this.currentMemoList = response.memoList
         this.currentMemoObj = response
-        this.offsetInt = this.currentMemoList.length
+        // this.offsetInt = this.currentMemoList.length
+        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
+        this.settingOffsetIntTotalMemoCount()
         console.log(response)
         this.memoSetCount(response.totalElements)
         this.pointAni()
@@ -710,6 +737,9 @@ export default {
       // if (this.shareAuth.R === true) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
+        if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== ''){
+          data.parentMemoKey = memo.parentMemoKey
+        }
         data.memo = memo
         // eslint-disable-next-line no-new-object
         this.mememoValue = new Object()
@@ -731,7 +761,9 @@ export default {
             var response = await this.getContentsMemoList(key)
 
             this.currentMemoList = response.memoList
-            this.offsetInt = this.currentMemoList.length
+            // this.offsetInt = this.currentMemoList.length
+            // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
+            this.settingOffsetIntTotalMemoCount()
             this.currentMemoObj = response
 
             // document.getElementById('memoOpen'+key).innerText = '댓글접기'
@@ -869,6 +901,8 @@ export default {
       console.log(this.$refs.gMemoRef)
       this.$refs.gMemoRef.memoLoadingHide() */
       this.currentMemoObj = result.data
+      this.currentMemoTotal = this.currentMemoObj.totalElements
+
       return list
         // if (allYn) {
         //   this.alimMemoList = result.data.content
@@ -884,13 +918,45 @@ export default {
     },
     async loadMoreMemo () {
         //this.showMoreMemoTextYn = false
-        console.log('offsetInt', this.offsetInt)
-        console.log('this.currentMemoObj', this.currentMemoObj)
+        // console.log('#########################')
+        // console.log('offsetInt', this.offsetInt)
+        // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
-            return
-
+          // this.showMoreMemoTextYn = false
+          return
         }
+        // console.log('axios totalElements : ' + this.currentMemoObj.totalElements)
+        // console.log('offsetInt : ' + this.offsetInt)
+        // console.log('CurrentMemoList Length : ' + this.currentMemoList.length)
+        // if (this.currentMemoObj.totalElements === this.currentMemoList.length) {
+        //   console.log('댓글 끝')
+        //   this.showMoreMemoTextYn = false
+        // } else {
+        //   this.showMoreMemoTextYn = true
+        // }
+        // console.log('#########################')
+        // if (this.currentMemoObj.totalElements === this.currentMemoList.length) {
+        //   console.log('댓글 끝')
+        //   this.showMoreMemoTextYn = false
+        // }else {
+        // }
         this.showMoreMemoTextYn = true
+    },
+    /** 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!  */
+    settingOffsetIntTotalMemoCount () {
+      console.log('#################')
+      var totalMemoCount = 0
+      for (let i = 0; i < this.currentMemoList.length; i++) {
+        if (this.currentMemoList[i].cmemoList.length > 0) {
+          for (let cmemoIndex = 0; cmemoIndex < this.currentMemoList[i].cmemoList.length; cmemoIndex++) {
+            totalMemoCount += 1
+          }
+        }
+      }
+      console.log(totalMemoCount)
+      console.log(this.currentMemoList.length + totalMemoCount)
+      this.offsetInt = this.currentMemoList.length + totalMemoCount
+      console.log('#################')
     },
     async yesLoadMore () {
         this.pageSize = 5
@@ -903,7 +969,10 @@ export default {
         ]
         this.currentMemoList = newArr
         this.currentMemoObj = response
-        this.offsetInt = this.currentMemoList.length
+        // this.offsetInt = this.currentMemoList.length
+        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
+        this.settingOffsetIntTotalMemoCount()
+        if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
         this.memoSetCount(response.totalElements)
     },
     async copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
@@ -919,10 +988,10 @@ export default {
             } else {
                 var link = await this.$makeShareLink(contentsKey, 'pushDetail', message, title)
             }
-            if (link) { 
+            if (link) {
                 if (navigator.share) {
                     navigator.share({ title: '더알림', text: title, url: link })
-                } else alert('지원하지 않는 브라우저입니다.') 
+                } else alert('지원하지 않는 브라우저입니다.')
             }
 
             // this.contentsList[index].copyText = link
@@ -1120,7 +1189,6 @@ export default {
     setBodyLength (str) {
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
-
         return str
     },
     setCutYn (str) {
@@ -1183,7 +1251,9 @@ export default {
                   var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
                   this.currentMemoObj = response
                   this.currentMemoList = response.memoList
-                  this.offsetInt = this.currentMemoList.length
+                  // this.offsetInt = this.currentMemoList.length
+                  // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
+                  this.settingOffsetIntTotalMemoCount()
                   // this.pointAni()
                   this.memoSetCount(response.totalElements)
                 } else {

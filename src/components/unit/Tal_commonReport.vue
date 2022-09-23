@@ -7,8 +7,8 @@
       <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}} 이동</p>
       <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}} 복사</p>
       <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}} 수정</p>
-      <p class="fl font16 w-100P commonColor rowText" @click="emit('write')" v-if="contentOwner &&contentType !== 'board'" >{{contentText}}을 게시글로 작성</p>
-      <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}}을 알림으로 작성</p>
+      <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentOwner && contentType !== 'board'" >{{contentText}}을 게시글로 작성</p>
+      <p class="fl font16 w-100P commonColor rowText" @click="emit('writeAlim')" v-if="contentOwner && contentType !== 'alim'" >{{contentText}}을 알림으로 작성</p>
       <p class="fl font16 w-100P commonColor rowText" :style="contentType === 'alim' ? 'border: none  !important;' : '' " @click="emit('delete')" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '나에게서만 ': ''}}{{contentText}} 삭제</p>
       <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'alim'" >{{contentText}} 삭제</p> -->
       <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'alim' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->

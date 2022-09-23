@@ -47,7 +47,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <pre  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(alim.bodyFullStr)"></pre>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -98,7 +98,7 @@
           </div>
           <div class="boardBorder"></div>
           <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"/>
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -709,6 +709,9 @@ export default {
       if (this.shareAuth.R === true) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
+        if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== '') {
+          data.parentMemoKey = memo.parentMemoKey
+        }
         data.memo = memo
         // eslint-disable-next-line no-new-object
         this.mememoValue = new Object()
@@ -902,22 +905,24 @@ export default {
       this.saveMemoLoadingYn = false
     },
     settingAddFalseList (attachYn) {
-      if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
-        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
+      if (this.alimDetail !== undefined && this.alimDetail !== null && this.alimDetail !== '' && this.alimDetail.length > 0) {
+        if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList !== null && this.alimDetail[0].attachFileList !== '' && this.alimDetail[0].attachFileList.length > 0) {
+          var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 
-        for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
-          var attFile = this.alimDetail[0].attachFileList[s]
+          for (var s = 0; s < this.alimDetail[0].attachFileList.length; s++) {
+            var attFile = this.alimDetail[0].attachFileList[s]
 
-          if (!attachYn) {
-            for (var i = 0; i < addFalseImgList.length; i++) {
-              if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-                addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-                break
+            if (!attachYn) {
+              for (var i = 0; i < addFalseImgList.length; i++) {
+                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+                  break
+                }
               }
-            }
-          } else {
-            if (attFile.attachYn) {
-              this.attachTrueFileList.push(attFile)
+            } else {
+              if (attFile.attachYn) {
+                this.attachTrueFileList.push(attFile)
+              }
             }
           }
         }

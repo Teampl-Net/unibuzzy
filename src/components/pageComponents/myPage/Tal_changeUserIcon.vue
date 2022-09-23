@@ -9,17 +9,17 @@
           </div>
         </div>
         <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
-          <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; " class="cropperImgArea">
+          <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 246px; max-height: 248px; " class="cropperImgArea">
             <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
-            <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+            <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" style="margin: 0 auto;" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
           </div>
 
           <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
               <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
           </form>
-          <div class="fl textLeft w-100P">
-            <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
-            <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+          <div class="fl textLeft w-100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
+            <p class="fl fontBold font14 mtop-05">터치해서 이미지를 변경할 수 있습니다.</p>
+            <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" btnTitle="다시 선택" @click="changeBtnClick"/>
           </div>
         </div>
         <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
@@ -190,7 +190,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'
@@ -269,6 +269,6 @@ export default {
 .cropperImgArea img{
   display: block;
   /* This rule is very important, please don't ignore this */
-  max-width: 100%
+  max-width: 100%;
 }
 </style>

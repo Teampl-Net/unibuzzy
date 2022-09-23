@@ -7,7 +7,9 @@
       <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
       <div v-else class="chanRow w-100P fl channelRow cursorP" style="border: none; border-radius: 8px; background: #FFF; padding: 10px 10px; padding-bottom: 5px;" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
         <div style="width: 100%; display: flex; min-height: 40px; float: left; ">
-            <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+<!-- url("fileServer/image/2022/09/15�33-edb1-4f1f-b530-9c5d32b3369a_aaaaaaaaaaaaa.png") -->
+          <!-- <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"> -->
+              <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext ? value.logoPathMtext : '/resource/userCommonIcon/userImg.png') + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                 <!-- <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
                 <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" /> -->
             </div>
@@ -41,7 +43,8 @@
                 <div style="width: 100%; margin-top: 5px; min-height: 25px; position: relative;">
                     <span class="chanMsgWrap fl font14 grayBlack " style="width: calc(100%); margin-right: 5px;" v-html="this.$makeMtextMap(value.memoMtext, 'KO')" ></span>
                 </div>
-                <div v-if="value.managerKey || value.memberYn" style="width: 100%; float: left;">
+                <!-- <div v-if="value.managerKey || value.memberYn" style="width: 100%; float: left;"> -->
+                <div v-if="value.managerKey" style="width: 100%; float: left;">
                     <div class="fr" style="display: flex; height: 23px; justify-content: space-around; align-items: center;">
                         <div v-if="value.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                             <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{value.ownerYn ? '소유자' : '관리자'}}</p>
@@ -49,9 +52,9 @@
                         <div v-if="value.managerKey" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                             <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'관리자'}}</p>
                         </div>
-                        <div v-else-if="value.memberYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
+                        <!-- <div v-else-if="value.memberYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                             <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'멤버'}}</p>
-                        </div>
+                        </div> -->
                         <!-- <div style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:rgb(220, 221, 235)' : 'background-color:#eee; border: 1px solid #ccc;' " >
                             <p class="fl font12 cursorP fontBold"  @click="saveMemberButton" :style="value.followerKey || value.followYn ? 'color:white' : '' " >{{value.followerKey || value.followYn ? '구독중' : '구독 +'}}</p>
                         </div> -->

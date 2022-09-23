@@ -50,6 +50,7 @@
                 <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
                     <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
                     <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
+                    <!-- <a :fileKey="value.fileKey" @click="window.open(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  > -->
                     {{value.fileName}}
                     </a>
                 </div>
@@ -57,7 +58,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <div  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" style="word-break: break-word;" v-html="decodeContents(alim.bodyFullStr)"></div>
+        <pre id="boardBodyArea" class="font15 mbottom-2 cursorDragText" style="word-break: break-word;" v-html="decodeContents(alim.bodyFullStr)"></pre>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -111,7 +112,7 @@
           </div>
           <div class="boardBorder"></div>
           <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" />
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="memoList" @deleteMemo='deleteConfirm' @editTrue='getMemoList' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -268,12 +269,18 @@ export default {
   },
   methods: {
     openSelectSharePop () {
-      // alert(navigator.userAgent)
-      if (navigator.share) {
-        navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
-      } else alert('지원하지 않는 브라우저입니다.')
-
-      /* window.navigator.share({
+      // alert(window.navigator.userAgent)
+      // window.navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
+      var shareItem = {}
+      shareItem = { title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr }
+      if (window.navigator.share) {
+        window.navigator.share(shareItem)
+      // } else alert('지원하지 않는 브라우저입니다.')
+      } else {
+        onMessage('REQ', 'nativeShare', shareItem)
+        // window.navigator.share
+        // alert('지원하지 않는 브라우저입니다.')
+        /* window.navigator.share({
         title: '더알림', // 공유될 제목
         text: 'test', // 공유될 설명
         url: this.copyTextStr// 공유될 URL
@@ -291,6 +298,7 @@ export default {
       }).catch(() => {
         alert('지원 되지 않는 api')
       }) */
+      }
     },
     shareText (type) {
       if (type === 'sms') {
@@ -483,8 +491,15 @@ export default {
       return false
     },
     async download1 (fileKey, path) {
-      var result = await this.$downloadFile(fileKey, path)
-      console.log(result)
+      var agent = this.$checkMobile()
+      // alert(agent)
+      if (agent === 'IOS') {
+        var result = await this.$downloadFile(fileKey, path)
+        console.log(result)
+      } else {
+        var api = path.split('/image')[0]
+        window.open(api + '/tp.downloadFile?fileKey=' + fileKey, '_blank')
+      }
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
@@ -657,6 +672,9 @@ export default {
       if (this.shareAuth.R === true) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
+        if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== '') {
+          data.parentMemoKey = memo.parentMemoKey
+        }
         data.memo = memo
         // eslint-disable-next-line no-new-object
         this.mememoValue = new Object()
@@ -688,7 +706,7 @@ export default {
       }
     },
     async getMemoList (allYn, recvNotiYn) {
-      this.$refs.boardMemoListCompo[0].memoLoadingShow()
+      // this.$refs.boardMemoListCompo[0].memoLoadingShow()
       this.axiosYn = true
       // eslint-disable-next-line no-new-object
       var memo = new Object()
@@ -848,7 +866,7 @@ export default {
       this.saveMemoLoadingYn = false
     },
     settingAddFalseList (attachYn) {
-      if (this.alimDetail) {
+      if (this.alimDetail[0]) {
         if (this.alimDetail[0].attachFileList !== undefined && this.alimDetail[0].attachFileList.length > 0) {
           var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
 

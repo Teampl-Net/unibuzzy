@@ -1,6 +1,6 @@
 <template>
-        <pre @focus="test" contenteditable style="padding: 0 5px; display:inline-block; width: calc(100% - 30px); border-right: #ccc;     word-break: break-all;" autofocus :formIdx="targetKey"  ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent" @input="inputResize('formTextArea'+targetKey)"></pre>
-        <!-- <div class="" style="width: 30px; background: #BFBFDA; float: right border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center;"><img class="fl" src="../../../assets/images/formEditor/scroll.svg" alt=""></div> -->
+  <pre @focus="test" contenteditable style="padding: 0 5px; display:inline-block; width: calc(100% - 30px); border-right: #ccc; word-break: break-all;" autofocus :formIdx="targetKey"  ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent" @input="inputResize('formTextArea'+targetKey)"></pre>
+  <!-- <div class="" style="width: 30px; background: #BFBFDA; float: right border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center;"><img class="fl" src="../../../assets/images/formEditor/scroll.svg" alt=""></div> -->
 </template>
 
 <script>
@@ -30,9 +30,18 @@ export default {
     })
     this.init()
     if (this.inputHtml) {
-      document.querySelectorAll('.formDiv #' + 'formTextArea' + this.targetKey)[0].innerHTML = this.inputHtml
+      this.$nextTick(() => {
+        console.log('formTextArea' + this.targetKey)
+        // // eslint-disable-next-line no-debugger
+        // debugger
+        // document.querySelectorAll('.formDiv #' + 'formTextArea' + this.targetKey)[0].innerHTML = this.inputHtml
+        // document.querySelectorAll('.formDiv .formText').innerHTML = this.inputHtml
+        this.$refs.formTextArea.innerHTML = this.inputHtml
 
-      this.formTextArea = this.inputHtml
+        // document.getElementById('formTextArea' + this.targetKey).innerHTML = this.inputHtml
+
+        this.formTextArea = this.inputHtml
+      })
     }
     // this.formTextArea = this.inputHtml
     if (this.propsTools !== undefined && this.propsTools !== 'undefined' && this.propsTools !== null && this.propsTools !== 'null' && this.propsTools !== '') {

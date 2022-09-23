@@ -273,7 +273,7 @@ export default {
 
         this.mCabContentsList = newArr
       } else {
-        this.$refs.boardListCompo.loadingRefHide()
+        // this.$refs.boardListCompo.loadingRefHide()
       }
       this.findPopShowYn = false
     },

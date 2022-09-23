@@ -9,10 +9,10 @@
       <div class="" >
         <div class="profileWrap ">
           <div @click="changeUserImg()" class="cursorP imgSize">
-            <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;">
-            </div>
-            <div v-else class="roundDiv"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-            </div>
+            <!-- <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;"></div> -->
+            <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div> -->
+            <div class="roundDiv picImgWrap" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + this.$changeUrlBackslash(userInfo.userProfileImg) : userInfo.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+            <!-- <div v-else class="roundDiv"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div> -->
             <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->
           </div>
@@ -256,4 +256,7 @@ th {color: #6768A7}
 .subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
 .leaveText{text-align: left; color: #A1A1A1;}
 .leaveText span {text-decoration: underline;}
+/* .picImgWrap {position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
+}
+.picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;} */
 </style>

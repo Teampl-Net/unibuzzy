@@ -130,7 +130,7 @@
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
-    <writePush  ref="chanAlimListWritePushRefs"  @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' />
+    <writePush  ref="chanAlimListWritePushRefs"  @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' />
   </div>
 
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
@@ -237,6 +237,10 @@ export default {
     } */
   },
   methods: {
+    toAlimFromBoard (tab) {
+      console.log('toAlimFromBoard')
+      this.$refs.ChanAlimListPushListCompo.changeMainTab(tab)
+    },
     changeMainTab (tab) {
       this.currentPushListMainTab = tab
     },
@@ -407,7 +411,7 @@ export default {
       }) */
       if (navigator.share) {
         navigator.share({ title: '더알림', text: this.chanItem.nameMtext, url: this.copyTextStr })
-      } else alert('지원하지 않는 브라우저입니다.')
+      } else this.$showToastPop('지원하지 않는 브라우저 입니다.')
     },
     changeRecvAlimYn () {
       // eslint-disable-next-line no-new-object
@@ -802,6 +806,8 @@ export default {
 
 .chanDetailWrap{
   height: 100vh;
+  /* min-height: 900px;
+  max-height: 1000px; */
   background-repeat: no-repeat;
   background-size: cover;
 }

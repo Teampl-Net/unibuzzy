@@ -347,6 +347,11 @@ export default {
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
             formList[f].contentEditable = false
+            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+            if (formList[f].id === 'formEditText') {
+              var formTextinnerHtml = formList[f].innerHTML
+              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+            }
           }
           param.getBodyHtmlYn = true
         }
@@ -355,6 +360,7 @@ export default {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         innerHtml = document.getElementById('textMsgBox').innerHTML
+        innerHtml = this.$findUrlChangeAtag(innerHtml)
       }
       param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
@@ -369,13 +375,14 @@ export default {
       param.cabinetName = 'KO$^$문의하기게시판'
       param.title = this.askTitle
       param.showCreNameYn = true
-
+      this.checkPopYn = false
       var result = await this.$saveContents(param)
-
+      console.log(result)
       if (result.result === true) {
         // this.$emit('successSave')
         this.$emit('closeXPop', true)
       }
+      this.$emit('closeXPop', true)
       this.sendLoadingYn = false
     },
     async uploadFile () {
@@ -392,7 +399,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

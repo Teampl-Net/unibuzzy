@@ -162,7 +162,7 @@ export default {
           this.introText = '현재 등록되어 있는 이메일이 없습니다.'
         }
       }
-    }, 
+    },
     async checkValidation () {
         var param = new Object()
         param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -176,7 +176,7 @@ export default {
             url: 'service/tp.checkValidation',
             param: param
         })
-        
+
         console.log(result)
         if (result.data.userInfo) {
             localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))

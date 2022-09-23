@@ -91,6 +91,7 @@ export default {
       this.targetCKey = this.targetContents.targetContentsKey
       if (this.targetContents.jobkindId === 'BOAR') {
         this.viewMainTab = 'B'
+        this.$emit('changeMainTab', this.viewMainTab)
       }
     }
     this.getPushContentsList().then(response => {
@@ -206,8 +207,10 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = data.contentsKey
-      param.targetType = 'writeBoard'
+      param.targetType = data.writeType === 'BOAR' ? 'writeBoard' : data.writeType === 'ALIM' ? 'writePush' : undefined
+      param.writeType = data.writeType
       param.creTeamKey = data.creTeamKey
+      param.currentTeamKey = data.creTeamKey
       if (data.attachMfilekey) { param.attachMfilekey = data.attachMfilekey }
       // eslint-disable-next-line no-undef
       param.bodyFullStr = Base64.decode(data.bodyFullStr)

@@ -65,10 +65,17 @@ const methods = {
             // 나머지 연산자(%)를 이용해서 시/분/초를 구한다.
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
             const seconds = Math.floor((distance % (1000 * 60)) / 1000)
-            text = '발송 취소 가능 시간까지 '
-            text += (minutes < 10 ? '0' + minutes : minutes) + '분'
-            text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
-            var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" > 발송취소 </p> <p class="font12 fr textRight">' + text + '</p>'
+            // text = '발송 취소 가능 시간까지 '
+            // text += (minutes < 10 ? '0' + minutes : minutes) + '분'
+            // text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
+            // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" > 발송취소 </p> <p class="font12 fr textRight">' + text + '</p>'
+            text = (minutes < 10 ? '0' + minutes : minutes) + ':'
+            text += (seconds < 10 ? '0' + seconds : seconds)
+            var innerHTML = '<div class="font14 fl commonColor mleft-03">'
+            innerHTML += '<p class="commonColor font14 fl" style="text-decoration: underline;"> 발송취소 </p>'
+            innerHTML += '<img src="/resource/common/icon_alarm_red.svg" class="fl img-w15 mleft-05 mright-03">'
+            innerHTML += text
+            innerHTML += '</div>'
             text = innerHTML
           } else {
             text = false
@@ -374,6 +381,9 @@ const methods = {
     //   return '<a href="' + url + '">' + url + '</a>'
     // })
   },
+  findATagDelete (html) {
+    return html.replace(/<(\/a|a)([^>]*)>/gi, '')
+  },
   titleToBody (inHtml) {
     // // eslint-disable-next-line no-debugger
     // debugger
@@ -525,9 +535,8 @@ const methods = {
     var api = path.split('/image')[0]
     iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
     console.log(iframe.src)
-    // eslint-disable-next-line no-debugger
-    debugger
-
+    // // eslint-disable-next-line no-debugger
+    // debugger
     /* try {
       var pom = document.createElement('a')
       pom.setAttribute('href', 'file.downloadFile' + 'upload/2022/08/01/220B35EC-C678-469C-8C90-F7F6AE71E7C5.png')
@@ -645,6 +654,87 @@ const methods = {
     /* if (thisthis.$refs.selectFile.files.length > 1) {
       thisthis.$emit('setMultiFile', thisthis.selectFileList)
     } */
+  },
+  /** 포커스 된 태그 안에 html 삽입해주는 함수 (커서 위치 맨 뒤) */
+  pasteHtmlAtCaret (html) {
+    var sel, range
+    if (window.getSelection) {
+      // IE9 and non-IE
+      sel = window.getSelection()
+      if (sel.getRangeAt && sel.rangeCount) {
+        range = sel.getRangeAt(0)
+        range.deleteContents()
+
+        // Range.createContextualFragment() would be useful here but is
+        // non-standard and not supported in all browsers (IE9, for one)
+        var el = document.createElement('div')
+        el.innerHTML = html
+        var frag = document.createDocumentFragment()
+        var node
+        var lastNode
+        while ((node = el.firstChild)) {
+          lastNode = frag.appendChild(node)
+        }
+        range.insertNode(frag)
+
+        // Preserve the selection
+        if (lastNode) {
+          range = range.cloneRange()
+          range.setStartAfter(lastNode)
+          range.collapse(true)
+          sel.removeAllRanges()
+          sel.addRange(range)
+        }
+      }
+    } else if (document.selection && document.selection.type !== 'Control') {
+      // IE < 9
+      document.selection.createRange().pasteHTML(html)
+    }
+  },
+  checkBrowser () {
+    var agt = navigator.userAgent.toLowerCase()
+    if (agt.indexOf('chrome') !== -1) return 'Chrome'
+    if (agt.indexOf('opera') !== -1) return 'Opera'
+    if (agt.indexOf('staroffice') !== -1) return 'Star Office'
+    if (agt.indexOf('webtv') !== -1) return 'WebTV'
+    if (agt.indexOf('beonex') !== -1) return 'Beonex'
+    if (agt.indexOf('chimera') !== -1) return 'Chimera'
+    if (agt.indexOf('netpositive') !== -1) return 'NetPositive'
+    if (agt.indexOf('phoenix') !== -1) return 'Phoenix'
+    if (agt.indexOf('firefox') !== -1) return 'Firefox'
+    if (agt.indexOf('safari') !== -1) return 'Safari'
+    if (agt.indexOf('skipstone') !== -1) return 'SkipStone'
+    if (agt.indexOf('netscape') !== -1) return 'Netscape'
+    if (agt.indexOf('mozilla/5.0') !== -1) return 'Mozilla'
+    // if (agt.indexOf('msie') !== -1) {
+    //   let rv = -1;
+    //   if (navigator.appName == 'Microsoft Internet Explorer') {
+    //     let ua = navigator.userAgent; var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    //   if (re.exec(ua) != null)
+    //     rv = parseFloat(RegExp.$1);
+    //   }
+    //   return 'Internet Explorer '+rv;
+    // }
+  },
+  checkMobile () {
+    // var varUA = navigator.userAgent.toLowerCase()
+    var varUA = localStorage.getItem('systemName')
+    console.log(varUA)
+    // alert(JSON.stringify(varUA))
+    if (varUA !== undefined || varUA !== null || varUA !== '') {
+      if (varUA === 'ios' || varUA === '"ios"') {
+        return 'IOS'
+      } else if (varUA === 'android' || varUA === '"android"') {
+        return 'AOS'
+      } else {
+        return '그외'
+      }
+    }
+  },
+  changeUrlBackslash (url) {
+    var changedUrl = url.replace(/\\/ig, '/')
+    console.log(changedUrl)
+    return changedUrl
   }
 }
 
@@ -683,5 +773,10 @@ export default {
     Vue.config.globalProperties.$checkTokenValidTime = methods.checkTokenValidTime
     Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
     Vue.config.globalProperties.$findUrlChangeAtag = methods.findUrlChangeAtag
+    Vue.config.globalProperties.$pasteHtmlAtCaret = methods.pasteHtmlAtCaret
+    Vue.config.globalProperties.$checkBrowser = methods.checkBrowser
+    Vue.config.globalProperties.$checkMobile = methods.checkMobile
+    Vue.config.globalProperties.$changeUrlBackslash = methods.changeUrlBackslash
+    Vue.config.globalProperties.$findATagDelete = methods.findATagDelete
   }
 }

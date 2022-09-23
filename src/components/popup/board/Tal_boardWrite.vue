@@ -121,15 +121,26 @@ export default {
         jsonObj.type = 'image'
         jsonObj.targetKey = i
         for (var c = 0; c < formC[i].classList.length; c++) {
+          // // eslint-disable-next-line no-debugger
+          // debugger
           if (formC[i].classList[c] === 'formText') {
+            jsonObj.innerHtml = this.$findATagDelete(formC[i].innerHTML)
             jsonObj.type = 'text'
             imgYn = false
             break
+          } else if (formC[i].classList[c] === 'formLine') {
+            jsonObj.type = 'line'
+            imgYn = false
+          } else if (formC[i].classList[c] === 'formDot') {
+            jsonObj.type = 'dot'
+            imgYn = false
+          } else if (formC[i].classList[c] === 'formBlock') {
+            jsonObj.type = 'block'
+            imgYn = false
           }
         }
         if (imgYn) {
           jsonObj.pSrc = formC[i].querySelector('img').src
-
           jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
         }
         newArr.push(jsonObj)
@@ -144,7 +155,7 @@ export default {
       console.log(this.propData.parentAttachTrueFileList)
       // this.formEditorShowYn = true
     } else {
-      document.getElementById('textMsgBox').innerHTML = this.bodyString
+      document.getElementById('textMsgBox').innerHTML = this.$findATagDelete(this.bodyString)
     }
     if (this.propData.parentAttachTrueFileList && this.propData.parentAttachTrueFileList.length > 0) {
       this.addFalseList = [
@@ -291,7 +302,7 @@ export default {
     async getTeamMenuList () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey)
-      paramMap.set('currentTeamKey', this.propData.currentTeamKey)
+      paramMap.set('currentTeamKey', this.propData.currentTeamKey || this.propData.creTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
@@ -458,6 +469,11 @@ export default {
         if (formList) {
           for (var f = 0; f < formList.length; f++) {
             formList[f].contentEditable = false
+            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+            if (formList[f].id === 'formEditText') {
+              var formTextinnerHtml = formList[f].innerHTML
+              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+            }
           }
           param.getBodyHtmlYn = true
         }
@@ -466,6 +482,9 @@ export default {
         param.bodyHtmlYn = false
         document.querySelectorAll('#textMsgBox')[0].contentEditable = false
         innerHtml = document.getElementById('textMsgBox').innerHTML
+        innerHtml = this.$findUrlChangeAtag(innerHtml)
+
+        // innerHtml = document.getElementById('textMsgBox').innerHTML
         // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
         // innerHtml = text
       }
@@ -620,7 +639,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

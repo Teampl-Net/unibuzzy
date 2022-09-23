@@ -42,7 +42,7 @@ export default {
       }, 1000) */
     },
     createToggle () {
-      /* var app = document.getElementById('app')
+      var app = document.getElementById('app')
       var toastDiv = document.createElement('div')
 
       toastDiv.id = 'FullScreenToggle'
@@ -59,7 +59,7 @@ export default {
         }
       }
       toastDiv.innerHTML = '전체화면'
-      document.body.append(toastDiv) */
+      document.body.append(toastDiv)
     },
     /* openPushPop (params) {
       this.pushPopParams = params
@@ -71,16 +71,16 @@ export default {
     },
     closePop () {
       this.popShowYn = false
-    }
-    /* handleResize () {
+    },
+    handleResize () {
       setTimeout(() => {
         this.screenWidth = window.innerWidth
       }, 500)
-    } */
+    }
   },
   watch: {
     screenWidth () {
-      /*  var toggle = document.getElementById('FullScreenToggle')
+      var toggle = document.getElementById('FullScreenToggle')
       if (this.screenWidth < 1250 && (toggle !== undefined && toggle !== null && toggle !== '')) {
         document.getElementById('FullScreenToggle').remove()
       }
@@ -89,7 +89,7 @@ export default {
         if (appMax !== '100%') {
           this.createToggle()
         }
-      } */
+      }
     }
   },
   beforeUnmount () {

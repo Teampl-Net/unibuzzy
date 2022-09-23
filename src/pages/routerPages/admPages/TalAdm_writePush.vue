@@ -113,7 +113,7 @@
                 </div>
                 <!-- <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" > -->
                 <div id="pageMsgAreaWrap" class="pageMsgArea" style="">
-                  <pre id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'"  contenteditable=true></pre>
+                  <pre id="textMsgBoxPush" style="word-break: break-all;" class="editableContent" @click="test" v-show="viewTab === 'text'" contenteditable=true></pre>
 
                   <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
                   <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
@@ -155,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    debugger
+    // debugger
     console.log(this.params)
     document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
       console.log(e)
@@ -205,6 +205,7 @@ export default {
       var textData = (e.originalEvent || e).clipboardData.getData('Text')
       document.execCommand('insertHTML', false, textData)
     })
+
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
     if (textArea) {
@@ -240,6 +241,8 @@ export default {
       this.$refs.textAreaRequestTitle.style.backgroundColor = '#00000010'
       this.$refs.textAreaRequestTitle.readOnly = true
     }
+
+    this.settingAlim()
   },
   data () {
     return {
@@ -297,7 +300,8 @@ export default {
       answerRequsetYn: false,
       answerRequestMsg: '',
       requestAgreeYn: false,
-      creTeamKey: 0
+      creTeamKey: 0,
+      bodyString: ''
       // formCardHeight: 0
 
 
@@ -331,8 +335,27 @@ export default {
   created() {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
+    console.log('console.log(this.params)console.log(this.params)console.log(this.params)console.log(this.params)')
+    console.log(this.params)
+    if (this.params.bodyFullStr) {
+      if (this.params.UseAnOtherYn) {
+        // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
+        this.bodyString = this.params.bodyFullStr
+        if (this.params.titleStr) {
+          this.titleShowYn = true
+          this.writePushTitle = this.params.titleStr
+        }
+      } else {
+        // 추후 수정이 있을 때
+      }
+    }
+
+    if (this.params.parentAttachTrueFileList && this.params.parentAttachTrueFileList.length > 0) {
+      // this.attachTrueFileList = this.params.parentAttachTrueFileList
+    }
+
     if (this.params.replyPopYn) {
-      this.replyPopYn = true
+      this.replyPopYn =
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
       console.log(this.params)
@@ -349,6 +372,64 @@ export default {
     }
   },
   methods: {
+    settingAlim() {
+      var temp = document.createElement('div')
+      temp.innerHTML = this.bodyString
+      if (temp.getElementsByClassName('formCard').length > 0) {
+        this.$refs.actBar.switchtab(1)
+        var innerHtml = ''
+        var newArr = []
+        var formC = temp.getElementsByClassName('formCard')
+        // eslint-disable-next-line no-new-object
+        var jsonObj = new Object()
+        var imgYn = true
+        for (var i = 0; i < formC.length; i++) {
+          // eslint-disable-next-line no-new-object
+          jsonObj = new Object()
+          imgYn = true
+          innerHtml += formC[i].outerHTML
+          jsonObj.innerHtml = formC[i].innerHTML
+          jsonObj.type = 'image'
+          jsonObj.targetKey = i
+          for (var c = 0; c < formC[i].classList.length; c++) {
+            // // eslint-disable-next-line no-debugger
+            // debugger
+            if (formC[i].classList[c] === 'formText') {
+              jsonObj.innerHtml = this.$findATagDelete(formC[i].innerHTML)
+              jsonObj.type = 'text'
+              imgYn = false
+              break
+            } else if (formC[i].classList[c] === 'formLine') {
+              jsonObj.type = 'line'
+              imgYn = false
+            } else if (formC[i].classList[c] === 'formDot') {
+              jsonObj.type = 'dot'
+              imgYn = false
+            } else if (formC[i].classList[c] === 'formBlock') {
+              jsonObj.type = 'block'
+              imgYn = false
+            }
+          }
+          if (imgYn) {
+            jsonObj.pSrc = formC[i].querySelector('img').src
+            jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
+          }
+          newArr.push(jsonObj)
+        }
+        this.propFormData = newArr
+        this.$refs.complexEditor.setFormCard(this.propFormData)
+        document.getElementById('msgBox').innerHTML = ''
+        document.getElementById('msgBox').innerHTML = innerHtml
+        this.viewTab = 'complex'
+        this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
+        console.log('this.propData.parentAttachTrueFileList')
+        // console.log(this.propData.parentAttachTrueFileList)
+        // this.formEditorShowYn = true
+      } else {
+        document.getElementById('textMsgBoxPush').innerHTML = this.$findATagDelete(this.bodyString)
+      }
+
+    },
     async requestPushAgreeClick () {
       if (this.checkRequstAgree() === true){
         var param = {}
@@ -605,25 +686,27 @@ export default {
     },
     async sendMsg () {
         var paramImgList = []
-        // this.sendLoadingYn = true
+        this.sendLoadingYn = true
+        this.checkPopYn = false
         // eslint-disable-next-line no-new-object
         var param = new Object()
         var innerHtml =''
         param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
         var targetMsgDiv = null
+        debugger
         console.log('업로드할 개수는!!!' + this.uploadFileList.length)
         if (this.uploadFileList.length > 0) {
             this.checkPopYn = false
             this.progressShowYn = true
             await this.formSubmit()
             setTimeout(() => {
-            this.progressShowYn = false
+              this.progressShowYn = false
             }, 2000)
-            this.sendLoadingYn = true
+            // this.sendLoadingYn = true
         } else {
-            this.sendLoadingYn = true
+            // this.sendLoadingYn = true
         }
-        
+
         if(this.viewTab === 'complex') {
         // this.$refs.complexEditor.setParamInnerHtml()
         param.bodyHtmlYn = true
@@ -639,22 +722,30 @@ export default {
             */
             var formList = document.querySelectorAll('#msgBox .formCard')
             if (formList) {
-            for (var f = 0; f < formList.length; f++) {
-                formList[f].contentEditable = false
-            }
+              for (var f = 0; f < formList.length; f++) {
+                  formList[f].contentEditable = false
+                  // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+                  if (formList[f].id === 'formEditText') {
+                    var innerHtml = formList[f].innerHTML
+                    formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
+                  }
+                  // if (formList[f].id)
+              }
             param.getBodyHtmlYn = true
             }
             targetMsgDiv = document.getElementById('msgBox')
+            innerHtml = targetMsgDiv.innerHTML
+
         } else if (this.viewTab === 'text') {
             // param.bodyHtmlYn = false
             document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
             //
             targetMsgDiv = document.getElementById('textMsgBoxPush')
-
-
-
+            innerHtml = targetMsgDiv.innerHTML
+            innerHtml = this.$findUrlChangeAtag(innerHtml)
         }
-        innerHtml = targetMsgDiv.innerHTML
+
+        // innerHtml = this.$findUrlChangeAtag(innerHtml)
         // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
 
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
@@ -683,6 +774,9 @@ export default {
         }
         param.teamName = this.$changeText(this.params.targetNameMtext)
         param.creTeamKey = this.params.targetKey || this.creTeamKey
+        if (this.params.currentTeamKey || this.params.creTeamKey){
+          param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
+        }
         // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
         // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
@@ -705,7 +799,7 @@ export default {
 
             // result = this.$saveContents(param)
             // this.closeXPop(true)
-            this.sendLoadingYn = false
+            // this.sendLoadingYn = false
             this.okPopYn = true
             return
         }
@@ -713,18 +807,22 @@ export default {
         result = await this.$saveContents(param)
         console.log('ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         /* if (result.result === true) { */
-          if (this.replyPopYn) {
-              var param = {}
-              param = this.params
-              param.targetType = 'chanDetail'
+        console.log(this.params.writeType)
+
+        // if (this.replyPopYn) {
+        //     var param = {}
+        //     param = this.params
+        //     param.targetType = 'chanDetail'
 
 
-              this.$emit('changePop', param)
+        //     this.$emit('changePop', param)
 
-          }else{
-          // this.$emit('closeXPop',true)
-            this.closeXPop(true)
-          }
+        // }else{
+        // // this.$emit('closeXPop',true)
+        //   this.closeXPop(true)
+        // }
+        this.closeXPop(true)
+
 
        /*  } */
 
@@ -736,8 +834,21 @@ export default {
       this.$store.commit('setRemovePage', removePage)
       this.$store.commit('updateStack', history)
         //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
+      // if (this.params.writeType) {
+      //   this.$parent.propParams.writeType = 'ALIM'
+      //   if (this.params.writeType === 'ALIM') {
+      //     this.$parent.propParams.writeType = 'ALIM'
+      //     // this.$emit('toAlimFromBoard' , 'P')
+      //   }
+      // }
       if (reloadYn === true) {
-        this.$emit('closeXPop',reloadYn)
+        if (this.params.writeType) {
+          // eslint-disable-next-line no-debugger
+          debugger
+          this.$emit('toAlimFromBoard')
+        }else {
+          this.$emit('closeXPop',reloadYn)
+        }
       } else {
         this.$emit('closeXPop')
       }
@@ -897,7 +1008,7 @@ export default {
           form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('http://222.233.118.96:19091/tp.uploadFile', form,
                 /* {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -912,7 +1023,6 @@ export default {
             .then(res => {
               console.log(res)
               if(res.data.length > 0) {
-                debugger
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
                 } else {

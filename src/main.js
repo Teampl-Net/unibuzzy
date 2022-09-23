@@ -38,7 +38,7 @@ import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
 // import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
 
-import commonSharejs from './assets/js/Tal_commonShare'
+// import commonSharejs from './assets/js/Tal_commonShare'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
@@ -66,6 +66,7 @@ import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
+// import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
 // import { getAnalytics } from 'firebase/analytics'
@@ -76,10 +77,11 @@ const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
 const app = createApp(moTheAlim).use(router)
 app.use(commonjs)
-app.use(commonSharejs)
+// app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
 app.component('gAlertPop', gAlertPop)
+// app.component('gSharePop', gSharePop)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)
