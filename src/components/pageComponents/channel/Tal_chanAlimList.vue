@@ -146,6 +146,7 @@ import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
 import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
+import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   data () {
     return {
@@ -409,9 +410,16 @@ export default {
         _this.errorBoxType = 'timeout'
         _this.errorBoxYn = true
       }) */
+      var shareItem = { title: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), text: this.copyTextStr, url: this.copyTextStr }
+      if (this.$checkMobile() === 'IOS') {
+        shareItem = { title: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), text: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), url: this.copyTextStr }
+      }
       if (navigator.share) {
-        navigator.share({ title: '더알림', text: this.chanItem.nameMtext, url: this.copyTextStr })
-      } else this.$showToastPop('지원하지 않는 브라우저 입니다.')
+        navigator.share(shareItem)
+      // } else this.$showToastPop('지원하지 않는 브라우저 입니다.')
+      } else {
+        onMessage('REQ', 'nativeShare', shareItem)
+      }
     },
     changeRecvAlimYn () {
       // eslint-disable-next-line no-new-object

@@ -271,10 +271,12 @@ export default {
     openSelectSharePop () {
       // alert(window.navigator.userAgent)
       // window.navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
-      var shareItem = {}
-      shareItem = { title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr }
-      if (window.navigator.share) {
-        window.navigator.share(shareItem)
+      var shareItem = { title: '[더알림] ' + this.alimDetail[0].title, text: this.copyTextStr, url: this.copyTextStr }
+      if (this.$checkMobile() === 'IOS') {
+        shareItem = { title: '[더알림] ' + this.alimDetail[0].title, text: '[더알림] ' + this.alimDetail[0].title, url: this.copyTextStr }
+      }
+      if (navigator.share) {
+        navigator.share(shareItem)
       // } else alert('지원하지 않는 브라우저입니다.')
       } else {
         onMessage('REQ', 'nativeShare', shareItem)

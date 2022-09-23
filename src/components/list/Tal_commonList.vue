@@ -115,6 +115,7 @@
 <script>
 // import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
+import { onMessage } from '../../assets/js/webviewInterface'
 export default {
     data: function () {
     return { // 데이터 정의
@@ -979,7 +980,7 @@ export default {
         // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
         var title = '[' + this.$changeText(teamName) + ']'
         if (cabName) {
-            title += cabName
+            title += this.$changeText(cabName)
         }
         var message = titleMsg
         // if (!text) {
@@ -989,11 +990,14 @@ export default {
                 var link = await this.$makeShareLink(contentsKey, 'pushDetail', message, title)
             }
             if (link) {
-                if (navigator.share) {
-                    navigator.share({ title: '더알림', text: title, url: link })
-                } else alert('지원하지 않는 브라우저입니다.')
+              var shareItem = { title: '더알림 ' + title, text: link, url: link }
+              if (this.$checkMobile() === 'IOS'){ shareItem = { title: '더알림 ' + title, text: '더알림 ' + title, url: link } }
+              if (window.navigator.share) {
+                  window.navigator.share(shareItem)
+              } else {
+                onMessage('REQ', 'nativeShare', shareItem)
+              }
             }
-
             // this.contentsList[index].copyText = link
         // }
         /* setTimeout(() => {

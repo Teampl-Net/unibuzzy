@@ -503,9 +503,19 @@ export default {
       } */
     },
     openSelectSharePop () {
-      if (navigator.share) {
-        navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
-      } else alert('지원하지 않는 브라우저입니다.')
+      var shareItem = { title: '[더알림] ' + this.alimDetail[0].title, text: this.copyTextStr, url: this.copyTextStr }
+      if (this.$checkMobile() === 'IOS') {
+        shareItem = { title: '[더알림] ' + this.alimDetail[0].title, text: '[더알림] ' + this.alimDetail[0].title, url: this.copyTextStr }
+      }
+      if (window.navigator.share) {
+        window.navigator.share(shareItem)
+      // } else alert('지원하지 않는 브라우저입니다.')
+      } else {
+        onMessage('REQ', 'nativeShare', shareItem)
+      }
+      // if (navigator.share) {
+      //   navigator.share({ title: '더알림', text: this.alimDetail[0].title, url: this.copyTextStr })
+      // } else alert('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
       console.log(this.alimDetail[0])
