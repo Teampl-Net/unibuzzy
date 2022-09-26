@@ -221,7 +221,9 @@ export default {
       }
     },
     CONT_DETAIL () {
-      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, this.detailVal.contentsKey, this.detailVal.jobkindId)
+      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, this.detailVal.contentsKey)
+      // eslint-disable-next-line no-debugger
+      debugger
       if (cont) {
         return cont[0]
       } else {
@@ -297,7 +299,8 @@ export default {
       if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
         await this.getCabinetDetail()
       }
-
+      // eslint-disable-next-line no-debugger
+      debugger
       if (!this.CONT_DETAIL.D_MEMO_LIST) {
         await this.getMemoList()
       }
@@ -328,11 +331,6 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         var resultList = await this.$getCabinetDetail(param)
-        // mShareItemList가 잘 들어오면 save잘 된것
-        //   this.shareAuth.R = true
-        //   this.shareAuth.W = true
-        //   this.shareAuth.V = true
-        // } else {
         resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
         this.updateStoreData(resultList.mCabinet)
       }
@@ -346,14 +344,8 @@ export default {
       console.log('param')
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (this.detailVal.jobkindId === 'BOAR') {
-        this.CHANNEL_DETAIL.ELEMENTS.boardList.push(detailData)
-      } else {
-        this.CHANNEL_DETAIL.ELEMENTS.alimList.push(detailData)
-      }
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true, null, null)
+
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
     },
     onLoadFunction () {
       var thisthis = this
@@ -380,18 +372,6 @@ export default {
             })
           }
         }, 300)
-      }
-    },
-    async copyTextMake () {
-      var title = '[' + this.$changeText(this.CONT_DETAIL.nameMtext) + ']' + this.$changeText(this.CONT_DETAIL.cabinetNameMtext)
-      var message = this.CONT_DETAIL.title
-      var cont = this.CONT_DETAIL
-      if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-        cont.copyTextStr = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'boardDetail', message, title)
-      } else {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-        cont.copyTextStr = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'pushDetail', message, title)
       }
     },
     memoUserNameClick (userKey) {
@@ -759,11 +739,7 @@ export default {
         memos = memos.splice(index, 1)
         var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = memos
-        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-        } else {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
     },
     async loadMore () {
@@ -784,11 +760,7 @@ export default {
       var cont = this.CONT_D_MEMO
       var index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === memo.memoKey)
       cont.D_MEMO_LIST[index].bodyFullStr = memo.bodyFullStr
-      if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-      } else {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-      }
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
     },
     async getMemoList (refreshYn) {
       // eslint-disable-next-line no-new-object
@@ -834,11 +806,7 @@ export default {
         cont.D_MEMO_LIST = tempMemo
 
         this.offsetInt = tempMemo.length
-        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-        } else {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
       // this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
@@ -911,11 +879,7 @@ export default {
         var cont = this.CONT_DETAIL
         cont.D_ATTATCH_FILE_LIST = attachFileList
         cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-        } else {
-          this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
     },
     decodeContents (data) {
@@ -946,11 +910,7 @@ export default {
       }
       var cont = this.CONT_DETAIL
       cont.D_CONT_USER_DO = D_CONT_USER_DO
-      if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-      } else {
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-      }
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       // return D_CONT_USER_DO
     },
 
@@ -985,11 +945,7 @@ export default {
         }
         if (act.doType === 'LI') {
           this.CONT_DETAIL.likeCount -= 1
-          if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-            this.$actionVuex('CONT', this.CONT_DETAIL, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-          } else {
-            this.$actionVuex('CONT', this.CONT_DETAIL, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-          }
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this.CONT_DETAIL])
         }
       } else {
         param.actYn = true
@@ -1005,11 +961,7 @@ export default {
 
         this.CONT_DETAIL.D_CONT_USER_DO.push({ doType: act.doType, doKey: 1 })
         if (act.doType === 'LI') { this.CONT_DETAIL.likeCount += 1 }
-        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-          this.$actionVuex('CONT', this.CONT_DETAIL, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
-        } else {
-          this.$actionVuex('CONT', this.CONT_DETAIL, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, null)
-        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this.CONT_DETAIL])
 
         // this.CONT_DETAIL.userDoList = temp
       }

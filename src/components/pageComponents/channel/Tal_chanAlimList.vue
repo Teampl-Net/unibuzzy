@@ -231,7 +231,7 @@ export default {
     async readyFunction () {
       // eslint-disable-next-line no-debugger
       debugger
-      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.initYn) {
+      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
         await this.$addChanList(this.chanDetail.targetKey)
       }
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {

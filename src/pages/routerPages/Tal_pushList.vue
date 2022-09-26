@@ -102,8 +102,9 @@ export default {
       }
     }
     var this_ = this
-    this_.getPushContentsList().then(response => {
-      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+    this_.getPushContentsList().then(async response => {
+      var settingList = await this_.settingUserDo(response.content)
+      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
       var newArr = []
       if (this_.viewMainTab === 'P') {
         newArr = [
@@ -182,23 +183,6 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    GE_CHANNEL_DETAIL: {
-      immediate: true,
-      handler (value, old) {
-        console.log('GE_CHANNEL_DETAIL')
-        console.log(value)
-        this.CHANNEL_DETAIL = value
-      },
-      deep: true
-    },
-    GE_MAIN_ALIM_LIST: {
-      immediate: true,
-      handler (value, old) {
-        console.log(value)
-        this.MAIN_ALIM_LIST = value
-      },
-      deep: true
-    },
     chanDetail (value, old) {
     },
     /* CHANNEL_DETAIL: {p
@@ -518,6 +502,28 @@ export default {
         this.$emit('closeLoading')
       }, 800)
     },
+    async settingUserDo (dataList) {
+      for (var i = 0; i < dataList.length; i++) {
+        var userDo = dataList[i].D_CONT_USER_DO
+        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        if (userDo) {
+          var index = userDo.findIndex((item) => item.doType === 'ST')
+          if (index >= 0) {
+            userDoList[0].doKey = userDo[index].doKey
+          }
+          index = userDo.findIndex((item) => item.doType === 'LI')
+          if (index >= 0) {
+            userDoList[1].doKey = userDo[index].doKey
+          }
+          index = userDo.findIndex((item) => item.doType === 'RE')
+          if (index >= 0) {
+            userDoList[2].doKey = userDo[index].doKey
+          }
+        }
+        dataList[i].D_CONT_USER_DO = userDoList
+      }
+      return dataList
+    },
     introPushPageTab () {
       if (this.viewTab === 'N') {
         this.currentTabName = '최신'
@@ -573,7 +579,8 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      var settingList = await this.settingUserDo(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
       this.endListSetFunc(resultList)
       var newArr = []
       if (this.viewMainTab === 'P') {
@@ -608,8 +615,9 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
+        var settingList = await this.settingUserDo(resultList.content)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
         var newArr = []
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
           if (this.viewMainTab === 'P') {
             newArr = [
@@ -687,7 +695,8 @@ export default {
       this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      var settingList = await this.settingUserDo(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
@@ -730,7 +739,8 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      var settingList = await this.settingUserDo(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
@@ -789,7 +799,8 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      var settingList = await this.settingUserDo(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [

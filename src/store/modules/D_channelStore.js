@@ -53,7 +53,10 @@ const D_CHANNEL = {
         // eslint-disable-next-line no-new-object
         var D_CHAN_AUTH = {}
         D_CHAN_AUTH.recvAlimYn = true
+        // eslint-disable-next-line no-debugger
+        debugger
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+          D_CHAN_AUTH.settingYn = true
           if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
             D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
           }
@@ -124,7 +127,9 @@ const D_CHANNEL = {
           // eslint-disable-next-line no-new-object
           var D_CHAN_AUTH = {}
           D_CHAN_AUTH.recvAlimYn = true
+          if (team.followerKey) D_CHAN_AUTH = true
           if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+            D_CHAN_AUTH.settingYn = true
             if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
               D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
             }
@@ -158,7 +163,8 @@ const D_CHANNEL = {
     MU_REPLACE_CHANNEL: (state, payload) => {
       var idx1
       var chanList = state.chanList
-
+      // eslint-disable-next-line no-debugger
+      debugger
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
       chanList[idx1] = payload
       state.chanList = chanList
@@ -229,23 +235,24 @@ const D_CHANNEL = {
       var chanList = state.chanList
       if (payload.length === 0) return
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
-      var chanDetail = chanList[idx1]
-      for (var i = 0; i < payload.length; i++) {
-        if (payload[i].jobkindId === 'BOAR') {
-          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
-        } else {
-          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
-        }
-
-        if (idx2 === -1) {
+      if (idx1 !== -1) {
+        var chanDetail = chanList[idx1]
+        for (var i = 0; i < payload.length; i++) {
           if (payload[i].jobkindId === 'BOAR') {
-            chanDetail.ELEMENTS.boardList.push(payload[i])
+            idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
           } else {
-            chanDetail.ELEMENTS.alimList.push(payload[i])
+            idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+          }
+
+          if (idx2 === -1) {
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList.push(payload[i])
+            } else {
+              chanList[idx1].ELEMENTS.alimList.push(payload[i])
+            }
           }
         }
       }
-      chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = chanDetail.teamKey
       return true
@@ -306,8 +313,6 @@ const D_CHANNEL = {
   },
   actions: {
     AC_MAIN_CHAN_LIST: ({ commit }, payload) => { // 채널전체 치환
-      // eslint-disable-next-line no-debugger
-      debugger
       commit('MU_MAIN_CHAN_LIST', payload)
     },
     AC_ADD_CHANNEL: ({ commit }, payload) => {
@@ -362,8 +367,6 @@ const D_CHANNEL = {
       var channelList = state.chanList
       index = channelList.findIndex((item) => item.teamKey === payload.teamKey)
       channelList[index] = payload
-      // eslint-disable-next-line no-debugger
-      debugger
       commit('MU_MAIN_CHAN_LIST', channelList)
     }
   }

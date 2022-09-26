@@ -76,11 +76,11 @@
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim):''">
+                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey, alim.creTeamKey):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
-                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey, alim.creTeamKey)"/>
                   </div>
 
                 </div>
@@ -166,9 +166,6 @@ export default {
       this.targetCKey = this.targetContentsKey
       this.memoOpenClick({contentsKey: this.targetCKey})
     }
-    if (this.commonListData) {
-        this.settingUserDo()
-    }
   },
   watch: {
   },
@@ -181,7 +178,6 @@ export default {
     this.settingAtag()
   },
   mounted() {
-    // this.settingUserDo()
     var pushListWrap = document.getElementById('pushListWrap')
     if (pushListWrap) {
         pushListWrap.addEventListener('scroll', () => {
@@ -526,14 +522,17 @@ export default {
         param: memo
       })
       if (result.data.result === true) {
+        var cont = this.currentMemoObj
         // this.memoList = []
         // await this.getBoardMemoList(true)
         var response = await this.getContentsMemoList(this.currentContentsKey)
-        this.currentMemoList = response.memoList
-        this.currentMemoObj = response
-        // this.offsetInt = this.currentMemoList.length
-        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
-        this.settingOffsetIntTotalMemoCount()
+
+        index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+        cont.D_MEMO_LIST.splice(index, 1)
+        this.currentMemoList = cont.D_MEMO_LIST
+        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.currentMemoObj = cont
         this.memoSetCount(response.totalElements)
       }
     },
@@ -653,13 +652,14 @@ export default {
         // await this.getContentsList()
         // await this.getBoardMemoList(true)
         // this.currentMemoList = []
+        var cont = this.currentMemoObj
         var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
-        this.currentMemoList = response.memoList
-        this.currentMemoObj = response
-        // this.offsetInt = this.currentMemoList.length
-        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
-        this.settingOffsetIntTotalMemoCount()
-        console.log(response)
+
+        cont.D_MEMO_LIST = response.memoList
+        
+        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.currentMemoObj = cont
         this.memoSetCount(response.totalElements)
         this.pointAni()
         /* this.scrollMove(-1) */
@@ -678,9 +678,9 @@ export default {
     mememoCancel(){
       this.mememoValue = null
     },
-    writeMemo (key) {
+    writeMemo (key, creTeamKey) {
       var findIndex = this.openMemoList.indexOf(key)
-      if (findIndex === -1) this.memoOpenClick(key)
+      if (findIndex === -1) this.memoOpenClick(key, creTeamKey)
       this.memoShowYn = true
       this.mememoValue = null
       this.currentContentsKey = key
@@ -706,49 +706,47 @@ export default {
         this.mememoValue = data
         this.memoShowYn = true
     },
-    async memoOpenClick (key) {
+    async memoOpenClick (key, teamKey) {
         this.pageSize = 5
         this.offsetInt = 0
         this.selectedConentsKey = key
-        var findIndex = this.openMemoList.indexOf(key)
-        this.currentMemoList = []
-        // var div = document.getElementById('memoList'+key)
-        // console.log('div')
-        if (findIndex === -1) {
-            var list = new Array
-            list.push(key)
-            this.openMemoList = list
-            var response = await this.getContentsMemoList(key)
-
-            this.currentMemoList = response.memoList
-            // this.offsetInt = this.currentMemoList.length
-            // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
-            this.settingOffsetIntTotalMemoCount()
-            this.currentMemoObj = response
-
-            // document.getElementById('memoOpen'+key).innerText = '댓글접기'
-            if (this.currentContentsKey !== null ){
-                if (document.getElementById('alimMemo'+this.currentContentsKey)) {
-                    document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
-                } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
-                    document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
-                }
+        this.currentContentsKey = key
+        var cont = null
+        if (teamKey) {
+            var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
+            if (contList) {
+                cont = contList[0]
             }
-            if (document.getElementById('alimMemo'+key)) {
-                document.getElementById('alimMemo'+key).style.display = 'block'
-            } else if (document.getElementById('borderLine'+key)) {
-                document.getElementById('borderLine'+key).style.display = 'block'
-            }
-
-      } else {
-        // document.getElementById('memoOpen'+key).innerText = '댓글펼치기'
-        this.openMemoList.splice(findIndex, 1)
-        if (document.getElementById('alimMemo'+key)) {
-            document.getElementById('alimMemo'+key).style.display = 'none'
-        } else if (document.getElementById('borderLine'+key)) {
-            document.getElementById('borderLine'+key).style.display = 'none'
         }
-      }
+        if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
+            this.currentMemoObj = cont
+        } else {
+            cont.D_MEMO_LIST = []
+            this.currentMemoObj = cont
+            var response = await this.getContentsMemoList(key, null, null, teamKey)
+            cont.D_MEMO_LIST = [
+                ...cont.D_MEMO_LIST,
+                ...response.memoList
+            ]
+        }
+        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+
+        if (this.currentContentsKey !== null ){
+            debugger
+            if (document.getElementById('alimMemo'+this.currentContentsKey)) {
+                document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
+            } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
+                document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+            }
+        }
+        if (document.getElementById('alimMemo'+key)) {
+            document.getElementById('alimMemo'+key).style.display = 'block'
+        } else if (document.getElementById('borderLine'+key)) {
+            document.getElementById('borderLine'+key).style.display = 'block'
+        }
+        
+      this.curretnMemoList = cont.D_MEMO_LIST  
       this.currentContentsKey = key
     },
     alimBigView (alim) {
@@ -816,15 +814,25 @@ export default {
         }
 
     },
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
     async getContentsMemoList (key, pageSize, offsetInt) {
-      var memo = {}
-      memo.targetKind = 'C'
-      memo.targetKey = key
+        var memo = {}
+        memo.targetKind = 'C'
+        memo.targetKey = key
+
+      var cont = this.currentMemoObj
       if (pageSize) memo.pageSize = pageSize
       else  memo.pageSize = this.pagesize
       if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
       else  memo.offsetInt = this.offsetInt
-      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, key, this.detailVal.jobkindId)
       // if (allYn) {
       //   memo.pageSize = this.totalElements + 1
       //   memo.offsetInt = 0
@@ -836,11 +844,11 @@ export default {
       })
 
       if (result.data.memoList) {
-        this.CONT_DETAIL.totalMemoCount = result.data.totalElements
+        cont.totalMemoCount = result.data.totalElements
         var tempList = []
         // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
-        if (this.CONT_DETAIL.D_MEMO_LIST && !refreshYn) {
-          tempList = this.CONT_DETAIL.D_MEMO_LIST
+        if (cont.D_MEMO_LIST) {
+          tempList = cont.D_MEMO_LIST
         }
         const newArr = [
           ...tempList,
@@ -860,7 +868,6 @@ export default {
             }
           }
         }
-        var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = tempMemo
         this.offsetInt = tempMemo.length
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
@@ -875,7 +882,7 @@ export default {
       /* console.log('this.$refs.gMemoRef')
       console.log(this.$refs.gMemoRef)
       this.$refs.gMemoRef.memoLoadingHide() */
-      this.currentMemoObj = result.data
+      this.currentMemoObj = cont
       this.currentMemoTotal = this.currentMemoObj.totalElements
 
       return list
@@ -918,20 +925,19 @@ export default {
         this.showMoreMemoTextYn = true
     },
     /** 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!  */
-    settingOffsetIntTotalMemoCount () {
+    settingOffsetIntTotalMemoCount (memoList) {
       console.log('#################')
       var totalMemoCount = 0
-      if (this.currentMemoList) {
-        for (let i = 0; i < this.currentMemoList.length; i++) {
-            if (this.currentMemoList[i].cmemoList.length > 0) {
-            for (let cmemoIndex = 0; cmemoIndex < this.currentMemoList[i].cmemoList.length; cmemoIndex++) {
+      if (memoList) {
+        for (let i = 0; i < memoList.length; i++) {
+            debugger
+            if (memoList[i].cmemoList.length > 0) {
+            for (let cmemoIndex = 0; cmemoIndex < memoList[i].cmemoList.length; cmemoIndex++) {
                 totalMemoCount += 1
             }
             }
         }
-        console.log(totalMemoCount)
-        console.log(this.currentMemoList.length + totalMemoCount)
-        this.offsetInt = this.currentMemoList.length + totalMemoCount
+        this.offsetInt = memoList.length + totalMemoCount
         console.log('#################')
       }
       
@@ -939,17 +945,18 @@ export default {
     async yesLoadMore () {
         this.pageSize = 5
         /* debugger */
+        var cont = this.currentMemoObj
         var response = await this.getContentsMemoList(this.currentContentsKey)
         var newArr = []
         newArr = [
-            ...this.currentMemoList,
+            ...cont.D_MEMO_LIST,
             ...response.memoList
         ]
-        this.currentMemoList = newArr
-        this.currentMemoObj = response
-        // this.offsetInt = this.currentMemoList.length
-        // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
-        this.settingOffsetIntTotalMemoCount()
+        cont.D_MEMO_LIST = newArr
+        this.currentMemoList = cont.D_MEMO_LIST
+        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.currentMemoObj = cont
         if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
         this.memoSetCount(response.totalElements)
     },
@@ -1126,31 +1133,6 @@ export default {
       /* if (result === true) {
         await this.$emit('refresh')
       } */
-    },
-    settingUserDo () {
-        var dataList = this.commonListData
-      for (var i = 0; i < dataList.length; i++){
-        var userDo = dataList[i].D_CONT_USER_DO 
-        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
-        if (userDo) {
-            var index = userDo.findIndex((item) => item.doType === 'ST')
-            if (index >= 0) {
-                userDoList[0].doKey = userDo[index].doKey
-            }
-            index = userDo.findIndex((item) => item.doType === 'LI')
-            if (index >= 0) {
-                userDoList[1].doKey = userDo[index].doKey
-            }
-            index = userDo.findIndex((item) => item.doType === 'RE')
-            if (index >= 0) {
-                userDoList[2].doKey = userDo[index].doKey
-            }
-        }
-        dataList[i].D_CONT_USER_DO = userDoList
-      }
-      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', dataList)
-      return userDoList
     },
     async loadMore() {
       this.loadingRefShow()

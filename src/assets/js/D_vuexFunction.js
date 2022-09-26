@@ -169,17 +169,29 @@ const functions = {
     console.log(cabinetDetail)
     return cabinetDetail
   },
-  getContentsDetail (teamDetail, targetKey, jobkindId) {
+  getContentsDetail (teamDetail, targetKey, teamKey) {
     var detailData
     var dataList
-    if (!teamDetail) return null
-    if (jobkindId === 'BOAR') {
-      dataList = teamDetail.ELEMENTS.boardList
-    } else {
-      dataList = teamDetail.ELEMENTS.alimList
+    if (!targetKey) return null
+    if (!teamDetail) {
+      debugger
+      if (teamKey) {
+        var teamList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+        var result = teamList.filter(data => data.teamKey === teamKey)
+        if (result) {
+          teamDetail = result[0]
+        } else {
+          return null
+        }
+      }
     }
-    detailData = dataList.filter(cab => cab.contentsKey === Number(targetKey))
-    return detailData
+    detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+    if (detailData && detailData.length !== 0) {
+      return detailData
+    } else {
+      detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+      return detailData
+    }
   },
   async addChanList (teamKey) {
     var paramMap = new Map()
@@ -187,43 +199,19 @@ const functions = {
     paramMap.set('teamKey', teamKey)
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var resultList = await methods.getTeamList(paramMap)
-    console.log('팀정보 가져오기 getFunction.getDetail')
-    console.log(resultList)
+    /* if (response)  */
     var response = resultList.data.content[0]
+    var team = null
+    var teamList = functions.getDetail('TEAM', teamKey)
+    if (teamList) {
+      team = teamList[0]
+      response.ELEMENTS = team.ELEMENTS
+    }
     response.teamTypeText = commonMethods.teamTypeString(response.teamType)
     var title = '[더알림]' + commonMethods.changeText(response.nameMtext)
     var message = commonMethods.changeText(response.memoMtext)
     response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
 
-    // eslint-disable-next-line no-new-object
-    var D_CHAN_AUTH = this.CHANNEL_DETAIL.D_CHAN_AUTH
-    D_CHAN_AUTH.recvAlimYn = true
-    if (response.userTeamInfo !== undefined && response.userTeamInfo !== null && response.userTeamInfo !== '') {
-      if (response.userTeamInfo.notiYn === false || Number(response.userTeamInfo.notiYn) === 0) {
-        D_CHAN_AUTH.recvAlimYn = response.userTeamInfo.notiYn
-      }
-      if (response.userTeamInfo.showProfileYn === 1) {
-        D_CHAN_AUTH.showProfileYn = true
-        D_CHAN_AUTH.userGrade = '(공개)'
-      }
-      D_CHAN_AUTH.followYn = true
-      response.detailShowYn = false
-      D_CHAN_AUTH.followTypeText = '구독자'
-      if (response.userTeamInfo.managerKey !== undefined && response.userTeamInfo.managerKey !== null && response.userTeamInfo.managerKey !== '') {
-        if (response.userTeamInfo.ownerYn === true || response.userTeamInfo.ownerYn === 'true') {
-          D_CHAN_AUTH.followTypeText = '소유자'
-          D_CHAN_AUTH.userGrade = '(관리자)'
-          D_CHAN_AUTH.ownerYn = true
-          D_CHAN_AUTH.admYn = true
-        } else {
-          D_CHAN_AUTH.followTypeText = '관리자'
-          D_CHAN_AUTH.userGrade = '(매니저)'
-        }
-        D_CHAN_AUTH.adminYn = true
-      }
-    }
-
-    response.D_CHAN_AUTH = D_CHAN_AUTH
     response.detailPageYn = true
     await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   }
