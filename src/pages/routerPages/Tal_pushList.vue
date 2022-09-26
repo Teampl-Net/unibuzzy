@@ -29,9 +29,8 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList id="chanAlimPush" :chanAlimYn="chanAlimYn" v-if="chanAlimYn && CHANNEL_DETAIL.ELEMENTS.commonList && CHANNEL_DETAIL.ELEMENTS.commonList.list.length > 0" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="CHANNEL_DETAIL.ELEMENTS.commonList.list" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-else-if="!chanAlimYn && viewMainTab === 'P' && MAIN_ALIM_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="MAIN_ALIM_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-else-if="!chanAlimYn && viewMainTab === 'B' && GE_MAIN_BOARD_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="GE_MAIN_BOARD_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.alimContentsList" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.boardContentsList" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
           <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -104,11 +103,22 @@ export default {
     }
     var this_ = this
     this_.getPushContentsList().then(response => {
-      var newArr = [
-        ...response.content
-      ]
-      var uniqueArr = this.replaceArr(newArr)
-      this.updateStoreData(uniqueArr)
+      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+      var newArr = []
+      if (this_.viewMainTab === 'P') {
+        newArr = [
+          ...this_.alimContentsList,
+          ...response.content
+        ]
+        this_.alimContentsList = this.replaceArr(newArr)
+      } else {
+        newArr = [
+          ...this_.boardContentsList,
+          ...response.content
+        ]
+        this_.boardContentsList = this.replaceArr(newArr)
+      }
+      // this.updateStoreData(uniqueArr)
       this_.findPopShowYn = false
       if (this_.readySearchList) {
         this_.requestSearchList(this_.readySearchList)
@@ -128,7 +138,7 @@ export default {
         this_.endListSetFunc(response)
       }
       this_.scrolledYn = false
-      if (uniqueArr.length > 0) {
+      if (newArr.length > 0) {
         this_.canLoadYn = true
       }
     })
@@ -563,29 +573,22 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       this.endListSetFunc(resultList)
       var newArr = []
-      var uniqueArr = null
-      if (this.chanAlimYn) {
+      if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
+          ...this.alimContentsList,
           ...resultList.content
         ]
+        this.alimContentsList = this.replaceArr(newArr)
       } else {
-        if (this.viewMainTab === 'P') {
-          newArr = [
-            ...this.MAIN_ALIM_LIST,
-            ...resultList.content
-          ]
-        } else if (this.viewMainTab === 'B') {
-          newArr = [
-            ...this.GE_MAIN_BOARD_LIST,
-            ...resultList.content
-          ]
-        }
+        newArr = [
+          ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.boardContentsList = this.replaceArr(newArr)
       }
-      uniqueArr = this.replaceArr(newArr)
-      this.updateStoreData(uniqueArr)
     },
     endListSetFunc (resultList) {
       console.log('result')
@@ -606,48 +609,38 @@ export default {
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
         var newArr = []
-        var uniqueArr = null
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
-          if (this.chanAlimYn) {
+          if (this.viewMainTab === 'P') {
             newArr = [
-              ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
+              ...this.alimContentsList,
               ...resultList.content
             ]
-            uniqueArr = this.replaceArr(newArr)
-            this.updateStoreData(uniqueArr)
+            this.alimContentsList = this.replaceArr(newArr)
           } else {
-            if (this.viewMainTab === 'P') {
-              newArr = [
-                ...this.MAIN_ALIM_LIST,
-                ...resultList.content
-              ]
-            } else if (this.viewMainTab === 'B') {
-              newArr = [
-                ...this.GE_MAIN_BOARD_LIST,
-                ...resultList.content
-              ]
-            }
-            uniqueArr = this.replaceArr(newArr)
-            this.updateStoreData(uniqueArr)
+            newArr = [
+              ...this.boardContentsList,
+              ...resultList.content
+            ]
+            this.boardContentsList = this.replaceArr(newArr)
           }
         } else {
-          if (this.chanAlimYn) {
-            console.log('!!!!!!!!!!!!!!!!')
-            console.log(uniqueArr)
-            // eslint-disable-next-line no-array-constructor
-            var tempArr = new Array()
-            for (var i = 0; i < resultList.content.length; i++) {
-              tempArr.unshift(resultList.content[i])
-            }
+          if (this.viewMainTab === 'P') {
             newArr = [
-              ...tempArr,
-              ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list
+              ...resultList.content,
+              ...this.alimContentsList
             ]
-            uniqueArr = this.replaceArr(newArr)
-            this.updateStoreData(uniqueArr)
+            this.alimContentsList = this.replaceArr(newArr)
+          } else {
+            newArr = [
+              ...resultList.content,
+              ...this.boardContentsList
+            ]
+            this.boardContentsList = this.replaceArr(newArr)
           }
         }
         await this.endListSetFunc(resultList)
+        this.contentsList = this.replaceArr(newArr)
         this.canLoadYn = true
         console.log('this.offsetInt' + this.offsetInt)
         this.$emit('numberOfElements', resultList.totalElements)
@@ -694,13 +687,21 @@ export default {
       this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
-      var uniqueArr = null
-      newArr = [
-        ...resultList.content
-      ]
-      uniqueArr = this.replaceArr(newArr)
-      this.updateStoreData(uniqueArr)
+      if (this.viewMainTab === 'P') {
+        newArr = [
+          ...this.alimContentsList,
+          ...resultList.content
+        ]
+        this.alimContentsList = this.replaceArr(newArr)
+      } else {
+        newArr = [
+          ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.boardContentsList = this.replaceArr(newArr)
+      }
       this.findPopShowYn = false
       this.introPushPageTab()
       this.scrollMove()
@@ -729,34 +730,23 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
-      var uniqueArr = null
-      if (this.chanAlimYn) {
+      if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
+          ...this.alimContentsList,
           ...resultList.content
         ]
+        this.alimContentsList = this.replaceArr(newArr)
       } else {
-        if (this.viewMainTab === 'P') {
-          newArr = [
-            ...this.MAIN_ALIM_LIST,
-            ...resultList.content
-          ]
-        } else if (this.viewMainTab === 'B') {
-          console.log('refreshList')
-          console.log(this.GE_MAIN_BOARD_LIST)
-          // eslint-disable-next-line no-debugger
-          debugger
-          newArr = [
-            ...this.GE_MAIN_BOARD_LIST,
-            ...resultList.content
-          ]
-        }
+        newArr = [
+          ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.boardContentsList = this.replaceArr(newArr)
       }
 
-      uniqueArr = this.replaceArr(newArr)
       this.endListSetFunc(resultList)
-      this.updateStoreData(uniqueArr)
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -799,28 +789,21 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
-      var uniqueArr = null
-      if (this.chanAlimYn) {
+      if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
+          ...this.alimContentsList,
           ...resultList.content
         ]
+        this.alimContentsList = this.replaceArr(newArr)
       } else {
-        if (this.viewMainTab === 'P') {
-          newArr = [
-            ...this.MAIN_ALIM_LIST,
-            ...resultList.content
-          ]
-        } else if (this.viewMainTab === 'B') {
-          newArr = [
-            ...this.GE_MAIN_BOARD_LIST,
-            ...resultList.content
-          ]
-        }
+        newArr = [
+          ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.boardContentsList = this.replaceArr(newArr)
       }
-      uniqueArr = this.replaceArr(newArr)
-      this.updateStoreData(uniqueArr)
       this.endListSetFunc(resultList)
     },
     /* 이미지 다운로드 */
@@ -862,6 +845,8 @@ export default {
     return {
       MAIN_ALIM_LIST: [],
       CHANNEL_DETAIL: {},
+      alimContentsList: [],
+      boardContentsList: [],
       paddingTop: 0,
       pushListReloadShowYn: false,
       imgUrl: '',

@@ -23,7 +23,7 @@ import commonListTable from '../../list/Tal_commonListTable.vue'
 export default {
   name: 'top5PushList',
   async created () {
-    this.contentsList = this.alimList
+    this.contentsList = this.allContList
   },
   data () {
     return {

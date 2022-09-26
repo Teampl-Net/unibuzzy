@@ -11,8 +11,8 @@
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
     <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
-    <gEmty :tabName="currentTabName" contentName="채널" v-if="emptyYn && this.GE_MAIN_TEAM_LIST.length === 0" style="margin-top:50px;" />
-    <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.GE_MAIN_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
+    <gEmty :tabName="currentTabName" contentName="채널" v-if="emptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+    <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
@@ -68,6 +68,19 @@ export default {
     GE_MAIN_TEAM_LIST () {
       return this.$store.getters['D_CONTENTS/GE_MAIN_TEAM_LIST']
     },
+    GE_DISP_TEAM_LIST () {
+        var index = null
+        var teamList = this.GE_MAIN_TEAM_LIST
+        for (var i = 0; i < this.channelList.length; i++) {
+            index = teamList.findIndex((item) => item.teamKey === this.channelList[i].teamKey)
+            if (index !== -1) {
+                this.channelList[i] = teamList[index]   
+            }
+        }
+        var returnData = this.channelList
+          
+      return returnData
+    },
     // calcHeaderHeight () {
     //   if (this.headerTop) {
     //   } else {
@@ -113,14 +126,15 @@ export default {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
     }
-    if (!this.GE_MAIN_TEAM_LIST || this.GE_MAIN_TEAM_LIST.length === 0) {
+    if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
         var resultList = await this.getChannelList()
+        this.channelList = resultList.content
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
         if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         } else {
         this.endListYn = false
         }
-        this.updateStoreData(resultList.content)
     }
     
     this.introChanPageTab()
@@ -208,7 +222,8 @@ export default {
       }
       this.endList = true
       var resultList = await this.getChannelList(pSize, 0)
-      this.updateStoreData(resultList.content)
+      this.channelList = resultList.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -221,30 +236,22 @@ export default {
       if (this.endListYn === false ) {
         this.offsetInt += 1
         var resultList = await this.getChannelList()
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
         const newArr = [
-          ...this.GE_MAIN_TEAM_LIST,
+          ...this.channelList,
           ...resultList.content
         ]
+        this.channelList = newArr
         if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
           this.endListYn = true
         } else {
           this.endListYn = false
         }
-        this.updateStoreData(newArr)
 
       } else {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
     },
-
-    // testRefresh () {
-    //   var top = document.getElementById('refresh').getBoundingClientRect().top
-    //   console.log(top)
-    //   // if(top>80){
-    //   // location.href = location.href
-    //   // console.log(location.href)
-    //   // }
-    // },
     clickCreateChannel () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
@@ -255,11 +262,11 @@ export default {
       this.$emit('openPop', param)
     },
     allChannelInfo() {
-      for (var i = 0; i < this.GE_MAIN_TEAM_LIST.length; i++) {
-        if (this.GE_MAIN_TEAM_LIST[i].userTeamInfo) {
-          this.GE_MAIN_TEAM_LIST[i].ownerYn = this.GE_MAIN_TEAM_LIST[i].userTeamInfo.ownerYn
-          if (this.GE_MAIN_TEAM_LIST[i].userTeamInfo.managerKey) {
-            this.GE_MAIN_TEAM_LIST[i].managerKey = this.GE_MAIN_TEAM_LIST[i].userTeamInfo.managerKey
+      for (var i = 0; i < this.GE_DISP_TEAM_LIST.length; i++) {
+        if (this.GE_DISP_TEAM_LIST[i].userTeamInfo) {
+          this.GE_DISP_TEAM_LIST[i].ownerYn = this.GE_DISP_TEAM_LIST[i].userTeamInfo.ownerYn
+          if (this.GE_DISP_TEAM_LIST[i].userTeamInfo.managerKey) {
+            this.GE_DISP_TEAM_LIST[i].managerKey = this.GE_DISP_TEAM_LIST[i].userTeamInfo.managerKey
           }
         }
       }
@@ -270,8 +277,9 @@ export default {
       this.listShowYn = false
       this.emptyYn = false
       var resultList = await this.getChannelList()
-      this.updateStoreData(resultList.content)
-      if (this.GE_MAIN_TEAM_LIST.length === 0) this.emptyYn = true
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      this.channelList = resultList.content
+      if (this.channelList.length === 0) this.emptyYn = true
 
       this.listShowYn = true
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -346,12 +354,13 @@ export default {
     async requestSearchList (paramMap) {
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList()
-      this.updateStoreData(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
         this.endListYn = false
       }
+      this.channelList = resultList.content
       this.viewTab = 'all'
       this.$refs.activeBar.switchtab(1)// 전체
       this.$refs.activeBar.selectTab('all')// 전체
@@ -373,7 +382,8 @@ export default {
     async changeSearchList(idx) {
       this.resultSearchKeyList.splice(idx, 1)
       var resultList = await this.getChannelList()
-      this.updateStoreData(resultList.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      this.channelList = resultList.content
       this.findPaddingTopChan()
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
@@ -384,6 +394,7 @@ export default {
   },
   data () {
     return {
+      channelList: [],
       paddingTop: 0,
       imgUrl: '',
       box: null,

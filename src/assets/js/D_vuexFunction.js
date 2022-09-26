@@ -112,7 +112,9 @@ const functions = {
           }
         }
       } */
-        await store.dispatch(ActName, dataList)
+        await store.dispatch(ActName, dataList).then(() => {
+          return true
+        })
       }
     }
   },

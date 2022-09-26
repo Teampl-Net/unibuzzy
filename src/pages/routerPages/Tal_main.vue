@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.GE_USER" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+<div v-if="this.GE_USER && this.GE_DISP_ALIM_LIST && this.GE_DISP_BOARD_LIST && this.GE_DISP_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
   <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
@@ -50,10 +50,9 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
+    this.getMainBoard()
     this.loadingYn = true
-    this.setAllContents()
     console.log(this.GE_MAIN_CHAN_LIST)
-    console.log(this.chanList)
     // document.addEventListener('message', e => this.recvNoti(e))
     // // window.addEventListener('message', e => this.recvNoti(e))
     this.$emit('changePageHeader', '더알림')
@@ -95,136 +94,45 @@ export default {
     // top5Title
   },
   methods: {
-    /* ...mapActions('D_USER', [
-      'AC_USER'
-    ]),
-    ...mapActions('D_CHANNEL', [
-      'AC_MAIN_CHAN_LIST'
-    ]),
-    ...mapActions('D_CONTENTS', [
-      'AC_MAIN_ALIM_LIST'
-    ]),
-    ...mapActions('D_CONTENTS', [
-      'AC_MAIN_BOARD_LIST'
-    ]), */
     async getMainBoard () {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
-      await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-      ).then(async (response) => {
-        if (response.status === 200 || response.status === '200') {
-          var teamList = response.data.teamList
-
-          this.mainAlimList = response.data.alimList
-          var index = null
-          var poolList = null
-          var index1 = null
-          for (var i = 0; i < this.mainAlimList.length; i++) {
-            index = teamList.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
-            poolList = teamList[index].ELEMENTS.alimList
-            index1 = poolList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
-            if (index1 === -1) {
-              teamList[index].ELEMENTS.alimList.push(this.mainAlimList[i])
-            }
-          }
-
-          for (var s = 0; s < this.mainBoardList.length; s++) {
-            index = teamList.findIndex((item) => item.teamKey === this.mainBoardList[s].creTeamKey)
-            poolList = teamList[index].ELEMENTS.boardList
-            index1 = poolList.findIndex((item) => item.mccKey === this.mainBoardList[s].mccKey)
-            if (index1 === -1) {
-              teamList[index].ELEMENTS.boardList.push(this.mainBoardList[s])
-            }
-          }
-          this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
-
-          this.mainBoardList = response.data.boardList
-          /* for (var i = 0; i < teamList.length; i++) {
-          var team = teamList[i]
-          team.teamTypeText = commonMethods.teamTypeString(team.teamType)
-          var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
-          var message = commonMethods.changeText(team.memoMtext)
-          // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
-
-          // eslint-disable-next-line no-new-object
-          var D_CHAN_AUTH
-          D_CHAN_AUTH.recvAlimYn = true
-          if (team.userTeamInfo) {
-            if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
-              D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
-            }
-            if (team.userTeamInfo.showProfileYn === 1) {
-              D_CHAN_AUTH.showProfileYn = true
-              D_CHAN_AUTH.userGrade = '(공개)'
-            }
-            D_CHAN_AUTH.followYn = true
-            team.detailShowYn = false
-            D_CHAN_AUTH.followTypeText = '구독자'
-            if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 'true') {
-                D_CHAN_AUTH.followTypeText = '소유자'
-                D_CHAN_AUTH.userGrade = '(관리자)'
-                D_CHAN_AUTH.ownerYn = true
-                D_CHAN_AUTH.admYn = true
-              } else {
-                D_CHAN_AUTH.followTypeText = '관리자'
-                D_CHAN_AUTH.userGrade = '(매니저)'
-              }
-              D_CHAN_AUTH.adminYn = true
-            }
-          }
-
-          team.D_CHAN_AUTH = D_CHAN_AUTH
-        } */
-          this.mainChanList = teamList
-          this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
-          this.$store.dispatch('D_CONTENTS/AC_MAIN_TEAM_LIST', teamList)
-        /* functions.AC_MAIN_CHAN_LIST(teamList)
-        functions.AC_MAIN_ALIM_LIST(response.data.boardList)
-        functions.AC_MAIN_BOARD_LIST(response.data.boardList) */
-        // store.commit('updateD_chanList', teamList)
-        // store.commit('updateD_alimList', response.data.alimList)
-        // this.chanList = response.data.teamList
-        }
-      // response.data.userMap
-      }).catch((error) => {
-        console.warn('ERROR!!!!! : ', error)
-      // return 'error'
-      })
-    },
-    setAllContents () {
-      if (this.GE_MAIN_ALIM_LIST && this.GE_MAIN_BOARD_LIST) {
-        if (this.GE_MAIN_ALIM_LIST.length > 4 && this.GE_MAIN_BOARD_LIST.length > 4) {
-          this.allContList = [
-            ...this.GE_MAIN_ALIM_LIST.slice(0, 5),
-            ...this.GE_MAIN_BOARD_LIST.slice(0, 5)
-          ]
-        } else {
-          if (this.GE_MAIN_ALIM_LIST.length > 4) {
-            this.allContList = [
-              ...this.GE_MAIN_ALIM_LIST.slice(0, 5),
-              ...this.GE_MAIN_BOARD_LIST
-            ]
-          } else if (this.GE_MAIN_ALIM_LIST.length > 4) {
-            this.allContList = [
-              ...this.GE_MAIN_ALIM_LIST,
-              ...this.GE_MAIN_BOARD_LIST.slice(0, 5)
-            ]
-          } else {
-            this.allContList = [
-              ...this.GE_MAIN_ALIM_LIST,
-              ...this.GE_MAIN_BOARD_LIST
-            ]
+      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      )
+      if (response.status === 200 || response.status === '200') {
+        var teamList = response.data.teamList
+        this.mainChanList = teamList
+        var test = await this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+        // var test = await this.$actionVuex('TEAM', null, true, false, null)
+        console.log(test)
+        this.mainAlimList = response.data.alimList
+        var index = null
+        var poolList = null
+        var index1 = null
+        teamList = this.GE_DISP_CHAN_LIST
+        for (var i = 0; i < this.mainAlimList.length; i++) {
+          index = teamList.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
+          poolList = teamList[index].ELEMENTS.alimList
+          index1 = poolList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+          if (index1 === -1) {
+            teamList[index].ELEMENTS.alimList.push(this.mainAlimList[i])
           }
         }
-        this.allContList = this.allContList.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.contentsKey - a.contentsKey
-        // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        })
+
+        for (var s = 0; s < this.mainBoardList.length; s++) {
+          index = teamList.findIndex((item) => item.teamKey === this.mainBoardList[s].creTeamKey)
+          poolList = teamList[index].ELEMENTS.boardList
+          index1 = poolList.findIndex((item) => item.mccKey === this.mainBoardList[s].mccKey)
+          if (index1 === -1) {
+            teamList[index].ELEMENTS.boardList.push(this.mainBoardList[s])
+          }
+        }
+        this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+
+        this.mainBoardList = response.data.boardList
+        this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+        this.$store.dispatch('D_CONTENTS/AC_MAIN_TEAM_LIST', teamList)
       }
-    },
-    refresh () {
-      /* this.$refs.topAlim.refreshList() */
     },
     goProfile () {
       // eslint-disable-next-line no-new-object
@@ -307,11 +215,15 @@ export default {
         for (var i = 0; i < this.mainBoardList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainBoardList[i].creTeamKey)
           var chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          var dataList = chanDetail.ELEMENTS.boarList
+          var dataList = chanDetail.ELEMENTS.boardList
           idx2 = dataList.findIndex((item) => item.mccKey === this.mainBoardList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          test.push(dataList[idx2])
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            test.push(dataList[idx2])
+          } else {
+            test.push(this.mainBoardList[i])
+          }
         }
         return test
       } else {
@@ -320,7 +232,7 @@ export default {
     },
     GE_DISP_ALIM_LIST () {
       var idx1, idx2
-      if (this.mainAlimList) {
+      if (this.mainAlimList.length > 0) {
         var test = []
         for (var i = 0; i < this.mainAlimList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
@@ -328,8 +240,12 @@ export default {
           var dataList = chanDetail.ELEMENTS.alimList
           idx2 = dataList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          test.push(dataList[idx2])
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+          if (idx2 !== -1) {
+            test.push(dataList[idx2])
+          } else {
+            test.push(this.mainAlimList[i])
+          }
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
         return test
       } else {
@@ -338,14 +254,16 @@ export default {
     },
     GE_DISP_CHAN_LIST () {
       var idx1
-      if (this.mainChanList) {
+      if (this.mainChanList.length > 0) {
         var test = []
         for (var i = 0; i < this.mainChanList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
           if (idx1 !== -1) {
             test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          } else {
+            test.push(this.mainChanList[i])
           }
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
         return test
       } else {
@@ -354,31 +272,30 @@ export default {
     },
     GE_DISP_ALL_CONTENTS () {
       var idx1, idx2
-      if (this.mainBoardList && this.mainAlimList) {
+      if (this.mainBoardList.length > 0 && this.mainAlimList.length > 0) {
         var test = []
         var newArr = [
           ...this.mainBoardList,
           ...this.mainAlimList
         ]
         for (var i = 0; i < newArr.length; i++) {
-          if (this.mainChanList[i].jobkindId === 'BOAR') {
-            idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainBoardList[i].creTeamKey)
-            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boarList.findIndex((item) => item.mccKey === this.mainBoardList[i].mccKey)
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === newArr[i].creTeamKey)
+          if (newArr[i].jobkindId === 'BOAR') {
+            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boardList.findIndex((item) => item.mccKey === newArr[i].mccKey)
             if (idx2 !== -1) {
-              test.push(this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boarList[idx2])
+              test.push(this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boardList[idx2])
             } else {
               test.push(this.mainBoardList[i])
             }
           } else {
-            idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
-            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.alimList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.alimList.findIndex((item) => item.mccKey === newArr[i].mccKey)
             if (idx2 !== -1) {
               test.push(this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.alimList[idx2])
             } else {
-              test.push(this.mainBoardList[i])
+              test.push(newArr[i])
             }
           }
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
         test = test.sort(function (a, b) { // num으로 오름차순 정렬
           return b.mccKey - a.mccKey

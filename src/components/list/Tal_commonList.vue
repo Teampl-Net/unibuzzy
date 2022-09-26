@@ -5,7 +5,7 @@
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
-        <template v-for="(alim, index0) in this.GE_MAIN_ALIM_LIST" :change="changeData" :key="index0" >
+        <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
           <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
@@ -166,14 +166,11 @@ export default {
       this.targetCKey = this.targetContentsKey
       this.memoOpenClick({contentsKey: this.targetCKey})
     }
-    if (this.GE_MAIN_ALIM_LIST) {
+    if (this.commonListData) {
         this.settingUserDo()
     }
   },
   watch: {
-    GE_MAIN_ALIM_LIST () {
-        this.settingUserDo()
-    }
   },
   updated() {
     if (this.commonListData.length) {
@@ -228,11 +225,11 @@ export default {
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (userKey) {
-      var indexOf = this.GE_MAIN_ALIM_LIST.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      var indexOf = this.commonListData.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
         console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
-        console.log(this.GE_MAIN_ALIM_LIST[indexOf])
-        this.userNameClick(true, userKey, this.GE_MAIN_ALIM_LIST[indexOf].creTeamKey, false)
+        console.log(this.commonListData[indexOf])
+        this.userNameClick(true, userKey, this.commonListData[indexOf].creTeamKey, false)
       }
     },
     userNameClick (userShowYn, userKey, teamKey, blindYn) {
@@ -291,14 +288,8 @@ export default {
           url: 'service/tp.deleteMCabContents',
           param: inParam
         })
-        var contList = this.GE_MAIN_ALIM_LIST
-        var index = contList.findIndex((item) => item.mccKey === inParam.mccKey)
-        contList = contList.splice(index, 1)
-        this.$actionVuex('ALIM', contList, null, true, false, null, null)
         
       } else if (this.tempData.jobkindId === 'BOAR') {
-        console.log(this.tempData)
-        console.log(this.tempData.mccKey)
         var inParam = {}
         // console.log(this.alimDetail)
         inParam.mccKey = this.tempData.mccKey
@@ -310,12 +301,9 @@ export default {
           url: 'service/tp.deleteContents',
           param: inParam
         })
-        var contList = this.GE_MAIN_BOARD_LIST
-        var index = contList.findIndex((item) => item.mccKey === inParam.mccKey)
-        contList = contList.splice(index, 1)
-        this.$actionVuex('BOAR', contList, null, true, false, null, null)
-        
       }
+      var index = this.commonListData.findIndex((item) => item.mccKey === inParam.mccKey)
+      this.commonListData = this.commonListData.splice(index, 1)
     },
     async deleteAlimAll () {
         var contents
@@ -681,9 +669,9 @@ export default {
     memoSetCount (size, key) {
       var contentsKey = this.currentContentsKey
       if (key !== undefined && key !== null && key !== '' ) contentsKey = key
-      var indexOf = this.GE_MAIN_ALIM_LIST.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      var indexOf = this.commonListData.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1 ){
-        this.GE_MAIN_ALIM_LIST[indexOf].memoCount = size
+        this.commonListData[indexOf].memoCount = size
       }
 
     },
@@ -874,9 +862,8 @@ export default {
         }
         var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = tempMemo
-
         this.offsetInt = tempMemo.length
-        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
 
 
@@ -1081,11 +1068,11 @@ export default {
       var result = null
       var saveYn = true
       var temp = []
-      if (!this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO) {
-        this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      if (!this.commonListData[idx].D_CONT_USER_DO) {
+        this.commonListData[idx].D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
       }
-      if (this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO) {
-        temp = this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO
+      if (this.commonListData[idx].D_CONT_USER_DO) {
+        temp = this.commonListData[idx].D_CONT_USER_DO
       }
       for (var i = 0; i < temp.length; i ++) {
         if (temp[i].doType === act.doType) {
@@ -1106,14 +1093,14 @@ export default {
         param.doKey = act.doKey
         result = this.$saveUserDo(param, 'delete')
         if (act.doType === 'LI') {
-          this.GE_MAIN_ALIM_LIST[idx].likeCount -= 1
+          this.commonListData[idx].likeCount -= 1
         }
         for (var i = 0; i < temp.length; i++) {
           if(temp[i].doType === act.doType) {
             temp[i].doKey = 0
           }
         }
-        this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = temp
+        this.commonListData[idx].D_CONT_USER_DO = temp
         this.changeData += 1
       } else {
         param.actYn = true
@@ -1126,14 +1113,14 @@ export default {
             }
         }
           // temp.push({ doType: act.doType, doKey: result.doKey })
-          this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = temp
+          this.commonListData[idx].D_CONT_USER_DO = temp
           this.changeData += 1
         })
         temp.push({ doType: act.doType, doKey: 1 })
         if (act.doType === 'LI') {
-            this.GE_MAIN_ALIM_LIST[idx].likeCount += 1
+            this.commonListData[idx].likeCount += 1
         }
-        this.$actionVuex('CONT', GE_MAIN_ALIM_LIST[idx], null, false, true, null, null)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.commonListData)
         // }
       }
       /* if (result === true) {
@@ -1141,16 +1128,7 @@ export default {
       } */
     },
     settingUserDo () {
-        var dataList = null
-        if (this.chanAlimYn) {
-            var dataList = this.CHANNEL_DETAIL.ELEMENTS.commonList.list
-        } else {
-            if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-                dataList =  this.GE_MAIN_BOAR_LIST
-            } else {
-                dataList =  this.GE_MAIN_ALIM_LIST
-            }
-        }
+        var dataList = this.commonListData
       for (var i = 0; i < dataList.length; i++){
         var userDo = dataList[i].D_CONT_USER_DO 
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
@@ -1171,34 +1149,13 @@ export default {
         dataList[i].D_CONT_USER_DO = userDoList
       }
       // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      if (this.chanAlimYn) {
-        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = dataList
-        this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true, null, null)
-      } else {
-        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-            this.$actionVuex('BOARD', dataList, null, true, false, null, null)
-        } else {
-            this.$actionVuex('ALIM', dataList, null, true, false, null, null)
-        }
-      }
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', dataList)
       return userDoList
     },
-    /* async loadUpMore() {
-      if (this.targetContentsKey){
-        // console.log('@@@topLoadMore@@@');
-        // this.$emit('moreList', false)
-        this.$emit('topLoadMore', false)
-      }
-    }, */
     async loadMore() {
       this.loadingRefShow()
       /* this.$emit('moreList', false) */
       this.$emit('moreList', true)
-      /* const newArr = [
-        ...this.commonListData,
-        ...resultList.content
-      ]
-      this.commonListData = newArr */
     },
     setBodyLength1 (str) {
       // eslint-disable-next-line no-undef
@@ -1238,77 +1195,7 @@ export default {
             result = true
         }
         return result
-    },
-
-    async recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-            if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
-                this.systemName = localStorage.getItem('systemName')
-            }
-            if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-                this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-            } else {
-                this.notiDetail = JSON.parse(message.pushMessage).noti.data
-            }
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT' || JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-                if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(this.GE_USER.userKey)) {
-                  return
-                }
-                /* if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) { */
-                var notiContentsKey = Number(JSON.parse(this.notiDetail.userDo).targetKey)
-                var pageS = this.currentMemoList.length + 1
-                if (pageS === 0 ) {
-                    pageS = 5
-                }
-                // alert(JSON.stringify(this.notiDetail))
-                // alert(JSON.stringify(this.notiDetail.userDo))
-                // alert(notiContentsKey)
-                var targetKey = this.currentContentsKey
-                if (this.currentContentsKey === notiContentsKey){
-                  var response = await this.getContentsMemoList(this.currentContentsKey, pageS, 0)
-                  this.currentMemoObj = response
-                  this.currentMemoList = response.memoList
-                  // this.offsetInt = this.currentMemoList.length
-                  // 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!
-                  this.settingOffsetIntTotalMemoCount()
-                  // this.pointAni()
-                  this.memoSetCount(response.totalElements)
-                } else {
-                  var response = await this.getContentsMemoList(notiContentsKey, pageS, 0)
-                  // this.currentMemoObj = response
-                  // this.currentMemoList = response.memoList
-                  // this.offsetInt = this.currentMemoList.length
-                  // this.pointAni()
-                  this.memoSetCount(response.totalElements, notiContentsKey)
-                }
-
-                if (Number(JSON.parse(this.notiDetail.userDo).ISub) && Number(JSON.parse(this.notiDetail.userDo).ISub)) {
-                    this.pointAni(Number(JSON.parse(this.notiDetail.userDo).ISub))
-                }
-            /* } */
-            }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
     }
-    /* changeMode () {
-      this.clickImgList = document.querySelectorAll('.bodyFullStr img')
-
-      for (let m = 0; m < this.clickImgList.length; m++) {
-        this.clickImgList[m].addEventListener('click', () => {
-          this.selectFileKey = this.clickImgList[m].fileKey
-          this.previewPopShowYn = true
-        })
-      }
-    } */
   },
   props: {
     imgUrl: {},
@@ -1333,9 +1220,9 @@ export default {
     GE_MAIN_BOARD_LIST () {
       return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
     }, */
-    GE_MAIN_ALIM_LIST () {
+    /* GE_MAIN_ALIM_LIST () {
       return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
-    }
+    } */
   }
 }
 </script>
