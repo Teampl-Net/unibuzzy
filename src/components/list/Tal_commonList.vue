@@ -284,7 +284,7 @@ export default {
           url: 'service/tp.deleteMCabContents',
           param: inParam
         })
-        
+
       } else if (this.tempData.jobkindId === 'BOAR') {
         var inParam = {}
         // console.log(this.alimDetail)
@@ -656,7 +656,7 @@ export default {
         var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
 
         cont.D_MEMO_LIST = response.memoList
-        
+
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         this.currentMemoObj = cont
@@ -745,8 +745,8 @@ export default {
         } else if (document.getElementById('borderLine'+key)) {
             document.getElementById('borderLine'+key).style.display = 'block'
         }
-        
-      this.curretnMemoList = cont.D_MEMO_LIST  
+
+      this.curretnMemoList = cont.D_MEMO_LIST
       this.currentContentsKey = key
     },
     alimBigView (alim) {
@@ -940,7 +940,7 @@ export default {
         this.offsetInt = memoList.length + totalMemoCount
         console.log('#################')
       }
-      
+
     },
     async yesLoadMore () {
         this.pageSize = 5

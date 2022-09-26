@@ -22,7 +22,8 @@ import commonListTable from '../../list/Tal_commonListTable.vue'
 // import router from '../../../router'
 export default {
   name: 'top5PushList',
-  async created () {
+  created () {
+    // this.contentsList = this.alimList
     this.contentsList = this.allContList
   },
   data () {

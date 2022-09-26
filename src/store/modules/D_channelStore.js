@@ -33,6 +33,9 @@ const D_CHANNEL = {
           if ((!team.ELEMENTS.cabinetList)) {
             team.ELEMENTS.cabinetList = []
           }
+          if ((!team.ELEMENTS.showProfileUserList)) {
+            team.ELEMENTS.showProfileUserList = []
+          }
           if ((!team.ELEMENTS.managerList)) {
             team.ELEMENTS.managerList = []
           }
@@ -107,6 +110,9 @@ const D_CHANNEL = {
             if ((!team.ELEMENTS.cabinetList)) {
               team.ELEMENTS.cabinetList = []
             }
+            if ((!team.ELEMENTS.showProfileUserList)) {
+              team.ELEMENTS.showProfileUserList = []
+            }
             if ((!team.ELEMENTS.managerList)) {
               team.ELEMENTS.managerList = []
             }
@@ -116,7 +122,8 @@ const D_CHANNEL = {
               boardList: [],
               cabinetList: [],
               commonList: { type: 'ALIM', list: [] },
-              managerList: []
+              managerList: [],
+              showProfileUserList: []
             }
           }
           team.teamTypeText = commonMethods.teamTypeString(team.teamType)
@@ -191,18 +198,24 @@ const D_CHANNEL = {
     MU_REPLACE_SHOW_PROFILE_USER: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
-
-      idx1 = chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (payload.length === 0) return null
+      // eslint-disable-next-line no-debugger
+      debugger
+      idx1 = chanList.findIndex(item => item.teamKey === payload[0].teamKey)
       var chanDetail = chanList[idx1]
-
-      var dataList = chanDetail.ELEMENTS.showProfileUserList
-      idx2 = dataList.findIndex((item) => item.followerKey === payload.followerKey)
-      dataList[idx2] = payload
-      chanDetail.ELEMENTS.showProfileUserList = dataList
+      for (let i = 0; i < payload.length - 1; i++) {
+        idx2 = chanDetail.ELEMENTS.showProfileUserList.findIndex(item => item.followerKey === payload[i].followerKey)
+        if (idx2 === -1) {
+          chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
+        }
+      }
 
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = payload.creTeamKey
+      console.log('?????????????????????')
       return true
     },
     MU_REPLACE_CONTENTS: (state, payload) => {
@@ -275,13 +288,17 @@ const D_CHANNEL = {
           if ((!payload.ELEMENTS.managerList)) {
             payload.ELEMENTS.managerList = []
           }
+          if ((!payload.ELEMENTS.showProfileUserList)) {
+            payload.ELEMENTS.showProfileUserList = []
+          }
         } else {
           payload.ELEMENTS = {
             commonList: { type: 'ALIM', list: [] },
             alimList: [],
             boardList: [],
             cabinetList: [],
-            managerList: []
+            managerList: [],
+            showProfileUserList: []
           }
         }
 
@@ -311,6 +328,7 @@ const D_CHANNEL = {
       state.recentChangeTeamKey = payload
     }
   },
+  // dispatch 를 사용하면 됨
   actions: {
     AC_MAIN_CHAN_LIST: ({ commit }, payload) => { // 채널전체 치환
       commit('MU_MAIN_CHAN_LIST', payload)
@@ -327,10 +345,10 @@ const D_CHANNEL = {
       commit('MU_ADD_CONTENTS', payload)
     },
     AC_REPLACE_SHOW_PROFILE_USER: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
-      commit('MU_REPLACE_FOLLOWER', payload)
+      commit('MU_REPLACE_SHOW_PROFILE_USER', payload)
     },
     AC_REPLACE_MANAGER: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
-      commit('MU_REPLACE_FOLLOWER', payload)
+      commit('MU_REPLACE_MANAGER', payload)
     },
     AC_RECENT_CHANGE_TEAM: ({ commit }, payload) => {
       commit('MU_RECENT_CHANGE_TEAM', payload)

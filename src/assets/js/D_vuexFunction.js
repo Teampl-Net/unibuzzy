@@ -135,14 +135,6 @@ const functions = {
       } else {
         return result
       }
-    } else if (type === 'ALIM') {
-      dataList = store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
-      result = dataList.filter(data => data.contentsKey === targetKey)
-      return result
-    } else if (type === 'BOAR') {
-      dataList = store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
-      result = dataList.filter(data => data.contentsKey === targetKey)
-      return result
     }
   },
   getBoardCabinetDetail (teamDetail, targetKey) {

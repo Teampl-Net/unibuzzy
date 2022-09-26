@@ -129,6 +129,8 @@ export async function saveUser (userProfile) {
   }) */
   if (result.data) {
     localStorage.setItem('user', JSON.stringify(result.data))
+    // eslint-disable-next-line no-debugger
+    debugger
     store.dispatch('D_USER/AC_USER', result.data)
     localStorage.setItem('sessionUser', JSON.stringify(result.data))
     localStorage.setItem('testYn', false)
@@ -198,7 +200,7 @@ export const methods = {
       if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
         localStorage.setItem('user', JSON.stringify(result.data.userMap))
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-        store.dispatch('D_USER/AC_USER', result.data)
+        store.dispatch('D_USER/AC_USER', result.data.userMap)
       }
       // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)

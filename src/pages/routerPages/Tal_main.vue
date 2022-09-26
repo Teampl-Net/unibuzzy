@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.GE_USER && this.GE_DISP_ALIM_LIST && this.GE_DISP_BOARD_LIST && this.GE_DISP_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+<div v-if="this.GE_USER && this.GE_DISP_ALIM_LIST && this.GE_DISP_BOARD_LIST && this.GE_DISP_USER_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
   <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
@@ -25,7 +25,7 @@
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
   <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :allContList="GE_DISP_ALL_CONTENTS" :boardList="GE_DISP_BOARD_LIST" :alimList="this.GE_DISP_ALIM_LIST"  @openPop="openPop" ref="topAlim" />
-  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="GE_DISP_CHAN_LIST" @openPop="openPop" ref="topChan" />
+  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :userChanList="GE_DISP_CHAN_LIST" :allChanList="GE_DISP_ALL_CHAN_LIST" :myChanList="GE_DISP_MY_CHAN_LIST" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -50,6 +50,7 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
+    this.getChannel()
     this.getMainBoard()
     this.loadingYn = true
     console.log(this.GE_MAIN_CHAN_LIST)
@@ -81,7 +82,11 @@ export default {
       systemName: {},
       mainBoardList: [],
       mainAlimList: [],
-      mainChanList: []
+      mainChanList: [],
+      userChannelList: [],
+      allChannelList: [],
+      myChannelList: []
+
     }
   },
   components: {
@@ -102,14 +107,15 @@ export default {
       if (response.status === 200 || response.status === '200') {
         var teamList = response.data.teamList
         this.mainChanList = teamList
-        var test = await this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+        await this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
         // var test = await this.$actionVuex('TEAM', null, true, false, null)
-        console.log(test)
+        console.log(teamList)
         this.mainAlimList = response.data.alimList
         var index = null
         var poolList = null
         var index1 = null
         teamList = this.GE_DISP_CHAN_LIST
+        // teamList = this.GE_MAIN_CHAN_LIST
         for (var i = 0; i < this.mainAlimList.length; i++) {
           index = teamList.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
           poolList = teamList[index].ELEMENTS.alimList
@@ -193,6 +199,40 @@ export default {
     },
     openCloseAppPop () {
       this.appCloseYn = true
+    },
+    async channelChangeTab (tab) {
+      var test = await this.getChannelList(tab)
+      console.log(test)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', test)
+      this.$store.dispatch('D_CONTENTS/AC_MAIN_TEAM_LIST', test)
+    },
+    async getChannel () {
+      // this.userChannelList = await this.getChannelList('user')
+      // console.log('this.userChannelListthis.userChannelListthis.userChannelListthis.userChannelListthis.userChannelListthis.userChannelList')
+      // console.log(this.userChannelList)
+      // this.allChannelList = await this.getChannelList('all')
+      // this.myChannelList = await this.getChannelList('mychannel')
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.userChannelList)
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.allChannelList)
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.myChannelList)
+    },
+    async getChannelList (tab) {
+      var paramMap = new Map()
+      var userKey = this.GE_USER.userKey
+      if (tab === 'user') {
+        paramMap.set('userKey', userKey)
+      } else if (tab === 'all') {
+        paramMap.set('fUserKey', userKey)
+      } else if (tab === 'mychannel') {
+        paramMap.set('userKey', userKey)
+        paramMap.set('managerYn', true)
+      }
+      paramMap.set('offsetInt', 0)
+      paramMap.set('pageSize', 5)
+
+      var result = await this.$getTeamList(paramMap)
+      var resultList = result.data
+      return resultList.content
     }
   },
   computed: {
@@ -252,6 +292,51 @@ export default {
         return null
       }
     },
+    GE_DISP_USER_CHAN_LIST () {
+      var idx1
+      if (this.userChannelList) {
+        var test = []
+        for (var i = 0; i < this.userChannelList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.userChannelList[i].teamKey)
+          if (idx1 !== -1) {
+            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          }
+        }
+        return test
+      } else {
+        return null
+      }
+    },
+    GE_DISP_ALL_CHAN_LIST () {
+      var idx1
+      if (this.allChannelList) {
+        var test = []
+        for (var i = 0; i < this.allChannelList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allChannelList[i].teamKey)
+          if (idx1 !== -1) {
+            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          }
+        }
+        return test
+      } else {
+        return null
+      }
+    },
+    GE_DISP_MY_CHAN_LIST () {
+      var idx1
+      if (this.myChannelList) {
+        var test = []
+        for (var i = 0; i < this.myChannelList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.myChannelList[i].teamKey)
+          if (idx1 !== -1) {
+            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          }
+        }
+        return test
+      } else {
+        return null
+      }
+    },
     GE_DISP_CHAN_LIST () {
       var idx1
       if (this.mainChanList.length > 0) {
@@ -270,6 +355,24 @@ export default {
         return null
       }
     },
+    // GE_DISP_AllCHAN_LIST () {
+    //   var idx1
+    //   if (this.mainChanList.length > 0) {
+    //     var test = []
+    //     for (var i = 0; i < this.mainChanList.length; i++) {
+    //       idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
+    //       if (idx1 !== -1) {
+    //         test.push(this.GE_MAIN_CHAN_LIST[idx1])
+    //       } else {
+    //         test.push(this.mainChanList[i])
+    //       }
+    //     // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+    //     }
+    //     return test
+    //   } else {
+    //     return null
+    //   }
+    // },
     GE_DISP_ALL_CONTENTS () {
       var idx1, idx2
       if (this.mainBoardList.length > 0 && this.mainAlimList.length > 0) {
@@ -313,7 +416,7 @@ export default {
 
   watch: {
     GE_RECENT_CHANGE_TEAM (value, old) {
-      alert(value)
+      // alert(value)
     },
     GE_USER (value, old) {
       // console.log(this.userInfo)

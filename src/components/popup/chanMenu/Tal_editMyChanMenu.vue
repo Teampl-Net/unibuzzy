@@ -111,13 +111,19 @@ export default {
     }
   },
   async created () {
+    this.param = this.CHANNEL_DETAIL
   },
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
-      return this.$getDetail('TEAM', this.propData.teamKey)[0]
+      var detailList = this.$getDetail('TEAM', this.propData.teamKey)
+      if (detailList) {
+        return detailList[0]
+      } else {
+        return null
+      }
     }
   },
   methods: {
@@ -131,7 +137,6 @@ export default {
     }, */
     addressEditClick () {
       this.param.targetType = 'editBookList'
-      this.param.value = this.CHANNEL_DETAIL
       this.openPop()
     },
     boardEditClick () {
@@ -140,19 +145,16 @@ export default {
     },
     chanDetailClick () {
       this.param.targetType = 'chanInfo'
-      this.param.value = this.CHANNEL_DETAIL
       this.openPop()
     },
     editChanDetaillClick () {
       this.param.targetType = 'createChannel'
       this.param.targetKey = this.propData.teamKey
       this.param.modiYn = true
-      this.param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.openPop()
     },
     managerEditClick () {
       this.param.targetType = 'memberManagement'
-      this.param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.openPop()
     },
     autoAnswerClick () {
@@ -164,7 +166,8 @@ export default {
       this.openPop()
     },
     openPop () {
-      this.$emit('openPop', this.CHANNEL_DETAIL)
+      // this.$emit('openPop', this.CHANNEL_DETAIL)
+      this.$emit('openPop', this.param)
     }
   }
 

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { nextTick } from '@vue/runtime-core'
 import store from '../../store'
 const D_CONTENTS = {
   namespaced: true,
@@ -10,22 +11,24 @@ const D_CONTENTS = {
   },
   getters: {
     GE_MAIN_ALIM_LIST (state) {
-      var dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
-      var chanDetail = null
-      if (dataList) {
-        for (var i = 0; i < state.alimList.length; i++) {
-          var index = dataList.findIndex((item) => item.teamKey === state.alimList[i].creTeamKey)
-          if (index >= 0) {
-            chanDetail = dataList[index]
-            var chanBoardList = chanDetail.ELEMENTS.alimList
-            index = chanBoardList.findIndex((item) => item.mccKey === state.alimList[i].mccKey)
+      nextTick(() => {
+        var dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+        var chanDetail = null
+        if (dataList) {
+          for (var i = 0; i < state.alimList.length; i++) {
+            var index = dataList.findIndex((item) => item.teamKey === state.alimList[i].creTeamKey)
             if (index >= 0) {
-              state.alimList[i] = chanBoardList[index]
+              chanDetail = dataList[index]
+              var chanBoardList = chanDetail.ELEMENTS.alimList
+              index = chanBoardList.findIndex((item) => item.mccKey === state.alimList[i].mccKey)
+              if (index >= 0) {
+                state.alimList[i] = chanBoardList[index]
+              }
             }
           }
         }
-      }
-      return state.alimList
+        return state.alimList
+      })
     },
     GE_MAIN_BOARD_LIST (state) {
       var dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']

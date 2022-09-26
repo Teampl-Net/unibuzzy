@@ -1,6 +1,6 @@
 <template>
-    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
-      <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
+    <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
+    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :style="currentTab === 'Mem' ? !member.memberYn ? 'display: none !important;' : '' : ''" :key="index" >
       <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
           <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
@@ -14,7 +14,7 @@
       </div>
       <div class="fr  memberItemBox" >
         <img class="fl img-w20" @click="openCommonAlertPop(member)" src="../../../assets/images/common/icon_message_solid.svg" style="height:18px; margin:0.6rem"  />
-       <!--  <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" > -->
+        <!--  <img class="fl img-w20" @click="openPop('selectAddressBookList', member)" src="../../../assets/images/channel/channer_addressBook.svg"  style="margin:0.6rem" > -->
         <!-- <gToggle :toggleId='member.userKey' :isChecked="(member.managerKey !== undefined && member.managerKey !== null && member.managerKey !== '')" class="fl mtop-01" style="margin:0.5rem; padding-top:0.3rem" /> -->
         <!-- <div v-if="currentTab == 'Admin'"> -->
         <div v-if="ownerYn">

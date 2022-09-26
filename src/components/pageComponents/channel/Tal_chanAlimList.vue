@@ -229,8 +229,9 @@ export default {
       this.$emit('openPop', param)
     },
     async readyFunction () {
-      // eslint-disable-next-line no-debugger
-      debugger
+      // // eslint-disable-next-line no-debugger
+      // debugger
+      // this.$addChanList(this.chanDetail.targetKey)
       if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
         await this.$addChanList(this.chanDetail.targetKey)
       }

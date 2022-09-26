@@ -9,10 +9,12 @@
       멤버 신청서 만들기
       </div> -->
       <!-- <gBtnSmall v-if="tab === 'Show'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
-      <commonMemberList :managingList='managingList' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
-      <div v-if="managingList.length === 0 && ownerYn && tab === 'Show'" class="mtop-1" style="">
-        <p class="font16 " style="">정보를 공개한 대상이 없습니다. <br> <!--채널을 조금 더 홍보해보세요! --> </p>
-      </div>
+      <commonMemberList v-if="this.tab === 'Mem'" :managingList='this.GE_DISP_SHOW_PROFILE_USER_LIST' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
+      <commonMemberList v-else-if="this.tab === 'Show'" :managingList='this.GE_DISP_SHOW_PROFILE_USER_LIST' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
+      <commonMemberList v-else-if="this.tab === 'Admin'" :managingList='this.GE_DISP_MANAGER_LIST' @setManager='setManager' @openPop='openPop' :currentOwner='propData.ownerYn' @match='matchInfo' @memberInfo='memberInfo' :currentTab="tab" />
+      <!-- <div v-if="GE_USER_LIST.length === 0 && ownerYn && tab === 'Show'" class="mtop-1" style=""> -->
+        <!-- <p class="font16 " style="">정보를 공개한 대상이 없습니다. <br> 채널을 조금 더 홍보해보세요! </p> -->
+      <!-- </div> -->
     </div>
 
     <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
@@ -38,17 +40,32 @@ export default {
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
 
       tab: 'Show',
-      managingList: [],
+      managerList: [],
+      showUserList: [],
       smallPopYn:false,
       confirmMsg:'',
       addSmallMsg:'',
       // userKey : JSON.parse(localStorage.getItem('sessionUser')).userKey ,
-      ownerYn : false
+      ownerYn : false,
+      currentTeamKey: null
     }
   },
   created () {
     console.log(this.propData)
-    this.getManagingList(this.tab)
+    if (this.tab === 'Show') {
+      if (!this.GE_DISP_SHOW_PROFILE_USER_LIST || this.GE_DISP_SHOW_PROFILE_USER_LIST.length === 0) {
+        this.getManagingList(this.tab)
+      }
+    // } else if (this.tab === 'Mem') {
+    //   if (!this.managingList || this.managingList.length === 0) {
+    //     this.getManagingList(this.tab)
+    //   }
+    } else if (this.tab === 'Admin') {
+      if (!this.GE_DISP_MANAGER_LIST || this.GE_DISP_MANAGER_LIST.length === 0) {
+        this.getManagingList(this.tab)
+      }
+    }
+
   },
   mounted () {
     this.ownerYn = true
@@ -59,12 +76,17 @@ export default {
     // } else {
     //   this.activeTabList = [{ display: '공개', name: 'Show' }]
     // }
+    /* this.currentTeamKey = this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM'] */
+    // if (!this.GE_USER_LIST) {
+    /* this.getManagingList(this.tab) */
+    // }
   },
   methods: {
     memberFormClick(){
       var param = {}
       param.targetType = 'memberForm'
-      param.teamKey = this.propData.currentTeamKey
+      // param.teamKey = this.propData.currentTeamKey
+      param.teamKey = this.$store.getters('D_CHANNEL/GE_RECENT_CHANGE_TEAM')
       this.$emit('openPop', param)
     },
     matchInfo(){
@@ -98,40 +120,44 @@ export default {
       this.getManagingList(this.tab)
     },
     async getManagingList (typeName, actionType) {
+      debugger
       if (actionType === 'tab') this.managingList = []
       var result= {}
       if (typeName === 'Show') {
         var paramMap = new Map()
         paramMap.set('showProfileYn', true)
-        paramMap.set('teamKey', this.propData.currentTeamKey)
+        paramMap.set('teamKey', this.propData.teamKey)
         paramMap.set('pageSize', 100)
         result = await this.$commonAxiosFunction({
           url: 'service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
-        this.managingList = await result.data.content
-      } else if (typeName === 'Mem') {
-        var paramMap = new Map()
-        paramMap.set('memberYn', true)
-        paramMap.set('teamKey', this.propData.currentTeamKey)
-        paramMap.set('pageSize', 100)
-        result = await this.$commonAxiosFunction({
-          url: 'service/tp.getFollowerList',
-          param: Object.fromEntries(paramMap)
-        })
-        this.managingList = await result.data.content
+        this.showUserList = result.data.content
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_SHOW_PROFILE_USER', this.showUserList)
+      // } else if (typeName === 'Mem') {
+      //   var paramMap = new Map()
+      //   paramMap.set('memberYn', true)
+      //   paramMap.set('teamKey', this.propData.teamKey)
+      //   paramMap.set('pageSize', 100)
+      //   result = await this.$commonAxiosFunction({
+      //     url: 'service/tp.getFollowerList',
+      //     param: Object.fromEntries(paramMap)
+      //   })
+      //   this.managingList = result.data.content
       } else if (typeName === 'Admin') {
         var param = {}
-        param.teamKey = this.propData.currentTeamKey
+        param.teamKey = this.propData.teamKey
         param.pageSize = 100
         result = await this.$commonAxiosFunction({
           url : 'service/tp.getManagerList',
           param: param
         })
 
-        this.managingList =await result.data.managerList
+        this.managerList = result.data.managerList
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_MANAGER', this.managerList)
       } else {
       }
+
       // console.log(this.managingList)
       // paramMap.set('followerType', 'M')
     },
@@ -176,7 +202,7 @@ export default {
 
       follower.inEmail = params.userEmail
       follower.inPhone = params.userPhone
-      follower.inUserName = this.$changeText(params.userDispMtext || params.userNameMtext)
+      follower.inUserName = this.$changeTex(params.userDispMtext || params.userNameMtext)
       // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
       param.follower = follower
 
@@ -205,12 +231,52 @@ export default {
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey
-      param.currentTeamKey = this.propData.currentTeamKey
+      param.currentTeamKey = this.propData.teamKey
       param.newMemYn = true
       this.$emit('openPop', param)
     }
   },
-  components: { commonMemberList }
+  components: { commonMemberList },
+  computed: {
+    CHANNEL_DETAIL () {
+      var detailList = this.$getDetail('TEAM', this.propData.teamKey)
+      if (detailList) {
+        return detailList[0]
+      } else {
+        return null
+      }
+    },
+    GE_DISP_SHOW_PROFILE_USER_LIST () {
+      for (var i = 0; i < this.showUserList.length; i++) {
+        var dataList = this.CHANNEL_DETAIL.ELEMENTS.showProfileUserList
+        var idx1 = dataList.findIndex((item) => item.followerKey === this.showUserList[i].followerKey)
+        if (idx1 !== -1) {
+          this.showUserList[i] = dataList[idx1]
+        }
+      }
+      var returnData = this.showUserList
+      return returnData
+    },
+    GE_DISP_MANAGER_LIST () {
+      for (var i = 0; i < this.managerList.length; i++) {
+        var dataList = this.CHANNEL_DETAIL.ELEMENTS.managerList
+        var idx1 = dataList.findIndex((item) => item.managerKey === this.managerList[i].managerKey)
+        if (idx1 !== -1) {
+          this.managerList[i] = dataList[idx1]
+        }
+      }
+      var returnData = this.managerList
+      return returnData
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    }
+  },
+  watch: {
+    // GE_CHANNEL_INFO() {
+    //   console.log(this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST'])
+    // }
+  }
 }
 </script>
 <style>

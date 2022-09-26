@@ -45,7 +45,9 @@ export default {
   created () {
   },
   props: {
-    chanList: {}
+    userChanList: {},
+    allChanList: {},
+    myChanList: {}
   },
   data () {
     return {
@@ -55,13 +57,15 @@ export default {
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       currentTabName: '구독중',
-      emptyYn: true
+      emptyYn: true,
+      chanList: {}
     }
   },
   components: {
     listTitle
   },
   mounted () {
+    this.chanList = this.userChanList
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
   },
@@ -134,11 +138,24 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
+      this.$emit('channelChangeTab', data)
+      switch (data) {
+        case 'user':
+          this.chanList = this.userChanList
+          break
+        case 'all':
+          this.chanList = this.allChanList
+          break
+        case 'myChannel':
+          this.chanList = this.myChanList
+          break
+      }
+
       // this.introTop5ChanPageTab()
-      this.emptyYn = false
+      // this.emptyYn = false
       // console.log(data)
       /* await this.getContentsList() */
-      if (this.chanList.length === 0) this.emptyYn = true
+      // if (this.chanList.length === 0) this.emptyYn = true
     }
     /* async reLoad () {
       await this.$refs.activeBarChanListTop5.switchtab(0)
