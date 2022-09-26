@@ -21,12 +21,12 @@
           <img v-if='member.ownerYn' src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="margin:0.6rem 0.8rem; " class="fl img-w20">
           <!-- <div v-if="!member.ownerYn && member.followerKey > 0" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" > -->
 
-          <div v-if="!member.ownerYn && member.userKey !== userKey" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
+          <div v-if="!member.ownerYn && member.userKey !== GE_USER.userKey" class="fl" style="margin:0.5rem; position: relative; display: flex; justify-content: center;" >
             <gToggle :toggleId='member.userKey' @changeToggle='setManager' :isChecked="(member.managerKey > 0 || member.grantDate != null)" class="fl" />
             <label :for="member.userKey" class="font8 commonBlack fontBold" style=" position: absolute; bottom:-0.4rem;" >매니저</label>
           </div>
 
-          <div v-if="!member.ownerYn && member.userKey === userKey" class="fl" style="width:46px; height:40px; position: relative; display: flex; justify-content: flex-end; flex-direction: column; align-items: center;" >
+          <div v-if="!member.ownerYn && member.userKey === GE_USER.userKey" class="fl" style="width:46px; height:40px; position: relative; display: flex; justify-content: flex-end; flex-direction: column; align-items: center;" >
             <img class="img-w15" src="../../../assets/images/main/mypageIcon.svg"/><p class="font10" >My</p>
           </div>
 
@@ -55,6 +55,14 @@ export default {
     currentOwner: {},
     currentTab: {}
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+    /* CHANNEL_DETAIL () {
+      return this.$getDetail('TEAM', this.propData.teamKey)[0]
+    } */
+  },
   data () {
     return {
       // ownerYn: false
@@ -62,7 +70,6 @@ export default {
       selectedMember: null,
       mobileYn: this.$getMobileYn(),
       openCommonAlertPopShowYn: false,
-      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       systemName: localStorage.getItem('systemName'),
       interfaceBtnList: [{ text: '알림 보내기', event: 'sendPush' }, { text: '이메일 보내기', event: 'sendEmail' }, { text: '전화 걸기', event: 'callPhone' }, { text: '메세지 보내기', event: 'sendSms' }]
     }

@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hStack
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
@@ -53,7 +53,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.goNo()
       }
@@ -72,21 +72,21 @@ export default {
       this.openPushDetailPop()
     },
     goNo () {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closePushPop')
     },
     openPushDetailPop () {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
 
-      var currentPage = this.$store.getters.hCPage
+      var currentPage = this.$store.getters['D_HISTORY/hCPage']
       if ((currentPage === 0 || currentPage === undefined)) {
         this.$emit('openDetailPop', { nameMtext: this.$changeText(this.pushDetail.nameMtext), targetKey: this.pushDetail.creTeamKey, targetContentsKey: this.pushDetail.contentsKey, targetType: 'chanDetail', value: this.pushDetail })
       } else {
@@ -127,13 +127,12 @@ export default {
   async created () {
     this.body = this.detailVal.body
     var resultList = await this.getContentsList()
+
     this.pushDetail = resultList.content[0]
-    var history = this.$store.getters.hStack
+    var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'pushDetailPop' + history.length
     history.push(this.popId)
-    this.$store.commit('updateStack', history)
-    // alert(JSON.stringify(this.detailVal))
-    // alert(JSON.stringify(this.pushDetail))
+    this.$store.commit('D_HISTORY/updateStack', history)
   }
 }
 </script>

@@ -147,8 +147,8 @@ export default {
       this.clickPageTopBtn()
     },
     // pageUpdate값이 달라지면 watch에서 이를 감지하고 함수를 실행함
-    pageUpdate (value, old) {
-      var history = this.$store.getters.hStack
+    pageUpdate (value, old) { 
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (history[history.length - 1] === this.popId) { // 글로벌 히스토리 리스트 변수의 마지막 값과 현 페이지의 아이디가 같은 값일때 (= 마지막 페이지가 내 페이지 일 때) close 함수 실행되도록
         this.closeXPop()
       }
@@ -229,11 +229,11 @@ export default {
     //  // 1)해당 페이지(팝업)의 유니크한 아이디값을 정의
     // this.popId = 'gPopup' + 9999
     // // 2) index.js (store) vuex에 저장된 글로벌 히스토리 리스트 변수를 불러옴
-    // var history = this.$store.getters.hStack
+    // var history = this.$store.getters['D_HISTORY/hStack']
     // // 3) 현 페이지(팝업)을 글로벌 히스토리 리스트 변수에 추가하여 업데이트 시켜줌
     // history.push(this.popId)
 
-    // this.$store.commit('updateStack', history)
+    // this.$store.commit('D_HISTORY/updateStack', history)
 
     // 알림신청 건을 승인 또는 취소를 하기 위함.
     // this.answerRequsetYn = true
@@ -828,11 +828,11 @@ export default {
 
     },
     closeXPop (reloadYn) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
         //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
       // if (this.params.writeType) {
       //   this.$parent.propParams.writeType = 'ALIM'

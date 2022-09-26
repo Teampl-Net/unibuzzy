@@ -7,19 +7,19 @@
           <img v-if="this.userInfo.userProfileImg" :src="this.userInfo.userProfileImg"/>
           <img v-else src="../../../public/resource/userCommonIcon/userImg01.png"/>
         </div> -->
-        <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="myPagePicImgWrap" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;">
+        <div v-if="this.GE_USER.userProfileImg !== undefined && GE_USER.userProfileImg !== null && GE_USER.userProfileImg !== ''" class="myPagePicImgWrap" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;">
         </div>
         <div v-else class="myPagePicImgWrap" style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         </div>
       </div>
       <div class="myProfileRight">
         <div class="myProfileRightContents">
-          <div class="font18 fontBold fl textLeft w-100P h-100P" >{{this.$changeText(this.userInfo.userDispMtext)}}</div>
+          <div class="font18 fontBold fl textLeft w-100P h-100P" >{{this.$changeText(this.GE_USER.userDispMtext)}}</div>
         </div>
         <div class="myProfileRightContents">
           <!-- <img class="myProfileRightIcon" src="../../assets/images/main/main_email.png" /> -->
           <!-- <span class="myProfileRightName commonColor font14">이메일</span> -->
-          <span class="font14 myProfileRightInfo commonBlack textOverdot">{{userInfo.userEmail}}</span>
+          <span class="font14 myProfileRightInfo commonBlack textOverdot">{{GE_USER.userEmail}}</span>
         </div>
       </div>
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
@@ -53,7 +53,12 @@ export default {
   async created () {
     this.loadingYn = true
     this.$emit('changePageHeader', '마이페이지')
-    await this.getUserInform()
+    // await this.getUserInform()
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
   },
   methods: {
     goMyChanList () {
@@ -71,11 +76,8 @@ export default {
     },
     openPop (value) {
       this.$emit('openPop', value)
-    },
-    async getUserInform () {
-      this.userInfo = JSON.parse(localStorage.getItem('sessionUser'))
-      console.log(this.userInfo)
-      console.log(this.userInfo)
+    }
+    /* async getUserInform () {
       if (this.userInfo !== undefined && this.userInfo !== null) {
         if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
         if (this.userInfo.phoneLast) {
@@ -89,7 +91,7 @@ export default {
       }
       this.$emit('closeLoading')
       return this.userInfo
-    }
+    } */
   }
 }
 </script>

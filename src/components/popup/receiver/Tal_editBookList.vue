@@ -86,8 +86,6 @@ export default {
         propData: {},
     },
     created (){
-        /* var history = this.$store.getters.hStack
-        this.popId = 'editBookList' + history.length */
         this.getBookList()
         this.chanName = this.propData.teamNameMtext || ''
 
@@ -99,18 +97,21 @@ export default {
     },
     computed: {
         historyStack () {
-        return this.$store.getters.hRPage
+        return this.$store.getters['D_HISTORY/hRPage']
         },
         pageUpdate () {
         return this.$store.getters.hUpdate
+        },
+        GE_USER () {
+            return this.$store.getters['D_USER/GE_USER']
+        },
+        CHANNEL_DETAIL () {
+            return this.$getDetail('TEAM', this.propData.currentTeamKey)[0]
         }
     },
     watch: {
         pageUpdate (value, old) {
             this.backClick(true)
-        /* if (this.popId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
-            } */
         },
         historyStack (value, old) {
         }
@@ -215,7 +216,7 @@ export default {
             var paramMap = new Map()
             paramMap.set('cabinetNameMtext', this.searchKeyword)
 
-            paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+            paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
@@ -238,17 +239,17 @@ export default {
             var data = new Object()
             data.targetType = 'bookMemberDetail'
             data.currentCabinetKey = this.selectBookDetail.cabinetKey
-            data.currentTeamKey = this.propData.currentTeamKey
+            data.currentTeamKey = this.CHANNEL_DETAIL.teamKey
             this.$emit('openPop',data)
         },
         async addMe () {
             var me = new Object()
-            me.userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
-            if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc) {
-               me.userPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
+            me.userEmail = this.GE_USER.userEmail
+            if (this.GE_USER.phoneEnc) {
+               me.userPhone = this.GE_USER.phoneEnc
             }
-            if (JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) {
-               me.userDispMtext = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext
+            if (this.GE_USER.userDispMtext) {
+               me.userDispMtext = this.GE_USER.userDispMtext
             }
             await this.saveMemberDirectly(me)
             this.plusMenuShowYn = false
@@ -267,7 +268,7 @@ export default {
                 param = new Object()
                 mCabContents.jobkindId = 'USER'
                 mCabContents.cabinetKey = this.selectBookDetail.cabinetKey
-                mCabContents.targetKey = this.propData.currentTeamKey
+                mCabContents.targetKey = this.CHANNEL_DETAIL.teamKey
 
                 mCabContents.inEmail = selectMem.userEmail
                 mCabContents.inPhone = selectMem.userPhone
@@ -315,7 +316,7 @@ export default {
                     } else {
                         this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
                     }
-                    if (this.memberList[i].userKey === JSON.parse(localStorage.getItem('sessionUser')).userKey) {
+                    if (this.memberList[i].userKey === this.GE_USER.userKey) {
                         /* if (this.imInYn) this.imInYn = true */
                         this.imInYn = true
                     }
@@ -324,25 +325,17 @@ export default {
                 this.detailOpenYn = true
             }
         },
-        async refresh () {
-            var hStack = this.$store.getters.hStack
-            if ((this.selectPopId === hStack[hStack.length - 1]) || this.excelPopId === hStack[hStack.length - 1]) {
-                await this.getBookMemberList()
-            } else {
-                await this.getBookList()
-            }
-        },
         editYnCheck(data) {
             this.editYn = data
         },
         goCabinetList () {
             this.searchKeyword = ''
-            var hStack = this.$store.getters.hStack
+            var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.selectPopId === hStack[hStack.length - 1]) {
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
+                this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                this.$store.commit('D_HISTORY/updateStack', hStack)
                 this.detailOpenYn = false
                 this.cabinetName = ''
                 this.receiverTitle = '주소록 관리'
@@ -350,20 +343,20 @@ export default {
                 return
             }
         },
-        backClick (backYn) {
-            var hStack = this.$store.getters.hStack
+        backClick (backYn) { 
+            var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.propData.value.clickData) {
                 if (this.excelPopId === hStack[hStack.length - 1]) {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                    this.$store.commit('setRemovePage', removePage)
-                    this.$store.commit('updateStack', hStack)
+                    this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                    this.$store.commit('D_HISTORY/updateStack', hStack)
                     this.excelUploadShowYn = false
                 } else {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                    this.$store.commit('setRemovePage', removePage)
-                    this.$store.commit('updateStack', hStack)
+                    this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                    this.$store.commit('D_HISTORY/updateStack', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.$emit('closeXPop')
@@ -372,8 +365,8 @@ export default {
                 if (this.selectPopId === hStack[hStack.length - 1]) {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                    this.$store.commit('setRemovePage', removePage)
-                    this.$store.commit('updateStack', hStack)
+                    this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                    this.$store.commit('D_HISTORY/updateStack', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.receiverTitle = '주소록 관리'
@@ -381,15 +374,15 @@ export default {
                 else if (this.subPopId === hStack[hStack.length - 1]) {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                    this.$store.commit('setRemovePage', removePage)
-                    this.$store.commit('updateStack', hStack)
+                    this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                    this.$store.commit('D_HISTORY/updateStack', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.receiverTitle = '주소록 관리'
                 } else  if (this.excelPopId === hStack[hStack.length - 1]) {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                    this.$store.commit('setRemovePage', removePage)
-                    this.$store.commit('updateStack', hStack)
+                    this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                    this.$store.commit('D_HISTORY/updateStack', hStack)
                     this.excelUploadShowYn = false
                 } else {
                     if (backYn) {
@@ -397,49 +390,18 @@ export default {
                     }   else {
                         this.$emit('closeXPop')
                     }
-                }
-            }/*
-            var hStack = this.$store.getters.hStack
-            var removePage = hStack[hStack.length - 1]
-            if (this.selectPopId === hStack[hStack.length - 1]) {
-                this.searchKeyword = ''
-                hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
-                this.detailOpenYn = false
-                this.cabinetName = ''
-                this.receiverTitle = '주소록 관리'
+                } 
             }
-            else if (this.subPopId === hStack[hStack.length - 1]) {
-                this.searchKeyword = ''
-                hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
-                this.detailOpenYn = false
-                this.cabinetName = ''
-                this.receiverTitle = '주소록 관리'
-            } else  if (this.excelPopId === hStack[hStack.length - 1]) {
-                hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
-                this.excelUploadShowYn = false
-            } else {
-                if (backYn === true) {
-
-                } else {
-                    this.$emit('closeXPop')
-                }
-            } */
         },
         async openMCabUserList(data){
             this.searchKeyword = ''
             this.receiverTitle = data.cabinetNameMtext /* + ' 멤버 관리' */
             this.selectBookDetail = data
-            this.setBookSearchFilter()
-            var history = this.$store.getters.hStack
+            this.setBookSearchFilter() 
+            var history = this.$store.getters['D_HISTORY/hStack']
             this.selectPopId = 'selectMemeberPopup' + history.length
             history.push(this.selectPopId)
-            this.$store.commit('updateStack', history)
+            this.$store.commit('D_HISTORY/updateStack', history)
 
             await this.getBookMemberList()
 
@@ -469,10 +431,10 @@ export default {
         openExcelUploadPop () {
             this.plusMenuShowYn = false
             if (!this.mobileYn) {
-                var history = this.$store.getters.hStack
+                var history = this.$store.getters['D_HISTORY/hStack']
                 this.excelPopId = 'excelUploadPop' + history.length
                 history.push(this.excelPopId)
-                this.$store.commit('updateStack', history)
+                this.$store.commit('D_HISTORY/updateStack', history)
 
                 this.excelUploadShowYn = true
             } else {
@@ -484,7 +446,7 @@ export default {
         async openSelectMemberPop () {
         // eslint-disable-next-line no-new-object
             var params = new Object()
-            params.teamKey = this.propData.currentTeamKey
+            params.teamKey = this.CHANNEL_DETAIL.teamKey
             params.showProfileYn = true
             var result = await this.$commonAxiosFunction({
                 url: 'service/tp.getFollowerList',
@@ -500,7 +462,7 @@ export default {
             param.pSelectedList = this.memberList
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'
-            param.currentTeamKey = this.propData.currentTeamKey
+            param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
 
             this.$emit('openPop', param)
 

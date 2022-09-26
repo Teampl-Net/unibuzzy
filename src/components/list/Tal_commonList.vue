@@ -5,8 +5,8 @@
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
-        <template v-for="(alim, index0) in contentsList" :change="changeData" :key="index0" >
-          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.commonListCreUserKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+        <template v-for="(alim, index0) in this.GE_MAIN_ALIM_LIST" :change="changeData" :key="index0" >
+          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -22,7 +22,7 @@
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{resizeText(alim.title, alim.nameMtext)}}
                   </p>
-                  <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.commonListCreUserKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                  <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
                   <div class="w-100P fl" style=" margin-bottom: 5px;">
@@ -60,7 +60,7 @@
                 <div class="alimCheckContents">
                   <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
-                  <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in settingUserDo(alim.userDoList)" :key="index">
+                  <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl img-w20" style="margin-top: 2px;"  v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl img-w20" style="margin-top: 2px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
@@ -76,11 +76,11 @@
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey):''">
+                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
-                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="commonListCreUserKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey)"/>
                   </div>
 
                 </div>
@@ -119,10 +119,8 @@ import { onMessage } from '../../assets/js/webviewInterface'
 export default {
     data: function () {
     return { // 데이터 정의
-      commonListCreUserKey: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       mainYn: false,
       chanWrap: null,
-      contentsList: [],
       currentScroll: 0,
       alimBigViewYn: false,
       confirmText: '',
@@ -158,37 +156,27 @@ export default {
       moreMemoText: '댓글 더보기',
       saveMemoLoadingYn: false,
       currentMemoTotal:0
-
     }
   },
   components: {
 
   },
   created () {
-    /* document.addEventListener('touchstart', () => {
-      this.clickEndYn = true
-    }) */
-    this.contentsList = this.commonListData
     if (this.targetContentsKey) {
       this.targetCKey = this.targetContentsKey
-      this.memoOpenClick(this.targetCKey)
+      this.memoOpenClick({contentsKey: this.targetCKey})
     }
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
-    // if (this.contentsList.length) {
-    //   if (this.targetContentsKey) {
-    //     this.contentsWich()
-    //   }
-    // }
+    if (this.GE_MAIN_ALIM_LIST) {
+        this.settingUserDo()
+    }
   },
   watch: {
-    commonListData() {
-      this.contentsList = this.commonListData
-      this.loadingRefHide()
-    },
+    GE_MAIN_ALIM_LIST () {
+        this.settingUserDo()
+    }
   },
   updated() {
-    if (this.contentsList.length) {
+    if (this.commonListData.length) {
       if (this.targetCKey) {
         this.contentsWich()
       }
@@ -196,6 +184,7 @@ export default {
     this.settingAtag()
   },
   mounted() {
+    // this.settingUserDo()
     var pushListWrap = document.getElementById('pushListWrap')
     if (pushListWrap) {
         pushListWrap.addEventListener('scroll', () => {
@@ -239,11 +228,11 @@ export default {
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (userKey) {
-      var indexOf = this.contentsList.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      var indexOf = this.GE_MAIN_ALIM_LIST.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
         console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
-        console.log(this.contentsList[indexOf])
-        this.userNameClick(true, userKey, this.contentsList[indexOf].creTeamKey, false)
+        console.log(this.GE_MAIN_ALIM_LIST[indexOf])
+        this.userNameClick(true, userKey, this.GE_MAIN_ALIM_LIST[indexOf].creTeamKey, false)
       }
     },
     userNameClick (userShowYn, userKey, teamKey, blindYn) {
@@ -253,7 +242,7 @@ export default {
         param.readOnlyYn = true
         param.userKey = userKey
         param.teamKey = teamKey
-        if (userKey === this.commonListCreUserKey) {
+        if (userKey === this.GE_USER.userKey) {
           param.selfYn = true
         } else {
           param.contentOpenYn = true
@@ -302,8 +291,11 @@ export default {
           url: 'service/tp.deleteMCabContents',
           param: inParam
         })
-        console.log(result.data)
-        this.$emit('refresh')
+        var contList = this.GE_MAIN_ALIM_LIST
+        var index = contList.findIndex((item) => item.mccKey === inParam.mccKey)
+        contList = contList.splice(index, 1)
+        this.$actionVuex('ALIM', contList, null, true, false, null, null)
+        
       } else if (this.tempData.jobkindId === 'BOAR') {
         console.log(this.tempData)
         console.log(this.tempData.mccKey)
@@ -318,9 +310,11 @@ export default {
           url: 'service/tp.deleteContents',
           param: inParam
         })
-        console.log('sssssssssssssss')
-        console.log(inParam)
-        this.$emit('refresh')
+        var contList = this.GE_MAIN_BOARD_LIST
+        var index = contList.findIndex((item) => item.mccKey === inParam.mccKey)
+        contList = contList.splice(index, 1)
+        this.$actionVuex('BOAR', contList, null, true, false, null, null)
+        
       }
     },
     async deleteAlimAll () {
@@ -393,18 +387,11 @@ export default {
       }
     },
     makeNewContents (type) {
-      // if (type === 'writeBoard') {
-      //   this.tempData.writeType = 'BOAR'
-      // } else if (type === 'writeAlim') {
-      //   this.tempData.writeType = 'ALIM'
-      // }
       this.tempData.writeType = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
       this.$emit('makeNewContents', this.tempData)
 
     },
     deleteConfirm (data) {
-      console.log('datadatadatadatadatadatadatadatadatadatadatadatadatadatadata')
-      console.log(data)
       if ((data !== undefined && data !== null && data !== '' ) && (data !=='alim' && data !== 'memo' && data !=='board') ) {
         console.log(data)
         this.tempData = data
@@ -456,7 +443,7 @@ export default {
       param.actType = 'REPO'
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
-      param.creUserKey = this.commonListCreUserKey
+      param.creUserKey = this.GE_USER.userKey
       this.saveActAxiosFunc(param)
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
@@ -498,7 +485,7 @@ export default {
         } else {
           this.confirmText = '알수 없는 오류입니다.'
         }
-        param.creUserKey = this.commonListCreUserKey
+        param.creUserKey = this.GE_USER.userKey
         this.confirmText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
       } else if (this.currentConfirmType === 'memoDEL') {
@@ -518,10 +505,6 @@ export default {
       this.currentConfirmType = ''
       this.confirmPopShowYn = false
     },
-    // cardInfo (alim) {
-    //   var a = document.getElementById('memoCard'+alim.contentsKey).offsetTop
-    //   this.$emit('scrollMove', a)
-    // },
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
@@ -529,23 +512,11 @@ export default {
         var tempKey
         if (this.targetCKey) tempKey = this.targetCKey
         if (key !== undefined && key !== null && key !== '') { tempKey = key }
-        console.log(this.contentsList)
         if (document.getElementById('memoCard'+tempKey)) {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
           this.targetCKey = null
         }
-      } else {
-        /* setTimeout(() => {
-          var tempKey
-          if (this.targetCKey) tempKey = this.targetCKey
-          if (key !== undefined && key !== null && key !== '') { tempKey = key }
-          console.log(this.contentsList)
-          var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
-
-          this.targetCKey = null
-          return targetContentWich
-        }, 1000) */
       }
     },
     async scrollMove (wich) {
@@ -600,7 +571,7 @@ export default {
     },
     cancelTimerShowCheck (alim) {
       var result = false
-      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.commonListCreUserKey){
+      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.GE_USER.userKey){
         var time = this.$cancelTimer(alim.creDate)
         if (time !== false) {
           result = true
@@ -679,9 +650,9 @@ export default {
       memo.targetKind = 'C'
       memo.targetKey = this.currentContentsKey
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
-      memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-      memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.creUserKey = this.GE_USER.userKey
+      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+      memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
 
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemo',
@@ -710,9 +681,9 @@ export default {
     memoSetCount (size, key) {
       var contentsKey = this.currentContentsKey
       if (key !== undefined && key !== null && key !== '' ) contentsKey = key
-      var indexOf = this.contentsList.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      var indexOf = this.GE_MAIN_ALIM_LIST.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1 ){
-        this.contentsList[indexOf].memoCount = size
+        this.GE_MAIN_ALIM_LIST[indexOf].memoCount = size
       }
 
     },
@@ -854,28 +825,9 @@ export default {
 
                 imgList[m].style.opacity = 1
             })
-
-            /* imgList[m].addEventListener('click', () => {
-            var param = new Object
-            param.mfileKey = alim.attachMfilekey
-            param.creUserName = alim.creUserName
-            param.title = alim.title
-            param.creDate = alim.creDate
-            param.imgIndex = m
-            this.$emit('clickImg', param)
-            }) */
         }
 
     },
-    /* openImgDetailAlert () {
-      var history = this.$store.getters.hStack
-      this.alertPopId = 'imgDetailAlertPop' + history.length
-      history.push(this.alertPopId)
-      this.$store.commit('updateStack', history)
-      console.log(this.$store.getters.hStack)
-      this.imgDetailAlertShowYn = true
-      this.clickEndYn = false
-    }, */
     async getContentsMemoList (key, pageSize, offsetInt) {
       var memo = {}
       memo.targetKind = 'C'
@@ -893,6 +845,40 @@ export default {
         url: 'service/tp.getMemoList',
         param: memo
       })
+
+      if (result.data.memoList) {
+        this.CONT_DETAIL.totalMemoCount = result.data.totalElements
+        var tempList = []
+        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
+        if (this.CONT_DETAIL.D_MEMO_LIST && !refreshYn) {
+          tempList = this.CONT_DETAIL.D_MEMO_LIST
+        }
+        const newArr = [
+          ...tempList,
+          ...result.data.memoList
+        ]
+        var tempMemo = this.replaceArr(newArr)
+
+        if (tempMemo && tempMemo.length > 0) {
+          for (let i = 0; i < tempMemo.length; i++) {
+            if (tempMemo.parentMemoKey) {
+              for (let j = 0; j < tempMemo.length; j++) {
+                if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
+                  tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
+                  tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
+                }
+              }
+            }
+          }
+        }
+        var cont = this.CONT_DETAIL
+        cont.D_MEMO_LIST = tempMemo
+
+        this.offsetInt = tempMemo.length
+        this.$actionVuex('CONT', cont, this.CONT_DETAIL.contentsKey, false, true, this.CHANNEL_DETAIL.teamKey, this.CAB_DETAIL.cabinetKey)
+      }
+
+
       // console.log(result.data.content)
       var list = new Array()
       list = result.data
@@ -947,17 +933,20 @@ export default {
     settingOffsetIntTotalMemoCount () {
       console.log('#################')
       var totalMemoCount = 0
-      for (let i = 0; i < this.currentMemoList.length; i++) {
-        if (this.currentMemoList[i].cmemoList.length > 0) {
-          for (let cmemoIndex = 0; cmemoIndex < this.currentMemoList[i].cmemoList.length; cmemoIndex++) {
-            totalMemoCount += 1
-          }
+      if (this.currentMemoList) {
+        for (let i = 0; i < this.currentMemoList.length; i++) {
+            if (this.currentMemoList[i].cmemoList.length > 0) {
+            for (let cmemoIndex = 0; cmemoIndex < this.currentMemoList[i].cmemoList.length; cmemoIndex++) {
+                totalMemoCount += 1
+            }
+            }
         }
+        console.log(totalMemoCount)
+        console.log(this.currentMemoList.length + totalMemoCount)
+        this.offsetInt = this.currentMemoList.length + totalMemoCount
+        console.log('#################')
       }
-      console.log(totalMemoCount)
-      console.log(this.currentMemoList.length + totalMemoCount)
-      this.offsetInt = this.currentMemoList.length + totalMemoCount
-      console.log('#################')
+      
     },
     async yesLoadMore () {
         this.pageSize = 5
@@ -1037,6 +1026,7 @@ export default {
       console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      param.jobkindId = data.jobkindId
       if (data.jobkindId === 'ALIM') {
         param.targetType = 'chanDetail'
         param.teamKey = data.creTeamKey
@@ -1051,7 +1041,11 @@ export default {
       } else {
         param.targetType = 'boardDetail'
         param.cabinetNameMtext = data.cabinetNameMtext
+        param.teamKey = data.creTeamKey
         param.targetKey = data.contentsKey
+        param.contentsKey = data.contentsKey
+        param.cabinetKey = data.cabinetKey
+        param.jobkindId = 'BOAR'
         param.value = data
       }
       this.$emit('goDetail', param)
@@ -1061,6 +1055,7 @@ export default {
       var param = new Object()
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
+      param.teamKey = value.creTeamKey
       if (value.officialYn) {
         param.officialYn = value.officialYn
       }
@@ -1085,11 +1080,11 @@ export default {
       var result = null
       var saveYn = true
       var temp = []
-      if (!this.contentsList[idx].userDoList) {
-        this.contentsList[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
+      if (!this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO) {
+        this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
       }
-      if (this.contentsList[idx].userDoList) {
-        temp = this.contentsList[idx].userDoList
+      if (this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO) {
+        temp = this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO
       }
       for (var i = 0; i < temp.length; i ++) {
         if (temp[i].doType === act.doType) {
@@ -1105,19 +1100,19 @@ export default {
       param.targetKey = contentsKey
       if (param.targetKey === null) { return }
       param.doType = act.doType
-      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      param.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
         result = this.$saveUserDo(param, 'delete')
         if (act.doType === 'LI') {
-          this.contentsList[idx].likeCount -= 1
+          this.GE_MAIN_ALIM_LIST[idx].likeCount -= 1
         }
         for (var i = 0; i < temp.length; i++) {
           if(temp[i].doType === act.doType) {
             temp[i].doKey = 0
           }
         }
-        this.contentsList[idx].userDoList = temp
+        this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = temp
         this.changeData += 1
       } else {
         param.actYn = true
@@ -1130,37 +1125,44 @@ export default {
             }
         }
           // temp.push({ doType: act.doType, doKey: result.doKey })
-          this.contentsList[idx].userDoList = temp
+          this.GE_MAIN_ALIM_LIST[idx].D_CONT_USER_DO = temp
           this.changeData += 1
         })
         temp.push({ doType: act.doType, doKey: 1 })
         if (act.doType === 'LI') {
-            this.contentsList[idx].likeCount += 1
+            this.GE_MAIN_ALIM_LIST[idx].likeCount += 1
         }
-
+        this.$actionVuex('CONT', GE_MAIN_ALIM_LIST[idx], null, false, true, null, null)
         // }
       }
       /* if (result === true) {
         await this.$emit('refresh')
       } */
     },
-    settingUserDo (userDo) {
-      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
-      this.readYn = false
-      if (userDo !== undefined && userDo !== null && userDo !== '') {
-        for (var i = 0; i < userDo.length; i++) {
-          if (userDo[i].doType === 'LI') {
-            userDoList[1].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'ST') {
-            userDoList[0].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'RE') {
-            this.readYn = true
-          }
+    settingUserDo () {
+      var aList =  this.GE_MAIN_ALIM_LIST
+      for (var i = 0; i < this.GE_MAIN_ALIM_LIST.length; i++){
+        var userDo = aList[i].D_CONT_USER_DO 
+        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        if (userDo) {
+            var index = userDo.findIndex((item) => item.doType === 'ST')
+            if (index >= 0) {
+                userDoList[0].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'LI')
+            if (index >= 0) {
+                userDoList[1].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'RE')
+            if (index >= 0) {
+                userDoList[2].doKey = userDo[index].doKey
+            }
         }
+        aList[i].D_CONT_USER_DO = userDoList
       }
+      // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
+      
+      this.$actionVuex('ALIM', aList, null, true, false, null, null)
       return userDoList
     },
     /* async loadUpMore() {
@@ -1238,7 +1240,7 @@ export default {
                 this.notiDetail = JSON.parse(message.pushMessage).noti.data
             }
             if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT' || JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-                if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
+                if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(this.GE_USER.userKey)) {
                   return
                 }
                 /* if (this.selectedConentsKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) { */
@@ -1303,6 +1305,18 @@ export default {
     targetContentsKey: {}
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    /* GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_MAIN_BOARD_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
+    }, */
+    GE_MAIN_ALIM_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
+    }
   }
 }
 </script>

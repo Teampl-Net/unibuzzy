@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
-
 import moTheAlim from './Tal_moTheAlim.vue'
 import router from './router'
+import Vuex from 'vuex'
 import store from './store'
 import axios from 'axios'
 import BootstrapVue3 from 'bootstrap-vue-3'
@@ -25,7 +25,7 @@ import TalHeader from './components/layout/Tal_gMainHeader.vue'
 import popHeader from './components/layout/Tal_gPopHeader.vue'
 import TalFooter from './components/layout/Tal_gFooter.vue'
 import commonList from './components/list/Tal_commonList.vue'
-import gChannelList from './components/list/Tal_gChannelList.vue'
+import gChannelList from './components/list/D_commonChanList.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
 import gColorPicker from './components/unit/Tal_colorPicker.vue'
 
@@ -38,6 +38,9 @@ import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
 // import htmlParser from './assets/js/Tal_htmlParser'
 import commonjs from './assets/js/Tal_common'
 
+import getjs from './assets/js/D_vuexFunction'
+
+import commonSharejs from './assets/js/Tal_commonShare'
 // import commonSharejs from './assets/js/Tal_commonShare'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import uploadFile from './assets/js/Tal_uploadFile'
@@ -75,8 +78,11 @@ import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardList
 /* import Meta from 'vue-meta' */
 const longClickInstance = longClickDirective({ delay: 400, interval: 50 })
 
-const app = createApp(moTheAlim).use(router)
+const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
+app.use(getjs)
+app.use(Vuex)
+app.use(commonSharejs)
 // app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
@@ -114,9 +120,6 @@ app.component(VueCropper)
 app.component('gSelectBoardPop', gSelectBoardPop)
 app.use(webViewBridge)
 app.use(axiosFunction)
-// app.use(htmlParser)
-
-app.use(store)
 app.use(uploadFile)
 
 // app.use(massage)
@@ -194,14 +197,20 @@ axios.interceptors.response.use(function (response) {
 // Vue.prototype.$http = axios
 
 app.config.silent = true
-
 app.config.globalProperties.$axios = axios
-
+app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
+app.config.globalProperties.$store = store
 
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
 app.mount('#app')
 document.title = '더알림'
+
+localStorage.setItem('loginYn', false)
+/* this.$userLoginCheck(true).then(response => {
+  this.$getMainboard()
+}) */
+
 // onMessage('REQ', 'removeAllNoti') // 앱이 시작되면 모든 알림 삭제

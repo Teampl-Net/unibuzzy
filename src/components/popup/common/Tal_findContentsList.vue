@@ -50,17 +50,17 @@ export default {
     }
   },
   created () {
-    var history = this.$store.getters.hStack
+    var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'searchPop' + history.length
     history.push(this.popId)
-    this.$store.commit('updateStack', history)
+    this.$store.commit('D_HISTORY/updateStack', history)
   },
   mounted () {
     // document.getElementById('findContentListConfo').setAttribute('readonly', 'readonly')
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hStack
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
@@ -68,7 +68,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.closeXPop()
       }
@@ -78,11 +78,11 @@ export default {
   },
   methods: {
     closeXPop () {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closePop')
       // this.$removeHistoryStack()
     },

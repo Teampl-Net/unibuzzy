@@ -1,33 +1,31 @@
 <template>
-<div :key="componentKey" class="pagePaddingWrap" v-if="renderOk" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+<div v-if="this.GE_USER" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
   <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-  <!-- <initModal v-if="initYn === true" :userEmail="this.userEmail" :userMobile="this.userMobile"/> -->
-  <!-- <gConfirmPop :confirmText='"안녕하세요"' @ok='popYn= false' @no="popYn= false " v-if="popYn" /> -->
   <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
     <!-- <img src="../../../public/resource/userCommonIcon/userImg01.png" style="width: 5em; margin-right: 1rem"/> -->
     <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" style="background-position: center; background-size: cover; background-repeat: no-repeat;" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + changeImgUrl(userInfo.userProfileImg) : userInfo.userProfileImg) +') !;'"  ></div> -->
-    <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + this.$changeUrlBackslash(userInfo.userProfileImg) : userInfo.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+    <div @click="goProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
     <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" style="background-position: center; background-size: cover; background-repeat: no-repeat;" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +') !;'"  ></div> -->
     <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
     <div class="userProfileTextWrap" >
-      <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(userInfo.userDispMtext || userInfo.userNameMtext)}}</p>
+      <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)}}</p>
       <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
         <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
         <span class="profileTitle font14" ref="userEmail" @click="this.$showToastPop('해당 게시물의 알림을 활성화 했습니다.')">이메일</span>
-        <span class="grayBlack font14" ref="userEmail">{{userInfo.userEmail}}</span>
+        <span class="grayBlack font14" ref="userEmail">{{this.GE_USER.userEmail}}</span>
       </div>
       <div>
         <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
         <span @click="test" class="profileTitle font14" ref="userMobile">휴대폰</span>
-        <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(userInfo.phoneEnc)}}</span>
+        <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
       </div>
     </div>
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :alimList="alimList"  @openPop="openPop" ref="topAlim" />
-  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :top5ChanList="chanList" @openPop="openPop" ref="topChan" />
+  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :allContList="allContList" :boardList="GE_MAIN_BOARD_LIST" :alimList="this.GE_MAIN_ALIM_LIST"  @openPop="openPop" ref="topAlim" />
+  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="GE_MAIN_CHAN_LIST" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -35,13 +33,14 @@
 
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import top5Channel from '../../components/pageComponents/main/Tal_top5_channelList.vue'
-import top5Alim from '../../components/pageComponents/main/Tal_top5_pushList.vue'
+import top5Channel from '../../components/pageComponents/main/D_top5ChanList.vue'
+import top5Alim from '../../components/pageComponents/main/D_top5ContentsList.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 // import { onMessage } from '../../assets/js/webviewInterface'
 // import initModal from '../../components/popup/Tal_mainInitModal'
-
+// eslint-disable-next-line no-unused-vars
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: '',
   props: {
@@ -51,19 +50,15 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
     this.loadingYn = true
-    this.getMainBoard()
-
-    /* localStorage.setItem('popHistoryStack', '') */
+    this.setAllContents()
+    console.log(this.GE_MAIN_CHAN_LIST)
+    console.log(this.chanList)
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // // window.addEventListener('message', e => this.recvNoti(e))
     this.$emit('changePageHeader', '더알림')
-    localStorage.setItem('loginYn', false)
-    this.$userLoginCheck(true)
-    this.getUserInform()
-    this.$store.commit('setRemovePage', 0)
-    this.$store.commit('updateStack', [0])
-    // <%= ${sessionName} != null %>
+    /* this.$store.commit('setRemovePage', 0)
+    this.$store.commit('D_HISTORY/updateStack', [0]) */
   },
   mounted () {
     this.loadingYn = false
@@ -75,7 +70,9 @@ export default {
       initYn: false,
       alimList: [],
       chanList: [],
-      userInfo: [],
+      boardList: [],
+      allContList: [],
+      userInfo: null,
       renderOk: false,
       popYn: true,
       userKey: null,
@@ -95,44 +92,51 @@ export default {
     // top5Title
   },
   methods: {
-    refresh () {
-      this.$refs.topAlim.refreshList()
-    },
-    async recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
+    /* ...mapActions('D_USER', [
+      'AC_USER'
+    ]),
+    ...mapActions('D_CHANNEL', [
+      'AC_MAIN_CHAN_LIST'
+    ]),
+    ...mapActions('D_CONTENTS', [
+      'AC_MAIN_ALIM_LIST'
+    ]),
+    ...mapActions('D_CONTENTS', [
+      'AC_MAIN_BOARD_LIST'
+    ]), */
+    setAllContents () {
+      if (this.GE_MAIN_ALIM_LIST && this.GE_MAIN_BOARD_LIST) {
+        if (this.GE_MAIN_ALIM_LIST.length > 4 && this.GE_MAIN_BOARD_LIST.length > 4) {
+          this.allContList = [
+            ...this.GE_MAIN_ALIM_LIST.slice(0, 5),
+            ...this.GE_MAIN_BOARD_LIST.slice(0, 5)
+          ]
         } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
-            this.systemName = localStorage.getItem('systemName')
-          }
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          if (this.GE_MAIN_ALIM_LIST.length > 4) {
+            this.allContList = [
+              ...this.GE_MAIN_ALIM_LIST.slice(0, 5),
+              ...this.GE_MAIN_BOARD_LIST
+            ]
+          } else if (this.GE_MAIN_ALIM_LIST.length > 4) {
+            this.allContList = [
+              ...this.GE_MAIN_ALIM_LIST,
+              ...this.GE_MAIN_BOARD_LIST.slice(0, 5)
+            ]
           } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-
-          var currentPage = this.$store.getters.hCPage
-
-          if ((currentPage === 0 || currentPage === undefined)) {
-            this.getMainBoard()
-            this.refresh()
-          } else {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              await this.getChanDetail()
-            }
+            this.allContList = [
+              ...this.GE_MAIN_ALIM_LIST,
+              ...this.GE_MAIN_BOARD_LIST
+            ]
           }
         }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
+        this.allContList = this.allContList.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.contentsKey - a.contentsKey
+        // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
       }
+    },
+    refresh () {
+      /* this.$refs.topAlim.refreshList() */
     },
     goProfile () {
       // eslint-disable-next-line no-new-object
@@ -147,7 +151,7 @@ export default {
       this.loadingYn = true
       this.$refs.topAlim.refreshList()
       this.$refs.topChan.reLoad()
-      await this.getMainBoard()
+      /* await this.getMainBoard() */
       /* await this.$refs.topAlim.reLoad()
       await this.$refs.topChan.reLoad() */
       this.loadingYn = false
@@ -184,47 +188,6 @@ export default {
         console.warn('ERROR!!!!! : ', ex)
       })
     },
-    async getUserInform () {
-      var userInfo = await this.$getUserInform()
-      this.userKey = userInfo.userKey
-      if (userInfo !== undefined && userInfo !== null) {
-        if (userInfo.userEmail !== undefined && userInfo.userEmail !== null); else userInfo.userEmail = '등록된 이메일이 없습니다.'
-        if (userInfo.phoneLast !== undefined && userInfo.phoneLast !== null) {
-          userInfo.phoneLast = '010-****-' + userInfo.phoneLast
-        } else {
-          userInfo.phoneLast = '등록된 번호 없음'
-        }
-
-        if (userInfo.userDispMtext !== undefined && userInfo.userDispMtext !== null); else {
-          if (userInfo.userNameMtext !== undefined && userInfo.userNameMtext !== null) { userInfo.userDispMtext = userInfo.userNameMtext } else { userInfo.userDispMtext = '등록된 이름이 없습니다.' }
-        }
-      }
-      this.userInfo = userInfo
-      console.log(this.userInfo)
-      return userInfo
-    },
-
-    async getMainBoard () {
-      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      var paramMap = new Map()
-      paramMap.set('userKey', userKey)
-      paramMap.set('jobkindId', 'ALIM')
-
-      return await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-      ).then(response => {
-        if (response.status === 200 || response.status === '200') {
-          this.alimList = []
-          this.alimList = response.data.alimList
-          this.chanList = response.data.teamList
-          this.renderOk = true
-          console.log(response)
-        }
-        // response.data.userMap
-      }).catch((error) => {
-        console.warn('ERROR!!!!! : ', error)
-        // return 'error'
-      })
-    },
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
@@ -238,31 +201,45 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hStack
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_MAIN_ALIM_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
+    },
+    GE_MAIN_BOARD_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
     }
   },
 
   watch: {
+    GE_USER (value, old) {
+      // console.log(this.userInfo)
+    },
+    GE_MAIN_CHAN_LIST (value, old) {
+      this.chanList = value
+    },
+    GE_MAIN_ALIM_LIST (value, old) {
+      this.setAllContents()
+    },
+    GE_MAIN_BOARD_LIST (value, old) {
+      this.setAllContents()
+    },
     pageUpdate (value, old) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (this.$route.path === '/') {
           this.openCloseAppPop()
         }
       }
-    },
-    historyStack (value, old) {
-    },
-    routerReloadKey () {
-      this.$nextTick(() => {
-        this.$userLoginCheck(true)
-        this.userInfo = this.$getUserInform()
-        console.log(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg)
-        this.$refs.mainImgAreaRef.style.backgroundImage = 'url(' + JSON.parse(localStorage.getItem('sessionUser')).userProfileImg + ')'
-      })
     }
   }
   // onMessage (data) {

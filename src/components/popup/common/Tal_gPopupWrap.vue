@@ -11,7 +11,7 @@
       v-if="targetType !=='writeBoard' && targetType !=='writePush'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
-      <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" />
+      <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if="this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
       <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if="this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if="this.targetType === 'pushList'">
@@ -35,7 +35,7 @@
 
       <boardMain ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
 
-      <boardDetail @closeAndNewPop="closeAndNewPop" :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <boardDetail @closeAndNewPop="closeAndNewPop" :propData="this.params" ref="boardDetailCompo" v-if="this.targetType === 'boardDetail' || this.targetType === 'pushDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <editBookList ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
 
       <editManagerList ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
@@ -71,7 +71,7 @@ import pushDetail from '../../pageComponents/push/Tal_pushDetail.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
-import chanList from '../../../pages/routerPages/Tal_chanList.vue'
+import chanList from '../../../pages/routerPages/D_chanList.vue'
 import chanAlimList from '../../pageComponents/channel/Tal_chanAlimList.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
 import talInfo from '../info/Tal_theAlimInfo.vue'
@@ -85,12 +85,12 @@ import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
 import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
 
-import boardMain from '../board/Tal_boardMain.vue'
-import boardDetail from '../board/Tal_boardDetail.vue'
+import boardMain from '@/components/board/D_boardMain.vue'
+import boardDetail from '@/components/common/D_contentsDetail.vue'
 import editBookList from '../receiver/Tal_editBookList.vue'
 import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
-import boardWrite from '../board/Tal_boardWrite.vue'
+import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 
 import selectBookList from '../receiver/Tal_selectBookList.vue'
@@ -115,8 +115,8 @@ import creAddressBook from '../receiver/Tal_creAddressBook.vue'
 export default {
   async created () {
     await this.settingPop()
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // window.addEventListener('message', e => this.recvNoti(e))
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
   },
@@ -174,7 +174,7 @@ export default {
   },
   components: {
     setMypage,
-    pushDetail,
+    /* pushDetail, */
     chanAlimList,
     pushList,
     chanList,
@@ -212,8 +212,11 @@ export default {
   updated () {
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     historyStack () {
-      return this.$store.getters.hStack
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
@@ -229,7 +232,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         this.closeXPop() // 혹시 모르니 일단 삭제
       } else {
@@ -239,7 +242,7 @@ export default {
       }
     },
     async deepLinkQueue (value, old) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
       } else {
         if (value.length > 0) {
@@ -250,34 +253,10 @@ export default {
           param.targetKey = target.targetKey
           this.$store.commit('changeDeepLinkQueue', [])
           this.openPop(param)
-          /* if (target.targetKind === 'pushDetail') {
-            var t = target.targetKey
-            var paramList = []
-            paramList = t.split('?')
-            param.targetType = 'chanDetail'
-            param.targetKey = paramList[1]
-            var followYn = await this.getFollowerYn(paramList[1])
-            if (followYn) {
-              param.targetContentsKey = paramList[0]
-            } else {
-            }
-            this.$store.commit('changeDeepLinkQueue', [])
-            this.openPop(param)
-          } else {
-            param.targetType = target.targetKind
-            param.targetKey = target.targetKey
-            this.$store.commit('changeDeepLinkQueue', [])
-            this.openPop(param)
-          } */
-          /* target.splice(0, 1)
-          this.$store.commit('changeDeepLinkQueue', target) */
         }
       }
     },
     historyStack (value, old) {
-      /* if (this.popId === value) {
-        this.closeXPop()
-      } */
     }
   },
   methods: {
@@ -286,7 +265,7 @@ export default {
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
@@ -336,17 +315,16 @@ export default {
       this.bgblackYn = data
     },
     openChannelItem (data) {
-      // this.itemTitle = item
-      if (data.targetType === 'boardMain') {
-        var history = this.$store.getters.hStack
+      /* if (data.targetType === 'boardMain') {
+        var history = this.$store.getters['D_HISTORY/hStack']
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', history)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', history)
         this.openChanMenuYn = false
       } else {
         this.openChanMenuYn = true
-      }
+      } */
       this.openPop(data)
     },
     openBookItem (data) {
@@ -535,9 +513,9 @@ export default {
       if (this.popId === '') {
         this.popId = 'gPopup' + this.thisPopN
       }
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       history.push(this.popId)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
 
@@ -559,18 +537,18 @@ export default {
     /** 자식 팝업을 닫는 함수
      * @param {reloadYn} Boolean true 보내면 리로드 */
     async closePop (reloadYn) {
+      reloadYn = false
       console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       this.popShowYn = false
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
-      /* if (this.popId === history[history.length - 1]) { */
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       if (reloadYn) {
         // eslint-disable-next-line no-unused-vars
-        if (this.targetType === 'pushList' || this.targetType === 'chanList') {
+        /* if (this.targetType === 'pushList' || this.targetType === 'chanList') {
           this.pushListAndDetailYn = false
           this.reloadYn = true
           setTimeout(() => {
@@ -582,7 +560,7 @@ export default {
             this.$refs.gPopPush.refreshList()
           }
           // this.reloadYn = false
-        } else if (this.targetType === 'editBookList') {
+        } else  */if (this.targetType === 'editBookList') {
           await this.$refs.editBookListComp.refresh()
         } else if (this.targetType === 'setMypage') {
           this.closeXPop()
@@ -591,22 +569,6 @@ export default {
             await this.$refs.selectManagerCompo.refresh()
           else */
           await this.$refs.editManagerListComp.refresh()
-        } else if (this.targetType === 'boardDetail') {
-          /* if (this.params.selectMemberType = 'manager')
-            await this.$refs.selectManagerCompo.refresh()
-          else */
-
-          this.$refs.boardDetailCompo.getContentsList()
-        } else if (this.targetType === 'boardMain') {
-          this.$refs.boardMainPop.getContentsList()
-          await this.$refs.boardMainPop.refresh()
-        } else if (this.targetType === 'chanDetail' && !this.delyn) {
-          if (this.openChanMenuYn) {
-            await this.$refs.chanMenuCompo.refresh()
-          }
-          console.log('closing...')
-          await this.$refs.gPopChanAlimList.refreshList()
-          // await this.$refs.gPopChanAlimList.refresh()
         } else if (this.targetType === 'pushListAndDetail') {
           this.pushListAndDetailYn = false
         } else if (this.targetType === 'memberManagement') {
@@ -706,140 +668,6 @@ export default {
     },
     closePushPop () {
       this.notiDetailShowYn = false
-    },
-    recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
-            this.systemName = localStorage.getItem('systemName')
-          }
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-
-          var currentPage = this.$store.getters.hCPage
-
-          if ((currentPage === 0 || currentPage === undefined)) {
-          } else {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  ;
-                } else {
-                  if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                  } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    if (this.targetType === 'boardDetail') {
-                      if (this.params.targerKey === Number(JSON.parse(this.notiDetail.userDo).targetKey)) {
-                        /* 여기수정해야함 */
-                        this.$refs.boardDetailCompo.getLikeCount()
-                        this.$refs.boardDetailCompo.getMemoList()
-                        return
-                      } else {
-                        this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                      }
-                    } else {
-                      this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                    }
-                  }
-                }
-              } else {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  if (this.targetType === 'chanDetail') {
-                    if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
-                      this.$refs.boardMainPop.refresh()
-                    } else {
-                      if (this.notiDetail.jobkindId !== 'BOAR') {
-                        this.notiDetailShowYn = true
-                      }
-                    }
-                  } else if (this.targetType === 'writePush') {
-                    return
-                  } else {
-                    if (this.notiDetail.jobkindId !== 'BOAR') {
-                      this.notiDetailShowYn = true
-                    }
-                  }
-                } else {
-                  if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  } else {
-                    if (this.targetType === 'pushList') {
-                      this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                    } else {
-                      this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                    }
-                  }
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CABI') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  ;
-                } else {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-              } else {
-                console.log(this.notiDetail)
-                if (this.notiDetail.actType === 'FL') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                } else if (this.notiDetail.actType === 'MA') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                } else {
-                  if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.openPop({ targetKey: this.notiDetail.creTeamKey, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                  } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                  }
-                }
-              }
-            }
-          }
-        } /* else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-          if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-            return
-          }
-          currentPage = this.$store.getters.hCPage
-          if ((currentPage === 0 || currentPage === undefined)) {
-          } else {
-            if (this.notiDetail.actType === 'WR') {
-              this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
-            } else {
-              if (this.notiDetail.actType === 'LI') {
-                this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', value: this.notiDetail, pushOpenYn: true })
-              }
-            }
-          }
-        } */
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
     }
   }
 }

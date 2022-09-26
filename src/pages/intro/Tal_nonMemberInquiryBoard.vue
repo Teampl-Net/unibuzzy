@@ -40,7 +40,7 @@
 <script>
 
 import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
-import boardList from '../../components/boardList/Tal_commonBoardList.vue'
+import boardList from '../../components/list/Tal_commonBoardList.vue'
 export default {
   name: '',
   data () {

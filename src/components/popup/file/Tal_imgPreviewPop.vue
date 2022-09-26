@@ -79,11 +79,11 @@ export default {
         // this.imgs.push(imgUrl)
       }
     })
-    var history = this.$store.getters.hStack
+    var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'previewImgPop' + history.length
     console.log(history)
     history.push(this.popId)
-    this.$store.commit('updateStack', history)
+    this.$store.commit('D_HISTORY/updateStack', history)
     console.log(this.imgList)
     // this.imgs.push(this.imgList[0].pathMtext)
   },
@@ -128,12 +128,12 @@ export default {
       // console.log(this.imgs)
     },
     backClick () {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closePop')
       } else {
 
@@ -167,7 +167,7 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate

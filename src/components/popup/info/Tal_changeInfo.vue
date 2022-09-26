@@ -54,6 +54,11 @@ export default {
   props: {
     kind: {}
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   methods: {
     validTimeCheck (alim) {
       var result = false
@@ -75,7 +80,7 @@ export default {
     },
     sendMsg () {
         if (this.regEmail(this.infoValue.trim())) {
-            if (JSON.parse(localStorage.getItem('sessionUser')).userEmail === this.infoValue) {
+            if (this.GE_USER.userEmail === this.infoValue) {
                 alert('현재이메일과 변경이메일이 동일합니다')
                 return
             }
@@ -143,7 +148,7 @@ export default {
     checkMyInfo () {
       if (this.kind === 'changeMobile') {
         this.kindText = '휴대전화 번호'
-        var userMobile = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
+        var userMobile = this.GE_USER.phoneEnc
         if (userMobile !== undefined && userMobile !== 'undefined' && userMobile !== null && userMobile !== 'null' && userMobile !== '' && localStorage.getItem('userMobile').length > 7) {
           this.targetKind = 'change'
           this.introText = '기존 휴대폰 번호는 ' + localStorage.getItem('userMobile') + ' 입니다.<br>변경할 휴대폰 번호로 인증 번호 받기'
@@ -153,7 +158,7 @@ export default {
         }
       } else if (this.kind === 'changeEmail') {
         this.kindText = '이메일 주소'
-        var userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
+        var userEmail = this.GE_USER.userEmail
         if (userEmail !== undefined && userEmail !== 'undefined' && userEmail !== null && userEmail !== 'null' && userEmail !== '') {
           this.targetKind = 'change'
           this.introText = '현재 등록된 이메일<br> <span class="commonBlack font16 mleft-05" style="font-weight: normal;"> ' + userEmail + '</span>'
@@ -165,7 +170,7 @@ export default {
     },
     async checkValidation () {
         var param = new Object()
-        param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.userKey = this.GE_USER.userKey
         if (this.token === undefined || this.token === null || this.token === '') {
             alert('인증번호를 입력해 주세요')
             return

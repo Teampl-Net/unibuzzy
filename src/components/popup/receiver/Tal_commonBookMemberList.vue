@@ -58,6 +58,14 @@ export default {
     bookType: {},
     pSearchFilterList: {}
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    CHANNEL_DETAIL () {
+      return this.$getDetail('TEAM', this.teamInfo.teamKey)[0]
+    }
+  },
   data () {
     return {
       teamName: '',

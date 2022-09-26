@@ -63,11 +63,11 @@ export default {
         selectBookNList: {},
         itemType: {}
     },
-    created() {
-        var history = this.$store.getters.hStack
+    created() { 
+        var history = this.$store.getters['D_HISTORY/hStack']
         this.popId = 'selectBookNMemPop' + history.length
         history.push(this.popId)
-        this.$store.commit('updateStack', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         // this.bookList = this.selectBookNList.data.bookList
         // this.memberList = this.selectBookNList.data.memberList
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
@@ -90,23 +90,23 @@ export default {
             }
         }
     },
-    computed: {
+    computed: { 
         historyStack () {
-            return this.$store.getters.hRPage
+            return this.$store.getters['D_HISTORY/hRPage']
         },
         pageUpdate () {
             return this.$store.getters.hUpdate
         }
     },
-    watch: {
+    watch: { 
         historyStack (value, old) {
-            var hStack = this.$store.getters.hStack
+            var hStack = this.$store.getters['D_HISTORY/hStack']
             if (this.popId === hStack[hStack.length - 1]) {
-            var history = this.$store.getters.hStack
+            var history = this.$store.getters['D_HISTORY/hStack']
             var removePage = history[history.length - 1]
             history = history.filter((element, index) => index < history.length - 1)
-            this.$store.commit('setRemovePage', removePage)
-            this.$store.commit('updateStack', history)
+            this.$store.commit('D_HISTORY/setRemovePage', removePage)
+            this.$store.commit('D_HISTORY/updateStack', history)
             this.closeXPop()
             }
         }

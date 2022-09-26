@@ -65,24 +65,8 @@ export default {
     // chanMenu
   },
   beforeUnmount () {
-    // PullToRefresh.destroyAll()
   },
   mounted () {
-
-    /* this.checkDeepLinkQueue() */
-    // console.log('pulltorefreshjs')
-    // PullToRefresh.init({
-    //   mainElement: 'body',
-    //   distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-    //   distMax: '100', // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-    //   distReload: '80', // 새로고침 후 갖고있는 영역의 크기
-    //   instructionsReleaseToRefresh: ' ', // 최소 새로고침에 도달 했을 때 문구
-    //   instructionsPullToRefresh: ' ', // 끌고 있을 때 문구
-    //   instructionsRefreshing: ' ', // 새로고침 중 문구
-    //   onRefresh () {
-    //     window.location.reload()
-    //   }
-    // })
   },
   computed: {
     getWindowSize () {
@@ -92,6 +76,9 @@ export default {
     },
     deepLinkQueue () {
       return this.$store.getters.deepLinkQueue
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   },
   // beforeUpdate () {
@@ -99,7 +86,7 @@ export default {
   // },
   watch: {
     async deepLinkQueue (value, old) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (value.length > 0) {
           var target = value[value.length - 1]
@@ -109,25 +96,6 @@ export default {
           param.targetKey = target.targetKey
           this.$store.commit('changeDeepLinkQueue', [])
           this.openPop(param)
-          /* if (target.targetKind === 'pushDetail') {
-            var t = target.targetKey
-            var paramList = []
-            paramList = t.split('?')
-            param.targetType = 'chanDetail'
-            param.targetKey = paramList[1]
-            var followYn = await this.getFollowerYn(paramList[1])
-            if (followYn) {
-              param.targetContentsKey = paramList[0]
-            } else {
-            }
-            this.$store.commit('changeDeepLinkQueue', [])
-            this.openPop(param)
-          } else {
-            param.targetType = target.targetKind
-            param.targetKey = target.targetKey
-            this.$store.commit('changeDeepLinkQueue', [])
-            this.openPop(param)
-          } */
         }
       }
     }
@@ -142,7 +110,7 @@ export default {
     async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
@@ -154,20 +122,6 @@ export default {
         return false
       }
     },
-    /* checkDeepLinkQueue () {
-      // const searchParams = new URLSearchParams(location.search)
-
-      var queue = this.$store.getters.deepLinkQueue
-      if (queue.length > 0) {
-        var target = queue[queue.length - 1]
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
-        param.targetType = target.targetKind
-        param.targetKey = target.targetKey
-        this.$store.commit('changeDeepLinkQueue', [])
-        this.openPop(param)
-      }
-    }, */
     reloadPop () {
       this.routerReloadKey += 1
     },
@@ -181,104 +135,6 @@ export default {
     },
     closePushPop () {
       this.notiDetailShowYn = false
-    },
-    recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
-            this.systemName = localStorage.getItem('systemName')
-          }
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-          var currentPage = this.$store.getters.hCPage
-          if ((currentPage === 0 || currentPage === undefined)) {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  ;
-                } else {
-                  if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                  } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                  }
-                }
-              } else {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  if (this.notiDetail.jobkindId !== 'BOAR') {
-                    this.notiDetailShowYn = true // wowns
-                    // if (this.$route.path === '/') {
-                    //   this.$refs.mainRouterView.getMainBoard()
-                    // }
-                  }
-                } else {
-                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CABI') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  ;
-                } else {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(JSON.parse(localStorage.getItem('sessionUser')).userKey)) {
-                return
-              }
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-              } else {
-                this.$router.replace({ path: '/' })
-                if (this.notiDetail.actType === 'FL') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                } else if (this.notiDetail.actType === 'MA') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
-                }
-              }
-            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-
-                } else {
-                  if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.openPop({ targetKey: this.notiDetail.creTeamKey, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-                  } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
-                  }
-                }
-              }
-            }
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
-    },
-    test () {
-      var currentPage = this.$store.getters.hCPage
-      if ((currentPage === 0 || currentPage === undefined)) {
-        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-      } else {
-        this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
-      }
     },
     showMenu () {
       this.showMenuYn = true
@@ -301,11 +157,11 @@ export default {
     },
     closePop (reloadYn) {
       // this.$refs.routerViewRef.reload()
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
 
       if (reloadYn) {
@@ -329,7 +185,11 @@ export default {
     }
   },
   created () {
-    const searchParams = new URLSearchParams(location.search)
+    var this_ = this
+    this.$userLoginCheck(true).then(response => {
+      this_.$getMainBoard()
+    })
+    /* const searchParams = new URLSearchParams(location.search)
     // alert(searchParams)
     // eslint-disable-next-line no-unused-vars
     for (const param of searchParams) {
@@ -342,9 +202,9 @@ export default {
         this.openPop({ targetKey: param[1], targetType: 'pushDetail', contentsKey: param[1], pushOpenYn: true })
       }
       console.log('targetKey: ' + param[1])
-    }
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    } */
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // // window.addEventListener('message', e => this.recvNoti(e))
   }
   // onMessage (data) {
   //   window.nsWebViewBridge.emit('onMessage', data)

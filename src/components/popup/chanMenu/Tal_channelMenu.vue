@@ -6,11 +6,11 @@
   <div class="menuHeader" :class="{editmenuHeader: editYn === true}">
     <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
     <p :class="{editColor: editYn === true }" class="fontBold font20 fl" style="white-space: nowrap;" >{{menuHeaderTitle}}</p>
-    <img v-if="ownerYn || adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
+    <img v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
     <div v-else />
   </div>
   <div v-if="true" class="fl w-100P" style="overflow: hidden scroll;">
-    <div v-if="ownerYn || adminYn" class="fl w-100P" style="margin-top:50px;" >
+    <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P" style="margin-top:50px;" >
       <p class="fl cursorP font14 commonColor fontBold mtop-13" style="white-space: nowrap;"  @click="bookDropDown">
         <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
         주소록
@@ -21,17 +21,17 @@
       </div>
     </div>
 
-    <div v-if="ownerYn || adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
+    <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
 
-    <div class="fl w-100P mtop-2" :style="!ownerYn || adminYns ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
+    <div class="fl w-100P mtop-2" :style="!CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYns ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
       <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
         <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
         게시판
-        ({{this.myBoardList.length}})
+        ({{this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length}})
       </p>
 
       <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
-        <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="myBoardList" @chanMenuClick="chanMenuClick" />
+        <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
 
@@ -40,7 +40,7 @@
     <div class="w-100P fl mtop-1" style="margin-bottom:3rem">
       <p class="fl font14 cursorP commonColor fontBold mtop-07 w-100P textLeft"><img class="fl cursorP img-w20 mright-05" src="../../../assets/images/channel/icon_heart.svg" alt="편리기능 아이콘"> 편리기능 </p>
       <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class="fl mleft-05 mtop-1" style="" >
-        <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (this.adminYn === true || this.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" />
+        <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" />
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@
     </div>
   </div> -->
 </div>
-<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='myBoardList' :teamNameText='teamNameText'/>
+<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList' :teamNameText='teamNameText'/>
 <!-- <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' /> -->
 </template>
 <script>
@@ -99,8 +99,14 @@ export default {
   },
 
   computed: {
+    GE_USER () {
+        return this.$store.getters['D_USER/GE_USER']
+    },
+    CHANNEL_DETAIL () {
+      return this.$getDetail('TEAM', this.chanAlimListTeamKey)[0]
+    },
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
@@ -108,7 +114,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       if ('chanMenu' + this.chanAlimListTeamKey === hStack[hStack.length - 1]) {
         this.goNo()
       }
@@ -118,9 +124,11 @@ export default {
 
   },
   created() {
-    var history = this.$store.getters.hStack
+    console.log('CHANNEL_DETAIL')
+    console.log(this.CHANNEL_DETAIL)
+    var history = this.$store.getters['D_HISTORY/hStack']
     history.push('chanMenu' + this.chanAlimListTeamKey)
-    this.$store.commit('updateStack', history)
+    this.$store.commit('D_HISTORY/updateStack', history)
     this.screenHeight = window.innerHeight
     // this. myBoardList =
   },
@@ -128,12 +136,17 @@ export default {
     this.getFollowerList().then(response => {
     })
     // this.cabinetList = this.$groupDummyList()
-    this.getTeamCabList().then(response => {
-      this.getTeamMenuList()
+    if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length === 0) {
+        this.getTeamCabList().then(response => {
+            this.getTeamMenuList()
 
-      this.boardListLength()
-      this.bookListLength()
-    })
+            this.boardListLength()
+            this.bookListLength()
+        })
+    } else {
+        this.boardListLength()
+        this.bookListLength()
+    }
 
   },
   data () {
@@ -184,7 +197,6 @@ export default {
     },
     myChanEdit(){
       var param = {}
-      // param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       param.targetType = 'myChanMenuEdit'
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.currentTeamKey = this.chanAlimListTeamKey
@@ -199,7 +211,7 @@ export default {
     },
     async getFollowerList () {
       var params = new Object()
-      params.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      params.userKey = this.GE_USER.userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
@@ -260,12 +272,6 @@ export default {
       param.managerOpenYn = true
       param.selectMemberType = 'manager'
 
-      /* var history = this.$store.getters.hStack
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
- */
       this.$emit('openItem', param)
     },
     closeEditPop () {
@@ -285,11 +291,11 @@ export default {
 
       params.teamNameMtext = this.teamName()
 
-      /* var history = this.$store.getters.hStack
+      /* var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history) */
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history) */
 
 
       this.$emit('openItem',params)
@@ -318,18 +324,37 @@ export default {
       paramMap.set('teamKey', this.chanAlimListTeamKey)
       paramMap.set('currentTeamKey', this.chanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
 
       var result = await this.$getTeamMenuList(paramMap)
-      this.myBoardList = result
+
+      var newArr = []
+      var uniqueArr = null
+      newArr = [
+        ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList,
+        ...result
+      ]
+      uniqueArr = this.replaceArr(newArr)
+      console.log(uniqueArr)
+      this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList = uniqueArr
+      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+    },
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ cabinetKey }) => cabinetKey === current.cabinetKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
     },
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength() {
-      var boardListLength = this.myBoardList.length === 0 ? 1 : this.myBoardList.length * 45 + 10
+      var boardListLength = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length === 0 ? 1 : this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length * 45 + 10
       this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
     },
     boardDropDown () {
-      if (this.myBoardList.length !== 0) {
+      if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length !== 0) {
         this.boardListLength()
         if (this.boardDropDownYn) { this.boardDropDownYn = false } else { this.boardDropDownYn = true }
       }
@@ -359,11 +384,11 @@ export default {
     },
     async goNo (){
       this.closeYn = true
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      await this.$store.commit('setRemovePage', removePage)
-      await this.$store.commit('updateStack', history)
+      await this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      await this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closePop')
       /* setTimeout(() => {
         this.$emit('closePop')
@@ -395,11 +420,6 @@ export default {
       params.currentTeamKey = this.chanAlimListTeamKey
       params.targetKey = data.cabinetKey
       params.value = data
-      /* var history = this.$store.getters.hStack
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history) */
       this.$emit('openItem', params)
     },
     receiverClick(data){
@@ -409,12 +429,6 @@ export default {
       // params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = '' // 클릭한 데이터 지우기
       params.value = data
-
-      /* var history = this.$store.getters.hStack
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history) */
 
       params.teamNameMtext = this.teamName()
       this.$emit('openItem',params)

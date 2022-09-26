@@ -25,14 +25,14 @@
           </div>
           <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
-            <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+            <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
             <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
             <ppp @click="memoUserNameClick(memo.creUserKey)">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
           </p>
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <pre id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
+          <pre ref="editCommentBox" id="editCommentBox" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
           <pre v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
@@ -41,8 +41,8 @@
               <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
           </div>
           <div >
-            <div v-if="!nonMemYn && (creUser || (editIndex !== index && memo.creUserKey == this.userKey)) && cMemoEditYn === false" class="memoActionArea borderLeft font13"  @click="memoDeleteClick(memo, index)">삭제</div>
-            <div v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.userKey) && cMemoEditYn === false" class="memoActionArea borderLeft font13" @click="editMemoClick(memo, index)">수정</div>
+            <div v-if="!nonMemYn && (creUser || (editIndex !== index && memo.creUserKey == this.GE_USER.userKey)) && cMemoEditYn === false" class="memoActionArea borderLeft font13"  @click="memoDeleteClick(memo, index)">삭제</div>
+            <div v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.GE_USER.userKey) && cMemoEditYn === false" class="memoActionArea borderLeft font13" @click="editMemoClick(memo, index)">수정</div>
           </div>
           <div  v-if="!nonMemYn &&(editIndex !== index)" class="memoActionArea font13" @click="memoMemoClick(memo)" >댓글</div>
           <!-- <p v-if="memo.cmemoList.length > 0" class="fr font13" style="color: darkgray; margin-right:0.5rem">댓글 {{memo.cmemoList.length}}개</p> -->
@@ -55,7 +55,7 @@
                     <div @click="memoUserNameClick(cMemo.creUserKey)" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
                     <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
                     <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
-                        <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                        <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                         <p @click="memoUserNameClick(cMemo.creUserKey)" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
@@ -66,8 +66,8 @@
                       <div class="memoActionArea font13"  @click="cancelEdit(cMemo, index)" >취소</div>
                     </div>
                     <div v-else>
-                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.userKey))" @click="memoDeleteClick(cMemo, index, cIndex)">삭제</div>
-                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
+                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.GE_USER.userKey))" @click="memoDeleteClick(cMemo, index, cIndex)">삭제</div>
+                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.GE_USER.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
                       <div class="memoActionArea font13" v-if="!nonMemYn &&(editIndex !== index)"  @click="meMemoMemoClick(cMemo)" >댓글</div>
                     </div>
                     <!-- <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn">댓글</div> -->
@@ -99,12 +99,9 @@ export default {
   mounted () {
     if (this.memoList) this.memoDataList = this.memoList
     // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
-    if (localStorage.getItem('sessionUser')) {
-      this.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-    }
     // document.querySelector('#editCommentBox').addEventListener('paste', (e) => {
-    if (document.getElementById('editCommentBox')) {
-      document.getElementById('editCommentBox').addEventListener('paste', (e) => {
+    if (this.$refs.editCommentBox) {
+      this.$refs.editCommentBox.addEventListener('paste', (e) => {
         e.preventDefault()
         var textData = (e.originalEvent || e).clipboardData.getData('Text')
         document.execCommand('insertHTML', false, textData)
@@ -135,12 +132,18 @@ export default {
       cMemoEditYn: false
     }
   },
-  watch: {
-    memoList () {
-      this.memoLoadingHide()
-      this.memoDataList = this.memoList
-      this.settingNameTagEvent()
+  computed: {
+    /* CHANNEL_DETAIL () {
+      return this.$getDetail('TEAM', this.propData.currentTeamKey)[0]
+    },
+    CAB_DETAIL () {
+      return this.$getBoardCabinetDetail(this.propData.currentTeamKey, this.propData.targetKey)[0]
+    }, */
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
+  },
+  watch: {
   },
   methods: {
     settingNameTagEvent () {
@@ -227,7 +230,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       // memo = data
-      memo.bodyFullStr = document.getElementById('editCommentBox').innerHTML
+      memo.bodyFullStr = this.$refs.editCommentBox.innerHTML
       memo.bodyHtmlYn = true
       // memo.bodyMinStr = document.getElementById('editCommentBox').innerHTML
       memo.targetKey = data.targetKey
@@ -235,7 +238,7 @@ export default {
       /* memo.bodyFilekey  */
       memo.memoKey = data.memoKey
       memo.creUserKey = data.creUserKey
-      memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
       var result = await this.$commonAxiosFunction({
@@ -248,9 +251,9 @@ export default {
         this.editIndex = ''
         this.editCIndex = ''
         this.cMemoEditYn = false
-        this.$emit('editTrue')
+        this.$emit('editTrue', memo)
       }
-      data.bodyFullStr = document.getElementById('editCommentBox').innerHTML
+      data.bodyFullStr = this.$refs.editCommentBox.innerHTML
     },
     memoMemoClick (memo) {
       this.$emit('mememo', memo)

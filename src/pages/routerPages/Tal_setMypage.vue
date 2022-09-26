@@ -5,19 +5,19 @@
       <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
       <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
       <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.userInfo.domainPath + this.userInfo.userProfileImg" :parentSelectedIconFileKey="this.userInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+      <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
       <div class="" >
         <div class="profileWrap ">
           <div @click="changeUserImg()" class="cursorP imgSize">
-            <!-- <div v-if="userInfo.userProfileImg !== undefined && userInfo.userProfileImg !== null && userInfo.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;"></div> -->
-            <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div> -->
-            <div class="roundDiv picImgWrap" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + this.$changeUrlBackslash(userInfo.userProfileImg) : userInfo.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+            <!-- <div v-if="GE_USER.userProfileImg !== undefined && GE_USER.userProfileImg !== null && GE_USER.userProfileImg !== ''" class="roundDiv" :style="'background-position: center; background-image: url(' + (GE_USER.domainPath ? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;"></div> -->
+            <!-- <div @click="goProfile" v-if="GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div> -->
+            <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
             <!-- <div v-else class="roundDiv"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div> -->
             <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->
           </div>
           <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
-            <span class="fl">{{this.$changeText(this.userInfo.userDispMtext)}}</span>
+            <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
             <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
           </div>
 
@@ -40,8 +40,8 @@
       <div class="subPaddingWrap">
         <table>
           <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
-          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(userInfo.creDate).format('YYYY/MM/DD')}}</td></tr>
-          <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(userInfo.creDate, true)}}</td></tr> -->
+          <tr><th>가입일</th><td class="textRight">{{this.$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
+          <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(GE_USER.creDate, true)}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">이용약관</th></tr>
           <tr>
@@ -90,7 +90,6 @@ export default {
   data () {
     return {
       pageHistoryName: '',
-      userInfo: {},
       changeUserIconShowYn:false,
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
@@ -109,7 +108,6 @@ export default {
     }
   },
   created () {
-    this.getUserInform()
 
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', '설정')
@@ -117,12 +115,15 @@ export default {
     /* var history = localStorage.getItem('popHistoryStack').split('$#$')
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
-  computed: {
+  computed: { 
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
+    },
+    GE_USER () {
+        this.$store.getters['D_USER/GE_USER']
     }
   },
   watch: {
@@ -141,24 +142,22 @@ export default {
       if(this.changeUserIconShowYn) {
         ;
       } else {
-        this.changeUserIconShowYn = true
-        var history = this.$store.getters.hStack
+        this.changeUserIconShowYn = true 
+        var history = this.$store.getters['D_HISTORY/hStack']
         this.changeUserIconPop = 'changeUserIconPop' + history.length
         console.log(history)
         history.push(this.changeUserIconPop)
-        this.$store.commit('updateStack', history)
-        console.log(this.$store.getters.hStack)
+        this.$store.commit('D_HISTORY/updateStack', history)
+        console.log(this.$store.getters['D_HISTORY/hStack'])
       }
     },
     async setDispName () {
       // KO$^$수망고$#$EN$^$sumango
       var param = {}
       var user = {}
-      console.log('this.userInfo');
-      console.log(this.userInfo);
-      // param.user = this.userInfo
-      user.userKey = this.userInfo.userKey
-      user.userNameMtext = this.userInfo.userNameMtext
+      // param.user = this.GE_USER
+      user.userKey = this.GE_USER.userKey
+      user.userNameMtext = this.GE_USER.userNameMtext
       user.userDispMtext = 'KO$^$' + this.tempUserDispName
       param.user = user
       param.updateYn = true
@@ -168,12 +167,10 @@ export default {
       console.log(result)
 
       if (result.data) {
-        // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
-        this.getUserInform()
         this.changeYn = false
         this.$router.push('/')
         this.$emit('closeXPop')
-        // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
+        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
         this.errorBoxText = '이름 변경 중 서버에 오류'
         this.errorBoxYn = true
@@ -181,7 +178,7 @@ export default {
     },
     changeUserDispMtext () {
       this.changeYn = true
-      this.tempUserDispName = this.$changeText(this.userInfo.userDispMtext)
+      this.tempUserDispName = this.$changeText(this.GE_USER.userDispMtext)
     },
     openPop (target) {
       // eslint-disable-next-line no-new-object
@@ -208,22 +205,13 @@ export default {
     closePolicyPop () {
       this.showPolicyPopYn = false
     },
-    async getUserInform () {
-      this.userInfo = await this.$getUserInform()
-      console.log(this.userInfo)
-      if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
-      if (this.userInfo.phoneLast); else this.userInfo.phoneLast = null || '등록된 번호가 없습니다.'
-      if (this.userInfo.userDispMtext) { this.userInfo.userDispMtext = this.userInfo.userDispMtext } else {this.userInfo.userDispMtext = this.userInfo.userNameMtext}
-
-      // console.log(this.userInfo.creDate)
-    },
-    backClick () {
-      var hStack = this.$store.getters.hStack
+    backClick () { 
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.changeUserIconPop === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.changeUserIconShowYn = false
       } else {
 

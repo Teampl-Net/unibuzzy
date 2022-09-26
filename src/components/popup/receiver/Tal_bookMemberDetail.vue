@@ -122,6 +122,14 @@ export default {
     mounted () {
         this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
     },
+    computed: {
+        GE_USER () {
+            return this.$store.getters['D_USER/GE_USER']
+        },
+        CHANNEL_DETAIL () {
+            return this.$getDetail('TEAM', this.propData.teamKey)[0]
+        }
+    },
     async created(){
         console.log(this.propData)
         this.$emit('openLoading')
@@ -141,20 +149,19 @@ export default {
                 if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
                 if (this.propData.selfYn) {
                     this.selfYn = this.propData.selfYn
-                    console.log(JSON.parse(localStorage.getItem('sessionUser')))
-                    if(JSON.parse(localStorage.getItem('sessionUser')).userProfileImg){
-                        console.log(JSON.parse(localStorage.getItem('sessionUser')))
-                        this.userProfileImg = JSON.parse(localStorage.getItem('sessionUser')).userProfileImg
-                        this.domainPath = JSON.parse(localStorage.getItem('sessionUser')).domainPath
-                        this.picMfilekey = JSON.parse(localStorage.getItem('sessionUser')).picMfilekey
+                    
+                    if(this.GE_USER.userProfileImg){
+                        this.userProfileImg = this.GE_USER.userProfileImg
+                        this.domainPath = this.GE_USER.domainPath
+                        this.picMfilekey = this.GE_USER.picMfilekey
                     }
-                    if (JSON.parse(localStorage.getItem('sessionUser')).userEmail)
-                        this.memEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
+                    if (this.GE_USER.userEmail)
+                        this.memEmail = this.GE_USER.userEmail
                     else{ this.memEmail= '등록된 이메일이 없습니다.'}
-                    if (JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
-                        this.memName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
-                    if (JSON.parse(localStorage.getItem('sessionUser')).phoneEnc)
-                        this.memPhone = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
+                    if (this.GE_USER.userDispMtext)
+                        this.memName = this.$changeText(this.GE_USER.userDispMtext)
+                    if (this.GE_USER.phoneEnc)
+                        this.memPhone = this.GE_USER.phoneEnc
                     else{ this.memPhone= '등록된 번호가 없습니다.' }
                 } else if (this.propData.userKey) {
                     var userKey = this.propData.userKey
@@ -249,7 +256,7 @@ export default {
             // KO$^$수망고$#$EN$^$sumango
             var param = {}
             var user = {}
-            user.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+            user.userKey = this.GE_USER.userKey
             user.userDispMtext = 'KO$^$' + this.memName
             param.user = user
             param.updateYn = true
@@ -274,21 +281,22 @@ export default {
                 ;
             } else {
                 this.changeUserIconShowYn = true
-                var history = this.$store.getters.hStack
                 this.changeUserIconPop = 'changeUserIconPop' + history.length
+                
+                var history = this.$store.getters['D_HISTORY/hStack']
                 console.log(history)
                 history.push(this.changeUserIconPop)
-                this.$store.commit('updateStack', history)
-                console.log(this.$store.getters.hStack)
+                this.$store.commit('D_HISTORY/updateStack', history)
+                console.log(this.$store.getters['D_HISTORY/hStack'])
             }
         },
-        backClick () {
-            var hStack = this.$store.getters.hStack
+        backClick () { 
+            var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.changeUserIconPop === hStack[hStack.length - 1]) {
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('setRemovePage', removePage)
-                this.$store.commit('updateStack', hStack)
+                this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                this.$store.commit('D_HISTORY/updateStack', hStack)
                 this.changeUserIconShowYn = false
             } else {
 

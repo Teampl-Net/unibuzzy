@@ -54,7 +54,11 @@ export default {
   components: {
     creChanPop
   },
-  computed: {},
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   async created () {
     await this.getManagerChanList()
   },
@@ -68,7 +72,7 @@ export default {
     },
     async getManagerChanList () {
       var paramMap = new Map()
-      var userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      var userKey = this.GE_USER.userKey
       paramMap.set('userKey', userKey)
       paramMap.set('followerType', 'A')
       var resultList = await this.$getTeamList(paramMap)

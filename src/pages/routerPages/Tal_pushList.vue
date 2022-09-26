@@ -29,8 +29,10 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.commonListData" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && commonListData.length === 0 "/>
+          <commonList id="chanAlimPush"  v-if="chanAlimYn && CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList && CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list.length > 0" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonPush" v-else-if="!chanAlimYn && viewMainTab === 'P' && MAIN_ALIM_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="MAIN_ALIM_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonBoard" v-else-if="!chanAlimYn && viewMainTab === 'B' && GE_MAIN_BOARD_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="GE_MAIN_BOARD_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.D_CHAN_ELEMENT.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -75,9 +77,16 @@ export default {
     propData: {},
     targetContents: {},
     // 라우터메인에서 여는 푸시화면과 gPop에서 여는 푸시화면 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
-    isOpen: {}
+    isOpen: {},
+
+    chanAlimYn: {},
+    chanDetail: {}
   },
   created () {
+    if (this.chanAlimYn) { this.currentTeamKey = this.chanDetail.teamKey } else {
+      this.currentTeamKey = 0
+    }
+
     this.$emit('changePageHeader', '알림')
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
@@ -86,7 +95,6 @@ export default {
         this.viewMainTab = this.propData.alimTabType
       }
     }
-    console.log(this.targetContents)
     if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
       this.targetCKey = this.targetContents.targetContentsKey
       if (this.targetContents.jobkindId === 'BOAR') {
@@ -94,45 +102,52 @@ export default {
         this.$emit('changeMainTab', this.viewMainTab)
       }
     }
-    this.getPushContentsList().then(response => {
-      this.commonListData = response.content
-      if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
-        this.pushListReloadShowYn = this.reloadShowYn
-      } else {
-        this.pushListReloadShowYn = true
+    var this_ = this
+    this_.getPushContentsList().then(response => {
+      var newArr = [
+        ...response.content
+      ]
+      var uniqueArr = this.replaceArr(newArr)
+      this.updateStoreData(uniqueArr)
+      this_.findPopShowYn = false
+      if (this_.readySearchList) {
+        this_.requestSearchList(this_.readySearchList)
       }
-      if (this.popYn === false) {
-        localStorage.setItem('notiReloadPage', 'none')
-      }
-      this.findPopShowYn = false
-      if (this.readySearchList) {
-        this.requestSearchList(this.readySearchList)
-      }
-      this.introPushPageTab()
-      if (this.targetCKey) {
-        this.getMCabContYn(this.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
-        /* if (Response !== true) {
+      this_.introPushPageTab()
+      if (this_.targetCKey) {
+        this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+          /* if (Response !== true) {
           this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
           this.failPopYn = true
           this.targetCKey = null
         } */
         })
-        this.canLoadYn = true
-        this.loadMore(true)
+        this_.canLoadYn = true
+        this_.loadMore(true)
+      } else {
+        this_.endListSetFunc(response)
       }
-      this.scrolledYn = false
-      if (this.commonListData.length > 0) {
-        this.canLoadYn = true
+      this_.scrolledYn = false
+      if (uniqueArr.length > 0) {
+        this_.canLoadYn = true
       }
     })
+    /*  } */
   },
 
   updated () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
+    if (this.box) {
+      this.box.addEventListener('scroll', this.handleScroll)
+    }
   },
   mounted () {
+    console.log('%%%%%%%%%%%%%')
+    console.log(this.chanDetail)
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
-    this.box.addEventListener('scroll', this.handleScroll)
+    if (this.box) {
+      this.box.addEventListener('scroll', this.handleScroll)
+    }
     if (this.viewTab === 'N') {
       this.$refs.activeBar.switchtab(0)
     } else if (this.viewTab === 'R') {
@@ -143,8 +158,8 @@ export default {
       this.$refs.activeBar.switchtab(3)
     }
 
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // window.addEventListener('message', e => this.recvNoti(e))
     if (this.pushListAndDetailYn === true) {
       var propObj = this.propData
       propObj.targetType = 'pushDetail'
@@ -157,6 +172,31 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    GE_CHANNEL_DETAIL: {
+      immediate: true,
+      handler (value, old) {
+        console.log('GE_CHANNEL_DETAIL')
+        console.log(value)
+        this.CHANNEL_DETAIL = value
+      },
+      deep: true
+    },
+    GE_MAIN_ALIM_LIST: {
+      immediate: true,
+      handler (value, old) {
+        console.log(value)
+        this.MAIN_ALIM_LIST = value
+      },
+      deep: true
+    },
+    chanDetail (value, old) {
+    },
+    /* CHANNEL_DETAIL: {p
+      handler () {
+        console.log(this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList)
+      },
+      deep: true
+    }, */
     routerReloadKey () {
       this.refreshList()
     },
@@ -171,24 +211,68 @@ export default {
       /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */
+    },
+    GE_RECENT_CHANGE_TEAM (value, old) {
+    },
+    GE_MAIN_CHAN_LIST: {
+      handler (value, old) {
+        /* alert(true) */
+      },
+      deep: true
     }
+    /* MU_RECENT_CHANGE_TEAM (value, old) {
+      console.log(value)
+      if (value === this.chanDetail.teamKey) {
+        alert(value)
+        this.CHANNEL_DETAIL = this.$getDetail('TEAM', this.CHANNEL_DETAIL.teamKey).data
+        console.log('new!!!')
+        console.log(this.CHANNEL_DETAIL)
+      }
+    },
+    GE_MAIN_CHAN_LIST (value, old) {
+      console.log('왔다!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(value)
+      this.CHANNEL_DETAIL = this.$getDetail('TEAM', this.CHANNEL_DETAIL.teamKey).data
+      console.log('new!!!')
+      console.log(this.CHANNEL_DETAIL)
+    },
+    MAIN_ALIM_LIST (value, old) {
+      this.alimList = value
+      console.log('alimList!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(this.alimList)
+      this.setAllContents()
+    } */
   },
   computed: {
-    /* calcPaddingTop () {
-      var paddingStr = '1px'
-      if (!this.popYn) {
-        paddingStr = '1rem;'
-      }
-      return 'padding-top: ' { padding: paddingStr, '--paddingTopLength': (this.paddingTop) + 'px' }
-    }, */
+    GE_CHANNEL_DETAIL () {
+      if (this.chanAlimYn) {
+        var team = this.$getDetail('TEAM', this.chanDetail.teamKey)
+        return team[0]
+      } else return null
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_MAIN_ALIM_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
+    },
+    GE_MAIN_BOARD_LIST () {
+      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
+    },
+    GE_RECENT_CHANGE_TEAM () {
+      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+    },
     pageUpdate () {
       return this.$store.getters.hUpdate
     },
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     currentPage () {
-      return this.$store.getters.hCPage
+      return this.$store.getters['D_HISTORY/hCPage']
     }
     /* setStickerWidth () {
       var stickerCnt = this.stickerList.length
@@ -203,6 +287,103 @@ export default {
     } */
   },
   methods: {
+    updateStoreData (uniqueArr) {
+      var this_ = this
+      if (this.chanAlimYn) {
+        console.log(this.CHANNEL_DETAIL)
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list = uniqueArr
+        if (this.viewMainTab === 'P') {
+          this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = 'ALIM'
+        } else if (this.viewMainTab === 'B') {
+          this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = 'BOAR'
+        }
+        this_.$actionVuex('COMMONCONT', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      } else {
+        if (uniqueArr.length > 0) {
+          this_.canLoadYn = true
+        }
+        if (this.viewMainTab === 'P') {
+          this_.$actionVuex('ALIM', uniqueArr, null, true, false)
+        } else if (this.viewMainTab === 'B') {
+          // eslint-disable-next-line no-debugger
+          debugger
+          this_.$actionVuex('BOAR', uniqueArr, null, true, false)
+        }
+      }
+    },
+    async getPushContentsList (pageSize, offsetInput) {
+    // @point
+    // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
+        param.creTeamKey = this.chanDetailKey
+      }
+      if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
+
+      if (pageSize) { param.pageSize = pageSize } else { pageSize = 10 }
+
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.title = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        }
+      }
+      param.findLogReadYn = null
+      param.findActLikeYn = false
+      param.findActStarYn = false
+      param.DESCYn = true
+
+      if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
+        param.targetContentsKey = this.targetCKey
+        param.DESCYn = this.loadMoreDESCYn
+      }
+
+      /* if (this.readCheckBoxYn) { //읽지않음 읽음
+      param.findLogReadYn = false
+    } */
+      if (this.viewTab === 'N') {
+        param.creTeamKey = this.chanDetailKey
+      } else if (this.viewTab === 'L') {
+        param.creTeamKey = this.chanDetailKey
+        param.findActYn = true
+        param.findActLikeYn = true
+      } else if (this.viewTab === 'S') {
+        param.creTeamKey = this.chanDetailKey
+        param.findActYn = true
+        param.findActStarYn = true
+      } else if (this.viewTab === 'M') {
+        param.creTeamKey = this.chanDetailKey
+        param.creUserKey = this.GE_USER.userKey
+      }
+      if (this.viewMainTab === 'P') {
+        param.jobkindId = 'ALIM'
+        param.ownUserKey = this.GE_USER.userKey
+      } else if (this.viewMainTab === 'B') {
+        param.jobkindId = 'BOAR'
+        if (this.viewTab === 'N') {
+          param.boardYn = true
+        } else {
+          param.ownUserKey = this.GE_USER.userKey
+        }
+      }
+      console.log('param')
+      console.log(param)
+      var result = await this.$getContentsList(param)
+      // console.log(result)
+      /* if (result.empty) {
+        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+      } */
+      var resultList = result
+      this.loadingYn = false
+      return resultList
+    },
     makeNewContents (data) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -216,8 +397,6 @@ export default {
       param.bodyFullStr = Base64.decode(data.bodyFullStr)
       param.UseAnOtherYn = true
       param.selectBoardYn = true
-      // eslint-disable-next-line no-debugger
-      debugger
       param.modiContentsKey = data.contentsKey
       param.titleStr = data.title
       // param.parentAttachTrueFileList = this.attachTrueFileList
@@ -233,22 +412,27 @@ export default {
       this.selectBoardPopShowYn = false
     },
     openUserProfile (params) {
-      console.log('############')
-      console.log(params)
       this.$emit('openUserProfile', params)
     },
     changeMainTab (tab) {
       this.viewMainTab = tab
+      this.offsetInt = 0
+      var jobkindId = 'ALIM'
+      if (this.chanAlimYn) {
+        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list = []
+        if (tab === 'B') jobkindId = 'BOAR'
+        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = jobkindId
+      }
       this.refreshList()
       this.$emit('changeMainTab', tab)
     },
     backClick () {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
@@ -257,13 +441,12 @@ export default {
     async getMCabContYn (contentsKey) {
       var paramMap = new Map()
       paramMap.set('targetKey', contentsKey)
-      paramMap.set('ownUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
-      console.log(result)
       if (result.data.length > 0) {
         return true
       } else {
@@ -284,7 +467,9 @@ export default {
     },
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')
-      this.paddingTop = element.clientHeight + 55
+      if (element) {
+        this.paddingTop = element.clientHeight + 55
+      }
     },
     checkShowReload () {
       if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
@@ -335,25 +520,27 @@ export default {
       var element = document.getElementsByClassName('commonListContentBox')[0]
       // console.log(this.getAbsoluteTop(element))
       // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-      this.firstContOffsetY = this.getAbsoluteTop(element)
-      // console.log(this.firstContOffsetY)
-      if (this.firstContOffsetY > 0) {
-        this.scrollDirection = 'up'
-        this.scrolledYn = false
-      }
-      if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
-        this.scrollCheckSec = currentTime
-
-        if (this.firstContOffsetY < 0) {
-          if (this.box.scrollTop > this.scrollPosition) {
-            this.scrollDirection = 'down'
-            this.scrolledYn = true
-          } else if (this.box.scrollTop <= this.scrollPosition) {
-            this.scrollDirection = 'up'
-            this.scrolledYn = false
-          }
+      if (element) {
+        this.firstContOffsetY = this.getAbsoluteTop(element)
+        // console.log(this.firstContOffsetY)
+        if (this.firstContOffsetY > 0) {
+          this.scrollDirection = 'up'
+          this.scrolledYn = false
         }
-        this.scrollPosition = this.box.scrollTop
+        if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
+          this.scrollCheckSec = currentTime
+
+          if (this.firstContOffsetY < 0) {
+            if (this.box.scrollTop > this.scrollPosition) {
+              this.scrollDirection = 'down'
+              this.scrolledYn = true
+            } else if (this.box.scrollTop <= this.scrollPosition) {
+              this.scrollDirection = 'up'
+              this.scrolledYn = false
+            }
+          }
+          this.scrollPosition = this.box.scrollTop
+        }
       }
     },
     async refreshList () {
@@ -364,10 +551,33 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
-      this.commonListData = resultList.content
       this.endListSetFunc(resultList)
+      var newArr = []
+      var uniqueArr = null
+      if (this.chanAlimYn) {
+        newArr = [
+          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...resultList.content
+        ]
+      } else {
+        if (this.viewMainTab === 'P') {
+          newArr = [
+            ...this.MAIN_ALIM_LIST,
+            ...resultList.content
+          ]
+        } else if (this.viewMainTab === 'B') {
+          newArr = [
+            ...this.GE_MAIN_BOARD_LIST,
+            ...resultList.content
+          ]
+        }
+      }
+      uniqueArr = this.replaceArr(newArr)
+      this.updateStoreData(uniqueArr)
     },
     endListSetFunc (resultList) {
+      console.log('result')
+      console.log(resultList)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
@@ -377,29 +587,6 @@ export default {
       }
       console.log(this.endListYn, '', this.offsetInt)
     },
-    async recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (JSON.parse(JSON.parse(message.pushMessage).noti.data.userDo).targetKind === 'CONT') {
-            if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
-            else this.refreshList()
-          }
-        } else if (message.type === 'pushBar') {
-          if (JSON.parse(JSON.parse(message.pushMessage).noti.data.userDo).targetKind === 'CONT') {
-            if (JSON.parse(message.pushMessage).noti.data.actYn === true || JSON.parse(message.pushMessage).noti.data.actYn === 'true') return
-            else this.refreshList()
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
-    },
     async loadMore (descYn) {
       console.log('this.canLoadYn' + this.canLoadYn + 'this.endListYn' + this.endListYn)
       if (this.canLoadYn && this.endListYn === false) {
@@ -407,28 +594,47 @@ export default {
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
         var newArr = []
+        var uniqueArr = null
         if (descYn) {
-          this.axiosResultTempList = resultList.content
-          newArr = [
-            ...this.commonListData,
-            ...this.axiosResultTempList
-          ]
-        } else {
-          console.log('!!!!!!!!!!!!!!!!')
-          console.log(resultList.content)
-          // eslint-disable-next-line no-array-constructor
-          var tempArr = new Array()
-          for (var i = 0; i < resultList.content.length; i++) {
-            tempArr.unshift(resultList.content[i])
+          if (this.chanAlimYn) {
+            newArr = [
+              ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+              ...resultList.content
+            ]
+            uniqueArr = this.replaceArr(newArr)
+            this.updateStoreData(uniqueArr)
+          } else {
+            if (this.viewMainTab === 'P') {
+              newArr = [
+                ...this.MAIN_ALIM_LIST,
+                ...resultList.content
+              ]
+            } else if (this.viewMainTab === 'B') {
+              newArr = [
+                ...this.GE_MAIN_BOARD_LIST,
+                ...resultList.content
+              ]
+            }
+            uniqueArr = this.replaceArr(newArr)
+            this.updateStoreData(uniqueArr)
           }
-          console.log(tempArr)
-          this.axiosResultTempList = tempArr
-          newArr = [
-            ...this.axiosResultTempList,
-            ...this.commonListData
-          ]
+        } else {
+          if (this.chanAlimYn) {
+            console.log('!!!!!!!!!!!!!!!!')
+            console.log(uniqueArr)
+            // eslint-disable-next-line no-array-constructor
+            var tempArr = new Array()
+            for (var i = 0; i < resultList.content.length; i++) {
+              tempArr.unshift(resultList.content[i])
+            }
+            newArr = [
+              ...tempArr,
+              ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list
+            ]
+            uniqueArr = this.replaceArr(newArr)
+            this.updateStoreData(uniqueArr)
+          }
         }
-        this.commonListData = await newArr
         await this.endListSetFunc(resultList)
         this.canLoadYn = true
         console.log('this.offsetInt' + this.offsetInt)
@@ -451,6 +657,15 @@ export default {
     openPop (value) {
       this.$emit('openPop', value)
     },
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ contentsKey }) => contentsKey === current.contentsKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
     // showToastPop (msg) {
     //   this.$emit('showToastPop', msg)
     // },
@@ -467,8 +682,13 @@ export default {
       this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
-      this.commonListData = resultList.content
-      if (this.commonListData.length === 0) this.emptyYn = true
+      var newArr = []
+      var uniqueArr = null
+      newArr = [
+        ...resultList.content
+      ]
+      uniqueArr = this.replaceArr(newArr)
+      this.updateStoreData(uniqueArr)
       this.findPopShowYn = false
       this.introPushPageTab()
       this.scrollMove()
@@ -480,76 +700,6 @@ export default {
       ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
     },
 
-    async getPushContentsList (pageSize, offsetInput) {
-      // @point
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
-      }
-      if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
-
-      if (pageSize) { param.pageSize = pageSize } else { pageSize = 10 }
-
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        }
-      }
-      param.findLogReadYn = null
-      param.findActLikeYn = false
-      param.findActStarYn = false
-      param.DESCYn = true
-
-      if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
-        param.targetContentsKey = this.targetCKey
-        param.DESCYn = this.loadMoreDESCYn
-      }
-
-      /* if (this.readCheckBoxYn) { //읽지않음 읽음
-        param.findLogReadYn = false
-      } */
-      if (this.viewTab === 'N') {
-        param.creTeamKey = this.chanDetailKey
-      } else if (this.viewTab === 'L') {
-        param.creTeamKey = this.chanDetailKey
-        param.findActYn = true
-        param.findActLikeYn = true
-      } else if (this.viewTab === 'S') {
-        param.creTeamKey = this.chanDetailKey
-        param.findActYn = true
-        param.findActStarYn = true
-      } else if (this.viewTab === 'M') {
-        param.creTeamKey = this.chanDetailKey
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      }
-      if (this.viewMainTab === 'P') {
-        param.jobkindId = 'ALIM'
-        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      } else if (this.viewMainTab === 'B') {
-        param.jobkindId = 'BOAR'
-        if (this.viewTab === 'N') {
-          param.boardYn = true
-        } else {
-          param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        }
-      }
-
-      var result = await this.$getContentsList(param)
-      // console.log(result)
-      if (result.empty) {
-        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
-      }
-      var resultList = result
-      this.loadingYn = false
-      return resultList
-    },
     /* 검색 */
     async requestSearchList (param) {
       if (param) {
@@ -567,8 +717,34 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
-      this.commonListData = resultList.content
+      var newArr = []
+      var uniqueArr = null
+      if (this.chanAlimYn) {
+        newArr = [
+          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...resultList.content
+        ]
+      } else {
+        if (this.viewMainTab === 'P') {
+          newArr = [
+            ...this.MAIN_ALIM_LIST,
+            ...resultList.content
+          ]
+        } else if (this.viewMainTab === 'B') {
+          console.log('refreshList')
+          console.log(this.GE_MAIN_BOARD_LIST)
+          // eslint-disable-next-line no-debugger
+          debugger
+          newArr = [
+            ...this.GE_MAIN_BOARD_LIST,
+            ...resultList.content
+          ]
+        }
+      }
+
+      uniqueArr = this.replaceArr(newArr)
       this.endListSetFunc(resultList)
+      this.updateStoreData(uniqueArr)
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -611,16 +787,37 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
-      this.commonListData = resultList.content
+      var newArr = []
+      var uniqueArr = null
+      if (this.chanAlimYn) {
+        newArr = [
+          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...resultList.content
+        ]
+      } else {
+        if (this.viewMainTab === 'P') {
+          newArr = [
+            ...this.MAIN_ALIM_LIST,
+            ...resultList.content
+          ]
+        } else if (this.viewMainTab === 'B') {
+          newArr = [
+            ...this.GE_MAIN_BOARD_LIST,
+            ...resultList.content
+          ]
+        }
+      }
+      uniqueArr = this.replaceArr(newArr)
+      this.updateStoreData(uniqueArr)
       this.endListSetFunc(resultList)
     },
     /* 이미지 다운로드 */
     imgLongClick (param) {
-      var history = this.$store.getters.hStack
+      var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.commit('updateStack', history)
-      console.log(this.$store.getters.hStack)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      console.log(this.$store.getters['D_HISTORY/hStack'])
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
       this.imgDetailAlertShowYn = true
@@ -651,6 +848,8 @@ export default {
   },
   data () {
     return {
+      MAIN_ALIM_LIST: [],
+      CHANNEL_DETAIL: {},
       paddingTop: 0,
       pushListReloadShowYn: false,
       imgUrl: '',

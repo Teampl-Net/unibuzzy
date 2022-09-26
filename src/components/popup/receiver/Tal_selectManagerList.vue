@@ -28,17 +28,17 @@ export default {
     this.getFollowerList()
 
   },
-  computed: {
+  computed: { 
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
     }
   },
-  watch: {
+  watch: { 
     pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.closeSubPop()
       }
@@ -77,12 +77,12 @@ export default {
 
         this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
     },
-    closeSubPop () {
-      var history = this.$store.getters.hStack
+    closeSubPop () { 
+      var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
-      this.$store.commit('updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       // this.selectBookListShowYn = false
       this.getFollowerList()
     },

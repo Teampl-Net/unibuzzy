@@ -39,15 +39,15 @@ export default {
 
   },
 
-  computed: {
+  computed: { 
     historyStack () {
-      return this.$store.getters.hRPage
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
     }
   },
-  watch: {
+  watch: { 
     pageUpdate (value, old) {
       this.backClick()
     },
@@ -217,14 +217,14 @@ export default {
 
     backClick () {
 
-      var hStack = this.$store.getters.hStack
+      var hStack = this.$store.getters['D_HISTORY/hStack']
 
       var removePage = hStack[hStack.length - 1]
 
       if (this.subPopId === hStack[hStack.length - 1] ) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         // this.detailOpenYn = false
         this.teamLength = 100
         this.memberEditYn = false
@@ -232,8 +232,8 @@ export default {
         this.detailOpenYn = false
       } else {
         // hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        // this.$store.commit('setRemovePage', removePage)
-        // this.$store.commit('updateStack', hStack)
+        // this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        // this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
       }
     },
@@ -243,11 +243,11 @@ export default {
         await this.getBookMemberList()
         this.detailOpenYn = true
 
-        this.selectBookDetail = data
-        var history = this.$store.getters.hStack
+        this.selectBookDetail = data 
+        var history = this.$store.getters['D_HISTORY/hStack']
         this.subPopId = 'commonBookMemberList' + history.length
         history.push(this.subPopId)
-        this.$store.commit('updateStack', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
 
         this.receiverTitle = '구성원 관리'
          if (this.selectPopYn) {

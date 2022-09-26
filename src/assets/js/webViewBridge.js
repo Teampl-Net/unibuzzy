@@ -117,7 +117,7 @@ const isJsonString = (str) => {
 
           store.commit('changeDeepLinkQueue', queList)
         } else if (message.type === 'goback') {
-          var history = store.getters.hStack
+          var history = store.getters['D_HISTORY/hStack']
           var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })

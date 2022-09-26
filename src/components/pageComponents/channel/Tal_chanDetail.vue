@@ -106,17 +106,17 @@ export default {
     welcomePopUp
     /* followerList */
   },
-  computed: {
-    historyStack () {
-      return this.$store.getters.hStack
+  computed: {// 임시삭제
+    /* historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
-    }
+    } */
   },
-  watch: {
-    pageUpdate (value, old) {
-      var hStack = this.$store.getters.hStack
+  watch: {// 임시삭제
+    /* pageUpdate (value, old) {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.alimSubPopYn) {
         if ('channelAlimToDetail' + this.chanDetail.teamKey === hStack[hStack.length - 1]) {
           this.$emit('closeDetailPop')
@@ -124,18 +124,18 @@ export default {
       }
     },
     historyStack (value, old) {
-    }
+    } */
   },
   async created () {
     this.$emit('openLoading')
     if (this.parentshowProfileYn) {
       this.showProfileYn = this.parentshowProfileYn
-    }
-    if (this.alimSubPopYn) {
-      var history = this.$store.getters.hStack
+    }// 임시삭제
+    /* if (this.alimSubPopYn) {
+    var history = this.$store.getters['D_HISTORY/hStack']
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
-      this.$store.commit('updateStack', history)
-    }
+      this.$store.commit('D_HISTORY/updateStack', history)
+    } */
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'

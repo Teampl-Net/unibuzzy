@@ -25,6 +25,8 @@ export default {
         }
     },
     created () {
+        console.log('listData')
+        console.log(this.listData)
         this.$emit('boardCount', this.listData.length)
     },
     methods: {

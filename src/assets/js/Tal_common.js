@@ -1,4 +1,6 @@
 import axiosCommonFunction from 'axios'
+
+import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
@@ -15,7 +17,7 @@ axios.defaults.headers.get.Pragma = 'no-cache' */
 // 당월: 일, 시, 분
 // 당해: 월, 일, 시, 분
 // 그 외: 년, 월, 일, 시, 분
-const methods = {
+export const commonMethods = {
   async commonAx (setItem) {
     var result = false
     await axiosCommonFunction.post(setItem.url, setItem.param, { withCredentials: true }
@@ -274,7 +276,7 @@ const methods = {
       if (indexOf === -1) {
         return text
       } else {
-        changeTxt = this.$makeMtextMap(text, 'KO')
+        changeTxt = commonMethods.makeMtextMap(text, 'KO')
         if (changeTxt) { return changeTxt }
       }
     }
@@ -301,7 +303,7 @@ const methods = {
       paramMap.set('title', '더알림')
     }
 
-    var result = await this.$commonAxiosFunction({
+    var result = await commonAxiosFunction({
       url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
@@ -319,6 +321,13 @@ const methods = {
     } catch (e) {
       return false
     }
+  },
+  sortListForupdDate (list) {
+    var resultlist = list.sort(function (a, b) { // num으로 오름차순 정렬
+      return b.updDate - a.updDate
+      // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+    })
+    return resultlist
   },
   checkUserAuth (data) {
     //
@@ -505,13 +514,13 @@ const methods = {
     return { path: imgBase64, file: newFile }
   },
   async saveFileSize (image, file) {
-    var result = await methods.getCanvasNewFile(image, file)
+    var result = await commonMethods.getCanvasNewFile(image, file)
     if (result.file.size > 1000000) {
       var reader = new FileReader()
       reader.onload = e => {
         var newImg = new Image()
         newImg.onload = async function () {
-          result = await methods.getCanvasNewFile(newImg, result.file)
+          result = await commonMethods.getCanvasNewFile(newImg, result.file)
         }
         newImg.onerror = function () {}
         newImg.src = e.target.result
@@ -740,43 +749,43 @@ const methods = {
 
 export default {
   install (Vue) {
-    Vue.config.globalProperties.$changeDateFormat = methods.changeDateFormat
-    Vue.config.globalProperties.$convertDate = methods.convertDate
-    Vue.config.globalProperties.$extractYear = methods.extractYear
-    Vue.config.globalProperties.$numberToKorean = methods.numberToKorean
-    Vue.config.globalProperties.$getUserInform = methods.getUserInform
-    Vue.config.globalProperties.$makeMtextMap = methods.makeMtextMap
-    Vue.config.globalProperties.$changeText = methods.changeText
-    Vue.config.globalProperties.$addHistoryStack = methods.addHistoryStack
-    Vue.config.globalProperties.$removeHistoryStack = methods.removeHistoryStack
-    Vue.config.globalProperties.$removeHistoryStackForPage = methods.removeHistoryStackForPage
-    Vue.config.globalProperties.$isJsonString = methods.isJsonString
+    Vue.config.globalProperties.$changeDateFormat = commonMethods.changeDateFormat
+    Vue.config.globalProperties.$convertDate = commonMethods.convertDate
+    Vue.config.globalProperties.$extractYear = commonMethods.extractYear
+    Vue.config.globalProperties.$numberToKorean = commonMethods.numberToKorean
+    Vue.config.globalProperties.$getUserInform = commonMethods.getUserInform
+    Vue.config.globalProperties.$makeMtextMap = commonMethods.makeMtextMap
+    Vue.config.globalProperties.$changeText = commonMethods.changeText
+    Vue.config.globalProperties.$addHistoryStack = commonMethods.addHistoryStack
+    Vue.config.globalProperties.$removeHistoryStack = commonMethods.removeHistoryStack
+    Vue.config.globalProperties.$removeHistoryStackForPage = commonMethods.removeHistoryStackForPage
+    Vue.config.globalProperties.$isJsonString = commonMethods.isJsonString
 
-    // Vue.config.globalProperties.$fullToInit = methods.PullToRefreshInit
-    // Vue.config.globalProperties.$fullToDestory = methods.PullToRefreshDestroy
-    Vue.config.globalProperties.$checkUserAuth = methods.checkUserAuth
-    Vue.config.globalProperties.$checkSameName = methods.checkSameName
-    Vue.config.globalProperties.$titleToBody = methods.titleToBody
-    Vue.config.globalProperties.$diffInt = methods.diffInt
-    Vue.config.globalProperties.$decodeHTML = methods.decodeHTML
-    Vue.config.globalProperties.$byteConvert = methods.byteConvert
-    Vue.config.globalProperties.$getFileExt = methods.getFileExt
-    Vue.config.globalProperties.$downloadFile = methods.downloadFile
-    Vue.config.globalProperties.$commonAx = methods.commonAx
-    Vue.config.globalProperties.$setPhone = methods.setPhone
-    Vue.config.globalProperties.$teamTypeString = methods.teamTypeString
-    Vue.config.globalProperties.$showToastPop = methods.showToastPop
-    Vue.config.globalProperties.$changeDateMemoFormat = methods.changeDateMemoFormat
-    Vue.config.globalProperties.$previewFile = methods.previewFile
-    Vue.config.globalProperties.$makeShareLink = methods.makeShareLink
-    Vue.config.globalProperties.$cancelTimer = methods.cancelTimer
-    Vue.config.globalProperties.$checkTokenValidTime = methods.checkTokenValidTime
-    Vue.config.globalProperties.$saveFileSize = methods.saveFileSize
-    Vue.config.globalProperties.$findUrlChangeAtag = methods.findUrlChangeAtag
-    Vue.config.globalProperties.$pasteHtmlAtCaret = methods.pasteHtmlAtCaret
-    Vue.config.globalProperties.$checkBrowser = methods.checkBrowser
-    Vue.config.globalProperties.$checkMobile = methods.checkMobile
-    Vue.config.globalProperties.$changeUrlBackslash = methods.changeUrlBackslash
-    Vue.config.globalProperties.$findATagDelete = methods.findATagDelete
+    // Vue.config.globalProperties.$fullToInit = commonMethods.PullToRefreshInit
+    // Vue.config.globalProperties.$fullToDestory = commonMethods.PullToRefreshDestroy
+    Vue.config.globalProperties.$checkUserAuth = commonMethods.checkUserAuth
+    Vue.config.globalProperties.$checkSameName = commonMethods.checkSameName
+    Vue.config.globalProperties.$titleToBody = commonMethods.titleToBody
+    Vue.config.globalProperties.$diffInt = commonMethods.diffInt
+    Vue.config.globalProperties.$decodeHTML = commonMethods.decodeHTML
+    Vue.config.globalProperties.$byteConvert = commonMethods.byteConvert
+    Vue.config.globalProperties.$getFileExt = commonMethods.getFileExt
+    Vue.config.globalProperties.$downloadFile = commonMethods.downloadFile
+    Vue.config.globalProperties.$commonAx = commonMethods.commonAx
+    Vue.config.globalProperties.$setPhone = commonMethods.setPhone
+    Vue.config.globalProperties.$teamTypeString = commonMethods.teamTypeString
+    Vue.config.globalProperties.$showToastPop = commonMethods.showToastPop
+    Vue.config.globalProperties.$changeDateMemoFormat = commonMethods.changeDateMemoFormat
+    Vue.config.globalProperties.$previewFile = commonMethods.previewFile
+    Vue.config.globalProperties.$makeShareLink = commonMethods.makeShareLink
+    Vue.config.globalProperties.$cancelTimer = commonMethods.cancelTimer
+    Vue.config.globalProperties.$checkTokenValidTime = commonMethods.checkTokenValidTime
+    Vue.config.globalProperties.$saveFileSize = commonMethods.saveFileSize
+    Vue.config.globalProperties.$findUrlChangeAtag = commonMethods.findUrlChangeAtag
+    Vue.config.globalProperties.$pasteHtmlAtCaret = commonMethods.pasteHtmlAtCaret
+    Vue.config.globalProperties.$checkBrowser = commonMethods.checkBrowser
+    Vue.config.globalProperties.$checkMobile = commonMethods.checkMobile
+    Vue.config.globalProperties.$changeUrlBackslash = commonMethods.changeUrlBackslash
+    Vue.config.globalProperties.$findATagDelete = commonMethods.findATagDelete
   }
 }

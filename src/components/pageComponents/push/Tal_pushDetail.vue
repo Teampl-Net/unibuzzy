@@ -223,8 +223,8 @@ export default {
       }
     }
     this.getContentsList()
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // window.addEventListener('message', e => this.recvNoti(e))
   },
   updated () {
     this.settingAtag()
@@ -246,13 +246,13 @@ export default {
       this.clickEndYn = true
     })
   },
-  computed: {
-    historyStack () {
-      return this.$store.getters.hRPage
+  computed: { // 임시삭제
+    /* historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters.hUpdate
-    },
+    }, */
     getWindowSize () {
       return {
         '--widndowHeight': window.innerHeight + 'px'
@@ -550,24 +550,24 @@ export default {
       }
       this.settingAddFalseList(false)
     },
-    backClick () {
-      var hStack = this.$store.getters.hStack
+    backClick () { // 임시삭제
+      /* var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('setRemovePage', removePage)
-        this.$store.commit('updateStack', hStack)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
-      }
+      } */
     },
-    openImgDetailAlert (img) {
-      var history = this.$store.getters.hStack
+    openImgDetailAlert (img) { // 임시삭제
+      /* var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.commit('updateStack', history)
-      console.log(this.$store.getters.hStack)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      console.log(this.$store.getters['D_HISTORY/hStack']) */
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
       /*
@@ -1076,8 +1076,8 @@ export default {
           } else {
             this.notiDetail = JSON.parse(message.pushMessage).noti.data
           }
-
-          var currentPage = this.$store.getters.hCPage
+          // 임시삭제
+          /* var currentPage = this.$store.getters['D_HISTORY/hCPage']
 
           if ((currentPage === 0 || currentPage === undefined)) {
           } else {
@@ -1091,7 +1091,7 @@ export default {
                 this.pointAni(Number(JSON.parse(this.notiDetail.userDo).ISub))
               }
             }
-          }
+          } */
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

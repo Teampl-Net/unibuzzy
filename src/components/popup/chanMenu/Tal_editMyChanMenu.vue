@@ -106,34 +106,32 @@ export default {
     return {
       editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동 응답' }],
       param: {},
-      teamInfo: {},
       managerYn: false
 
     }
   },
   async created () {
-    console.log(this.propData)
-    if (this.propData) {
-      await this.getTeamInfo()
-      this.param = {}
-      this.param.teamKey = this.propData.teamKey
-      this.param.currentTeamKey = this.propData.currentTeamKey
-      this.param.teamNameMtext = this.propData.teamNameMtext
-      this.param.value = this.teamInfo
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    CHANNEL_DETAIL () {
+      return this.$getDetail('TEAM', this.propData.teamKey)[0]
     }
   },
   methods: {
-    async getTeamInfo () {
+    /* async getTeamInfo () {
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.teamKey)
       var result = await this.$getTeamList(paramMap)
       this.teamInfo = result.data.content[0]
       console.log(this.teamInfo)
       // if (this.teamInfo) if (this.teamInfo.userTeamInfo) if (this.teamInfo.userTeamInfo.managerKey) this.managerYn = true
-    },
+    }, */
     addressEditClick () {
       this.param.targetType = 'editBookList'
-      this.param.value = this.teamInfo
+      this.param.value = this.CHANNEL_DETAIL
       this.openPop()
     },
     boardEditClick () {
@@ -142,19 +140,19 @@ export default {
     },
     chanDetailClick () {
       this.param.targetType = 'chanInfo'
-      this.param.value = this.teamInfo
+      this.param.value = this.CHANNEL_DETAIL
       this.openPop()
     },
     editChanDetaillClick () {
       this.param.targetType = 'createChannel'
       this.param.targetKey = this.propData.teamKey
       this.param.modiYn = true
-      this.param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.teamInfo.creUserKey)
+      this.param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.openPop()
     },
     managerEditClick () {
       this.param.targetType = 'memberManagement'
-      this.param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.teamInfo.creUserKey)
+      this.param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.openPop()
     },
     autoAnswerClick () {
@@ -166,7 +164,7 @@ export default {
       this.openPop()
     },
     openPop () {
-      this.$emit('openPop', this.param)
+      this.$emit('openPop', this.CHANNEL_DETAIL)
     }
   }
 

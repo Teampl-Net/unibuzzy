@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
+import store from '../../src/store'
+import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.post['Content-Type'] = 'application/json;'
@@ -126,6 +129,7 @@ export async function saveUser (userProfile) {
   }) */
   if (result.data) {
     localStorage.setItem('user', JSON.stringify(result.data))
+    store.dispatch('D_USER/AC_USER', result.data)
     localStorage.setItem('sessionUser', JSON.stringify(result.data))
     localStorage.setItem('testYn', false)
     await methods.userLoginCheck(true)
@@ -135,7 +139,19 @@ export async function saveUser (userProfile) {
     router.replace({ path: '/' })
   }
 }
-const methods = {
+export const methods = {
+  /* ...mapActions('D_USER', [
+    'AC_USER'
+  ]),
+  ...mapActions('D_CHANNEL', [
+    'AC_MAIN_CHAN_LIST'
+  ]),
+  ...mapActions('D_CONTENTS', [
+    'AC_MAIN_ALIM_LIST'
+  ]),
+  ...mapActions('D_CONTENTS', [
+    'AC_MAIN_BOARD_LIST'
+  ]), */
   getMobileYn () {
     var user = navigator.userAgent
     var mobileYn = false
@@ -163,11 +179,11 @@ const methods = {
       // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
       localStorage.setItem('testYn', false)
-      if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === null || localStorage.getItem('user') === '') {
+      var user = store.getters['D_USER/GE_USER']
+      if (user === undefined || user === null || user === '') {
         router.replace('/policies')
         return
       }
-      var user = JSON.parse(localStorage.getItem('user'))
 
       if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
       if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
@@ -182,6 +198,7 @@ const methods = {
       if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
         localStorage.setItem('user', JSON.stringify(result.data.userMap))
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+        store.dispatch('D_USER/AC_USER', result.data)
       }
       // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       localStorage.setItem('loginYn', true)
@@ -197,7 +214,7 @@ const methods = {
   },
   async getTeamList (paramMap) {
     var resultList = null
-    paramMap.set('fUserKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+    paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var result = await commonAxiosFunction({
       url: 'service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
@@ -248,7 +265,7 @@ const methods = {
     }
     var urlSet = null
     if (type === 'delete') { urlSet = 'service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'service/tp.saveUserDo' }
-    param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
     var response = await commonAxiosFunction({
@@ -264,7 +281,7 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: 'service/tp.saveSticker',
@@ -280,7 +297,7 @@ const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: 'service/tp.getStickerList',
@@ -299,7 +316,7 @@ const methods = {
     if (type === 'del') { urlSet = 'service/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
-    paramSet.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: urlSet,
@@ -465,6 +482,8 @@ const methods = {
       param: paramSet
     })
     result = response.data
+    // eslint-disable-next-line no-debugger
+    debugger
     return result
   },
   async saveMCabContents (paramSet) {
