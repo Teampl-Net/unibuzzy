@@ -29,10 +29,10 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList id="chanAlimPush"  v-if="chanAlimYn && CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList && CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list.length > 0" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonPush" v-else-if="!chanAlimYn && viewMainTab === 'P' && MAIN_ALIM_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="MAIN_ALIM_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonBoard" v-else-if="!chanAlimYn && viewMainTab === 'B' && GE_MAIN_BOARD_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="GE_MAIN_BOARD_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.D_CHAN_ELEMENT.alimList.length === 0 "/> -->
+          <commonList id="chanAlimPush" :chanAlimYn="chanAlimYn" v-if="chanAlimYn && CHANNEL_DETAIL.ELEMENTS.commonList && CHANNEL_DETAIL.ELEMENTS.commonList.list.length > 0" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="CHANNEL_DETAIL.ELEMENTS.commonList.list" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-else-if="!chanAlimYn && viewMainTab === 'P' && MAIN_ALIM_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="MAIN_ALIM_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-else-if="!chanAlimYn && viewMainTab === 'B' && GE_MAIN_BOARD_LIST.length > 0 " @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="GE_MAIN_BOARD_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -193,7 +193,7 @@ export default {
     },
     /* CHANNEL_DETAIL: {p
       handler () {
-        console.log(this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList)
+        console.log(this.CHANNEL_DETAIL.ELEMENTS.commonList)
       },
       deep: true
     }, */
@@ -250,6 +250,18 @@ export default {
         return team[0]
       } else return null
     },
+    /* GE_DISPLAY_ALIM_LIST () {
+      var alimList = this.CHANNEL_DETAIL.ELEMENTS.alimList
+      var dispList = []
+      for (var i = 0; i < this.commonDataList.length; i++) {
+        var index = alimList.findIndex((item) => item.mccKey === this.commonDataList[i].mccKey)
+        if (index < 0) {
+          alimList.push(this.commonDataList[i])
+        }
+      }
+      this.CHANNEL_DETAIL.ELEMENTS.alimList = alimList
+      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+    }, */
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
@@ -293,11 +305,11 @@ export default {
         console.log(this.CHANNEL_DETAIL)
         // eslint-disable-next-line no-debugger
         debugger
-        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list = uniqueArr
+        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
         if (this.viewMainTab === 'P') {
-          this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = 'ALIM'
+          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'ALIM'
         } else if (this.viewMainTab === 'B') {
-          this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = 'BOAR'
+          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'BOAR'
         }
         this_.$actionVuex('COMMONCONT', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
       } else {
@@ -419,9 +431,9 @@ export default {
       this.offsetInt = 0
       var jobkindId = 'ALIM'
       if (this.chanAlimYn) {
-        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list = []
+        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = []
         if (tab === 'B') jobkindId = 'BOAR'
-        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.type = jobkindId
+        this.CHANNEL_DETAIL.ELEMENTS.commonList.type = jobkindId
       }
       this.refreshList()
       this.$emit('changeMainTab', tab)
@@ -556,7 +568,7 @@ export default {
       var uniqueArr = null
       if (this.chanAlimYn) {
         newArr = [
-          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
           ...resultList.content
         ]
       } else {
@@ -598,7 +610,7 @@ export default {
         if (descYn) {
           if (this.chanAlimYn) {
             newArr = [
-              ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+              ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
               ...resultList.content
             ]
             uniqueArr = this.replaceArr(newArr)
@@ -629,7 +641,7 @@ export default {
             }
             newArr = [
               ...tempArr,
-              ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list
+              ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list
             ]
             uniqueArr = this.replaceArr(newArr)
             this.updateStoreData(uniqueArr)
@@ -721,7 +733,7 @@ export default {
       var uniqueArr = null
       if (this.chanAlimYn) {
         newArr = [
-          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
           ...resultList.content
         ]
       } else {
@@ -791,7 +803,7 @@ export default {
       var uniqueArr = null
       if (this.chanAlimYn) {
         newArr = [
-          ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.commonList.list,
+          ...this.CHANNEL_DETAIL.ELEMENTS.commonList.list,
           ...resultList.content
         ]
       } else {

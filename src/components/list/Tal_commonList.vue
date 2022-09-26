@@ -836,6 +836,7 @@ export default {
       else  memo.pageSize = this.pagesize
       if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
       else  memo.offsetInt = this.offsetInt
+      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, key, this.detailVal.jobkindId)
       // if (allYn) {
       //   memo.pageSize = this.totalElements + 1
       //   memo.offsetInt = 0
@@ -1140,9 +1141,18 @@ export default {
       } */
     },
     settingUserDo () {
-      var aList =  this.GE_MAIN_ALIM_LIST
-      for (var i = 0; i < this.GE_MAIN_ALIM_LIST.length; i++){
-        var userDo = aList[i].D_CONT_USER_DO 
+        var dataList = null
+        if (this.chanAlimYn) {
+            var dataList = this.CHANNEL_DETAIL.ELEMENTS.commonList.list
+        } else {
+            if (this.CONT_DETAIL.jobkindId === 'BOAR') {
+                dataList =  this.GE_MAIN_BOAR_LIST
+            } else {
+                dataList =  this.GE_MAIN_ALIM_LIST
+            }
+        }
+      for (var i = 0; i < dataList.length; i++){
+        var userDo = dataList[i].D_CONT_USER_DO 
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
         if (userDo) {
             var index = userDo.findIndex((item) => item.doType === 'ST')
@@ -1158,11 +1168,19 @@ export default {
                 userDoList[2].doKey = userDo[index].doKey
             }
         }
-        aList[i].D_CONT_USER_DO = userDoList
+        dataList[i].D_CONT_USER_DO = userDoList
       }
       // var userDoList = { LI: { doKey: 0 }, ST: { doKey: 0 } }
-      
-      this.$actionVuex('ALIM', aList, null, true, false, null, null)
+      if (this.chanAlimYn) {
+        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = dataList
+        this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true, null, null)
+      } else {
+        if (this.CONT_DETAIL.jobkindId === 'BOAR') {
+            this.$actionVuex('BOARD', dataList, null, true, false, null, null)
+        } else {
+            this.$actionVuex('ALIM', dataList, null, true, false, null, null)
+        }
+      }
       return userDoList
     },
     /* async loadUpMore() {
@@ -1302,6 +1320,7 @@ export default {
       readYn: false,
       stickerList: [ ]
     },
+    chanAlimYn: Boolean,
     targetContentsKey: {}
   },
   computed: {

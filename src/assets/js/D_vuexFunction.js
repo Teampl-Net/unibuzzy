@@ -20,78 +20,6 @@ const functions = {
   ...mapActions('D_CONTENTS', [
     'AC_MAIN_BOARD_LIST'
   ]), */
-  async getMainBoard () {
-    var paramMap = new Map()
-    var user = store.getters['D_USER/GE_USER']
-    var userKey
-    if (user.userInfo) {
-      if (user.userInfo.userKey) {
-        userKey = user.userInfo.userKey
-      }
-    }
-    paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
-    paramMap.set('jobkindId', 'ALIM')
-    var this_ = this
-    await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-    ).then(async (response) => {
-      if (response.status === 200 || response.status === '200') {
-        debugger
-        var teamList = response.data.teamList
-        store.dispatch('D_CONTENTS/AC_MAIN_ALIM_LIST', response.data.alimList)
-        store.dispatch('D_CONTENTS/AC_MAIN_BOARD_LIST', response.data.boardList)
-
-        /* for (var i = 0; i < teamList.length; i++) {
-          var team = teamList[i]
-          team.teamTypeText = commonMethods.teamTypeString(team.teamType)
-          var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
-          var message = commonMethods.changeText(team.memoMtext)
-          // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
-
-          // eslint-disable-next-line no-new-object
-          var D_CHAN_AUTH
-          D_CHAN_AUTH.recvAlimYn = true
-          if (team.userTeamInfo) {
-            if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
-              D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
-            }
-            if (team.userTeamInfo.showProfileYn === 1) {
-              D_CHAN_AUTH.showProfileYn = true
-              D_CHAN_AUTH.userGrade = '(공개)'
-            }
-            D_CHAN_AUTH.followYn = true
-            team.detailShowYn = false
-            D_CHAN_AUTH.followTypeText = '구독자'
-            if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 'true') {
-                D_CHAN_AUTH.followTypeText = '소유자'
-                D_CHAN_AUTH.userGrade = '(관리자)'
-                D_CHAN_AUTH.ownerYn = true
-                D_CHAN_AUTH.admYn = true
-              } else {
-                D_CHAN_AUTH.followTypeText = '관리자'
-                D_CHAN_AUTH.userGrade = '(매니저)'
-              }
-              D_CHAN_AUTH.adminYn = true
-            }
-          }
-
-          team.D_CHAN_AUTH = D_CHAN_AUTH
-        } */
-        store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
-        store.dispatch('D_CONTENTS/AC_MAIN_TEAM_LIST', teamList)
-        /* functions.AC_MAIN_CHAN_LIST(teamList)
-        functions.AC_MAIN_ALIM_LIST(response.data.boardList)
-        functions.AC_MAIN_BOARD_LIST(response.data.boardList) */
-        // store.commit('updateD_chanList', teamList)
-        // store.commit('updateD_alimList', response.data.alimList)
-        // this.chanList = response.data.teamList
-      }
-      // response.data.userMap
-    }).catch((error) => {
-      console.warn('ERROR!!!!! : ', error)
-      // return 'error'
-    })
-  },
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'TEAM' || type === 'CABI' || type === 'CONT') {
@@ -128,10 +56,10 @@ const functions = {
           dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === creTeamKey)
           team = dataList[index]
-          childList = team.D_CHAN_ELEMENT.cabinetList
+          childList = team.ELEMENTS.cabinetList
           cabIndex = childList.findIndex((item) => item.cabinetKey === targetKey)
           childList[cabIndex] = data
-          team.D_CHAN_ELEMENT.cabinetList = childList
+          team.ELEMENTS.cabinetList = childList
           dataList = team
           store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
         } else if (type === 'COMMONCONT') {
@@ -144,10 +72,10 @@ const functions = {
             dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
-            childList = team.D_CHAN_ELEMENT.boardList
+            childList = team.ELEMENTS.boardList
             contIndex = childList.findIndex((item) => item.contentsKey === targetKey)
             childList[contIndex] = data
-            team.D_CHAN_ELEMENT.boardList = childList
+            team.ELEMENTS.boardList = childList
             dataList[index] = team
             debugger
             store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
@@ -155,10 +83,10 @@ const functions = {
             dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
-            childList = team.D_CHAN_ELEMENT.alimList
+            childList = team.ELEMENTS.alimList
             contIndex = childList.findIndex((item) => item.contentsKey === targetKey)
             childList[contIndex] = data
-            team.D_CHAN_ELEMENT.alimList = childList
+            team.ELEMENTS.alimList = childList
             dataList[index] = team
             debugger
             store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
@@ -219,7 +147,7 @@ const functions = {
     var cabinetList
     var cabinetDetail
     if (!teamDetail) return null
-    cabinetList = teamDetail.D_CHAN_ELEMENT.cabinetList
+    cabinetList = teamDetail.ELEMENTS.cabinetList
     cabinetDetail = cabinetList.filter(cab => cab.cabinetKey === Number(targetKey))
     /* if (cabinetDetail.length === 0) {
       // eslint-disable-next-line no-new-object
@@ -231,7 +159,7 @@ const functions = {
 
       if (response) {
         cabinetDetail = response.mCabinet
-        teamDetail.D_CHAN_ELEMENT.cabinetList.push(cabinetDetail)
+        teamDetail.ELEMENTS.cabinetList.push(cabinetDetail)
         await functions.actionVuex('TEAM', teamDetail, teamDetail.teamKey, false, true, null, null)
       }
     } */
@@ -244,9 +172,9 @@ const functions = {
     var dataList
     if (!teamDetail) return null
     if (jobkindId === 'BOAR') {
-      dataList = teamDetail.D_CHAN_ELEMENT.boardList
+      dataList = teamDetail.ELEMENTS.boardList
     } else {
-      dataList = teamDetail.D_CHAN_ELEMENT.alimList
+      dataList = teamDetail.ELEMENTS.alimList
     }
     detailData = dataList.filter(cab => cab.contentsKey === Number(targetKey))
     return detailData

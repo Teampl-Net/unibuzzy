@@ -24,8 +24,8 @@
     </div>
   </div>
   <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :allContList="allContList" :boardList="GE_MAIN_BOARD_LIST" :alimList="this.GE_MAIN_ALIM_LIST"  @openPop="openPop" ref="topAlim" />
-  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="GE_MAIN_CHAN_LIST" @openPop="openPop" ref="topChan" />
+  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;" :allContList="GE_DISP_ALL_CONTENTS" :boardList="GE_DISP_BOARD_LIST" :alimList="this.GE_DISP_ALIM_LIST"  @openPop="openPop" ref="topAlim" />
+  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="GE_DISP_CHAN_LIST" @openPop="openPop" ref="topChan" />
 
 </div>
 
@@ -79,7 +79,10 @@ export default {
       userInfoChangeYn: true,
       loadingYn: false,
       notiDetail: {},
-      systemName: {}
+      systemName: {},
+      mainBoardList: [],
+      mainAlimList: [],
+      mainChanList: []
     }
   },
   components: {
@@ -104,6 +107,91 @@ export default {
     ...mapActions('D_CONTENTS', [
       'AC_MAIN_BOARD_LIST'
     ]), */
+    async getMainBoard () {
+      var paramMap = new Map()
+      paramMap.set('userKey', this.GE_USER.userKey)
+      await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      ).then(async (response) => {
+        if (response.status === 200 || response.status === '200') {
+          var teamList = response.data.teamList
+
+          this.mainAlimList = response.data.alimList
+          var index = null
+          var poolList = null
+          var index1 = null
+          for (var i = 0; i < this.mainAlimList.length; i++) {
+            index = teamList.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
+            poolList = teamList[index].ELEMENTS.alimList
+            index1 = poolList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+            if (index1 === -1) {
+              teamList[index].ELEMENTS.alimList.push(this.mainAlimList[i])
+            }
+          }
+
+          for (var s = 0; s < this.mainBoardList.length; s++) {
+            index = teamList.findIndex((item) => item.teamKey === this.mainBoardList[s].creTeamKey)
+            poolList = teamList[index].ELEMENTS.boardList
+            index1 = poolList.findIndex((item) => item.mccKey === this.mainBoardList[s].mccKey)
+            if (index1 === -1) {
+              teamList[index].ELEMENTS.boardList.push(this.mainBoardList[s])
+            }
+          }
+          this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+
+          this.mainBoardList = response.data.boardList
+          /* for (var i = 0; i < teamList.length; i++) {
+          var team = teamList[i]
+          team.teamTypeText = commonMethods.teamTypeString(team.teamType)
+          var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
+          var message = commonMethods.changeText(team.memoMtext)
+          // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
+
+          // eslint-disable-next-line no-new-object
+          var D_CHAN_AUTH
+          D_CHAN_AUTH.recvAlimYn = true
+          if (team.userTeamInfo) {
+            if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
+              D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
+            }
+            if (team.userTeamInfo.showProfileYn === 1) {
+              D_CHAN_AUTH.showProfileYn = true
+              D_CHAN_AUTH.userGrade = '(공개)'
+            }
+            D_CHAN_AUTH.followYn = true
+            team.detailShowYn = false
+            D_CHAN_AUTH.followTypeText = '구독자'
+            if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
+              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 'true') {
+                D_CHAN_AUTH.followTypeText = '소유자'
+                D_CHAN_AUTH.userGrade = '(관리자)'
+                D_CHAN_AUTH.ownerYn = true
+                D_CHAN_AUTH.admYn = true
+              } else {
+                D_CHAN_AUTH.followTypeText = '관리자'
+                D_CHAN_AUTH.userGrade = '(매니저)'
+              }
+              D_CHAN_AUTH.adminYn = true
+            }
+          }
+
+          team.D_CHAN_AUTH = D_CHAN_AUTH
+        } */
+          this.mainChanList = teamList
+          this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', teamList)
+          this.$store.dispatch('D_CONTENTS/AC_MAIN_TEAM_LIST', teamList)
+        /* functions.AC_MAIN_CHAN_LIST(teamList)
+        functions.AC_MAIN_ALIM_LIST(response.data.boardList)
+        functions.AC_MAIN_BOARD_LIST(response.data.boardList) */
+        // store.commit('updateD_chanList', teamList)
+        // store.commit('updateD_alimList', response.data.alimList)
+        // this.chanList = response.data.teamList
+        }
+      // response.data.userMap
+      }).catch((error) => {
+        console.warn('ERROR!!!!! : ', error)
+      // return 'error'
+      })
+    },
     setAllContents () {
       if (this.GE_MAIN_ALIM_LIST && this.GE_MAIN_BOARD_LIST) {
         if (this.GE_MAIN_ALIM_LIST.length > 4 && this.GE_MAIN_BOARD_LIST.length > 4) {
@@ -212,27 +300,116 @@ export default {
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
-    GE_MAIN_ALIM_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
+    GE_DISP_BOARD_LIST () {
+      var idx1, idx2
+      if (this.mainBoardList) {
+        var test = []
+        for (var i = 0; i < this.mainBoardList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainBoardList[i].creTeamKey)
+          var chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          var dataList = chanDetail.ELEMENTS.boarList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.mainBoardList[i].mccKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          test.push(dataList[idx2])
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        }
+        return test
+      } else {
+        return null
+      }
     },
-    GE_MAIN_BOARD_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
+    GE_DISP_ALIM_LIST () {
+      var idx1, idx2
+      if (this.mainAlimList) {
+        var test = []
+        for (var i = 0; i < this.mainAlimList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
+          var chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          var dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          test.push(dataList[idx2])
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        }
+        return test
+      } else {
+        return null
+      }
+    },
+    GE_DISP_CHAN_LIST () {
+      var idx1
+      if (this.mainChanList) {
+        var test = []
+        for (var i = 0; i < this.mainChanList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
+          if (idx1 !== -1) {
+            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          }
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        }
+        return test
+      } else {
+        return null
+      }
+    },
+    GE_DISP_ALL_CONTENTS () {
+      var idx1, idx2
+      if (this.mainBoardList && this.mainAlimList) {
+        var test = []
+        var newArr = [
+          ...this.mainBoardList,
+          ...this.mainAlimList
+        ]
+        for (var i = 0; i < newArr.length; i++) {
+          if (this.mainChanList[i].jobkindId === 'BOAR') {
+            idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainBoardList[i].creTeamKey)
+            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boarList.findIndex((item) => item.mccKey === this.mainBoardList[i].mccKey)
+            if (idx2 !== -1) {
+              test.push(this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.boarList[idx2])
+            } else {
+              test.push(this.mainBoardList[i])
+            }
+          } else {
+            idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
+            idx2 = this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.alimList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+            if (idx2 !== -1) {
+              test.push(this.GE_MAIN_CHAN_LIST[idx1].ELEMENTS.alimList[idx2])
+            } else {
+              test.push(this.mainBoardList[i])
+            }
+          }
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boarList
+        }
+        test = test.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.mccKey - a.mccKey
+        // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return test
+      } else {
+        return null
+      }
+    },
+    GE_RECENT_CHANGE_TEAM () {
+      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
     }
   },
 
   watch: {
+    GE_RECENT_CHANGE_TEAM (value, old) {
+      alert(value)
+    },
     GE_USER (value, old) {
       // console.log(this.userInfo)
     },
     GE_MAIN_CHAN_LIST (value, old) {
       this.chanList = value
     },
-    GE_MAIN_ALIM_LIST (value, old) {
+    /* GE_MAIN_ALIM_LIST (value, old) {
       this.setAllContents()
     },
     GE_MAIN_BOARD_LIST (value, old) {
       this.setAllContents()
-    },
+    }, */
     pageUpdate (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {

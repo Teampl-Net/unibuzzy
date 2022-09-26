@@ -3,9 +3,9 @@
   <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
     <!-- <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' /> -->
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
-      <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
+      <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="CHANNEL_DETAIL.ELEMENTS.cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div  v-for="(data, index) in CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
+          <div  v-for="(data, index) in CHANNEL_DETAIL.ELEMENTS.cabinetList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
             <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div> -->
@@ -82,7 +82,7 @@ export default {
     // this.popId = 'manageBoardPop' + this.currentTeamKey
     // history.push(this.popId)
     // this.$store.commit('D_HISTORY/updateStack', history)
-    if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList < this.CHANNEL_DETAIL.cabinetCount) {
+    if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList < this.CHANNEL_DETAIL.cabinetCount) {
         await this.getTeamMenuList()
     }
     this.$emit('closeLoading')
@@ -141,16 +141,16 @@ export default {
       var newArr = []
       var uniqueArr = null
       newArr = [
-        ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList,
+        ...this.CHANNEL_DETAIL.ELEMENTS.cabinetList,
         ...result
       ]
       uniqueArr = this.replaceArr(newArr)
       console.log('uniqueArr')
       console.log(uniqueArr)
-      this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList = uniqueArr
+      this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
       this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
 
-      console.log(this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList)
+      console.log(this.CHANNEL_DETAIL.ELEMENTS.cabinetList)
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -202,7 +202,7 @@ export default {
       param.creMenuYn = true
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
-      var defaultAddBoardName = this.$checkSameName(this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList, '게시판')
+      var defaultAddBoardName = this.$checkSameName(this.CHANNEL_DETAIL.ELEMENTS.cabinetList, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.currentTeamKey
       cabinet.creTeamKey = this.currentTeamKey
@@ -218,7 +218,7 @@ export default {
         // this.boardList = []
         await this.getTeamMenuList()
       }
-      if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length > 0) {
+      if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length > 0) {
         this.anima()
       }
     },
@@ -247,16 +247,16 @@ export default {
       // eslint-disable-next-line no-array-constructor
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
-        for (var i = 0; i < this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length; i++) {
+        for (var i = 0; i < this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length; i++) {
           if (index === i) {
             menu = {}
             menu.menuType = 'C'
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].menuType) { menu.MenuType = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].menuType }
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].teamKey) { menu.teamKey = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].teamKey }
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].parentMenuKey) { menu.parentMenuKey = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].parentMenuKey }
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].cabinetKey) { menu.cabinetKey = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].cabinetKey }
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].cabinetNameMtext }
-            if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].sysCabinetCode) { menu.sysCabinetCode = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList[i].sysCabinetCode }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].menuType) { menu.MenuType = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].menuType }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].teamKey) { menu.teamKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].teamKey }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].parentMenuKey) { menu.parentMenuKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].parentMenuKey }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetKey) { menu.cabinetKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetKey }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetNameMtext }
+            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].sysCabinetCode) { menu.sysCabinetCode = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].sysCabinetCode }
             teamMenuList.push(menu)
             break
           }
@@ -284,7 +284,7 @@ export default {
         tempList.push(list[list.length - (a + 1)])
       }
 
-      this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList = new Array(tempList)
+      this.CHANNEL_DETAIL.ELEMENTS.cabinetList = new Array(tempList)
     }
     // this.boardList.push()
   }

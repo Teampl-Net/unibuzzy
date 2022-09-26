@@ -17,7 +17,7 @@ const D_CONTENTS = {
           var index = dataList.findIndex((item) => item.teamKey === state.alimList[i].creTeamKey)
           if (index >= 0) {
             chanDetail = dataList[index]
-            var chanBoardList = chanDetail.D_CHAN_ELEMENT.alimList
+            var chanBoardList = chanDetail.ELEMENTS.alimList
             index = chanBoardList.findIndex((item) => item.mccKey === state.alimList[i].mccKey)
             if (index >= 0) {
               state.alimList[i] = chanBoardList[index]
@@ -35,7 +35,7 @@ const D_CONTENTS = {
           var index = dataList.findIndex((item) => item.teamKey === state.boardList[i].creTeamKey)
           if (index >= 0) {
             chanDetail = dataList[index]
-            var chanBoardList = chanDetail.D_CHAN_ELEMENT.boardList
+            var chanBoardList = chanDetail.ELEMENTS.boardList
             index = chanBoardList.findIndex((item) => item.mccKey === state.boardList[i].mccKey)
             if (index >= 0) {
               state.boardList[i] = chanBoardList[index]

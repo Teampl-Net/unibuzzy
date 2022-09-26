@@ -27,11 +27,11 @@
       <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
         <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
         게시판
-        ({{this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length}})
+        ({{this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length}})
       </p>
 
       <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
-        <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList" @chanMenuClick="chanMenuClick" />
+        <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.CHANNEL_DETAIL.ELEMENTS.cabinetList" @chanMenuClick="chanMenuClick" />
       </div>
     </div>
 
@@ -79,7 +79,7 @@
     </div>
   </div> -->
 </div>
-<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList' :teamNameText='teamNameText'/>
+<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='this.CHANNEL_DETAIL.ELEMENTS.cabinetList' :teamNameText='teamNameText'/>
 <!-- <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' /> -->
 </template>
 <script>
@@ -136,7 +136,7 @@ export default {
     this.getFollowerList().then(response => {
     })
     // this.cabinetList = this.$groupDummyList()
-    if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length === 0) {
+    if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length === 0) {
         this.getTeamCabList().then(response => {
             this.getTeamMenuList()
 
@@ -331,12 +331,12 @@ export default {
       var newArr = []
       var uniqueArr = null
       newArr = [
-        ...this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList,
+        ...this.CHANNEL_DETAIL.ELEMENTS.cabinetList,
         ...result
       ]
       uniqueArr = this.replaceArr(newArr)
       console.log(uniqueArr)
-      this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList = uniqueArr
+      this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
       this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
     },
     replaceArr (arr) {
@@ -350,11 +350,11 @@ export default {
     },
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength() {
-      var boardListLength = this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length === 0 ? 1 : this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length * 45 + 10
+      var boardListLength = this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length === 0 ? 1 : this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length * 45 + 10
       this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
     },
     boardDropDown () {
-      if (this.CHANNEL_DETAIL.D_CHAN_ELEMENT.cabinetList.length !== 0) {
+      if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length !== 0) {
         this.boardListLength()
         if (this.boardDropDownYn) { this.boardDropDownYn = false } else { this.boardDropDownYn = true }
       }

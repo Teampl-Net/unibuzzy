@@ -559,10 +559,10 @@ export default {
     updateStoreData (Detail) {
       console.log(this.CAB_DETAIL)
       var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.D_CHAN_ELEMENT.cabinetList
+      var cabinetList = tempChan.ELEMENTS.cabinetList
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index] = Detail
-      tempChan.D_CHAN_ELEMENT.cabinetList = cabinetList
+      tempChan.ELEMENTS.cabinetList = cabinetList
       this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
     },
     async getCabinetDetail () {
@@ -806,10 +806,10 @@ export default {
     },
     updateStoreBoardList (uniqueArr) {
       var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.D_CHAN_ELEMENT.cabinetList
+      var cabinetList = tempChan.ELEMENTS.cabinetList
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index].boardList = uniqueArr
-      tempChan.D_CHAN_ELEMENT.cabinetList = cabinetList
+      tempChan.ELEMENTS.cabinetList = cabinetList
       this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
     },
     async loadMore (pageSize) {

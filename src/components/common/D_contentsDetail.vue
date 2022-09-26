@@ -308,14 +308,14 @@ export default {
     updateStoreData (Detail) {
       console.log(this.CAB_DETAIL)
       var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.D_CHAN_ELEMENT.cabinetList
+      var cabinetList = tempChan.ELEMENTS.cabinetList
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       if (index >= 0) {
         cabinetList[index] = Detail
       } else {
         cabinetList.push(Detail)
       }
-      tempChan.D_CHAN_ELEMENT.cabinetList = cabinetList
+      tempChan.ELEMENTS.cabinetList = cabinetList
       this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
     },
     async getCabinetDetail () {
@@ -349,9 +349,9 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (this.detailVal.jobkindId === 'BOAR') {
-        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.boardList.push(detailData)
+        this.CHANNEL_DETAIL.ELEMENTS.boardList.push(detailData)
       } else {
-        this.CHANNEL_DETAIL.D_CHAN_ELEMENT.alimList.push(detailData)
+        this.CHANNEL_DETAIL.ELEMENTS.alimList.push(detailData)
       }
       this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true, null, null)
     },

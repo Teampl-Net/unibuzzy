@@ -185,10 +185,7 @@ export default {
     }
   },
   created () {
-    var this_ = this
-    this.$userLoginCheck(true).then(response => {
-      this_.$getMainBoard()
-    })
+    this.$userLoginCheck(true)
     /* const searchParams = new URLSearchParams(location.search)
     // alert(searchParams)
     // eslint-disable-next-line no-unused-vars
