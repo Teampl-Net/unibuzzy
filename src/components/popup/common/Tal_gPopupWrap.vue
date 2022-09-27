@@ -319,7 +319,7 @@ export default {
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         this.openChanMenuYn = false
       } else {
         this.openChanMenuYn = true
@@ -379,14 +379,20 @@ export default {
       // var tt = this.params
       if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
         this.detailVal = target
-        this.popId = this.targetType + this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
-        if (this.detailVal.value) {
-          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
-            this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
-          } else {
-            this.headerTitle = '상세'
+        var targetKey = this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
+        var chan = this.$getDetail('TEAM', targetKey)
+        if (chan) {
+          this.headerTitle = this.changeText(chan[0].nameMtext)
+        } else {
+          if (this.detailVal.value) {
+            if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
+              this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+            } else {
+              this.headerTitle = '상세'
+            }
           }
         }
+        this.popId = this.targetType + this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
           this.chanAlimListTeamKey = target.targetKey || target.teamKey
@@ -514,7 +520,7 @@ export default {
       }
       var history = this.$store.getters['D_HISTORY/hStack']
       history.push(this.popId)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
 
@@ -544,7 +550,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       if (reloadYn) {
         // eslint-disable-next-line no-unused-vars
         /* if (this.targetType === 'pushList' || this.targetType === 'chanList') {
@@ -580,13 +586,9 @@ export default {
       /* } */
     },
     toAlimFromBoard () {
-      // alert(1)
-      // if (this.toAlimFromBoardYn === false) {
-      // alert(2)
       // this.toAlimFromBoardYn = true
       this.$emit('toAlimFromBoard')
       // } else {
-      // alert(3)
     },
     toAlimThisPageClose () {
       this.$refs.gPopChanAlimList.toAlimFromBoard('P')

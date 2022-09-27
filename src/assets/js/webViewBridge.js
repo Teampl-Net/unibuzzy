@@ -122,7 +122,7 @@ const isJsonString = (str) => {
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           }
-          var current = store.getters.hUpdate
+          var current = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
 

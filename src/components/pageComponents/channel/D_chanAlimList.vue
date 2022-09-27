@@ -178,7 +178,8 @@ export default {
       notiDetail: null,
       systemName: '',
       currentConfirmType: '',
-      currentPushListMainTab: 'P'
+      currentPushListMainTab: 'P',
+      requestYn: false
       // errorPopYn: false
     }
   },
@@ -232,16 +233,19 @@ export default {
       // // eslint-disable-next-line no-debugger
       // debugger
       console.log(this.CHANNEL_DETAIL)
-      await this.$addChanList(this.chanDetail.targetKey)
+      if (this.requestYn === false) {
+        this.requestYn = true
+        this.$addChanList(this.chanDetail.targetKey)
+      }
       /* // this.$addChanList(this.chanDetail.targetKey)
       if (!this.CHANNEL_DETAIL || this.CHANNEL_DETAIL.changedYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
         // eslint-disable-next-line no-debugger
         debugger
         await this.$addChanList(this.chanDetail.targetKey)
       } */
-      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
+      /* if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
         this.$emit('followYn')
-      }
+      } */
       this.$emit('closeLoading')
     },
     targetContentScrollMove (wich) {
@@ -435,7 +439,7 @@ export default {
         }
       }
       this.openWelcomePopYn = false
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      this.$addChanList(this.chanDetail.targetKey)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     numberOfElements (num) {
@@ -449,7 +453,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.detailShowYn = false
     },
     openWritePushPop () {
@@ -464,7 +468,7 @@ export default {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.writePopId = 'writePush' + history.length
         history.push(this.writePopId)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         this.writePushYn = true
       } else if (this.currentPushListMainTab === 'B') {
         var param = {}
@@ -508,7 +512,7 @@ export default {
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         this.closeWritePushPop()
       }
     },
@@ -571,6 +575,7 @@ export default {
   computed: {
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
+      // alert(this.chanDetail.targetKey)
       if (detail) {
         return detail[0]
       } else {
@@ -596,6 +601,12 @@ export default {
     }
   },
   watch: {
+    CHANNEL_DETAIL: {
+      handler (value, old) {
+        alert(true)
+      },
+      deep: true
+    },
     GE_RECENT_CHANGE_TEAM (value, old) {
       if (value === this.CHANNEL_DETAIL.teamKey) {
         console.log('team [' + value + ']의 관련 정보가 변경되었음')

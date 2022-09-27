@@ -134,7 +134,7 @@ export default {
     if (this.alimSubPopYn) {
       var history = this.$store.getters['D_HISTORY/hStack']
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
     }
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true

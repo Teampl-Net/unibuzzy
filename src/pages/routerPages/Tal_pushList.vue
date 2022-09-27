@@ -392,6 +392,8 @@ export default {
     // @point
     // eslint-disable-next-line no-new-object
       var param = new Object()
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       }
@@ -507,7 +509,7 @@ export default {
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
@@ -892,7 +894,7 @@ export default {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       console.log(this.$store.getters['D_HISTORY/hStack'])
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam

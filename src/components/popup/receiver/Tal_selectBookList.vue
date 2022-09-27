@@ -224,7 +224,7 @@ export default {
       if (this.subPopId === hStack[hStack.length - 1] ) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         // this.detailOpenYn = false
         this.teamLength = 100
         this.memberEditYn = false
@@ -233,7 +233,7 @@ export default {
       } else {
         // hStack = hStack.filter((element, index) => index < hStack.length - 1)
         // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        // this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
+        // this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
       }
     },
@@ -247,7 +247,7 @@ export default {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.subPopId = 'commonBookMemberList' + history.length
         history.push(this.subPopId)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
 
         this.receiverTitle = '구성원 관리'
          if (this.selectPopYn) {

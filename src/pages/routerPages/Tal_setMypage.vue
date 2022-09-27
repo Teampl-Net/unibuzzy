@@ -154,7 +154,7 @@ export default {
         this.changeUserIconPop = 'changeUserIconPop' + history.length
         console.log(history)
         history.push(this.changeUserIconPop)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         console.log(this.$store.getters['D_HISTORY/hStack'])
       }
     },
@@ -218,7 +218,7 @@ export default {
       if (this.changeUserIconPop === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.changeUserIconShowYn = false
       } else {
 

@@ -60,7 +60,7 @@ export default {
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+        this.$store.commit('D_HISTORY/updateStack', history)
         this.closeXPop()
       }
     },
@@ -71,7 +71,7 @@ export default {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'searchChanPop' + history.length
     history.push(this.popId)
-    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+    this.$store.commit('D_HISTORY/updateStack', history)
   },
   mounted () {
     document.getElementById('chanSearchInput').focus()

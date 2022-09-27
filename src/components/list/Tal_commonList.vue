@@ -1078,7 +1078,7 @@ export default {
         param.chanName = data.nameMtext
         param.targetContentsKey = data.contentsKey
         // 세션에서 유저키 받아오기
-        if (data.creUserKey === this.creUserKey) {
+        if (data.creUserKey === this.GE_USER.userKey) {
           param.ownerYn = true
         }
       } else {

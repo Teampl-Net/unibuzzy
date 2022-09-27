@@ -81,7 +81,7 @@ export default {
     // var history = this.$store.getters['D_HISTORY/hStack']
     // this.popId = 'manageBoardPop' + this.currentTeamKey
     // history.push(this.popId)
-    // this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+    // this.$store.commit('D_HISTORY/updateStack', history)
     if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList < this.CHANNEL_DETAIL.cabinetCount) {
         await this.getTeamMenuList()
     }
@@ -164,7 +164,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
     replaceArr (arr) {

@@ -10,7 +10,8 @@ const D_historyStack = {
     canRemoveYn: true,
     pageUpdate: 0,
     recvPushQueue: [],
-    deepLinkQueue: []
+    deepLinkQueue: [],
+    axiosQueue: []
   },
   mutations: {
     updateServerList (state, server) {
@@ -36,16 +37,33 @@ const D_historyStack = {
     },
     changeDeepLinkQueue (state, page) {
       state.deepLinkQueue = page
+    },
+    updateAxiosQueue (state, page) {
+      state.axiosQueue = page
     }
   },
   actions: {
+    AC_DELETE_AXIOS_QUEUE ({ commit, state }, payload) {
+      var idx2 = state.axiosQueue.findIndex((item) => item === payload)
+      if (idx2 !== -1) { var queue = state.axiosQueue.splice(idx2, 1) }
+      commit('updateAxiosQueue', queue)
+    },
     AC_UPDATE_HISTORY ({ commit }, payload) {
-      commit('updateStack', payload)
+      commit('updateAxiosQueue', payload)
+    },
+    AC_ADD_AXIOS_QUEUE ({ commit, state }, payload) {
+      commit('updateAxiosQueue', payload.push(payload))
+    },
+    AC_GE_AXIOS_QUEUE ({ commit }, payload) {
+      commit('updatePage', payload)
     }
   },
   modules: {
   },
   getters: {
+    axiosQueue (state) {
+      return state.axiosQueue
+    },
     archServerList (state) {
       return state.archivingServerList
     },

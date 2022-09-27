@@ -83,7 +83,7 @@ export default {
     this.popId = 'previewImgPop' + history.length
     console.log(history)
     history.push(this.popId)
-    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+    this.$store.commit('D_HISTORY/updateStack', history)
     console.log(this.imgList)
     // this.imgs.push(this.imgList[0].pathMtext)
   },
@@ -133,7 +133,7 @@ export default {
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closePop')
       } else {
 

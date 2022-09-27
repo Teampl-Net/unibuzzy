@@ -233,7 +233,7 @@ export default {
     // // 3) 현 페이지(팝업)을 글로벌 히스토리 리스트 변수에 추가하여 업데이트 시켜줌
     // history.push(this.popId)
 
-    // this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+    // this.$store.commit('D_HISTORY/updateStack', history)
 
     // 알림신청 건을 승인 또는 취소를 하기 위함.
     // this.answerRequsetYn = true
@@ -844,7 +844,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+      this.$store.commit('D_HISTORY/updateStack', history)
         //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
       // if (this.params.writeType) {
       //   this.$parent.propParams.writeType = 'ALIM'

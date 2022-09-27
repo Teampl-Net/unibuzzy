@@ -53,13 +53,13 @@ export default {
     this.getMainBoard()
     this.loadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
-    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', [])
+    this.$store.commit('D_HISTORY/updateStack', [])
     console.log(this.GE_MAIN_CHAN_LIST)
     // document.addEventListener('message', e => this.recvNoti(e))
     // // window.addEventListener('message', e => this.recvNoti(e))
     this.$emit('changePageHeader', '더알림')
     /* this.$store.commit('setRemovePage', 0)
-    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', [0]) */
+    this.$store.commit('D_HISTORY/updateStack', [0]) */
   },
   mounted () {
     this.loadingYn = false
