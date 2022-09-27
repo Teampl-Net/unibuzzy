@@ -78,7 +78,7 @@ const D_CONTENTS = {
     AC_MAIN_BOARD_LIST: ({ commit }, payload) => {
       commit('MU_MAIN_BOARD_LIST', payload)
     },
-    AC_MAIN_TEAM_LIST: ({ commit, state }, payload) => {
+    getContentsDetail: ({ commit, state }, payload) => {
       var dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
       if (dataList) {
         for (var i = 0; i < payload.length; i++) {

@@ -76,7 +76,7 @@
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick(alim.contentsKey, alim.creTeamKey):''">
+                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''">
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
@@ -92,7 +92,8 @@
               <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
                 <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
                 <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" />
-                <div v-if="currentMemoList.length > 0 && showMoreMemoTextYn === true" style=" height: 20px;     float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
+                <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
+                <div v-if="this.currentMemoList.length > 0 && showMoreMemoTextYn === true" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
                 <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
@@ -162,10 +163,6 @@ export default {
 
   },
   created () {
-    if (this.targetContentsKey) {
-      this.targetCKey = this.targetContentsKey
-      this.memoOpenClick({contentsKey: this.targetCKey})
-    }
   },
   watch: {
   },
@@ -185,6 +182,11 @@ export default {
         })
     }
     this.settingAtag()
+    this.$nextTick(() => {
+      if (this.targetContentsKey) {
+        this.targetCKey = this.targetContentsKey
+      }
+    })
   },
   methods: {
     async makeShareLink (key) {
@@ -217,7 +219,7 @@ export default {
         }
     },
     clickInfo (data) {
-      console.log(data)
+      // console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (userKey) {
@@ -499,6 +501,7 @@ export default {
         if (document.getElementById('memoCard'+tempKey)) {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
+          this.memoOpenClick({key: this.targetCKey, teamKey: null})
           this.targetCKey = null
         }
       }
@@ -641,30 +644,38 @@ export default {
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
 
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
-        param: { memo: memo }
-      })
-      if (result.data.result === true || result.data.result === 'true') {
-        /* this.confirmText = '댓글 저장 성공'
-        this.confirmPopShowYn = true */
-        this.memoShowYn = false
-        // await this.getContentsList()
-        // await this.getBoardMemoList(true)
-        // this.currentMemoList = []
-        var cont = this.currentMemoObj
-        var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
+      try{
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
 
-        cont.D_MEMO_LIST = response.memoList
+        if (result.data.result === true || result.data.result === 'true') {
+          /* this.confirmText = '댓글 저장 성공'
+          this.confirmPopShowYn = true */
+          this.memoShowYn = false
+          // await this.getContentsList()
+          // await this.getBoardMemoList(true)
+          this.currentMemoList = []
+          var cont = this.currentMemoObj
+          debugger
+          var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
+          debugger
+          cont.D_MEMO_LIST = response.memoList
 
-        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-        this.currentMemoObj = cont
-        this.memoSetCount(response.totalElements)
-        this.pointAni()
-        /* this.scrollMove(-1) */
+          this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.currentMemoObj = cont
+          this.currentMemoList = cont.D_MEMO_LIST
+          this.memoSetCount(response.totalElements)
+          this.pointAni()
+          /* this.scrollMove(-1) */
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.saveMemoLoadingYn = false
       }
-      this.saveMemoLoadingYn = false
     },
     memoSetCount (size, key) {
       var contentsKey = this.currentContentsKey
@@ -680,7 +691,7 @@ export default {
     },
     writeMemo (key, creTeamKey) {
       var findIndex = this.openMemoList.indexOf(key)
-      if (findIndex === -1) this.memoOpenClick(key, creTeamKey)
+      if (findIndex === -1) this.memoOpenClick({key : key, teamKey : creTeamKey})
       this.memoShowYn = true
       this.mememoValue = null
       this.currentContentsKey = key
@@ -706,48 +717,82 @@ export default {
         this.mememoValue = data
         this.memoShowYn = true
     },
-    async memoOpenClick (key, teamKey) {
-        this.pageSize = 5
-        this.offsetInt = 0
-        this.selectedConentsKey = key
-        this.currentContentsKey = key
-        var cont = null
-        if (teamKey) {
-            var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
-            if (contList) {
-                cont = contList[0]
-            }
+    async memoOpenClick (param) {
+      console.log(param)
+      this.currentMemoList = new Array()
+      this.pageSize = 5
+      this.offsetInt = 0
+      this.selectedConentsKey = param.key
+      this.openMemoList.splice(this.findMemoOpend(this.currentContentsKey), 1)
+      this.openMemoList.push(param.key)
+      this.currentContentsKey = param.key
+      var key = param.key
+      var teamKey = param.teamKey
+      var cont = null
+
+      var indexOf = this.commonListData.findIndex(i => i.contentsKey === this.selectedConentsKey)
+      if (indexOf !== -1) {
+        teamKey = this.commonListData[indexOf].creTeamKey
+
+        var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
+        console.log('!!!contList!!!')
+        console.log(contList)
+        if (contList) {
+            cont = contList[0]
         }
-        if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
-            this.currentMemoObj = cont
-        } else {
-            cont.D_MEMO_LIST = []
-            this.currentMemoObj = cont
-            var response = await this.getContentsMemoList(key, null, null, teamKey)
-            cont.D_MEMO_LIST = [
-                ...cont.D_MEMO_LIST,
-                ...response.memoList
-            ]
+        console.log('###cont###')
+        console.log(cont)
+        debugger
+
+        if (!cont.D_MEMO_LIST) {
+          this.currentMemoObj = cont
+          cont.D_MEMO_LIST = new Array()
+          var response = await this.getContentsMemoList(key, null, null, teamKey)
+          cont.D_MEMO_LIST = response.memoList
         }
+        // if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
+        //     this.currentMemoObj = cont
+        // } else {
+            // if (cont.D_MEMO_LIST) {
+            //   cont.D_MEMO_LIST = new Array()
+            //   this.currentMemoObj = cont
+            //   var response = await this.getContentsMemoList(key, null, null, teamKey)
+            //   cont.D_MEMO_LIST = [
+            //       ...cont.D_MEMO_LIST,
+            //       ...response.memoList
+            //   ]
+            //   console.log('###D_MEMO_LIST###')
+            //   console.log(cont.D_MEMO_LIST)
+            // } else {
+
+            // }
+        // }
+        // console.log('!!!!!!!!!!!!')
+        // console.log(cont)
+        // console.log('!!!!!!!!!!!!')
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
 
-        if (this.currentContentsKey !== null ){
-            debugger
-            if (document.getElementById('alimMemo'+this.currentContentsKey)) {
-                document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
-            } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
-                document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
-            }
+
+        if (document.getElementById('alimMemo'+this.currentContentsKey)) {
+            document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
+        } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
+            document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
         }
+
         if (document.getElementById('alimMemo'+key)) {
             document.getElementById('alimMemo'+key).style.display = 'block'
         } else if (document.getElementById('borderLine'+key)) {
             document.getElementById('borderLine'+key).style.display = 'block'
         }
+        this.currentMemoList = cont.D_MEMO_LIST
 
-      this.curretnMemoList = cont.D_MEMO_LIST
-      this.currentContentsKey = key
+        console.log('!!!!!!!!!!!!')
+        console.log(this.currentMemoList)
+        console.log('!!!!!!!!!!!!')
+        this.currentContentsKey = key
+      }
+      if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
     },
     alimBigView (alim) {
         alim.bigYn = true
@@ -899,12 +944,13 @@ export default {
 
     },
     async loadMoreMemo () {
-        //this.showMoreMemoTextYn = false
+        this.showMoreMemoTextYn = true
+        // alert(true)
         // console.log('#########################')
         // console.log('offsetInt', this.offsetInt)
         // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
-          // this.showMoreMemoTextYn = false
+          this.showMoreMemoTextYn = false
           return
         }
         // console.log('axios totalElements : ' + this.currentMemoObj.totalElements)
@@ -927,6 +973,7 @@ export default {
     /** 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!  */
     settingOffsetIntTotalMemoCount (memoList) {
       console.log('#################')
+      console.log(memoList)
       var totalMemoCount = 0
       if (memoList) {
         for (let i = 0; i < memoList.length; i++) {
@@ -937,6 +984,7 @@ export default {
             }
             }
         }
+        console.log('this.offsetInt : ' + this.offsetInt)
         this.offsetInt = memoList.length + totalMemoCount
         console.log('#################')
       }
