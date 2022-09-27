@@ -232,19 +232,12 @@ export default {
     async readyFunction () {
       // // eslint-disable-next-line no-debugger
       // debugger
-      console.log(this.CHANNEL_DETAIL)
-      if (this.requestYn === false) {
-        this.requestYn = true
-        this.$addChanList(this.chanDetail.targetKey)
-      }
+      await this.$addChanList(this.chanDetail.targetKey)
       /* // this.$addChanList(this.chanDetail.targetKey)
       if (!this.CHANNEL_DETAIL || this.CHANNEL_DETAIL.changedYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
         // eslint-disable-next-line no-debugger
         debugger
         await this.$addChanList(this.chanDetail.targetKey)
-      } */
-      /* if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
-        this.$emit('followYn')
       } */
       this.$emit('closeLoading')
     },
@@ -575,7 +568,6 @@ export default {
   computed: {
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
-      // alert(this.chanDetail.targetKey)
       if (detail) {
         return detail[0]
       } else {
@@ -603,7 +595,9 @@ export default {
   watch: {
     CHANNEL_DETAIL: {
       handler (value, old) {
-        // alert(true)
+        if (value && value.D_CHAN_AUTH.followYn) {
+          this.$emit('followYn')
+        }
       },
       deep: true
     },

@@ -379,20 +379,18 @@ export default {
       // var tt = this.params
       if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
         this.detailVal = target
-        var targetKey = this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
-        var chan = this.$getDetail('TEAM', targetKey)
-        if (chan) {
-          this.headerTitle = this.changeText(chan[0].nameMtext)
-        } else {
-          if (this.detailVal.value) {
-            if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
-              this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
-            } else {
-              this.headerTitle = '상세'
-            }
+        // var chan = this.$getDetail('TEAM', target.targetKey)
+        if (this.detailVal.value) {
+          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
+            this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+          } else {
+            this.headerTitle = '상세'
           }
+        } else {
+          this.headerTitle = '상세'
         }
         this.popId = this.targetType + this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
+
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
           this.chanAlimListTeamKey = target.targetKey || target.teamKey
@@ -586,9 +584,13 @@ export default {
       /* } */
     },
     toAlimFromBoard () {
+      // alert(1)
+      // if (this.toAlimFromBoardYn === false) {
+      // alert(2)
       // this.toAlimFromBoardYn = true
       this.$emit('toAlimFromBoard')
       // } else {
+      // alert(3)
     },
     toAlimThisPageClose () {
       this.$refs.gPopChanAlimList.toAlimFromBoard('P')
@@ -673,7 +675,7 @@ export default {
       this.notiDetailShowYn = false
     },
     recvNoti (e) {
-      var message
+      /* var message
       try {
         if (this.$isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
@@ -763,7 +765,7 @@ export default {
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
-      }
+      } */
     }
   }
 }

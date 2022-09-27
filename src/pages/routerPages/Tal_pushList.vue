@@ -243,6 +243,31 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    GE_DISP_CONT_LIST: {
+      /* handler (value, old) {
+        for (var i = 0; i < this.alimContentsList.length; i++) {
+          var userDo = this.alimContentsList[i].userDoList
+          var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+          if (userDo) {
+            var index = userDo.findIndex((item) => item.doType === 'ST')
+            if (index >= 0) {
+              userDoList[0].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'LI')
+            if (index >= 0) {
+              userDoList[1].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'RE')
+            if (index >= 0) {
+              userDoList[2].doKey = userDo[index].doKey
+            }
+          }
+          this.alimContentsList[i].D_CONT_USER_DO = userDoList
+        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CAHNNEL', this.alimContentsList)
+      },
+      deep: true */
+    },
     GE_CHANNEL_DETAIL: {
       /* handler (value, old) {
         console.log(JSON.stringify(value))
@@ -1025,28 +1050,6 @@ export default {
         this.$emit('closeLoading')
       }, 800)
     },
-    /* async settingUserDo (dataList) {
-      for (var i = 0; i < dataList.length; i++) {
-        var userDo = dataList[i].D_CONT_USER_DO
-        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
-        if (userDo) {
-          var index = userDo.findIndex((item) => item.doType === 'ST')
-          if (index >= 0) {
-            userDoList[0].doKey = userDo[index].doKey
-          }
-          index = userDo.findIndex((item) => item.doType === 'LI')
-          if (index >= 0) {
-            userDoList[1].doKey = userDo[index].doKey
-          }
-          index = userDo.findIndex((item) => item.doType === 'RE')
-          if (index >= 0) {
-            userDoList[2].doKey = userDo[index].doKey
-          }
-        }
-        dataList[i].D_CONT_USER_DO = userDoList
-      }
-      return dataList
-    }, */
     introPushPageTab () {
       if (this.viewTab === 'N') {
         this.currentTabName = '최신'

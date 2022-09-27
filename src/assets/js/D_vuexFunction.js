@@ -104,7 +104,7 @@ const functions = {
     if (type === 'TEAM') {
       dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
       result = dataList.filter(data => data.teamKey === targetKey)
-      if (result === undefined || result === '' || result.length === 0) {
+      /* if (result === undefined || result === '' || result.length === 0) {
         var paramMap = new Map()
         paramMap.set('teamKey', targetKey)
         methods.getTeamList(paramMap).then(resultList => {
@@ -114,7 +114,8 @@ const functions = {
         })
       } else {
         return result
-      }
+      } */
+      return result
     }
   },
   getBoardCabinetDetail (teamDetail, targetKey) {

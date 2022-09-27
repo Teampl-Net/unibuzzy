@@ -188,14 +188,16 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // alert(true)
-      param.jobkindId = data.jobkindId
-      if (data.jobkindId === 'ALIM') {
+      if (data.targetType === 'chanDetail') {
         param.targetType = 'chanDetail'
         param.teamKey = data.creTeamKey
         param.targetKey = data.creTeamKey
         param.nameMtext = data.nameMtext
         param.chanName = data.nameMtext
-        param.targetContentsKey = data.contentsKey
+        if (data.contentsKey) {
+          param.jobkindId = data.jobkindId
+          param.targetContentsKey = data.contentsKey
+        }
         // 세션에서 유저키 받아오기
         if (data.creUserKey === this.GE_USER.userKey) {
           param.ownerYn = true
@@ -212,7 +214,7 @@ export default {
       }
       this.openPop(param)
     },
-    recvNoti (e) {
+    async recvNoti (e) {
       var message
       try {
         if (this.$isJsonString(e.data) === true) {
@@ -238,9 +240,11 @@ export default {
                   ;
                 } else {
                   if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.goChanDetail({ contentsKey: JSON.parse(this.notiDetail.userDo).targetKey, jobkindId: this.notiDetail.jobkindId, creTeamKey: this.notiDetail.creTeamKey, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                    return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: JSON.parse(this.notiDetail.userDo).targetKey, cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    return
                   }
                 }
               } else {
@@ -252,7 +256,7 @@ export default {
                     // }
                   }
                 } else {
-                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CABI') {
@@ -263,7 +267,7 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   ;
                 } else {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
@@ -274,23 +278,24 @@ export default {
               } else {
                 this.$router.replace({ path: '/' })
                 if (this.notiDetail.actType === 'FL') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', creTeamKey: this.notiDetail.creTeamKey, value: this.notiDetail, pushOpenYn: true })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', creTeamKey: this.notiDetail.creTeamKey, value: this.notiDetail, pushOpenYn: true })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'MA') {
-                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', creTeamKey: this.notiDetail.creTeamKey, value: this.notiDetail, pushOpenYn: true })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-              alert(JSON.parse(this.notiDetail))
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
 
                 } else {
                   if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.goChanDetail({ contentsKey: JSON.parse(this.notiDetail.userDo).targetKey, creTeamKey: this.notiDetail.creTeamKey, jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: JSON.parse(this.notiDetail.userDo).targetKey, cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    return
                   }
                 }
               }
