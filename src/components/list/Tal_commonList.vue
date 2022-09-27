@@ -534,7 +534,7 @@ export default {
         cont.D_MEMO_LIST.splice(index, 1)
         this.currentMemoList = cont.D_MEMO_LIST
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         this.currentMemoObj = cont
         this.memoSetCount(response.totalElements)
       }
@@ -771,7 +771,7 @@ export default {
         // console.log(cont)
         // console.log('!!!!!!!!!!!!')
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
 
 
         if (document.getElementById('alimMemo'+this.currentContentsKey)) {
@@ -1003,7 +1003,7 @@ export default {
         cont.D_MEMO_LIST = newArr
         this.currentMemoList = cont.D_MEMO_LIST
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         this.currentMemoObj = cont
         if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
         this.memoSetCount(response.totalElements)
@@ -1160,18 +1160,20 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
+        var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
           // debugger
-        for (var d = temp.length - 1; d >= 0 ; d--) {
-            if (temp[d].doKey === 1 && temp[d].doType === act.doType) {
-                temp[d].doKey = result.doKey
+            for (var d = temp.length - 1; d >= 0 ; d--) {
+                if (temp[d].doType === act.doType) {
+                    temp[d].doKey = result.doKey
+                }
             }
-        }
-          // temp.push({ doType: act.doType, doKey: result.doKey })
-          this.commonListData[idx].D_CONT_USER_DO = temp
-          this.changeData += 1
+            // temp.push({ doType: act.doType, doKey: result.doKey })
+            this_.commonListData[idx].D_CONT_USER_DO = temp
+            this_.changeData += 1
+            this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.commonListData)
         })
-        temp.push({ doType: act.doType, doKey: 1 })
+        /* temp.push({ doType: act.doType, doKey: 1 }) */
         if (act.doType === 'LI') {
             this.commonListData[idx].likeCount += 1
         }

@@ -64,6 +64,8 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
+      // eslint-disable-next-line no-debugger
+      debugger
       var idx1, idx2
       var contList = this.contentsList
       for (var i = 0; i < contList.length; i++) {
@@ -84,12 +86,27 @@ export default {
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
       return contList
+    },
+    GE_NEW_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
     }
   },
   watch: {
     alimList: {
       handler (value, old) {
         this.contentsList = value
+      },
+      deep: true
+    },
+    GE_NEW_CONT_LIST: {
+      handler (value, old) {
+        var newArr = []
+        if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
+        newArr = [
+          value[0],
+          ...this.GE_DISP_CONT_LIST
+        ]
+        this.contentsList = this.replaceArr(newArr)
       },
       deep: true
     }
@@ -99,6 +116,15 @@ export default {
     commonListTable
   },
   methods: {
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
     settingAtag () {
       if (this.systemName !== 'Android' && this.systemName !== 'android') {
         return

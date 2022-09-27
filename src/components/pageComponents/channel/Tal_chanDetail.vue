@@ -106,13 +106,13 @@ export default {
     welcomePopUp
     /* followerList */
   },
-  computed: {// 임시삭제
-    /* historyStack () {
+  computed: {
+    historyStack () {
       return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
-    } */
+    }
   },
   watch: {
     pageUpdate (value, old) {

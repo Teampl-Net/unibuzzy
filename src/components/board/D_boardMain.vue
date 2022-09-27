@@ -563,7 +563,8 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index] = Detail
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
+      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail () {
       if (!this.CAB_DETAIL.shareAuth) {
@@ -810,7 +811,8 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index].boardList = uniqueArr
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
+      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async loadMore (pageSize) {
       if (this.endListYn === false) {

@@ -165,10 +165,6 @@ export default {
       }, [])
       return uniqueArr
     },
-    updateStoreData (uniqueArr) {
-        var this_ = this
-        this_.$actionVuex('MAINTEAM', uniqueArr, null, true, false)
-    },
     findPaddingTopChan () {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {

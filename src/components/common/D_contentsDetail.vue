@@ -319,7 +319,8 @@ export default {
         cabinetList.push(Detail)
       }
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
+      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail () {
       if (!this.CAB_DETAIL || !this.CAB_DETAIL.shareAuth) {
@@ -950,16 +951,18 @@ export default {
       } else {
         param.actYn = true
         param.targetKind = 'C'
+        var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
-          for (var d = this.CONT_DETAIL.D_CONT_USER_DO.length - 1; d >= 0; d--) {
-            if (this.CONT_DETAIL.D_CONT_USER_DO[d].doKey === 1 && this.CONT_DETAIL.D_CONT_USER_DO[d].doType === act.doType) {
-              this.CONT_DETAIL.D_CONT_USER_DO[d].doKey = result.doKey
+          for (var d = this_.CONT_DETAIL.D_CONT_USER_DO.length - 1; d >= 0; d--) {
+            if (this.CONT_DETAIL.D_CONT_USER_DO[d].doType === act.doType) {
+              this_.CONT_DETAIL.D_CONT_USER_DO[d].doKey = result.doKey
             }
           }
+          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this_.CONT_DETAIL])
           /* this.settingUserDo(this.CONT_DETAIL.D_CONT_USER_DO) */
         })
 
-        this.CONT_DETAIL.D_CONT_USER_DO.push({ doType: act.doType, doKey: 1 })
+        /* this.CONT_DETAIL.D_CONT_USER_DO.push({ doType: act.doType, doKey: 1 }) */
         if (act.doType === 'LI') { this.CONT_DETAIL.likeCount += 1 }
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this.CONT_DETAIL])
 

@@ -50,7 +50,7 @@
 
       </div>
     </div>
-    <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="ownerYn">
+    <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="CHANNEL_DETAIL.ownerYn">
       <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; ">
         <p class="font16 textLeft lightGray fr "  >편집 > </p>
       </div>
@@ -231,6 +231,7 @@ export default {
     async readyFunction () {
       // // eslint-disable-next-line no-debugger
       // debugger
+      console.log(this.CHANNEL_DETAIL)
       // this.$addChanList(this.chanDetail.targetKey)
       if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
         // eslint-disable-next-line no-debugger
@@ -302,7 +303,8 @@ export default {
       }
 
       this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async confirmOk () {
       // eslint-disable-next-line no-debugger
@@ -325,8 +327,13 @@ export default {
           if (fStatus) {
             console.log(this.followParam)
             result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
-            this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = false
-            this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+            this.CHANNEL_DETAIL.D_CHAN_AUTH = null
+            this.CHANNEL_DETAIL.followerKey = null
+            this.CHANNEL_DETAIL.userTeamInfo = null
+            this.CHANNEL_DETAIL.followerCount -= 1
+            console.log(this.CHANNEL_DETAIL)
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+            // this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
             console.log(result)
 
             this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
@@ -385,7 +392,8 @@ export default {
         param.notiYn = this.CHANNEL_DETAIL.recvAlimYn
         toastText = '채널 알림이 활성화 되었습니다'
       }
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
       this.$changeRecvAlimYn({ follower: param })
       setTimeout(() => {
         this.$showToastPop(toastText)
@@ -426,7 +434,8 @@ export default {
         }
       }
       this.openWelcomePopYn = false
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     numberOfElements (num) {
       this.myContentsCount = num

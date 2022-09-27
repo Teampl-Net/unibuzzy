@@ -83,15 +83,15 @@ export default {
       var idx1
       // eslint-disable-next-line no-debugger
       debugger
-      console.log(this.chanList)
-      if (this.chanList && this.chanList.length > 0) {
+      console.log(this.mainChanList)
+      if (this.mainChanList && this.mainChanList.length > 0) {
         var test = []
-        for (var i = 0; i < this.chanList.length; i++) {
-          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.chanList[i].creTeamKey)
+        for (var i = 0; i < this.mainChanList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
           if (idx1 !== -1) {
             test.push(this.GE_MAIN_CHAN_LIST[idx1])
           } else {
-            test.push(this.chanList[i])
+            test.push(this.mainChanList[i])
           }
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
@@ -99,6 +99,9 @@ export default {
       } else {
         return null
       }
+    },
+    GE_RECENT_CHANGE_TEAM () {
+      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
     }
   },
   watch: {
@@ -107,6 +110,15 @@ export default {
         // alert(true)
         this.mainChanList = value
       }
+    },
+    GE_MAIN_CHAN_LIST: {
+      handler (value, old) {
+        var idx = this.mainChanList.findIndex((item) => item.teamKey === this.GE_RECENT_CHANGE_TEAM)
+        if (idx !== -1) {
+          this.getContentsList()
+        }
+      },
+      deep: true
     }
   },
   unmounted () {
@@ -130,7 +142,7 @@ export default {
       // }
       return text
     },
-    async getContentsList (type) {
+    async getContentsList () {
       var paramMap = new Map()
       if (this.viewTab === 'user') {
         paramMap.set('userKey', this.GE_USER.userKey)
@@ -142,6 +154,7 @@ export default {
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
       this.mainChanList = resultList.data.content
+      console.log(resultList.data.content)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
     async recvNoti (e) {
@@ -192,19 +205,6 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
-      this.$emit('channelChangeTab', data)
-      switch (data) {
-        case 'user':
-          this.chanList = this.userChanList
-          break
-        case 'all':
-          this.chanList = this.allChanList
-          break
-        case 'myChannel':
-          this.chanList = this.myChanList
-          break
-      }
-
       // this.introTop5ChanPageTab()
       // this.emptyYn = false
       // console.log(data)

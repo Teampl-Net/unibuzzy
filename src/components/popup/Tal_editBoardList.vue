@@ -148,7 +148,8 @@ export default {
       console.log('uniqueArr')
       console.log(uniqueArr)
       this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
 
       console.log(this.CHANNEL_DETAIL.ELEMENTS.cabinetList)
     },

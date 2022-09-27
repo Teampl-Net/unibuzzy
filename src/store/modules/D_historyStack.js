@@ -39,7 +39,7 @@ const D_historyStack = {
     }
   },
   actions: {
-    AC_UPDATE_HISTOY ({ commit }, payload) {
+    AC_UPDATE_HISTORY ({ commit }, payload) {
       commit('updateStack', payload)
     }
   },

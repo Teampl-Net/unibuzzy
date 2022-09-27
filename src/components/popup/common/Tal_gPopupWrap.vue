@@ -114,8 +114,8 @@ import creAddressBook from '../receiver/Tal_creAddressBook.vue'
 export default {
   async created () {
     await this.settingPop()
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // window.addEventListener('message', e => this.recvNoti(e))
+    document.addEventListener('message', e => this.recvNoti(e))
+    window.addEventListener('message', e => this.recvNoti(e))
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
   },
@@ -667,6 +667,99 @@ export default {
     },
     closePushPop () {
       this.notiDetailShowYn = false
+    },
+    recvNoti (e) {
+      var message
+      try {
+        if (this.$isJsonString(e.data) === true) {
+          message = JSON.parse(e.data)
+        } else {
+          message = e.data
+        }
+        if (message.type === 'pushmsg') {
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            this.systemName = localStorage.getItem('systemName')
+          }
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
+          var currentPage = this.$store.getters['D_HISTORY/hCPage']
+          if ((currentPage === 0 || currentPage === undefined)) {
+          } else {
+            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
+              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
+                return
+              }
+              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
+                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+                  ;
+                } else {
+                  if (this.notiDetail.jobkindId === 'ALIM') {
+                    if (this.popId === 'chanDetail' + JSON.parse(this.notiDetail.userDo).targetKey) return
+                    this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  } else if (this.notiDetail.jobkindId === 'BOAR') {
+                    this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
+                  }
+                }
+              } else {
+                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+                  if (this.notiDetail.jobkindId !== 'BOAR') {
+                    this.notiDetailShowYn = true // wowns
+                    // if (this.$route.path === '/') {
+                    //   this.$refs.mainRouterView.getMainBoard()
+                    // }
+                  }
+                } else {
+                  this.openPop({ targetKey: this.notiDetail.creTeamKey, nameMtext: this.notiDetail.creTeamName, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                }
+              }
+            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CABI') {
+              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(this.GE_USER.userKey)) {
+                return
+              }
+              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
+                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+                  ;
+                } else {
+                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
+                }
+              }
+            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
+              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
+                return
+              }
+              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+              } else {
+                if (this.popId === 'chanDetail' + JSON.parse(this.notiDetail.userDo).targetKey) return
+                if (this.notiDetail.actType === 'FL') {
+                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+                } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
+                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+                } else if (this.notiDetail.actType === 'MA') {
+                  this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail, pushOpenYn: true })
+                }
+              }
+            } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
+              if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
+                if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+
+                } else {
+                  if (this.notiDetail.jobkindId === 'ALIM') {
+                    if (this.popId === 'chanDetail' + JSON.parse(this.notiDetail.userDo).targetKey) return
+                    this.openPop({ targetKey: this.notiDetail.creTeamKey, targetContentsKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'chanDetail', value: this.notiDetail })
+                  } else if (this.notiDetail.jobkindId === 'BOAR') {
+                    this.openPop({ targetKey: JSON.parse(this.notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, value: this.notiDetail, pushOpenYn: true })
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.error('메세지를 파싱할수 없음 ' + err)
+      }
     }
   }
 }

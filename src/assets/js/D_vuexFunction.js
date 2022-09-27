@@ -271,9 +271,14 @@ const functions = {
       }
     }
   },
-  settingChanNoti (message) {
+  async settingChanNoti (message) {
     if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
-      return
+    }
+    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL') {
+      var chanDetail = await functions.getDetail('TEAM', JSON.parse(notiDetail.userDo).targetKey)
+      if (!chanDetail || chanDetail.length === 0) return
+      chanDetail[0].followerCount += 1
+      store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', chanDetail[0])
     }
     if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
     } else {

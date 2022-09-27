@@ -133,10 +133,6 @@ const D_CHANNEL = {
             }
           }
           team.teamTypeText = commonMethods.teamTypeString(team.teamType)
-          // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
-          // var message = commonMethods.changeText(team.memoMtext)
-          // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
-
           // eslint-disable-next-line no-new-object
           var D_CHAN_AUTH = {}
           D_CHAN_AUTH.recvAlimYn = true
@@ -203,11 +199,7 @@ const D_CHANNEL = {
     MU_REPLACE_SHOW_PROFILE_USER: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
-      // eslint-disable-next-line no-debugger
-      debugger
       if (payload.length === 0) return null
-      // eslint-disable-next-line no-debugger
-      debugger
       idx1 = chanList.findIndex(item => item.teamKey === payload[0].teamKey)
       var chanDetail = chanList[idx1]
       for (let i = 0; i < payload.length - 1; i++) {
@@ -248,37 +240,9 @@ const D_CHANNEL = {
       state.recentChangeTeamKey = chanDetail.teamKey
       return true
     },
-    MU_REPLACE_CONTENTS_USERDO: (state, payload) => {
-      var idx1, idx2
-      var chanList = state.chanList
-      // eslint-disable-next-line no-debugger
-      debugger
-      idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
-      var chanDetail = chanList[idx1]
-      for (var i = 0; i < payload.length; i++) {
-        if (payload[i].jobkindId === 'BOAR') {
-          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
-        } else {
-          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
-        }
-        if (idx2 !== -1) {
-          if (payload[i].jobkindId === 'BOAR') {
-            chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
-          } else {
-            chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
-          }
-        }
-      }
-      chanList[idx1] = chanDetail
-      state.chanList = chanList
-      state.recentChangeTeamKey = chanDetail.teamKey
-      return true
-    },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
-      // eslint-disable-next-line no-debugger
-      debugger
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
       var chanDetail = chanList[idx1]
       for (var i = 0; i < payload.length; i++) {
@@ -397,16 +361,6 @@ const D_CHANNEL = {
     AC_REPLACE_CONTENTS: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
       if (payload.length > 0) {
         commit('MU_REPLACE_CONTENTS', payload)
-      }
-    },
-    AC_REPLACE_CONTENTS_USERDO: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
-      if (payload.length > 0) {
-        commit('MU_REPLACE_CONTENTS_USERDO', payload)
-      }
-    },
-    AC_REPLACE_CONTENTS_MEMO_LIST: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
-      if (payload.length > 0) {
-        commit('MU_REPLACE_CONTENTS_MEMO_LIST', payload)
       }
     },
     AC_ADD_CONTENTS: ({ commit, state }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)

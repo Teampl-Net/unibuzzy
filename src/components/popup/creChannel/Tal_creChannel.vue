@@ -10,7 +10,7 @@
           <img src="../../../assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt=""> 배경편집 </label>
       </form>
 
-      <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
+      <div v-if="chanDetail.modiYn === true && this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
           <p class="font14" style="color:#aaa;"> <img src="../../../assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> 채널 삭제 </p>
         </div>
 
@@ -85,7 +85,7 @@
           </div>
         </div> -->
 
-        <!-- <div v-if="chanDetail.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:3em; bottom:80px;"> -->
+        <!-- <div v-if="CHANNEL_DETAIL.modiYn === true" @click="chanDelete" style="background-color:#DC143C; width:4rem; border-radius:5px; padding:3px 5px;position: absolute; right:3em; bottom:80px;"> -->
          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">채널 {{pageType}}</div>
       </div>
     </div>
@@ -104,7 +104,7 @@ import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {
   created() {
     this.$emit('openLoading')
-    if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
+    if (this.CHANNEL_DETAIL !== undefined && this.CHANNEL_DETAIL !== null && this.CHANNEL_DETAIL !== {}) {
       if (this.chanDetail.modiYn === true) {
         this.pageType = '수정'
         this.chanMemoYn = true
@@ -173,23 +173,20 @@ export default {
       // this.setParam(true)
     },
     async getTeamList () {
-      var paramMap = new Map()
-      paramMap.set('teamKey', this.chanDetail.targetKey)
-      this.modiTeamData = await this.$getTeamList(paramMap)
-      // console.log('this.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamData')
-      // console.log(this.modiTeamData.data.content[0].reqKey)
-      this.inputChannelName = this.$changeText(this.modiTeamData.data.content[0].nameMtext)
-      this.inputChannelMemo = this.$changeText(this.modiTeamData.data.content[0].memoMtext)
-      console.log(this.modiTeamData.data.content[0].bgPathMtext.length > 30)
-      console.log(this.modiTeamData.data.content[0].logoPathMtext.length > 30)
-      this.selectBg.selectedId = this.modiTeamData.data.content[0].picMfilekey
-      this.selectBg.selectPath = this.modiTeamData.data.content[0].bgDomainPath + this.modiTeamData.data.content[0].bgPathMtext
-      this.selectBg.iconType = this.modiTeamData.data.content[0].bgPathMtext.length > 30 ? 'img' : 'icon'
-      this.selectIcon.selectedId = this.modiTeamData.data.content[0].logoFilekey
-      this.selectIcon.selectPath = this.modiTeamData.data.content[0].logoDomainPath + this.modiTeamData.data.content[0].logoPathMtext
-      this.selectIcon.iconType = this.modiTeamData.data.content[0].logoPathMtext.length > 30 ? 'img' : 'icon'
+      // console.log('this.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAILthis.CHANNEL_DETAIL')
+      // console.log(this.CHANNEL_DETAIL.data.content[0].reqKey)
+      this.inputChannelName = this.$changeText(this.CHANNEL_DETAIL.data.content[0].nameMtext)
+      this.inputChannelMemo = this.$changeText(this.CHANNEL_DETAIL.data.content[0].memoMtext)
+      console.log(this.CHANNEL_DETAIL.data.content[0].bgPathMtext.length > 30)
+      console.log(this.CHANNEL_DETAIL.data.content[0].logoPathMtext.length > 30)
+      this.selectBg.selectedId = this.CHANNEL_DETAIL.data.content[0].picMfilekey
+      this.selectBg.selectPath = this.CHANNEL_DETAIL.data.content[0].bgDomainPath + this.CHANNEL_DETAIL.data.content[0].bgPathMtext
+      this.selectBg.iconType = this.CHANNEL_DETAIL.data.content[0].bgPathMtext.length > 30 ? 'img' : 'icon'
+      this.selectIcon.selectedId = this.CHANNEL_DETAIL.data.content[0].logoFilekey
+      this.selectIcon.selectPath = this.CHANNEL_DETAIL.data.content[0].logoDomainPath + this.CHANNEL_DETAIL.data.content[0].logoPathMtext
+      this.selectIcon.iconType = this.CHANNEL_DETAIL.data.content[0].logoPathMtext.length > 30 ? 'img' : 'icon'
       var param = {}
-      param.teamType = this.modiTeamData.data.content[0].teamType
+      param.teamType = this.CHANNEL_DETAIL.data.content[0].teamType
       this.setTypeData(param)
     },
     channelTypeClick () {
@@ -246,11 +243,11 @@ export default {
 
       // eslint-disable-next-line no-new-object
       var gParam = new Object()
-      if (this.chanDetail !== {}) {
-        gParam.teamKey = this.chanDetail.targetKey
-        if (this.modiTeamData.data){
-          // console.log(this.modiTeamData.data.content[0].reqKey)
-          gParam.reqKey = this.modiTeamData.data.content[0].reqKey
+      if (this.CHANNEL_DETAIL !== {}) {
+        gParam.teamKey = this.CHANNEL_DETAIL.targetKey
+        if (this.CHANNEL_DETAIL.data){
+          // console.log(this.CHANNEL_DETAIL.data.content[0].reqKey)
+          gParam.reqKey = this.CHANNEL_DETAIL.data.content[0].reqKey
         }
       }
 
@@ -284,16 +281,16 @@ export default {
         params.targetType = 'chanDetail'
         params.nameMtext = 'KO$^$' + this.inputChannelName
         if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
-          params.targetKey = this.chanDetail.targetKey
+          params.targetKey = this.CHANNEL_DETAIL.targetKey
           params.modiYn = true
-          params.teamKey = this.chanDetail.targetKey
+          params.teamKey = this.CHANNEL_DETAIL.targetKey
         }else{
           params.targetKey = result.teamKey
           params.teamKey = result.teamKey
           params.newChan = true
         }
 
-        // if(delYn === true && this.chanDetail.modiYn === true) {
+        // if(delYn === true && this.CHANNEL_DETAIL.modiYn === true) {
         //   params.deleteYn = delYn
         // }
         this.$emit('successCreChan', params)
@@ -312,6 +309,11 @@ export default {
         // '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
         '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
       }
+    },
+    CHANNEL_DETAIL () {
+        if (this.chanDetail) {
+            return this.$getDetail('TEAM', this.chanDetail.teamKey)
+        }
     }
   },
   components: {
