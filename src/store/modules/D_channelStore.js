@@ -228,6 +228,8 @@ const D_CHANNEL = {
     MU_REPLACE_CONTENTS: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
+      // eslint-disable-next-line no-debugger
+      debugger
 
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
       var chanDetail = chanList[idx1]
@@ -248,6 +250,7 @@ const D_CHANNEL = {
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = chanDetail.teamKey
+      console.log('************** REPLACE_CONTENTS  **************')
       return true
     },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {

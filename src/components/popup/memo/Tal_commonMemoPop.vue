@@ -53,15 +53,15 @@ export default {
           var s = window.getSelection()
           var r = s.getRangeAt(0)
           var el = r.startContainer.parentElement
-          console.log('#########################')
-          console.log(el.classList)
-          console.log('!!!!!!!!!!!!!!!!!!!!!!!!!')
+          // console.log('#########################')
+          // console.log(el.classList)
+          // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!')
           // Check if the current element is the .label
           if (el.classList.contains('parentNameCard')) {
             // Check if we are exactly at the end of the .label element
-            console.log('r.startOffset : ' + r.startOffset)
-            console.log('r.endOffset : ' + r.endOffset)
-            console.log('rel.textContent.length : ' + el.textContent.length)
+            // console.log('r.startOffset : ' + r.startOffset)
+            // console.log('r.endOffset : ' + r.endOffset)
+            // console.log('rel.textContent.length : ' + el.textContent.length)
             if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
               // prevent the default delete behavior
               event.preventDefault()

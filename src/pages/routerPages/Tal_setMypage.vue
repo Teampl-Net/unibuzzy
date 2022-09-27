@@ -116,7 +116,7 @@ export default {
     /* var history = localStorage.getItem('popHistoryStack').split('$#$')
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
-  computed: { 
+  computed: {
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -149,7 +149,7 @@ export default {
       if(this.changeUserIconShowYn) {
         ;
       } else {
-        this.changeUserIconShowYn = true 
+        this.changeUserIconShowYn = true
         var history = this.$store.getters['D_HISTORY/hStack']
         this.changeUserIconPop = 'changeUserIconPop' + history.length
         console.log(history)
@@ -212,7 +212,7 @@ export default {
     closePolicyPop () {
       this.showPolicyPopYn = false
     },
-    backClick () { 
+    backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.changeUserIconPop === hStack[hStack.length - 1]) {

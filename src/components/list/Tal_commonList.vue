@@ -6,7 +6,7 @@
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
-          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.mccKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -38,9 +38,9 @@
                       <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                   </div>
                   <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
-                  <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
-                    <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
+                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.mccKey"> -->
+                  <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.mccKey" @click="cancelConfirm(alim)">
+                    <p :id="'timerText'+alim.mccKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.mccKey)}}</p>
                   </div>
                   <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
                     <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
@@ -53,14 +53,14 @@
                   </div>
                 </div>
               </div>
-                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.mccKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.mccKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
                   <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
-                  <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
+                  <div @click="changeAct(userDo, alim.mccKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl img-w20" style="margin-top: 2px;"  v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl img-w20" style="margin-top: 2px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
@@ -70,31 +70,33 @@
                       <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.contentsKey" @click="copyText(alim.contentsKey, alim.jobkindId, index0, alim.title, alim.nameMtext, alim.cabinetNameMtext)"
+                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.mccKey" @click="copyText(alim.mccKey, alim.jobkindId, index0, alim.title, alim.nameMtext, alim.cabinetNameMtext)"
                       data-clipboard-text="" >
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''">
+                    <p class="fl font14" :id="'memoCountArea'+alim.mccKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.mccKey, teamKey : alim.creTeamKey}):''">
+                    <!-- <p class="fl font14" :id="'memoCountArea'+alim.mccKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.mccKey, teamKey : alim.creTeamKey}):''"> -->
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
-                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey, alim.creTeamKey)"/>
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.mccKey, alim.creTeamKey)"/>
                   </div>
 
                 </div>
               </div>
-              <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 && currentMemoList.length > 0" :id="'borderLine'+alim.contentsKey" ></div>
-              <!-- <div class="w-100P">
-                <p class="commonColor fl font16 mleft-05 mtop-1 fontBold" style="display:none" :id="'alimMemo'+alim.contentsKey" >댓글</p>
-              </div> -->
-              <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" >
-                <!-- <gMemoList :replyYn='true' @loadMore='MemoloadMore' :ref="setMemoList" :memoList="alimMemoList" @deleteMemo='deleteMemo' @editTrue='getBoardMemoList' @mememo='writeMememo' @scrollMove='scrollMove' /> -->
-                <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" />
+              <!-- <div class="alimListMemoBorder" v-if="findMemoOpend(alim.mccKey) !== -1 && commonListData.memoList.length > 0" :id="'borderLine'+alim.mccKey" ></div> -->
+              <div class="alimListMemoBorder" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1" :id="'borderLine'+alim.mccKey" ></div>
+              <!-- <div class="w-100P fl" v-if="findMemoOpend(alim.mccKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" > -->
+              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1">
+                <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.mccKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
+                  <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.mccKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
+                  <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
+                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.mccKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
+
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
-                <div v-if="this.currentMemoList.length > 0 && showMoreMemoTextYn === true" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div>
-                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
+                <div v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && alim.D_MEMO_LIST.length < getTotalMemoCount(alim) " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
@@ -105,10 +107,10 @@
       <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
-      <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div>
-      <transition name="showMemoPop">
-        <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
-      </transition>
+      <!-- <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div> -->
+      <!-- <transition name="showMemoPop">
+        <gMemoPop ref="gMemoRef" transition="showMemoPop" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
+      </transition> -->
       <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
       <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
@@ -189,6 +191,15 @@ export default {
     })
   },
   methods: {
+    getTotalMemoCount (alim) {
+      var count
+      for (let i = 0; i < alim.D_MEMO_LIST.length; i++) {
+        if (alim.D_MEMO_LIST[i].cmemoList && alim.D_MEMO_LIST[i].cmemoList.length > 0) {
+          count += 1
+        }
+      }
+      return alim.D_MEMO_LIST.length + count
+    },
     async makeShareLink (key) {
       var result = null
       var thisthis = this
@@ -219,11 +230,13 @@ export default {
         }
     },
     clickInfo (data) {
-      // console.log(data)
+      console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
-    memoUserNameClick (userKey) {
-      var indexOf = this.commonListData.findIndex(i => i.contentsKey === this.currentContentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+    memoUserNameClick (param) {
+      var userKey = param.userKey
+      var currentContentsKey = param.contentsKey
+      var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
         console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
         console.log(this.commonListData[indexOf])
@@ -517,27 +530,30 @@ export default {
         this.$emit('scrollMove', wich+a)
       })
     },
-    async deleteMemo (param) {
-      var memo = {}
-      memo.memoKey = param.memoKey
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
-        param: memo
-      })
-      if (result.data.result === true) {
-        var cont = this.currentMemoObj
-        // this.memoList = []
-        // await this.getBoardMemoList(true)
-        var response = await this.getContentsMemoList(this.currentContentsKey)
+    // async deleteMemo (param) {
+    //   var memo = {}
+    //   memo.memoKey = param.memoKey
+    //   var result = await this.$commonAxiosFunction({
+    //     url: 'service/tp.deleteMemo',
+    //     param: memo
+    //   })
+    //   if (result.data.result === true) {
+    //     var cont = this.currentMemoObj
+    //     // this.memoList = []
+    //     // await this.getBoardMemoList(true)
+    //     var response = await this.getContentsMemoList(this.currentContentsKey)
 
-        index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
-        cont.D_MEMO_LIST.splice(index, 1)
-        this.currentMemoList = cont.D_MEMO_LIST
-        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-        this.currentMemoObj = cont
-        this.memoSetCount(response.totalElements)
-      }
+    //     index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+    //     cont.D_MEMO_LIST.splice(index, 1)
+    //     this.currentMemoList = cont.D_MEMO_LIST
+    //     this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+    //     this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+    //     this.currentMemoObj = cont
+    //     this.memoSetCount(response.totalElements)
+    //   }
+    // },
+    deleteMemo (param) {
+      this.$emit('deleteMemo', param)
     },
     setIntervalTimer(date, contentsKey){
       var time = this.$cancelTimer(date)
@@ -626,76 +642,79 @@ export default {
         this.$showToastPop('3분이 지나 취소가 불가능합니다. 알림을 회수하고 싶으시면 해당 알림 우측에 메뉴를 눌러 사유 입력 후 취소를 눌러주세요')
       }
     },
-    async saveMemo (text) {
-      this.saveMemoLoadingYn = true
-      // eslint-disable-next-line no-new-object
-      var memo = new Object()
-      memo.parentMemoKey = null
-      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
-        memo.parentMemoKey = this.mememoValue.parentMemoKey
-      }
+    // async saveMemo (text) {
+    //   this.saveMemoLoadingYn = true
+    //   // eslint-disable-next-line no-new-object
+    //   var memo = new Object()
+    //   memo.parentMemoKey = null
+    //   if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+    //     memo.parentMemoKey = this.mememoValue.parentMemoKey
+    //   }
 
-      memo.bodyFullStr = text
-      /* memo.bodyFilekey  */
-      memo.targetKind = 'C'
-      memo.targetKey = this.currentContentsKey
-      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
-      memo.creUserKey = this.GE_USER.userKey
-      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+    //   memo.bodyFullStr = text
+    //   /* memo.bodyFilekey  */
+    //   memo.targetKind = 'C'
+    //   memo.targetKey = this.currentContentsKey
+    //   // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
+    //   memo.creUserKey = this.GE_USER.userKey
+    //   memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+    //   memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
 
-      try{
-        var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
-          param: { memo: memo }
-        })
+    //   try{
+    //     var result = await this.$commonAxiosFunction({
+    //       url: 'service/tp.saveMemo',
+    //       param: { memo: memo }
+    //     })
 
-        if (result.data.result === true || result.data.result === 'true') {
-          /* this.confirmText = '댓글 저장 성공'
-          this.confirmPopShowYn = true */
-          this.memoShowYn = false
-          // await this.getContentsList()
-          // await this.getBoardMemoList(true)
-          this.currentMemoList = []
-          var cont = this.currentMemoObj
-          debugger
-          var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
-          debugger
-          cont.D_MEMO_LIST = response.memoList
+    //     if (result.data.result === true || result.data.result === 'true') {
+    //       /* this.confirmText = '댓글 저장 성공'
+    //       this.confirmPopShowYn = true */
+    //       this.memoShowYn = false
+    //       // await this.getContentsList()
+    //       // await this.getBoardMemoList(true)
+    //       this.currentMemoList = []
+    //       var cont = this.currentMemoObj
+    //       debugger
+    //       var response = await this.getContentsMemoList(this.currentContentsKey, this.currentMemoList.length + 1, 0)
+    //       debugger
+    //       cont.D_MEMO_LIST = response.memoList
 
-          this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          this.currentMemoObj = cont
-          this.currentMemoList = cont.D_MEMO_LIST
-          this.memoSetCount(response.totalElements)
-          this.pointAni()
-          /* this.scrollMove(-1) */
-        }
-      } catch (e) {
-        console.log(e)
-      } finally {
-        this.saveMemoLoadingYn = false
-      }
-    },
-    memoSetCount (size, key) {
-      var contentsKey = this.currentContentsKey
-      if (key !== undefined && key !== null && key !== '' ) contentsKey = key
-      var indexOf = this.commonListData.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
-      if (indexOf !== -1 ){
-        this.commonListData[indexOf].memoCount = size
-      }
+    //       this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+    //       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+    //       this.currentMemoObj = cont
+    //       this.currentMemoList = cont.D_MEMO_LIST
+    //       this.memoSetCount(response.totalElements)
+    //       this.pointAni()
+    //       /* this.scrollMove(-1) */
+    //     }
+    //   } catch (e) {
+    //     console.log(e)
+    //   } finally {
+    //     this.saveMemoLoadingYn = false
+    //   }
+    // },
+    // memoSetCount (size, key) {
+    //   var contentsKey = this.currentContentsKey
+    //   if (key !== undefined && key !== null && key !== '' ) contentsKey = key
+    //   var indexOf = this.commonListData.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+    //   if (indexOf !== -1 ){
+    //     this.commonListData[indexOf].memoCount = size
+    //   }
 
-    },
-    mememoCancel(){
-      this.mememoValue = null
-    },
+    // },
+    // mememoCancel(){
+    //   this.mememoValue = null
+    // },
     writeMemo (key, creTeamKey) {
       var findIndex = this.openMemoList.indexOf(key)
       if (findIndex === -1) this.memoOpenClick({key : key, teamKey : creTeamKey})
-      this.memoShowYn = true
-      this.mememoValue = null
-      this.currentContentsKey = key
-
+      // this.memoShowYn = true
+      // this.mememoValue = null
+      // this.currentContentsKey = key
+      var param = {}
+      param.mccKey = key
+      param.teamKey = creTeamKey
+      this.$emit('writeMemo', param)
     },
     findMemoOpend (key) {
       return this.openMemoList.indexOf(key)
@@ -705,79 +724,29 @@ export default {
       console.log(el)
     },
     writeMememo (memo) {
-      // if (this.shareAuth.R === true) {
-        var data = {}
-        data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
-        if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== ''){
-          data.parentMemoKey = memo.parentMemoKey
-        }
-        data.memo = memo
-        // eslint-disable-next-line no-new-object
-        this.mememoValue = new Object()
-        this.mememoValue = data
-        this.memoShowYn = true
+      var data = {}
+      data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
+      if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== ''){
+        data.parentMemoKey = memo.parentMemoKey
+      }
+      data.memo = memo
+      // this.mememoValue = {}
+      // this.mememoValue = data
+      // this.memoShowYn = true
+      this.$emit('writeMememo', data)
     },
     async memoOpenClick (param) {
       console.log(param)
-      this.currentMemoList = new Array()
-      this.pageSize = 5
-      this.offsetInt = 0
-      this.selectedConentsKey = param.key
-      this.openMemoList.splice(this.findMemoOpend(this.currentContentsKey), 1)
-      this.openMemoList.push(param.key)
-      this.currentContentsKey = param.key
       var key = param.key
       var teamKey = param.teamKey
-      var cont = null
+      // if (this.findMemoOpend(key) !== -1) this.openMemoList.splice(this.findMemoOpend(key), 1)
+      this.openMemoList.push(key)
 
-      var indexOf = this.commonListData.findIndex(i => i.contentsKey === this.selectedConentsKey)
-      if (indexOf !== -1) {
-        teamKey = this.commonListData[indexOf].creTeamKey
-
-        var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
-        console.log('!!!contList!!!')
-        console.log(contList)
-        if (contList) {
-            cont = contList[0]
-        }
-        console.log('###cont###')
-        console.log(cont)
-        debugger
-
-        if (!cont.D_MEMO_LIST) {
-          this.currentMemoObj = cont
-          cont.D_MEMO_LIST = new Array()
-          var response = await this.getContentsMemoList(key, null, null, teamKey)
-          cont.D_MEMO_LIST = response.memoList
-        }
-        // if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
-        //     this.currentMemoObj = cont
-        // } else {
-            // if (cont.D_MEMO_LIST) {
-            //   cont.D_MEMO_LIST = new Array()
-            //   this.currentMemoObj = cont
-            //   var response = await this.getContentsMemoList(key, null, null, teamKey)
-            //   cont.D_MEMO_LIST = [
-            //       ...cont.D_MEMO_LIST,
-            //       ...response.memoList
-            //   ]
-            //   console.log('###D_MEMO_LIST###')
-            //   console.log(cont.D_MEMO_LIST)
-            // } else {
-
-            // }
-        // }
-        // console.log('!!!!!!!!!!!!')
-        // console.log(cont)
-        // console.log('!!!!!!!!!!!!')
-        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-
-
-        if (document.getElementById('alimMemo'+this.currentContentsKey)) {
-            document.getElementById('alimMemo'+this.currentContentsKey).style.display = 'none'
-        } else if (document.getElementById('borderLine'+this.currentContentsKey)) {
-            document.getElementById('borderLine'+this.currentContentsKey).style.display = 'none'
+      console.log(this.openMemoList)
+      if (document.getElementById('alimMemo'+key)) {
+            document.getElementById('alimMemo'+key).style.display = 'none'
+        } else if (document.getElementById('borderLine'+key)) {
+            document.getElementById('borderLine'+key).style.display = 'none'
         }
 
         if (document.getElementById('alimMemo'+key)) {
@@ -785,23 +754,79 @@ export default {
         } else if (document.getElementById('borderLine'+key)) {
             document.getElementById('borderLine'+key).style.display = 'block'
         }
-        this.currentMemoList = cont.D_MEMO_LIST
 
-        console.log('!!!!!!!!!!!!')
-        console.log(this.currentMemoList)
-        console.log('!!!!!!!!!!!!')
-        this.currentContentsKey = key
-      }
-      if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
+      this.$emit('memoOpenClick', param)
+      // this.currentMemoList = new Array()
+      // this.pageSize = 5
+      // this.offsetInt = 0
+      // this.selectedConentsKey = param.key
+
+      // this.currentContentsKey = param.key
+
+      // var cont = null
+
+      // var indexOf = this.commonListData.Index(i => i.contentsKey === this.selectedConentsKey)
+      // if (indexOf !== -1) {
+      //   teamKey = this.commonListData[indexOf].creTeamKey
+
+      //   var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
+      //   console.log('!!!contList!!!')
+      //   console.log(contList)
+      //   if (contList) {
+      //       cont = contList[0]
+      //   }
+      //   console.log('###cont###')
+      //   console.log(cont)
+      //   debugger
+
+      //   if (!cont.D_MEMO_LIST) {
+      //     this.currentMemoObj = cont
+      //     cont.D_MEMO_LIST = new Array()
+      //     var response = await this.getContentsMemoList(key, null, null, teamKey)
+      //     cont.D_MEMO_LIST = response.memoList
+      //   }
+      //   // if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
+      //   //     this.currentMemoObj = cont
+      //   // } else {
+      //       // if (cont.D_MEMO_LIST) {
+      //       //   cont.D_MEMO_LIST = new Array()
+      //       //   this.currentMemoObj = cont
+      //       //   var response = await this.getContentsMemoList(key, null, null, teamKey)
+      //       //   cont.D_MEMO_LIST = [
+      //       //       ...cont.D_MEMO_LIST,
+      //       //       ...response.memoList
+      //       //   ]
+      //       //   console.log('###D_MEMO_LIST###')
+      //       //   console.log(cont.D_MEMO_LIST)
+      //       // } else {
+
+      //       // }
+      //   // }
+      //   // console.log('!!!!!!!!!!!!')
+      //   // console.log(cont)
+      //   // console.log('!!!!!!!!!!!!')
+      //   this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+      //   this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+
+        // console.log(document.getElementById('alimMemo'+key))
+
+        // this.currentMemoList = cont.D_MEMO_LIST
+
+      //   console.log('!!!!!!!!!!!!')
+      //   console.log(this.currentMemoList)
+      //   console.log('!!!!!!!!!!!!')
+      //   this.currentContentsKey = key
+      // }
+      // if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
     },
     alimBigView (alim) {
         alim.bigYn = true
       // contentsKey, alim.attachMfilekey
-        document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
-        document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
-        document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+        document.getElementById('bodyFullStr'+alim.mccKey).style.maxHeight = '100%'
+        document.getElementById('bodyFullStr'+alim.mccKey).style.marginBottom = '2rem'
+        document.getElementById('bodyMore'+alim.mccKey).style.display = 'none'
         var thisthis = this
-        var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
+        var imgList = document.querySelectorAll('#bodyFullStr'+alim.mccKey + ' img')
         for (let m = 0; m < imgList.length; m++) {
             imgList[m].addEventListener('touchstart', () => {
             imgList[m].style.opacity = 0.8
@@ -868,69 +893,69 @@ export default {
       }, [])
       return uniqueArr
     },
-    async getContentsMemoList (key, pageSize, offsetInt) {
-        var memo = {}
-        memo.targetKind = 'C'
-        memo.targetKey = key
+    // async getContentsMemoList (key, pageSize, offsetInt) {
+    //   var memo = {}
+    //   memo.targetKind = 'C'
+    //   memo.targetKey = key
 
-      var cont = this.currentMemoObj
-      if (pageSize) memo.pageSize = pageSize
-      else  memo.pageSize = this.pagesize
-      if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
-      else  memo.offsetInt = this.offsetInt
-      // if (allYn) {
-      //   memo.pageSize = this.totalElements + 1
-      //   memo.offsetInt = 0
-      // }
+    //   var cont = this.currentMemoObj
+    //   if (pageSize) memo.pageSize = pageSize
+    //   else  memo.pageSize = this.pagesize
+    //   if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
+    //   else  memo.offsetInt = this.offsetInt
+    //   // if (allYn) {
+    //   //   memo.pageSize = this.totalElements + 1
+    //   //   memo.offsetInt = 0
+    //   // }
 
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
-        param: memo
-      })
+    //   var result = await this.$commonAxiosFunction({
+    //     url: 'service/tp.getMemoList',
+    //     param: memo
+    //   })
 
-      if (result.data.memoList) {
-        cont.totalMemoCount = result.data.totalElements
-        var tempList = []
-        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
-        if (cont.D_MEMO_LIST) {
-          tempList = cont.D_MEMO_LIST
-        }
-        const newArr = [
-          ...tempList,
-          ...result.data.memoList
-        ]
-        var tempMemo = this.replaceArr(newArr)
+    //   if (result.data.memoList) {
+    //     cont.totalMemoCount = result.data.totalElements
+    //     var tempList = []
+    //     // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
+    //     if (cont.D_MEMO_LIST) {
+    //       tempList = cont.D_MEMO_LIST
+    //     }
+    //     const newArr = [
+    //       ...tempList,
+    //       ...result.data.memoList
+    //     ]
+    //     var tempMemo = this.replaceArr(newArr)
 
-        if (tempMemo && tempMemo.length > 0) {
-          for (let i = 0; i < tempMemo.length; i++) {
-            if (tempMemo.parentMemoKey) {
-              for (let j = 0; j < tempMemo.length; j++) {
-                if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
-                  tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
-                  tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
-                }
-              }
-            }
-          }
-        }
-        cont.D_MEMO_LIST = tempMemo
-        this.offsetInt = tempMemo.length
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-      }
+    //     if (tempMemo && tempMemo.length > 0) {
+    //       for (let i = 0; i < tempMemo.length; i++) {
+    //         if (tempMemo.parentMemoKey) {
+    //           for (let j = 0; j < tempMemo.length; j++) {
+    //             if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
+    //               tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
+    //               tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //     cont.D_MEMO_LIST = tempMemo
+    //     this.offsetInt = tempMemo.length
+    //     this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+    //   }
 
 
-      // console.log(result.data.content)
-      var list = new Array()
-      list = result.data
-      console.log(list)
+      // // console.log(result.data.content)
+      // var list = new Array()
+      // list = result.data
+      // console.log(list)
 
-      /* console.log('this.$refs.gMemoRef')
-      console.log(this.$refs.gMemoRef)
-      this.$refs.gMemoRef.memoLoadingHide() */
-      this.currentMemoObj = cont
-      this.currentMemoTotal = this.currentMemoObj.totalElements
+      // /* console.log('this.$refs.gMemoRef')
+      // console.log(this.$refs.gMemoRef)
+      // this.$refs.gMemoRef.memoLoadingHide() */
+      // this.currentMemoObj = cont
+      // this.currentMemoTotal = this.currentMemoObj.totalElements
 
-      return list
+      // return list
         // if (allYn) {
         //   this.alimMemoList = result.data.content
         //   this.endListYn = true
@@ -942,7 +967,7 @@ export default {
         //   this.alimMemoList = newArr
         // }
 
-    },
+    // },
     async loadMoreMemo () {
         this.showMoreMemoTextYn = true
         // alert(true)
@@ -990,23 +1015,9 @@ export default {
       }
 
     },
-    async yesLoadMore () {
-        this.pageSize = 5
-        /* debugger */
-        var cont = this.currentMemoObj
-        var response = await this.getContentsMemoList(this.currentContentsKey)
-        var newArr = []
-        newArr = [
-            ...cont.D_MEMO_LIST,
-            ...response.memoList
-        ]
-        cont.D_MEMO_LIST = newArr
-        this.currentMemoList = cont.D_MEMO_LIST
-        this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-        this.currentMemoObj = cont
-        if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
-        this.memoSetCount(response.totalElements)
+    async yesLoadMore (contentsKey) {
+      console.log('commonlist contentsKey : ' + contentsKey);
+      this.$emit('yesLoadMore', contentsKey)
     },
     async copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
         // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText

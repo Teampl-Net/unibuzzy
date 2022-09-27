@@ -1,6 +1,8 @@
 <template>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
+    <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
+
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true "/> -->
       <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/>
@@ -29,19 +31,24 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && GE_CHANNEL_DETAIL && GE_CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
+          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
         </div>
+        <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="this.memoShowYn = false"></div>
+        <transition name="showMemoPop">
+          <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
+        </transition>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
         <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
     </div>
+    <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
   <!-- </div> -->
 </template>
 <script>
@@ -105,18 +112,72 @@ export default {
     this_.getPushContentsList().then(response => {
       this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = []
+      var cont
+      var tempContentDetail
+      var contentDetail
+
       if (this_.viewMainTab === 'P') {
         newArr = [
           ...this_.alimContentsList,
           ...response.content
         ]
         this_.alimContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this_.alimContentsList.length; i++) {
+          cont = this_.alimContentsList[i]
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+          console.log('!!!!!!!!!!!!!!!!!!!!!')
+          console.log(contentDetail)
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...contentDetail.D_MEMO_LIST,
+              ...cont.memoList
+            ]
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          }
+        }
       } else {
         newArr = [
           ...this_.boardContentsList,
           ...response.content
         ]
         this_.boardContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this_.boardContentsList.length; i++) {
+          cont = this_.boardContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...contentDetail.D_MEMO_LIST,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          }
+        }
       }
       // this.updateStoreData(uniqueArr)
       this_.findPopShowYn = false
@@ -388,6 +449,397 @@ export default {
     } */
   },
   methods: {
+    async yesLoadMore (contentKey) {
+      var cont, idx
+      if (this.viewMainTab === 'P') {
+        idx = this.alimContentsList.findIndex(i => i.contentsKey === contentKey)
+        if (idx !== -1) cont = this.alimContentsList[idx]
+      } else if (this.viewMainTab === 'B') {
+        idx = this.boardContentsList.findIndex(i => i.contentsKey === contentKey)
+        if (idx !== -1) cont = this.boardContentsList[idx]
+      }
+      console.log('#######yesLoadMore#####')
+      console.log('index : ' + idx)
+      console.log(cont)
+      console.log('############')
+      // eslint-disable-next-line no-debugger
+      debugger
+      /* debugger */
+      var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
+      console.log('console.log(response)')
+      console.log(response)
+      console.log(cont.D_MEMO_LIST)
+
+      var newArr = [
+        ...cont.D_MEMO_LIST,
+        ...response
+      ]
+      var newList = await this.replaceMemoArr(newArr)
+
+      console.log(newList)
+      cont.D_MEMO_LIST = newList
+      console.log(cont)
+
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+      // eslint-disable-next-line no-debugger
+      debugger
+      // this.currentMemoObj = cont
+      // if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
+      // this.memoSetCount(response.totalElements)
+    },
+    replaceMemoArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+          data.push(current)
+        }
+        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.mccKey - a.mccKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        }) */
+        return data
+      }, [])
+      return uniqueArr
+    },
+    writeMememo (memo) {
+      console.log('###########write#######')
+      console.log(memo)
+      this.mememoValue = {}
+      this.currentContentsKey = memo.memo.targetKey
+      this.mememoValue = memo
+      this.memoShowYn = true
+    },
+    async deleteMemo (param) {
+      console.log(param)
+      var memo = {}
+      memo.memoKey = param.memoKey
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.deleteMemo',
+        param: memo
+      })
+      var index
+      if (result.data.result === true) {
+        // var cont = this.currentMemoObj
+        var idx, cont
+        if (this.viewMainTab === 'P') {
+          idx = this.alimContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+          if (idx !== -1) cont = this.alimContentsList[idx]
+        } else if (this.viewMainTab === 'B') {
+          idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+          if (idx !== -1) cont = this.boardContentsList[idx]
+        }
+        // this.memoList = []
+        // await this.getBoardMemoList(true)
+        // var response = await this.getContentsMemoList(this.currentContentsKey)
+        console.log('$$$$$$$$$$$$cont#############')
+        console.log(cont)
+        console.log(idx)
+        console.log('$$$$$$$$$$$$@@@@#############')
+        index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+        console.log(cont.D_MEMO_LIST)
+        var cmemoListIdx
+        if (param.parentMemoKey) {
+          for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+            if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
+              console.log(cont.D_MEMO_LIST[i].cmemoList)
+              index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
+              if (index !== -1) {
+                cmemoListIdx = i
+                break
+              }
+            }
+          }
+          console.log('cMemoList 중 해당 인덱스는 : ' + index)
+          console.log('해당 메모가 있는 인덱스는 : ' + cmemoListIdx)
+          console.log('cont.D_MEMO_LIST[cmemoListIdx] : ' + cont.D_MEMO_LIST[cmemoListIdx])
+          cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+        } else {
+          cont.D_MEMO_LIST.splice(index, 1)
+        }
+        cont.memoCount -= 1
+
+        // this.currentMemoList = cont.D_MEMO_LIST
+        // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        // this.currentMemoObj = cont
+        // this.memoSetCount(response.totalElements)
+      }
+      this.$showToastPop('댓글을 삭제하였습니다.')
+    },
+    confirmOk () {
+      this.confirmType = 'timeout'
+      if (this.currentConfirmType === 'memoDEL') {
+        console.log(this.tempData)
+        this.deleteMemo({ memoKey: this.tempData.memoKey, contentsKey: this.tempData.targetKey, parentMemoKey: this.tempData.parentMemoKey })
+      }
+      this.currentConfirmType = ''
+      this.confirmPopShowYn = false
+    },
+    deleteConfirm (data) {
+      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
+        console.log(data)
+        this.tempData = data
+      }
+
+      if (data === 'memo' || this.tempData.memoKey) {
+        this.confirmText = '댓글을 삭제하시겠습니까?'
+        if (this.tempData.parentMemoKey) {
+          this.confirmText = '대댓글을 삭제하시겠습니까?'
+        }
+        this.currentConfirmType = 'memoDEL'
+      } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
+        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.currentConfirmType = 'alimDEL'
+      } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
+        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.currentConfirmType = 'boardDEL'
+      }
+      console.log(this.tempData)
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
+    },
+    memoSetCount (size, key) {
+      // var contentsKey = this.currentContentsKey
+      // if (key !== undefined && key !== null && key !== '' ) contentsKey = key
+      // // var indexOf = this.commonListData.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      // // if (indexOf !== -1 ){
+      // //   this.commonListData[indexOf].memoCount = size
+      // // }
+    },
+    mememoCancel () {
+      this.mememoValue = null
+    },
+    writeMemo (param) {
+      console.log('tal_pushList writeMemo' + JSON.stringify(param))
+      this.mememoValue = null
+      this.memoShowYn = true
+      // this.writeMemoTempmcckey = param.mccKey
+      // var currentContentsKey
+      var idx
+      if (this.viewMainTab === 'P') {
+        idx = this.alimContentsList.findIndex(i => i.mccKey === param.mccKey)
+        if (idx !== -1) {
+          this.currentContentsKey = this.alimContentsList[idx].contentsKey
+        } else {
+          this.$showToastPop('작성 setting 중 오류')
+        }
+      } else if (this.viewMainTab === 'B') {
+        idx = this.boardContentsList.findIndex(i => i.mccKey === param.mccKey)
+        if (idx !== -1) {
+          this.currentContentsKey = this.boardContentsList[idx].contentsKey
+        } else {
+          this.$showToastPop('작성 setting 중 오류')
+        }
+      }
+      console.log('##############')
+      console.log('작성 할 contents index 는 : ' + idx)
+      console.log('작성 할 contents key 는 : ' + this.currentContentsKey)
+      console.log('##############')
+
+      this.writeMemoTempTeamKey = param.teamKey
+    },
+    async saveMemo (text) {
+      this.saveMemoLoadingYn = true
+      // eslint-disable-next-line no-new-object
+      var memo = new Object()
+      memo.parentMemoKey = null
+      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+        memo.parentMemoKey = this.mememoValue.parentMemoKey
+      }
+
+      memo.bodyFullStr = text
+      /* memo.bodyFilekey  */
+      memo.targetKind = 'C'
+      memo.targetKey = this.currentContentsKey
+      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
+      memo.creUserKey = this.GE_USER.userKey
+      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+      memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(memo)
+
+      // try {
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveMemo',
+        param: { memo: memo }
+      })
+      console.log('!!!!!! SAVE MEMO result !!!!!!!')
+      console.log(result)
+
+      if (result.data.result === true || result.data.result === 'true') {
+        /* this.confirmText = '댓글 저장 성공'
+        this.confirmPopShowYn = true */
+        this.memoShowYn = false
+        // await this.getContentsList()
+        // await this.getBoardMemoList(true)
+
+        // this.currentMemoList = []
+        // var cont = this.currentMemoObj
+        var idx, memoLength, cont
+        if (this.viewMainTab === 'P') {
+          idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+          if (idx !== -1) {
+            memoLength = this.alimContentsList[idx].memoList.length
+            cont = this.alimContentsList[idx]
+          }
+        } else if (this.viewMainTab === 'B') {
+          idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+          if (idx !== -1) {
+            memoLength = this.boardContentsList[idx].memoList.length
+            cont = this.boardContentsList[idx]
+          }
+        }
+        console.log('memoLength : ' + memoLength)
+        console.log('memoLength : ' + memoLength)
+
+        if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
+          var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
+          console.log('!!!response!!!!')
+          console.log(response)
+          console.log('!!!!!!!!!!!!!!!')
+          if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
+          var newArr = [
+            ...response,
+            ...cont.D_MEMO_LIST
+          ]
+          var newList = this.replaceMemoArr(newArr)
+          cont.D_MEMO_LIST = newList
+          // cont.memoCount = newList.length
+          cont.memoCount += 1
+          // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          // this.currentMemoObj = cont
+          // this.currentMemoList = cont.D_MEMO_LIST
+          // this.memoSetCount(response.totalElements)
+          // this.pointAni()
+        }
+        /* this.scrollMove(-1) */
+      }
+      // } catch (e) {
+      //   console.log(e)
+      // } finally {
+      //   this.saveMemoLoadingYn = false
+      // }
+      this.saveMemoLoadingYn = false
+    },
+    memoOpenClick (params) {
+      console.log(params)
+    },
+    async getContentsMemoList (key, pageSize, offsetInt) {
+      var memo = {}
+      memo.targetKind = 'C'
+      memo.targetKey = key
+      var idx, cont
+      if (this.viewMainTab === 'P') {
+        idx = this.alimContentsList.findIndex(i => i.contentsKey === key)
+        if (idx !== -1) cont = this.alimContentsList[idx]
+      } else if (this.viewMainTab === 'B') {
+        idx = this.boardContentsList.findIndex(i => i.mccKey === key)
+        if (idx !== -1) cont = this.boardContentsList[idx]
+      }
+
+      console.log('getContentsMemoList idx :' + idx)
+      console.log('#########################')
+      console.log('param key : ' + key + ' param pageSize : ' + pageSize + ' param offsetInt : ' + offsetInt)
+      if (pageSize) memo.pageSize = pageSize
+      else memo.pageSize = this.pagesize
+      if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
+      else memo.offsetInt = this.offsetInt
+      // if (allYn) {
+      //   memo.pageSize = this.totalElements + 1
+      //   memo.offsetInt = 0
+      // }
+
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemoList',
+        param: memo
+      })
+      console.log(result)
+
+      console.log(cont)
+      if (result.data.memoList) {
+        // cont.totalMemoCount = result.data.totalElements
+        // var tempList = []
+        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
+        // if (cont.D_MEMO_LIST) {
+        //   tempList = cont.D_MEMO_LIST
+        // }
+        // const newArr = [
+        //   ...tempList,
+        //   ...result.data.memoList
+        // ]
+        // var tempMemo = this.replaceArr(newArr)
+
+        // if (tempMemo && tempMemo.length > 0) {
+        //   for (let i = 0; i < tempMemo.length; i++) {
+        //     if (tempMemo.parentMemoKey) {
+        //       for (let j = 0; j < tempMemo.length; j++) {
+        //         if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
+        //           tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
+        //           tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
+        // console.log('sssssssssssssssssssssssssssss')
+        // console.log(tempMemo)
+        // console.log('sssssssssssssssssssssssssssss')
+        // cont.D_MEMO_LIST = tempMemo
+        // this.offsetInt = tempMemo.length
+        // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', cont)
+      }
+
+      // console.log(result.data.content)
+      // var list = []
+      // list = tempMemo
+      // console.log(list)
+      // console.log(tempMemo)?
+      /* console.log('this.$refs.gMemoRef')
+      console.log(this.$refs.gMemoRef)
+      this.$refs.gMemoRef.memoLoadingHide() */
+      // this.currentMemoObj = cont
+      // this.currentMemoTotal = this.currentMemoObj.totalElements
+
+      return result.data.memoList
+      // if (allYn) {
+      //   this.alimMemoList = result.data.content
+      //   this.endListYn = true
+      // } else {
+      //   const newArr = [
+      //     ...this.alimMemoList,
+      //     ...result.data.content
+      //   ]
+      //   this.alimMemoList = newArr
+      // }
+    },
+    updateStoreData (uniqueArr) {
+      var this_ = this
+      if (this.chanAlimYn) {
+        console.log(this.CHANNEL_DETAIL)
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
+        if (this.viewMainTab === 'P') {
+          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'ALIM'
+        } else if (this.viewMainTab === 'B') {
+          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'BOAR'
+        }
+        this_.$actionVuex('COMMONCONT', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
+      } else {
+        if (uniqueArr.length > 0) {
+          this_.canLoadYn = true
+        }
+        if (this.viewMainTab === 'P') {
+          this_.$actionVuex('ALIM', uniqueArr, null, true, false)
+        } else if (this.viewMainTab === 'B') {
+          // eslint-disable-next-line no-debugger
+          debugger
+          this_.$actionVuex('BOAR', uniqueArr, null, true, false)
+        }
+      }
+    },
+
     async getPushContentsList (pageSize, offsetInput) {
     // @point
     // eslint-disable-next-line no-new-object
@@ -650,22 +1102,74 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
-
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       this.endListSetFunc(resultList)
       var newArr = []
+      var cont
+      var tempContentDetail
+      var contentDetail
       if (this.viewMainTab === 'P') {
         newArr = [
           ...this.alimContentsList,
           ...resultList.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.alimContentsList.length; i++) {
+          cont = this.alimContentsList[i]
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+          console.log('!!!!!!!!!!!!!!!!!!!!!')
+          console.log(contentDetail)
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...contentDetail.D_MEMO_LIST,
+              ...cont.memoList
+            ]
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          }
+        }
       } else {
         newArr = [
           ...this.boardContentsList,
           ...resultList.content
         ]
         this.boardContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.boardContentsList.length; i++) {
+          cont = this.boardContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...contentDetail.D_MEMO_LIST,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          }
+        }
       }
     },
     endListSetFunc (resultList) {
@@ -965,7 +1469,18 @@ export default {
       selectBoardType: null,
       selectBoardPopShowYn: false,
       boardDetailValue: null,
-      canLoadYn: false
+      canLoadYn: false,
+      memoShowYn: false,
+      mememoValue: undefined,
+      writeMemoTempmcckey: null,
+      writeMemoTempTeamKey: null,
+      currentContentsKey: null,
+      saveMemoLoadingYn: false,
+      tempData: {},
+      confirmText: '',
+      currentConfirmType: '',
+      confirmPopShowYn: false,
+      confirmType: 'timeout'
     }
   }
 }
@@ -1081,4 +1596,8 @@ background: #fbfbfb;
 .back{
   background: #dcddeb !important;
 }
+.pushListMemoBoxBackground{
+width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;
+}
+
 </style>

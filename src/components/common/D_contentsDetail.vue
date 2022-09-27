@@ -703,8 +703,9 @@ export default {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
-        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
-        this.confirmPopShowYn = true
+        this.$showToastPop('댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.')
+        // this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        // this.confirmPopShowYn = true
       }
     },
     writeMememo (memo) {

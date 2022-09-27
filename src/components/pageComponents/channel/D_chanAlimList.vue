@@ -603,7 +603,7 @@ export default {
   watch: {
     CHANNEL_DETAIL: {
       handler (value, old) {
-        alert(true)
+        // alert(true)
       },
       deep: true
     },
