@@ -109,7 +109,7 @@ export default {
       return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -128,7 +128,7 @@ export default {
     console.log(this.CHANNEL_DETAIL)
     var history = this.$store.getters['D_HISTORY/hStack']
     history.push('chanMenu' + this.chanAlimListTeamKey)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
     this.screenHeight = window.innerHeight
     // this. myBoardList =
   },
@@ -295,7 +295,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history) */
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history) */
 
 
       this.$emit('openItem',params)
@@ -388,7 +388,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       await this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      await this.$store.commit('D_HISTORY/updateStack', history)
+      await this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       this.$emit('closePop')
       /* setTimeout(() => {
         this.$emit('closePop')

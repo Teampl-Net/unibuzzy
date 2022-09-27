@@ -4,13 +4,13 @@
     <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
     <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" fl" @changeTab="changeTab" />
     <div class="chanTop5Wrap fl" >
-        <div v-if="emptyYn && chanList && this.chanList.length === 0" class="w-100P">
+        <div v-if="emptyYn && GE_DISP_CHAN_LIST && this.GE_DISP_CHAN_LIST.length === 0" class="w-100P">
         <!-- 다른 이미지로 대체하면 된다 -->
             <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
         <!-- <img src="/resource/common/placeholder_white.png" /> -->
         </div>
         <!-- <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}"> -->
-        <div class="w-100P top5ChannelRow" :style="chanList && index === chanList.length - 1 ? 'border: none!important;' : ''"  v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
+        <div class="w-100P top5ChannelRow" :style="GE_DISP_CHAN_LIST && index === GE_DISP_CHAN_LIST.length - 1 ? 'border: none!important;' : ''"  v-for="(value, index) in GE_DISP_CHAN_LIST"  :key="index" v-on:click="openPop(value)" >
         <div class="top5ChanLogoImgWrap" :style="'background-image: url(' + ( value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; position: relative; background-position: center;">
             <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: -15px;"  alt="소유주 아이콘"/>
             <img src="../../../assets/images/common/icon_setting_gear.svg" v-else-if="value.managerKey > 0" style="width: 18px; height: 18px; position: absolute; top: -10px;" alt="매니저 아이콘">
@@ -43,31 +43,71 @@ import listTitle from '../../unit/Tal_main_title.vue'
 export default {
   name: 'top5_channel',
   created () {
+    if (this.chanList) {
+      this.mainChanList = this.chanList
+      console.log(this.mainChanList)
+    }
   },
   props: {
-    userChanList: {},
+    chanList: {},
     allChanList: {},
     myChanList: {}
   },
   data () {
     return {
+      mainChanList: [],
       ownerYn: false,
       moreLink: 'subs',
       // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       currentTabName: '구독중',
-      emptyYn: true,
-      chanList: {}
+      emptyYn: true
     }
   },
   components: {
     listTitle
   },
   mounted () {
-    this.chanList = this.userChanList
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_DISP_CHAN_LIST () {
+      var idx1
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(this.chanList)
+      if (this.chanList && this.chanList.length > 0) {
+        var test = []
+        for (var i = 0; i < this.chanList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.chanList[i].creTeamKey)
+          if (idx1 !== -1) {
+            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+          } else {
+            test.push(this.chanList[i])
+          }
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+        }
+        return test
+      } else {
+        return null
+      }
+    }
+  },
+  watch: {
+    chanList (value, old) {
+      if (value) {
+        // alert(true)
+        this.mainChanList = value
+      }
+    }
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -89,6 +129,20 @@ export default {
       //   text += '...'
       // }
       return text
+    },
+    async getContentsList (type) {
+      var paramMap = new Map()
+      if (this.viewTab === 'user') {
+        paramMap.set('userKey', this.GE_USER.userKey)
+      } else if (this.viewTab === 'mychannel') {
+        paramMap.set('userKey', this.GE_USER.userKey)
+        paramMap.set('managerYn', true)
+      }
+      paramMap.set('pageSize', 5)
+      paramMap.set('offsetInt', 0)
+      var resultList = await this.$getTeamList(paramMap)
+      this.mainChanList = resultList.data.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
     async recvNoti (e) {
       /* var message
@@ -154,7 +208,7 @@ export default {
       // this.introTop5ChanPageTab()
       // this.emptyYn = false
       // console.log(data)
-      /* await this.getContentsList() */
+      await this.getContentsList()
       // if (this.chanList.length === 0) this.emptyYn = true
     }
     /* async reLoad () {

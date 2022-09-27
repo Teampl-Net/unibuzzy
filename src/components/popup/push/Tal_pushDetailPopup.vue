@@ -48,7 +48,7 @@ export default {
       return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -76,7 +76,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       this.$emit('closePushPop')
     },
     openPushDetailPop () {
@@ -84,7 +84,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
 
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       if ((currentPage === 0 || currentPage === undefined)) {
@@ -132,7 +132,7 @@ export default {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'pushDetailPop' + history.length
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
   }
 }
 </script>

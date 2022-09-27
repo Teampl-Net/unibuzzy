@@ -6,7 +6,7 @@ import { createStore } from 'vuex'
 import D_USER from '@/store/modules/D_userStore.js'
 import D_HISTORY from '@/store/modules/D_historyStack.js'
 import D_CHANNEL from '@/store/modules/D_channelStore.js'
-import D_CONTENTS from '@/store/modules/D_contentsStore.js'
+import D_UPDATE from '@/store/modules/D_updateStore.js'
 
 import createPersistedState from 'vuex-persistedstate'
 
@@ -22,7 +22,7 @@ const store = createStore({
     D_USER: D_USER,
     D_HISTORY: D_HISTORY,
     D_CHANNEL: D_CHANNEL,
-    D_CONTENTS: D_CONTENTS
+    D_UPDATE: D_UPDATE
   },
   plugins: [storageState]
 })

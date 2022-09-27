@@ -39,32 +39,35 @@ const D_historyStack = {
     }
   },
   actions: {
+    AC_UPDATE_HISTOY ({ commit }, payload) {
+      commit('updateStack', payload)
+    }
   },
   modules: {
   },
   getters: {
-    archServerList (state) { // 현재 로그인 상태인지 확인 (true/false)
+    archServerList (state) {
       return state.archivingServerList
     },
-    canRYn (state) { // 현재 로그인 상태인지 확인 (true/false)
+    canRYn (state) {
       return state.canRemoveYn
     },
-    hStack (state) { // 현재 로그인 상태인지 확인 (true/false)
+    hStack (state) {
       return state.historyStack
     },
-    hRPage (state) { // 현재 로그인 상태인지 확인 (true/false)
+    hRPage (state) {
       return state.removePage
     },
-    hCPage (state) { // 현재 로그인 상태인지 확인 (true/false)
+    hCPage (state) {
       return state.historyStack[state.historyStack.length - 1]
     },
-    hUpdate (state) { // 현재 로그인 상태인지 확인 (true/false)
+    hUpdate (state) {
       return state.pageUpdate
     },
-    pushQueue (state) { // 현재 로그인 상태인지 확인 (true/false)
+    pushQueue (state) {
       return state.recvPushQueue
     },
-    deepLinkQueue (state) { // 현재 로그인 상태인지 확인 (true/false)
+    deepLinkQueue (state) {
       return state.deepLinkQueue
     }
   }

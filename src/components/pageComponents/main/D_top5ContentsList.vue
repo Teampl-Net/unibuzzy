@@ -9,7 +9,7 @@
             </div>
             <div id="top5ListWrap" class="pushListWrap fl">
             <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.contentsList && this.contentsList.length === 0" style="margin-top:50px;" /> -->
-            <commonListTable :commonListData="contentsList" v-if="listShowYn"  @goDetail="openPop" />
+            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goDetail="openPop" />
             </div>
         </div>
 
@@ -24,7 +24,6 @@ export default {
   name: 'top5PushList',
   created () {
     // this.contentsList = this.alimList
-    this.contentsList = this.allContList
   },
   data () {
     return {
@@ -43,9 +42,7 @@ export default {
     }
   },
   props: {
-    alimList: {},
-    boardList: {},
-    allContList: {}
+    alimList: {}
   },
   mounted () {
     // document.addEventListener('message', e => this.recvNoti(e))
@@ -58,6 +55,44 @@ export default {
   },
   updated () {
     // this.settingAtag()
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_DISP_CONT_LIST () {
+      var idx1, idx2
+      var contList = this.contentsList
+      for (var i = 0; i < contList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === contList[i].creTeamKey)
+
+        var detailData = this.GE_MAIN_CHAN_LIST[idx1]
+
+        idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+        if (idx2 !== -1) {
+          contList[i] = detailData.ELEMENTS.alimList[idx2]
+        } else {
+          idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+          if (idx2 !== -1) {
+            contList[i] = detailData.ELEMENTS.boardList[idx2]
+          }
+        }
+
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+      }
+      return contList
+    }
+  },
+  watch: {
+    alimList: {
+      handler (value, old) {
+        this.contentsList = value
+      },
+      deep: true
+    }
   },
   components: {
     listTitle,
@@ -86,6 +121,26 @@ export default {
         this.currentTabName = '게시글'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
+    },
+    async getContentsList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      var resultData = null
+      param.offsetInt = 0
+      param.pageSize = 5
+      if (this.viewTab === 'P') {
+        param.jobkindId = 'ALIM'
+        param.ownUserKey = this.GE_USER.userKey
+      } else if (this.viewTab === 'B') {
+        param.boardYn = true
+        param.jobkindId = 'BOAR'
+      } else if (this.viewTab === 'A') {
+        param.allYn = true
+      }
+      resultData = await this.$getContentsList(param)
+
+      this.contentsList = resultData.content
+      return resultData
     },
     async recvNoti (e) {
       /* var message
@@ -155,7 +210,7 @@ export default {
       // alert(tabName)
       // this.pushList = [] ///######
       this.viewTab = tabName
-      if (tabName === 'A') { this.contentsList = this.allContList } else if (tabName === 'P') { this.contentsList = this.alimList } else if (tabName === 'B') { this.contentsList = this.boardList }
+      await this.getContentsList()
     },
     async reLoad () {
       this.changeTab('A')

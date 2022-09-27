@@ -75,7 +75,7 @@ export default {
       }
     },
     deepLinkQueue () {
-      return this.$store.getters.deepLinkQueue
+      return this.$store.getters['D_HISTORY/deepLinkQueue']
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -94,7 +94,7 @@ export default {
           var param = new Object()
           param.targetType = target.targetKind
           param.targetKey = target.targetKey
-          this.$store.commit('changeDeepLinkQueue', [])
+          this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
           this.openPop(param)
         }
       }
@@ -161,7 +161,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
 
       if (reloadYn) {

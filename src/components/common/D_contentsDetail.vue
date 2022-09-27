@@ -200,7 +200,7 @@ export default {
       return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     },
     CHANNEL_DETAIL () {
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
@@ -292,7 +292,7 @@ export default {
       // this.getContentsList()
       } else {
         if (!this.CONT_DETAIL.D_CONT_USER_DO) {
-          this.settingUserDo(this.CONT_DETAIL.userDoList)
+          /* this.settingUserDo(this.CONT_DETAIL.userDoList) */
         }
       }
 
@@ -607,7 +607,7 @@ export default {
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
@@ -617,7 +617,7 @@ export default {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       console.log(this.$store.getters['D_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
@@ -915,7 +915,7 @@ export default {
     },
 
     async changeAct (act) {
-      var detail = this.CONT_DETAIL
+      // var detail = this.CONT_DETAIL
       // eslint-disable-next-line no-unused-vars
       var result = null
       var saveYn = true
@@ -956,7 +956,7 @@ export default {
               this.CONT_DETAIL.D_CONT_USER_DO[d].doKey = result.doKey
             }
           }
-          this.settingUserDo(this.CONT_DETAIL.D_CONT_USER_DO)
+          /* this.settingUserDo(this.CONT_DETAIL.D_CONT_USER_DO) */
         })
 
         this.CONT_DETAIL.D_CONT_USER_DO.push({ doType: act.doType, doKey: 1 })
@@ -965,7 +965,7 @@ export default {
 
         // this.CONT_DETAIL.userDoList = temp
       }
-      this.settingUserDo(detail.D_CONT_USER_DO)
+      /* this.settingUserDo(detail.D_CONT_USER_DO) */
     },
     goChanDetail () {
       // eslint-disable-next-line no-new-object

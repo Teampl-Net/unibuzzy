@@ -62,15 +62,18 @@ export default {
         '--paddingTopLength' : this.paddingTop + 'px'
       }
     },
+    GE_NEW_CHAN_LIST () {
+        return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
     GE_USER () {
         return this.$store.getters['D_USER/GE_USER']
     },
-    GE_MAIN_TEAM_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_TEAM_LIST']
-    },
     GE_DISP_TEAM_LIST () {
         var index = null
-        var teamList = this.GE_MAIN_TEAM_LIST
+        var teamList = this.GE_MAIN_CHAN_LIST
         for (var i = 0; i < this.channelList.length; i++) {
             index = teamList.findIndex((item) => item.teamKey === this.channelList[i].teamKey)
             if (index !== -1) {
@@ -97,6 +100,16 @@ export default {
     }
   },
   watch: {
+    GE_NEW_CHAN_LIST: {
+        /* handler (value, old) {
+            var newArr = [
+                value[0],
+                ...this.channelList
+            ]
+            this.channelList = this.replaceArr(newArr)
+        },
+        deep: true */
+    },
     historyStack () {
     },
     routerReloadKey () {
@@ -143,6 +156,15 @@ export default {
     this.loadingYn = false
   },
   methods: {
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ teamKey }) => teamKey === current.teamKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
     updateStoreData (uniqueArr) {
         var this_ = this
         this_.$actionVuex('MAINTEAM', uniqueArr, null, true, false)

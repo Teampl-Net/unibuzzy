@@ -67,7 +67,6 @@
 <script>
 import pushPop from '../push/Tal_pushDetailPopup.vue'
 // eslint-disable-next-line
-import pushDetail from '../../pageComponents/push/Tal_pushDetail.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
@@ -80,7 +79,7 @@ import leaveTal from '../info/Tal_leaveTheAlim.vue'
 
 // import selectChanType from './Tal_creChannelStep00.vue'
 import createChannel from '../creChannel/Tal_creChannel.vue'
-import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
+import writePush from '../D_writeContents.vue'
 
 import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
@@ -219,10 +218,10 @@ export default {
       return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     },
     deepLinkQueue () {
-      return this.$store.getters.deepLinkQueue
+      return this.$store.getters['D_HISTORY/deepLinkQueue']
     },
     getWindowSize () {
       return {
@@ -251,7 +250,7 @@ export default {
           var param = new Object()
           param.targetType = target.targetKind
           param.targetKey = target.targetKey
-          this.$store.commit('changeDeepLinkQueue', [])
+          this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
           this.openPop(param)
         }
       }
@@ -320,7 +319,7 @@ export default {
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
         this.openChanMenuYn = false
       } else {
         this.openChanMenuYn = true
@@ -515,7 +514,7 @@ export default {
       }
       var history = this.$store.getters['D_HISTORY/hStack']
       history.push(this.popId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
 
@@ -545,7 +544,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       if (reloadYn) {
         // eslint-disable-next-line no-unused-vars
         /* if (this.targetType === 'pushList' || this.targetType === 'chanList') {

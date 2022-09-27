@@ -100,7 +100,7 @@ export default {
         return this.$store.getters['D_HISTORY/hRPage']
         },
         pageUpdate () {
-        return this.$store.getters.hUpdate
+        return this.$store.getters['D_HISTORY/hUpdate']
         },
         GE_USER () {
             return this.$store.getters['D_USER/GE_USER']
@@ -335,7 +335,7 @@ export default {
             if (this.selectPopId === hStack[hStack.length - 1]) {
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
                 this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                this.$store.commit('D_HISTORY/updateStack', hStack)
+                this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                 this.detailOpenYn = false
                 this.cabinetName = ''
                 this.receiverTitle = '주소록 관리'
@@ -350,13 +350,13 @@ export default {
                 if (this.excelPopId === hStack[hStack.length - 1]) {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                    this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                     this.excelUploadShowYn = false
                 } else {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                    this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.$emit('closeXPop')
@@ -366,7 +366,7 @@ export default {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                    this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.receiverTitle = '주소록 관리'
@@ -375,14 +375,14 @@ export default {
                     this.searchKeyword = ''
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                    this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.receiverTitle = '주소록 관리'
                 } else  if (this.excelPopId === hStack[hStack.length - 1]) {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                    this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
                     this.excelUploadShowYn = false
                 } else {
                     if (backYn) {
@@ -401,7 +401,7 @@ export default {
             var history = this.$store.getters['D_HISTORY/hStack']
             this.selectPopId = 'selectMemeberPopup' + history.length
             history.push(this.selectPopId)
-            this.$store.commit('D_HISTORY/updateStack', history)
+            this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
 
             await this.getBookMemberList()
 
@@ -434,7 +434,7 @@ export default {
                 var history = this.$store.getters['D_HISTORY/hStack']
                 this.excelPopId = 'excelUploadPop' + history.length
                 history.push(this.excelPopId)
-                this.$store.commit('D_HISTORY/updateStack', history)
+                this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
 
                 this.excelUploadShowYn = true
             } else {

@@ -428,7 +428,7 @@ export default {
       var history = this.$store.getters.hStack
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('updateStack', history)
       this.boardWriteYn = false
     },
@@ -843,7 +843,7 @@ export default {
       return this.$store.getters.hRPage
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {

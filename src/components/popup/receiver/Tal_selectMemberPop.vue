@@ -206,7 +206,7 @@ export default {
       var removePage = hStack[hStack.length - 1]
       hStack = hStack.filter((element, index) => index < hStack.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', hStack)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
       this.$emit('closeXPop', true)
     },
     async setManager (list) {

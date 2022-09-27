@@ -6,11 +6,19 @@ const D_CHANNEL = {
   namespaced: true,
   state: {
     chanList: [],
-    recentChangeTeamKey: null
+    recentChangeTeamKey: null,
+    addContsList: [],
+    addChanList: []
   },
   getters: {
     GE_MAIN_CHAN_LIST (state) {
       return state.chanList
+    },
+    GE_NEW_CONT_LIST (state) {
+      return state.addContsList
+    },
+    GE_NEW_CHAN_LIST (state) {
+      return state.addChanList
     },
     GE_RECENT_CHANGE_TEAM (state) {
       return state.recentChangeTeamKey
@@ -56,8 +64,6 @@ const D_CHANNEL = {
         // eslint-disable-next-line no-new-object
         var D_CHAN_AUTH = {}
         D_CHAN_AUTH.recvAlimYn = true
-        // eslint-disable-next-line no-debugger
-        debugger
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
           D_CHAN_AUTH.settingYn = true
           if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
@@ -163,6 +169,7 @@ const D_CHANNEL = {
 
           team.D_CHAN_AUTH = D_CHAN_AUTH
           state.chanList.push(team)
+          /* state.addChanList.push(team) */
         }
       }
       return true
@@ -170,8 +177,6 @@ const D_CHANNEL = {
     MU_REPLACE_CHANNEL: (state, payload) => {
       var idx1
       var chanList = state.chanList
-      // eslint-disable-next-line no-debugger
-      debugger
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
       chanList[idx1] = payload
       state.chanList = chanList
@@ -243,6 +248,58 @@ const D_CHANNEL = {
       state.recentChangeTeamKey = chanDetail.teamKey
       return true
     },
+    MU_REPLACE_CONTENTS_USERDO: (state, payload) => {
+      var idx1, idx2
+      var chanList = state.chanList
+      // eslint-disable-next-line no-debugger
+      debugger
+      idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
+      var chanDetail = chanList[idx1]
+      for (var i = 0; i < payload.length; i++) {
+        if (payload[i].jobkindId === 'BOAR') {
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        } else {
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        }
+        if (idx2 !== -1) {
+          if (payload[i].jobkindId === 'BOAR') {
+            chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+          } else {
+            chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+          }
+        }
+      }
+      chanList[idx1] = chanDetail
+      state.chanList = chanList
+      state.recentChangeTeamKey = chanDetail.teamKey
+      return true
+    },
+    MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
+      var idx1, idx2
+      var chanList = state.chanList
+      // eslint-disable-next-line no-debugger
+      debugger
+      idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
+      var chanDetail = chanList[idx1]
+      for (var i = 0; i < payload.length; i++) {
+        if (payload[i].jobkindId === 'BOAR') {
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        } else {
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        }
+        if (idx2 !== -1) {
+          if (payload[i].jobkindId === 'BOAR') {
+            chanDetail.ELEMENTS.boardList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          } else {
+            chanDetail.ELEMENTS.alimList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          }
+        }
+      }
+      chanList[idx1] = chanDetail
+      state.chanList = chanList
+      state.recentChangeTeamKey = chanDetail.teamKey
+      return true
+    },
     MU_ADD_CONTENTS: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
@@ -263,6 +320,7 @@ const D_CHANNEL = {
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
             }
+            state.addContsList.unshift(payload[i])
           }
         }
       }
@@ -341,7 +399,36 @@ const D_CHANNEL = {
         commit('MU_REPLACE_CONTENTS', payload)
       }
     },
-    AC_ADD_CONTENTS: ({ commit }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)
+    AC_REPLACE_CONTENTS_USERDO: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
+      if (payload.length > 0) {
+        commit('MU_REPLACE_CONTENTS_USERDO', payload)
+      }
+    },
+    AC_REPLACE_CONTENTS_MEMO_LIST: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
+      if (payload.length > 0) {
+        commit('MU_REPLACE_CONTENTS_MEMO_LIST', payload)
+      }
+    },
+    AC_ADD_CONTENTS: ({ commit, state }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)
+      for (var i = 0; i < payload.length; i++) {
+        var userDo = payload[i].userDoList
+        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        if (userDo) {
+          var index = userDo.findIndex((item) => item.doType === 'ST')
+          if (index >= 0) {
+            userDoList[0].doKey = userDo[index].doKey
+          }
+          index = userDo.findIndex((item) => item.doType === 'LI')
+          if (index >= 0) {
+            userDoList[1].doKey = userDo[index].doKey
+          }
+          index = userDo.findIndex((item) => item.doType === 'RE')
+          if (index >= 0) {
+            userDoList[2].doKey = userDo[index].doKey
+          }
+        }
+        payload[i].D_CONT_USER_DO = userDoList
+      }
       commit('MU_ADD_CONTENTS', payload)
     },
     AC_REPLACE_SHOW_PROFILE_USER: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
@@ -354,6 +441,73 @@ const D_CHANNEL = {
       commit('MU_RECENT_CHANGE_TEAM', payload)
     },
     AC_REPLACE_CHANNEL: ({ commit }, payload) => {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (payload.ELEMENTS) {
+        if (!payload.ELEMENTS.alimList) {
+          payload.ELEMENTS.alimList = []
+        }
+        if (!payload.ELEMENTS.commonList) {
+          payload.ELEMENTS.commonList = { type: 'ALIM', list: [] }
+        }
+        if ((!payload.ELEMENTS.boardList)) {
+          payload.ELEMENTS.boardList = []
+        }
+        if ((!payload.ELEMENTS.cabinetList)) {
+          payload.ELEMENTS.cabinetList = []
+        }
+        if ((!payload.ELEMENTS.showProfileUserList)) {
+          payload.ELEMENTS.showProfileUserList = []
+        }
+        if ((!payload.ELEMENTS.managerList)) {
+          payload.ELEMENTS.managerList = []
+        }
+      } else {
+        payload.ELEMENTS = {
+          alimList: [],
+          boardList: [],
+          cabinetList: [],
+          commonList: { type: 'ALIM', list: [] },
+          managerList: [],
+          showProfileUserList: []
+        }
+      }
+      payload.teamTypeText = commonMethods.teamTypeString(payload.teamType)
+      // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
+      // var message = commonMethods.changeText(team.memoMtext)
+      // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
+
+      // eslint-disable-next-line no-new-object
+      var D_CHAN_AUTH = {}
+      D_CHAN_AUTH.recvAlimYn = true
+      if (payload.followerKey) D_CHAN_AUTH.followYn = true
+      if (payload.userTeamInfo !== undefined && payload.userTeamInfo !== null && payload.userTeamInfo !== '') {
+        D_CHAN_AUTH.settingYn = true
+        if (payload.userTeamInfo.notiYn === false || Number(payload.userTeamInfo.notiYn) === 0) {
+          D_CHAN_AUTH.recvAlimYn = payload.userTeamInfo.notiYn
+        }
+        if (payload.userTeamInfo.showProfileYn === 1) {
+          D_CHAN_AUTH.showProfileYn = true
+          D_CHAN_AUTH.userGrade = '(공개)'
+        }
+        D_CHAN_AUTH.followYn = true
+        payload.detailShowYn = false
+        D_CHAN_AUTH.followTypeText = '구독자'
+        if (payload.userTeamInfo.managerKey !== undefined && payload.userTeamInfo.managerKey !== null && payload.userTeamInfo.managerKey !== '') {
+          if (payload.userTeamInfo.ownerYn === true || payload.userTeamInfo.ownerYn === 'true') {
+            D_CHAN_AUTH.followTypeText = '소유자'
+            D_CHAN_AUTH.userGrade = '(관리자)'
+            D_CHAN_AUTH.ownerYn = true
+            D_CHAN_AUTH.admYn = true
+          } else {
+            D_CHAN_AUTH.followTypeText = '관리자'
+            D_CHAN_AUTH.userGrade = '(매니저)'
+          }
+          D_CHAN_AUTH.adminYn = true
+        }
+      }
+
+      payload.D_CHAN_AUTH = D_CHAN_AUTH
       commit('MU_REPLACE_CHANNEL', payload)
     },
     /* AC_RECENT_CHANGE_TEAM: ({ commit }, payload) => {

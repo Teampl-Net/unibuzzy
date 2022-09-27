@@ -1,6 +1,8 @@
 import axiosCommonFunction from 'axios'
 
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
+// eslint-disable-next-line no-unused-vars
+import router from '../../router'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
@@ -719,6 +721,14 @@ export const commonMethods = {
     var changedUrl = url.replace(/\\/ig, '/')
     console.log(changedUrl)
     return changedUrl
+  },
+  makeHistoryObj (routerYn, page, targetKey, id) {
+    var resultObj = null
+    resultObj.routerYn = routerYn
+    resultObj.pageType = page
+    resultObj.targetKey = targetKey
+    resultObj.id = id
+    return resultObj
   }
 }
 
@@ -761,5 +771,6 @@ export default {
     Vue.config.globalProperties.$checkMobile = commonMethods.checkMobile
     Vue.config.globalProperties.$changeUrlBackslash = commonMethods.changeUrlBackslash
     Vue.config.globalProperties.$findATagDelete = commonMethods.findATagDelete
+    Vue.config.globalProperties.$makeHistoryObj = commonMethods.makeHistoryObj
   }
 }

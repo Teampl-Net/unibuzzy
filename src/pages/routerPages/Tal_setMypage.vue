@@ -120,10 +120,10 @@ export default {
       return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     },
     GE_USER () {
-        this.$store.getters['D_USER/GE_USER']
+       return this.$store.getters['D_USER/GE_USER']
     }
   },
   watch: {
@@ -147,7 +147,7 @@ export default {
         this.changeUserIconPop = 'changeUserIconPop' + history.length
         console.log(history)
         history.push(this.changeUserIconPop)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
         console.log(this.$store.getters['D_HISTORY/hStack'])
       }
     },
@@ -211,7 +211,7 @@ export default {
       if (this.changeUserIconPop === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
         this.changeUserIconShowYn = false
       } else {
 

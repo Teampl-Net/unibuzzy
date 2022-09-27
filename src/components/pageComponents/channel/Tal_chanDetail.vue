@@ -111,11 +111,11 @@ export default {
       return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     } */
   },
-  watch: {// 임시삭제
-    /* pageUpdate (value, old) {
+  watch: {
+    pageUpdate (value, old) {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.alimSubPopYn) {
         if ('channelAlimToDetail' + this.chanDetail.teamKey === hStack[hStack.length - 1]) {
@@ -124,18 +124,18 @@ export default {
       }
     },
     historyStack (value, old) {
-    } */
+    }
   },
   async created () {
     this.$emit('openLoading')
     if (this.parentshowProfileYn) {
       this.showProfileYn = this.parentshowProfileYn
-    }// 임시삭제
-    /* if (this.alimSubPopYn) {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    }
+    if (this.alimSubPopYn) {
+      var history = this.$store.getters['D_HISTORY/hStack']
       history.push('channelAlimToDetail' + this.chanDetail.teamKey)
-      this.$store.commit('D_HISTORY/updateStack', history)
-    } */
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
+    }
     if (this.chanDetail.userTeamInfo !== undefined && this.chanDetail.userTeamInfo != null && this.chanDetail.userTeamInfo !== '') {
       this.followYn = true
       this.followTypeText = '구독자'

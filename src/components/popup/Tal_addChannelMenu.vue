@@ -61,7 +61,7 @@ computed: {
       return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -78,7 +78,7 @@ computed: {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'selectChanTypePop' + history.length
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
 
   },
   methods: {
@@ -87,7 +87,7 @@ computed: {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       this.$emit('closePop')
     },
     setResult () {

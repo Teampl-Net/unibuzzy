@@ -7,6 +7,19 @@ import { mapGetters, mapActions } from 'vuex'
 import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './Tal_common'
 var this_ = this
+var g_user = store.getters['D_USER/GE_USER']
+document.addEventListener('message', e => functions.recvNoti(e))
+window.addEventListener('message', e => functions.recvNoti(e))
+var notiDetail
+const isJsonString = (str) => {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
 const functions = {
   /* ...mapActions('D_USER', [
     'AC_USER'
@@ -23,18 +36,9 @@ const functions = {
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'TEAM' || type === 'CABI' || type === 'CONT') {
-      debugger
       ActName = 'D_CHANNEL/AC_MAIN_CHAN_LIST'
     } else if (type === 'COMMONCONT') {
       ActName = 'D_CHANNEL/AC_SET_CHAN_CONT_LIST'
-    } else if (type === 'ALIM') {
-      ActName = 'D_CONTENTS/AC_MAIN_ALIM_LIST'
-    } else if (type === 'BOAR') {
-      ActName = 'D_CONTENTS/AC_MAIN_BOARD_LIST'
-    } else if (type === 'MAINTEAM') {
-      ActName = 'D_CONTENTS/AC_MAIN_TEAM_LIST'
-    } else if (type === 'USER') {
-      ActName = 'D_USER/AC_USER'
     }
 
     if (allYn) {
@@ -48,7 +52,6 @@ const functions = {
           index = dataList.findIndex((item) => item.teamKey === targetKey)
           dataList[index] = data
           store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', targetKey)
-          debugger
           /* if (data.detailPageYn) {
             store.dispatch('D_CHANNEL/AC_RECENT_CHANGE_TEAM', targetKey)
           } */
@@ -65,7 +68,6 @@ const functions = {
         } else if (type === 'COMMONCONT') {
           dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === targetKey)
-          debugger
           dataList[index] = data
         } else if (type === 'CONT') {
           if (creCabinetKey) {
@@ -77,7 +79,6 @@ const functions = {
             childList[contIndex] = data
             team.ELEMENTS.boardList = childList
             dataList[index] = team
-            debugger
             store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
           } else {
             dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
@@ -88,30 +89,9 @@ const functions = {
             childList[contIndex] = data
             team.ELEMENTS.alimList = childList
             dataList[index] = team
-            debugger
             store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
           }
-        } else if (type === 'ALIM') {
-          dataList = store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
-          index = dataList.findIndex((item) => item.contentsKey === targetKey)
-          dataList[index] = data
-        } else if (type === 'BOAR') {
-          dataList = store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
-          index = dataList.findIndex((item) => item.contentsKey === targetKey)
-          dataList[index] = data
-        } else if (type === 'MAINTEAM') {
-          dataList = store.getters['D_CONTENTS/GE_MAIN_TEAM_LIST']
-          index = dataList.findIndex((item) => item.teamKey === targetKey)
-          dataList[index] = data
-        }/* else if (type === 'USER') {
-        dataList = store.getters['D_USER/GE_USER']
-        for (i = 0; i < dataList.length; i++) {
-          if (dataList[i].userKey === targetKey) {
-            dataList[i] = data
-            break
-          }
         }
-      } */
         await store.dispatch(ActName, dataList).then(() => {
           return true
         })
@@ -205,7 +185,120 @@ const functions = {
     response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
 
     response.detailPageYn = true
-    await functions.actionVuex('TEAM', response, response.teamKey, false, true)
+    if (functions.getDetail('TEAM', teamKey)) {
+      await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
+    } else {
+      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response)
+    }
+    // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
+  },
+  recvNoti (e) {
+    var message
+    try {
+      if (isJsonString(e.data) === true) {
+        message = JSON.parse(e.data)
+      } else {
+        message = e.data
+      }
+      if (message.type === 'pushmsg') {
+        if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+          notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+        } else {
+          notiDetail = JSON.parse(message.pushMessage).noti.data
+        }
+        if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+          functions.settingAlimNoti(message)
+        } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
+          functions.settingCabiNoti(message)
+        } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
+          functions.settingChanNoti(message)
+        } else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
+          functions.settingMemoNoti(message)
+        }
+      }
+    } catch (err) {
+      console.error('메세지를 파싱할수 없음 ' + err)
+    }
+  },
+  settingCabiNoti (message) {
+    if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+      return
+    }
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        ;
+      } else {
+        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+      }
+    }
+  },
+  async addContents (targetKey, jobkindId) {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    param.contentsKey = targetKey
+    param.jobkindId = jobkindId
+    var resultList = await methods.getContentsList(param)
+    var detailData = resultList.content[0]
+    store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+  },
+  async settingAlimNoti (message) {
+    await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+      return
+    } */
+    /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, notiDetail.creTeamKey)
+    alert(JSON.stringify(noti))
+    store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        ;
+      } else {
+        if (notiDetail.jobkindId === 'ALIM') {
+          this.openPop({ targetKey: notiDetail.creTeamKey, nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+        } else if (notiDetail.jobkindId === 'BOAR') {
+          this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+        }
+      }
+    } else {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        if (notiDetail.jobkindId !== 'BOAR') {
+          // if (this.$route.path === '/') {
+          //   this.$refs.mainRouterView.getMainBoard()
+          // }
+        }
+      } else {
+        this.openPop({ targetKey: notiDetail.creTeamKey, nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+      }
+    }
+  },
+  settingChanNoti (message) {
+    if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+      return
+    }
+    if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+    } else {
+      this.$router.replace({ path: '/' })
+      if (notiDetail.actType === 'FL') {
+        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
+        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      } else if (notiDetail.actType === 'MA') {
+        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      }
+    }
+  },
+  settingMemoNoti (message) {
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+
+      } else {
+        if (notiDetail.jobkindId === 'ALIM') {
+          this.openPop({ targetKey: notiDetail.creTeamKey, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+        } else if (notiDetail.jobkindId === 'BOAR') {
+          this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+        }
+      }
+    }
   }
 }
 

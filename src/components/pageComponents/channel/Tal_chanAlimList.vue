@@ -147,7 +147,7 @@
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
-import writePush from '../../../pages/routerPages/admPages/TalAdm_writePush.vue'
+import writePush from '../../popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   data () {
@@ -232,7 +232,9 @@ export default {
       // // eslint-disable-next-line no-debugger
       // debugger
       // this.$addChanList(this.chanDetail.targetKey)
-      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
+      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
+        // eslint-disable-next-line no-debugger
+        debugger
         await this.$addChanList(this.chanDetail.targetKey)
       }
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
@@ -303,8 +305,10 @@ export default {
       this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
     },
     async confirmOk () {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.currentConfirmType === 'follow') {
-        if (this.this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.errorBoxText = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
           this.errorBoxYn = true
         } else {
@@ -344,12 +348,14 @@ export default {
       }
     },
     changeFollowYn () {
+      // eslint-disable-next-line no-debugger
+      debugger
       this.currentConfirmType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.errorBoxText = '구독을 취소하시겠습니까?'
         this.confirmType = 'two'
         this.errorBoxYn = true
-      } else if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === false) {
+      } else {
         this.confirmOk()
       }
     },
@@ -433,7 +439,7 @@ export default {
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       this.detailShowYn = false
     },
     openWritePushPop () {
@@ -448,7 +454,7 @@ export default {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.writePopId = 'writePush' + history.length
         history.push(this.writePopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
         this.writePushYn = true
       } else if (this.currentPushListMainTab === 'B') {
         var param = {}
@@ -492,14 +498,14 @@ export default {
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
         this.closeWritePushPop()
       }
     },
     async closeWritePushPop (reloadYn) {
-      if (reloadYn) {
+      /* if (reloadYn) {
         await this.refreshList()
-      }
+      } */
       this.writePushYn = false
     },
     openPop () {

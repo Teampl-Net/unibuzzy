@@ -29,9 +29,9 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.alimContentsList" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.boardContentsList" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
-          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
+          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" />
+          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && GE_CHANNEL_DETAIL && GE_CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -102,9 +102,8 @@ export default {
       }
     }
     var this_ = this
-    this_.getPushContentsList().then(async response => {
-      var settingList = await this_.settingUserDo(response.content)
-      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+    this_.getPushContentsList().then(response => {
+      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = []
       if (this_.viewMainTab === 'P') {
         newArr = [
@@ -183,11 +182,81 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    chanDetail (value, old) {
+    GE_CHANNEL_DETAIL: {
+      /* handler (value, old) {
+        console.log(JSON.stringify(value))
+        alert(JSON.stringify(value))
+      },
+      deep: true */
     },
-    /* CHANNEL_DETAIL: {p
+    GE_NEW_CONT_LIST: {
+      handler (value, old) {
+        var newArr = []
+        if (this.chanAlimYn) {
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (value[0].creTeamKey === this.chanDetail.teamKey) {
+            if (value[0].jobkindId === 'ALIM') {
+              newArr = [
+                value[0],
+                ...this.alimContentsList
+              ]
+              this.alimContentsList = this.replaceArr(newArr)
+            } else {
+              newArr = [
+                value[0],
+                ...this.boardContentsList
+              ]
+              this.boardContentsList = this.replaceArr(newArr)
+            }
+          }
+        } else {
+          if (value[0].jobkindId === 'ALIM') {
+            newArr = [
+              value[0],
+              ...this.alimContentsList
+            ]
+            this.alimContentsList = this.replaceArr(newArr)
+          } else {
+            newArr = [
+              value[0],
+              ...this.boardContentsList
+            ]
+            this.boardContentsList = this.replaceArr(newArr)
+          }
+        }
+      },
+      deep: true
+    },
+    /* GE_NEW_NOTI_LIST: {
+      handler  (value, old) {
+        console.log('noti도착----------------------------------------------------')
+        alert(JSON.stringify(value[0]))
+        var newArr = null
+        if (this.chanAlimYn) {
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (value[0].creTeamKey === this.chanDetail.teamKey) {
+            newArr = [
+              value[0],
+              ...this.alimContentsList
+            ]
+            this.alimContentsList = this.replaceArr(newArr)
+          }
+        } else {
+          alert('왔어요!!!')
+          newArr = [
+            value[0],
+            ...this.alimContentsList
+          ]
+          this.alimContentsList = this.replaceArr(newArr)
+        }
+      },
+      deep: true
+    }, */
+    /* GE_CHANNEL_DETAIL: {p
       handler () {
-        console.log(this.CHANNEL_DETAIL.ELEMENTS.commonList)
+        console.log(this.GE_CHANNEL_DETAIL.ELEMENTS.commonList)
       },
       deep: true
     }, */
@@ -218,17 +287,17 @@ export default {
       console.log(value)
       if (value === this.chanDetail.teamKey) {
         alert(value)
-        this.CHANNEL_DETAIL = this.$getDetail('TEAM', this.CHANNEL_DETAIL.teamKey).data
+        this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
         console.log('new!!!')
-        console.log(this.CHANNEL_DETAIL)
+        console.log(this.GE_CHANNEL_DETAIL)
       }
     },
     GE_MAIN_CHAN_LIST (value, old) {
       console.log('왔다!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       console.log(value)
-      this.CHANNEL_DETAIL = this.$getDetail('TEAM', this.CHANNEL_DETAIL.teamKey).data
+      this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
       console.log('new!!!')
-      console.log(this.CHANNEL_DETAIL)
+      console.log(this.GE_CHANNEL_DETAIL)
     },
     MAIN_ALIM_LIST (value, old) {
       this.alimList = value
@@ -244,35 +313,61 @@ export default {
         return team[0]
       } else return null
     },
-    /* GE_DISPLAY_ALIM_LIST () {
-      var alimList = this.CHANNEL_DETAIL.ELEMENTS.alimList
-      var dispList = []
-      for (var i = 0; i < this.commonDataList.length; i++) {
-        var index = alimList.findIndex((item) => item.mccKey === this.commonDataList[i].mccKey)
-        if (index < 0) {
-          alimList.push(this.commonDataList[i])
+    GE_NEW_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+    },
+    GE_NEW_NOTI_LIST () {
+      return this.$store.getters['D_UPDATE/GE_NEW_NOTI_LIST']
+    },
+    GE_DISP_CONT_LIST () {
+      var idx1, idx2
+      var test = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      if (this.viewMainTab === 'P') {
+        for (i = 0; i < this.alimContentsList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            test.push(dataList[idx2])
+          } else {
+            test.push(this.alimContentsList[i])
+          }
+        }
+      } else {
+        for (i = 0; i < this.boardContentsList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            test.push(dataList[idx2])
+          } else {
+            test.push(this.boardContentsList[i])
+          }
         }
       }
-      this.CHANNEL_DETAIL.ELEMENTS.alimList = alimList
-      this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
-    }, */
+
+      return test
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
-    GE_MAIN_ALIM_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
-    },
-    GE_MAIN_BOARD_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
-    },
     GE_RECENT_CHANGE_TEAM () {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     pageUpdate () {
-      return this.$store.getters.hUpdate
+      return this.$store.getters['D_HISTORY/hUpdate']
     },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
@@ -293,32 +388,6 @@ export default {
     } */
   },
   methods: {
-    updateStoreData (uniqueArr) {
-      var this_ = this
-      if (this.chanAlimYn) {
-        console.log(this.CHANNEL_DETAIL)
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
-        if (this.viewMainTab === 'P') {
-          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'ALIM'
-        } else if (this.viewMainTab === 'B') {
-          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'BOAR'
-        }
-        this_.$actionVuex('COMMONCONT', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
-      } else {
-        if (uniqueArr.length > 0) {
-          this_.canLoadYn = true
-        }
-        if (this.viewMainTab === 'P') {
-          this_.$actionVuex('ALIM', uniqueArr, null, true, false)
-        } else if (this.viewMainTab === 'B') {
-          // eslint-disable-next-line no-debugger
-          debugger
-          this_.$actionVuex('BOAR', uniqueArr, null, true, false)
-        }
-      }
-    },
     async getPushContentsList (pageSize, offsetInput) {
     // @point
     // eslint-disable-next-line no-new-object
@@ -425,9 +494,9 @@ export default {
       this.offsetInt = 0
       var jobkindId = 'ALIM'
       if (this.chanAlimYn) {
-        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = []
+        this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.list = []
         if (tab === 'B') jobkindId = 'BOAR'
-        this.CHANNEL_DETAIL.ELEMENTS.commonList.type = jobkindId
+        this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.type = jobkindId
       }
       this.refreshList()
       this.$emit('changeMainTab', tab)
@@ -438,7 +507,7 @@ export default {
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
@@ -502,7 +571,7 @@ export default {
         this.$emit('closeLoading')
       }, 800)
     },
-    async settingUserDo (dataList) {
+    /* async settingUserDo (dataList) {
       for (var i = 0; i < dataList.length; i++) {
         var userDo = dataList[i].D_CONT_USER_DO
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
@@ -523,7 +592,7 @@ export default {
         dataList[i].D_CONT_USER_DO = userDoList
       }
       return dataList
-    },
+    }, */
     introPushPageTab () {
       if (this.viewTab === 'N') {
         this.currentTabName = '최신'
@@ -579,8 +648,8 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
-      var settingList = await this.settingUserDo(resultList.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       this.endListSetFunc(resultList)
       var newArr = []
       if (this.viewMainTab === 'P') {
@@ -615,9 +684,9 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
-        var settingList = await this.settingUserDo(resultList.content)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+        console.log(resultList.contnet)
         var newArr = []
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
           if (this.viewMainTab === 'P') {
             newArr = [
@@ -695,8 +764,7 @@ export default {
       this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
-      var settingList = await this.settingUserDo(resultList.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
@@ -739,8 +807,7 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
-      var settingList = await this.settingUserDo(resultList.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
@@ -799,8 +866,7 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
-      var settingList = await this.settingUserDo(resultList.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', settingList)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
@@ -822,7 +888,7 @@ export default {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_HISTORY', history)
       console.log(this.$store.getters['D_HISTORY/hStack'])
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
@@ -854,8 +920,6 @@ export default {
   },
   data () {
     return {
-      MAIN_ALIM_LIST: [],
-      CHANNEL_DETAIL: {},
       alimContentsList: [],
       boardContentsList: [],
       paddingTop: 0,

@@ -534,7 +534,7 @@ export default {
         cont.D_MEMO_LIST.splice(index, 1)
         this.currentMemoList = cont.D_MEMO_LIST
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
         this.currentMemoObj = cont
         this.memoSetCount(response.totalElements)
       }
@@ -771,7 +771,7 @@ export default {
         // console.log(cont)
         // console.log('!!!!!!!!!!!!')
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
 
 
         if (document.getElementById('alimMemo'+this.currentContentsKey)) {
@@ -1003,7 +1003,7 @@ export default {
         cont.D_MEMO_LIST = newArr
         this.currentMemoList = cont.D_MEMO_LIST
         this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_MEMO_LIST', [cont])
         this.currentMemoObj = cont
         if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
         this.memoSetCount(response.totalElements)
@@ -1243,16 +1243,7 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
-    },
-    /* GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
-    },
-    GE_MAIN_BOARD_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_BOARD_LIST']
-    }, */
-    /* GE_MAIN_ALIM_LIST () {
-      return this.$store.getters['D_CONTENTS/GE_MAIN_ALIM_LIST']
-    } */
+    }
   }
 }
 </script>

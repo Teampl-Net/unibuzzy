@@ -18,16 +18,16 @@ import nonMemInquiryBoard from '../pages/intro/Tal_nonMemberInquiryBoard.vue'
 import suminTest from '../pages/suminTest.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
-import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
+/* import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
 import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
 import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.vue'
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
-import admWritePush from '../pages/routerPages/admPages/TalAdm_writePush.vue'
-import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue'
+import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue' */
 
 import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
 // import howToUse from '../components/popup/info/Tal_howToUse.vue'
 
+import admWritePush from '../components/popup/D_writeContents.vue'
 import helpMemberPop from '../components/popup/info/Tal_helpMemberPop.vue'
 import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
 import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
@@ -113,7 +113,7 @@ const routes = [
     name: 'naverCallback',
     props: true,
     component: naverCallback
-  },
+  }, /*
 
   {
     path: '/admRouterMain',
@@ -152,7 +152,7 @@ const routes = [
         component: admManageChannel
       }
     ]
-  },
+  }, */
   {
     path: '/testLoginPage',
     name: 'testLoginPage',

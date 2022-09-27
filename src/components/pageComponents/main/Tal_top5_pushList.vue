@@ -102,7 +102,7 @@ export default {
           } else {
             this.notiDetail = JSON.parse(message.pushMessage).noti.data
           }
-          var currentPage = this.$store.getters.hCPage
+          var currentPage = this.$store.getters['D_HISTORY/hCPage']
           if ((currentPage === 0 || currentPage === undefined)) {
             if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
               this.getContentsList()
