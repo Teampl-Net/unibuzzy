@@ -71,7 +71,7 @@ import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
 import chanList from '../../../pages/routerPages/D_chanList.vue'
-import chanAlimList from '../../pageComponents/channel/Tal_chanAlimList.vue'
+import chanAlimList from '../../pageComponents/channel/D_chanAlimList.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
 import talInfo from '../info/Tal_theAlimInfo.vue'
 import question from '../info/Tal_question.vue'
@@ -607,8 +607,10 @@ export default {
         return
       }
       if ((params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) || (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true)) {
-        this.$emit('reloadPop', true) // 부모페이지까지 리로드?
-        this.closeXPop(true)
+        // this.$emit('reloadPop', true) // 부모페이지까지 리로드?
+
+        this.closeXPop()
+
         setTimeout(() => {
           this.$showToastPop('채널정보가 수정되었습니다.')
         }, 500)

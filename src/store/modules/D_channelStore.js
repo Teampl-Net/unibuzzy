@@ -25,6 +25,10 @@ const D_CHANNEL = {
     }
   },
   mutations: {
+    MU_CLEAN_CHAN_LIST: (state, payload) => {
+      state.chanList = []
+      return true
+    },
     MU_MAIN_CHAN_LIST: (state, payload) => {
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
@@ -77,7 +81,9 @@ const D_CHANNEL = {
           team.detailShowYn = false
           D_CHAN_AUTH.followTypeText = '구독자'
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-            if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 'true') {
+            // eslint-disable-next-line no-debugger
+            debugger
+            if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
               D_CHAN_AUTH.followTypeText = '소유자'
               D_CHAN_AUTH.userGrade = '(관리자)'
               D_CHAN_AUTH.ownerYn = true
@@ -150,7 +156,7 @@ const D_CHANNEL = {
             team.detailShowYn = false
             D_CHAN_AUTH.followTypeText = '구독자'
             if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 'true') {
+              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
                 D_CHAN_AUTH.followTypeText = '소유자'
                 D_CHAN_AUTH.userGrade = '(관리자)'
                 D_CHAN_AUTH.ownerYn = true
@@ -175,6 +181,10 @@ const D_CHANNEL = {
       var chanList = state.chanList
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
       chanList[idx1] = payload
+      if (!chanList[idx1].changedYn) chanList[idx1].changedYn = true
+      else {
+        chanList[idx1].changedYn = false
+      }
       state.chanList = chanList
       state.recentChangeTeamKey = payload.teamKey
       return true
@@ -223,9 +233,9 @@ const D_CHANNEL = {
       var chanDetail = chanList[idx1]
       for (var i = 0; i < payload.length; i++) {
         if (payload[i].jobkindId === 'BOAR') {
-          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         } else {
-          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {
@@ -247,9 +257,9 @@ const D_CHANNEL = {
       var chanDetail = chanList[idx1]
       for (var i = 0; i < payload.length; i++) {
         if (payload[i].jobkindId === 'BOAR') {
-          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         } else {
-          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {
@@ -273,9 +283,9 @@ const D_CHANNEL = {
         var chanDetail = chanList[idx1]
         for (var i = 0; i < payload.length; i++) {
           if (payload[i].jobkindId === 'BOAR') {
-            idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+            idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           } else {
-            idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+            idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           }
 
           if (idx2 === -1) {
@@ -448,7 +458,7 @@ const D_CHANNEL = {
         payload.detailShowYn = false
         D_CHAN_AUTH.followTypeText = '구독자'
         if (payload.userTeamInfo.managerKey !== undefined && payload.userTeamInfo.managerKey !== null && payload.userTeamInfo.managerKey !== '') {
-          if (payload.userTeamInfo.ownerYn === true || payload.userTeamInfo.ownerYn === 'true') {
+          if (payload.userTeamInfo.ownerYn === true || payload.userTeamInfo.ownerYn === 1) {
             D_CHAN_AUTH.followTypeText = '소유자'
             D_CHAN_AUTH.userGrade = '(관리자)'
             D_CHAN_AUTH.ownerYn = true
@@ -485,7 +495,7 @@ const D_CHANNEL = {
           dataList = payload.ELEMENTS.boardList
         }
 
-        index = dataList.findIndex((item) => item.mccKey === payload.ELEMENTS.commonList.list[i].mccKey)
+        index = dataList.findIndex((item) => item.contentsKey === payload.ELEMENTS.commonList.list[i].contentsKey)
         if (index >= 0) {
           payload.ELEMENTS.commonList.list[i] = dataList[index]
         }

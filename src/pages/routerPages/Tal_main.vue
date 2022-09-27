@@ -97,7 +97,11 @@ export default {
   methods: {
     async getMainBoard () {
       var paramMap = new Map()
-      paramMap.set('userKey', this.GE_USER.userKey)
+      if (this.GE_USER.userKey) {
+        paramMap.set('userKey', this.GE_USER.userKey)
+      } else {
+        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      }
       var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       if (response.status === 200 || response.status === '200') {
@@ -113,17 +117,19 @@ export default {
         var index1 = null
         for (var i = 0; i < this.mainAlimList.length; i++) {
           index = teamList.findIndex((item) => item.teamKey === this.mainAlimList[i].creTeamKey)
-          if (this.mainAlimList[i].jobkindId === 'BOAR') {
-            poolList = teamList[index].ELEMENTS.boardList
-          } else {
-            poolList = teamList[index].ELEMENTS.alimList
-          }
-          index1 = poolList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
-          if (index1 === -1) {
+          if (index !== -1) {
             if (this.mainAlimList[i].jobkindId === 'BOAR') {
-              teamList[index].ELEMENTS.boardList.push(this.mainAlimList[i])
+              poolList = teamList[index].ELEMENTS.boardList
             } else {
-              teamList[index].ELEMENTS.alimList.push(this.mainAlimList[i])
+              poolList = teamList[index].ELEMENTS.alimList
+            }
+            index1 = poolList.findIndex((item) => item.mccKey === this.mainAlimList[i].mccKey)
+            if (index1 === -1) {
+              if (this.mainAlimList[i].jobkindId === 'BOAR') {
+                teamList[index].ELEMENTS.boardList.push(this.mainAlimList[i])
+              } else {
+                teamList[index].ELEMENTS.alimList.push(this.mainAlimList[i])
+              }
             }
           }
         }

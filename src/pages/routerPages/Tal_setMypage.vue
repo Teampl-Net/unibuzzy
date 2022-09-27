@@ -50,6 +50,7 @@
               <p class="font10">최신버전: 1.1.8</p>
             </th>
             <td class="textRight font16">{{appVersion}}</td></tr>
+            <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">캐시정보 삭제</th></tr>
             <!-- <tr @click="this.myChanListPopYn = true">
               <th>
                 내 채널 -->
@@ -138,6 +139,12 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    cleanApp () {
+        this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+        alert('삭제 완료')
+        this.$router.push('/')
+        this.$emit('closeXPop')
+    },
     changeUserImg () {
       if(this.changeUserIconShowYn) {
         ;

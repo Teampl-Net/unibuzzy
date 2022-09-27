@@ -171,21 +171,19 @@ const functions = {
     paramMap.set('teamKey', teamKey)
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var resultList = await methods.getTeamList(paramMap)
-    /* if (response)  */
+
     var response = resultList.data.content[0]
     var team = null
-    var teamList = functions.getDetail('TEAM', teamKey)
-    if (teamList) {
-      team = teamList[0]
-      response.ELEMENTS = team.ELEMENTS
-    }
     response.teamTypeText = commonMethods.teamTypeString(response.teamType)
     var title = '[더알림]' + commonMethods.changeText(response.nameMtext)
     var message = commonMethods.changeText(response.memoMtext)
     response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
 
     response.detailPageYn = true
-    if (functions.getDetail('TEAM', teamKey)) {
+    var teamList = functions.getDetail('TEAM', teamKey)
+    if (teamList && teamList.length > 0) {
+      team = teamList[0]
+      response.ELEMENTS = team.ELEMENTS
       await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
     } else {
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response)
