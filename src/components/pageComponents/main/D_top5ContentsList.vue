@@ -98,19 +98,18 @@ export default {
       deep: true
     },
     GE_NEW_CONT_LIST: {
-      /* async handler (value, old) {
-        alert(true)
-        /* var newArr = []
+      handler (value, old) {
+        var newArr = []
         // alert(true)
+        if (!value) return
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
         newArr = [
           value[0],
           ...this.contentsList
         ]
         this.contentsList = this.replaceArr(newArr)
-        await this.getContentsList()
       },
-      deep: true */
+      deep: true
     }
   },
   components: {
