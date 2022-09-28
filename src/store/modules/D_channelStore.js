@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable camelcase */
 
 // import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
@@ -33,32 +34,14 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
         if (team.ELEMENTS) {
-          if (!team.ELEMENTS.alimList) {
-            team.ELEMENTS.alimList = []
-          }
-          if (!team.ELEMENTS.commonList) {
-            team.ELEMENTS.commonList = { type: 'ALIM', list: [] }
-          }
-          if ((!team.ELEMENTS.boardList)) {
-            team.ELEMENTS.boardList = []
-          }
-          if ((!team.ELEMENTS.cabinetList)) {
-            team.ELEMENTS.cabinetList = []
-          }
-          if ((!team.ELEMENTS.showProfileUserList)) {
-            team.ELEMENTS.showProfileUserList = []
-          }
-          if ((!team.ELEMENTS.managerList)) {
-            team.ELEMENTS.managerList = []
-          }
+          if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
+          if (!team.ELEMENTS.commonList) { team.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
+          if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
+          if ((!team.ELEMENTS.cabinetList)) { team.ELEMENTS.cabinetList = [] }
+          if ((!team.ELEMENTS.showProfileUserList)) { team.ELEMENTS.showProfileUserList = [] }
+          if ((!team.ELEMENTS.managerList)) { team.ELEMENTS.managerList = [] }
         } else {
-          team.ELEMENTS = {
-            alimList: [],
-            boardList: [],
-            cabinetList: [],
-            commonList: { type: 'ALIM', list: [] },
-            managerList: []
-          }
+          team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
         }
         team.teamTypeText = commonMethods.teamTypeString(team.teamType)
         // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
@@ -110,33 +93,14 @@ const D_CHANNEL = {
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
         if (index === -1) {
           if (team.ELEMENTS) {
-            if (!team.ELEMENTS.alimList) {
-              team.ELEMENTS.alimList = []
-            }
-            if (!team.ELEMENTS.commonList) {
-              team.ELEMENTS.commonList = { type: 'ALIM', list: [] }
-            }
-            if ((!team.ELEMENTS.boardList)) {
-              team.ELEMENTS.boardList = []
-            }
-            if ((!team.ELEMENTS.cabinetList)) {
-              team.ELEMENTS.cabinetList = []
-            }
-            if ((!team.ELEMENTS.showProfileUserList)) {
-              team.ELEMENTS.showProfileUserList = []
-            }
-            if ((!team.ELEMENTS.managerList)) {
-              team.ELEMENTS.managerList = []
-            }
+            if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
+            if (!team.ELEMENTS.commonList) { team.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
+            if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
+            if ((!team.ELEMENTS.cabinetList)) { team.ELEMENTS.cabinetList = [] }
+            if ((!team.ELEMENTS.showProfileUserList)) { team.ELEMENTS.showProfileUserList = [] }
+            if ((!team.ELEMENTS.managerList)) { team.ELEMENTS.managerList = [] }
           } else {
-            team.ELEMENTS = {
-              alimList: [],
-              boardList: [],
-              cabinetList: [],
-              commonList: { type: 'ALIM', list: [] },
-              managerList: [],
-              showProfileUserList: []
-            }
+            team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
           }
           team.teamTypeText = commonMethods.teamTypeString(team.teamType)
           // eslint-disable-next-line no-new-object
@@ -228,9 +192,6 @@ const D_CHANNEL = {
     MU_REPLACE_CONTENTS: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
-      // eslint-disable-next-line no-debugger
-      debugger
-
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
       var chanDetail = chanList[idx1]
       for (var i = 0; i < payload.length; i++) {
@@ -250,7 +211,6 @@ const D_CHANNEL = {
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = chanDetail.teamKey
-      console.log('************** REPLACE_CONTENTS  **************')
       return true
     },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
@@ -308,33 +268,14 @@ const D_CHANNEL = {
     MU_ADD_MAIN_CHAN_LIST: (state, payload) => {
       if (!payload.initYn) {
         if (payload.ELEMENTS) {
-          if (!payload.ELEMENTS.alimList) {
-            payload.ELEMENTS.alimList = []
-          }
-          if (!payload.ELEMENTS.commonList) {
-            payload.ELEMENTS.commonList = { type: 'ALIM', list: [] }
-          }
-          if ((!payload.ELEMENTS.boardList)) {
-            payload.ELEMENTS.boardList = []
-          }
-          if ((!payload.ELEMENTS.cabinetList)) {
-            payload.ELEMENTS.cabinetList = []
-          }
-          if ((!payload.ELEMENTS.managerList)) {
-            payload.ELEMENTS.managerList = []
-          }
-          if ((!payload.ELEMENTS.showProfileUserList)) {
-            payload.ELEMENTS.showProfileUserList = []
-          }
+          if (!payload.ELEMENTS.alimList) { payload.ELEMENTS.alimList = [] }
+          if (!payload.ELEMENTS.commonList) { payload.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
+          if ((!payload.ELEMENTS.boardList)) { payload.ELEMENTS.boardList = [] }
+          if ((!payload.ELEMENTS.cabinetList)) { payload.ELEMENTS.cabinetList = [] }
+          if ((!payload.ELEMENTS.showProfileUserList)) { payload.ELEMENTS.showProfileUserList = [] }
+          if ((!payload.ELEMENTS.managerList)) { payload.ELEMENTS.managerList = [] }
         } else {
-          payload.ELEMENTS = {
-            commonList: { type: 'ALIM', list: [] },
-            alimList: [],
-            boardList: [],
-            cabinetList: [],
-            managerList: [],
-            showProfileUserList: []
-          }
+          payload.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
         }
 
         if (!payload.D_CHAN_AUTH) {
@@ -361,6 +302,29 @@ const D_CHANNEL = {
       console.log('UPDATE_CHANGE_TEAM: ' + payload)
       state.recentChangeTeamKey = 0
       state.recentChangeTeamKey = payload
+    },
+    MU_REPLACE_CONTENTS_ONLY_USERDO: (state, payload) => {
+      var idx1, idx2
+      var chanList = state.chanList
+      idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
+      var chanDetail = chanList[idx1]
+      for (var i = 0; i < payload.length; i++) {
+        if (payload[i].jobkindId === 'BOAR') {
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        } else {
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        }
+        if (idx2 !== -1) {
+          if (payload[i].jobkindId === 'BOAR') {
+            chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+          } else {
+            chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+          }
+        }
+      }
+      state.chanList[idx1] = chanDetail
+      state.recentChangeTeamKey = chanDetail.teamKey
+      return true
     }
   },
   // dispatch 를 사용하면 됨
@@ -372,8 +336,33 @@ const D_CHANNEL = {
       commit('MU_ADD_CHANNEL', payload)
     },
     AC_REPLACE_CONTENTS: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
+      debugger
       if (payload.length > 0) {
+        for (var i = 0; i < payload.length; i++) {
+          var userDo = payload[i].userDoList
+          var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+          if (userDo) {
+            var index = userDo.findIndex((item) => item.doType === 'ST')
+            if (index >= 0) {
+              userDoList[0].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'LI')
+            if (index >= 0) {
+              userDoList[1].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'RE')
+            if (index >= 0) {
+              userDoList[2].doKey = userDo[index].doKey
+            }
+          }
+          payload[i].D_CONT_USER_DO = userDoList
+        }
         commit('MU_REPLACE_CONTENTS', payload)
+      }
+    },
+    AC_REPLACE_CONTENTS_ONLY_USERDO: ({ commit }, payload) => { // 컨텐츠 부분 치환 (ALIM/BOARD)
+      if (payload.length > 0) {
+        commit('MU_REPLACE_CONTENTS_ONLY_USERDO', payload)
       }
     },
     AC_ADD_CONTENTS: ({ commit, state }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)
@@ -411,33 +400,14 @@ const D_CHANNEL = {
       // eslint-disable-next-line no-debugger
       debugger
       if (payload.ELEMENTS) {
-        if (!payload.ELEMENTS.alimList) {
-          payload.ELEMENTS.alimList = []
-        }
-        if (!payload.ELEMENTS.commonList) {
-          payload.ELEMENTS.commonList = { type: 'ALIM', list: [] }
-        }
-        if ((!payload.ELEMENTS.boardList)) {
-          payload.ELEMENTS.boardList = []
-        }
-        if ((!payload.ELEMENTS.cabinetList)) {
-          payload.ELEMENTS.cabinetList = []
-        }
-        if ((!payload.ELEMENTS.showProfileUserList)) {
-          payload.ELEMENTS.showProfileUserList = []
-        }
-        if ((!payload.ELEMENTS.managerList)) {
-          payload.ELEMENTS.managerList = []
-        }
+        if (!payload.ELEMENTS.alimList) { payload.ELEMENTS.alimList = [] }
+        if (!payload.ELEMENTS.commonList) { payload.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
+        if ((!payload.ELEMENTS.boardList)) { payload.ELEMENTS.boardList = [] }
+        if ((!payload.ELEMENTS.cabinetList)) { payload.ELEMENTS.cabinetList = [] }
+        if ((!payload.ELEMENTS.showProfileUserList)) { payload.ELEMENTS.showProfileUserList = [] }
+        if ((!payload.ELEMENTS.managerList)) { payload.ELEMENTS.managerList = [] }
       } else {
-        payload.ELEMENTS = {
-          alimList: [],
-          boardList: [],
-          cabinetList: [],
-          commonList: { type: 'ALIM', list: [] },
-          managerList: [],
-          showProfileUserList: []
-        }
+        payload.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
       }
       payload.teamTypeText = commonMethods.teamTypeString(payload.teamType)
       // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)

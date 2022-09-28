@@ -59,7 +59,7 @@
             </div> -->
             <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
                 <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
-                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
+                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.totalMemoCount}}개</p>
             </div>
             <div v-else class="mbottom-05 fr" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{CONT_DETAIL.memoCount > 0? '답변완료' : '답변대기'}}</div>
@@ -204,9 +204,6 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
     CHANNEL_DETAIL () {
-      // console.log('#######################################')
-      // console.log(this.detailVal.teamKey)
-      // var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       if (chan) {
         return chan[0]
@@ -215,17 +212,11 @@ export default {
       }
     },
     CAB_DETAIL () {
-      // console.log('$@!$$!$!$!$!!$!$')
-      // console.log(this.detailVal)
-      // console.log(this.CHANNEL_DETAIL)
-
       if (this.detailVal.jobkindId === 'BOAR') {
-        // console.log('##########################')
-        // console.log(this.detailVal)
-        var test = this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.detailVal.cabinetKey)[0]
+        var test = this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.detailVal.cabinetKey)
         // console.log(test)
         if (test) {
-          return test
+          return test[0]
         } else {
           return null
         }
@@ -306,14 +297,13 @@ export default {
       // this.getContentsList()
       } else {
         if (!this.CONT_DETAIL.D_CONT_USER_DO) {
-          /* this.settingUserDo(this.CONT_DETAIL.userDoList) */
         }
       }
 
       if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
-        alert(4)
         await this.getCabinetDetail()
       }
+      console.log(this.CONT_DETAIL)
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.CONT_DETAIL.D_MEMO_LIST) {
@@ -340,7 +330,6 @@ export default {
     },
     async getCabinetDetail () {
       if (!this.CAB_DETAIL || !this.CAB_DETAIL.shareAuth) {
-        alert(4444)
         // eslint-disable-next-line no-new-object
         var param = new Object()
         // var tt = this.propData
@@ -362,6 +351,7 @@ export default {
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
+      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
 
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
     },
@@ -558,7 +548,7 @@ export default {
       if (params.tempData) {
         params.tempData.index = params.index
         params.tempData.cIndex = params.cIndex
-        // // console.log(params.tempData.index)
+        // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
       this.reportYn = true
@@ -573,7 +563,7 @@ export default {
       } else alert('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
-      // // console.log(this.CONT_DETAIL)
+      console.log(this.CONT_DETAIL)
 
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
@@ -636,7 +626,7 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      // // console.log(this.$store.getters['D_HISTORY/hStack'])
+      console.log(this.$store.getters['D_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     },
@@ -671,7 +661,7 @@ export default {
       this.confirmPopShowYn = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // // // console.log(this.alimDetail)
+        // console.log(this.alimDetail)
         inParam.contentsKey = this.CONT_DETAIL.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
@@ -681,10 +671,10 @@ export default {
           param: inParam
         })
         this.$emit('closeXPop', true)
-        // // // console.log('Delete Content Result' + result)
+        // console.log('Delete Content Result' + result)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        // // console.log(this.tempData)
+        console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -716,10 +706,6 @@ export default {
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
-      // // // console.log(this.CAB_DETAIL)
-      // // // console.log(this.CHANNEL_DETAIL)
-      // // console.log(this.CONT_DETAIL)
-      // // // console.log(this.detailVal)
       if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL?.shareAuth.R === true) {
         this.mememoValue = null
         this.memoShowYn = true
@@ -817,7 +803,7 @@ export default {
         url: 'service/tp.getMemoList',
         param: memo
       })
-      console.log(result.data)
+
       if (result.data.memoList) {
         this.CONT_DETAIL.totalMemoCount = result.data.totalElements
         var tempList = []
@@ -951,66 +937,78 @@ export default {
           } */
         }
       }
-      var cont = this.CONT_DETAIL
+      /* var cont = this.CONT_DETAIL
       cont.D_CONT_USER_DO = D_CONT_USER_DO
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-      // return D_CONT_USER_DO
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+      return D_CONT_USER_DO
     },
 
-    async changeAct (act) {
-      // var detail = this.CONT_DETAIL
+    async changeAct (act, key) {
       // eslint-disable-next-line no-unused-vars
       var result = null
       var saveYn = true
+      var temp = []
+      if (!this.CONT_DETAIL.D_CONT_USER_DO) {
+        this.CONT_DETAIL.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      }
+      if (this.CONT_DETAIL.D_CONT_USER_DO) {
+        temp = this.CONT_DETAIL.D_CONT_USER_DO
+      }
+      for (var i = 0; i < temp.length; i++) {
+        if (temp[i].doType === act.doType) {
+          if (temp[i].doKey === 1) return
+        }
+      }
+      // this.pushDetail = JSON.parse(this.detailVal).data
       if (Number(act.doKey) > 0) {
         saveYn = false
       }
       // eslint-disable-next-line no-new-object
       var param = new Object()
-
-      for (var i = 0; i < this.CONT_DETAIL.D_CONT_USER_DO.length; i++) {
-        if (this.CONT_DETAIL.D_CONT_USER_DO[i].doType === act.doType) {
-          if (this.CONT_DETAIL.D_CONT_USER_DO[i].doKey === 1) return
-        }
-      }
-
-      param.targetKey = this.CONT_DETAIL.contentsKey
-      param.userName = this.$changeText(this.GE_USER.userDispMtext)
+      param.targetKey = key
       if (param.targetKey === null) { return }
       param.doType = act.doType
+      param.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
         result = this.$saveUserDo(param, 'delete')
-        for (i = 0; i < this.CONT_DETAIL.D_CONT_USER_DO.length; i++) {
-          if (this.CONT_DETAIL.D_CONT_USER_DO[i].doType === act.doType) {
-            this.CONT_DETAIL.D_CONT_USER_DO[i].doKey = 0
-          }
-        }
         if (act.doType === 'LI') {
           this.CONT_DETAIL.likeCount -= 1
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this.CONT_DETAIL])
         }
+        for (i = 0; i < temp.length; i++) {
+          if (temp[i].doType === act.doType) {
+            temp[i].doKey = 0
+          }
+        }
+        this.CONT_DETAIL.D_CONT_USER_DO = temp
+        this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
         var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
-          for (var d = this_.CONT_DETAIL.D_CONT_USER_DO.length - 1; d >= 0; d--) {
-            if (this.CONT_DETAIL.D_CONT_USER_DO[d].doType === act.doType) {
-              this_.CONT_DETAIL.D_CONT_USER_DO[d].doKey = result.doKey
+          // debugger
+          for (var d = temp.length - 1; d >= 0; d--) {
+            if (temp[d].doType === act.doType) {
+              temp[d].doKey = result.doKey
             }
           }
-          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this_.CONT_DETAIL])
-          /* this.settingUserDo(this.CONT_DETAIL.D_CONT_USER_DO) */
+          // temp.push({ doType: act.doType, doKey: result.doKey })
+          this_.CONT_DETAIL.D_CONT_USER_DO = temp
+          this_.changeData += 1
+          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [this_.CONT_DETAIL])
         })
-
-        /* this.CONT_DETAIL.D_CONT_USER_DO.push({ doType: act.doType, doKey: 1 }) */
-        if (act.doType === 'LI') { this.CONT_DETAIL.likeCount += 1 }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [this.CONT_DETAIL])
-
-        // this.CONT_DETAIL.userDoList = temp
+        for (var d = temp.length - 1; d >= 0; d--) {
+          if (temp[d].doType === act.doType) {
+            temp[d].doKey = 1
+          }
+        }
+        if (act.doType === 'LI') {
+          this.CONT_DETAIL.likeCount += 1
+        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [this.CONT_DETAIL])
+        // }
       }
-      /* this.settingUserDo(detail.D_CONT_USER_DO) */
     },
     goChanDetail () {
       // eslint-disable-next-line no-new-object

@@ -60,7 +60,7 @@
                 <div class="alimCheckContents">
                   <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
-                  <div @click="changeAct(userDo, alim.mccKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
+                  <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
                     <template v-if="userDo.doType === 'LI'">
                       <img class="fl img-w20" style="margin-top: 2px;"  v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
                       <img class="fl img-w20" style="margin-top: 2px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
@@ -507,7 +507,7 @@ export default {
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
-      if(channelItemBoxDom.scrollHeight === 50) {
+      if(channelItemBoxDom.scrollHeight <= 50) {
         var tempKey
         if (this.targetCKey) tempKey = this.targetCKey
         if (key !== undefined && key !== null && key !== '') { tempKey = key }
@@ -1182,13 +1182,18 @@ export default {
             // temp.push({ doType: act.doType, doKey: result.doKey })
             this_.commonListData[idx].D_CONT_USER_DO = temp
             this_.changeData += 1
-            this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.commonListData)
+            this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', this.commonListData)
         })
+        for (var d = temp.length - 1; d >= 0; d--) {
+          if (temp[d].doType === act.doType) {
+            temp[d].doKey = 1
+          }
+        }
         /* temp.push({ doType: act.doType, doKey: 1 }) */
         if (act.doType === 'LI') {
             this.commonListData[idx].likeCount += 1
         }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.commonListData)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', this.commonListData)
         // }
       }
       /* if (result === true) {

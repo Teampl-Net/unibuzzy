@@ -202,6 +202,7 @@ export default {
       if (newArr.length > 0) {
         this_.canLoadYn = true
       }
+      this_.loadingYn = false
     })
     /*  } */
   },
@@ -867,8 +868,6 @@ export default {
     // @point
     // eslint-disable-next-line no-new-object
       var param = new Object()
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       }
@@ -933,7 +932,6 @@ export default {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       } */
       var resultList = result
-      this.loadingYn = false
       return resultList
     },
     makeNewContents (data) {
@@ -969,12 +967,12 @@ export default {
     changeMainTab (tab) {
       this.viewMainTab = tab
       this.offsetInt = 0
-      var jobkindId = 'ALIM'
+      /* var jobkindId = 'ALIM'
       if (this.chanAlimYn) {
         this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.list = []
         if (tab === 'B') jobkindId = 'BOAR'
         this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.type = jobkindId
-      }
+      } */
       this.refreshList()
       this.$emit('changeMainTab', tab)
     },
@@ -1279,13 +1277,13 @@ export default {
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.alimContentsList,
+          // ...this.alimContentsList,
           ...resultList.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
       } else {
         newArr = [
-          ...this.boardContentsList,
+          // ...this.boardContentsList,
           ...resultList.content
         ]
         this.boardContentsList = this.replaceArr(newArr)

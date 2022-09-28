@@ -277,7 +277,7 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      var a = this.resultSearchKeyList
+      // var a = this.resultSearchKeyList
       // console.log(a)
       this.offsetInt = 0
       var resultList = await this.getMyActContentsList(10, 0)
