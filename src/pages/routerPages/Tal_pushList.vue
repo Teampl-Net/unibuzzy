@@ -580,7 +580,8 @@ export default {
         } else {
           cont.D_MEMO_LIST.splice(index, 1)
         }
-        cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
+        cont.memoCount -= 1
+        // cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
 
         // this.currentMemoList = cont.D_MEMO_LIST
         // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
@@ -641,20 +642,25 @@ export default {
       // var currentContentsKey
       var idx
       if (this.viewMainTab === 'P') {
-        idx = this.alimContentsList.findIndex(i => i.mccKey === param.mccKey)
+        idx = this.alimContentsList.findIndex(i => i.contentsKey === param.contentsKey)
         if (idx !== -1) {
           this.currentContentsKey = this.alimContentsList[idx].contentsKey
         } else {
+          this.memoShowYn = false
           this.$showToastPop('작성 setting 중 오류')
+          return
         }
       } else if (this.viewMainTab === 'B') {
-        idx = this.boardContentsList.findIndex(i => i.mccKey === param.mccKey)
+        idx = this.boardContentsList.findIndex(i => i.contentsKey === param.contentsKey)
         if (idx !== -1) {
           this.currentContentsKey = this.boardContentsList[idx].contentsKey
         } else {
+          this.memoShowYn = false
           this.$showToastPop('작성 setting 중 오류')
+          return
         }
       }
+
       // console.log('##############')
       // console.log('작성 할 contents index 는 : ' + idx)
       // console.log('작성 할 contents key 는 : ' + this.currentContentsKey)
@@ -729,7 +735,7 @@ export default {
           var newList = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList
           // cont.memoCount = newList.length
-          cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
+          cont.memoCount += 1
           // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           // this.currentMemoObj = cont
@@ -873,7 +879,7 @@ export default {
       }
       if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
 
-      if (pageSize) { param.pageSize = pageSize } else { pageSize = 10 }
+      if (pageSize !== undefined) { param.pageSize = pageSize } else { param.pageSize = 10 }
 
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
@@ -925,9 +931,10 @@ export default {
         }
       }
       // console.log('param')
-      // console.log(param)
+      console.log('param')
+      console.log(param)
       var result = await this.$getContentsList(param)
-      // // console.log(result)
+      console.log(result)
       /* if (result.empty) {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       } */
@@ -965,8 +972,10 @@ export default {
       this.$emit('openUserProfile', params)
     },
     changeMainTab (tab) {
+      // this.targetCKey = null
       this.viewMainTab = tab
       this.offsetInt = 0
+
       /* var jobkindId = 'ALIM'
       if (this.chanAlimYn) {
         this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.list = []
@@ -1039,6 +1048,7 @@ export default {
       this.resultSearchKeyList = []
       this.changeMainTab('P')
       this.changeTab('N')
+      this.offsetInt = 0
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
@@ -1184,12 +1194,12 @@ export default {
       // console.log(this.endListYn, '', this.offsetInt)
     },
     async loadMore (descYn) {
-      // console.log('this.canLoadYn' + this.canLoadYn + 'this.endListYn' + this.endListYn)
+      console.log('this.canLoadYn : ' + this.canLoadYn + ' this.endListYn : ' + this.endListYn)
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
-        // console.log(resultList.contnet)
+        console.log(resultList.content)
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
@@ -1265,12 +1275,13 @@ export default {
     },
     async changeTab (tabName) {
       this.targetCKey = null
+      this.offsetInt = 0
       /* if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       } */
       this.viewTab = tabName
 
-      this.offsetInt = 0
+      // this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
@@ -1288,6 +1299,7 @@ export default {
         ]
         this.boardContentsList = this.replaceArr(newArr)
       }
+      this.endListSetFunc(resultList)
       this.findPopShowYn = false
       this.introPushPageTab()
       this.scrollMove()

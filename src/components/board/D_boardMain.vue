@@ -7,58 +7,35 @@
     <div id="summaryHeader" class="summaryHeader">
       <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
-
-        <!-- 게시판 이름 , 소속 채널 -->
-        <!-- <div class="font22 boardCard">
-          <p class="cBlack font20 mbottom-05" style="width: 100%; ">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</p>
-          <p class="font16 grayBlack" style="width: 100%;">{{ this.$changeText(this.propData.nameMtext) }}</p>
-        </div> -->
-      <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
-        <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
-          <!-- <img class="fl" src="../../assets/images/channel/icon_official.svg" v-if="chanItem.officialYn" style="position: absolute; width:30px; top:-1rem" alt=""> -->
-        </div>
-        <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
-          <div class="fl font16  w-100P">
-            <div style="width:50px;" >
-              <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
-            </div>
-            <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
+        <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
+          <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
           </div>
-          <div class="fl font16  w-100P">
-            <div style="width:50px;" >
-              <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-              <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
-            </div>
-            <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
-          </div>
-
-          <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
-            <div class="fl font15  w-100P">
-              <div style="width:100%" class="fl" >
-                <!-- <img class="fl" style="width:20px; margin-top:2px;" src="../../assets/images/channel/channer_4.png" alt="구독자 아이콘"> -->
-                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
+          <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
+            <div class="fl font16  w-100P">
+              <div style="width:50px;" >
+                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
               </div>
-              <p class="mleft-05 fl font12 commonBlack" v-if="CAB_DETAIL.replyYn === 1">댓글</p>
-              <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.fileYn === 1">파일업로드</p>
-              <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.blindYn === 1">익명</p>
+              <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
             </div>
-            <!-- <p class="fl font14">{{mCabinetContentsDetail.blindYn === 1? '파일업로드O/': '파일업로드X/'}}</p> -->
+            <div class="fl font16  w-100P">
+              <div style="width:50px;" >
+                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
+              </div>
+              <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
+            </div>
+
+            <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+              <div class="fl font15  w-100P">
+                <div style="width:100%" class="fl" >
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
+                </div>
+                <p class="mleft-05 fl font12 commonBlack" v-if="CAB_DETAIL.replyYn === 1">댓글</p>
+                <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.fileYn === 1">파일업로드</p>
+                <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.blindYn === 1">익명</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-        <!-- 익명게시판 여부 -->
-        <!-- <div v-if="mCabinetContentsDetail.blindYn === 1" class="font16" style="width: 100%; margin-top: 10px; margin-bottom: 20px; ">익명게시판</div> -->
-
-        <!-- <div class="summaryTop">
-          <p class="cBlack fl font16" style="width: 100%; height: 30px;">공유 {{mCabinetContentsDetail.mShareItemCnt}}명</p>
-          <p class="cBlack fl font16" style="width: 100%; height: 30px; border-left: 1px solid white">게시글 {{totalElements}}개</p>
-          <div class="fl boardMainAdminArea"  v-if="this.propData.value.adminYn">
-            <p class="fl font16 fontBold cBlack" style="text-align: left;width: 50px; height: 100%;" >관리자</p>
-            <img src="../../assets/images/common/icon_manager_tie.svg" class="fl" style="width: 15px; height: 15px;" />
-          </div>
-        </div> -->
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
           <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
           <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.CAB_DETAIL.totalContentsCount}}개</p>
@@ -98,21 +75,17 @@
     </div>
 
     <div class="boardItemBox" id="boardItemBox" style="">
-      <!-- <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll"> -->
       <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
         <transition name="showModal">
           <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
         <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
-          <!-- <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
           <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-          <!-- <div class="fr boardReadCheckAlimArea" :class="this.scrolledYn? 'boardReadCheckAlimArea--unpinned': 'boardReadCheckAlimArea--pinned'"  style="height: 20px; position: sticky; top:20px; z-index: 9; display: flex; align-items: center; " > <input type="checkbox" v-model="readCheckBoxYn" id="boardReadYn" style="" > <label for="boardReadYn" class="mleft-05">안읽은 알림 보기</label></div> -->
-          <boardList :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="this.mCabContentsList" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' @openPop="openPop" />
+          <boardList  :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' @openPop="openPop" />
           <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
         </div>
-        <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.newScrollPosition}}</div> -->
       </div>
     </div>
     <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
@@ -152,8 +125,19 @@ export default {
     // console.log('this.CAB_DETAIL')
     this.$emit('openLoading')
     await this.getCabinetDetail()
+    var this_ = this
+    this_.getContentsList().then(response => {
+      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+      var newArr = [
+        ...this_.mCabContentsList,
+        ...response.content
+      ]
+      this_.mCabContentsList = this.replaceArr(newArr)
+    })
+    var resultList = await this.getContentsList()
+    console.log('####  CREATED  #####')
+    console.log(resultList)
 
-    // var resultList = await this.getContentsList()
     // this.mCabContentsList = resultList.content
     // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
     //   this.endListYn = true
@@ -161,31 +145,39 @@ export default {
     //   this.endListYn = false
     // }
   },
-  mounted () {
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // window.addEventListener('message', e => this.recvNoti(e))
-    if (this.CAB_DETAIL) {
-      this.boardListWrap = this.$refs.boardListWrap
-      this.boardListWrap.addEventListener('scroll', this.saveScroll)
-      this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
-      this.listBox.addEventListener('scroll', this.handleScroll)
-    }
-  },
   updated () {
     if (this.CAB_DETAIL) {
-      this.boardListWrap.scrollTop = this.currentScroll
-      this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
-
-      // eslint-disable-next-line no-unused-vars
+      // this.boardListWrap.scrollTop = this.currentScroll
+      // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
       this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
-      this.box.addEventListener('scroll', this.updateScroll)
-      this.box.addEventListener('mousewheel', e => {
-        this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
-      })
+      if (this.box) {
+        this.box.addEventListener('scroll', this.updateScroll)
+        this.box.addEventListener('mousewheel', e => {
+          this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+        })
+      }
+      // eslint-disable-next-line no-unused-vars
       if (this.findPopShowYn) {
         this.findPaddingTopBoard()
       }
     }
+  },
+  mounted () {
+    if (this.CAB_DETAIL) {
+      // this.boardListWrap = this.$refs.boardListWrap
+      // this.boardListWrap.addEventListener('scroll', this.saveScroll)
+      // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
+      // this.listBox.addEventListener('scroll', this.handleScroll)
+      this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
+      if (this.box) {
+        this.box.addEventListener('scroll', this.updateScroll)
+        this.box.addEventListener('mousewheel', e => {
+          this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+        })
+      }
+    }
+    console.log('##################### CAB_DETAIL #################')
+    console.log(this.CAB_DETAIL)
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -238,6 +230,19 @@ export default {
   },
 
   methods: {
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.mccKey - a.mccKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
     goProfile () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -709,7 +714,9 @@ export default {
       // this.mCabContentsList = []
       this.emptyYn = false
       var resultList = await this.getContentsList()
-      this.mCabContentsList = resultList.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      this.mCabContentsList = this.replaceArr(resultList.content)
+
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -796,15 +803,15 @@ export default {
 
       this.findPopShowYn = false
     },
-    replaceArr (arr) {
-      var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ contentsKey }) => contentsKey === current.contentsKey) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      return uniqueArr
-    },
+    // replaceArr (arr) {
+    //   var uniqueArr = arr.reduce(function (data, current) {
+    //     if (data.findIndex(({ contentsKey }) => contentsKey === current.contentsKey) === -1) {
+    //       data.push(current)
+    //     }
+    //     return data
+    //   }, [])
+    //   return uniqueArr
+    // },
     updateStoreBoardList (uniqueArr) {
       var tempChan = this.CHANNEL_DETAIL
       var cabinetList = tempChan.ELEMENTS.cabinetList
@@ -816,20 +823,24 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.endListYn === false) {
-        if (this.CAB_DETAIL.boardList && (!this.CAB_DETAIL.totalContentsCount > this.CAB_DETAIL.boardList.length)) return
+        if (this.mCabContentsList && (!this.CAB_DETAIL.totalContentsCount > this.mCabContentsList.length)) return
 
         var resultList = await this.getContentsList()
-        if (this.CAB_DETAIL.boardList === undefined || this.CAB_DETAIL.boardList.length === 0) {
-          this.CAB_DETAIL.boardList = []
-        }
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
+        // const newArr = [
+        //   ...this.CAB_DETAIL.boardList,
+        //   ...resultList.content
+        // ]
         const newArr = [
-          ...this.CAB_DETAIL.boardList,
+          ...this.mCabContentsList,
           ...resultList.content
         ]
+
         var uniqueArr = this.replaceArr(newArr)
         var tempCabData = this.CAB_DETAIL
-        tempCabData.boardList = uniqueArr
+        // tempCabData.boardList
+        this.mCabContentsList = uniqueArr
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
@@ -843,7 +854,6 @@ export default {
           this.offsetInt += 1
           this.endListYn = false
         }
-        this.mCabContentsList = newArr
       } else {
         this.$refs.boardListCompo.loadingRefHide()
       }
@@ -852,7 +862,12 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      return this.$getDetail('TEAM', this.propData.currentTeamKey)[0]
+      var team = this.$getDetail('TEAM', this.propData.currentTeamKey)
+      if (team) {
+        return team[0]
+      } else {
+        return null
+      }
     },
     CAB_DETAIL () {
       return this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.propData.targetKey)[0]
@@ -860,10 +875,33 @@ export default {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
     calcBoardPaddingTop () {
       return {
         '--paddingTopLength': (this.paddingTop) + 'px'
       }
+    },
+    BOARD_CONT_LIST () {
+      var contentList = []
+      var vFoolChanIdx, vFoolContentIdx
+      var vFoolChanInfo = null
+      var vFoolContList = []
+      for (let i = 0; i < this.mCabContentsList.length; i++) {
+        vFoolChanIdx = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mCabContentsList[i].creTeamKey)
+        vFoolChanInfo = this.GE_MAIN_CHAN_LIST[vFoolChanIdx]
+        vFoolContList = vFoolChanInfo.ELEMENTS.boardList
+        vFoolContentIdx = vFoolContList.findIndex((item) => item.mccKey === this.mCabContentsList[i].mccKey)
+
+        if (vFoolContentIdx !== -1) {
+          contentList.push(vFoolContList[vFoolContentIdx])
+        } else {
+          contentList.push(this.mCabContentsList[i])
+        }
+      }
+
+      return contentList
     },
     setBlockBoxHeight () {
       return {

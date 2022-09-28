@@ -6,7 +6,7 @@
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
-          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.mccKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div @click="clickInfo(alim)" v-if="alim.bodyFullStr" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -38,9 +38,9 @@
                       <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                   </div>
                   <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.mccKey"> -->
-                  <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.mccKey" @click="cancelConfirm(alim)">
-                    <p :id="'timerText'+alim.mccKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.mccKey)}}</p>
+                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
+                  <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
+                    <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
                   </div>
                   <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
                     <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
@@ -53,8 +53,8 @@
                   </div>
                 </div>
               </div>
-                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.mccKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.mccKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div class="alimCheckContents">
@@ -70,30 +70,30 @@
                       <img class="mright-05 fl img-w20" v-else src="../../assets/images/common/starIcon.svg" alt="">
                     </template>
                   </div>
-                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.mccKey" @click="copyText(alim.mccKey, alim.jobkindId, index0, alim.title, alim.nameMtext, alim.cabinetNameMtext)"
+                  <div style="margin-left: 10px; margin-top: 1px; float: left;" data-clipboard-action="copy" :id="'copyTextBody' + alim.contentsKey" @click="copyText(alim.contentsKey, alim.jobkindId, index0, alim.title, alim.nameMtext, alim.cabinetNameMtext)"
                       data-clipboard-text="" >
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
                   <div class="fr w-100P mtop-05" v-show="alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR'">
-                    <p class="fl font14" :id="'memoCountArea'+alim.mccKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.mccKey, teamKey : alim.creTeamKey}):''">
-                    <!-- <p class="fl font14" :id="'memoCountArea'+alim.mccKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.mccKey, teamKey : alim.creTeamKey}):''"> -->
+                    <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''">
+                    <!-- <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''"> -->
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       댓글 {{alim.memoCount}}개
                     </p>
-                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.mccKey, alim.creTeamKey)"/>
+                    <gBtnSmall  btnTitle="댓글쓰기" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey, alim.creTeamKey)"/>
                   </div>
 
                 </div>
               </div>
-              <!-- <div class="alimListMemoBorder" v-if="findMemoOpend(alim.mccKey) !== -1 && commonListData.memoList.length > 0" :id="'borderLine'+alim.mccKey" ></div> -->
-              <div class="alimListMemoBorder" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1" :id="'borderLine'+alim.mccKey" ></div>
-              <!-- <div class="w-100P fl" v-if="findMemoOpend(alim.mccKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" > -->
-              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1">
-                <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.mccKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
-                  <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.mccKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
-                  <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.mccKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
-                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.mccKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
+              <!-- <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 && commonListData.memoList.length > 0" :id="'borderLine'+alim.contentsKey" ></div> -->
+              <div class="alimListMemoBorder" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
+              <!-- <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" > -->
+              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1">
+                <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
+                  <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
+                  <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
+                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
 
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
                 <div v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
@@ -712,7 +712,7 @@ export default {
       // this.mememoValue = null
       // this.currentContentsKey = key
       var param = {}
-      param.mccKey = key
+      param.contentsKey = key
       param.teamKey = creTeamKey
       this.$emit('writeMemo', param)
     },
@@ -822,11 +822,11 @@ export default {
     alimBigView (alim) {
         alim.bigYn = true
       // contentsKey, alim.attachMfilekey
-        document.getElementById('bodyFullStr'+alim.mccKey).style.maxHeight = '100%'
-        document.getElementById('bodyFullStr'+alim.mccKey).style.marginBottom = '2rem'
-        document.getElementById('bodyMore'+alim.mccKey).style.display = 'none'
+        document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
+        document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
+        document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
         var thisthis = this
-        var imgList = document.querySelectorAll('#bodyFullStr'+alim.mccKey + ' img')
+        var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
         for (let m = 0; m < imgList.length; m++) {
             imgList[m].addEventListener('touchstart', () => {
             imgList[m].style.opacity = 0.8
@@ -971,8 +971,8 @@ export default {
     async loadMoreMemo () {
         this.showMoreMemoTextYn = true
         // alert(true)
-        // // console.log('#########################')
-        // // console.log('offsetInt', this.offsetInt)
+        console.log('#########################')
+        console.log('offsetInt', this.offsetInt)
         // // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
           this.showMoreMemoTextYn = false

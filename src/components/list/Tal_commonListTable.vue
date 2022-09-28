@@ -68,8 +68,8 @@ export default {
       param.targetKey = data.creTeamKey
       param.nameMtext = data.nameMtext
       param.chanName = data.nameMtext
-      // param.targetContentsKey = data.contentsKey
-      param.targetContentsKey = data.mccKey
+      param.targetContentsKey = data.contentsKey
+      // param.targetContentsKey = data.mccKey
       // if (data.jobkindId === 'BOAR') {}
       param.jobkindId = data.jobkindId
       // 세션에서 유저키 받아오기
