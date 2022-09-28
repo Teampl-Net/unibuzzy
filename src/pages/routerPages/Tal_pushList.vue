@@ -109,6 +109,9 @@ export default {
       }
     }
     var this_ = this
+    if (this_.axiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+    this_.axiosQueue.push('getPushContentsList')
+
     this_.getPushContentsList().then(response => {
       this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = []
@@ -203,6 +206,9 @@ export default {
         this_.canLoadYn = true
       }
       this_.loadingYn = false
+
+      var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
+      this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
     })
     /*  } */
   },
@@ -574,12 +580,16 @@ export default {
     },
     async deleteMemo (param) {
       // console.log(param)
+      if (this.axiosQueue.findIndex((item) => item === 'deleteMemo') !== -1) return
       var memo = {}
       memo.memoKey = param.memoKey
+      this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.deleteMemo',
         param: memo
       })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       var index
       if (result.data.result === true) {
         // var cont = this.currentMemoObj
@@ -707,6 +717,8 @@ export default {
       this.writeMemoTempTeamKey = param.teamKey
     },
     async saveMemo (text) {
+      if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
+      this.axiosQueue.push('saveMemo')
       this.saveMemoLoadingYn = true
       // eslint-disable-next-line no-new-object
       var memo = new Object()
@@ -731,6 +743,8 @@ export default {
         url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       // console.log('!!!!!! SAVE MEMO result !!!!!!!')
       // console.log(result)
 
@@ -794,6 +808,8 @@ export default {
       // console.log(params)
     },
     async getContentsMemoList (key, pageSize, offsetInt) {
+      if (this.axiosQueue.findIndex((item) => item === 'getContentsMemoList') !== -1) return
+      this.axiosQueue.push('getContentsMemoList')
       var memo = {}
       memo.targetKind = 'C'
       memo.targetKey = key
@@ -823,7 +839,8 @@ export default {
         param: memo
       })
       // console.log(result)
-
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       console.log(cont)
       if (result.data.memoList) {
         // cont.totalMemoCount = result.data.totalElements
@@ -1036,6 +1053,8 @@ export default {
       }
     },
     async getMCabContYn (contentsKey) {
+      if (this.axiosQueue.findIndex((item) => item === 'getMCabContYn') !== -1) return
+      this.axiosQueue.push('getMCabContYn')
       var paramMap = new Map()
       paramMap.set('targetKey', contentsKey)
       paramMap.set('ownUserKey', this.GE_USER.userKey)
@@ -1044,6 +1063,8 @@ export default {
         url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       if (result.data.length > 0) {
         return true
       } else {
@@ -1163,7 +1184,7 @@ export default {
         this.alimContentsList = this.replaceArr(newArr)
         for (let i = 0; i < this.alimContentsList.length; i++) {
           cont = this.alimContentsList[i]
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -1195,7 +1216,7 @@ export default {
         for (let i = 0; i < this.boardContentsList.length; i++) {
           cont = this.boardContentsList[i]
           tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -1529,7 +1550,8 @@ export default {
       confirmText: '',
       currentConfirmType: '',
       confirmPopShowYn: false,
-      confirmType: 'timeout'
+      confirmType: 'timeout',
+      axiosQueue: []
     }
   }
 }

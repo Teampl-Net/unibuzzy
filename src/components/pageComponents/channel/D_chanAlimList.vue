@@ -179,7 +179,8 @@ export default {
       systemName: '',
       currentConfirmType: '',
       currentPushListMainTab: 'P',
-      requestYn: false
+      requestYn: false,
+      axiosQueue: []
       // errorPopYn: false
     }
   },
@@ -232,7 +233,11 @@ export default {
     async readyFunction () {
       // // eslint-disable-next-line no-debugger
       // debugger
+      if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+      this.axiosQueue.push('addChanList')
       await this.$addChanList(this.chanDetail.targetKey)
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       /* // this.$addChanList(this.chanDetail.targetKey)
       if (!this.CHANNEL_DETAIL || this.CHANNEL_DETAIL.changedYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
         // eslint-disable-next-line no-debugger
@@ -324,7 +329,11 @@ export default {
           this.sendLoadingYn = true
           if (fStatus) {
             // console.log(this.followParam)
+            if (this.axiosQueue.findIndex((item) => item === 'changeFollower') !== -1) return
+            this.axiosQueue.push('changeFollower')
             result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
+            var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
+            this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
@@ -376,7 +385,8 @@ export default {
         onMessage('REQ', 'nativeShare', shareItem)
       }
     },
-    changeRecvAlimYn () {
+    async changeRecvAlimYn () {
+      if (this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn') !== -1) return
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
@@ -390,14 +400,18 @@ export default {
         param.notiYn = this.CHANNEL_DETAIL.recvAlimYn
         toastText = '채널 알림이 활성화 되었습니다'
       }
+      this.axiosQueue.push('changeRecvAlimYn')
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
-      this.$changeRecvAlimYn({ follower: param })
+      await this.$changeRecvAlimYn({ follower: param })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       setTimeout(() => {
         this.$showToastPop(toastText)
       }, 500)
     },
     async saveMemberButton () {
+      if (this.axiosQueue.findIndex((item) => item === 'saveMemberButton') !== -1) return
       this.smallPopYn = true
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn === 1) {
         this.confirmMsg = '내 정보 공개가 취소 완료되었습니다.'
@@ -420,10 +434,14 @@ export default {
       } else {
         params = { follower: param, doType: 'ME' }
       }
+
+      this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveFollower',
         param: params
       })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       if (result.data.result === true) {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn === 1) {
           this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn = false
@@ -432,7 +450,11 @@ export default {
         }
       }
       this.openWelcomePopYn = false
-      this.$addChanList(this.chanDetail.targetKey)
+      if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+      this.axiosQueue.push('addChanList')
+      await this.$addChanList(this.chanDetail.targetKey)
+      queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     numberOfElements (num) {
