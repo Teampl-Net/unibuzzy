@@ -30,7 +30,7 @@ export default {
   methods: {
     async initF () {
       var self = this
-      console.log(self)
+      // console.log(self)
       var hashData = this.$route.hash
       hashData = hashData.replace('#', '')
       var hashList = hashData.split('&')
@@ -61,7 +61,7 @@ export default {
       var email_val = this.naverIdLogin.getProfileData('email')
       var mobile_val = this.naverIdLogin.getProfileData('mobile')
       var age_val = this.naverIdLogin.getProfileData('age')
-      console.log(acc_token_val + id_val + name_val + nickname_val + email_val + mobile_val + age_val)
+      // console.log(acc_token_val + id_val + name_val + nickname_val + email_val + mobile_val + age_val)
       if (this.naverIdLogin.getProfileData('name') !== undefined) {
         user.email = email_val
         user.mobile = mobile_val
@@ -75,7 +75,7 @@ export default {
           user.nickname = nickname_val
         }, 2000)
       }
-      console.log('naverIdLogin.getProfileData(): ' + this.naverIdLogin.getProfileData('name'))
+      // console.log('naverIdLogin.getProfileData(): ' + this.naverIdLogin.getProfileData('name'))
 
       var userProfile = await setUserInfo(user)
 

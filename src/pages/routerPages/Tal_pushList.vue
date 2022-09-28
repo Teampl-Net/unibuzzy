@@ -130,8 +130,8 @@ export default {
           } else {
             contentDetail = null
           }
-          console.log('!!!!!!!!!!!!!!!!!!!!!')
-          console.log(contentDetail)
+          // console.log('!!!!!!!!!!!!!!!!!!!!!')
+          // console.log(contentDetail)
 
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
@@ -213,8 +213,8 @@ export default {
     }
   },
   mounted () {
-    console.log('%%%%%%%%%%%%%')
-    console.log(this.chanDetail)
+    // console.log('%%%%%%%%%%%%%')
+    // console.log(this.chanDetail)
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
     if (this.box) {
       this.box.addEventListener('scroll', this.handleScroll)
@@ -270,7 +270,7 @@ export default {
     },
     GE_CHANNEL_DETAIL: {
       /* handler (value, old) {
-        console.log(JSON.stringify(value))
+        // console.log(JSON.stringify(value))
         alert(JSON.stringify(value))
       },
       deep: true */
@@ -316,7 +316,7 @@ export default {
     },
     /* GE_NEW_NOTI_LIST: {
       handler  (value, old) {
-        console.log('noti도착----------------------------------------------------')
+        // console.log('noti도착----------------------------------------------------')
         alert(JSON.stringify(value[0]))
         var newArr = null
         if (this.chanAlimYn) {
@@ -342,7 +342,7 @@ export default {
     }, */
     /* GE_CHANNEL_DETAIL: {p
       handler () {
-        console.log(this.GE_CHANNEL_DETAIL.ELEMENTS.commonList)
+        // console.log(this.GE_CHANNEL_DETAIL.ELEMENTS.commonList)
       },
       deep: true
     }, */
@@ -370,25 +370,25 @@ export default {
       deep: true
     }
     /* MU_RECENT_CHANGE_TEAM (value, old) {
-      console.log(value)
+      // console.log(value)
       if (value === this.chanDetail.teamKey) {
         alert(value)
         this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
-        console.log('new!!!')
-        console.log(this.GE_CHANNEL_DETAIL)
+        // console.log('new!!!')
+        // console.log(this.GE_CHANNEL_DETAIL)
       }
     },
     GE_MAIN_CHAN_LIST (value, old) {
-      console.log('왔다!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(value)
+      // console.log('왔다!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      // console.log(value)
       this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
-      console.log('new!!!')
-      console.log(this.GE_CHANNEL_DETAIL)
+      // console.log('new!!!')
+      // console.log(this.GE_CHANNEL_DETAIL)
     },
     MAIN_ALIM_LIST (value, old) {
       this.alimList = value
-      console.log('alimList!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(this.alimList)
+      // console.log('alimList!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      // console.log(this.alimList)
       this.setAllContents()
     } */
   },
@@ -483,17 +483,17 @@ export default {
         idx = this.boardContentsList.findIndex(i => i.contentsKey === contentKey)
         if (idx !== -1) cont = this.boardContentsList[idx]
       }
-      console.log('#######yesLoadMore#####')
-      console.log('index : ' + idx)
-      console.log(cont)
-      console.log('############')
+      // console.log('#######yesLoadMore#####')
+      // console.log('index : ' + idx)
+      // console.log(cont)
+      // console.log('############')
       // eslint-disable-next-line no-debugger
       debugger
       /* debugger */
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
-      console.log('console.log(response)')
-      console.log(response)
-      console.log(cont.D_MEMO_LIST)
+      // console.log('// console.log(response)')
+      // console.log(response)
+      // console.log(cont.D_MEMO_LIST)
 
       var newArr = [
         ...cont.D_MEMO_LIST,
@@ -501,9 +501,9 @@ export default {
       ]
       var newList = await this.replaceMemoArr(newArr)
 
-      console.log(newList)
+      // console.log(newList)
       cont.D_MEMO_LIST = newList
-      console.log(cont)
+      // console.log(cont)
 
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       // eslint-disable-next-line no-debugger
@@ -526,15 +526,15 @@ export default {
       return uniqueArr
     },
     writeMememo (memo) {
-      console.log('###########write#######')
-      console.log(memo)
+      // console.log('###########write#######')
+      // console.log(memo)
       this.mememoValue = {}
       this.currentContentsKey = memo.memo.targetKey
       this.mememoValue = memo
       this.memoShowYn = true
     },
     async deleteMemo (param) {
-      console.log(param)
+      // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
@@ -555,18 +555,16 @@ export default {
         // this.memoList = []
         // await this.getBoardMemoList(true)
         // var response = await this.getContentsMemoList(this.currentContentsKey)
-        console.log('$$$$$$$$$$$$cont#############')
-        console.log(cont)
-        console.log(idx)
-        console.log('$$$$$$$$$$$$@@@@#############')
+        // console.log('$$$$$$$$$$$$cont#############')
+        // console.log(cont)
+        // console.log(idx)
+        // console.log('$$$$$$$$$$$$@@@@#############')
         index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
-        console.log(cont.D_MEMO_LIST)
+        // console.log(cont.D_MEMO_LIST)
         var cmemoListIdx
         if (param.parentMemoKey) {
           for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
             if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
-              console.log(cont.D_MEMO_LIST[i].cmemoList)
               index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
               if (index !== -1) {
                 cmemoListIdx = i
@@ -574,14 +572,14 @@ export default {
               }
             }
           }
-          console.log('cMemoList 중 해당 인덱스는 : ' + index)
-          console.log('해당 메모가 있는 인덱스는 : ' + cmemoListIdx)
-          console.log('cont.D_MEMO_LIST[cmemoListIdx] : ' + cont.D_MEMO_LIST[cmemoListIdx])
+          // console.log('cMemoList 중 해당 인덱스는 : ' + index)
+          // console.log('해당 메모가 있는 인덱스는 : ' + cmemoListIdx)
+          // console.log('cont.D_MEMO_LIST[cmemoListIdx] : ' + cont.D_MEMO_LIST[cmemoListIdx])
           cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
         } else {
           cont.D_MEMO_LIST.splice(index, 1)
         }
-        cont.memoCount -= 1
+        cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
 
         // this.currentMemoList = cont.D_MEMO_LIST
         // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
@@ -594,7 +592,7 @@ export default {
     confirmOk () {
       this.confirmType = 'timeout'
       if (this.currentConfirmType === 'memoDEL') {
-        console.log(this.tempData)
+        // console.log(this.tempData)
         this.deleteMemo({ memoKey: this.tempData.memoKey, contentsKey: this.tempData.targetKey, parentMemoKey: this.tempData.parentMemoKey })
       }
       this.currentConfirmType = ''
@@ -602,7 +600,7 @@ export default {
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
-        console.log(data)
+        // console.log(data)
         this.tempData = data
       }
 
@@ -619,7 +617,7 @@ export default {
         this.confirmText = '게시글을 삭제 하시겠습니까?'
         this.currentConfirmType = 'boardDEL'
       }
-      console.log(this.tempData)
+      // console.log(this.tempData)
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
@@ -635,7 +633,7 @@ export default {
       this.mememoValue = null
     },
     writeMemo (param) {
-      console.log('tal_pushList writeMemo' + JSON.stringify(param))
+      // console.log('tal_pushList writeMemo' + JSON.stringify(param))
       this.mememoValue = null
       this.memoShowYn = true
       // this.writeMemoTempmcckey = param.mccKey
@@ -656,10 +654,10 @@ export default {
           this.$showToastPop('작성 setting 중 오류')
         }
       }
-      console.log('##############')
-      console.log('작성 할 contents index 는 : ' + idx)
-      console.log('작성 할 contents key 는 : ' + this.currentContentsKey)
-      console.log('##############')
+      // console.log('##############')
+      // console.log('작성 할 contents index 는 : ' + idx)
+      // console.log('작성 할 contents key 는 : ' + this.currentContentsKey)
+      // console.log('##############')
 
       this.writeMemoTempTeamKey = param.teamKey
     },
@@ -680,16 +678,16 @@ export default {
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(memo)
+      // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      // console.log(memo)
 
       // try {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
-      console.log('!!!!!! SAVE MEMO result !!!!!!!')
-      console.log(result)
+      // console.log('!!!!!! SAVE MEMO result !!!!!!!')
+      // console.log(result)
 
       if (result.data.result === true || result.data.result === 'true') {
         /* this.confirmText = '댓글 저장 성공'
@@ -714,14 +712,14 @@ export default {
             cont = this.boardContentsList[idx]
           }
         }
-        console.log('memoLength : ' + memoLength)
-        console.log('memoLength : ' + memoLength)
+        // console.log('memoLength : ' + memoLength)
+        // console.log('memoLength : ' + memoLength)
 
         if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
           var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
-          console.log('!!!response!!!!')
-          console.log(response)
-          console.log('!!!!!!!!!!!!!!!')
+          // console.log('!!!response!!!!')
+          // console.log(response)
+          // console.log('!!!!!!!!!!!!!!!')
           if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
           var newArr = [
             ...response,
@@ -730,7 +728,7 @@ export default {
           var newList = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList
           // cont.memoCount = newList.length
-          cont.memoCount += 1
+          cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
           // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           // this.currentMemoObj = cont
@@ -741,14 +739,14 @@ export default {
         /* this.scrollMove(-1) */
       }
       // } catch (e) {
-      //   console.log(e)
+      //   // console.log(e)
       // } finally {
       //   this.saveMemoLoadingYn = false
       // }
       this.saveMemoLoadingYn = false
     },
     memoOpenClick (params) {
-      console.log(params)
+      // console.log(params)
     },
     async getContentsMemoList (key, pageSize, offsetInt) {
       var memo = {}
@@ -763,9 +761,9 @@ export default {
         if (idx !== -1) cont = this.boardContentsList[idx]
       }
 
-      console.log('getContentsMemoList idx :' + idx)
-      console.log('#########################')
-      console.log('param key : ' + key + ' param pageSize : ' + pageSize + ' param offsetInt : ' + offsetInt)
+      // console.log('getContentsMemoList idx :' + idx)
+      // console.log('#########################')
+      // console.log('param key : ' + key + ' param pageSize : ' + pageSize + ' param offsetInt : ' + offsetInt)
       if (pageSize) memo.pageSize = pageSize
       else memo.pageSize = this.pagesize
       if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
@@ -779,7 +777,7 @@ export default {
         url: 'service/tp.getMemoList',
         param: memo
       })
-      console.log(result)
+      // console.log(result)
 
       console.log(cont)
       if (result.data.memoList) {
@@ -807,21 +805,21 @@ export default {
         //     }
         //   }
         // }
-        // console.log('sssssssssssssssssssssssssssss')
-        // console.log(tempMemo)
-        // console.log('sssssssssssssssssssssssssssss')
+        // // console.log('sssssssssssssssssssssssssssss')
+        // // console.log(tempMemo)
+        // // console.log('sssssssssssssssssssssssssssss')
         // cont.D_MEMO_LIST = tempMemo
         // this.offsetInt = tempMemo.length
         // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', cont)
       }
 
-      // console.log(result.data.content)
+      // // console.log(result.data.content)
       // var list = []
       // list = tempMemo
-      // console.log(list)
-      // console.log(tempMemo)?
-      /* console.log('this.$refs.gMemoRef')
-      console.log(this.$refs.gMemoRef)
+      // // console.log(list)
+      // // console.log(tempMemo)?
+      /* // console.log('this.$refs.gMemoRef')
+      // console.log(this.$refs.gMemoRef)
       this.$refs.gMemoRef.memoLoadingHide() */
       // this.currentMemoObj = cont
       // this.currentMemoTotal = this.currentMemoObj.totalElements
@@ -841,7 +839,7 @@ export default {
     updateStoreData (uniqueArr) {
       var this_ = this
       if (this.chanAlimYn) {
-        console.log(this.CHANNEL_DETAIL)
+        // console.log(this.CHANNEL_DETAIL)
         // eslint-disable-next-line no-debugger
         debugger
         this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
@@ -927,10 +925,10 @@ export default {
           param.ownUserKey = this.GE_USER.userKey
         }
       }
-      console.log('param')
-      console.log(param)
+      // console.log('param')
+      // console.log(param)
       var result = await this.$getContentsList(param)
-      // console.log(result)
+      // // console.log(result)
       /* if (result.empty) {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       } */
@@ -1072,11 +1070,11 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      // console.log(this.getAbsoluteTop(element))
+      // // console.log(this.getAbsoluteTop(element))
       // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       if (element) {
         this.firstContOffsetY = this.getAbsoluteTop(element)
-        // console.log(this.firstContOffsetY)
+        // // console.log(this.firstContOffsetY)
         if (this.firstContOffsetY > 0) {
           this.scrollDirection = 'up'
           this.scrolledYn = false
@@ -1125,8 +1123,8 @@ export default {
           } else {
             contentDetail = null
           }
-          console.log('!!!!!!!!!!!!!!!!!!!!!')
-          console.log(contentDetail)
+          // console.log('!!!!!!!!!!!!!!!!!!!!!')
+          // console.log(contentDetail)
 
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
@@ -1176,8 +1174,8 @@ export default {
       }
     },
     endListSetFunc (resultList) {
-      console.log('result')
-      console.log(resultList)
+      // console.log('result')
+      // console.log(resultList)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
@@ -1185,15 +1183,15 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-      console.log(this.endListYn, '', this.offsetInt)
+      // console.log(this.endListYn, '', this.offsetInt)
     },
     async loadMore (descYn) {
-      console.log('this.canLoadYn' + this.canLoadYn + 'this.endListYn' + this.endListYn)
+      // console.log('this.canLoadYn' + this.canLoadYn + 'this.endListYn' + this.endListYn)
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
-        console.log(resultList.contnet)
+        // console.log(resultList.contnet)
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
@@ -1228,13 +1226,13 @@ export default {
         await this.endListSetFunc(resultList)
         this.contentsList = this.replaceArr(newArr)
         this.canLoadYn = true
-        console.log('this.offsetInt' + this.offsetInt)
+        // console.log('this.offsetInt' + this.offsetInt)
         this.$emit('numberOfElements', resultList.totalElements)
         // if (this.targetContentsKey !== undefined && this.targetContentsKey !== null && this.targetContentsKey !== '') {
         //   var a = this.$refs.pushListChangeTabLoadingComp.contentsWich(this.targetContentsKey)
-        //   console.log(a)
-        //   console.log(a)
-        //   console.log(a)
+        //   // console.log(a)
+        //   // console.log(a)
+        //   // console.log(a)
 
         //   this.scrollMove(a + 1000)
         // }
@@ -1297,7 +1295,7 @@ export default {
       this.scrollMove()
     },
     scrollMove (wich) {
-      console.log('scrollMove : ' + wich)
+      // console.log('scrollMove : ' + wich)
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
       ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
@@ -1402,7 +1400,7 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      console.log(this.$store.getters['D_HISTORY/hStack'])
+      // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
       this.imgDetailAlertShowYn = true
@@ -1427,7 +1425,7 @@ export default {
         this.backClick()
         this.failPopYn = true
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
   },

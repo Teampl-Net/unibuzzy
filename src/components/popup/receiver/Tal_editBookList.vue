@@ -168,7 +168,7 @@ export default {
             this.confirmPopShowYn = true
         },
         setBookSearchFilter () {
-            console.log('%%%%%%%%%%%%%%%')
+            // console.log('%%%%%%%%%%%%%%%')
             if (this.selectBookDetail.sSub) {
                 if (this.selectBookDetail.sSub === 'STUD') {
                     this.searchFilterList = [{ text: '학번', groupList: [], selectGroup: 'all' }, { text: '학과', groupList: [], selectGroup: 'all' }, { text: '직책', groupList: [], selectGroup: 'all' }]
@@ -183,7 +183,7 @@ export default {
                 this.getMCabGroupList(2)
             }
 
-            console.log(this.searchFilterList)
+            // console.log(this.searchFilterList)
         },
         async getMCabGroupList (index) {
             var paramMap = new Map()
@@ -193,7 +193,7 @@ export default {
             url: 'service/tp.getMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
-        console.log(result)
+        // console.log(result)
         if (result.data.length > 0) {
             this.searchFilterList = this.searchFilterList.reverse()
             this.searchFilterList[index].groupList = result.data
@@ -276,7 +276,7 @@ export default {
                 param.mCabContents = mCabContents
                 result = await this.$saveMCabContents(param)
                 if (result.data.result) {
-                    console.log(result)
+                    // console.log(result)
                     await this.getBookMemberList()
                 }
             }
@@ -289,7 +289,7 @@ export default {
             if (this.orderByText === 'userDispMtext') {
                 orderText = 'u.userDispMtext'
             }
-            console.log(this.searchFilterList)
+            // console.log(this.searchFilterList)
             this.searchFilterList = this.searchFilterList.reverse()
             if (this.searchFilterList.length > 0) {
                 for (var s = 0; s < this.searchFilterList.length; s++) {
@@ -308,7 +308,7 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
-            console.log(this.memberList);
+            // console.log(this.memberList);
             if (this.memberList) { // dispName이 없을시 userName으로 대체
                 for (var i =0; i < this.memberList.length; i ++) {
                     if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
@@ -343,7 +343,7 @@ export default {
                 return
             }
         },
-        backClick (backYn) { 
+        backClick (backYn) {
             var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.propData.value.clickData) {
@@ -390,14 +390,14 @@ export default {
                     }   else {
                         this.$emit('closeXPop')
                     }
-                } 
+                }
             }
         },
         async openMCabUserList(data){
             this.searchKeyword = ''
             this.receiverTitle = data.cabinetNameMtext /* + ' 멤버 관리' */
             this.selectBookDetail = data
-            this.setBookSearchFilter() 
+            this.setBookSearchFilter()
             var history = this.$store.getters['D_HISTORY/hStack']
             this.selectPopId = 'selectMemeberPopup' + history.length
             history.push(this.selectPopId)

@@ -148,7 +148,7 @@ export default {
     propData: {}
   },
   async created () {
-    console.log(this.propData)
+    // console.log(this.propData)
     this.$emit('openLoading')
     await this.getCabinetDetail()
     await this.getChanInfo()
@@ -280,7 +280,7 @@ export default {
         url: 'service/tp.saveActLog',
         param: param
       })
-      console.log(result.data.result)
+      // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.errorBoxText
         this.smallPopYn = true
@@ -290,7 +290,7 @@ export default {
     moveOrCopyContent (type) {
       this.selectBoardType = type
       this.boardDetailValue = this.tempData
-      console.log(this.tempData)
+      // console.log(this.tempData)
       this.selectBoardPopShowYn = true
     },
     closeSelectBoardPop () {
@@ -308,7 +308,7 @@ export default {
       this.confirmType = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // console.log(this.alimDetail)
+        // // console.log(this.alimDetail)
         inParam.contentsKey = this.tempData.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.tempData.creTeamKey
@@ -322,7 +322,7 @@ export default {
         // this.$emit('closeXPop', true)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        console.log(this.tempData)
+        // console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -443,7 +443,7 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       // if (resultList.data) { this.chanItem = resultList.data.content[0] }
       this.chanInfo = resultList.data.content[0]
-      console.log(this.chanInfo)
+      // console.log(this.chanInfo)
     },
     findPaddingTopBoard () {
       var element = document.getElementById('searchResultWrapLength')
@@ -592,8 +592,8 @@ export default {
       // } else {
       this.shareAuth = this.$checkUserAuth(this.mCabinetContentsDetail.mShareItemList)
       // }
-      console.log('this.mCabinetContentsDetail')
-      console.log(this.mCabinetContentsDetail)
+      // console.log('this.mCabinetContentsDetail')
+      // console.log(this.mCabinetContentsDetail)
       /* if (this.shareAuth.V === false) {
         this.$emit('closeXPop')
       } */
@@ -656,7 +656,7 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
-      console.log(resultList)
+      // console.log(resultList)
       if (this.viewTab === 'N') {
         this.totalElements = resultList.totalElements
       }

@@ -42,8 +42,8 @@ export default {
     } else if (this.type === 'copy') {
       this.mainText = '복사'
     }
-    console.log(this.boardDetail)
-    console.log(this.boardValue)
+    // console.log(this.boardDetail)
+    // console.log(this.boardValue)
     this.getTeamMenuList()
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
-      console.log(result)
+      // console.log(result)
       this.currentTeamKey = this.boardList[0].teamKey
     },
     async saveMCabContents () {
@@ -92,7 +92,7 @@ export default {
         url: 'service/tp.saveMCabContents',
         param: { mCabContents: param }
       })
-      console.log(result)
+      // console.log(result)
       if (result.data.result) {
         this.confirmPopShowYn = false
         this.confirmText = this.mainText + '되었습니다!'

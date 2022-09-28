@@ -132,7 +132,7 @@ export default {
       paramMap.set('teamKey', this.propData.teamKey)
       var result = await this.$getTeamList(paramMap)
       this.teamInfo = result.data.content[0]
-      console.log(this.teamInfo)
+      // console.log(this.teamInfo)
       // if (this.teamInfo) if (this.teamInfo.userTeamInfo) if (this.teamInfo.userTeamInfo.managerKey) this.managerYn = true
     }, */
     addressEditClick () {

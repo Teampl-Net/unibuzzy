@@ -37,7 +37,7 @@ export default {
       wheelZoomRatio: 0.1,
       movable: false
     })
-    console.log(this.selectFile)
+    // console.log(this.selectFile)
   },
   computed: {
   },
@@ -74,7 +74,7 @@ export default {
       // this.cropper.getCroppedCanvas().toBlob((blob) => {
       //   const formData = new FormData()
       //   formData.append('croppedImage', blob)
-      //   console.log(formData)
+      //   // console.log(formData)
       // })
       // this.$emit('cropImage', cropImg)
       // this.cropper.getCroppedCanvas({
@@ -93,8 +93,8 @@ export default {
 
       //   // Pass the image file name as the third parameter if necessary.
       //   formData.append('croppedImage', blob/*, 'example.png' */)
-      //   console.log('sssssssssssssssssssssssssssssss')
-      //   console.log(formData)
+      //   // console.log('sssssssssssssssssssssssssssssss')
+      //   // console.log(formData)
       //   this.$emit('cropImage', formData)
       //   // this.$parent.formSubmit()
       // // const formData = new FormData();

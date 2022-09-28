@@ -31,7 +31,7 @@ export default {
     propData: {}
   },
   created () {
-    console.log(this.propData)
+    // console.log(this.propData)
     this.getMemberForm()
   },
   data () {
@@ -54,7 +54,7 @@ export default {
       // this.mQuestList = result
       var indexOf = this.dummyData.findIndex(i => i.mFormKey === this.propData.formKey)
       this.mQuestList = this.dummyData[indexOf]
-      console.log(this.mQuestList)
+      // console.log(this.mQuestList)
     }
   }
 }

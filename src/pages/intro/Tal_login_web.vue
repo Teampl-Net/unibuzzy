@@ -78,7 +78,7 @@ export default {
       window.location.replace(url)
     },
     async signWithGoogle () {
-      console.log('login')
+      // console.log('login')
       firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
     },
     async loginWithGoogle () {

@@ -240,8 +240,8 @@ export default {
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
 
-    console.log('this.modiBoardDetailProps')
-    console.log(this.modiBoardDetailProps)
+    // console.log('this.modiBoardDetailProps')
+    // console.log(this.modiBoardDetailProps)
 
     this.chanProps = this.modiBoardDetailProps
     if (this.chanInfo.value) {
@@ -252,8 +252,8 @@ export default {
       this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
     }
 
-    // console.log(this.boardDetail)
-    // console.log(this.chanInfo)
+    // // console.log(this.boardDetail)
+    // // console.log(this.chanInfo)
 
     //
   },
@@ -400,7 +400,7 @@ export default {
       if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }
-      console.log(data)
+      // console.log(data)
       // 작성자명/댓글지원O/파일업로드O
       this.okFunctionList = ''
       // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
@@ -623,10 +623,10 @@ export default {
       if (this.currentPermissionType === 'R') this.commentPermission = text
 
       this.receiverAccessListYn = false
-      // console.log('this.selectItemList')
-      // console.log(this.selectItemList)
-      // console.log('this.selectShareList')
-      // console.log(this.selectShareList)
+      // // console.log('this.selectItemList')
+      // // console.log(this.selectItemList)
+      // // console.log('this.selectShareList')
+      // // console.log(this.selectShareList)
     },
 
     selectShareActorItem (itemType) {
@@ -660,7 +660,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var item = new Object()
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
-      // console.log(this.shareType)
+      // // console.log(this.shareType)
       if (this.shareType === 'all') {
         if (this.selectShareList) {
           shareList = this.selectShareList
@@ -676,7 +676,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'W' // 작성
           itemList.push(item)
-          // console.log(this.writePermissionAllYn)
+          // // console.log(this.writePermissionAllYn)
         }
 
         if (this.readPermissionAllYn === true && this.readPermissionSelectYn !== true) {
@@ -684,7 +684,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'V' // 열람
           itemList.push(item)
-          // console.log(this.readPermissionAllYn)
+          // // console.log(this.readPermissionAllYn)
         }
 
         if (this.commentPermissionAllYn === true && this.commentPermissionSelectYn !== true) {
@@ -692,7 +692,7 @@ export default {
           item.shareSeq = 0
           item.shareType = 'R' // 댓글
           itemList.push(item)
-          // console.log(this.commentPermissionAllYn)
+          // // console.log(this.commentPermissionAllYn)
         }
 
         cabinet.shareList = shareList
@@ -790,11 +790,11 @@ export default {
       param.cabinet = cabinet
       param.creMenuYn = false
 
-      // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      // console.log(param)
+      // // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      // // console.log(param)
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        // console.log('@@성공@@')
+        // // console.log('@@성공@@')
         this.okPopYn = true
       }
     },
@@ -822,7 +822,7 @@ export default {
       this.selectTypePopShowYn = false
     },
     changeFunc () {
-      console.log(this.blindYn)
+      // console.log(this.blindYn)
       this.okFunctionList = (this.replyYnInput === true ? '댓글O' : '댓글X') + (this.fileYnInput === true ? '/파일O' : '/파일X') + (this.blindYn === true ? '/익명' : '/실명')
     },
     // replyYnChange () {
@@ -850,7 +850,7 @@ export default {
       var text = ''
       var selectLength = 0
       var tempSelectedList = {}
-      // console.log(datas);
+      // // console.log(datas);
       // if(this.currentSelectBookType === 'select'){}
 
       var dataLength = 0

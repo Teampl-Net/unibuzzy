@@ -51,7 +51,7 @@ export default {
     }
   },
   created () {
-    console.log(this.propData)
+    // console.log(this.propData)
     if (this.tab === 'Show') {
       if (!this.GE_DISP_SHOW_PROFILE_USER_LIST || this.GE_DISP_SHOW_PROFILE_USER_LIST.length === 0) {
         this.getManagingList(this.tab)
@@ -97,8 +97,8 @@ export default {
     memberInfo(member){
       // if(this.tab === 'Show' && member.showProfileYn){
         var param = {}
-        console.log("@@########!@#!!!!!!!!!!!@@@@@@@@@@@")
-        console.log(member)
+        // console.log("@@########!@#!!!!!!!!!!!@@@@@@@@@@@")
+        // console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
         param.userKey = member.userKey
@@ -158,7 +158,7 @@ export default {
       } else {
       }
 
-      // console.log(this.managingList)
+      // // console.log(this.managingList)
       // paramMap.set('followerType', 'M')
     },
 
@@ -274,7 +274,7 @@ export default {
   },
   watch: {
     // GE_CHANNEL_INFO() {
-    //   console.log(this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST'])
+    //   // console.log(this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST'])
     // }
   }
 }

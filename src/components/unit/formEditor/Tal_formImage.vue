@@ -173,7 +173,7 @@ export default {
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */
-      console.log(this.selectFileList)
+      // console.log(this.selectFileList)
     },
     deleteFile (idx) {
       this.selectFileList.splice(idx, 1)

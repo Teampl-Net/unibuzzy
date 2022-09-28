@@ -152,10 +152,10 @@ export default {
         this.changeUserIconShowYn = true
         var history = this.$store.getters['D_HISTORY/hStack']
         this.changeUserIconPop = 'changeUserIconPop' + history.length
-        console.log(history)
+        // console.log(history)
         history.push(this.changeUserIconPop)
         this.$store.commit('D_HISTORY/updateStack', history)
-        console.log(this.$store.getters['D_HISTORY/hStack'])
+        // console.log(this.$store.getters['D_HISTORY/hStack'])
       }
     },
     async setDispName () {
@@ -168,10 +168,10 @@ export default {
       user.userDispMtext = 'KO$^$' + this.tempUserDispName
       param.user = user
       param.updateYn = true
-      console.log(param)
+      // console.log(param)
 
       var result = await this.$changeDispName(param)
-      console.log(result)
+      // console.log(result)
 
       if (result.data) {
         this.changeYn = false

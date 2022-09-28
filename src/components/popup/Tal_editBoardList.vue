@@ -72,7 +72,7 @@ export default {
   },
   async created () {
     this.$emit('openLoading')
-    console.log(this.propData)
+    // console.log(this.propData)
     if (this.propData) {
       this.chanInfo = {}
       this.currentTeamKey = this.propData.currentTeamKey
@@ -145,13 +145,13 @@ export default {
         ...result
       ]
       uniqueArr = this.replaceArr(newArr)
-      console.log('uniqueArr')
-      console.log(uniqueArr)
+      // console.log('uniqueArr')
+      // console.log(uniqueArr)
       this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
 
-      console.log(this.CHANNEL_DETAIL.ELEMENTS.cabinetList)
+      // console.log(this.CHANNEL_DETAIL.ELEMENTS.cabinetList)
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -244,7 +244,7 @@ export default {
       // for (let index = 0; index < cardList.length; index++) {
       //   tempList.push(cardList[index].getAttribute('index'))
       // }
-      // console.log(tempList)
+      // // console.log(tempList)
       // eslint-disable-next-line no-array-constructor
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
@@ -275,7 +275,7 @@ export default {
         // this.boardList = []
         // await this.getTeamMenuList()
       //   this.boardList = new Array(tempList)[0]
-      //   console.log(this.boardList)
+      //   // console.log(this.boardList)
       }
     },
     indexChange (list) {

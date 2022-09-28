@@ -31,7 +31,7 @@ export default {
     this.init()
     if (this.inputHtml) {
       this.$nextTick(() => {
-        console.log('formTextArea' + this.targetKey)
+        // console.log('formTextArea' + this.targetKey)
         // // eslint-disable-next-line no-debugger
         // debugger
         // document.querySelectorAll('.formDiv #' + 'formTextArea' + this.targetKey)[0].innerHTML = this.inputHtml
@@ -82,7 +82,7 @@ export default {
     test () {
       this.$emit('showToolBox', { tools: this.tools })
       var tt = this.$refs.formTextArea
-      console.log(tt)
+      // console.log(tt)
       this.$emit('inputScroll', tt.scrollHeight)
     },
     focusInput () {

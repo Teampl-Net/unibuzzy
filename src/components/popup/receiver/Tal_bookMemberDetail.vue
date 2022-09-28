@@ -131,7 +131,7 @@ export default {
         }
     },
     async created(){
-        console.log(this.propData)
+        // console.log(this.propData)
         this.$emit('openLoading')
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
             if(this.propData.userProfileImg){
@@ -149,7 +149,7 @@ export default {
                 if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
                 if (this.propData.selfYn) {
                     this.selfYn = this.propData.selfYn
-                    
+
                     if(this.GE_USER.userProfileImg){
                         this.userProfileImg = this.GE_USER.userProfileImg
                         this.domainPath = this.GE_USER.domainPath
@@ -172,10 +172,10 @@ export default {
                     // url: 'service/tp.getUserList',
                     // param: param
                     // })
-                    // console.log(response)
+                    // // console.log(response)
 
                     // var list = await result.data.content
-                    // console.log(list)
+                    // // console.log(list)
                 }
             }
         }
@@ -221,9 +221,9 @@ export default {
             })
             var list = []
             list = result.data.content
-            console.log(list)
+            // console.log(list)
             var indexOf = list.findIndex(i => i.userKey === this.propData.userKey);
-            console.log(indexOf)
+            // console.log(indexOf)
             if (indexOf !== -1) {
                 var data = list[indexOf]
                 this.userProfileImg = data.userProfileImg
@@ -261,7 +261,7 @@ export default {
             param.user = user
             param.updateYn = true
             var result = await this.$changeDispName(param)
-            console.log(result)
+            // console.log(result)
             if (result.data) {
                 localStorage.setItem('sessionUser', JSON.stringify(result.data))
                 this.changeYn = false
@@ -282,15 +282,15 @@ export default {
             } else {
                 this.changeUserIconShowYn = true
                 this.changeUserIconPop = 'changeUserIconPop' + history.length
-                
+
                 var history = this.$store.getters['D_HISTORY/hStack']
-                console.log(history)
+                // console.log(history)
                 history.push(this.changeUserIconPop)
                 this.$store.commit('D_HISTORY/updateStack', history)
-                console.log(this.$store.getters['D_HISTORY/hStack'])
+                // console.log(this.$store.getters['D_HISTORY/hStack'])
             }
         },
-        backClick () { 
+        backClick () {
             var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.changeUserIconPop === hStack[hStack.length - 1]) {

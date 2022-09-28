@@ -67,14 +67,14 @@ export default {
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {
       // handle successful response
-      console.log('AppleIDSignInOnSuccess')
+      // console.log('AppleIDSignInOnSuccess')
       this.successAppleLogin(data)
       // todo success logic
     })
     // 애플로 로그인 실패 시.
     // eslint-disable-next-line handle-callback-err
     document.addEventListener('AppleIDSignInOnFailure', (error) => {
-      console.log('AppleIDSignInOnFailure')
+      // console.log('AppleIDSignInOnFailure')
     })
   },
   methods: {
@@ -148,7 +148,7 @@ export default {
       var thisthis = this
       localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
-        console.log(result)
+        // console.log(result)
         if (result.user) {
           // eslint-disable-next-line no-new-object
           var user = new Object()

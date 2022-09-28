@@ -82,7 +82,7 @@ export default {
     }
   },
   // beforeUpdate () {
-  //   console.log(true)
+  //   // console.log(true)
   // },
   watch: {
     async deepLinkQueue (value, old) {
@@ -115,7 +115,7 @@ export default {
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
-      console.log(result)
+      // console.log(result)
       if (result.data.content.length > 0) {
         return true
       } else {
@@ -166,7 +166,7 @@ export default {
 
       if (reloadYn) {
         this.routerReloadKey += 1
-        console.log(this.$route.path)
+        // console.log(this.$route.path)
         // if (this.$route.path === '/') {
         //   this.$refs.mainRouterView.reloadPage()
         // }
@@ -184,7 +184,7 @@ export default {
       this.$router.replace({ path: '/' + page })
     },
     goChanDetail (data) {
-      console.log(data)
+      // console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // alert(true)
@@ -321,7 +321,7 @@ export default {
       } else if (param[0] === 'pushDetail') {
         this.openPop({ targetKey: param[1], targetType: 'pushDetail', contentsKey: param[1], pushOpenYn: true })
       }
-      console.log('targetKey: ' + param[1])
+      // console.log('targetKey: ' + param[1])
     } */
     document.addEventListener('message', e => this.recvNoti(e))
     window.addEventListener('message', e => this.recvNoti(e))

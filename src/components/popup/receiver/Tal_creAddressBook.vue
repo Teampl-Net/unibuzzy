@@ -19,7 +19,7 @@ export default {
     propData: {}
   },
   mounted () {
-    console.log(this.propData)
+    // console.log(this.propData)
     this.setting()
   },
   data () {

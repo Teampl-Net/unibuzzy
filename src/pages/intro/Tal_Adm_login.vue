@@ -90,7 +90,7 @@ export default {
     onLogin () {
       var thisthis = this
       authService.login('Google').then(async function (result) {
-        console.log(result)
+        // console.log(result)
         if (result.user) {
           // eslint-disable-next-line no-new-object
           var user = new Object()
@@ -118,19 +118,19 @@ export default {
       // alert('apple')
     },
     /* async GoogleLoginBtn () {
-      console.log('login')
+      // console.log('login')
       const provider = new firebase.auth.GoogleAuthProvider()
       provider.setCustomParameters({
         prompt: 'select_account'
       })
       const profile = await firebase.auth().signInWithPopup(provider)
-      console.log(profile)
+      // console.log(profile)
     }, */
     naverCallbackFunction (log) {
-      console.log(log)
+      // console.log(log)
     },
     handleCredentialResponse (response) {
-      console.log('Encoded JWT ID token: ' + response.credential)
+      // console.log('Encoded JWT ID token: ' + response.credential)
     }
   }
 }

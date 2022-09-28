@@ -92,8 +92,8 @@ export default {
     nonMemYn: {}
   },
   mounted () {
-    console.log('this.memoList')
-    console.log(this.memoList)
+    // console.log('this.memoList')
+    // console.log(this.memoList)
     // if (this.memoList) {
     //   var tempData = this.memoList
     //   for (let i = 0; i < tempData.length - 1; i++) {
@@ -119,7 +119,7 @@ export default {
     //         this.$nextTick(() => {
     //           document.getElementById('parentKey' + this.memoDataList[i].cmemoList[mememoIdx].memoKey).addEventListener('click', (e) => {
     //             alert('Z' + this.memoDataList[i].cmemoList[mememoIdx].memoKey)
-    //           // console.log('안녕 : ' + this.memoDataList[i].cmemoList.parentMemoKey)
+    //           // // console.log('안녕 : ' + this.memoDataList[i].cmemoList.parentMemoKey)
     //           })
     //         })
     //       }
@@ -196,7 +196,7 @@ export default {
       this.$emit('contentMenuClick', param)
     },
     infoMemo (memo) {
-      console.log(memo)
+      // console.log(memo)
     },
     loadMore () {
       // this.memoLoadingShow()
@@ -234,7 +234,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       // memo = data
-      console.log(data)
+      // console.log(data)
       var bodyFullStr
       if (data.parentMemoKey) {
         bodyFullStr = window.document.getElementById('cMemoEditBoxId').innerHTML
@@ -242,7 +242,7 @@ export default {
         bodyFullStr = window.document.getElementById('memoEditBoxId').innerHTML
       }
       memo.bodyFullStr = bodyFullStr
-      console.log('#################')
+      // console.log('#################')
       // memo.bodyFullStr = this.$refs.editCommentBox.innerHTML
       // memo.bodyFullStr = this.inputText
 
@@ -256,12 +256,12 @@ export default {
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       // memo.creTeamKey = data.creTeamKey
       memo.deleteYn = false
-      console.log(memo)
+      // console.log(memo)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
-      console.log(result)
+      // console.log(result)
 
       if (result.data.result === true || result.data.result === 'true') {
         this.editIndex = ''
@@ -277,9 +277,9 @@ export default {
       // this.hoverAnima(memo.memoKey)
     },
     meMemoMemoClick (mememo) {
-      console.log('##cMemo##')
-      console.log(mememo)
-      console.log('#########')
+      // console.log('##cMemo##')
+      // console.log(mememo)
+      // console.log('#########')
       this.$emit('mememoMemo', mememo)
     },
     scrollMove (key) {

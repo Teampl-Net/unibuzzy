@@ -246,7 +246,7 @@ export default {
       // this.listShowYn = false
       // this.pushList = resultList.content
       // this.listShowYn = true
-      // console.log(this.pushList)
+      // // console.log(this.pushList)
     }
   }
 }

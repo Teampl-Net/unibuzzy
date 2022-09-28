@@ -366,8 +366,8 @@ export default {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
       var resultList = result.data
-      console.log('#######################')
-      console.log(resultList)
+      // console.log('#######################')
+      // console.log(resultList)
       return resultList
     },
 

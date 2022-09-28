@@ -148,8 +148,8 @@ export default {
     propData: {}
   },
   async created () {
-    console.log(this.CAB_DETAIL)
-    console.log('this.CAB_DETAIL')
+    // console.log(this.CAB_DETAIL)
+    // console.log('this.CAB_DETAIL')
     this.$emit('openLoading')
     await this.getCabinetDetail()
 
@@ -272,7 +272,7 @@ export default {
         url: 'service/tp.saveActLog',
         param: param
       })
-      console.log(result.data.result)
+      // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.errorBoxText
         this.smallPopYn = true
@@ -282,7 +282,7 @@ export default {
     moveOrCopyContent (type) {
       this.selectBoardType = type
       this.boardDetailValue = this.tempData
-      console.log(this.tempData)
+      // console.log(this.tempData)
       this.selectBoardPopShowYn = true
     },
     closeSelectBoardPop () {
@@ -300,7 +300,7 @@ export default {
       this.confirmType = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // console.log(this.alimDetail)
+        // // console.log(this.alimDetail)
         inParam.contentsKey = this.tempData.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.tempData.creTeamKey
@@ -314,7 +314,7 @@ export default {
         // this.$emit('closeXPop', true)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        console.log(this.tempData)
+        // console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -557,7 +557,7 @@ export default {
       // this.$emit('openPop', params)
     },
     updateStoreData (Detail) {
-      console.log(this.CAB_DETAIL)
+      // console.log(this.CAB_DETAIL)
       var tempChan = this.CHANNEL_DETAIL
       var cabinetList = tempChan.ELEMENTS.cabinetList
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)

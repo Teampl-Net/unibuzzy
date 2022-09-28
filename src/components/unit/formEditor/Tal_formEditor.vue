@@ -165,11 +165,11 @@ export default {
       this.$emit('inputScroll', param)
     },
     async changePosTeamMenu (event) {
-      console.log(event)
+      // console.log(event)
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex
-      // console.log(oldIndex)
-      // console.log(newIndex)
+      // // console.log(oldIndex)
+      // // console.log(newIndex)
 
       var tempList = this.formCardList
       if (oldIndex < newIndex) {
@@ -208,15 +208,15 @@ export default {
       //     if (index === i) {
       //       menu = {}
       //       menu = this.formCardList[i]
-      //       console.log(menu)
+      //       // console.log(menu)
       //       teamMenuList.push(menu)
       //     }
       //   }
       // }
-      // console.log(teamMenuList)
+      // // console.log(teamMenuList)
       // this.formCardList = []
       // this.formCardList = teamMenuList
-      console.log(this.formCardList)
+      // console.log(this.formCardList)
     },
     clickSelectBox () {
       if (this.fontSelectBoxShowYn) {
@@ -243,7 +243,7 @@ export default {
       this.addFormCard('image', file.previewImgUrl, true)
     },
     setParamInnerHtml () {
-      console.log(true)
+      // console.log(true)
       var formCard = null
       formCard = document.querySelectorAll('#eContentsWrap .formDiv .formCard')
       var tempList = []
@@ -252,7 +252,7 @@ export default {
         // this.formCardList[i].outerHtml = formCard[i].outerHTML
         // this.formCardList[i].innerHtml = formCard[i].innerHTML
         // this.formCardList[i].type = formCard[i].originalType
-        console.log(formCard[i])
+        // console.log(formCard[i])
         var temp = {}
         temp.outerHtml = formCard[i].outerHTML
         temp.innerHtml = formCard[i].innerHTML
@@ -334,7 +334,7 @@ export default {
         this.uploadFileList.push(target.selectFileList)
         this.uploadFileKeyList.push(this.formCount)
       }
-      console.log(this.uploadFileList)
+      // console.log(this.uploadFileList)
       this.$emit('changeUploadList', target.selectFileList)
       if (this.formCardList[this.formCount] && this.formCardList[this.formCount].selectFileList) {
         this.formCardList[this.formCount].selectFileList = target.selectFileList
@@ -398,7 +398,7 @@ export default {
       this.toolBoxShowYn = false
     },
     clickForm (value, idx) {
-      console.log(value)
+      // console.log(value)
       this.selectedCardKey = idx
       this.selectRow = idx
       if (value.type === 'text') {

@@ -80,8 +80,8 @@ export default {
     }
   },
   created () {
-    console.log(this.selectIcon)
-    // console.log(this.opentype)
+    // console.log(this.selectIcon)
+    // // console.log(this.opentype)
     this.getCodeList()
     this.setDefaultData()
     this.dataSetting()
@@ -204,8 +204,8 @@ export default {
       }
     },
     async setParam () {
-      console.log(this.selectedImgPath)
-      console.log(this.selectedImgFilekey)
+      // console.log(this.selectedImgPath)
+      // console.log(this.selectedImgFilekey)
       if (this.viewTab === 'icon') {
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -222,7 +222,7 @@ export default {
           }
         } else {
           // this.cropYn = true
-          // console.log(this.previewImgUrl)
+          // // console.log(this.previewImgUrl)
           // return
           await this.formSubmit()
         }
@@ -231,7 +231,7 @@ export default {
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
-        console.log(param)
+        // console.log(param)
         this.$emit('makeParam', param)
       }
     },
@@ -275,7 +275,7 @@ export default {
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
-              // console.log(this.cropper)
+              // // console.log(this.cropper)
 
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
@@ -308,7 +308,7 @@ export default {
     },
     async cropImage (img) {
       if (this.uploadFileList.length > 0) {
-        console.log(img)
+        // console.log(img)
         for (var i = 0; i < this.uploadFileList.length; i++) {
           this.uploadFileList[i].file = img
         }
@@ -318,7 +318,7 @@ export default {
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
-        console.log(param)
+        // console.log(param)
         this.$emit('makeParam', param)
       }
     },
@@ -338,8 +338,8 @@ export default {
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
-        console.log('this.uploadFileList')
-        console.log(this.uploadFileList)
+        // console.log('this.uploadFileList')
+        // console.log(this.uploadFileList)
         var form = new FormData()
         // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -357,8 +357,8 @@ export default {
                 }
               })
             .then(res => {
-              console.log('res')
-              console.log(res)
+              // console.log('res')
+              // console.log(res)
               if (res.data.length > 0) {
                 var path = res.data[0].domainPath + res.data[0].pathMtext
                 this.selectedImgPath = path

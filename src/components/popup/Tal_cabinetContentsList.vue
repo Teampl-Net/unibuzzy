@@ -65,7 +65,7 @@ export default {
       var resultList = await this.$getCabinetDetail(param)
 
       //mShareItemList가 잘 들어오면 save잘 된것
-      
+
       this.commonListData = resultList.content
 
       this.findPopShowYn = false
@@ -74,7 +74,7 @@ export default {
     },
 
     async loadMore () {
-      // console.log('옵저버 실행'+(this.offsetInt++))
+      // // console.log('옵저버 실행'+(this.offsetInt++))
       // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기에 추가아아~~~~~~~~~@@@@@@@@@@@@@@@@@
       // eslint-disable-next-line no-new-object
       var param = new Object()

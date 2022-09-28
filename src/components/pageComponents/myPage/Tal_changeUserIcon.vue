@@ -64,8 +64,8 @@ export default {
         this.viewTab = 'img'
         this.$refs.activeBar.switchtab(1)
         this.$refs.activeBar.selectTab('img')
-        console.log(this.pSelectedIconPath)
-        console.log(this.parentSelectedIconFileKey)
+        // console.log(this.pSelectedIconPath)
+        // console.log(this.parentSelectedIconFileKey)
         this.previewImgUrl = this.pSelectedIconPath
         this.selectedImgPath = this.pSelectedIconPath
         this.selectedImgFilekey = this.parentSelectedIconFileKey
@@ -115,7 +115,7 @@ export default {
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
-              // console.log(this.cropper)
+              // // console.log(this.cropper)
 
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
@@ -178,8 +178,8 @@ export default {
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
-        console.log('this.uploadFileList')
-        console.log(this.uploadFileList)
+        // console.log('this.uploadFileList')
+        // console.log(this.uploadFileList)
         var form = new FormData()
         // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -209,8 +209,8 @@ export default {
                 // localStorage.getItem('sessionUser').picMfilekey = this.selectedImgFilekey
                 // local.userProfileImg = this.selectedImgPath
                 // local.picMfilekey = this.selectedImgFilekey
-                // console.log('locallocallocallocallocal')
-                // console.log(local)
+                // // console.log('locallocallocallocallocal')
+                // // console.log(local)
                 // localStorage.setItem('sessionUser', JSON.parse(local))
               }
             })
@@ -232,7 +232,7 @@ export default {
       // param.user = this.userInfo
       user.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       if (this.viewTab === 'img') {
-        // console.log(this.selectedImgPath)
+        // // console.log(this.selectedImgPath)
         // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath
         if (this.selectedImgFilekey === '' || this.selectedImgFilekey === undefined) {
           await this.formSubmit()
@@ -245,7 +245,7 @@ export default {
       param.updateYn = true
 
       var result = await this.$changeDispName(param)
-      console.log(result)
+      // console.log(result)
       if (result.data) {
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
         this.$router.replace({ path: '/' })

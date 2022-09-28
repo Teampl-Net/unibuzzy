@@ -92,11 +92,11 @@ export default {
   },
   methods: {
     loadingRefShow () {
-      // console.log('show')
+      // // console.log('show')
       this.$refs.sLoadingChan.show()
     },
     loadingRefHide () {
-      // console.log('hide')
+      // // console.log('hide')
       this.$refs.sLoadingChan.hide()
     },
     resizeText (text) {

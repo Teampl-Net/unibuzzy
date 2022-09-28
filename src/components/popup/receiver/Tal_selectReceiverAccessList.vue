@@ -50,8 +50,8 @@ export default {
   },
   methods: {
     // settingList(){
-    // console.log("######@!@#!@#!@#!@#######")
-    // console.log(this.parentList)
+    // // console.log("######@!@#!@#!@#!@#######")
+    // // console.log(this.parentList)
     // if(this.parentList.bookList){
     //   for (let index = 0; index < array.length; index++) {
     //     const element = array[index];

@@ -230,7 +230,7 @@ export default {
         }
     },
     clickInfo (data) {
-      console.log(data)
+      // console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (param) {
@@ -238,8 +238,8 @@ export default {
       var currentContentsKey = param.contentsKey
       var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
-        console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
-        console.log(this.commonListData[indexOf])
+        // console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
+        // console.log(this.commonListData[indexOf])
         this.userNameClick(true, userKey, this.commonListData[indexOf].creTeamKey, false)
       }
     },
@@ -278,13 +278,13 @@ export default {
       if (params.tempData) {
         params.tempData.index = params.index
         params.tempData.cIndex = params.cIndex
-        // console.log(params.tempData.index)
+        // // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
       this.reportYn = true
     },
     async deleteAlim(allYn){
-      console.log(this.tempData)
+      // console.log(this.tempData)
       if (this.tempData.jobkindId === 'ALIM') {
         if (allYn) {
 
@@ -302,7 +302,7 @@ export default {
 
       } else if (this.tempData.jobkindId === 'BOAR') {
         var inParam = {}
-        // console.log(this.alimDetail)
+        // // console.log(this.alimDetail)
         inParam.mccKey = this.tempData.mccKey
         inParam.contentsKey = this.tempData.contentsKey
         inParam.jobkindId = 'BOAR'
@@ -324,7 +324,7 @@ export default {
       this.$emit('openPop', value)
     },
     editBoard(){
-      console.log();
+      // console.log();
       var param = {}
       param.targetKey = this.tempData.contentsKey
       param.targetType = 'writeBoard'
@@ -337,8 +337,8 @@ export default {
       this.openPop(param)
     },
     moveOrCopyContent(type){
-      console.log('this.tempData');
-      console.log(this.tempData);
+      // console.log('this.tempData');
+      // console.log(this.tempData);
       this.tempData.type = type
       // param.parentAttachTrueFileList = this.attachTrueFileList
       this.$emit('moveOrCopyContent', this.tempData)
@@ -392,7 +392,7 @@ export default {
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '' ) && (data !=='alim' && data !== 'memo' && data !=='board') ) {
-        console.log(data)
+        // console.log(data)
         this.tempData = data
       }
 
@@ -409,7 +409,7 @@ export default {
         this.confirmText = '게시글을 삭제 하시겠습니까?'
         this.currentConfirmType = 'boardDEL'
       }
-      console.log(this.tempData);
+      // console.log(this.tempData);
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
@@ -447,13 +447,13 @@ export default {
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
     async saveActAxiosFunc (param) {
-      console.log(param)
+      // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveActLog',
         param: param
       })
-      console.log(result.data.result)
+      // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.confirmText
         this.smallPopYn = true
@@ -472,7 +472,7 @@ export default {
       this.confirmType = 'timeout'
       if (this.currentConfirmType === 'BLOC'){
         this.currentConfirmType = ''
-        console.log(this.tempData);
+        // console.log(this.tempData);
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -525,8 +525,8 @@ export default {
         if (wich === -1){
           wich = document.getElementById(this.currentMemoList[this.currentMemoList.length - 1].memoKey).offsetTop
         }
-        console.log('Contents Wich : ' + a)
-        console.log('Wich : ' + wich)
+        // console.log('Contents Wich : ' + a)
+        // console.log('Wich : ' + wich)
         this.$emit('scrollMove', wich+a)
       })
     },
@@ -622,13 +622,13 @@ export default {
     async alimCancle () {
       //현재 시간과 비교하며 3분이 지났으면 false가 오고있음 혹시 모르니 한번 더 체크하는 중
       var checkTime = this.$cancelTimer(this.tempData.creDate)
-      console.log(checkTime)
+      // console.log(checkTime)
       if (checkTime !== false) {
         this.saveMemoLoadingYn = true
         try{
           var param = {}
           param = this.tempData
-          console.log(param)
+          // console.log(param)
           await this.$commonAxiosFunction({
             url: 'service/tp.deleteContents',
             param: param
@@ -688,7 +688,7 @@ export default {
     //       /* this.scrollMove(-1) */
     //     }
     //   } catch (e) {
-    //     console.log(e)
+    //     // console.log(e)
     //   } finally {
     //     this.saveMemoLoadingYn = false
     //   }
@@ -720,8 +720,8 @@ export default {
       return this.openMemoList.indexOf(key)
     },
     setMemoList(el){
-      console.log('console.log(el)')
-      console.log(el)
+      // console.log('// console.log(el)')
+      // console.log(el)
     },
     writeMememo (memo) {
       var data = {}
@@ -736,13 +736,13 @@ export default {
       this.$emit('writeMememo', data)
     },
     async memoOpenClick (param) {
-      console.log(param)
+      // console.log(param)
       var key = param.key
       var teamKey = param.teamKey
       // if (this.findMemoOpend(key) !== -1) this.openMemoList.splice(this.findMemoOpend(key), 1)
       this.openMemoList.push(key)
 
-      console.log(this.openMemoList)
+      // console.log(this.openMemoList)
       if (document.getElementById('alimMemo'+key)) {
             document.getElementById('alimMemo'+key).style.display = 'none'
         } else if (document.getElementById('borderLine'+key)) {
@@ -770,13 +770,13 @@ export default {
       //   teamKey = this.commonListData[indexOf].creTeamKey
 
       //   var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
-      //   console.log('!!!contList!!!')
-      //   console.log(contList)
+      //   // console.log('!!!contList!!!')
+      //   // console.log(contList)
       //   if (contList) {
       //       cont = contList[0]
       //   }
-      //   console.log('###cont###')
-      //   console.log(cont)
+      //   // console.log('###cont###')
+      //   // console.log(cont)
       //   debugger
 
       //   if (!cont.D_MEMO_LIST) {
@@ -796,25 +796,25 @@ export default {
       //       //       ...cont.D_MEMO_LIST,
       //       //       ...response.memoList
       //       //   ]
-      //       //   console.log('###D_MEMO_LIST###')
-      //       //   console.log(cont.D_MEMO_LIST)
+      //       //   // console.log('###D_MEMO_LIST###')
+      //       //   // console.log(cont.D_MEMO_LIST)
       //       // } else {
 
       //       // }
       //   // }
-      //   // console.log('!!!!!!!!!!!!')
-      //   // console.log(cont)
-      //   // console.log('!!!!!!!!!!!!')
+      //   // // console.log('!!!!!!!!!!!!')
+      //   // // console.log(cont)
+      //   // // console.log('!!!!!!!!!!!!')
       //   this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
       //   this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
 
-        // console.log(document.getElementById('alimMemo'+key))
+        // // console.log(document.getElementById('alimMemo'+key))
 
         // this.currentMemoList = cont.D_MEMO_LIST
 
-      //   console.log('!!!!!!!!!!!!')
-      //   console.log(this.currentMemoList)
-      //   console.log('!!!!!!!!!!!!')
+      //   // console.log('!!!!!!!!!!!!')
+      //   // console.log(this.currentMemoList)
+      //   // console.log('!!!!!!!!!!!!')
       //   this.currentContentsKey = key
       // }
       // if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
@@ -859,7 +859,7 @@ export default {
             imgList[m].style.opacity = 0.8
             thisthis.clickEndYn = false
             setTimeout(() => {
-                console.log(thisthis.clickEndYn)
+                // console.log(thisthis.clickEndYn)
                 if (thisthis.clickEndYn === false) {
                 thisthis.selectImgObject.path = imgList[m].src
                 thisthis.selectImgObject.fileKey = Number(imgList[m].attributes.filekey.value)
@@ -876,7 +876,7 @@ export default {
             }, 1000)
             })
             imgList[m].addEventListener('mouseup', () => {
-                console.log(thisthis.clickEndYn)
+                // console.log(thisthis.clickEndYn)
                 thisthis.clickEndYn = true
 
                 imgList[m].style.opacity = 1
@@ -944,13 +944,13 @@ export default {
     //   }
 
 
-      // // console.log(result.data.content)
+      // // // console.log(result.data.content)
       // var list = new Array()
       // list = result.data
-      // console.log(list)
+      // // console.log(list)
 
-      // /* console.log('this.$refs.gMemoRef')
-      // console.log(this.$refs.gMemoRef)
+      // /* // console.log('this.$refs.gMemoRef')
+      // // console.log(this.$refs.gMemoRef)
       // this.$refs.gMemoRef.memoLoadingHide() */
       // this.currentMemoObj = cont
       // this.currentMemoTotal = this.currentMemoObj.totalElements
@@ -971,25 +971,25 @@ export default {
     async loadMoreMemo () {
         this.showMoreMemoTextYn = true
         // alert(true)
-        // console.log('#########################')
-        // console.log('offsetInt', this.offsetInt)
-        // console.log('this.currentMemoObj', this.currentMemoObj)
+        // // console.log('#########################')
+        // // console.log('offsetInt', this.offsetInt)
+        // // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
           this.showMoreMemoTextYn = false
           return
         }
-        // console.log('axios totalElements : ' + this.currentMemoObj.totalElements)
-        // console.log('offsetInt : ' + this.offsetInt)
-        // console.log('CurrentMemoList Length : ' + this.currentMemoList.length)
+        // // console.log('axios totalElements : ' + this.currentMemoObj.totalElements)
+        // // console.log('offsetInt : ' + this.offsetInt)
+        // // console.log('CurrentMemoList Length : ' + this.currentMemoList.length)
         // if (this.currentMemoObj.totalElements === this.currentMemoList.length) {
-        //   console.log('댓글 끝')
+        //   // console.log('댓글 끝')
         //   this.showMoreMemoTextYn = false
         // } else {
         //   this.showMoreMemoTextYn = true
         // }
-        // console.log('#########################')
+        // // console.log('#########################')
         // if (this.currentMemoObj.totalElements === this.currentMemoList.length) {
-        //   console.log('댓글 끝')
+        //   // console.log('댓글 끝')
         //   this.showMoreMemoTextYn = false
         // }else {
         // }
@@ -997,8 +997,8 @@ export default {
     },
     /** 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!  */
     settingOffsetIntTotalMemoCount (memoList) {
-      console.log('#################')
-      console.log(memoList)
+      // console.log('#################')
+      // console.log(memoList)
       var totalMemoCount = 0
       if (memoList) {
         for (let i = 0; i < memoList.length; i++) {
@@ -1009,14 +1009,14 @@ export default {
             }
             }
         }
-        console.log('this.offsetInt : ' + this.offsetInt)
+        // console.log('this.offsetInt : ' + this.offsetInt)
         this.offsetInt = memoList.length + totalMemoCount
-        console.log('#################')
+        // console.log('#################')
       }
 
     },
     async yesLoadMore (contentsKey) {
-      console.log('commonlist contentsKey : ' + contentsKey);
+      // console.log('commonlist contentsKey : ' + contentsKey);
       this.$emit('yesLoadMore', contentsKey)
     },
     async copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
@@ -1054,11 +1054,11 @@ export default {
 
     },
     loadingRefShow(){
-      // console.log('show');
+      // // console.log('show');
       this.$refs.sLoadingPush.show()
     },
     loadingRefHide(){
-      // console.log('hide');
+      // // console.log('hide');
       this.$refs.sLoadingPush.hide()
     },
     resizeText (text, name) {
@@ -1077,7 +1077,7 @@ export default {
       this.$emit('currentScroll', this.currentScroll)
     },
     goChanDetail (data) {
-      console.log(data)
+      // console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.jobkindId = data.jobkindId

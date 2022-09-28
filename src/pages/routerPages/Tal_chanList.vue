@@ -226,10 +226,10 @@ export default {
 
     // testRefresh () {
     //   var top = document.getElementById('refresh').getBoundingClientRect().top
-    //   console.log(top)
+    //   // console.log(top)
     //   // if(top>80){
     //   // location.href = location.href
-    //   // console.log(location.href)
+    //   // // console.log(location.href)
     //   // }
     // },
     clickCreateChannel () {

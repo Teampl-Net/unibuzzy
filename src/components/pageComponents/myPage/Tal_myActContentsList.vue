@@ -52,20 +52,20 @@ export default {
       this.$emit('myActMoreList', 10)
     },
     myPageLoadingRefShow () {
-      // console.log('show');
+      // // console.log('show');
       /* if (this.$refs && this.$refs.myActsLoadingPush) {
         this.$refs.myActsLoadingPush.show()
       } */
     },
     myPageLoadingRefHide () {
-      // console.log('hide');
+      // // console.log('hide');
       /* if (this.$refs && this.$refs.myActsLoadingPush) {
         this.$refs.myActsLoadingPush.hide()
       } */
     },
     myActBoardContentDetail (data) {
-      console.log('게시글')
-      console.log(data.cabinetNameMtext)
+      // console.log('게시글')
+      // console.log(data.cabinetNameMtext)
       // eslint-disable-next-line no-new-object
       var params = new Object()
       if (data.jobkindId === 'ALIM') {

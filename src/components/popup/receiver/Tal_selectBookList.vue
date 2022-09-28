@@ -39,7 +39,7 @@ export default {
 
   },
 
-  computed: { 
+  computed: {
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -47,7 +47,7 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
-  watch: { 
+  watch: {
     pageUpdate (value, old) {
       this.backClick()
     },
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     async getBookList () {
-        console.log(this.propData)
+        // console.log(this.propData)
         var paramMap = new Map()
         paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
         paramMap.set('sysCabinetCode', 'USER')
@@ -129,12 +129,12 @@ export default {
     sendReceivers () {
       // // eslint-disable-next-line no-new-object
       var param = {}
+      // // console.log(this.selectedList)
+      // // console.log(this.selectedList.memberList)
+      // console.log('sendReceiver sendReceiver sendReceiver sendReceiver')
       // console.log(this.selectedList)
-      // console.log(this.selectedList.memberList)
-      console.log('sendReceiver sendReceiver sendReceiver sendReceiver')
-      console.log(this.selectedList)
       param.data = this.selectedList
-      console.log(param)
+      // console.log(param)
       this.$emit('sendReceivers', param)
       // this.$emit('selectedList', this.selectedList)
     },
@@ -145,7 +145,7 @@ export default {
         this.selectedList.memberList.push(data[i])
       }
       // this.selectedList.memberList = data
-      console.log(this.selectedList)
+      // console.log(this.selectedList)
       this.$refs.selectedListCompo.upDatePage()
     },
     addMe (data) {
@@ -243,7 +243,7 @@ export default {
         await this.getBookMemberList()
         this.detailOpenYn = true
 
-        this.selectBookDetail = data 
+        this.selectBookDetail = data
         var history = this.$store.getters['D_HISTORY/hStack']
         this.subPopId = 'commonBookMemberList' + history.length
         history.push(this.subPopId)

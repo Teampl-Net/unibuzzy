@@ -139,7 +139,7 @@ const functions = {
       }
     } */
     console.log('return:  cabinetDetail')
-    console.log(cabinetDetail)
+    console.log(cabinetDetail[0])
     return cabinetDetail
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
@@ -171,7 +171,11 @@ const functions = {
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+    console.log('############# addChanList ############')
+    console.log(paramMap)
     var resultList = await methods.getTeamList(paramMap)
+
+    console.log(resultList)
 
     var response = resultList.data.content[0]
     var team = null

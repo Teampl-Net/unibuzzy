@@ -18,8 +18,8 @@ export default {
   },
   created () {
     this.stepWidth = 100 / this.progressStep.length + '%'
-    console.log('test!!!!!!')
-    console.log(this.activeStep)
+    // console.log('test!!!!!!')
+    // console.log(this.activeStep)
   }
 }
 </script>

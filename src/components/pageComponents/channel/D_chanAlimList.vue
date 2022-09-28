@@ -283,7 +283,7 @@ export default {
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
         this.$emit('closeLoading')
       }
-      // console.log(result)
+      // // console.log(result)
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
@@ -319,20 +319,20 @@ export default {
           this.followParam.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
           this.followParam.userKey = this.$store.getters['D_USER/GE_USER'].userKey
           this.followParam.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-          console.log(this.followParam)
+          // console.log(this.followParam)
           var result = false
           this.sendLoadingYn = true
           if (fStatus) {
-            console.log(this.followParam)
+            // console.log(this.followParam)
             result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'del')
             this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
             this.CHANNEL_DETAIL.followerCount -= 1
-            console.log(this.CHANNEL_DETAIL)
+            // console.log(this.CHANNEL_DETAIL)
             this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
             // this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
-            console.log(result)
+            // console.log(result)
 
             this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
 
@@ -475,11 +475,11 @@ export default {
       // this.$emit('openPop', params)
     },
     openPushDetailPop (param) {
-      console.log('openPushDetailPop')
-      console.log(param)
+      // console.log('openPushDetailPop')
+      // console.log(param)
       if (param.targetType === 'pushDetail' || param.targetType === 'createChannel') {
-        console.log('openPushDetailPop')
-        console.log(param)
+        // console.log('openPushDetailPop')
+        // console.log(param)
         //  && param.targetKey !== this.CHANNEL_DETAIL.teamKey
         param.openActivity = 'chanAlimList'
       } else if (param.targetType === 'chanDetail') {
@@ -529,7 +529,7 @@ export default {
       }
 
       this.scrollPosition = this.box.scrollTop
-      console.log(this.scrollPosition)
+      // console.log(this.scrollPosition)
       if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
         // blockBox.scrollHeight = 100
@@ -603,7 +603,7 @@ export default {
     },
     GE_RECENT_CHANGE_TEAM (value, old) {
       if (value === this.CHANNEL_DETAIL.teamKey) {
-        console.log('team [' + value + ']의 관련 정보가 변경되었음')
+        // console.log('team [' + value + ']의 관련 정보가 변경되었음')
       }
     },
     GE_MAIN_CHAN_LIST (value, old) {

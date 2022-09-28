@@ -56,10 +56,10 @@ export default {
   emits: ['goDetail'],
   methods: {
     clickInfo (data) {
-      console.log(data)
+      // console.log(data)
     },
     goChanDetail (data) {
-      console.log(data)
+      // console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // if (data.jobkindId === 'ALIM') {

@@ -69,7 +69,7 @@ export default {
           /* this.editorType = 'complex' */
           var file = item.getAsFile()
           this.previewFile(file)
-          console.log(file)
+          // console.log(file)
           // uploadFile(file);
         } else {
 
@@ -119,7 +119,7 @@ export default {
       this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
     }
 
-    console.log(this.addFalseList)
+    // console.log(this.addFalseList)
   },
   props: {
   },
@@ -253,13 +253,13 @@ export default {
       if (sFile[0].addYn === true) {
         this.uploadFileList.push(sFile)
       }
-      console.log(this.uploadFileList)
+      // console.log(this.uploadFileList)
     },
     async setAttachFileList () {
       var imgItemList = document.querySelectorAll('.msgArea .formCard .editorImg')
-      console.log(imgItemList)
-      console.log(this.addFalseList)
-      console.log(this.delAddFalseFileList)
+      // console.log(imgItemList)
+      // console.log(this.addFalseList)
+      // console.log(this.delAddFalseFileList)
       // eslint-disable-next-line no-undef
       var delList = []
       for (var f = this.addFalseList.length - 1; f > -1; f--) {
@@ -283,13 +283,13 @@ export default {
           }
         }
       }
-      console.log(delList)
+      // console.log(delList)
       // eslint-disable-next-line no-array-constructor
       var newAttachFileList = new Array()
       // eslint-disable-next-line no-new-object
       var setObj = new Object()
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
-      console.log(this.addFalseList)
+      // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
+      // console.log(this.addFalseList)
       if (delList.length > 0) {
         for (var a = 0; a < delList.length; a++) {
           // eslint-disable-next-line no-new-object
@@ -319,7 +319,7 @@ export default {
           newAttachFileList.push(setObj)
         }
       }
-      console.log(newAttachFileList)
+      // console.log(newAttachFileList)
       return newAttachFileList
     },
     async sendMsg () {
@@ -327,7 +327,7 @@ export default {
       debugger
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+      // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
       if (this.uploadFileList.length > 0) {
         this.checkPopYn = false
         this.progressShowYn = true
@@ -377,7 +377,7 @@ export default {
       param.showCreNameYn = true
       this.checkPopYn = false
       var result = await this.$saveContents(param)
-      console.log(result)
+      // console.log(result)
       if (result.result === true) {
         // this.$emit('successSave')
         this.$emit('closeXPop', true)
@@ -387,8 +387,8 @@ export default {
     },
     async uploadFile () {
       if (this.uploadFileList.length > 0) {
-        console.log('this.uploadFileList')
-        console.log(this.uploadFileList)
+        // console.log('this.uploadFileList')
+        // console.log(this.uploadFileList)
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -412,7 +412,7 @@ export default {
                 }
               })
             .then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.data.length > 0) {
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
@@ -431,13 +431,13 @@ export default {
           /* } */
           // var selFile = this.selectFileList[i].file
         }
-        console.log(this.uploadFileList)
+        // console.log(this.uploadFileList)
         var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
-            console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            console.log(uploadFile)
+            // console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            // console.log(uploadFile)
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {

@@ -44,7 +44,7 @@ export default {
   created () {
     this.chanList = this.top5ChanList
     this.checkOwnerYn()
-    // console.log(this.chanList)
+    // // console.log(this.chanList)
   },
   props: {
     top5ChanList: {}
@@ -162,7 +162,7 @@ export default {
       this.viewTab = data
       this.introTop5ChanPageTab()
       this.emptyYn = false
-      // console.log(data)
+      // // console.log(data)
       await this.getContentsList()
       if (this.chanList.length === 0) this.emptyYn = true
 

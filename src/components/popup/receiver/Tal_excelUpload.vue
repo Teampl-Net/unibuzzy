@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     downLoadTemplete (path) {
-      console.log(path)
+      // console.log(path)
       var iframe
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
@@ -136,7 +136,7 @@ export default {
         param: new Object()
       })
       this.excelFileList = result.data.resultList
-      console.log(result)
+      // console.log(result)
     },
     changeFile () {
       this.activeStep = 1
@@ -163,7 +163,7 @@ export default {
               }
             })
             .then(res => {
-              console.log(res)
+              // console.log(res)
               if (res.data.result === true) {
                 this.excelFileList = res.data.resultMap.dataList
                 this.failCnt = res.data.resultMap.failCnt
@@ -241,7 +241,7 @@ export default {
       if (result.result) {
         this.$emit('success')
       }
-      console.log(result)
+      // console.log(result)
     }
   }
 }

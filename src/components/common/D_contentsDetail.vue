@@ -59,7 +59,7 @@
             </div> -->
             <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
                 <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
-                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.totalMemoCount}}개</p>
+                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
             </div>
             <div v-else class="mbottom-05 fr" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{CONT_DETAIL.memoCount > 0? '답변완료' : '답변대기'}}</div>
@@ -182,10 +182,10 @@ export default {
     loadingCompo
   },
   created () {
-    console.log('this.detailVal')
-    console.log(this.detailVal)
-    console.log('this.CHANNEL_DETAIL')
-    console.log(this.CHANNEL_DETAIL)
+    // // console.log('this.detailVal')
+    // // console.log(this.detailVal)
+    // // console.log('this.CHANNEL_DETAIL')
+    // // console.log(this.CHANNEL_DETAIL)
     this.readyFunction()
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
@@ -194,6 +194,7 @@ export default {
     this.settingAtag()
   },
   mounted () {
+    this.memoCountCheck()
   },
   computed: {
     historyStack () {
@@ -203,6 +204,9 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
     CHANNEL_DETAIL () {
+      // console.log('#######################################')
+      // console.log(this.detailVal.teamKey)
+      // var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       if (chan) {
         return chan[0]
@@ -211,11 +215,20 @@ export default {
       }
     },
     CAB_DETAIL () {
+      // console.log('$@!$$!$!$!$!!$!$')
+      // console.log(this.detailVal)
+      // console.log(this.CHANNEL_DETAIL)
+
       if (this.detailVal.jobkindId === 'BOAR') {
+        // console.log('##########################')
+        // console.log(this.detailVal)
         var test = this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.detailVal.cabinetKey)[0]
-        console.log(test)
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&')
-        return test
+        // console.log(test)
+        if (test) {
+          return test
+        } else {
+          return null
+        }
       } else {
         return null
       }
@@ -250,8 +263,8 @@ export default {
     },
     CAB_DETAIL: {
       handler (value, old) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        console.log(value)
+        // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+        // console.log(value)
         if (value) {
         }
       },
@@ -259,10 +272,10 @@ export default {
     },
     CONT_DETAIL: {
       handler (value, old) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        console.log(value)
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        console.log(old)
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
+        // console.log(value)
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
+        // console.log(old)
         if (value) {
           this.onLoadFunction()
         }
@@ -277,16 +290,17 @@ export default {
     }
   },
   methods: {
+    memoCountCheck () {
+      var memoTotalCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
+      if (this.CONT_DETAIL.memoCount !== memoTotalCount) {
+        this.getMemoList(true)
+      }
+    },
     async readyFunction () {
       this.loadingYn = true
-      if (!this.CHANNEL_DETAIL) {
+      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
         await this.$addChanList(this.detailVal.teamKey)
-      } else {
-        if (!this.CHANNEL_DETAIL.initYn) {
-          await this.$addChanList(this.detailVal.teamKey)
-        }
       }
-      // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
       if (!this.CONT_DETAIL) {
         await this.getContentsDetail()
       // this.getContentsList()
@@ -297,6 +311,7 @@ export default {
       }
 
       if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
+        alert(4)
         await this.getCabinetDetail()
       }
       // eslint-disable-next-line no-debugger
@@ -307,12 +322,13 @@ export default {
       if (this.CONT_DETAIL.attachFileList && !this.CONT_DETAIL_D_ATTATCH_FILE_LIST) {
         this.settingFileList()
       }
+      this.loadingYn = false
     },
     updateStoreData (Detail) {
-      console.log(this.CAB_DETAIL)
+      // // console.log(this.CAB_DETAIL)
       var tempChan = this.CHANNEL_DETAIL
       var cabinetList = tempChan.ELEMENTS.cabinetList
-      var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
+      var index = cabinetList.findIndex((item) => item.cabinetKey === this.detailVal.cabinetKey)
       if (index >= 0) {
         cabinetList[index] = Detail
       } else {
@@ -324,14 +340,15 @@ export default {
     },
     async getCabinetDetail () {
       if (!this.CAB_DETAIL || !this.CAB_DETAIL.shareAuth) {
+        alert(4444)
         // eslint-disable-next-line no-new-object
         var param = new Object()
         // var tt = this.propData
         param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
         param.cabinetKey = this.detailVal.cabinetKey
+        var resultList = await this.$getCabinetDetail(param)
         // eslint-disable-next-line no-debugger
         debugger
-        var resultList = await this.$getCabinetDetail(param)
         resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
         this.updateStoreData(resultList.mCabinet)
       }
@@ -341,8 +358,8 @@ export default {
       var param = new Object()
       param.contentsKey = this.detailVal.contentsKey
       param.jobkindId = this.detailVal.jobkindId
-      console.log(param)
-      console.log('param')
+      // // console.log(param)
+      // // console.log('param')
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
 
@@ -379,7 +396,7 @@ export default {
       this.userNameClick(userKey, this.CONT_DETAIL.creTeamKey, false)
     },
     userNameClick (userKey, teamKey, blindYn) {
-      console.log('zzz')
+      // // console.log('zzz')
       if (blindYn === false) {
         var param = {}
         param.targetType = 'bookMemberDetail'
@@ -391,7 +408,7 @@ export default {
         } else {
           param.contentOpenYn = true
         }
-        console.log(param)
+        // // console.log(param)
         this.$emit('openPop', param)
       } else {
         this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
@@ -430,7 +447,7 @@ export default {
         this.backClick()
         this.confirmPopShowYn = true
       } catch (error) {
-        console.log(error)
+        // // console.log(error)
       }
     },
     openSelectBoardPop (type) {
@@ -478,7 +495,7 @@ export default {
         this.currentConfirmType = 'memoDEL'
       }
 
-      console.log(this.tempData)
+      // // console.log(this.tempData)
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
@@ -521,7 +538,7 @@ export default {
         url: 'service/tp.saveActLog',
         param: param
       })
-      console.log(result.data.result)
+      // // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.confirmText
         this.smallPopYn = true
@@ -541,7 +558,7 @@ export default {
       if (params.tempData) {
         params.tempData.index = params.index
         params.tempData.cIndex = params.cIndex
-        // console.log(params.tempData.index)
+        // // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
       this.reportYn = true
@@ -556,7 +573,7 @@ export default {
       } else alert('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
-      console.log(this.CONT_DETAIL)
+      // // console.log(this.CONT_DETAIL)
 
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
@@ -619,7 +636,7 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      console.log(this.$store.getters['D_HISTORY/hStack'])
+      // // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     },
@@ -654,7 +671,7 @@ export default {
       this.confirmPopShowYn = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // console.log(this.alimDetail)
+        // // // console.log(this.alimDetail)
         inParam.contentsKey = this.CONT_DETAIL.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
@@ -664,10 +681,10 @@ export default {
           param: inParam
         })
         this.$emit('closeXPop', true)
-        // console.log('Delete Content Result' + result)
+        // // // console.log('Delete Content Result' + result)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        console.log(this.tempData)
+        // // console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -699,7 +716,11 @@ export default {
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
-      if (this.CAB_DETAIL.shareAuth.R === true) {
+      // // // console.log(this.CAB_DETAIL)
+      // // // console.log(this.CHANNEL_DETAIL)
+      // // console.log(this.CONT_DETAIL)
+      // // // console.log(this.detailVal)
+      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL?.shareAuth.R === true) {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
@@ -709,7 +730,7 @@ export default {
       }
     },
     writeMememo (memo) {
-      if (this.CAB_DETAIL.shareAuth.R === true) {
+      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL?.shareAuth.R === true) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
         if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== '') {
@@ -729,18 +750,36 @@ export default {
       // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
-      console.log(param)
+      // // console.log(param)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.deleteMemo',
         param: memo
       })
-      console.log(result)
       if (result.data.result === true) {
         var memos = this.CONT_DETAIL.D_MEMO_LIST
         var index = memos.findIndex((item) => item.memoKey === param.memoKey)
-        memos = memos.splice(index, 1)
+        console.log('**')
+        console.log(this.tempData)
+        console.log(' index : ' + index)
+        if (this.tempData.parentMemoKey) {
+          var cmemoListIdx
+          for (let i = 0; i < memos.length; i++) {
+            if (memos[i].cmemoList.length > 0) {
+              index = memos[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
+              if (index !== -1) {
+                cmemoListIdx = i
+                break
+              }
+            }
+          }
+          console.log('cmemoListIdx : ' + cmemoListIdx)
+          if (cmemoListIdx !== -1) memos[cmemoListIdx].cmemoList.splice(index, 1)
+        } else {
+          memos.splice(index, 1)
+        }
         var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = memos
+        cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
     },
@@ -778,7 +817,7 @@ export default {
         url: 'service/tp.getMemoList',
         param: memo
       })
-
+      console.log(result.data)
       if (result.data.memoList) {
         this.CONT_DETAIL.totalMemoCount = result.data.totalElements
         var tempList = []
@@ -806,8 +845,9 @@ export default {
         }
         var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = tempMemo
-
-        this.offsetInt = tempMemo.length
+        // var totalMemoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
+        cont.memoCount = result.data.totalElements
+        this.offsetInt = result.data.totalElements
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
       // this.$refs.boardMemoListCompo[0].memoLoadingHide()
@@ -848,11 +888,12 @@ export default {
       })
       if (result.data.result === true || result.data.result === 'true') {
         this.memoShowYn = false
-        if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
-          await this.getMemoList(true)
-        } else {
-          await this.getMemoList()
-        }
+        // if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+        //   await this.getMemoList(true)
+        // } else {
+        //   await this.getMemoList()
+        // }
+        this.getMemoList(true)
       }
       this.saveMemoLoadingYn = false
     },

@@ -174,8 +174,8 @@ export default {
     async getTeamList () {
       var paramMap = new Map()
       this.modiTeamData = this.CHANNEL_DETAIL
-      // console.log('this.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamData')
-      console.log(this.CHANNEL_DETAIL)
+      // // console.log('this.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamDatathis.modiTeamData')
+      // console.log(this.CHANNEL_DETAIL)
       this.inputChannelName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
       this.inputChannelMemo = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
       this.selectBg.selectedId = this.CHANNEL_DETAIL.picMfilekey
@@ -245,7 +245,7 @@ export default {
       if (this.chanDetail !== {}) {
         gParam.teamKey = this.chanDetail.targetKey
         if (this.CHANNEL_DETAIL){
-          // console.log(this.CHANNEL_DETAIL.reqKey)
+          // // console.log(this.CHANNEL_DETAIL.reqKey)
           gParam.reqKey = this.CHANNEL_DETAIL.reqKey
         }
       }
@@ -262,7 +262,7 @@ export default {
       gParam.picMfilekey = this.selectBg.selectedId
       gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       gParam.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
-      console.log(gParam)
+      // console.log(gParam)
 
       var params = new Object()
       if(this.deleteYn === true){
@@ -295,7 +295,7 @@ export default {
         // if(delYn === true && this.chanDetail.modiYn === true) {
         //   params.deleteYn = delYn
         // }
-        
+
         this.$emit('successCreChan', params)
       }
     },
@@ -310,7 +310,7 @@ export default {
       temp.teamKeyWord = data.teamKeyWord
       temp.creUserName = data.creUserName
       debugger
-      console.log(temp)
+      // console.log(temp)
       // this.$emit('closeLoading')
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', temp)
     }
@@ -324,7 +324,7 @@ export default {
       }
     },
     CHANNEL_DETAIL () {
-        console.log(this.chanDetail)
+        // console.log(this.chanDetail)
         if (this.chanDetail) {
             return this.$getDetail('TEAM', this.chanDetail.targetKey)[0]
         } else {

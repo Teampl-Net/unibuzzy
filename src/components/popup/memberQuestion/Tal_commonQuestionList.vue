@@ -55,7 +55,7 @@ export default {
   //   }
   // }
   created () {
-    console.log(this.list)
+    // console.log(this.list)
     if (this.list) {
       this.questionList = this.list
     }

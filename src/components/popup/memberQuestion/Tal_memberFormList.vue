@@ -45,10 +45,10 @@ export default {
   },
   methods: {
     getChanMemberForm () {
-      console.log(this.propData)
+      // console.log(this.propData)
       var param = {}
       param.teamKey = this.propData.teamKey
-      console.log(param)
+      // console.log(param)
       // 서비스가 나오면 여기서 axios로 데이터 받아 set해주기!!!!
       // var result = await this.$commonAxiosFunction({
       //   url : 'service/tp.getChanMemberForm',
@@ -88,7 +88,7 @@ export default {
       await tempList.push(temp)
 
       this.memberFormList = tempList
-      console.log(this.memberFormList)
+      // console.log(this.memberFormList)
     },
     deleteClick (params) {
       var data = params.data

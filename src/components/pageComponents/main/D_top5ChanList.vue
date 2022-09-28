@@ -45,7 +45,7 @@ export default {
   created () {
     if (this.chanList) {
       this.mainChanList = this.chanList
-      console.log(this.mainChanList)
+      // console.log(this.mainChanList)
     }
   },
   props: {
@@ -83,7 +83,7 @@ export default {
       var idx1
       // eslint-disable-next-line no-debugger
       debugger
-      console.log(this.mainChanList)
+      // console.log(this.mainChanList)
       if (this.mainChanList && this.mainChanList.length > 0) {
         var test = []
         for (var i = 0; i < this.mainChanList.length; i++) {
@@ -154,7 +154,7 @@ export default {
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
       this.mainChanList = resultList.data.content
-      console.log(resultList.data.content)
+      // console.log(resultList.data.content)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
     async recvNoti (e) {
@@ -207,7 +207,7 @@ export default {
       this.viewTab = data
       // this.introTop5ChanPageTab()
       // this.emptyYn = false
-      // console.log(data)
+      // // console.log(data)
       await this.getContentsList()
       // if (this.chanList.length === 0) this.emptyYn = true
     }

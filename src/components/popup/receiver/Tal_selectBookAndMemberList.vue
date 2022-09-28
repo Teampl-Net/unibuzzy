@@ -63,7 +63,7 @@ export default {
         selectBookNList: {},
         itemType: {}
     },
-    created() { 
+    created() {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.popId = 'selectBookNMemPop' + history.length
         history.push(this.popId)
@@ -90,7 +90,7 @@ export default {
             }
         }
     },
-    computed: { 
+    computed: {
         historyStack () {
             return this.$store.getters['D_HISTORY/hRPage']
         },
@@ -98,7 +98,7 @@ export default {
             return this.$store.getters['D_HISTORY/hUpdate']
         }
     },
-    watch: { 
+    watch: {
         historyStack (value, old) {
             var hStack = this.$store.getters['D_HISTORY/hStack']
             if (this.popId === hStack[hStack.length - 1]) {
@@ -125,7 +125,7 @@ export default {
     },
     methods: {
         clickList(data) {
-            console.log(data);
+            // console.log(data);
         },
         addSelectedList(data, index, type) {
 

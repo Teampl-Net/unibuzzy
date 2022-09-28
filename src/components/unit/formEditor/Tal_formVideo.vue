@@ -90,7 +90,7 @@ export default {
       var inputfile = document.getElementById('input-file')
       var file = inputfile.files[0]
       var videoUrl = URL.createObjectURL(file)
-      console.log(file)
+      // console.log(file)
       console.log(videoUrl)
 
       var reader = new FileReader()
@@ -170,7 +170,7 @@ export default {
         this.selectFile = null
         this.previewImgUrl = null
       }
-      console.log(this.selectFileList)
+      // console.log(this.selectFileList)
     },
     deleteFile (idx) {
       this.selectFileList.splice(idx, 1)

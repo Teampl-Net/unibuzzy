@@ -225,7 +225,7 @@ export default {
                     }
                 }
             }catch(e){
-                console.log(e)
+                // console.log(e)
             }
         },
         addSelectedList(data, index) {
@@ -341,13 +341,13 @@ export default {
                     if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
                     if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
                     if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
-                    console.log(menu);
+                    // console.log(menu);
                     teamMenuList.push(menu)
                     break
                 }
                 }
             }
-            console.log(teamMenuList)
+            // console.log(teamMenuList)
             paramSet.teamMenuList = teamMenuList
             var result = await this.$commonAxiosFunction(
                 {

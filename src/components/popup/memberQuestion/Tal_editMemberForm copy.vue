@@ -71,7 +71,7 @@ export default {
     }
   },
   created () {
-    console.log(this.propData)
+    // console.log(this.propData)
   },
   methods: {
     editCardSet (data, index) {

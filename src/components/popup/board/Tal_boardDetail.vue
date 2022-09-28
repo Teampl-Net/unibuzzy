@@ -207,8 +207,8 @@ export default {
     // 비회원 문의하기에서 로컬데이터에 데이터가 없으므로 에러가 나서 if처리를 해둠
     if (localStorage.getItem('sessionUser')) {
       this.creUser = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      // console.log(this.detailVal)
-      // console.log(this.detailVal.value.value)
+      // // console.log(this.detailVal)
+      // // console.log(this.detailVal.value.value)
       if (this.detailVal.value) {
         this.picBgPath = this.detailVal.value.picBgPath
         if (this.detailVal.value.value) {
@@ -288,7 +288,7 @@ export default {
       this.userNameClick(userKey, this.alimDetail[0].creTeamKey, false)
     },
     userNameClick (userKey, teamKey, blindYn) {
-      console.log('zzz')
+      // console.log('zzz')
       if (blindYn === false) {
         var param = {}
         param.targetType = 'bookMemberDetail'
@@ -300,7 +300,7 @@ export default {
         } else {
           param.contentOpenYn = true
         }
-        console.log(param)
+        // console.log(param)
         this.$emit('openPop', param)
       } else {
         this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
@@ -332,14 +332,14 @@ export default {
           onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
         } else {
           var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
-          console.log(result)
+          // console.log(result)
         }
         this.confirmText = '저장되었습니다!'
         this.confirmType = false
         this.backClick()
         this.confirmPopShowYn = true
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     },
     openSelectBoardPop (type) {
@@ -387,7 +387,7 @@ export default {
         this.currentConfirmType = 'memoDEL'
       }
 
-      console.log(this.tempData)
+      // console.log(this.tempData)
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
@@ -430,7 +430,7 @@ export default {
         url: 'service/tp.saveActLog',
         param: param
       })
-      console.log(result.data.result)
+      // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.confirmText
         this.smallPopYn = true
@@ -451,7 +451,7 @@ export default {
       if (params.tempData) {
         params.tempData.index = params.index
         params.tempData.cIndex = params.cIndex
-        // console.log(params.tempData.index)
+        // // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
       this.reportYn = true
@@ -474,7 +474,7 @@ export default {
 
     async download1 (fileKey, path) {
       var result = await this.$downloadFile(fileKey, path)
-      console.log(result)
+      // console.log(result)
       /* var aTag
       var iframe
       aTag = document.getElementById('hiddenDownloaderForAndroid')
@@ -518,7 +518,7 @@ export default {
       // } else alert('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
-      console.log(this.alimDetail[0])
+      // console.log(this.alimDetail[0])
 
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
@@ -581,7 +581,7 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('updateStack', history)
-      console.log(this.$store.getters.hStack)
+      // console.log(this.$store.getters.hStack)
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
       /*
@@ -625,7 +625,7 @@ export default {
       if (this.detailVal.nonMemYn) {
         this.picBgPath = '#6768A7'
       }
-      console.log(mCabinetContentsDetail)
+      // console.log(mCabinetContentsDetail)
       this.fileYn = mCabinetContentsDetail.fileYn === 1
       this.replyYn = mCabinetContentsDetail.replyYn === 1
       this.deleteYn = mCabinetContentsDetail.deleteYn === 1// 나중에 삭제된 게시글을 공유하게 된다면
@@ -662,7 +662,7 @@ export default {
       this.confirmPopShowYn = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // console.log(this.alimDetail)
+        // // console.log(this.alimDetail)
         inParam.contentsKey = this.alimDetail[0].contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.alimDetail[0].creTeamKey
@@ -672,10 +672,10 @@ export default {
           param: inParam
         })
         this.$emit('closeXPop', true)
-        // console.log('Delete Content Result' + result)
+        // // console.log('Delete Content Result' + result)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        console.log(this.tempData)
+        // console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -733,15 +733,15 @@ export default {
       }
     },
     async deleteMemo (param) {
-      // console.log(param)
+      // // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
-      console.log(param)
+      // console.log(param)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.deleteMemo',
         param: memo
       })
-      console.log(result)
+      // console.log(result)
       if (result.data.result === true) {
         // this.memoList = []
         await this.getContentsList()
@@ -770,13 +770,13 @@ export default {
         memo.pageSize = this.memoList.length + 1
         memo.offsetInt = 0
       }
-      console.log('memo')
-      console.log(memo)
+      // console.log('memo')
+      // console.log(memo)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
       })
-      console.log(result)
+      // console.log(result)
       if (result.data.memoList) {
         this.totalElements = result.data.totalElements
         if (allYn) {
@@ -826,7 +826,7 @@ export default {
       var clip = new ClipboardJS('#boardDetailCopyBody')
       var _this = this
       clip.on('success', function (e) {
-        // console.log(e)
+        // // console.log(e)
         _this.confirmText = '게시글 링크가 복사되었습니다!'
         _this.confirmPopShowYn = true
       })
@@ -949,7 +949,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
-      console.log(this.detailVal)
+      // console.log(this.detailVal)
       param.contentsKey = this.detailVal.targetKey
       param.mccKey = this.detailVal.value.mccKey
       param.jobkindId = 'BOAR'
@@ -971,7 +971,7 @@ export default {
       this.fileDownloadAreaYn = (this.attachTrueFileList.findIndex(i => i.attachYn === true)) !== -1
       // await this.settingUserDo(tempuserDoList)
 
-      // console.log(this.alimDetail)
+      // // console.log(this.alimDetail)
       await this.getLikeCount()
       if (!userDoYn) {
         await this.checkUserAuth()
@@ -1055,7 +1055,7 @@ export default {
           this.settingUserDo(temp)
           this.getContentsList(true)
           // }
-          console.log(this.alimDetail[0])
+          // console.log(this.alimDetail[0])
         })
 
         this.alimDetail[0].userDoList.push({ doType: act.doType, doKey: 1 })
@@ -1066,8 +1066,8 @@ export default {
         // this.alimDetail[0].likeCount += 1
         // if (result.result === true) {
       }
-      // console.log('resultresult')
-      // console.log(result)
+      // // console.log('resultresult')
+      // // console.log(result)
       /* if (result === true) {
         await this.getContentsList()
         this.$emit('reloadParent')

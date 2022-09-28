@@ -729,6 +729,16 @@ export const commonMethods = {
     resultObj.targetKey = targetKey
     resultObj.id = id
     return resultObj
+  },
+  countingTotalMemo (list) {
+    var count = 0
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].cmemoList.length > 0) {
+        count += 1
+      }
+    }
+    console.log('counting Memo : ' + (count + list.length))
+    return count + list.length
   }
 }
 
@@ -772,5 +782,6 @@ export default {
     Vue.config.globalProperties.$changeUrlBackslash = commonMethods.changeUrlBackslash
     Vue.config.globalProperties.$findATagDelete = commonMethods.findATagDelete
     Vue.config.globalProperties.$makeHistoryObj = commonMethods.makeHistoryObj
+    Vue.config.globalProperties.$countingTotalMemo = commonMethods.countingTotalMemo
   }
 }

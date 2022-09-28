@@ -48,20 +48,20 @@ export default {
       var keycode = event.keyCode
       // alert(keycode)
       if (keycode === 8 || keycode === 46) {
-        console.log(keycode)
+        // console.log(keycode)
         try {
           var s = window.getSelection()
           var r = s.getRangeAt(0)
           var el = r.startContainer.parentElement
-          // console.log('#########################')
-          // console.log(el.classList)
-          // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!')
+          // // console.log('#########################')
+          // // console.log(el.classList)
+          // // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!')
           // Check if the current element is the .label
           if (el.classList.contains('parentNameCard')) {
             // Check if we are exactly at the end of the .label element
-            // console.log('r.startOffset : ' + r.startOffset)
-            // console.log('r.endOffset : ' + r.endOffset)
-            // console.log('rel.textContent.length : ' + el.textContent.length)
+            // // console.log('r.startOffset : ' + r.startOffset)
+            // // console.log('r.endOffset : ' + r.endOffset)
+            // // console.log('rel.textContent.length : ' + el.textContent.length)
             if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
               // prevent the default delete behavior
               event.preventDefault()
@@ -77,7 +77,7 @@ export default {
   methods: {
     setMememo () {
       this.meMemoData = this.mememo
-      console.log(this.meMemoData)
+      // console.log(this.meMemoData)
       var myCreHtml = null
       myCreHtml = '<span style="padding:0 5px; border-radius: 10px;" class="parentNameCard fl CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
       // myCreHtml += '<p class="font14 fl">'
@@ -89,7 +89,7 @@ export default {
           this.$refs.memoTextTag.focus()
           this.$pasteHtmlAtCaret(myCreHtml)
         } catch (error) {
-          console.log(error)
+          // console.log(error)
         }
       })
     },

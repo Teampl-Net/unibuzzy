@@ -196,7 +196,8 @@ export const methods = {
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     if (result.data.resultCode === 'OK') {
-      console.log(result.data.userMap)
+      // console.log(result.data.userMap)
+      console.log('!!! USER LOGIN CHECK !!!')
       if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
         localStorage.setItem('user', JSON.stringify(result.data.userMap))
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))

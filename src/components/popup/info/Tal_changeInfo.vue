@@ -100,7 +100,7 @@ export default {
         param: param
       })
       if (result.data.result) {
-        console.log(result.data.result)
+        // console.log(result.data.result)
         if(this.Timer != null){
             this.timerStop(this.Timer)
             this.Timer = null;
@@ -182,7 +182,7 @@ export default {
             param: param
         })
 
-        console.log(result)
+        // console.log(result)
         if (result.data.userInfo) {
             localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
             this.$router.replace({ path: '/' })

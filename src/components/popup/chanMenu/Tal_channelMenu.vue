@@ -124,8 +124,8 @@ export default {
 
   },
   created() {
-    console.log('CHANNEL_DETAIL')
-    console.log(this.CHANNEL_DETAIL)
+    // console.log('CHANNEL_DETAIL')
+    // console.log(this.CHANNEL_DETAIL)
     var history = this.$store.getters['D_HISTORY/hStack']
     history.push('chanMenu' + this.chanAlimListTeamKey)
     this.$store.commit('D_HISTORY/updateStack', history)
@@ -217,7 +217,7 @@ export default {
         url: 'service/tp.getFollowerList',
         param: params
       })
-      console.log(result.data.content[0])
+      // console.log(result.data.content[0])
       if (result.data) {
         if(result.data.content.length > 0){
           if(result.data.content[0].managerKey !== undefined && result.data.content[0].managerKey !== null && result.data.content[0].managerKey !== '') {
@@ -280,14 +280,14 @@ export default {
       // this.goNo()
     },
     openTeamDetailPop(data) {
-      // console.log(data)
+      // // console.log(data)
       var params = {}
       params.targetType = 'editBookList'
       params.currentTeamKey = this.chanAlimListTeamKey
       // params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = data
       params.value = this.propData
-      console.log(this.propData);
+      // console.log(this.propData);
 
       params.teamNameMtext = this.teamName()
 
@@ -315,8 +315,8 @@ export default {
           var changeT = this.cabinetList[i].cabinetNameMtext
           this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
       }
-      // console.log('#####')
-      // console.log(this.cabinetList)
+      // // console.log('#####')
+      // // console.log(this.cabinetList)
       // albugger
     },
     async getTeamMenuList () {
@@ -335,7 +335,7 @@ export default {
         ...result
       ]
       uniqueArr = this.replaceArr(newArr)
-      console.log(uniqueArr)
+      // console.log(uniqueArr)
       this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */

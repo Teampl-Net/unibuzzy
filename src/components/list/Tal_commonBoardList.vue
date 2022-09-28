@@ -278,7 +278,7 @@ async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
       var temp = []
-      console.log(this.commonBoardListData)
+      // console.log(this.commonBoardListData)
       if (!this.commonBoardListData[idx].userDoList) {
         this.commonBoardListData[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       }
@@ -377,7 +377,7 @@ async changeAct (act, contentsKey, idx) {
           temp.push({ doType: act.doType, doKey: result.doKey })
           this.commonBoardListData[idx].userDoList = temp
           this.changeData += 1
-          console.log(JSON.stringify(act.doType === 'LI'))
+          // console.log(JSON.stringify(act.doType === 'LI'))
           this.commonBoardListData[idx].likeCount += 1
         // }
       }

@@ -54,7 +54,7 @@ export default {
     this.loadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
-    console.log(this.GE_MAIN_CHAN_LIST)
+    // console.log(this.GE_MAIN_CHAN_LIST)
     // document.addEventListener('message', e => this.recvNoti(e))
     // // window.addEventListener('message', e => this.recvNoti(e))
     this.$emit('changePageHeader', '더알림')
@@ -108,7 +108,7 @@ export default {
         this.mainChanList = response.data.teamList
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
         // var test = await this.$actionVuex('TEAM', null, true, false, null)
-        console.log(this.mainChanList)
+        // console.log(this.mainChanList)
         var teamList = this.GE_MAIN_CHAN_LIST
         // eslint-disable-next-line no-debugger
         this.mainAlimList = response.data.alimList
@@ -239,7 +239,7 @@ export default {
     GE_RECENT_CHANGE_TEAM (value, old) {
     },
     GE_USER (value, old) {
-      // console.log(this.userInfo)
+      // // console.log(this.userInfo)
     },
     GE_MAIN_CHAN_LIST (value, old) {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']

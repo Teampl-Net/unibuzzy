@@ -106,7 +106,7 @@ export default {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
     // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
     if (this.parentSelectList) {
-      console.log(this.parentSelectList)
+      // console.log(this.parentSelectList)
       this.selectedMemberList = []
       this.selectedMemberList = this.parentSelectList.memberList
     }
@@ -206,14 +206,14 @@ export default {
       if (!this.selectedMemberList) this.selectedMemberList = []
       data.shareSeq = data.userKey
       this.selectedMemberList.push(data)
-      console.log('@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#')
-      console.log(this.selectedMemberList)
+      // console.log('@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#')
+      // console.log(this.selectedMemberList)
       this.$emit('changeSelectMemberList', this.selectedMemberList)
       // // eslint-disable-next-line no-debugger
       // debugger
       // eslint-disable-next-line vue/no-mutating-props
       this.listData[index].selectedYn = true
-      // console.log(this.listData)
+      // // console.log(this.listData)
       // var tt = this.listData
     },
     checkClick () {

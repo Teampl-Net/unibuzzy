@@ -209,7 +209,7 @@ export default {
         param.findActYn = true
         param.findActStarYn = true
       }
-      console.log(param)
+      // console.log(param)
       var result = await this.$getContentsList(param)
       if (result.empty) {
         this.endListYn = true
@@ -218,7 +218,7 @@ export default {
         }
       }
       var resultList = result
-      console.log(resultList)
+      // console.log(resultList)
       this.$emit('closeLoading')
       return resultList
     },
@@ -278,7 +278,7 @@ export default {
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       var a = this.resultSearchKeyList
-      console.log(a)
+      // console.log(a)
       this.offsetInt = 0
       var resultList = await this.getMyActContentsList(10, 0)
       this.myActContentsList = resultList.content

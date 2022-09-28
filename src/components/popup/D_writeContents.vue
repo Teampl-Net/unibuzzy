@@ -147,7 +147,7 @@ export default {
       this.clickPageTopBtn()
     },
     // pageUpdate값이 달라지면 watch에서 이를 감지하고 함수를 실행함
-    pageUpdate (value, old) { 
+    pageUpdate (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history[history.length - 1] === this.popId) { // 글로벌 히스토리 리스트 변수의 마지막 값과 현 페이지의 아이디가 같은 값일때 (= 마지막 페이지가 내 페이지 일 때) close 함수 실행되도록
         this.closeXPop()
@@ -156,9 +156,9 @@ export default {
   },
   mounted() {
     // debugger
-    console.log(this.params)
+    // console.log(this.params)
     document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
-      console.log(e)
+      // console.log(e)
       var items = (e.clipboardData || e.originalEvent.clipboardData).items;
 
       for (let i of items) {
@@ -171,7 +171,7 @@ export default {
               /* this.editorType = 'complex' */
               var file = item.getAsFile();
               this.previewFile(file)
-              console.log(file);
+              // console.log(file);
           //uploadFile(file);
           } else {
             // e.preventDefault()
@@ -189,9 +189,9 @@ export default {
               // const before = text.slice(0, start)
               // const after = text.slice(end)
 
-              // console.log(start)
-              // console.log(before)
-              // console.log(after)
+              // // console.log(start)
+              // // console.log(before)
+              // // console.log(after)
               // document.getElementById('textMsgBoxPush').textContent = before + getText + after;
               // document.getElementById('textMsgBoxPush').textContent = getText;
               // const text = (e.originalEvent || e).clipboardData.getData('text/html')
@@ -335,8 +335,8 @@ export default {
   created() {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
-    console.log('console.log(this.params)console.log(this.params)console.log(this.params)console.log(this.params)')
-    console.log(this.params)
+    // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
+    // console.log(this.params)
     if (this.params.bodyFullStr) {
       if (this.params.UseAnOtherYn) {
         // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
@@ -358,7 +358,7 @@ export default {
       this.replyPopYn =
       this.allRecvYn = false
       this.creUserName = this.$changeText(this.params.creUserName)
-      console.log(this.params)
+      // console.log(this.params)
       if (this.params.targetKey) {
         this.creTeamKey = this.params.targetKey
       }
@@ -422,8 +422,8 @@ export default {
         document.getElementById('msgBox').innerHTML = innerHtml
         this.viewTab = 'complex'
         this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-        console.log('this.propData.parentAttachTrueFileList')
-        // console.log(this.propData.parentAttachTrueFileList)
+        // console.log('this.propData.parentAttachTrueFileList')
+        // // console.log(this.propData.parentAttachTrueFileList)
         // this.formEditorShowYn = true
       } else {
         document.getElementById('textMsgBoxPush').innerHTML = this.$findATagDelete(this.bodyString)
@@ -505,8 +505,8 @@ export default {
       return encodeURI(str);
     },
     openPop(param){
-      console.log('param');
-      console.log(param);
+      // console.log('param');
+      // console.log(param);
       this.$emit('openPop',param)
     },
     changeTab (tab) {
@@ -524,9 +524,9 @@ export default {
         var bList = []
         var myMList = []
         var myBList = []
-        console.log('2!@#!@#!@@@@@2222')
-        console.log(this.receiverList)
-        console.log(obj)
+        // console.log('2!@#!@#!@@@@@2222')
+        // console.log(this.receiverList)
+        // console.log(obj)
         if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
             myMList = this.receiverList.memberList
         }
@@ -553,8 +553,8 @@ export default {
         // if (obj.memberList && obj.memberList.length > 0) {
         //     mList = obj.memberList
         //     if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
-        //         console.log('this.receiverList')
-        //         console.log(this.receiverList)
+        //         // console.log('this.receiverList')
+        //         // console.log(this.receiverList)
         //         mList = this.receiverList.memberList
 
         //         for (var mm = 0; mm < myMList.length; mm ++) {
@@ -599,7 +599,7 @@ export default {
       this.selectedReceiverList = []
       this.receiverTotalNum = myMList.length + mList.length + myBList.length + bList.length
       this.receiverText = ''
-      console.log(this.receiverList.bookList);
+      // console.log(this.receiverList.bookList);
       // var shareItemBookList = []
       // eslint-disable-next-line no-new-object
 
@@ -646,8 +646,8 @@ export default {
       param.teamKey = this.params.targetKey
       param.teamNameMtext = this.params.teamNameMtext
       param.pSelectedList = this.receiverList
-      console.log(this.params)
-      console.log(param)
+      // console.log(this.params)
+      // console.log(param)
 
       this.$emit('openPop',param)
       // this.receiverPopYn = true
@@ -671,7 +671,7 @@ export default {
     },
     confirmNo(){
       this.complexOkYn = false
-      console.log(this.propFormData)
+      // console.log(this.propFormData)
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -691,7 +691,7 @@ export default {
         var innerHtml =''
         param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
         var targetMsgDiv = null
-        console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+        // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
         if (this.uploadFileList.length > 0) {
             this.checkPopYn = false
             this.progressShowYn = true
@@ -754,7 +754,7 @@ export default {
         if (this.allRecvYn === true) {
 
         } else {
-            console.log(this.param)
+            // console.log(this.param)
             if(this.replyPopYn) {
             param.parentContentsKey = this.params.targetContentsKey
             param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
@@ -805,9 +805,9 @@ export default {
         /* if (result.contents) {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [result.contents] )
         }
-        var isMobile = /Mobi/i.test(window.navigator.userAgent); 
+        var isMobile = /Mobi/i.test(window.navigator.userAgent);
         debugger */
-        var isMobile = /Mobi/i.test(window.navigator.userAgent); 
+        var isMobile = /Mobi/i.test(window.navigator.userAgent);
         if (!isMobile) {
     // eslint-disable-next-line no-new-object
             var param = new Object()
@@ -819,7 +819,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
         }
         /* if (result.result === true) { */
-        console.log(this.params.writeType)
+        // console.log(this.params.writeType)
 
         // if (this.replyPopYn) {
         //     var param = {}
@@ -996,7 +996,7 @@ export default {
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
         var testtest = this.uploadFileList
-        console.log(this.uploadFileList)
+        // console.log(this.uploadFileList)
         var iList = document.querySelectorAll(".formCard .addTrue")
         // Form 필드 생성
         // if (!this.selectFileList.length) return
@@ -1023,7 +1023,7 @@ export default {
                 }
               })
             .then(res => {
-              console.log(res)
+              // console.log(res)
               if(res.data.length > 0) {
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
@@ -1041,7 +1041,7 @@ export default {
               this.isUploading = false
             })
         }
-        console.log(this.uploadFileList)
+        // console.log(this.uploadFileList)
         var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
@@ -1049,10 +1049,10 @@ export default {
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
 
-                console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                console.log(uploadFile[0].previewImgUrl)
-                console.log(iList[il].src)
-                console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
+                // console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                // console.log(uploadFile[0].previewImgUrl)
+                // console.log(iList[il].src)
+                // console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
                     if (iList[il].src === uploadFile[0].previewImgUrl) {
                         iList[il].src = uploadFile.filePath
@@ -1092,7 +1092,7 @@ export default {
         if (sFile[0].addYn === true) {
             this.uploadFileList.push(sFile)
         }
-        console.log(this.uploadFileList)
+        // console.log(this.uploadFileList)
     },
   },
 

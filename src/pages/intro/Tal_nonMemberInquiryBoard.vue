@@ -119,7 +119,7 @@ export default {
       } else {
         pageSize = 10
       }
-      console.log(this.findKeyList)
+      // console.log(this.findKeyList)
       if (this.findKeyList) {
         if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
           param.title = this.findKeyList.searchKey
@@ -180,7 +180,7 @@ export default {
       this.scrollPosition = this.listBox.scrollTop
     },
     async requestSearchList (param) {
-      console.log(param)
+      // console.log(param)
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey

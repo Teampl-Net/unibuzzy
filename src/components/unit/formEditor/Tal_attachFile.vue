@@ -33,7 +33,7 @@ export default {
     if (this.attachTrueAddFalseList && this.attachTrueAddFalseList.length > 0) {
       this.sFileList = this.attachTrueAddFalseList
       for (var i = 0; i < this.sFileList.length; i++) {
-        console.log(this.sFileList)
+        // console.log(this.sFileList)
         this.sFileList[i].addYn = false
         this.sFileList[i].attachYn = true
         this.sFileList[i].file = { name: this.sFileList[i].fileName, size: this.sFileList[i].fileSizeKb }
@@ -63,7 +63,7 @@ export default {
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = null
           this.gAttachKey += 1
-          console.log(this.$refs.selectFile.files[k])
+          // console.log(this.$refs.selectFile.files[k])
           this.selectFile = this.$refs.selectFile.files[k]
 
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -105,11 +105,11 @@ export default {
               this.errorShowYn = true
               return true
             }
-            console.log('#####')
+            // console.log('#####')
             if (!this.sFileList) {
               this.sFileList = []
             }
-            console.log(this.sFileList)
+            // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
             this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
           }
@@ -118,7 +118,7 @@ export default {
         this.selectFile = null
         this.preImgUrl = null
       }
-      console.log(this.sFileList)
+      // console.log(this.sFileList)
     },
     async formSubmit () {
       if (this.sFileList.length > 0) {

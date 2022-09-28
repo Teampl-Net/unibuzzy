@@ -71,7 +71,7 @@ export default {
     this.getImgList().then(response => {
       this.imgList = response
       for (var i = 0; i < this.imgList.length; i++) {
-        console.log(this.imgList[i].pathMtext)
+        // console.log(this.imgList[i].pathMtext)
         // this.imgList[i].src = this.imgList[i].pathMtext
         this.imgList[i].src = this.imgList[i].domainPath + this.imgList[i].pathMtext
         this.imgList[i].title = this.imgList[i].fileKey
@@ -81,10 +81,10 @@ export default {
     })
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'previewImgPop' + history.length
-    console.log(history)
+    // console.log(history)
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
-    console.log(this.imgList)
+    // console.log(this.imgList)
     // this.imgs.push(this.imgList[0].pathMtext)
   },
   updated () {
@@ -123,9 +123,9 @@ export default {
         url: 'service/tp.getMMFileList',
         param: param
       })
-      console.log(result)
+      // console.log(result)
       return result.data.mmFileList
-      // console.log(this.imgs)
+      // // console.log(this.imgs)
     },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
@@ -161,7 +161,7 @@ export default {
         }
         this.saveOkPopShowYn = true
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
   },

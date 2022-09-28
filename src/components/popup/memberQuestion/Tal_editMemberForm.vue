@@ -47,8 +47,8 @@ export default {
     }
   },
   created () {
-    console.log('this.propData')
-    console.log(this.propData)
+    // console.log('this.propData')
+    // console.log(this.propData)
     if (this.propData) {
       this.memberFormData = this.propData.formData
       this.setting()
@@ -88,7 +88,7 @@ export default {
       //   url: 'service/tp.saveMemberForm',
       //   param: param
       // })
-      // console.log(result)
+      // // console.log(result)
       // this.$emit('saveQuestion')
     },
     mQcopy (params) {

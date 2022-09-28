@@ -269,7 +269,7 @@ export default {
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
-      console.log(result)
+      // console.log(result)
       if (result.data.content.length > 0) {
         return true
       } else {
@@ -277,9 +277,9 @@ export default {
       }
     },
     selectedReceiverBookNMemberList (param) {
-      console.log('selectedReceiverBookNMemberList')
-      console.log(this.targetType)
-      console.log(param.data.memberList)
+      // console.log('selectedReceiverBookNMemberList')
+      // console.log(this.targetType)
+      // console.log(param.data.memberList)
       if (!param.emit) {
         param.emit = true
         this.$emit('selectedReceiverBookNMemberList', param)
@@ -523,8 +523,8 @@ export default {
     },
 
     openPop (params) {
-      console.log('hahahaha')
-      console.log(params)
+      // console.log('hahahaha')
+      // console.log(params)
       this.popParams = params
       this.popShowYn = true
     },
@@ -541,7 +541,7 @@ export default {
      * @param {reloadYn} Boolean true 보내면 리로드 */
     async closePop (reloadYn) {
       reloadYn = false
-      console.log(this.targetType)
+      // console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       this.popShowYn = false
       var history = this.$store.getters['D_HISTORY/hStack']
@@ -643,7 +643,7 @@ export default {
       // }
       // eslint-disable-next-line no-debugger
       debugger
-      console.log(reloadYn)
+      // console.log(reloadYn)
       this.$emit('closePop', reloadYn)
     },
     // sucssesCreChan(){
