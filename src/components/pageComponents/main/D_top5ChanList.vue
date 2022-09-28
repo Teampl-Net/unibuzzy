@@ -153,9 +153,9 @@ export default {
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
+      console.log(resultList.data.content)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.data.content)
       this.mainChanList = resultList.data.content
-      // console.log(resultList.data.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
     async recvNoti (e) {
       /* var message

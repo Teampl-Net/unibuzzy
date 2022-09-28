@@ -289,12 +289,22 @@ export default {
         this.$emit('closeLoading')
       }
       // // console.log(result)
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log('#########################')
+      console.log(result)
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
           this.openWelcomePopYn = false
+          // console.log('^^^^^^^^^^^^^^^^^^^^^^^')
+          // console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
+          var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
+          this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
           this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-          this.$emit('changeFollowYn', this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
+          console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true)
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+          // this.$emit('changeFollowYn', this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
         } else {
           this.errorMsg = result.message
           this.errorPopYn = true
@@ -306,12 +316,15 @@ export default {
       }
 
       this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+      console.log('^^^^^^^^^^^^^^^^^^^^^^^')
+      console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true)
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async confirmOk () {
       // eslint-disable-next-line no-debugger
       debugger
+      this.errorBoxYn = false
       if (this.currentConfirmType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.errorBoxText = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'

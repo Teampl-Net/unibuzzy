@@ -194,7 +194,9 @@ export default {
     this.settingAtag()
   },
   mounted () {
-    this.memoCountCheck()
+    // console.log('########################')
+    // console.log(this.detailVal)
+    // console.log('########################')
   },
   computed: {
     historyStack () {
@@ -203,9 +205,16 @@ export default {
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
     CHANNEL_DETAIL () {
+      // console.log('!!! CHANNEL_DETAIL !!!')
+      // console.log(this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       if (chan) {
+        // console.log('tlqkf')
+        // console.log(chan[0])
         return chan[0]
       } else {
         return null
@@ -213,9 +222,16 @@ export default {
     },
     CAB_DETAIL () {
       if (this.detailVal.jobkindId === 'BOAR') {
+        // console.log(this.CHANNEL_DETAIL)
+        // console.log(this.CHANNEL_DETAIL)
         var test = this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.detailVal.cabinetKey)
-        // console.log(test)
         if (test) {
+          // console.log('#!@##################')
+          // console.log('#!@##################')
+          // console.log('#!@##################')
+          // console.log('#!@##################')
+          // console.log('#!@##################')
+          // console.log(test[0])
           return test[0]
         } else {
           return null
@@ -225,12 +241,19 @@ export default {
       }
     },
     CONT_DETAIL () {
-      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, this.detailVal.contentsKey)
+      // console.log('## this.CHANNEL_DETAIL ##')
+      // console.log(this.CHANNEL_DETAIL)
+      // console.log('## this.detailVal.contentsKey ##')
+      // console.log(this.detailVal.contentsKey)
+      var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.detailVal.teamKey)
       // eslint-disable-next-line no-debugger
       debugger
       if (cont) {
+        // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
+        // console.log(cont[0])
         return cont[0]
       } else {
+        // console.log(cont)
         return null
       }
     },
@@ -303,35 +326,50 @@ export default {
   },
   methods: {
     memoCountCheck () {
-      var memoTotalCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
-      if (this.CONT_DETAIL.memoCount !== memoTotalCount) {
-        this.getMemoList(true)
+      if (this.CONT_DETAIL.D_MEMO_LIST.length > 0) {
+        var memoTotalCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
+        if (this.CONT_DETAIL.memoCount !== memoTotalCount) {
+          this.getMemoList(true)
+        }
       }
     },
     async readyFunction () {
-      this.loadingYn = true
-      if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
-        await this.$addChanList(this.detailVal.teamKey)
-      }
-      if (!this.CONT_DETAIL) {
-        await this.getContentsDetail()
-      // this.getContentsList()
-      } else {
-        if (!this.CONT_DETAIL.D_CONT_USER_DO) {
+      try {
+        this.loadingYn = true
+        if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
+          await this.$addChanList(this.detailVal.teamKey)
         }
-      }
+        // console.log('this.CHANNEL_DETAIL')
+        // console.log(this.CHANNEL_DETAIL)
+        if (!this.CONT_DETAIL) {
+          await this.getContentsDetail()
+        // this.getContentsList()
+        } else {
+          if (!this.CONT_DETAIL.D_CONT_USER_DO) {
+          }
+        }
+        // console.log('this.CONT_DETAIL')
+        // console.log(this.CONT_DETAIL)
 
-      if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
-        await this.getCabinetDetail()
-      }
-      console.log(this.CONT_DETAIL)
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (!this.CONT_DETAIL.D_MEMO_LIST) {
-        await this.getMemoList()
-      }
-      if (this.CONT_DETAIL.attachFileList && !this.CONT_DETAIL_D_ATTATCH_FILE_LIST) {
-        this.settingFileList()
+        if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
+          await this.getCabinetDetail()
+        }
+        // console.log(this.CONT_DETAIL)
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (!this.CONT_DETAIL.D_MEMO_LIST) {
+          this.CONT_DETAIL.D_MEMO_LIST = []
+          await this.getMemoList()
+        }
+        if (this.CONT_DETAIL.attachFileList && !this.CONT_DETAIL_D_ATTATCH_FILE_LIST) {
+          this.settingFileList()
+        }
+        if (this.CONT_DETAIL.D_MEMO_LIST) {
+          this.memoCountCheck()
+        }
+        // console.log('###############################!!!!##############################')
+      } catch (e) {
+        // console.log(e)
       }
       this.loadingYn = false
     },
@@ -372,8 +410,33 @@ export default {
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+      // console.log('!!!!!!!!!!! tq !!!!!!!!!!!!!')
+      // console.log(detailData)
 
+      // var idx1, idx2
+      // var chanDetail = {}
+      // var contentList = []
+      // idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.detailVal.teamKey)
+      // console.log(idx1)
+      // chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+      // console.log(chanDetail)
+      // contentList = detailData.jobkindId === 'ALIM' ? chanDetail.ELEMENTS.alimList : chanDetail.ELEMENTS.boardList
+      // console.log(contentList)
+      // idx2 = contentList.findIndex((item) => item.mccKey === detailData.mccKey)
+      // console.log(idx2)
+      // if (idx2 !== -1) {
+      //   contentList[idx2] = detailData
+      // } else {
+      //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      // }
+      // console.log(contentList)
+
+      // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [contentList])
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+      if (!detailData.D_MEMO_LIST) detailData.D_MEMO_LIST = []
+      // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
+      // console.log(detailData)
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
     },
     onLoadFunction () {
@@ -584,7 +647,7 @@ export default {
       } else alert('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
-      console.log(this.CONT_DETAIL)
+      // console.log(this.CONT_DETAIL)
 
       this.clickImgList = document.querySelectorAll('#boardBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
@@ -647,7 +710,7 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      console.log(this.$store.getters['D_HISTORY/hStack'])
+      // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     },
@@ -695,7 +758,7 @@ export default {
         // console.log('Delete Content Result' + result)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        console.log(this.tempData)
+        // console.log(this.tempData)
         var param = {}
         param.actType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -727,7 +790,7 @@ export default {
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
-      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL?.shareAuth.R === true) {
+      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL.shareAuth.R === true) {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
@@ -765,9 +828,9 @@ export default {
       if (result.data.result === true) {
         var memos = this.CONT_DETAIL.D_MEMO_LIST
         var index = memos.findIndex((item) => item.memoKey === param.memoKey)
-        console.log('**')
-        console.log(this.tempData)
-        console.log(' index : ' + index)
+        // console.log('**')
+        // console.log(this.tempData)
+        // console.log(' index : ' + index)
         if (this.tempData.parentMemoKey) {
           var cmemoListIdx
           for (let i = 0; i < memos.length; i++) {
@@ -779,7 +842,7 @@ export default {
               }
             }
           }
-          console.log('cmemoListIdx : ' + cmemoListIdx)
+          // console.log('cmemoListIdx : ' + cmemoListIdx)
           if (cmemoListIdx !== -1) memos[cmemoListIdx].cmemoList.splice(index, 1)
         } else {
           memos.splice(index, 1)
@@ -851,9 +914,12 @@ export default {
           }
         }
         var cont = this.CONT_DETAIL
-        cont.D_MEMO_LIST = tempMemo
+        console.log(tempMemo)
+        cont.D_MEMO_LIST = [...tempMemo]
+        console.log(cont)
+        console.log(cont.D_MEMO_LIST)
         // var totalMemoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-        cont.memoCount = result.data.totalElements
+        cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
         this.offsetInt = result.data.totalElements
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }

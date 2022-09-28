@@ -1,4 +1,5 @@
 <template>
+<!-- <div v-if="this.pushDetail && pushDetail.jobkindId === 'ALIM'"> -->
   <div class="pushBackground" @click="goNo"></div>
   <div class="pushPopUpWrap" >
     <div class="pushPopContent pushMbox zoomInOutPop">
@@ -8,17 +9,12 @@
 
         <div class="pushDetailHeaderTextArea">
           <p class=" font18 fontBold textOverdot commonColor">{{pushDetail.title}}</p>
-          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
           <p class="font12 fl lightGray">{{this.changeText(pushDetail.nameMtext)}}</p>
           <p class="font12 fl lightGray" v-if="pushDetail.showCreNameYn">{{' (' + this.$changeText(pushDetail.creUserName) + ')'}}</p>
           <p class="font12 fr lightGray">{{this.$changeDateFormat(pushDetail.creDate)}}</p>
-
-          <!-- <p class="font12 fr lightGray">{{this.$dayjs(JSON.parse(this.detailVal).sendTime).format('YYYY-MM-DD HH:mm')}}</p> -->
-          <!-- <p class="font12 fr lightGray">{{this.$dayjs(pushDetail.data.sentTime).format('YYYY-MM-DD HH:mm')}}</p> -->
         </div>
       </div>
 
-      <!-- <div class="font15 mbottom-1" v-html="body" style="color: #60657F;max-height: 200px; overflow: auto; "></div> -->
       <div class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(pushDetail.bodyFullStr)" style="max-height:300px; overflow:hidden"></div>
       <p @click="goOk" v-show="pushDetail.bodyFullStr && pushDetail.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
@@ -28,6 +24,7 @@
       </div>
     </div>
   </div>
+<!-- </div> -->
 </template>
 <script>
 export default {
@@ -44,22 +41,22 @@ export default {
     detailVal: {}
   },
   computed: {
-    historyStack () {
-      return this.$store.getters['D_HISTORY/hStack']
-    },
-    pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
-    }
+    // historyStack () {
+    //   return this.$store.getters['D_HISTORY/hStack']
+    // },
+    // pageUpdate () {
+    //   return this.$store.getters['D_HISTORY/hUpdate']
+    // }
   },
   watch: {
-    pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      if (this.popId === hStack[hStack.length - 1]) {
-        this.goNo()
-      }
-    },
-    historyStack (value, old) {
-    }
+    // pageUpdate (value, old) {
+    //   var hStack = this.$store.getters['D_HISTORY/hStack']
+    //   if (this.popId === hStack[hStack.length - 1]) {
+    //     this.goNo()
+    //   }
+    // },
+    // historyStack (value, old) {
+    // }
   },
   methods: {
     /* decodeContents (data) {
@@ -72,26 +69,27 @@ export default {
       this.openPushDetailPop()
     },
     goNo () {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var removePage = history[history.length - 1]
+      // history = history.filter((element, index) => index < history.length - 1)
+      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      // this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closePushPop')
     },
     openPushDetailPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
-
-      var currentPage = this.$store.getters['D_HISTORY/hCPage']
-      if ((currentPage === 0 || currentPage === undefined)) {
-        this.$emit('openDetailPop', { nameMtext: this.$changeText(this.pushDetail.nameMtext), targetKey: this.pushDetail.creTeamKey, targetContentsKey: this.pushDetail.contentsKey, targetType: 'chanDetail', value: this.pushDetail })
-      } else {
-        this.$emit('openDetailPop', { nameMtext: this.$changeText(this.pushDetail.nameMtext), targetKey: this.pushDetail.creTeamKey, targetContentsKey: this.pushDetail.contentsKey, targetType: 'chanDetail', value: this.pushDetail })
-      }
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var removePage = history[history.length - 1]
+      // history = history.filter((element, index) => index < history.length - 1)
+      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      // this.$store.commit('D_HISTORY/updateStack', history)
+      this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.detailVal.userDo).targetKey), jobkindId: this.detailVal.jobkindId, creTeamKey: Number(this.detailVal.creTeamKey), targetType: 'chanDetail' })
+      // var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      // if ((currentPage === 0 || currentPage === undefined)) {
+      //   this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+      // } else {
+      //   this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+      // }
+      this.$emit('closePushPop')
       // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     setBodyLength (str) {
@@ -116,23 +114,24 @@ export default {
       var param = new Object()
       // param.baseContentsKey = this.detailVal.targetKey
       // param.contentsKey = 1001172
-      param.contentsKey = 1003095
+      // param.contentsKey = 1003095
       /* param.contentsKey = this.detailVal.targetKey */
-      param.contentsKey = JSON.parse(this.detailVal.userDo).targetKey || this.detailVal.contentsKey
+      param.contentsKey = JSON.parse(this.detailVal.userDo).targetKey
       var resultList = await this.$getContentsList(param)
-      return resultList
+      this.pushDetail = resultList.content[0]
+      // return resultList
     }
 
   },
-  async created () {
-    this.body = this.detailVal.body
-    var resultList = await this.getContentsList()
+  created () {
+    // this.body = this.detailVal.body
+    this.getContentsList()
+    // alert(JSON.stringify(resultList.content[0]))
 
-    this.pushDetail = resultList.content[0]
-    var history = this.$store.getters['D_HISTORY/hStack']
-    this.popId = 'pushDetailPop' + history.length
-    history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    // var history = this.$store.getters['D_HISTORY/hStack']
+    // this.popId = 'pushDetailPop' + history.length
+    // history.push(this.popId)
+    // this.$store.commit('D_HISTORY/updateStack', history)
   }
 }
 </script>

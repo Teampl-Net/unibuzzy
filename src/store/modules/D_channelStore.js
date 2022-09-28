@@ -178,7 +178,6 @@ const D_CHANNEL = {
         team.D_CHAN_AUTH = D_CHAN_AUTH
         payload[i] = team
       }
-
       state.chanList = payload
       return true
     },
@@ -238,6 +237,8 @@ const D_CHANNEL = {
       return true
     },
     MU_REPLACE_CHANNEL: (state, payload) => {
+      console.log('^^^^^^^^^^^^^^^^^^^^^^^')
+      console.log(payload)
       var idx1
       var chanList = state.chanList
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
@@ -307,15 +308,20 @@ const D_CHANNEL = {
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
+        console.log('content의 위치는 : ')
+        console.log(idx2)
         var dataList = null
         if (payload[i].jobkindId === 'BOAR') {
           dataList = chanDetail.ELEMENTS.boardList[idx2]
         } else {
           dataList = chanDetail.ELEMENTS.alimList[idx2]
         }
+        console.log(dataList)
         if (!dataList.D_MEMO_LIST) {
           dataList.D_MEMO_LIST = []
         }
+        if (!payload[i].D_MEMO_LIST) payload[i].D_MEMO_LIST = []
+
         if (!payload[i].D_MEMO_LIST || payload[i].D_MEMO_LIST.length === 0) {
           payload[i].D_MEMO_LIST = payload[i].memoList
         }
@@ -347,9 +353,14 @@ const D_CHANNEL = {
           }
         }
       }
+      console.log('*************************')
+      console.log(chanDetail)
+      console.log(chanList[idx1])
       chanList[idx1] = chanDetail
       state.chanList = chanList
-      state.recentChangeTeamKey = chanDetail.teamKey
+      console.log(state.chanList)
+      console.log('*************************')
+      if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
       return true
     },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
@@ -373,7 +384,7 @@ const D_CHANNEL = {
       }
       chanList[idx1] = chanDetail
       state.chanList = chanList
-      state.recentChangeTeamKey = chanDetail.teamKey
+      if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
       return true
     },
     MU_ADD_CONTENTS: (state, payload) => {
@@ -405,7 +416,7 @@ const D_CHANNEL = {
         }
       }
       state.chanList = chanList
-      state.recentChangeTeamKey = chanDetail.teamKey
+      if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
       return true
     },
     MU_ADD_MAIN_CHAN_LIST: (state, payload) => {
@@ -466,7 +477,7 @@ const D_CHANNEL = {
         }
       }
       state.chanList[idx1] = chanDetail
-      state.recentChangeTeamKey = chanDetail.teamKey
+      if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
       return true
     }
   },

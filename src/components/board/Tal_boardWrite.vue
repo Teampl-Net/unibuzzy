@@ -526,14 +526,30 @@ export default {
         param.contentsKey = this.propData.modiContentsKey
       }
       var result = await this.$saveContents(param)
+      console.log('########################## 이거!!!')
+      console.log(result)
       if (result.result === true) {
         this.sendLoadingYn = false
         // eslint-disable-next-line no-new-object
         var newP = new Object()
-        newP.targetKey = result.contentsKey
+        newP.targetKey = result.contents.contentsKey
+        newP.teamKey = result.contents.creTeamKey
+        newP.contentsKey = result.contents.contentsKey
         newP.targetType = 'boardDetail'
-        newP.cabinetNameMtext = this.propData.cabinetNameMtext
+        newP.cabinetNameMtext = result.contents.cabinetName
+        newP.jobkindId = 'BOAR'
         newP.value = this.propData
+        newP.cabinetKey = result.contents.cabinetKey
+
+        var newParam = {}
+        param.contentsKey = result.contents.contentsKey
+        param.jobkindId = 'BOAR'
+        await this.$getContentsList(newParam).then(newReslute => {
+          console.log('newReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslute')
+          console.log(newReslute)
+          console.log(newReslute.content)
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+        })
         this.progressShowYn = false
         if (!this.modiYn && !this.UseAnOtherYn) {
           this.$emit('successWrite', newP)
@@ -639,7 +655,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

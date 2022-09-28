@@ -139,7 +139,7 @@ const functions = {
       }
     } */
     console.log('return:  cabinetDetail')
-    console.log(cabinetDetail[0])
+    console.log(cabinetDetail)
     return cabinetDetail
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
@@ -157,12 +157,21 @@ const functions = {
           return null
         }
       }
+    // } else {
+    //   return null
     }
+    console.log(teamDetail)
+    console.log(teamDetail.ELEMENTS)
     detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+    console.log('boardList')
+    console.log(detailData)
     if (detailData && detailData.length !== 0) {
       return detailData
     } else {
       detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+
+      console.log('alimList')
+      console.log(detailData)
       return detailData
     }
   },

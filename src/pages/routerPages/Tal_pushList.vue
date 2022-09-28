@@ -113,6 +113,8 @@ export default {
     this_.axiosQueue.push('getPushContentsList')
 
     this_.getPushContentsList().then(response => {
+      console.log('#################')
+      console.log(response)
       this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = []
       var cont
@@ -1256,7 +1258,7 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
-        console.log(resultList.content)
+        console.log(resultList)
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {

@@ -639,7 +639,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -666,7 +666,7 @@ export default {
               }
             })
             .catch(error => {
-              // console.log(error)
+              console.log(error)
             })
           /* } */
           // var selFile = this.selectFileList[i].file

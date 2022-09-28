@@ -4,7 +4,7 @@
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
-    <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
+    <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
     <transition name="show_view">
       <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="showMenuYn" />
@@ -125,14 +125,14 @@ export default {
     reloadPop () {
       this.routerReloadKey += 1
     },
-    openDetailPop (params) {
-      this.popParams = params
-      this.popShowYn = true
-      this.showMenuYn = false
-      setTimeout(() => {
-        this.notiDetailShowYn = false
-      }, 200)
-    },
+    // openDetailPop (params) {
+    // this.popParams = params
+    // this.popShowYn = true
+    // this.showMenuYn = false
+    // setTimeout(() => {
+    //   this.notiDetailShowYn = false
+    // }, 200)
+    // },
     closePushPop () {
       this.notiDetailShowYn = false
     },
