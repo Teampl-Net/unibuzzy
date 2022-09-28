@@ -9,7 +9,11 @@ const D_CHANNEL = {
     chanList: [],
     recentChangeTeamKey: null,
     addContsList: [],
-    addChanList: []
+    addChanList: [],
+    addMemoList: [],
+    addManagerList: [],
+    addShowProfileUserList: []
+
   },
   getters: {
     GE_MAIN_CHAN_LIST (state) {
@@ -21,6 +25,15 @@ const D_CHANNEL = {
     GE_NEW_CHAN_LIST (state) {
       return state.addChanList
     },
+    GE_NEW_MAN_LIST (state) {
+      return state.addManagerList
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return state.addMemoList
+    },
+    GE_NEW_SHOW_LIST (state) {
+      return state.addShowProfileUserList
+    },
     GE_RECENT_CHANGE_TEAM (state) {
       return state.recentChangeTeamKey
     }
@@ -28,6 +41,29 @@ const D_CHANNEL = {
   mutations: {
     MU_CLEAN_CHAN_LIST: (state, payload) => {
       state.chanList = []
+      return true
+    },
+    MU_REPLACE_NEW_MEMO: (state, payload) => {
+      var index = state.addMemoList.findIndex((item) => item.memoKey === payload.memoKey)
+      if (index === -1) {
+        var index2 = state.chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
+        if (index2 === -1) return
+        var chan = state.chanList[index2]
+        var index3 = null
+        if (payload.jobkindId === 'ALIM') {
+          // alert(payload.targetKey)
+          index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload.targetKey)
+        } else {
+          index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload.targetKey)
+        }
+        // alert(2)
+        if (index3 === -1) return
+        if (state.chanList[index2].ELEMENTS.alimList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.memoKey) === -1) {
+          // alert(3)
+          state.chanList[index2].ELEMENTS.alimList[index3].D_MEMO_LIST.push(payload)
+          state.addMemoList.unshift(payload)
+        }
+      }
       return true
     },
     MU_MAIN_CHAN_LIST: (state, payload) => {
@@ -159,12 +195,15 @@ const D_CHANNEL = {
 
       idx1 = chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
       var chanDetail = chanList[idx1]
-
-      var dataList = chanDetail.ELEMENTS.managerList
-      idx2 = dataList.findIndex((item) => item.managerKey === payload.managerKey)
-      dataList[idx2] = payload
-      chanDetail.ELEMENTS.managerList = dataList
-
+      for (let i = 0; i < payload.length; i++) {
+        idx2 = chanDetail.ELEMENTS.managerList.findIndex(item => item.managerKey === payload[i].managerKey)
+        if (idx2 !== -1) {
+          chanDetail.ELEMENTS.managerList[idx2] = payload[i]
+        } else {
+          chanDetail.ELEMENTS.managerList.push(payload[i])
+          state.managerList.unshift(payload[i])
+        }
+      }
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = payload.creTeamKey
@@ -176,17 +215,20 @@ const D_CHANNEL = {
       if (payload.length === 0) return null
       idx1 = chanList.findIndex(item => item.teamKey === payload[0].teamKey)
       var chanDetail = chanList[idx1]
-      for (let i = 0; i < payload.length - 1; i++) {
-        idx2 = chanDetail.ELEMENTS.showProfileUserList.findIndex(item => item.followerKey === payload[i].followerKey)
-        if (idx2 === -1) {
+      for (var i = 0; i < payload.length; i++) {
+        idx2 = chanDetail.ELEMENTS.showProfileUserList.findIndex(item => item.userKey === payload[i].userKey)
+        if (idx2 !== -1) {
+          chanDetail.ELEMENTS.showProfileUserList[idx2] = payload[i]
+        } else {
           chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
+          state.addShowProfileUserList.unshift(payload[i])
         }
       }
 
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = payload.creTeamKey
-      console.log('?????????????????????')
+      // console.log('?????????????????????')
       return true
     },
     MU_REPLACE_CONTENTS: (state, payload) => {
@@ -199,6 +241,38 @@ const D_CHANNEL = {
           idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+        }
+        var dataList = null
+        if (payload[i].jobkindId === 'BOAR') {
+          dataList = chanDetail.ELEMENTS.boardList[idx2]
+        } else {
+          dataList = chanDetail.ELEMENTS.alimList[idx2]
+        }
+        if (!dataList.D_MEMO_LIST) {
+          dataList.D_MEMO_LIST = []
+        }
+        if (!payload[i].D_MEMO_LIST || payload[i].D_MEMO_LIST.length === 0) {
+          payload[i].D_MEMO_LIST = payload[i].memoList
+        }
+        // alert('ok')
+        if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
+          var newArr = []
+          if (payload[i].D_MEMO_LIST.length > 0) {
+            newArr = [...newArr, ...payload[i].D_MEMO_LIST]
+          }
+          if (dataList.D_MEMO_LIST.length > 0) {
+            newArr = [...newArr, ...dataList.D_MEMO_LIST]
+          }
+          if (newArr && newArr.length > 0) {
+            var uniqueArr = newArr.reduce(function (data, current) {
+              // var addData = []
+              if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                data.push(current)
+              }
+              return data
+            }, [])
+            payload[i].MEMO_LIST = uniqueArr
+          }
         }
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {

@@ -252,7 +252,6 @@ export const methods = {
     }
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
-
     var result = await commonAxiosFunction({
       url: 'service/tp.getContentsList',
       param: paramSet

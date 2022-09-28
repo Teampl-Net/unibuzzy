@@ -183,6 +183,56 @@ export default {
       this.showMenuYn = false
       this.$router.replace({ path: '/' + page })
     },
+    async getContentsMemoList (targetKey, memoKey) {
+      var memo = {}
+      memo.targetKind = 'C'
+      memo.targetKey = targetKey
+      memo.memoKey = memoKey
+
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemoList',
+        param: memo
+      })
+      var memos = result.data.memoList[0]
+      return memos
+    },
+    async setContentsDetail (contentsKey, jobkindId) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.contentsKey = contentsKey
+      param.jobkindId = jobkindId
+      // // console.log(param)
+      // // console.log('param')
+      var resultList = await this.$getContentsList(param)
+      var detailData = resultList.content[0]
+      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+
+      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
+      // alert(JSON.stringify(detailData))
+    },
+    async settingUserDo (userDo) {
+      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+
+      if (userDo !== undefined && userDo !== null && userDo !== '') {
+        // eslint-disable-next-line no-array-constructor
+        /* this.userDoStickerList = new Array() */
+        for (var i = 0; i < userDo.length; i++) {
+          if (userDo[i].doType === 'LI') {
+            D_CONT_USER_DO[1].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'ST') {
+            D_CONT_USER_DO[0].doKey = userDo[i].doKey
+          }
+          if (userDo[i].doType === 'RE') {
+            D_CONT_USER_DO[2].doKey = true
+          }
+          /* if (userDo[i].doType === 'SK') {
+            this.userDoStickerList.push(userDo[i].sticker)
+          } */
+        }
+      }
+      return D_CONT_USER_DO
+    },
     goChanDetail (data) {
       // console.log(data)
       // eslint-disable-next-line no-new-object
@@ -237,13 +287,17 @@ export default {
               }
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  ;
+                  var memo = await this.getContentsMemoList(Number(JSON.parse(this.notiDetail.userDo).targetKey), Number(JSON.parse(this.notiDetail.userDo).ISub))
+                  memo.jobkindId = this.notiDetail.jobkindId
+                  memo.creTeamKey = Number(this.notiDetail.creTeamKey)
+                  await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo)
                 } else {
                   if (this.notiDetail.jobkindId === 'ALIM') {
                     this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                     return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                     return
                   }
                 }
@@ -267,7 +321,8 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   ;
                 } else {
-                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                  // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
@@ -278,11 +333,11 @@ export default {
               } else {
                 this.$router.replace({ path: '/' })
                 if (this.notiDetail.actType === 'FL') {
-                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'MA') {
-                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
@@ -294,7 +349,8 @@ export default {
                     this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                     return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                     return
                   }
                 }
@@ -310,10 +366,8 @@ export default {
   created () {
     this.$userLoginCheck(true)
     /* const searchParams = new URLSearchParams(location.search)
-    // alert(searchParams)
     // eslint-disable-next-line no-unused-vars
     for (const param of searchParams) {
-      // alert('targetKind: ' + param[0])
       if (param[0] === 'chanDetail') {
         this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
       } else if (param[0] === 'boardDetail') {

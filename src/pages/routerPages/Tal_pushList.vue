@@ -276,6 +276,41 @@ export default {
       },
       deep: true */
     },
+    GE_NEW_MEMO_LIST: {
+      handler (value, old) {
+        //  alert(true)
+        var newArr = []
+        // alert(true)
+        if (!value || value.length === 0) return
+        // var memoContents = value[0]
+        var memo = null
+        var findContsList = [
+          ...this.alimContentsList,
+          ...this.boardContentsList
+        ]
+        var index = findContsList.findIndex((item) => item.contentsKey === value[0].targetKey)
+        if (index !== -1) {
+          memo = findContsList[index]
+        }
+        if (!memo) return
+        if (memo.jobkindId === 'ALIM') {
+          newArr = [
+            value[0],
+            ...memo.D_MEMO_LIST
+          ]
+          var idx = this.alimContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
+          this.alimContentsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
+        } else {
+          newArr = [
+            value[0],
+            ...memo.D_MEMO_LIST
+          ]
+          var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
+          this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
+        }
+      },
+      deep: true
+    },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
@@ -405,6 +440,9 @@ export default {
     },
     GE_NEW_NOTI_LIST () {
       return this.$store.getters['D_UPDATE/GE_NEW_NOTI_LIST']
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
     GE_DISP_CONT_LIST () {
       var idx1, idx2
@@ -1017,12 +1055,12 @@ export default {
       this.$emit('targetContentScrollMove', wich)
     },
     async chanAlimScrollMove (wich) {
-      await this.$nextTick(() => {
+      /* await this.$nextTick(() => {
         // this.scrollMove(wich)
         var ScrollWrap = this.$refs.pushListWrapWrapCompo
         if (wich === undefined || wich === null || wich === '') { wich = 0 }
         ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
-      })
+      }) */
     },
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')

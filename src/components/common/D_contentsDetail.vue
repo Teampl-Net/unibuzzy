@@ -244,6 +244,9 @@ export default {
       return {
         '--widndowHeight': window.innerHeight + 'px'
       }
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     }
   },
   watch: {
@@ -278,6 +281,25 @@ export default {
       /* if (this.popId === hStack[hStack.length - 1]) {
                 this.closeSubPop()
             } */
+    },
+    GE_NEW_MEMO_LIST: {
+      handler (value, old) {
+        alert(true)
+        //  alert(true)
+        var newArr = []
+        // alert(true)
+        if (!value || value.length === 0) return
+        // var memoContents = value[0]
+        var memo = null
+        memo = this.CONT_DETAIL
+        if (!memo) return
+        newArr = [
+          value[0],
+          ...memo.D_MEMO_LIST
+        ]
+        this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
+      },
+      deep: true
     }
   },
   methods: {

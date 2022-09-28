@@ -120,7 +120,6 @@ export default {
       this.getManagingList(this.tab)
     },
     async getManagingList (typeName, actionType) {
-      debugger
       if (actionType === 'tab') this.managingList = []
       var result= {}
       if (typeName === 'Show') {
@@ -238,6 +237,12 @@ export default {
   },
   components: { commonMemberList },
   computed: {
+    GE_NEW_MAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
+    },
+    GE_NEW_SHOW_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_SHOW_LIST']
+    },
     CHANNEL_DETAIL () {
       var detailList = this.$getDetail('TEAM', this.propData.teamKey)
       if (detailList) {
@@ -268,11 +273,50 @@ export default {
       var returnData = this.managerList
       return returnData
     },
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ userKey }) => userKey === current.userKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     }
   },
   watch: {
+    GE_NEW_SHOW_LIST: {
+        handler (value, old) {
+            if (value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
+                return
+            }
+            alert(this.CHANNEL_DETAIL.teamKey)
+            // alert(value[0])
+            var newArr = [
+                ...this.showUserList,
+                value[0]
+            ]
+            this.showUserList = this.replaceArr(newArr)
+            alert(JSON.stringify(this.showUserList))
+        },
+        deep: true
+    },
+    GE_NEW_MAN_LIST: {
+        handler (value, old) {
+            // alert(this.CHANNEL_DETAIL.teamKey)
+            if (!value || value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
+                return
+            }
+            var newArr = [
+                ...this.managerList,
+                value[0]
+            ]
+            this.managerList = this.replaceArr(newArr)
+        },
+        deep: true
+    }
     // GE_CHANNEL_INFO() {
     //   // console.log(this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST'])
     // }
