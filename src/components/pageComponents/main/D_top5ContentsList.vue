@@ -96,11 +96,10 @@ export default {
         this.contentsList = value
       },
       deep: true
-    },
-    GE_NEW_CONT_LIST: {
+    }
+    /* GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
-        // alert(true)
         if (!value) return
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
         newArr = [
@@ -110,7 +109,7 @@ export default {
         this.contentsList = this.replaceArr(newArr)
       },
       deep: true
-    }
+    } */
   },
   components: {
     listTitle,

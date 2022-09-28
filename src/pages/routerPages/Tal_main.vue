@@ -1,5 +1,5 @@
 <template>
-<div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST && this.GE_DISP_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+<div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
   <loadingCompo v-show="loadingYn === true"/>
   <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
   <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
@@ -169,18 +169,8 @@ export default {
     forceRerender () {
       this.componentKey += 1
     },
-    /*  async saveUserPhone () {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetType = 'changeMobile'
-      await this.openPop(params)
-    }, */
     openPop (params) {
-      // eslint-disable-next-line no-new-object
       this.$emit('openPop', params)
-      // 아래라인 모달창에서 로딩화면보여주고싶으면 풀기
-      // this.$emit('openLoading')
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     goPush () {
       // eslint-disable-next-line no-new-object
@@ -196,10 +186,8 @@ export default {
     },
     changeText (text) {
       var changeTxt = ''
-      // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
       changeTxt = this.$makeMtextMap(text, 'KO')
       return changeTxt
-      // if (changeTxt !== undefined) { return changeTxt }
     },
     openCloseAppPop () {
       this.appCloseYn = true
@@ -215,7 +203,7 @@ export default {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
-    GE_DISP_CHAN_LIST () {
+    /* GE_DISP_CHAN_LIST () {
       var idx1
       if (this.mainChanList.length > 0) {
         var test = []
@@ -232,7 +220,7 @@ export default {
       } else {
         return null
       }
-    },
+    }, */
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },

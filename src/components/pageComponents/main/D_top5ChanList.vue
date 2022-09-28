@@ -81,21 +81,20 @@ export default {
     },
     GE_DISP_CHAN_LIST () {
       var idx1
-      // eslint-disable-next-line no-debugger
-      debugger
       // console.log(this.mainChanList)
       if (this.mainChanList && this.mainChanList.length > 0) {
-        var test = []
+        var chanList = []
         for (var i = 0; i < this.mainChanList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
           if (idx1 !== -1) {
-            test.push(this.GE_MAIN_CHAN_LIST[idx1])
+            chanList.push(this.GE_MAIN_CHAN_LIST[idx1])
           } else {
-            test.push(this.mainChanList[i])
+            chanList.push(this.mainChanList[i])
           }
+          console.log(chanList[i].logoPathMtext)
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
-        return test
+        return chanList
       } else {
         return null
       }
@@ -154,8 +153,8 @@ export default {
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
       console.log(resultList.data.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.data.content)
       this.mainChanList = resultList.data.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
     async recvNoti (e) {
       /* var message

@@ -183,7 +183,6 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
-      debugger
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
@@ -231,7 +230,7 @@ const D_CHANNEL = {
 
           team.D_CHAN_AUTH = D_CHAN_AUTH
           state.chanList.push(team)
-          /* state.addChanList.push(team) */
+          state.recentChangeTeamKey = payload.payload
         }
       }
       return true
@@ -353,15 +352,7 @@ const D_CHANNEL = {
           }
         }
       }
-      console.log('*************************')
-      console.log(chanDetail)
-      console.log(chanList[idx1])
-      chanList[idx1] = chanDetail
-      state.chanList = chanList
-      console.log(state.chanList)
-      console.log('*************************')
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
-      return true
     },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
       var idx1, idx2
@@ -385,10 +376,10 @@ const D_CHANNEL = {
       chanList[idx1] = chanDetail
       state.chanList = chanList
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
-      return true
     },
     MU_ADD_CONTENTS: (state, payload) => {
-      debugger
+      console.log('MU_ADD_CONTENTS')
+      console.log(payload)
       var idx1, idx2
       var chanList = state.chanList
       if (payload.length === 0) return
@@ -417,7 +408,6 @@ const D_CHANNEL = {
       }
       state.chanList = chanList
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
-      return true
     },
     MU_ADD_MAIN_CHAN_LIST: (state, payload) => {
       if (!payload.initYn) {
