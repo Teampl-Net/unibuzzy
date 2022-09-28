@@ -64,14 +64,13 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
-      // eslint-disable-next-line no-debugger
-      debugger
       var idx1, idx2
       var contList = this.contentsList
+      var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
-        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === contList[i].creTeamKey)
+        idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
 
-        var detailData = this.GE_MAIN_CHAN_LIST[idx1]
+        var detailData = test[idx1]
 
         idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
         if (idx2 !== -1) {
@@ -99,16 +98,19 @@ export default {
       deep: true
     },
     GE_NEW_CONT_LIST: {
-      handler (value, old) {
-        var newArr = []
+      /* async handler (value, old) {
+        alert(true)
+        /* var newArr = []
+        // alert(true)
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
         newArr = [
           value[0],
-          ...this.GE_DISP_CONT_LIST
+          ...this.contentsList
         ]
         this.contentsList = this.replaceArr(newArr)
+        await this.getContentsList()
       },
-      deep: true
+      deep: true */
     }
   },
   components: {

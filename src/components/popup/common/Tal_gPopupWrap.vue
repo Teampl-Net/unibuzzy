@@ -697,9 +697,11 @@ export default {
       }
       this.openPop(param)
     },
-    async getContentsMemoList (targetKey, memoKey) {
+    async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
+      // alert(true)
       var memo = {}
       memo.targetKind = 'C'
+      memo.parentMemoKey = parentMemoKey
       memo.targetKey = targetKey
       memo.memoKey = memoKey
 
@@ -838,7 +840,11 @@ export default {
           } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
             if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
               if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-
+                var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
+                // alert(JSON.stringify(memo))
+                memo_.jobkindId = this.notiDetail.jobkindId
+                memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
+                await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
               } else {
                 if (this.notiDetail.jobkindId === 'ALIM') {
                   this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })

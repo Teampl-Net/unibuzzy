@@ -223,10 +223,11 @@ const functions = {
       console.error('메세지를 파싱할수 없음 ' + err)
     }
   },
-  settingCabiNoti (message) {
-    if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+  async settingCabiNoti (message) {
+    await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return
-    }
+    } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
         ;
@@ -245,6 +246,7 @@ const functions = {
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async settingAlimNoti (message) {
+    // alert('come')
     await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
     /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return

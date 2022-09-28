@@ -41,29 +41,89 @@ const D_CHANNEL = {
   mutations: {
     MU_CLEAN_CHAN_LIST: (state, payload) => {
       state.chanList = []
+      state.recentChangeTeamKey = null
+      state.addContsList = []
+      state.addChanList = []
+      state.addMemoList = []
+      state.addManagerList = []
+      state.addShowProfileUserList = []
       return true
     },
     MU_REPLACE_NEW_MEMO: (state, payload) => {
-      var index = state.addMemoList.findIndex((item) => item.memoKey === payload.memoKey)
-      if (index === -1) {
-        var index2 = state.chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
-        if (index2 === -1) return
-        var chan = state.chanList[index2]
-        var index3 = null
-        if (payload.jobkindId === 'ALIM') {
-          // alert(payload.targetKey)
-          index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload.targetKey)
-        } else {
-          index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload.targetKey)
+      var index = null
+      if (!payload) return
+      // alert(JSON.stringify(payload))
+      var chanIndex = state.chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
+      if (chanIndex === -1) return
+      var chan = state.chanList[chanIndex]
+
+      if (payload.parentMemoKey) {
+        index = state.addMemoList.findIndex((item) => item.memoKey === payload.parentMemoKey)
+        if (index !== -1) {
+          state.addMemoList = state.addMemoList.splice(index, 1)
         }
-        // alert(2)
-        if (index3 === -1) return
-        if (state.chanList[index2].ELEMENTS.alimList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.memoKey) === -1) {
-          // alert(3)
-          state.chanList[index2].ELEMENTS.alimList[index3].D_MEMO_LIST.push(payload)
+      } else {
+        index = state.addMemoList.findIndex((item) => item.memoKey === payload.memoKey)
+        if (index !== -1) {
+          state.addMemoList = state.addMemoList.splice(index, 1)
+        }
+      }
+      // alert(index)
+      // alert(JSON.stringify(payload))
+      /* if (index) { */
+      var index3 = null
+      var dataList = null
+      // alert(JSON.stringify(payload))
+      if (payload.jobkindId === 'ALIM') {
+        // alert(payload.targetKey)
+        dataList = chan.ELEMENTS.alimList
+        index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload.targetKey)
+      } else {
+        dataList = chan.ELEMENTS.boardList
+        index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload.targetKey)
+      }
+      // alert(2)
+      if (index3 === -1) return
+      if (payload.parentMemoKey) {
+        // alert('JSON.stringify(payload)')
+        // (JSON.stringify(payload))
+        var pMemoIndex = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.parentMemoKey)
+        if (pMemoIndex === -1) return
+        var pMemo = dataList[index3].D_MEMO_LIST[pMemoIndex]
+        if (!pMemo.cmemoList) pMemo.cmemoList = []
+        var cIndex = pMemo.cmemoList.findIndex((item) => item.memoKey === payload.memoKey)
+        // alert(cIndex)
+        if (cIndex !== -1) {
+          pMemo.cmemoList[cIndex] = payload
+        } else {
+          pMemo.cmemoList.unshift(payload)
+        }
+        payload = pMemo
+      }
+      // alert(JSON.stringify(dataList[index3].D_MEMO_LIST))
+      var newIdx = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.memoKey)
+      if (state.addMemoList.length > 30) {
+        state.addMemoList = state.addMemoList.splice(0, 30)
+      }
+      if (dataList[index3] === 'ALIM') {
+        if (newIdx === -1) {
+          state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST.push(payload)
+          state.addMemoList.unshift(payload)
+        } else {
+          // alert('여기')
+          state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST[newIdx] = payload
+          state.addMemoList.unshift(payload)
+        }
+      } else {
+        if (newIdx === -1) {
+          state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST.push(payload)
+          state.addMemoList.unshift(payload)
+        } else {
+          state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST[newIdx] = payload
           state.addMemoList.unshift(payload)
         }
       }
+      /* } */
       return true
     },
     MU_MAIN_CHAN_LIST: (state, payload) => {
@@ -124,6 +184,7 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
+      debugger
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
@@ -170,7 +231,7 @@ const D_CHANNEL = {
           }
 
           team.D_CHAN_AUTH = D_CHAN_AUTH
-          state.chanList.push({ teamKey: team.teamKey, team: team })
+          state.chanList.push(team)
           /* state.addChanList.push(team) */
         }
       }
@@ -222,6 +283,9 @@ const D_CHANNEL = {
         } else {
           chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
           // alert('yes' + payload[i].userKey)
+          if (state.addShowProfileUserList.length > 50) {
+            state.addShowProfileUserList = state.addShowProfileUserList.splice(0, 50)
+          }
           state.addShowProfileUserList.unshift(payload[i])
         }
       }
@@ -313,6 +377,7 @@ const D_CHANNEL = {
       return true
     },
     MU_ADD_CONTENTS: (state, payload) => {
+      debugger
       var idx1, idx2
       var chanList = state.chanList
       if (payload.length === 0) return
@@ -325,12 +390,15 @@ const D_CHANNEL = {
           } else {
             idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           }
-
+          // alert(idx2)
           if (idx2 === -1) {
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(payload[i])
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
+            }
+            if (state.addContsList.length > 30) {
+              state.addContsList = state.addContsList.splice(0, 30)
             }
             state.addContsList.unshift(payload[i])
           }

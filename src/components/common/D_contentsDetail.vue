@@ -284,7 +284,6 @@ export default {
     },
     GE_NEW_MEMO_LIST: {
       handler (value, old) {
-        alert(true)
         //  alert(true)
         var newArr = []
         // alert(true)

@@ -183,17 +183,18 @@ export default {
       this.showMenuYn = false
       this.$router.replace({ path: '/' + page })
     },
-    async getContentsMemoList (targetKey, memoKey) {
+    async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
       var memo = {}
       memo.targetKind = 'C'
+      memo.parentMemoKey = parentMemoKey
       memo.targetKey = targetKey
       memo.memoKey = memoKey
-
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
+      // alert(JSON.stringify(memos))
       return memos
     },
     async setContentsDetail (contentsKey, jobkindId) {
@@ -321,7 +322,7 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   ;
                 } else {
-                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                  this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                   // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                 }
               }
@@ -343,7 +344,10 @@ export default {
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-
+                  var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
+                  memo_.jobkindId = this.notiDetail.jobkindId
+                  memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
+                  await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
                 } else {
                   if (this.notiDetail.jobkindId === 'ALIM') {
                     this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })

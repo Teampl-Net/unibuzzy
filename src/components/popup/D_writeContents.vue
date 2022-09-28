@@ -800,7 +800,6 @@ export default {
             this.okPopYn = true
             return
         }
-        debugger
         result = await this.$saveContents(param)
         /* if (result.contents) {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [result.contents] )
@@ -808,32 +807,20 @@ export default {
         var isMobile = /Mobi/i.test(window.navigator.userAgent);
         debugger */
         var isMobile = /Mobi/i.test(window.navigator.userAgent);
-        if (!isMobile) {
+        /* if (!isMobile) {
     // eslint-disable-next-line no-new-object
-            var param = new Object()
-            param.contentsKey = result.contents.contentsKey
-            param.jobkindId = result.contents.jobkindId
-            var resultList = await this.$getContentsList(param)
-            var detailData = resultList.content[0]
-            debugger
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-        }
-        /* if (result.result === true) { */
-        // console.log(this.params.writeType)
-
-        // if (this.replyPopYn) {
-        //     var param = {}
-        //     param = this.params
-        //     param.targetType = 'chanDetail'
-
-
-        //     this.$emit('changePop', param)
-
-        // }else{
-        // // this.$emit('closeXPop',true)
-        //   this.closeXPop(true)
-        // }
+            this.closeXPop(true)
+        } else {
+            this.closeXPop(true)
+        } */
         this.closeXPop(true)
+        var param = new Object()
+        param.contentsKey = result.contents.contentsKey
+        param.jobkindId = result.contents.jobkindId
+        var resultList = await this.$getContentsList(param)
+        var detailData = resultList.content[0]
+        debugger
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
 
 
        /*  } */

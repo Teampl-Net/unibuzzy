@@ -286,32 +286,29 @@ export default {
       handler (value, old) {
         //  alert(true)
         var newArr = []
-        // alert(true)
         if (!value || value.length === 0) return
         // var memoContents = value[0]
-        var memo = null
-        var findContsList = [
-          ...this.alimContentsList,
-          ...this.boardContentsList
-        ]
-        var index = findContsList.findIndex((item) => item.contentsKey === value[0].targetKey)
+        var content = null
+        var index = this.GE_DISP_CONT_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
-          memo = findContsList[index]
+          content = this.GE_DISP_CONT_LIST[index]
         }
-        if (!memo) return
-        if (memo.jobkindId === 'ALIM') {
+        if (!content) return
+        if (content.jobkindId === 'ALIM') {
           newArr = [
             value[0],
-            ...memo.D_MEMO_LIST
+            ...content.D_MEMO_LIST
           ]
           var idx = this.alimContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
           this.alimContentsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
         } else {
           newArr = [
             value[0],
-            ...memo.D_MEMO_LIST
+            ...content.D_MEMO_LIST
           ]
-          var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
+          // alert(JSON.stringify(this.boardContentsList))
+          var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
+          // alert(idx1)
           this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
         }
       },
@@ -474,7 +471,7 @@ export default {
         for (i = 0; i < this.boardContentsList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.alimList
+          dataList = chanDetail.ELEMENTS.boardList
           idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
@@ -485,7 +482,8 @@ export default {
           }
         }
       }
-
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.boardContentsList = test
       return test
     },
     GE_USER () {
