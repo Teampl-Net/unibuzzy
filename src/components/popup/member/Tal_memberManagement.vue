@@ -233,6 +233,15 @@ export default {
       param.currentTeamKey = this.propData.teamKey
       param.newMemYn = true
       this.$emit('openPop', param)
+    },
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ userKey }) => userKey === current.userKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
     }
   },
   components: { commonMemberList },
@@ -273,15 +282,6 @@ export default {
       var returnData = this.managerList
       return returnData
     },
-    replaceArr (arr) {
-      var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ userKey }) => userKey === current.userKey) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      return uniqueArr
-    },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     }
@@ -289,6 +289,7 @@ export default {
   watch: {
     GE_NEW_SHOW_LIST: {
         handler (value, old) {
+            alert(true)
             if (value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
                 return
             }

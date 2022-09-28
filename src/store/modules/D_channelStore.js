@@ -170,7 +170,7 @@ const D_CHANNEL = {
           }
 
           team.D_CHAN_AUTH = D_CHAN_AUTH
-          state.chanList.push(team)
+          state.chanList.push({ teamKey: team.teamKey, team: team })
           /* state.addChanList.push(team) */
         }
       }
@@ -221,6 +221,7 @@ const D_CHANNEL = {
           chanDetail.ELEMENTS.showProfileUserList[idx2] = payload[i]
         } else {
           chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
+          // alert('yes' + payload[i].userKey)
           state.addShowProfileUserList.unshift(payload[i])
         }
       }

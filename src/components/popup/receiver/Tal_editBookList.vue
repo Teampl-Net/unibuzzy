@@ -1,5 +1,5 @@
 <template>
-    <div class="editBookListWrap">
+    <div v-if="CHANNEL_DETAIL" class="editBookListWrap">
         <gConfirmPop :confirmText='confirmText' :confirmType="confirmType" v-if="confirmPopShowYn" @no='confirmPopShowYn=false' @ok='confirmOk' />
         <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
@@ -52,7 +52,7 @@
             <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
                 <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" @delAddress="delAddress" />
                 <transition name="showGroup">
-                    <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' @delAddress="delAddress" />
+                    <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' @delAddress="delAddress" />
                     <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
                 </transition>
                 <!-- <div v-if="plusMenuShowYn"  @click="plusMenuShowYn = !plusMenuShowYn" style="background: #00000026; height: 100%; width: 100%; position: fixed; left: 0; z-index: 999; top: 0;"></div> -->
@@ -91,7 +91,7 @@ export default {
 
     },
     async mounted () {
-        if(this.propData.value.clickData){
+        if(this.propData.value && this.propData.value.clickData){
             this.openMCabUserList(this.propData.value.clickData)
         }
     },
@@ -106,7 +106,7 @@ export default {
             return this.$store.getters['D_USER/GE_USER']
         },
         CHANNEL_DETAIL () {
-            return this.$getDetail('TEAM', this.propData.currentTeamKey)[0]
+            return this.$getDetail('TEAM', this.propData.teamKey)[0]
         }
     },
     watch: {
@@ -216,7 +216,7 @@ export default {
             var paramMap = new Map()
             paramMap.set('cabinetNameMtext', this.searchKeyword)
 
-            paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
+            paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
@@ -346,7 +346,7 @@ export default {
         backClick (backYn) {
             var hStack = this.$store.getters['D_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
-            if (this.propData.value.clickData) {
+            if (this.propData.value && this.propData.value.clickData) {
                 if (this.excelPopId === hStack[hStack.length - 1]) {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
