@@ -96,7 +96,7 @@
                   <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.mccKey) !== -1" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.mccKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
 
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
-                <div v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && alim.D_MEMO_LIST.length < getTotalMemoCount(alim) " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
+                <div v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
