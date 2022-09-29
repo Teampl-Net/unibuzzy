@@ -822,6 +822,7 @@ export default {
         // debugger
         console.log([detailData])
         this.$store.commit('D_CHANNEL/MU_ADD_CONTENTS', [detailData])
+        debugger
 
         this.closeXPop(true)
        /*  } */

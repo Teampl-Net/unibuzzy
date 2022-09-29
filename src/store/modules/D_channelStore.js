@@ -391,6 +391,7 @@ const D_CHANNEL = {
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
             }
+            debugger
             if (state.addContsList.length > 30) {
               state.addContsList = state.addContsList.splice(0, 30)
             }

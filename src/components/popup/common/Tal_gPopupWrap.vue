@@ -4,7 +4,7 @@
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose'
+                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet'
                                         />
       </transition>
       <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
@@ -59,7 +59,7 @@
       <memberFormPreView v-if="this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
       <errorPage v-if="this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
 
-      <creAddressBook v-if="this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop"  />
+      <creAddressBook v-if="this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
 
     </div>
 </template>
@@ -86,7 +86,7 @@ import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 
 import boardMain from '@/components/board/D_boardMain.vue'
 import boardDetail from '@/components/common/D_contentsDetail.vue'
-import editBookList from '../receiver/Tal_editBookList.vue'
+import editBookList from '../receiver/D_editBookList.vue'
 import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
 import boardWrite from '@/components/board/Tal_boardWrite.vue'
@@ -109,7 +109,7 @@ import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
 
 import errorPage from '../../popup/common/Tal_errorPage.vue'
 
-import creAddressBook from '../receiver/Tal_creAddressBook.vue'
+import creAddressBook from '../receiver/D_creAddressBook.vue'
 
 export default {
   async created () {
@@ -260,7 +260,23 @@ export default {
     }
   },
   methods: {
-
+    emitFunc (emitName, param) {
+      this.$emit(emitName, param)
+    },
+    refreshCabinet (param) {
+      if (param.cabinetType === 'address') {
+        this.$refs.editBookListComp.getBookList()
+      } else if (param.cabinetType === 'member') {
+        this.$refs.editBookListComp.getBookMemberList()
+      }
+    },
+    saveCabinet (param) {
+      if (param.cabinetType === 'address') {
+        this.emitFunc('saveCabinet', param)
+      } else if (param.cabinetType === 'member') {
+        this.emitFunc('saveCabinet', param)
+      }
+    },
     // 헤더에게 현재 chanAlimList에 화면이 구독중인지 확인하기 위해 사용
     async getFollowerYn (teamKey) {
       var paramMap = new Map()

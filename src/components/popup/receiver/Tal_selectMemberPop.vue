@@ -169,11 +169,16 @@ export default {
           param.userKeyList = userKeyList
           param.cabinetKey = this.propData.cabinetKey
           param.targetKey = this.propData.currentTeamKey
-
-          await this.$saveMCabContents(param)
+          alert('zzzzz')
+          await this.$saveMCabContents(param).then(response => {
+            var thisParam = {}
+            thisParam.cabinetType = 'member'
+            this.$emit('saveCabinet', thisParam)
+          })
         }
 
         if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
+          // alert('2')
           // eslint-disable-next-line no-new-object
           var mCabContents = new Object()
           for (var d = 0; d < this.directAddMemList.length; d++) {

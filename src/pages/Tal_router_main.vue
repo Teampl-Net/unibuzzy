@@ -236,6 +236,7 @@ export default {
     },
     goChanDetail (data) {
       // console.log(data)
+      if (data.popCloseYn === true) this.closePushPop()
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // alert(true)
@@ -305,7 +306,7 @@ export default {
               } else {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   if (this.notiDetail.jobkindId !== 'BOAR') {
-                    this.notiDetailShowYn = true // wowns
+                    this.notiDetailShowYn = true
                     // if (this.$route.path === '/') {
                     //   this.$refs.mainRouterView.getMainBoard()
                     // }

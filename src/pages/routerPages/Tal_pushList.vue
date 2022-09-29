@@ -398,6 +398,8 @@ export default {
           idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+
+          if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
           if (idx2 !== -1) {
             test.push(dataList[idx2])
           } else {
@@ -1034,6 +1036,8 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
+        console.log(resultList)
+        if (resultList === undefined) return
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {

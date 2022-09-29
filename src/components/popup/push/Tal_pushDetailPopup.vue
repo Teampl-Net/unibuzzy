@@ -1,5 +1,5 @@
 <template>
-<!-- <div v-if="this.pushDetail && pushDetail.jobkindId === 'ALIM'"> -->
+<div v-if="this.pushDetail && pushDetail.jobkindId === 'ALIM'">
   <div class="pushBackground" @click="goNo"></div>
   <div class="pushPopUpWrap" >
     <div class="pushPopContent pushMbox zoomInOutPop">
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(pushDetail.bodyFullStr)" style="max-height:300px; overflow:hidden"></div>
+      <pre class="font14 mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(pushDetail.bodyFullStr)" style="max-height:300px; overflow:hidden"></pre>
       <p @click="goOk" v-show="pushDetail.bodyFullStr && pushDetail.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
       <div class="detailPopUpBtnArea">
@@ -24,7 +24,7 @@
       </div>
     </div>
   </div>
-<!-- </div> -->
+</div>
 </template>
 <script>
 export default {
@@ -66,31 +66,19 @@ export default {
       return changeText
     }, */
     goOk () {
-      this.openPushDetailPop()
+      var param = { contentsKey: Number(JSON.parse(this.detailVal.userDo).targetKey), jobkindId: this.detailVal.jobkindId, creTeamKey: Number(this.detailVal.creTeamKey), targetType: 'chanDetail' }
+      param.targetContentsKey = JSON.parse(this.detailVal.userDo).targetKey
+      // param.popCloseYn = true
+      this.goNo()
+      this.$emit('goChanDetail', param)
     },
     goNo () {
-      // var history = this.$store.getters['D_HISTORY/hStack']
-      // var removePage = history[history.length - 1]
-      // history = history.filter((element, index) => index < history.length - 1)
-      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      // this.$store.commit('D_HISTORY/updateStack', history)
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closePushPop')
-    },
-    openPushDetailPop () {
-      // var history = this.$store.getters['D_HISTORY/hStack']
-      // var removePage = history[history.length - 1]
-      // history = history.filter((element, index) => index < history.length - 1)
-      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      // this.$store.commit('D_HISTORY/updateStack', history)
-      this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.detailVal.userDo).targetKey), jobkindId: this.detailVal.jobkindId, creTeamKey: Number(this.detailVal.creTeamKey), targetType: 'chanDetail' })
-      // var currentPage = this.$store.getters['D_HISTORY/hCPage']
-      // if ((currentPage === 0 || currentPage === undefined)) {
-      //   this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-      // } else {
-      //   this.$emit('goChanDetail', { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-      // }
-      this.$emit('closePushPop')
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     setBodyLength (str) {
       // eslint-disable-next-line no-undef
@@ -118,7 +106,9 @@ export default {
       /* param.contentsKey = this.detailVal.targetKey */
       param.contentsKey = JSON.parse(this.detailVal.userDo).targetKey
       var resultList = await this.$getContentsList(param)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       this.pushDetail = resultList.content[0]
+      // alert(JSON.stringify(resultList.content))
       // return resultList
     }
 
@@ -128,10 +118,10 @@ export default {
     this.getContentsList()
     // alert(JSON.stringify(resultList.content[0]))
 
-    // var history = this.$store.getters['D_HISTORY/hStack']
-    // this.popId = 'pushDetailPop' + history.length
-    // history.push(this.popId)
-    // this.$store.commit('D_HISTORY/updateStack', history)
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'pushDetailPop' + history.length
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
   }
 }
 </script>

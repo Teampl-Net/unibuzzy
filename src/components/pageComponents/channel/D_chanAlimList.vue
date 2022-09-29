@@ -278,15 +278,12 @@ export default {
     },
     async okMember (inshowProfileYn) {
       var result = null
+      this.$emit('openLoading')
       if (inshowProfileYn) {
         this.followParam.showProfileYn = inshowProfileYn
-        this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
-        this.$emit('closeLoading')
       } else {
-        this.$emit('openLoading')
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
-        this.$emit('closeLoading')
       }
       // // console.log(result)
       // eslint-disable-next-line no-debugger
@@ -297,13 +294,24 @@ export default {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
           this.openWelcomePopYn = false
-          // console.log('^^^^^^^^^^^^^^^^^^^^^^^')
-          // console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
-          var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
-          this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-          this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-          console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true)
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+          // var param = {}
+          // param.targetType = 'createChannel'
+          // param.targetKey = this.CHANNEL_DETAIL.teamKey
+          var paramMap = new Map()
+          paramMap.set('teamKey', this.chanDetail.targetKey)
+          paramMap.set('fUserKey', this.GE_USER)
+          var resultList = await this.$getTeamList(paramMap)
+          var response = resultList.data.content[0]
+          response.detailPageYn = true
+          var team = null
+          var teamList = this.$getDetail('TEAM', this.chanDetail.targetKey)
+          team = teamList[0]
+          response.ELEMENTS = team.ELEMENTS
+          await this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
+          // var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
+          // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+
+          // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
           // this.$emit('changeFollowYn', this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
         } else {
           this.errorMsg = result.message
@@ -316,10 +324,9 @@ export default {
       }
 
       this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-      console.log('^^^^^^^^^^^^^^^^^^^^^^^')
-      console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true)
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
+      this.$emit('closeLoading')
     },
     async confirmOk () {
       // eslint-disable-next-line no-debugger

@@ -59,7 +59,7 @@
             </div> -->
             <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
                 <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
-                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.totalMemoCount}}개</p>
+                <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
             </div>
             <div v-else class="mbottom-05 fr" style="min-height: 30px;">
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{CONT_DETAIL.memoCount > 0? '답변완료' : '답변대기'}}</div>

@@ -40,11 +40,11 @@
   <div v-else>
       <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없습니다.'}}</p>
   </div>
-  <creAddressPop v-if="creAddressPopYn" @closePop="creAddressPopYn = false" />
+  <!-- <creAddressPop v-if="creAddressPopYn" @closePop="creAddressPopYn = false" /> -->
 </template>
 
 <script>
-import creAddressPop from './Tal_creAddressBook.vue'
+// import creAddressPop from './Tal_creAddressBook.vue'
 // import loadingCompo from '../../../components/Tal_loading.vue'
 // import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -113,8 +113,8 @@ export default {
     },
     components: {
         // loadingCompo,
-        draggable: VueDraggableNext,
-        creAddressPop
+        draggable: VueDraggableNext
+        // creAddressPop
         // pageTopCompo
     },
     computed: {
@@ -223,9 +223,10 @@ export default {
                     if (this.addressBookList.length === 0) {
                         this.cabinetList.length = 0
                     }
+                    this.$showToastPop('주소록이 삭제되었습니다.')
                 }
             }catch(e){
-                // console.log(e)
+                this.$showToastPop('주소록 삭제에 실패했습니다.')
             }
         },
         addSelectedList(data, index) {

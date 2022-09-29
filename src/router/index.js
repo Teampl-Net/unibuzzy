@@ -24,7 +24,6 @@ import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.v
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue' */
 
-import manaReceiver from '../components/popup/receiver/Tal_editBookList.vue'
 // import howToUse from '../components/popup/info/Tal_howToUse.vue'
 
 import admWritePush from '../components/popup/D_writeContents.vue'
@@ -235,11 +234,6 @@ const routes = [
   // which is lazy-loaded when the route is visited.
   //  component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue')
   // }
-
-  {
-    path: '/testReceiver',
-    component: manaReceiver
-  },
   // {
   //   path: '/howToUse',
   //   component: howToUse

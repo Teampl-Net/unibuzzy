@@ -185,6 +185,7 @@ export default {
           if (result.data === 'true' || result.data === true) {
             this.memberList = []
             this.$emit('refreshList')
+            this.$showToastPop('주소가 삭제되었습니다.')
           }
         }
       }

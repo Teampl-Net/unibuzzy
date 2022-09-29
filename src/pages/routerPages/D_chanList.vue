@@ -254,6 +254,8 @@ export default {
       if (this.endListYn === false ) {
         this.offsetInt += 1
         var resultList = await this.getChannelList()
+        console.log(resultList)
+        if (resultList === undefined) return
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
         const newArr = [
           ...this.channelList,
