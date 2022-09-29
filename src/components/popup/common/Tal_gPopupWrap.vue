@@ -4,7 +4,7 @@
       <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet'
+                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
                                         />
       </transition>
       <popHeader ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
@@ -558,7 +558,8 @@ export default {
      * @param {reloadYn} Boolean true 보내면 리로드 */
     async closePop (reloadYn) {
       reloadYn = false
-      // console.log(this.targetType)
+      console.log('**** closePop ****')
+      console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'memberManagement') reloadYn = true
       this.popShowYn = false
       var history = this.$store.getters['D_HISTORY/hStack']
@@ -653,14 +654,17 @@ export default {
       this.settingPop(true) */
       this.closeXPop(true)
     },
+    async channelMenuReload () {
+      await this.$refs.chanMenuCompo.refresh()
+    },
     async closeXPop (reloadYn) { // 내 팝업 닫기
+      if (this.targetType === 'myChanMenuEdit') {
+        this.$emit('channelMenuReload')
+      }
       // if (this.targetType === 'pushDetail') {
       // //   this.pushListAndDetailYn = false
       //   reloadYn = true
       // }
-      // eslint-disable-next-line no-debugger
-      debugger
-      // console.log(reloadYn)
       this.$emit('closePop', reloadYn)
     },
     // sucssesCreChan(){
@@ -692,7 +696,6 @@ export default {
       this.notiDetailShowYn = false
     },
     goChanDetail (data) {
-      // console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // alert(true)

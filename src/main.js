@@ -178,6 +178,8 @@ axios.interceptors.response.use(function (response) {
       document.getElementById('toastPop').remove()
     }, 2000)
     router.replace('/')
+    // var content = store.getters('D_HISTORY/GE_CONTENT_ALL_CREAR')
+    // store.dispatch('D_HISTORY/CONTENT_CREAR_ALL', content + 1)
     return axios.request(originalRequest)
   }
 })

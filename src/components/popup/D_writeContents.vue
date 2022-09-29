@@ -5,7 +5,7 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
       <!-- <writePushPageTitle class="pleft-2" titleText="알림작성"  @clickEvnt="clickPageTopBtn" :btnYn ="false" pageType="writePush"/> -->
-      <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @no='confirmNo(),checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @no='confirmNo(),checkPopYn=false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
       <gConfirmPop @no="closeXPop" confirmText='신청되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -439,7 +439,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: 'service/tp.승인 처리',
+        //   url: 'https://mo.d-alim.com/service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -459,7 +459,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -683,146 +683,150 @@ export default {
       }
     },
     async sendMsg () {
+        this.checkPopYn=false
         var paramImgList = []
         this.sendLoadingYn = true
-        this.checkPopYn = false
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
-        var innerHtml =''
-        param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
-        var targetMsgDiv = null
-        // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
-        if (this.uploadFileList.length > 0) {
-            this.checkPopYn = false
-            this.progressShowYn = true
-            await this.formSubmit()
-            setTimeout(() => {
-              this.progressShowYn = false
-            }, 2000)
-            // this.sendLoadingYn = true
-        } else {
-            // this.sendLoadingYn = true
-        }
 
-        if(this.viewTab === 'complex') {
-        // this.$refs.complexEditor.setParamInnerHtml()
-        param.bodyHtmlYn = true
-        /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
-        /* var imgSrc = null
-        var imgList = document.querySelectorAll('#msgBox img')
-        for (var img=0; img < imgList.length; img ++) {
-            imgSrc = imgList[img].src
-            paramImgList.push(imgSrc)
-            imgList[img].src = 'imgTagSrc' + img
-            }
-            param.imgList = imgList
-            */
-            var formList = document.querySelectorAll('#msgBox .formCard')
-            if (formList) {
-              for (var f = 0; f < formList.length; f++) {
-                  formList[f].contentEditable = false
-                  // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-                  if (formList[f].id === 'formEditText') {
-                    var innerHtml = formList[f].innerHTML
-                    formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
-                  }
-                  // if (formList[f].id)
+        try {
+          var param = {}
+          var innerHtml =''
+          param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
+          var targetMsgDiv = null
+          // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+          if (this.uploadFileList.length > 0) {
+              this.progressShowYn = true
+              await this.formSubmit()
+              setTimeout(() => {
+                this.progressShowYn = false
+              }, 2000)
+          } else {
+          }
+
+          if(this.viewTab === 'complex') {
+          // this.$refs.complexEditor.setParamInnerHtml()
+          param.bodyHtmlYn = true
+          /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
+          /* var imgSrc = null
+          var imgList = document.querySelectorAll('#msgBox img')
+          for (var img=0; img < imgList.length; img ++) {
+              imgSrc = imgList[img].src
+              paramImgList.push(imgSrc)
+              imgList[img].src = 'imgTagSrc' + img
               }
-            param.getBodyHtmlYn = true
-            }
-            targetMsgDiv = document.getElementById('msgBox')
-            innerHtml = targetMsgDiv.innerHTML
+              param.imgList = imgList
+              */
+              var formList = document.querySelectorAll('#msgBox .formCard')
+              if (formList) {
+                for (var f = 0; f < formList.length; f++) {
+                    formList[f].contentEditable = false
+                    // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+                    if (formList[f].id === 'formEditText') {
+                      var innerHtml = formList[f].innerHTML
+                      formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
+                    }
+                    // if (formList[f].id)
+                }
+              param.getBodyHtmlYn = true
+              }
+              targetMsgDiv = document.getElementById('msgBox')
+              innerHtml = targetMsgDiv.innerHTML
 
-        } else if (this.viewTab === 'text') {
-            // param.bodyHtmlYn = false
-            document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
-            //
-            targetMsgDiv = document.getElementById('textMsgBoxPush')
-            innerHtml = targetMsgDiv.innerHTML
-            innerHtml = this.$findUrlChangeAtag(innerHtml)
+          } else if (this.viewTab === 'text') {
+              // param.bodyHtmlYn = false
+              document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
+              //
+              targetMsgDiv = document.getElementById('textMsgBoxPush')
+              innerHtml = targetMsgDiv.innerHTML
+              innerHtml = this.$findUrlChangeAtag(innerHtml)
+          }
+
+          // innerHtml = this.$findUrlChangeAtag(innerHtml)
+          // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
+
+          param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+          param.allRecvYn = this.allRecvYn
+          var attachFileList = await this.setAttachFileList()
+          if (attachFileList.length > 0) {
+              param.attachFileList = attachFileList
+          }
+          if (this.allRecvYn === true) {
+
+          } else {
+              // console.log(this.param)
+              if(this.replyPopYn) {
+              param.parentContentsKey = this.params.targetContentsKey
+              param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
+              } else {
+              await this.settingRecvList()
+              if (this.selectedReceiverList.length > 0) {
+                  param.actorList = this.selectedReceiverList
+              } else {
+                  this.errorText = '수신자를 선택해주세요'
+                  this.failPopYn = true
+                  return
+              }
+              }
+          }
+          param.teamName = this.$changeText(this.params.targetNameMtext)
+          param.creTeamKey = this.params.targetKey || this.creTeamKey
+          if (this.params.currentTeamKey || this.params.creTeamKey){
+            param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
+          }
+          // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+          // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+          param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          if(this.writePushTitle !== '') {
+              param.title = this.writePushTitle
+          } else {
+              // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
+              param.title = this.$titleToBody(targetMsgDiv)
+          }
+          //
+          param.jobkindId = 'ALIM'
+          param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+
+          param.showCreNameYn = this.showCreNameYn
+          param.canReplyYn = this.canReplyYn
+          //
+          var result
+          if (this.requestPushYn === true) {
+              param.requestTitle = this.requestTitle
+
+              // result = this.$saveContents(param)
+              // this.closeXPop(true)
+              // this.sendLoadingYn = false
+              this.okPopYn = true
+              return
+          }
+          result = await this.$saveContents(param)
+          /* if (result.contents) {
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [result.contents] )
+          }
+          var isMobile = /Mobi/i.test(window.navigator.userAgent);
+          debugger */
+          var isMobile = /Mobi/i.test(window.navigator.userAgent);
+          /* if (!isMobile) {
+      // eslint-disable-next-line no-new-object
+              this.closeXPop(true)
+          } else {
+              this.closeXPop(true)
+          } */
+          // this.closeXPop(true)
+          var param = new Object()
+          param.contentsKey = result.contents.contentsKey
+          param.jobkindId = result.contents.jobkindId
+          var resultList = await this.$getContentsList(param)
+          var detailData = resultList.content[0]
+          this.$store.commit('D_CHANNEL/MU_ADD_CONTENTS', [detailData])
+        } catch (error) {
+          console.error(error)
+          this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+        } finally {
+          this.sendLoadingYn = false
+          this.closeXPop(true)
         }
 
-        // innerHtml = this.$findUrlChangeAtag(innerHtml)
-        // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
 
-        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-        param.allRecvYn = this.allRecvYn
-        var attachFileList = await this.setAttachFileList()
-        if (attachFileList.length > 0) {
-            param.attachFileList = attachFileList
-        }
-        if (this.allRecvYn === true) {
-
-        } else {
-            // console.log(this.param)
-            if(this.replyPopYn) {
-            param.parentContentsKey = this.params.targetContentsKey
-            param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
-            } else {
-            await this.settingRecvList()
-            if (this.selectedReceiverList.length > 0) {
-                param.actorList = this.selectedReceiverList
-            } else {
-                this.errorText = '수신자를 선택해주세요'
-                this.failPopYn = true
-                return
-            }
-            }
-        }
-        param.teamName = this.$changeText(this.params.targetNameMtext)
-        param.creTeamKey = this.params.targetKey || this.creTeamKey
-        if (this.params.currentTeamKey || this.params.creTeamKey){
-          param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
-        }
-        // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-        // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        if(this.writePushTitle !== '') {
-            param.title = this.writePushTitle
-        } else {
-            // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
-            param.title = this.$titleToBody(targetMsgDiv)
-        }
-        //
-        param.jobkindId = 'ALIM'
-        param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-
-        param.showCreNameYn = this.showCreNameYn
-        param.canReplyYn = this.canReplyYn
-        //
-        var result
-        if (this.requestPushYn === true) {
-            param.requestTitle = this.requestTitle
-
-            // result = this.$saveContents(param)
-            // this.closeXPop(true)
-            // this.sendLoadingYn = false
-            this.okPopYn = true
-            return
-        }
-        result = await this.$saveContents(param)
-        /* if (result.contents) {
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [result.contents] )
-        }
-        var isMobile = /Mobi/i.test(window.navigator.userAgent);
-        debugger */
-        var isMobile = /Mobi/i.test(window.navigator.userAgent);
-        /* if (!isMobile) {
-    // eslint-disable-next-line no-new-object
-            this.closeXPop(true)
-        } else {
-            this.closeXPop(true)
-        } */
-        // this.closeXPop(true)
-        var param = new Object()
-        param.contentsKey = result.contents.contentsKey
-        param.jobkindId = result.contents.jobkindId
-        var resultList = await this.$getContentsList(param)
-        var detailData = resultList.content[0]
-        this.$store.commit('D_CHANNEL/MU_ADD_CONTENTS', [detailData])
-        debugger
-
-        this.closeXPop(true)
        /*  } */
 
     },

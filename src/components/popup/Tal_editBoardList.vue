@@ -91,7 +91,6 @@ export default {
   data () {
     return {
       popId: null,
-      boardList: [],
       modiBoardDetailProps: null,
       dragging: false,
       modiBoardPopShowYn: false,
@@ -123,7 +122,7 @@ export default {
       this.errorBoxYn = true
     },
     async confirmfunc () {
-      if (this.currentConfirmType) {
+      if (this.currentConfirmType === 'delete') {
         var data = this.tempDeleteData.data
         var index = this.tempDeleteData.index
         await this.deleteCabinet(data, index)
@@ -144,7 +143,7 @@ export default {
       var uniqueArr = []
       if (result && result.length > 0) {
         var newArr = []
-        
+
         newArr = [
             ...this.cabinetList,
             ...result
@@ -153,7 +152,7 @@ export default {
         console.log(uniqueArr)
         // console.log('uniqueArr')
         // console.log(uniqueArr)
-        
+
       }
       this.cabinetList = uniqueArr
       // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
@@ -187,13 +186,13 @@ export default {
     async deleteCabinet (data, index) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.currentTeamKey = this.currentTeamKey
+      param.currentTeamKey = data.creTeamKey
       param.cabinetKey = data.cabinetKey
       param.menuType = data.menuType
       var result = await this.$deleteCabinet(param)
-      /* if (result === true || result === 'true') {
-        this.boardList.splice(index, 1)
-      } */
+      if (result === true || result === 'true') {
+        this.cabinetList.splice(index, 1)
+      }
     },
     openModiBoardPop (data) {
       this.modiBoardDetailProps = data
@@ -224,7 +223,7 @@ export default {
         await this.getTeamMenuList()
       }
       if (this.CAB_DETAIL.length > 0) {
-        this.anima()
+        // this.anima()
       }
     },
     anima () {
@@ -263,7 +262,7 @@ export default {
       paramSet.teamMenuList = teamMenuList
       var result = await this.$commonAxiosFunction(
         {
-          url: 'service/tp.changePosTeamMenu',
+          url: 'https://mo.d-alim.com/service/tp.changePosTeamMenu',
           param: paramSet
         }
       )

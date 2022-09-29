@@ -4,7 +4,7 @@
     <div class="w-100P" style=" height:100vh;top: 0; position: absolute; overflow:auto">
     <div style="min-height: 400px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='confirmNo(), checkPopYn=false' v-if="checkPopYn" @ok='sendMsg' />
+      <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='confirmNo(), checkPopYn=false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
       <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
       <div :style="toolBoxWidth" class="writeArea">
         <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -259,7 +259,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'service/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -279,7 +279,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'service/tp.getCabinetDetail',
+      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -450,112 +450,110 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
-      if (this.uploadFileList.length > 0) {
-        this.checkPopYn = false
-        this.progressShowYn = true
-        await this.uploadFile()
-        setTimeout(() => {
-          this.progressShowYn = false
-        }, 2000)
-        this.sendLoadingYn = true
-      } else {
-        this.sendLoadingYn = true
-      }
-      param.attachFileList = await this.setAttachFileList()
-      var innerHtml = ''
-      if (this.viewTab === 'complex') {
-        param.bodyHtmlYn = true
-        var formList = document.querySelectorAll('#msgBox .formCard')
-        if (formList) {
-          for (var f = 0; f < formList.length; f++) {
-            formList[f].contentEditable = false
-            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-            if (formList[f].id === 'formEditText') {
-              var formTextinnerHtml = formList[f].innerHTML
-              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+      this.sendLoadingYn = true
+      this.checkPopYn = false
+      try {
+        if (this.uploadFileList.length > 0) {
+          this.progressShowYn = true
+          await this.uploadFile()
+          setTimeout(() => {
+            this.progressShowYn = false
+          }, 2000)
+        }
+        param.attachFileList = await this.setAttachFileList()
+        var innerHtml = ''
+        if (this.viewTab === 'complex') {
+          param.bodyHtmlYn = true
+          var formList = document.querySelectorAll('#msgBox .formCard')
+          if (formList) {
+            for (var f = 0; f < formList.length; f++) {
+              formList[f].contentEditable = false
+              // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+              if (formList[f].id === 'formEditText') {
+                var formTextinnerHtml = formList[f].innerHTML
+                formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+              }
             }
+            param.getBodyHtmlYn = true
           }
-          param.getBodyHtmlYn = true
+          innerHtml = document.getElementById('msgBox').innerHTML
+        } else if (this.viewTab === 'text') {
+          param.bodyHtmlYn = false
+          document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+          innerHtml = document.getElementById('textMsgBox').innerHTML
+          innerHtml = this.$findUrlChangeAtag(innerHtml)
+
+          // innerHtml = document.getElementById('textMsgBox').innerHTML
+          // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
+          // innerHtml = text
         }
-        innerHtml = document.getElementById('msgBox').innerHTML
-      } else if (this.viewTab === 'text') {
-        param.bodyHtmlYn = false
-        document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        innerHtml = document.getElementById('textMsgBox').innerHTML
-        innerHtml = this.$findUrlChangeAtag(innerHtml)
+        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
-        // innerHtml = document.getElementById('textMsgBox').innerHTML
-        // var text = this.encodeUTF8(document.getElementById('textMsgBox').innerHTML)
-        // innerHtml = text
-      }
-      param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-
-      param.jobkindId = 'BOAR'
-      if (this.selectBoardYn === true) {
-        param.cabinetKey = this.selectBoardCabinetKey
-        param.actorList = []
-      } else {
-        param.cabinetKey = this.propData.cabinetKey
-        param.actorList = this.propData.actorList
-      }
-      param.onlyManagerYn = false
-      if (param.cabinetKey === 11015) {
-        param.onlyManagerYn = true
-      }
-      param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
-      if (this.propData.attachMfilekey) {
-        param.attachMfilekey = this.propData.attachMfilekey
-      }
-      // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-      // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      if (this.propData.nonMemYn) {
-        param.creUserName = this.nonMemUserName
-        param.creUserKey = 0
-      } else {
-        param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      }
-
-      param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
-      // console.log(param)
-
-      param.title = this.writePushTitle
-      param.showCreNameYn = true
-
-      if (this.modiYn) {
-        param.contentsKey = this.propData.modiContentsKey
-      }
-      var result = await this.$saveContents(param)
-      console.log('########################## 이거!!!')
-      console.log(result)
-      if (result.result === true) {
-        this.sendLoadingYn = false
-        // eslint-disable-next-line no-new-object
-        var newP = new Object()
-        newP.targetKey = result.contents.contentsKey
-        newP.teamKey = result.contents.creTeamKey
-        newP.contentsKey = result.contents.contentsKey
-        newP.targetType = 'boardDetail'
-        newP.cabinetNameMtext = result.contents.cabinetName
-        newP.jobkindId = 'BOAR'
-        newP.value = this.propData
-        newP.cabinetKey = result.contents.cabinetKey
-
-        var newParam = {}
-        param.contentsKey = result.contents.contentsKey
         param.jobkindId = 'BOAR'
-        await this.$getContentsList(newParam).then(newReslute => {
-          console.log('newReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslutenewReslute')
-          console.log(newReslute)
-          console.log(newReslute.content)
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
-        })
-        this.progressShowYn = false
-        if (!this.modiYn && !this.UseAnOtherYn) {
-          this.$emit('successWrite', newP)
+        if (this.selectBoardYn === true) {
+          param.cabinetKey = this.selectBoardCabinetKey
+          param.actorList = []
         } else {
-          this.$emit('closeXPop', true)
+          param.cabinetKey = this.propData.cabinetKey
+          param.actorList = this.propData.actorList
         }
+        param.onlyManagerYn = false
+        if (param.cabinetKey === 11015) {
+          param.onlyManagerYn = true
+        }
+        param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
+        if (this.propData.attachMfilekey) {
+          param.attachMfilekey = this.propData.attachMfilekey
+        }
+        // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+        // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+        if (this.propData.nonMemYn) {
+          param.creUserName = this.nonMemUserName
+          param.creUserKey = 0
+        } else {
+          param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+          param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        }
+
+        param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
+        // console.log(param)
+
+        param.title = this.writePushTitle
+        param.showCreNameYn = true
+
+        if (this.modiYn) {
+          param.contentsKey = this.propData.modiContentsKey
+        }
+        var result = await this.$saveContents(param)
+        if (result.result === true) {
+          // eslint-disable-next-line no-new-object
+          var newP = new Object()
+          newP.targetKey = result.contents.contentsKey
+          newP.teamKey = result.contents.creTeamKey
+          newP.contentsKey = result.contents.contentsKey
+          newP.targetType = 'boardDetail'
+          newP.cabinetNameMtext = result.contents.cabinetName
+          newP.jobkindId = 'BOAR'
+          newP.value = this.propData
+          newP.cabinetKey = result.contents.cabinetKey
+
+          var newParam = {}
+          param.contentsKey = result.contents.contentsKey
+          param.jobkindId = 'BOAR'
+          await this.$getContentsList(newParam).then(newReslute => {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+          })
+          this.progressShowYn = false
+          if (!this.modiYn && !this.UseAnOtherYn) {
+            this.$emit('successWrite', newP)
+          }
+        }
+      } catch (error) {
+        console.error(error)
+        this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+      } finally {
+        this.$emit('closeXPop', true)
+        this.sendLoadingYn = false
       }
     },
     messageAreaClick () {

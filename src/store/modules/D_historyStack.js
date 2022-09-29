@@ -11,7 +11,8 @@ const D_historyStack = {
     pageUpdate: 0,
     recvPushQueue: [],
     deepLinkQueue: [],
-    axiosQueue: []
+    axiosQueue: [],
+    contentsAllClose: 0
   },
   mutations: {
     updateServerList (state, server) {
@@ -40,6 +41,9 @@ const D_historyStack = {
     },
     updateAxiosQueue (state, page) {
       state.axiosQueue = page
+    },
+    contentCrearAll (state, count) {
+      state.contentsAllClose = count
     }
   },
   actions: {
@@ -56,6 +60,9 @@ const D_historyStack = {
     },
     AC_GE_AXIOS_QUEUE ({ commit }, payload) {
       commit('updatePage', payload)
+    },
+    CONTENT_CREAR_ALL ({ commit }, payload) {
+      commit('contentCrearAll', payload)
     }
   },
   modules: {
@@ -87,6 +94,9 @@ const D_historyStack = {
     },
     deepLinkQueue (state) {
       return state.deepLinkQueue
+    },
+    GE_CONTENT_ALL_CREAR (state) {
+      return state.contentsAllClose
     }
   }
 }
