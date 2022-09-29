@@ -170,7 +170,8 @@ export default {
       clickImg: null,
       systemName: localStorage.getItem('systemName'),
       loadingYn: false,
-      saveMemoLoadingYn: false
+      saveMemoLoadingYn: false,
+      cabinetDetail: null
     }
   },
   props: {
@@ -213,8 +214,7 @@ export default {
       // console.log(this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       if (chan) {
-        // console.log('tlqkf')
-        // console.log(chan[0])
+        this.getCabinetDetail(chan[0].teamKey)
         return chan[0]
       } else {
         return null
@@ -222,32 +222,17 @@ export default {
     },
     CAB_DETAIL () {
       if (this.detailVal.jobkindId === 'BOAR') {
-        // console.log(this.CHANNEL_DETAIL)
-        // console.log(this.CHANNEL_DETAIL)
-        var test = this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.detailVal.cabinetKey)
-        if (test) {
-          // console.log('#!@##################')
-          // console.log('#!@##################')
-          // console.log('#!@##################')
-          // console.log('#!@##################')
-          // console.log('#!@##################')
-          // console.log(test[0])
-          return test[0]
-        } else {
-          return null
-        }
+        if (!this.cabinetDetail) return null
+        return this.cabinetDetail.mCabinet
       } else {
         return null
       }
     },
     CONT_DETAIL () {
-      // console.log('## this.CHANNEL_DETAIL ##')
-      // console.log(this.CHANNEL_DETAIL)
-      // console.log('## this.detailVal.contentsKey ##')
-      // console.log(this.detailVal.contentsKey)
-      var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.detailVal.teamKey)
       // eslint-disable-next-line no-debugger
       debugger
+      console.log(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
+      var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (cont) {
         // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
         // console.log(cont[0])
@@ -280,10 +265,8 @@ export default {
     },
     CAB_DETAIL: {
       handler (value, old) {
-        // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        // console.log(value)
-        if (value) {
-        }
+        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+        console.log(this.CONT_DETAIL)
       },
       deep: false
     },
@@ -350,13 +333,6 @@ export default {
         }
         // console.log('this.CONT_DETAIL')
         // console.log(this.CONT_DETAIL)
-
-        if (this.CONT_DETAIL && this.CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL) {
-          await this.getCabinetDetail()
-        }
-        // console.log(this.CONT_DETAIL)
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
@@ -374,7 +350,6 @@ export default {
       this.loadingYn = false
     },
     updateStoreData (Detail) {
-      // // console.log(this.CAB_DETAIL)
       var tempChan = this.CHANNEL_DETAIL
       var cabinetList = tempChan.ELEMENTS.cabinetList
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.detailVal.cabinetKey)
@@ -387,19 +362,18 @@ export default {
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
-    async getCabinetDetail () {
-      if (!this.CAB_DETAIL || !this.CAB_DETAIL.shareAuth) {
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
-        // var tt = this.propData
-        param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
-        param.cabinetKey = this.detailVal.cabinetKey
-        var resultList = await this.$getCabinetDetail(param)
-        // eslint-disable-next-line no-debugger
-        debugger
-        resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
-        this.updateStoreData(resultList.mCabinet)
-      }
+    async getCabinetDetail (teamKey) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // var tt = this.propData
+      param.currentTeamKey = teamKey
+      param.cabinetKey = this.detailVal.cabinetKey
+      var resultList = await this.$getCabinetDetail(param)
+      resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.cabinetDetail = resultList
+      // this.updateStoreData(resultList.mCabinet)
     },
     async getContentsDetail () {
       // eslint-disable-next-line no-new-object
@@ -410,29 +384,7 @@ export default {
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
-      // console.log('!!!!!!!!!!! tq !!!!!!!!!!!!!')
-      // console.log(detailData)
-
-      // var idx1, idx2
-      // var chanDetail = {}
-      // var contentList = []
-      // idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.detailVal.teamKey)
-      // console.log(idx1)
-      // chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-      // console.log(chanDetail)
-      // contentList = detailData.jobkindId === 'ALIM' ? chanDetail.ELEMENTS.alimList : chanDetail.ELEMENTS.boardList
-      // console.log(contentList)
-      // idx2 = contentList.findIndex((item) => item.mccKey === detailData.mccKey)
-      // console.log(idx2)
-      // if (idx2 !== -1) {
-      //   contentList[idx2] = detailData
-      // } else {
-      //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      // }
-      // console.log(contentList)
-
-      // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [contentList])
-      // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
       if (!detailData.D_MEMO_LIST) detailData.D_MEMO_LIST = []
       // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')

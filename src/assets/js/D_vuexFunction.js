@@ -119,31 +119,28 @@ const functions = {
       return result
     }
   },
-  getBoardCabinetDetail (teamDetail, targetKey) {
-    var cabinetList
-    var cabinetDetail
-    if (!teamDetail) return null
-    cabinetList = teamDetail.ELEMENTS.cabinetList
-    cabinetDetail = cabinetList.filter(cab => cab.cabinetKey === Number(targetKey))
-    /* if (cabinetDetail.length === 0) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+  async getBoardCabinetDetail (teamKey, targetKey) {
+    if (g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail') !== -1) return
+    g_axiosQueue.push('getBoardCabinetDetail')
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    var tt = this.propData
 
-      param.currentTeamKey = teamDetail.teamKey
-      param.cabinetKey = targetKey
-      var response = methods.getCabinetDetail(param)
-
-      if (response) {
-        cabinetDetail = response.mCabinet
-        teamDetail.ELEMENTS.cabinetList.push(cabinetDetail)
-        await functions.actionVuex('TEAM', teamDetail, teamDetail.teamKey, false, true, null, null)
-      }
-    } */
-    console.log('return:  cabinetDetail')
-    console.log(cabinetDetail)
-    return cabinetDetail
+    param.currentTeamKey = teamKey
+    param.cabinetKey = targetKey
+    var resultList = await this.$getCabinetDetail(param)
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail')
+    g_axiosQueue.splice(queueIndex, 1)
+    // mShareItemList가 잘 들어오면 save잘 된것
+    //     this.commonListData = resultList.content
+    if (resultList && resultList.mCabinet) {
+      return resultList.mCabinet
+    } else {
+      return null
+    }
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
+    debugger
     if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
     g_axiosQueue.push('getContentsDetail')
     var detailData
@@ -164,8 +161,9 @@ const functions = {
       return detailData
     } else {
       detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
-
-      console.log('alimList')
+      if (!detailData || detailData.length === 0) {
+        detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+      }
       var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
       g_axiosQueue.splice(queueIndex, 1)
       return detailData

@@ -870,7 +870,7 @@ export default {
       }
     },
     CAB_DETAIL () {
-      return this.$getBoardCabinetDetail(this.CHANNEL_DETAIL, this.propData.targetKey)[0]
+      return this.$getBoardCabinetDetail(this.CHANNEL_DETAIL.teamKey, this.propData.targetKey)[0]
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
