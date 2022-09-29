@@ -225,7 +225,8 @@ export default {
       confirmMsg: '',
       selectBoardType: null,
       boardDetailValue: null,
-      selectBoardPopShowYn: false
+      selectBoardPopShowYn: false,
+      cabinetDetail: null
     }
   },
 
@@ -572,21 +573,22 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail () {
-      if (!this.CAB_DETAIL.shareAuth) {
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
-        // var tt = this.propData
-        param.currentTeamKey = this.propData.currentTeamKey
-        param.cabinetKey = this.propData.targetKey
-        var resultList = await this.$getCabinetDetail(param)
-        // mShareItemList가 잘 들어오면 save잘 된것
-        //   this.shareAuth.R = true
-        //   this.shareAuth.W = true
-        //   this.shareAuth.V = true
-        // } else {
-        resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
-        this.updateStoreData(resultList.mCabinet)
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // var tt = this.propData
+      param.currentTeamKey = this.propData.currentTeamKey
+      param.cabinetKey = this.propData.targetKey
+      var resultList = await this.$getCabinetDetail(param)
+      // mShareItemList가 잘 들어오면 save잘 된것
+      //   this.shareAuth.R = true
+      //   this.shareAuth.W = true
+      //   this.shareAuth.V = true
+      // } else {
+      resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
+      if (resultList && resultList.mCabinet) {
+        this.cabinetDetail = resultList.mCabinet
       }
+      // this.updateStoreData(resultList.mCabinet)
       // eslint-disable-next-line no-new-object
 
       // }
@@ -870,7 +872,7 @@ export default {
       }
     },
     CAB_DETAIL () {
-      return this.$getBoardCabinetDetail(this.CHANNEL_DETAIL.teamKey, this.propData.targetKey)[0]
+      return this.cabinetDetail
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
