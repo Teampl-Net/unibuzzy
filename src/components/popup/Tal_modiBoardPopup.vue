@@ -212,10 +212,10 @@
     <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
   </div>
   </div>
-  <selectType :chanInfo="this.chanInfo" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.chanInfo" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" @openPop='openPop' />
+  <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
+  <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList.data" @openPop='openPop' />
 
-  <receiverAccessList @sendReceivers="setOk" :chanInfo="this.chanInfo" :propData="chanInfo" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
+  <receiverAccessList @sendReceivers="setOk" :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
 
 </template>
@@ -240,17 +240,8 @@ export default {
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
 
-    // console.log('this.modiBoardDetailProps')
-    // console.log(this.modiBoardDetailProps)
-
     this.chanProps = this.modiBoardDetailProps
-    if (this.chanInfo.value) {
-      // this.chanProps = this.chanInfo.value
-      this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
-    } else {
-      // this.chanProps = this.chanInfo
-      this.chanProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
-    }
+    this.chanProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
 
     // // console.log(this.boardDetail)
     // // console.log(this.chanInfo)
@@ -258,6 +249,14 @@ export default {
     //
   },
   computed: {
+    CHANNEL_DETAIL () {
+      var team = this.$getDetail('TEAM', this.modiBoardDetailProps.teamKey)
+      if (team) {
+        return team[0]
+      } else {
+        return null
+      }
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -764,12 +763,12 @@ export default {
         cabinet.shareList = this.selectShareList
         cabinet.itemList = this.selectItemList
       }
-      cabinet.creteamkey = this.chanInfo.targetKey
-      if (this.chanInfo.value) {
+      cabinet.creteamkey = this.CHANNEL_DETAIL.teamKey
+      /* if (this.chanInfo.value) {
         cabinet.creuserkey = this.chanInfo.value.creUserKey
       } else {
         cabinet.creuserkey = this.chanInfo.creUserKey
-      }
+      } */
       cabinet.picBgPath = this.selectedColor
 
       /*

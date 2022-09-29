@@ -2,7 +2,7 @@
 <div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
     <div style="width: 100%; float: left; position: relative;">
         <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
-        <gBtnSmall v-if="tab === 'Mem'" btnTitle="신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/>
+        <!-- <gBtnSmall v-if="tab === 'Mem'" btnTitle="신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/> -->
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <!-- <div v-if="tab === 'Show'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">

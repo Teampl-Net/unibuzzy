@@ -1,11 +1,11 @@
 <template>
 <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
-  <div class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
+  <div v-if="CHANNEL_DETAIL" class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
     <!-- <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' /> -->
     <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; ">
-      <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" v-model="CHANNEL_DETAIL.ELEMENTS.cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
+      <draggable  ref="editableArea"   @end="changePosTeamMenu" class="ghostClass" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="CAB_DETAIL" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
-          <div  v-for="(data, index) in CHANNEL_DETAIL.ELEMENTS.cabinetList" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
+          <div  v-for="(data, index) in CAB_DETAIL" :id="'board' + data.cabinetKey" :key='index' :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
             <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
               <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
             </div> -->
@@ -47,11 +47,23 @@ export default {
 
   },
   computed: {
+    CAB_DETAIL () {
+        if (this.cabinetList.length === 0) {
+            return
+        }debugger
+        for (var i = 0; i <this.cabinetList.length; i++) {
+            
+             console.log(this.cabinetList[i])
+            /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
+        }
+        debugger
+        return this.cabinetList
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
-      return this.$getDetail('TEAM', this.currentTeamKey)[0]
+      return this.$getDetail('TEAM', this.propData.teamKey)[0]
     },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
@@ -70,21 +82,18 @@ export default {
     historyStack (value, old) {
     }
   },
-  async created () {
+  created () {
     this.$emit('openLoading')
-    // console.log(this.propData)
-    if (this.propData) {
-      this.chanInfo = {}
-      this.currentTeamKey = this.propData.currentTeamKey
-      this.chanInfo.nameMtext = this.propData.teamNameMtext
-    }
+    // this.getCabinetDetail()
     // var history = this.$store.getters['D_HISTORY/hStack']
     // this.popId = 'manageBoardPop' + this.currentTeamKey
     // history.push(this.popId)
     // this.$store.commit('D_HISTORY/updateStack', history)
-    if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList < this.CHANNEL_DETAIL.cabinetCount) {
-        await this.getTeamMenuList()
-    }
+    console.log(this.propData)
+    /* if (this.CAB_DETAIL < this.CHANNEL_DETAIL.cabinetCount) {
+        this.getTeamMenuList()
+    } */
+    this.getTeamMenuList()
     this.$emit('closeLoading')
   },
   data () {
@@ -100,7 +109,9 @@ export default {
       tempDeleteData: {},
       currentConfirmType: '',
       currentTeamKey: null,
-      chanInfo: null
+      chanInfo: null,
+      cabinetList: [],
+      axiosQueue: []
     }
   },
   components: {
@@ -133,7 +144,7 @@ export default {
     },
     async getTeamMenuList () {
       var paramMap = new Map()
-      paramMap.set('teamKey', this.currentTeamKey)
+      paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('adminYn', true)
@@ -141,17 +152,18 @@ export default {
       var newArr = []
       var uniqueArr = null
       newArr = [
-        ...this.CHANNEL_DETAIL.ELEMENTS.cabinetList,
+        ...this.cabinetList,
         ...result
       ]
       uniqueArr = this.replaceArr(newArr)
+      console.log(uniqueArr)
       // console.log('uniqueArr')
       // console.log(uniqueArr)
-      this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      this.cabinetList = uniqueArr
+      // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
 
-      // console.log(this.CHANNEL_DETAIL.ELEMENTS.cabinetList)
+      // console.log(this.CAB_DETAIL)
     },
     goPage (link) {
       this.$emit('goPage', link)
@@ -189,11 +201,7 @@ export default {
     },
     openModiBoardPop (data) {
       this.modiBoardDetailProps = data
-      if (this.chanInfo.value) {
-        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.value.nameMtext)
-      } else {
-        this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.chanInfo.nameMtext)
-      }
+      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
       this.modiBoardPopShowYn = true
     },
 
@@ -203,10 +211,10 @@ export default {
       param.creMenuYn = true
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
-      var defaultAddBoardName = this.$checkSameName(this.CHANNEL_DETAIL.ELEMENTS.cabinetList, '게시판')
+      var defaultAddBoardName = this.$checkSameName(this.CAB_DETAIL, '게시판')
       cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-      cabinet.currentTeamKey = this.currentTeamKey
-      cabinet.creTeamKey = this.currentTeamKey
+      cabinet.currentTeamKey = this.CHANNEL_DETAIL.teamKey
+      cabinet.creTeamKey = this.CHANNEL_DETAIL.teamKey
       cabinet.sysCabinetCode = 'BOAR'
       cabinet.menuType = 'C'
       cabinet.blindYn = false
@@ -219,7 +227,7 @@ export default {
         // this.boardList = []
         await this.getTeamMenuList()
       }
-      if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length > 0) {
+      if (this.CAB_DETAIL.length > 0) {
         this.anima()
       }
     },
@@ -237,27 +245,20 @@ export default {
       var teamMenuList = new Array()
       // eslint-disable-next-line no-new-object
       var menu = new Object()
-      var cardList = document.getElementsByClassName('receiverTeamListCard')
+      var cardList = document.getElementsByClassName('boardListCard')
       var index = null
-
-      // var tempList = []
-      // for (let index = 0; index < cardList.length; index++) {
-      //   tempList.push(cardList[index].getAttribute('index'))
-      // }
-      // // console.log(tempList)
-      // eslint-disable-next-line no-array-constructor
       for (var s = cardList.length - 1; s >= 0; s--) {
         index = Number(cardList[s].getAttribute('index'))
-        for (var i = 0; i < this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length; i++) {
+        for (var i = 0; i < this.CAB_DETAIL.length; i++) {
           if (index === i) {
             menu = {}
             menu.menuType = 'C'
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].menuType) { menu.MenuType = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].menuType }
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].teamKey) { menu.teamKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].teamKey }
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].parentMenuKey) { menu.parentMenuKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].parentMenuKey }
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetKey) { menu.cabinetKey = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetKey }
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetNameMtext) { menu.cabinetNameMtext = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].cabinetNameMtext }
-            if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].sysCabinetCode) { menu.sysCabinetCode = this.CHANNEL_DETAIL.ELEMENTS.cabinetList[i].sysCabinetCode }
+            if (this.CAB_DETAIL[i].menuType) { menu.MenuType = this.CAB_DETAIL[i].menuType }
+            if (this.CAB_DETAIL[i].teamKey) { menu.teamKey = this.CAB_DETAIL[i].teamKey }
+            if (this.CAB_DETAIL[i].parentMenuKey) { menu.parentMenuKey = this.CAB_DETAIL[i].parentMenuKey }
+            if (this.CAB_DETAIL[i].cabinetKey) { menu.cabinetKey = this.CAB_DETAIL[i].cabinetKey }
+            if (this.CAB_DETAIL[i].cabinetNameMtext) { menu.cabinetNameMtext = this.CAB_DETAIL[i].cabinetNameMtext }
+            if (this.CAB_DETAIL[i].sysCabinetCode) { menu.sysCabinetCode = this.CAB_DETAIL[i].sysCabinetCode }
             teamMenuList.push(menu)
             break
           }
@@ -272,6 +273,7 @@ export default {
       )
 
       if (result.data.result === true) {
+        // this.cabinetList = teamMenuList
         // this.boardList = []
         // await this.getTeamMenuList()
       //   this.boardList = new Array(tempList)[0]
@@ -285,7 +287,7 @@ export default {
         tempList.push(list[list.length - (a + 1)])
       }
 
-      this.CHANNEL_DETAIL.ELEMENTS.cabinetList = new Array(tempList)
+      this.CAB_DETAIL = new Array(tempList)
     }
     // this.boardList.push()
   }
