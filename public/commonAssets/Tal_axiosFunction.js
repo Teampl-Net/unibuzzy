@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
@@ -21,6 +22,7 @@ axios.defaults.withCredentials = true */
 // 캐싱 방지
 /* axios.defaults.headers.get['Cache-Control'] = 'no-cache'
 axios.defaults.headers.get.Pragma = 'no-cache' */
+var g_axiosQueue = []
 
 export async function commonAxiosFunction (setItem) {
   if (setItem.firstYn) {
@@ -112,21 +114,7 @@ export async function saveUser (userProfile) {
     url: 'service/tp.saveUser',
     param: setParam,
     firstYn: true
-  })/* ).catch(function (error) {
-    if (error.response) {
-      // 요청은 됐으나 에러리턴됨
-      console.log(error.response)
-    } else if (error.request) {
-      // 요청은 됐으나 응답받지못함
-      console.log(error.request)
-    } else {
-      // 그외
-      console.log('ERROR: ', error.message)
-    }
-    alert('세션이 만료되어 메인으로 이동합니다.')
-    router.replace({ path: '/' })
-    console.log(error.config)
-  }) */
+  })
   if (result.data) {
     localStorage.setItem('user', JSON.stringify(result.data))
     // eslint-disable-next-line no-debugger
@@ -142,18 +130,6 @@ export async function saveUser (userProfile) {
   }
 }
 export const methods = {
-  /* ...mapActions('D_USER', [
-    'AC_USER'
-  ]),
-  ...mapActions('D_CHANNEL', [
-    'AC_MAIN_CHAN_LIST'
-  ]),
-  ...mapActions('D_CONTENTS', [
-    'AC_MAIN_ALIM_LIST'
-  ]),
-  ...mapActions('D_CONTENTS', [
-    'AC_MAIN_BOARD_LIST'
-  ]), */
   getMobileYn () {
     var user = navigator.userAgent
     var mobileYn = false
@@ -163,6 +139,8 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
+    if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
+    g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     // testYn = false
@@ -195,6 +173,8 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
+    g_axiosQueue.splice(queueIndex, 1)
     if (result.data.resultCode === 'OK') {
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')

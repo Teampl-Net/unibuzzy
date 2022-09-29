@@ -109,12 +109,8 @@ export default {
       }
     }
     var this_ = this
-    if (this_.axiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
-    this_.axiosQueue.push('getPushContentsList')
 
     this_.getPushContentsList().then(response => {
-      console.log('#################')
-      console.log(response)
       this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = []
       var cont
@@ -135,9 +131,6 @@ export default {
           } else {
             contentDetail = null
           }
-          // console.log('!!!!!!!!!!!!!!!!!!!!!')
-          // console.log(contentDetail)
-
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
             this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
@@ -222,8 +215,6 @@ export default {
     }
   },
   mounted () {
-    // console.log('%%%%%%%%%%%%%')
-    // console.log(this.chanDetail)
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
     if (this.box) {
       this.box.addEventListener('scroll', this.handleScroll)
@@ -253,36 +244,8 @@ export default {
   },
   watch: {
     GE_DISP_CONT_LIST: {
-      /* handler (value, old) {
-        for (var i = 0; i < this.alimContentsList.length; i++) {
-          var userDo = this.alimContentsList[i].userDoList
-          var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
-          if (userDo) {
-            var index = userDo.findIndex((item) => item.doType === 'ST')
-            if (index >= 0) {
-              userDoList[0].doKey = userDo[index].doKey
-            }
-            index = userDo.findIndex((item) => item.doType === 'LI')
-            if (index >= 0) {
-              userDoList[1].doKey = userDo[index].doKey
-            }
-            index = userDo.findIndex((item) => item.doType === 'RE')
-            if (index >= 0) {
-              userDoList[2].doKey = userDo[index].doKey
-            }
-          }
-          this.alimContentsList[i].D_CONT_USER_DO = userDoList
-        }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CAHNNEL', this.alimContentsList)
-      },
-      deep: true */
     },
     GE_CHANNEL_DETAIL: {
-      /* handler (value, old) {
-        // console.log(JSON.stringify(value))
-        alert(JSON.stringify(value))
-      },
-      deep: true */
     },
     GE_NEW_MEMO_LIST: {
       handler (value, old) {
@@ -381,12 +344,6 @@ export default {
       },
       deep: true
     }, */
-    /* GE_CHANNEL_DETAIL: {p
-      handler () {
-        // console.log(this.GE_CHANNEL_DETAIL.ELEMENTS.commonList)
-      },
-      deep: true
-    }, */
     routerReloadKey () {
       this.refreshList()
     },
@@ -410,28 +367,6 @@ export default {
       },
       deep: true
     }
-    /* MU_RECENT_CHANGE_TEAM (value, old) {
-      // console.log(value)
-      if (value === this.chanDetail.teamKey) {
-        alert(value)
-        this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
-        // console.log('new!!!')
-        // console.log(this.GE_CHANNEL_DETAIL)
-      }
-    },
-    GE_MAIN_CHAN_LIST (value, old) {
-      // console.log('왔다!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      // console.log(value)
-      this.GE_CHANNEL_DETAIL = this.$getDetail('TEAM', this.GE_CHANNEL_DETAIL.teamKey).data
-      // console.log('new!!!')
-      // console.log(this.GE_CHANNEL_DETAIL)
-    },
-    MAIN_ALIM_LIST (value, old) {
-      this.alimList = value
-      // console.log('alimList!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      // console.log(this.alimList)
-      this.setAllContents()
-    } */
   },
   computed: {
     GE_CHANNEL_DETAIL () {
@@ -485,7 +420,6 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.boardContentsList = test
       return test
     },
     GE_USER () {
@@ -528,34 +462,16 @@ export default {
         idx = this.boardContentsList.findIndex(i => i.contentsKey === contentKey)
         if (idx !== -1) cont = this.boardContentsList[idx]
       }
-      // console.log('#######yesLoadMore#####')
-      // console.log('index : ' + idx)
-      // console.log(cont)
-      // console.log('############')
-      // eslint-disable-next-line no-debugger
-      debugger
-      /* debugger */
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
-      // console.log('// console.log(response)')
-      // console.log(response)
-      // console.log(cont.D_MEMO_LIST)
-
       var newArr = [
         ...cont.D_MEMO_LIST,
         ...response
       ]
       var newList = await this.replaceMemoArr(newArr)
 
-      // console.log(newList)
       cont.D_MEMO_LIST = newList
-      // console.log(cont)
 
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-      // eslint-disable-next-line no-debugger
-      debugger
-      // this.currentMemoObj = cont
-      // if (this.offsetInt === response.totalElements) { this.showMoreMemoTextYn = false }
-      // this.memoSetCount(response.totalElements)
     },
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -571,15 +487,12 @@ export default {
       return uniqueArr
     },
     writeMememo (memo) {
-      // console.log('###########write#######')
-      // console.log(memo)
       this.mememoValue = {}
       this.currentContentsKey = memo.memo.targetKey
       this.mememoValue = memo
       this.memoShowYn = true
     },
     async deleteMemo (param) {
-      // console.log(param)
       if (this.axiosQueue.findIndex((item) => item === 'deleteMemo') !== -1) return
       var memo = {}
       memo.memoKey = param.memoKey
@@ -589,7 +502,7 @@ export default {
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+      this.axiosQueue.splice(queueIndex, 1)
       var index
       if (result.data.result === true) {
         // var cont = this.currentMemoObj
@@ -601,15 +514,7 @@ export default {
           idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
           if (idx !== -1) cont = this.boardContentsList[idx]
         }
-        // this.memoList = []
-        // await this.getBoardMemoList(true)
-        // var response = await this.getContentsMemoList(this.currentContentsKey)
-        // console.log('$$$$$$$$$$$$cont#############')
-        // console.log(cont)
-        // console.log(idx)
-        // console.log('$$$$$$$$$$$$@@@@#############')
         index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
-        // console.log(cont.D_MEMO_LIST)
         var cmemoListIdx
         if (param.parentMemoKey) {
           for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
@@ -621,9 +526,6 @@ export default {
               }
             }
           }
-          // console.log('cMemoList 중 해당 인덱스는 : ' + index)
-          // console.log('해당 메모가 있는 인덱스는 : ' + cmemoListIdx)
-          // console.log('cont.D_MEMO_LIST[cmemoListIdx] : ' + cont.D_MEMO_LIST[cmemoListIdx])
           cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
         } else {
           cont.D_MEMO_LIST.splice(index, 1)
@@ -642,7 +544,6 @@ export default {
     confirmOk () {
       this.confirmType = 'timeout'
       if (this.currentConfirmType === 'memoDEL') {
-        // console.log(this.tempData)
         this.deleteMemo({ memoKey: this.tempData.memoKey, contentsKey: this.tempData.targetKey, parentMemoKey: this.tempData.parentMemoKey })
       }
       this.currentConfirmType = ''
@@ -650,7 +551,6 @@ export default {
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
-        // console.log(data)
         this.tempData = data
       }
 
@@ -667,27 +567,17 @@ export default {
         this.confirmText = '게시글을 삭제 하시겠습니까?'
         this.currentConfirmType = 'boardDEL'
       }
-      // console.log(this.tempData)
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
     memoSetCount (size, key) {
-      // var contentsKey = this.currentContentsKey
-      // if (key !== undefined && key !== null && key !== '' ) contentsKey = key
-      // // var indexOf = this.commonListData.findIndex(i => i.contentsKey === contentsKey); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
-      // // if (indexOf !== -1 ){
-      // //   this.commonListData[indexOf].memoCount = size
-      // // }
     },
     mememoCancel () {
       this.mememoValue = null
     },
     writeMemo (param) {
-      // console.log('tal_pushList writeMemo' + JSON.stringify(param))
       this.mememoValue = null
       this.memoShowYn = true
-      // this.writeMemoTempmcckey = param.mccKey
-      // var currentContentsKey
       var idx
       if (this.viewMainTab === 'P') {
         idx = this.alimContentsList.findIndex(i => i.contentsKey === param.contentsKey)
@@ -708,12 +598,6 @@ export default {
           return
         }
       }
-
-      // console.log('##############')
-      // console.log('작성 할 contents index 는 : ' + idx)
-      // console.log('작성 할 contents key 는 : ' + this.currentContentsKey)
-      // console.log('##############')
-
       this.writeMemoTempTeamKey = param.teamKey
     },
     async saveMemo (text) {
@@ -735,19 +619,13 @@ export default {
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      // console.log(memo)
-
       // try {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-      // console.log('!!!!!! SAVE MEMO result !!!!!!!')
-      // console.log(result)
-
+      this.axiosQueue.splice(queueIndex, 1)
       if (result.data.result === true || result.data.result === 'true') {
         /* this.confirmText = '댓글 저장 성공'
         this.confirmPopShowYn = true */
@@ -771,14 +649,9 @@ export default {
             cont = this.boardContentsList[idx]
           }
         }
-        // console.log('memoLength : ' + memoLength)
-        // console.log('memoLength : ' + memoLength)
 
         if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
           var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
-          // console.log('!!!response!!!!')
-          // console.log(response)
-          // console.log('!!!!!!!!!!!!!!!')
           if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
           var newArr = [
             ...response,
@@ -790,22 +663,11 @@ export default {
           cont.memoCount += 1
           // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          // this.currentMemoObj = cont
-          // this.currentMemoList = cont.D_MEMO_LIST
-          // this.memoSetCount(response.totalElements)
-          // this.pointAni()
         }
-        /* this.scrollMove(-1) */
       }
-      // } catch (e) {
-      //   // console.log(e)
-      // } finally {
-      //   this.saveMemoLoadingYn = false
-      // }
       this.saveMemoLoadingYn = false
     },
     memoOpenClick (params) {
-      // console.log(params)
     },
     async getContentsMemoList (key, pageSize, offsetInt) {
       if (this.axiosQueue.findIndex((item) => item === 'getContentsMemoList') !== -1) return
@@ -813,6 +675,7 @@ export default {
       var memo = {}
       memo.targetKind = 'C'
       memo.targetKey = key
+      // eslint-disable-next-line no-unused-vars
       var idx, cont
       if (this.viewMainTab === 'P') {
         idx = this.alimContentsList.findIndex(i => i.contentsKey === key)
@@ -821,89 +684,23 @@ export default {
         idx = this.boardContentsList.findIndex(i => i.mccKey === key)
         if (idx !== -1) cont = this.boardContentsList[idx]
       }
-
-      // console.log('getContentsMemoList idx :' + idx)
-      // console.log('#########################')
-      // console.log('param key : ' + key + ' param pageSize : ' + pageSize + ' param offsetInt : ' + offsetInt)
       if (pageSize) memo.pageSize = pageSize
       else memo.pageSize = this.pagesize
       if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
       else memo.offsetInt = this.offsetInt
-      // if (allYn) {
-      //   memo.pageSize = this.totalElements + 1
-      //   memo.offsetInt = 0
-      // }
 
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
       })
-      // console.log(result)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-      console.log(cont)
-      if (result.data.memoList) {
-        // cont.totalMemoCount = result.data.totalElements
-        // var tempList = []
-        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
-        // if (cont.D_MEMO_LIST) {
-        //   tempList = cont.D_MEMO_LIST
-        // }
-        // const newArr = [
-        //   ...tempList,
-        //   ...result.data.memoList
-        // ]
-        // var tempMemo = this.replaceArr(newArr)
-
-        // if (tempMemo && tempMemo.length > 0) {
-        //   for (let i = 0; i < tempMemo.length; i++) {
-        //     if (tempMemo.parentMemoKey) {
-        //       for (let j = 0; j < tempMemo.length; j++) {
-        //         if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
-        //           tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
-        //           tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
-        //         }
-        //       }
-        //     }
-        //   }
-        // }
-        // // console.log('sssssssssssssssssssssssssssss')
-        // // console.log(tempMemo)
-        // // console.log('sssssssssssssssssssssssssssss')
-        // cont.D_MEMO_LIST = tempMemo
-        // this.offsetInt = tempMemo.length
-        // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', cont)
-      }
-
-      // // console.log(result.data.content)
-      // var list = []
-      // list = tempMemo
-      // // console.log(list)
-      // // console.log(tempMemo)?
-      /* // console.log('this.$refs.gMemoRef')
-      // console.log(this.$refs.gMemoRef)
-      this.$refs.gMemoRef.memoLoadingHide() */
-      // this.currentMemoObj = cont
-      // this.currentMemoTotal = this.currentMemoObj.totalElements
+      this.axiosQueue.splice(queueIndex, 1)
 
       return result.data.memoList
-      // if (allYn) {
-      //   this.alimMemoList = result.data.content
-      //   this.endListYn = true
-      // } else {
-      //   const newArr = [
-      //     ...this.alimMemoList,
-      //     ...result.data.content
-      //   ]
-      //   this.alimMemoList = newArr
-      // }
     },
     updateStoreData (uniqueArr) {
       var this_ = this
       if (this.chanAlimYn) {
-        // console.log(this.CHANNEL_DETAIL)
-        // eslint-disable-next-line no-debugger
-        debugger
         this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
         if (this.viewMainTab === 'P') {
           this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'ALIM'
@@ -918,83 +715,75 @@ export default {
         if (this.viewMainTab === 'P') {
           this_.$actionVuex('ALIM', uniqueArr, null, true, false)
         } else if (this.viewMainTab === 'B') {
-          // eslint-disable-next-line no-debugger
-          debugger
           this_.$actionVuex('BOAR', uniqueArr, null, true, false)
         }
       }
     },
 
     async getPushContentsList (pageSize, offsetInput) {
-    // @point
-    // eslint-disable-next-line no-new-object
-      var param = new Object()
-      if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
-      }
-      if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
-
-      if (pageSize !== undefined) { param.pageSize = pageSize } else { param.pageSize = 10 }
-
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+      if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
+        this.axiosQueue.push('getPushContentsList')
+        // @point
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
+          param.creTeamKey = this.chanDetailKey
         }
-      }
-      param.findLogReadYn = null
-      param.findActLikeYn = false
-      param.findActStarYn = false
-      param.DESCYn = true
+        if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
 
-      if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
-        param.targetContentsKey = this.targetCKey
-        param.DESCYn = this.loadMoreDESCYn
-      }
+        if (pageSize !== undefined) { param.pageSize = pageSize } else { param.pageSize = 10 }
 
-      /* if (this.readCheckBoxYn) { //읽지않음 읽음
-      param.findLogReadYn = false
-    } */
-      if (this.viewTab === 'N') {
-        param.creTeamKey = this.chanDetailKey
-      } else if (this.viewTab === 'L') {
-        param.creTeamKey = this.chanDetailKey
-        param.findActYn = true
-        param.findActLikeYn = true
-      } else if (this.viewTab === 'S') {
-        param.creTeamKey = this.chanDetailKey
-        param.findActYn = true
-        param.findActStarYn = true
-      } else if (this.viewTab === 'M') {
-        param.creTeamKey = this.chanDetailKey
-        param.creUserKey = this.GE_USER.userKey
-      }
-      if (this.viewMainTab === 'P') {
-        param.jobkindId = 'ALIM'
-        param.ownUserKey = this.GE_USER.userKey
-      } else if (this.viewMainTab === 'B') {
-        param.jobkindId = 'BOAR'
+        if (this.findKeyList) {
+          if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+            param.title = this.findKeyList.searchKey
+          } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+            param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+          } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+            param.toCreDateStr = this.findKeyList.toCreDateStr
+          } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+            param.fromCreDateStr = this.findKeyList.fromCreDateStr
+          }
+        }
+        param.findLogReadYn = null
+        param.findActLikeYn = false
+        param.findActStarYn = false
+        param.DESCYn = true
+
+        if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
+          param.targetContentsKey = this.targetCKey
+          param.DESCYn = this.loadMoreDESCYn
+        }
         if (this.viewTab === 'N') {
-          param.boardYn = true
-        } else {
-          param.ownUserKey = this.GE_USER.userKey
+          param.creTeamKey = this.chanDetailKey
+        } else if (this.viewTab === 'L') {
+          param.creTeamKey = this.chanDetailKey
+          param.findActYn = true
+          param.findActLikeYn = true
+        } else if (this.viewTab === 'S') {
+          param.creTeamKey = this.chanDetailKey
+          param.findActYn = true
+          param.findActStarYn = true
+        } else if (this.viewTab === 'M') {
+          param.creTeamKey = this.chanDetailKey
+          param.creUserKey = this.GE_USER.userKey
         }
+        if (this.viewMainTab === 'P') {
+          param.jobkindId = 'ALIM'
+          param.ownUserKey = this.GE_USER.userKey
+        } else if (this.viewMainTab === 'B') {
+          param.jobkindId = 'BOAR'
+          if (this.viewTab === 'N') {
+            param.boardYn = true
+          } else {
+            param.ownUserKey = this.GE_USER.userKey
+          }
+        }
+        var result = await this.$getContentsList(param)
+        var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
+        this.axiosQueue.splice(queueIndex, 1)
+        var resultList = result
+        return resultList
       }
-      // console.log('param')
-      console.log('param')
-      console.log(param)
-      var result = await this.$getContentsList(param)
-      console.log(result)
-      /* if (result.empty) {
-        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
-      } */
-      var resultList = result
-      return resultList
     },
     makeNewContents (data) {
       // eslint-disable-next-line no-new-object
@@ -1011,7 +800,6 @@ export default {
       param.selectBoardYn = true
       param.modiContentsKey = data.contentsKey
       param.titleStr = data.title
-      // param.parentAttachTrueFileList = this.attachTrueFileList
       this.$emit('openPop', param)
     },
     moveOrCopyContent (data) {
@@ -1030,13 +818,6 @@ export default {
       // this.targetCKey = null
       this.viewMainTab = tab
       this.offsetInt = 0
-
-      /* var jobkindId = 'ALIM'
-      if (this.chanAlimYn) {
-        this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.list = []
-        if (tab === 'B') jobkindId = 'BOAR'
-        this.GE_CHANNEL_DETAIL.ELEMENTS.commonList.type = jobkindId
-      } */
       this.refreshList()
       this.$emit('changeMainTab', tab)
     },
@@ -1064,7 +845,7 @@ export default {
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+      this.axiosQueue.splice(queueIndex, 1)
       if (result.data.length > 0) {
         return true
       } else {
@@ -1137,11 +918,8 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      // // console.log(this.getAbsoluteTop(element))
-      // this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       if (element) {
         this.firstContOffsetY = this.getAbsoluteTop(element)
-        // // console.log(this.firstContOffsetY)
         if (this.firstContOffsetY > 0) {
           this.scrollDirection = 'up'
           this.scrolledYn = false
@@ -1184,15 +962,14 @@ export default {
         this.alimContentsList = this.replaceArr(newArr)
         for (let i = 0; i < this.alimContentsList.length; i++) {
           cont = this.alimContentsList[i]
+
           tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
             contentDetail = null
           }
-          // console.log('!!!!!!!!!!!!!!!!!!!!!')
-          // console.log(contentDetail)
-
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
             this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
@@ -1212,9 +989,9 @@ export default {
           ...this.boardContentsList,
           ...resultList.content
         ]
-        this.boardContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.boardContentsList.length; i++) {
-          cont = this.boardContentsList[i]
+        var tempArr = this.replaceArr(newArr)
+        for (let i = 0; i < tempArr.length; i++) {
+          cont = tempArr[i]
           tempContentDetail = []
           tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
           if (tempContentDetail) {
@@ -1237,12 +1014,12 @@ export default {
             cont.D_MEMO_LIST = newList
             this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           }
+          tempArr[i] = cont
         }
+        this.boardContentsList = tempArr
       }
     },
     endListSetFunc (resultList) {
-      // console.log('result')
-      // console.log(resultList)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
@@ -1250,7 +1027,6 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
       }
-      // console.log(this.endListYn, '', this.offsetInt)
     },
     async loadMore (descYn) {
       console.log('this.canLoadYn : ' + this.canLoadYn + ' this.endListYn : ' + this.endListYn)
@@ -1258,7 +1034,6 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
-        console.log(resultList)
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
@@ -1293,16 +1068,7 @@ export default {
         await this.endListSetFunc(resultList)
         this.contentsList = this.replaceArr(newArr)
         this.canLoadYn = true
-        // console.log('this.offsetInt' + this.offsetInt)
         this.$emit('numberOfElements', resultList.totalElements)
-        // if (this.targetContentsKey !== undefined && this.targetContentsKey !== null && this.targetContentsKey !== '') {
-        //   var a = this.$refs.pushListChangeTabLoadingComp.contentsWich(this.targetContentsKey)
-        //   // console.log(a)
-        //   // console.log(a)
-        //   // console.log(a)
-
-        //   this.scrollMove(a + 1000)
-        // }
       } else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
@@ -1364,7 +1130,6 @@ export default {
       this.scrollMove()
     },
     scrollMove (wich) {
-      // console.log('scrollMove : ' + wich)
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       if (wich === undefined || wich === null || wich === '') { wich = 0 }
       ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
@@ -1469,7 +1234,6 @@ export default {
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
       this.imgDetailAlertShowYn = true
@@ -1487,14 +1251,12 @@ export default {
         if (this.mobileYn) {
           onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
         } else {
-          var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
-          console.log(result)
+          await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
         }
         this.errorText = '저장되었습니다!'
         this.backClick()
         this.failPopYn = true
       } catch (error) {
-        // console.log(error)
       }
     }
   },

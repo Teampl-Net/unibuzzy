@@ -8,6 +8,7 @@ import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './Tal_common'
 var this_ = this
 var g_user = store.getters['D_USER/GE_USER']
+var g_axiosQueue = []
 document.addEventListener('message', e => functions.recvNoti(e))
 window.addEventListener('message', e => functions.recvNoti(e))
 var notiDetail
@@ -143,11 +144,12 @@ const functions = {
     return cabinetDetail
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
+    if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
+    g_axiosQueue.push('getContentsDetail')
     var detailData
     var dataList
     if (!targetKey) return null
     if (!teamDetail) {
-      debugger
       if (teamKey) {
         var teamList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
         var result = teamList.filter(data => data.teamKey === teamKey)
@@ -157,21 +159,15 @@ const functions = {
           return null
         }
       }
-    // } else {
-    //   return null
     }
-    console.log(teamDetail)
-    console.log(teamDetail.ELEMENTS)
-    detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
-    console.log('boardList')
-    console.log(detailData)
     if (detailData && detailData.length !== 0) {
       return detailData
     } else {
       detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
 
       console.log('alimList')
-      console.log(detailData)
+      var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
+      g_axiosQueue.splice(queueIndex, 1)
       return detailData
     }
   },

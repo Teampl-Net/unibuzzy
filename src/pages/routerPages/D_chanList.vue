@@ -334,6 +334,8 @@ export default {
     },
 
     async getChannelList (pageSize, offsetInput) {
+      if (this.axiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
+	  this.axiosQueue.push('getChannelList')
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       if (this.viewTab === 'user') {
@@ -358,6 +360,8 @@ export default {
         paramMap.set('pageSize', 10)
       }
       var result = await this.$getTeamList(paramMap)
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getChannelList')
+      this.axiosQueue.splice(queueIndex, 1)
       // var pageable = resultList.pageable
       // eslint-disable-next-line no-
       // this.totalPages = resultList.totalPages
@@ -440,7 +444,8 @@ export default {
       listShowYn: true,
       currentTabName: '구독중',
       emptyYn: true,
-      loadingYn: false
+      loadingYn: false,
+      axiosQueue: []
     }
   },
   props: {

@@ -719,7 +719,6 @@ export const commonMethods = {
   },
   changeUrlBackslash (url) {
     var changedUrl = url.replace(/\\/ig, '/')
-    console.log(changedUrl)
     return changedUrl
   },
   makeHistoryObj (routerYn, page, targetKey, id) {

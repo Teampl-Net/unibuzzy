@@ -54,10 +54,10 @@ export default {
         // { myActTabType: 'mi', name: '관심있는' },
         { tabType: 'mwb', name: '작성한' }, { tabType: 'mcb', name: '댓글 단' }, { tabType: 'mlb', name: '좋아한' }, { tabType: 'msb', name: '스크랩한' }],
       myPageTabType: 'ALIM',
-      // ma: my act (내가 작성한, 내가 댓글 단..) / m1: my log (이력) / mi: my info (내 정보)
       myPageTabList: [{ myPageTabType: 'ALIM', name: '알림' }, { myPageTabType: 'BOAR', name: '게시글' }
         // { myPageTabType: 'mi', name: '내 정보' }
-      ]
+      ],
+      axiosQueue: []
     }
   },
   async created () {
@@ -209,7 +209,6 @@ export default {
         param.findActYn = true
         param.findActStarYn = true
       }
-      // console.log(param)
       var result = await this.$getContentsList(param)
       if (result.empty) {
         this.endListYn = true
@@ -218,7 +217,6 @@ export default {
         }
       }
       var resultList = result
-      // console.log(resultList)
       this.$emit('closeLoading')
       return resultList
     },

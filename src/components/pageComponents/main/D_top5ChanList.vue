@@ -45,7 +45,6 @@ export default {
   created () {
     if (this.chanList) {
       this.mainChanList = this.chanList
-      // console.log(this.mainChanList)
     }
   },
   props: {
@@ -81,7 +80,6 @@ export default {
     },
     GE_DISP_CHAN_LIST () {
       var idx1
-      // console.log(this.mainChanList)
       if (this.mainChanList && this.mainChanList.length > 0) {
         var chanList = []
         for (var i = 0; i < this.mainChanList.length; i++) {
@@ -91,7 +89,6 @@ export default {
           } else {
             chanList.push(this.mainChanList[i])
           }
-          console.log(chanList[i].logoPathMtext)
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
         return chanList
@@ -152,7 +149,6 @@ export default {
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
-      console.log(resultList.data.content)
       this.mainChanList = resultList.data.content
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
     },
@@ -204,16 +200,9 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
-      // this.introTop5ChanPageTab()
-      // this.emptyYn = false
-      // // console.log(data)
       await this.getContentsList()
       // if (this.chanList.length === 0) this.emptyYn = true
     }
-    /* async reLoad () {
-      await this.$refs.activeBarChanListTop5.switchtab(0)
-      await this.$refs.activeBarChanListTop5.selectTab('user')
-    } */
   }
 }
 </script>

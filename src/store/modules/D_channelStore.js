@@ -236,8 +236,6 @@ const D_CHANNEL = {
       return true
     },
     MU_REPLACE_CHANNEL: (state, payload) => {
-      console.log('^^^^^^^^^^^^^^^^^^^^^^^')
-      console.log(payload)
       var idx1
       var chanList = state.chanList
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
@@ -293,7 +291,6 @@ const D_CHANNEL = {
       chanList[idx1] = chanDetail
       state.chanList = chanList
       state.recentChangeTeamKey = payload.creTeamKey
-      // console.log('?????????????????????')
       return true
     },
     MU_REPLACE_CONTENTS: (state, payload) => {
@@ -307,15 +304,12 @@ const D_CHANNEL = {
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
-        console.log('content의 위치는 : ')
-        console.log(idx2)
         var dataList = null
         if (payload[i].jobkindId === 'BOAR') {
           dataList = chanDetail.ELEMENTS.boardList[idx2]
         } else {
           dataList = chanDetail.ELEMENTS.alimList[idx2]
         }
-        console.log(dataList)
         if (!dataList.D_MEMO_LIST) {
           dataList.D_MEMO_LIST = []
         }
@@ -378,8 +372,6 @@ const D_CHANNEL = {
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
     },
     MU_ADD_CONTENTS: (state, payload) => {
-      console.log('MU_ADD_CONTENTS')
-      console.log(payload)
       var idx1, idx2
       var chanList = state.chanList
       if (payload.length === 0) return

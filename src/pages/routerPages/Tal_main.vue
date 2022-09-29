@@ -82,7 +82,8 @@ export default {
       notiDetail: {},
       systemName: {},
       mainAlimList: [],
-      mainChanList: []
+      mainChanList: [],
+      axiosQueue: []
     }
   },
   components: {
@@ -96,6 +97,8 @@ export default {
   },
   methods: {
     async getMainBoard () {
+      if (this.axiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
+      this.axiosQueue.push('getMainBoard')
       var paramMap = new Map()
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
@@ -104,6 +107,8 @@ export default {
       }
       var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
+      this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
         this.mainChanList = response.data.teamList
         if (this.GE_MAIN_CHAN_LIST.length > 0) {
