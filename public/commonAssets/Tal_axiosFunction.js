@@ -116,6 +116,8 @@ export async function saveUser (userProfile) {
     firstYn: true
   })
   if (result.data) {
+    // eslint-disable-next-line no-debugger
+    debugger
     localStorage.setItem('user', JSON.stringify(result.data))
     // eslint-disable-next-line no-debugger
     debugger

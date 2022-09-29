@@ -819,8 +819,6 @@ export default {
         param.jobkindId = result.contents.jobkindId
         var resultList = await this.$getContentsList(param)
         var detailData = resultList.content[0]
-        // debugger
-        console.log([detailData])
         this.$store.commit('D_CHANNEL/MU_ADD_CONTENTS', [detailData])
         debugger
 

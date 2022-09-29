@@ -96,8 +96,8 @@ export default {
         this.contentsList = value
       },
       deep: true
-    }
-    /* GE_NEW_CONT_LIST: {
+    },
+    GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
         if (!value) return
@@ -109,7 +109,7 @@ export default {
         this.contentsList = this.replaceArr(newArr)
       },
       deep: true
-    } */
+    }
   },
   components: {
     listTitle,

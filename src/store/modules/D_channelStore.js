@@ -183,6 +183,7 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
+      if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
