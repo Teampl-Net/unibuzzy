@@ -241,6 +241,21 @@ export const methods = {
     resultList = result.data
     return resultList
   },
+  async getContentsOnly (inputParam) {
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
+    if (inputParam) {
+      paramSet = inputParam
+    }
+    // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+    var resultList = null
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getContents',
+      param: paramSet
+    })
+    resultList = result.data
+    return resultList
+  },
   async saveUserDo (inputParam, type) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
@@ -521,5 +536,6 @@ export default {
     Vue.config.globalProperties.$saveMCabContents = methods.saveMCabContents
     Vue.config.globalProperties.$changeDispName = methods.changeDispName
     Vue.config.globalProperties.$getMobileYn = methods.getMobileYn
+    Vue.config.globalProperties.$getContentsOnly = methods.getContentsOnly
   }
 }

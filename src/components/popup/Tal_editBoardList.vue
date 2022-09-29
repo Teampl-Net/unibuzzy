@@ -49,7 +49,7 @@ export default {
   computed: {
     CAB_DETAIL () {
         if (this.cabinetList.length === 0) {
-            return
+            return []
         }debugger
         for (var i = 0; i <this.cabinetList.length; i++) {
 
@@ -84,15 +84,7 @@ export default {
   },
   created () {
     this.$emit('openLoading')
-    // this.getCabinetDetail()
-    // var history = this.$store.getters['D_HISTORY/hStack']
-    // this.popId = 'manageBoardPop' + this.currentTeamKey
-    // history.push(this.popId)
-    // this.$store.commit('D_HISTORY/updateStack', history)
     console.log(this.propData)
-    /* if (this.CAB_DETAIL < this.CHANNEL_DETAIL.cabinetCount) {
-        this.getTeamMenuList()
-    } */
     this.getTeamMenuList()
     this.$emit('closeLoading')
   },
@@ -149,16 +141,20 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
-      var newArr = []
-      var uniqueArr = null
-      newArr = [
-        ...this.cabinetList,
-        ...result
-      ]
-      uniqueArr = this.replaceArr(newArr)
-      console.log(uniqueArr)
-      // console.log('uniqueArr')
-      // console.log(uniqueArr)
+      var uniqueArr = []
+      if (result && result.length > 0) {
+        var newArr = []
+        
+        newArr = [
+            ...this.cabinetList,
+            ...result
+        ]
+        uniqueArr = this.replaceArr(newArr)
+        console.log(uniqueArr)
+        // console.log('uniqueArr')
+        // console.log(uniqueArr)
+        
+      }
       this.cabinetList = uniqueArr
       // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */

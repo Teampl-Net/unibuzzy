@@ -827,34 +827,6 @@ export default {
           } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
             if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               // alert(Number(JSON.parse(this.notiDetail.userDo).userKey))
-              if (/* (this.targetType === 'memberManagement') && */ ((this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') || (this.notiDetail.actType === 'MA'))) {
-                if (this.notiDetail.actType === 'MA') {
-                  // alert(Number(JSON.parse(this.notiDetail.userDo).userKey) + ';;;' + this.GE_USER.userKey)
-                  if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
-                    if (this.targetType === 'chanDetail' && (Number(this.notiDetail.creTeamKey) === this.params.targetKey)) {
-                      // alert(true)
-                      await this.$addChanList(Number(this.notiDetail.creTeamKey))
-                    }
-                  }
-                }
-                var channelL = this.$getDetail('TEAM', Number(JSON.parse(this.notiDetail.userDo).targetKey))
-                if (channelL) {
-                  var user = null
-                  if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                    user = await this.getFollowerList(channelL[0].teamKey, Number(JSON.parse(this.notiDetail.userDo).userKey))
-                    if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
-                  } else if (this.notiDetail.actType === 'MA') {
-                    user = await this.getFollowerList(channelL[0].teamKey, Number(JSON.parse(this.notiDetail.userDo).userKey))
-                    // channelL[0].ELEMENTS.showProfileUserList.push(user)
-                    if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
-                  }
-                } else if ((this.notiDetail.actType === 'MA')) {
-                  alert(Number(JSON.parse(this.notiDetail.userDo).userKey) + ';;;' + this.GE_USER.userKey)
-                  if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
-                    alert(true)
-                  }
-                }
-              }
             } else {
               if (this.targetTye === 'chanDetail' && this.targetKey === Number(this.notiDetail.creTeamKey)) return
               if (this.notiDetail.actType === 'FL') {

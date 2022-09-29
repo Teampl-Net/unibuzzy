@@ -4,7 +4,7 @@
 
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
-import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
+import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './Tal_common'
 var this_ = this
 var g_user = store.getters['D_USER/GE_USER']
@@ -279,24 +279,53 @@ const functions = {
       }
     }
   },
-  async settingChanNoti (message) {
-    if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+  async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
+    var paramMap = new Map()
+    paramMap.set('teamKey', teamKey)
+    paramMap.set('userKey', userKey)
+    if (showProfileYn) {
+      paramMap.set('showProfileYn', showProfileYn)
+    } else {
+      if (managerYn) {
+        paramMap.set('managerYn', managerYn)
+      }
     }
-    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL') {
-      var chanDetail = await functions.getDetail('TEAM', JSON.parse(notiDetail.userDo).targetKey)
-      if (!chanDetail || chanDetail.length === 0) return
-      chanDetail[0].followerCount += 1
-      store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', chanDetail[0])
+    // paramMap.set('followerType', 'M')
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getFollowerList',
+      param: Object.fromEntries(paramMap)
+    })
+    var user = result.data.content
+    return user
+  },
+  async settingChanNoti (message) {
+    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
+      await functions.addChanList(Number(notiDetail.creTeamKey))
+    }
+
+    if ((this.targetType === 'memberManagement') && ((notiDetail.actType === 'ME' || notiDetail.actType === 'FM') || (notiDetail.actType === 'MA'))) {
+      var channelL = functions.getDetail('TEAM', Number(JSON.parse(notiDetail.userDo).targetKey))
+      if (channelL) {
+        var user = null
+        if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
+        } else if (notiDetail.actType === 'MA') {
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          // channelL[0].ELEMENTS.showProfileUserList.push(user)
+          if (user.length === 1) store.commit('D_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
+        }
+      }
     }
     if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
     } else {
-      this.$router.replace({ path: '/' })
+      // this.$router.replace({ path: '/' })
       if (notiDetail.actType === 'FL') {
-        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
-        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       } else if (notiDetail.actType === 'MA') {
-        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       }
     }
   },
@@ -306,9 +335,9 @@ const functions = {
 
       } else {
         if (notiDetail.jobkindId === 'ALIM') {
-          this.openPop({ targetKey: notiDetail.creTeamKey, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+          // this.openPop({ targetKey: notiDetail.creTeamKey, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
         } else if (notiDetail.jobkindId === 'BOAR') {
-          this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+          // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
         }
       }
     }

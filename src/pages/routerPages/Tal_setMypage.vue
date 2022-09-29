@@ -175,6 +175,7 @@ export default {
 
       if (result.data) {
         this.changeYn = false
+        this.$store.commit('D_USER/MU_USER', result.data)
         this.$router.push('/')
         this.$emit('closeXPop')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)

@@ -50,6 +50,10 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     this.$emit('openLoading')
+    if (!this.GE_USER) {
+      this.$router.push('/policies')
+      return
+    }
     this.getMainBoard()
     this.loadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')

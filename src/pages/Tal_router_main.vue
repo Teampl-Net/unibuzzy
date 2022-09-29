@@ -197,7 +197,7 @@ export default {
       // alert(JSON.stringify(memos))
       return memos
     },
-    async setContentsDetail (contentsKey, jobkindId) {
+    async getContentsYn (contentsKey, jobkindId) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.contentsKey = contentsKey
@@ -205,10 +205,8 @@ export default {
       // // console.log(param)
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
-      var detailData = resultList.content[0]
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
-
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
+      alert(resultList.content.length)
+      return resultList.content
       // alert(JSON.stringify(detailData))
     },
     async settingUserDo (userDo) {

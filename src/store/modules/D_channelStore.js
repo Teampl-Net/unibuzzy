@@ -60,12 +60,12 @@ const D_CHANNEL = {
       if (payload.parentMemoKey) {
         index = state.addMemoList.findIndex((item) => item.memoKey === payload.parentMemoKey)
         if (index !== -1) {
-          state.addMemoList = state.addMemoList.splice(index, 1)
+          state.addMemoList.splice(index, 1)
         }
       } else {
         index = state.addMemoList.findIndex((item) => item.memoKey === payload.memoKey)
         if (index !== -1) {
-          state.addMemoList = state.addMemoList.splice(index, 1)
+          state.addMemoList.splice(index, 1)
         }
       }
       // alert(index)
@@ -103,12 +103,14 @@ const D_CHANNEL = {
       // alert(JSON.stringify(dataList[index3].D_MEMO_LIST))
       var newIdx = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.memoKey)
       if (state.addMemoList.length > 30) {
-        state.addMemoList = state.addMemoList.splice(0, 30)
+        state.addMemoList.splice(0, 30)
       }
-      if (dataList[index3] === 'ALIM') {
+      // alert(JSON.stringify(dataList[index3]))
+      if (dataList[index3].jobkindId === 'ALIM') {
         if (newIdx === -1) {
-          state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST.push(payload)
+          state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST.unshift(payload)
           state.addMemoList.unshift(payload)
+          // alert(state.addMemoList)
         } else {
           // alert('여기')
           state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST[newIdx] = payload
@@ -116,7 +118,8 @@ const D_CHANNEL = {
         }
       } else {
         if (newIdx === -1) {
-          state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST.push(payload)
+          // alert('BOAR1')
+          state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST.unshift(payload)
           state.addMemoList.unshift(payload)
         } else {
           state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST[newIdx] = payload
@@ -283,7 +286,7 @@ const D_CHANNEL = {
           chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
           // alert('yes' + payload[i].userKey)
           if (state.addShowProfileUserList.length > 50) {
-            state.addShowProfileUserList = state.addShowProfileUserList.splice(0, 50)
+            state.addShowProfileUserList.splice(0, 50)
           }
           state.addShowProfileUserList.unshift(payload[i])
         }
@@ -395,7 +398,7 @@ const D_CHANNEL = {
             }
             debugger
             if (state.addContsList.length > 30) {
-              state.addContsList = state.addContsList.splice(0, 30)
+              state.addContsList.splice(0, 30)
             }
             state.addContsList.unshift(payload[i])
           }
@@ -536,8 +539,6 @@ const D_CHANNEL = {
       commit('MU_RECENT_CHANGE_TEAM', payload)
     },
     AC_REPLACE_CHANNEL: ({ commit }, payload) => {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (payload.ELEMENTS) {
         if (!payload.ELEMENTS.alimList) { payload.ELEMENTS.alimList = [] }
         if (!payload.ELEMENTS.commonList) { payload.ELEMENTS.commonList = { type: 'ALIM', list: [] } }

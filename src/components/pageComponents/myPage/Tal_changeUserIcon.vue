@@ -247,6 +247,8 @@ export default {
       var result = await this.$changeDispName(param)
       // console.log(result)
       if (result.data) {
+        this.$store.commit('D_USER/MU_USER', result.data)
+        localStorage.setItem('sessionUser', JSON.stringify(result.data))
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
         this.$router.replace({ path: '/' })
         this.$emit('closeXPop')

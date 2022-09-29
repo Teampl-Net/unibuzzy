@@ -184,6 +184,7 @@ export default {
 
         // console.log(result)
         if (result.data.userInfo) {
+            this.$store.commit('D_USER/MU_USER', result.data.userInfo)
             localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
             this.$router.replace({ path: '/' })
             this.$emit('successUpdate')

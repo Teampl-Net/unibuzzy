@@ -109,102 +109,105 @@ export default {
       }
     }
     var this_ = this
+    if (this.targetCKey) {
+      this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
+    } else {
+      this_.getPushContentsList().then(response => {
+        this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+        var newArr = []
+        var cont
+        var tempContentDetail
+        var contentDetail
 
-    this_.getPushContentsList().then(response => {
-      this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
-      var newArr = []
-      var cont
-      var tempContentDetail
-      var contentDetail
-
-      if (this_.viewMainTab === 'P') {
-        newArr = [
-          ...this_.alimContentsList,
-          ...response.content
-        ]
-        this_.alimContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this_.alimContentsList.length; i++) {
-          cont = this_.alimContentsList[i]
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          } else {
+        if (this_.viewMainTab === 'P') {
+          newArr = [
+            ...this_.alimContentsList,
+            ...response.content
+          ]
+          this_.alimContentsList = this.replaceArr(newArr)
+          for (let i = 0; i < this_.alimContentsList.length; i++) {
+            cont = this_.alimContentsList[i]
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            if (tempContentDetail) {
+              contentDetail = tempContentDetail[0]
+            } else {
+              contentDetail = null
+            }
+            if (!cont.D_MEMO_LIST) {
+              cont.D_MEMO_LIST = cont.memoList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            } else {
             // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...contentDetail.D_MEMO_LIST,
-              ...cont.memoList
-            ]
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              var newArr = [
+                ...contentDetail.D_MEMO_LIST,
+                ...cont.memoList
+              ]
+              var newList = this.replaceMemoArr(newArr)
+              cont.D_MEMO_LIST = newList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            }
+          }
+        } else {
+          newArr = [
+            ...this_.boardContentsList,
+            ...response.content
+          ]
+          this_.boardContentsList = this.replaceArr(newArr)
+          for (let i = 0; i < this_.boardContentsList.length; i++) {
+            cont = this_.boardContentsList[i]
+            tempContentDetail = []
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            if (tempContentDetail) {
+              contentDetail = tempContentDetail[0]
+            } else {
+              contentDetail = null
+            }
+
+            if (!cont.D_MEMO_LIST) {
+              cont.D_MEMO_LIST = cont.memoList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            } else {
+            // eslint-disable-next-line no-redeclare
+              var newArr = [
+                ...contentDetail.D_MEMO_LIST,
+                ...cont.memoList
+              ]
+              // eslint-disable-next-line no-redeclare
+              var newList = this.replaceMemoArr(newArr)
+              cont.D_MEMO_LIST = newList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            }
           }
         }
-      } else {
-        newArr = [
-          ...this_.boardContentsList,
-          ...response.content
-        ]
-        this_.boardContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this_.boardContentsList.length; i++) {
-          cont = this_.boardContentsList[i]
-          tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...contentDetail.D_MEMO_LIST,
-              ...cont.memoList
-            ]
-            // eslint-disable-next-line no-redeclare
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          }
+        // this.updateStoreData(uniqueArr)
+        this_.findPopShowYn = false
+        if (this_.readySearchList) {
+          this_.requestSearchList(this_.readySearchList)
         }
-      }
-      // this.updateStoreData(uniqueArr)
-      this_.findPopShowYn = false
-      if (this_.readySearchList) {
-        this_.requestSearchList(this_.readySearchList)
-      }
-      this_.introPushPageTab()
-      if (this_.targetCKey) {
-        this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+        this_.introPushPageTab()
+        if (this_.targetCKey) {
+          this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
           /* if (Response !== true) {
           this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
           this.failPopYn = true
           this.targetCKey = null
         } */
-        })
-        this_.canLoadYn = true
-        this_.loadMore(true)
-      } else {
-        this_.endListSetFunc(response)
-      }
-      this_.scrolledYn = false
-      if (newArr.length > 0) {
-        this_.canLoadYn = true
-      }
-      this_.loadingYn = false
+          })
+          this_.canLoadYn = true
+          this_.loadMore(true)
+        } else {
+          this_.endListSetFunc(response)
+        }
+        this_.scrolledYn = false
+        if (newArr.length > 0) {
+          this_.canLoadYn = true
+        }
+        this_.loadingYn = false
 
-      var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
-      this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
-    })
+        var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
+        this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
+      })
+    }
     /*  } */
   },
 
@@ -249,7 +252,6 @@ export default {
     },
     GE_NEW_MEMO_LIST: {
       handler (value, old) {
-        //  alert(true)
         var newArr = []
         if (!value || value.length === 0) return
         // var memoContents = value[0]
@@ -455,6 +457,112 @@ export default {
     } */
   },
   methods: {
+    async targetKeyYn (targetKey, jobkindId) {
+      var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (detail.contentsList.length === 0) {
+        this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+        this.targetCKey = null
+        this.failPopYn = true
+      }
+      var this_ = this
+      await this_.getPushContentsList().then(response => {
+        this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+        var newArr = []
+        var cont
+        var tempContentDetail
+        var contentDetail
+
+        if (this_.viewMainTab === 'P') {
+          newArr = [
+            ...this_.alimContentsList,
+            ...response.content
+          ]
+          this_.alimContentsList = this.replaceArr(newArr)
+          for (let i = 0; i < this_.alimContentsList.length; i++) {
+            cont = this_.alimContentsList[i]
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            if (tempContentDetail) {
+              contentDetail = tempContentDetail[0]
+            } else {
+              contentDetail = null
+            }
+            if (!cont.D_MEMO_LIST) {
+              cont.D_MEMO_LIST = cont.memoList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            } else {
+              // eslint-disable-next-line no-redeclare
+              var newArr = [
+                ...contentDetail.D_MEMO_LIST,
+                ...cont.memoList
+              ]
+              var newList = this.replaceMemoArr(newArr)
+              cont.D_MEMO_LIST = newList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            }
+          }
+        } else {
+          newArr = [
+            ...this_.boardContentsList,
+            ...response.content
+          ]
+          this_.boardContentsList = this.replaceArr(newArr)
+          for (let i = 0; i < this_.boardContentsList.length; i++) {
+            cont = this_.boardContentsList[i]
+            tempContentDetail = []
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            if (tempContentDetail) {
+              contentDetail = tempContentDetail[0]
+            } else {
+              contentDetail = null
+            }
+
+            if (!cont.D_MEMO_LIST) {
+              cont.D_MEMO_LIST = cont.memoList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            } else {
+              // eslint-disable-next-line no-redeclare
+              var newArr = [
+                ...contentDetail.D_MEMO_LIST,
+                ...cont.memoList
+              ]
+              // eslint-disable-next-line no-redeclare
+              var newList = this.replaceMemoArr(newArr)
+              cont.D_MEMO_LIST = newList
+              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            }
+          }
+        }
+        // this.updateStoreData(uniqueArr)
+        this_.findPopShowYn = false
+        if (this_.readySearchList) {
+          this_.requestSearchList(this_.readySearchList)
+        }
+        this_.introPushPageTab()
+        if (this_.targetCKey) {
+          this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
+            /* if (Response !== true) {
+          this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
+          this.failPopYn = true
+          this.targetCKey = null
+        } */
+          })
+          this_.canLoadYn = true
+          this_.loadMore(true)
+        } else {
+          this_.endListSetFunc(response)
+        }
+        this_.scrolledYn = false
+        if (newArr.length > 0) {
+          this_.canLoadYn = true
+        }
+        this_.loadingYn = false
+
+        var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
+        this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
+      })
+    },
     async yesLoadMore (contentKey) {
       var cont, idx
       if (this.viewMainTab === 'P') {
