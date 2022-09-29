@@ -28,7 +28,7 @@ export default {
     this.getFollowerList()
 
   },
-  computed: { 
+  computed: {
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -36,7 +36,7 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
-  watch: { 
+  watch: {
     pageUpdate (value, old) {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
@@ -77,7 +77,7 @@ export default {
 
         this.dispNameChangeUserName()// dispName이 없을시 userName으로 대체
     },
-    closeSubPop () { 
+    closeSubPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)

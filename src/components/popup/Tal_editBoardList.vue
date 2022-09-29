@@ -52,7 +52,7 @@ export default {
             return
         }debugger
         for (var i = 0; i <this.cabinetList.length; i++) {
-            
+
              console.log(this.cabinetList[i])
             /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
         }

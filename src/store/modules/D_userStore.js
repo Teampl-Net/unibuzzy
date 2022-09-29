@@ -36,6 +36,9 @@ const D_USER = {
         deviceId: state.deviceId,
     } */
     GE_USER (state) {
+      // if (!state.userInfo) {
+      //   state.userInfo.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // }
       return state.userInfo /* {
         userNameMtext: state.userNameMtext,
         userDispMtext: state.userDispMtext,

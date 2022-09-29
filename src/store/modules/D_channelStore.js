@@ -304,6 +304,7 @@ const D_CHANNEL = {
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
+        if (idx2 === -1) continue
         var dataList = null
         if (payload[i].jobkindId === 'BOAR') {
           dataList = chanDetail.ELEMENTS.boardList[idx2]
