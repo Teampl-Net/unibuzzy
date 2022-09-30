@@ -115,7 +115,11 @@ export default {
       this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
         this.mainChanList = response.data.teamList
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
+        if (this.GE_MAIN_CHAN_LIST.length > 0) {
+          await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
+        } else {
+          await this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', response.data.teamList)
+        }
         // var test = await this.$actionVuex('TEAM', null, true, false, null)
         // console.log(this.mainChanList)
         var teamList = this.GE_MAIN_CHAN_LIST
