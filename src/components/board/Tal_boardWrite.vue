@@ -217,6 +217,9 @@ export default {
     }
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     // toolBoxWidth () {
     //   return {
     //     '--width': this.toolWidth + 'px'
@@ -256,10 +259,10 @@ export default {
       paramMap.set('cabinetKey', cabinetKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+        url: 'service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -276,10 +279,10 @@ export default {
       // paramMap.set('cabinetKey', data.cabinetKey)
       // paramMap.set('sysCabinetCode', 'BOAR')
       // paramMap.set('shareType', 'W')
-      // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      // paramMap.set('userKey', this.GE_USER.userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+      //   url: 'service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -305,7 +308,7 @@ export default {
       paramMap.set('currentTeamKey', this.propData.currentTeamKey || this.propData.creTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var result = await this.$getTeamMenuList(paramMap)
       this.selectBoardList = result
@@ -511,8 +514,8 @@ export default {
           param.creUserName = this.nonMemUserName
           param.creUserKey = 0
         } else {
-          param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-          param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+          param.creUserKey = this.GE_USER.userKey
         }
 
         param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName

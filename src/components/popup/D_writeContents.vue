@@ -307,6 +307,9 @@ export default {
     }
   },
   computed: {
+    GE_USER () {
+        return this.$store.getters['D_USER/GE_USER']
+    },
     setScrollWidth () {
         var w = 150 * this.receiverTotalNum
         return 'width: ' + w + 'px'
@@ -436,9 +439,9 @@ export default {
         param.answerRequestMsg = this.answerRequestMsg
         param.teamName = this.$changeText(this.params.targetNameMtext)
         param.creTeamKey = this.params.targetKey
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: 'https://mo.d-alim.com/service/tp.승인 처리',
+        //   url: 'service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -456,9 +459,9 @@ export default {
         param.answerRequestMsg = this.answerRequestMsg
         param.teamName = this.$changeText(this.params.targetNameMtext)
         param.creTeamKey = this.params.targetKey
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
+        //   url: ''service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -773,7 +776,7 @@ export default {
           }
           // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
           // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-          param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          param.creUserKey = this.GE_USER.userKey
           if(this.writePushTitle !== '') {
               param.title = this.writePushTitle
           } else {
@@ -782,7 +785,7 @@ export default {
           }
           //
           param.jobkindId = 'ALIM'
-          param.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
+          param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
 
           param.showCreNameYn = this.showCreNameYn
           param.canReplyYn = this.canReplyYn

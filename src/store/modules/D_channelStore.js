@@ -163,8 +163,6 @@ const D_CHANNEL = {
           team.detailShowYn = false
           D_CHAN_AUTH.followTypeText = '구독자'
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-            // eslint-disable-next-line no-debugger
-            debugger
             if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
               D_CHAN_AUTH.followTypeText = '소유자'
               D_CHAN_AUTH.userGrade = '(관리자)'
@@ -186,6 +184,7 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
+      debugger
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
@@ -235,6 +234,11 @@ const D_CHANNEL = {
           team.D_CHAN_AUTH = D_CHAN_AUTH
           state.chanList.push(team)
           state.recentChangeTeamKey = payload.payload
+        } else {
+          var chan = state.chanList[index]
+          var tempEle = chan.ELEMENTS
+          state.chanList[index] = payload[i]
+          state.chanList[index].ELEMENTS = tempEle
         }
       }
       return true
@@ -396,7 +400,6 @@ const D_CHANNEL = {
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
             }
-            debugger
             if (state.addContsList.length > 30) {
               state.addContsList.splice(0, 30)
             }
@@ -478,7 +481,6 @@ const D_CHANNEL = {
       commit('MU_ADD_CHANNEL', payload)
     },
     AC_REPLACE_CONTENTS: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
-      debugger
       if (payload.length > 0) {
         for (var i = 0; i < payload.length; i++) {
           var userDo = payload[i].userDoList

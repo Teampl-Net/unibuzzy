@@ -8,7 +8,7 @@
       <img @click="backClick" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">
       <img src="../../../assets/images/common/download.svg"  @click="download" class="" style="position: absolute; width: 35px; right: 20px; top: 15px;" alt="">
     </div>
-    <div class="previewWrap">
+    <div v-if="imgList.length > 0" class="previewWrap">
        <!-- <div
         v-for="(src, index) in imgs"
         :key="index"
@@ -68,13 +68,15 @@ export default {
     if (this.startIndex) {
       this.index = this.startIndex
     }
+    var this_ = this
     this.getImgList().then(response => {
-      this.imgList = response
-      for (var i = 0; i < this.imgList.length; i++) {
+      this_.imgList = response
+      for (var i = 0; i < this_.imgList.length; i++) {
+        alert(JSON.stringify(this_.imgList[i]))
         // console.log(this.imgList[i].pathMtext)
         // this.imgList[i].src = this.imgList[i].pathMtext
-        this.imgList[i].src = this.imgList[i].domainPath + this.imgList[i].pathMtext
-        this.imgList[i].title = this.imgList[i].fileKey
+        this_.imgList[i].src = this_.imgList[i].domainPath + this_.imgList[i].pathMtext
+        this_.imgList[i].title = this_.imgList[i].fileKey
         // var imgUrl = this.imgList[i].domainPath + this.imgList[i].pathMtext
         // this.imgs.push(imgUrl)
       }
@@ -120,7 +122,7 @@ export default {
       param.attachYn = false
       this.imgs = []
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMMFileList',
+        url: 'service/tp.getMMFileList',
         param: param
       })
       // console.log(result)

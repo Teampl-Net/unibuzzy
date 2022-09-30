@@ -188,24 +188,24 @@ export default {
       }
       if (this.myPageTabType === 'ALIM') {
         if (this.myActTabType === 'mwb') {
-          param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+          param.ownUserKey = this.GE_USER.userKey
         }
-        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.ownUserKey = this.GE_USER.userKey
       }
       param.jobkindId = this.myPageTabType
 
       if (this.myActTabType === 'mwb') {
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.creUserKey = this.GE_USER.userKey
       } else if (this.myActTabType === 'mcb') {
-        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.creUserKey = this.GE_USER.userKey
+        param.ownUserKey = this.GE_USER.userKey
         param.findActMemoYn = true
       } else if (this.myActTabType === 'mlb') {
         param.findActYn = true
-        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.ownUserKey = this.GE_USER.userKey
         param.findActLikeYn = true
       } else if (this.myActTabType === 'msb') {
-        param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.ownUserKey = this.GE_USER.userKey
         param.findActYn = true
         param.findActStarYn = true
       }
@@ -291,6 +291,11 @@ export default {
     myActContentList,
     findContentsList,
     roundTab
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
   }
 }
 </script>

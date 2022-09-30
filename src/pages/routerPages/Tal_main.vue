@@ -109,20 +109,24 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
         this.mainChanList = response.data.teamList
-        if (this.GE_MAIN_CHAN_LIST.length > 0) {
+        /* if (this.GE_MAIN_CHAN_LIST.length > 0) {
           await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
         } else {
           await this.$store.dispatch('D_CHANNEL/MU_ADD_CHANNEL', response.data.teamList)
-        }
+
+        } */
+
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
         // var test = await this.$actionVuex('TEAM', null, true, false, null)
         // console.log(this.mainChanList)
         var teamList = this.GE_MAIN_CHAN_LIST
+        console.log(this.GE_MAIN_CHAN_LIST)
         // eslint-disable-next-line no-debugger
         debugger
         // eslint-disable-next-line no-debugger
@@ -149,7 +153,7 @@ export default {
           }
         }
 
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', teamList)
+        // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', teamList)
         // this.$store.dispatch('D_CHANNEL/AC_MAIN_CAHN_LIST', teamList)
       }
     },

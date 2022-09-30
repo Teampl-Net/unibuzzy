@@ -85,7 +85,7 @@ export default {
               var compressedFile = await this.$imageCompression(this.selectFile, options)
               console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              var src = URL.createObjectURL(compressedFile)
+              var src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
               console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.preImgUr = src

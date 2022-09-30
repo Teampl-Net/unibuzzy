@@ -58,6 +58,11 @@ export default {
     }
     this.getCodeList()
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   mounted () {
     if (this.parentSelectedIconFileKey !== undefined && this.parentSelectedIconFileKey !== null && this.parentSelectedIconFileKey !== '') {
       if (this.parentSelectedIconFileKey > 100) {
@@ -111,7 +116,7 @@ export default {
             var compressedFile = await this.$imageCompression(this.selectFile, options)
             console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
             console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-            var src = URL.createObjectURL(compressedFile)
+            var src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
             console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
             this.previewImgUrl = src
@@ -266,7 +271,7 @@ export default {
                 var path = res.data[0].domainPath + res.data[0].pathMtext
                 this.selectedImgPath = path
                 this.selectedImgFilekey = res.data[0].fileKey
-                var tempLocalStorage = JSON.parse(localStorage.getItem('sessionUser'))
+                var tempLocalStorage = this.GE_USER
                 tempLocalStorage.userProfileImg = res.data[0].pathMtext
                 tempLocalStorage.picMfilekey = this.selectedImgFilekey
                 localStorage.setItem('sessionUser', JSON.stringify(tempLocalStorage))
@@ -295,7 +300,7 @@ export default {
       var param = {}
       var user = {}
       // param.user = this.userInfo
-      user.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      user.userKey = this.GE_USER.userKey
       if (this.viewTab === 'img') {
         // // console.log(this.selectedImgPath)
         // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath

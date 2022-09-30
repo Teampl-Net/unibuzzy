@@ -105,17 +105,6 @@ const functions = {
     if (type === 'TEAM') {
       dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
       result = dataList.filter(data => data.teamKey === targetKey)
-      /* if (result === undefined || result === '' || result.length === 0) {
-        var paramMap = new Map()
-        paramMap.set('teamKey', targetKey)
-        methods.getTeamList(paramMap).then(resultList => {
-          store.commit('D_CHANNEL/MU_ADD_MAIN_CHAN_LIST', resultList.data.content[0])
-          result = dataList.filter(data => data.teamKey === targetKey)
-          return result
-        })
-      } else {
-        return result
-      } */
       return result
     }
   },
@@ -140,7 +129,6 @@ const functions = {
     }
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
-    debugger
     if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
     g_axiosQueue.push('getContentsDetail')
     var detailData
@@ -293,7 +281,7 @@ const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+      url: 'service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     var user = result.data.content

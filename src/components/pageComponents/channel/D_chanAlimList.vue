@@ -83,7 +83,7 @@
             <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'color:white' : '' " >공개</p>
             <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >내정보공개</p> -->
           </div>
-          <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+          <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
@@ -412,17 +412,18 @@ export default {
       var toastText = ''
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn === true) {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn = false
-        param.notiYn = this.CHANNEL_DETAIL.recvAlimYn
+        param.notiYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn
         toastText = '채널 알림이 비활성화 되었습니다'
       } else {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn = true
-        param.notiYn = this.CHANNEL_DETAIL.recvAlimYn
+        param.notiYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn
         toastText = '채널 알림이 활성화 되었습니다'
       }
       this.axiosQueue.push('changeRecvAlimYn')
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
       await this.$changeRecvAlimYn({ follower: param })
+      await this.$addChanList(this.CHANNEL_DETAIL.targetKey)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn')
       this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       setTimeout(() => {
@@ -456,7 +457,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

@@ -141,8 +141,16 @@ export default {
     }
     if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
         var resultList = await this.getChannelList()
+        var newArr = []
+        for (var i = 0; i < resultList.content.length; i++) {
+            if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            newArr.push(resultList.content[i])
+            }
+        }
+        if (newArr.length > 0) {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        }
         this.channelList = resultList.content
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
         if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         } else {
@@ -241,7 +249,16 @@ export default {
       this.endList = true
       var resultList = await this.getChannelList(pSize, 0)
       this.channelList = resultList.content
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      var newArr = []
+        for (var i = 0; i < resultList.content.length; i++) {
+            if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            newArr.push(resultList.content[i])
+            }
+        }
+        if (newArr.length > 0) {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        }
+        this.channelList = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -256,7 +273,15 @@ export default {
         var resultList = await this.getChannelList()
         console.log(resultList)
         if (resultList === undefined) return
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+        var addList = []
+        for (var i = 0; i < resultList.content.length; i++) {
+            if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            addList.push(resultList.content[i])
+            }
+        }
+        if (addList.length > 0) {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', addList)
+        }
         const newArr = [
           ...this.channelList,
           ...resultList.content
@@ -297,7 +322,15 @@ export default {
       this.listShowYn = false
       this.emptyYn = false
       var resultList = await this.getChannelList()
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      var addList = []
+        for (var i = 0; i < resultList.content.length; i++) {
+            if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            addList.push(resultList.content[i])
+            }
+        }
+        if (addList.length > 0) {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', addList)
+        }
       this.channelList = resultList.content
       if (this.channelList.length === 0) this.emptyYn = true
 
@@ -380,7 +413,16 @@ export default {
     async requestSearchList (paramMap) {
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList()
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      var newArr = []
+      for (var i = 0; i < resultList.content.length; i++) {
+        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+          newArr.push(resultList.content[i])
+        }
+      }
+      if (newArr.length > 0) {
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+      }
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
       } else {
@@ -408,7 +450,15 @@ export default {
     async changeSearchList(idx) {
       this.resultSearchKeyList.splice(idx, 1)
       var resultList = await this.getChannelList()
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultList.content)
+      var newArr = []
+      for (var i = 0; i < resultList.content.length; i++) {
+        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+          newArr.push(resultList.content[i])
+        }
+      }
+      if (newArr.length > 0) {
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+      }
       this.channelList = resultList.content
       this.findPaddingTopChan()
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {

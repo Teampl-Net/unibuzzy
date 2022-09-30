@@ -83,7 +83,7 @@ export default {
       search1: '',
       search2: '',
       search3: '',
-      userKey: JSON.parse(localStorage.getItem('sessionUser')).userKey
+      userKey: this.GE_USER.userKey
     }
   },
   updated () {
@@ -179,7 +179,7 @@ export default {
           param.mccKey = data.mccKey
           param.jobkindId = data.jobkindId
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
+            url: 'service/tp.deleteMCabContents',
             param: param
           })
           if (result.data === 'true' || result.data === true) {

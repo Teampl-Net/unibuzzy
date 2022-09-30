@@ -313,7 +313,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -947,19 +947,25 @@ export default {
         var index = this.mCabContentsList.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
           content = this.mCabContentsList[index]
-          var count = await this.$getMemoCount({ targetKey: content.contentsKey })
+          var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
           this.mCabContentsList[index].memoCount = count
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mCabContentsList[index])
         }
         if (!content) return
-        newArr = [
-          value[0],
-          ...content.D_MEMO_LIST
-        ]
+        var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        if (memoAleadyIdx1 !== -1) {
+          content.D_MEMO_LIST[memoAleadyIdx1].D_MEMO_LIST = value[0]
+          newArr = content.D_MEMO_LIST
+        } else {
+          newArr = [
+            value[0],
+            ...content.D_MEMO_LIST
+          ]
+        }
         // alert(JSON.stringify(this.boardContentsList))
         var idx1 = this.mCabContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
         // alert(idx1)
         this.mCabContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
-        this.mCabContentsList[idx1].memoCount = count
       },
       deep: true
     },

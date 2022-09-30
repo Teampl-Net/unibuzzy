@@ -259,28 +259,39 @@ export default {
         var index = this.GE_DISP_CONT_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
           content = this.GE_DISP_CONT_LIST[index]
-          var count = await this.$getMemoCount({ targetKey: content.contentsKey })
+          var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
           this.GE_DISP_CONT_LIST[index].memoCount = count
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_CONT_LIST[index])
         }
         if (!content) return
         if (content.jobkindId === 'ALIM') {
-          newArr = [
-            value[0],
-            ...content.D_MEMO_LIST
-          ]
+          var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+          if (memoAleadyIdx !== -1) {
+            content.D_MEMO_LIST[memoAleadyIdx].D_MEMO_LIST = value[0]
+            newArr = content.D_MEMO_LIST
+          } else {
+            newArr = [
+              value[0],
+              ...content.D_MEMO_LIST
+            ]
+          }
           var idx = this.alimContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
           this.alimContentsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
-          this.alimContentsList[idx].memoCount = count
         } else {
-          newArr = [
-            value[0],
-            ...content.D_MEMO_LIST
-          ]
+          var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+          if (memoAleadyIdx1 !== -1) {
+            content.D_MEMO_LIST[memoAleadyIdx1].D_MEMO_LIST = value[0]
+            newArr = content.D_MEMO_LIST
+          } else {
+            newArr = [
+              value[0],
+              ...content.D_MEMO_LIST
+            ]
+          }
           // alert(JSON.stringify(this.boardContentsList))
           var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
           // alert(idx1)
           this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
-          this.boardContentsList[idx1].memoCount = count
         }
       },
       deep: true
@@ -590,10 +601,10 @@ export default {
         if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
           data.push(current)
         }
-        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.mccKey - a.mccKey
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.memeoKey - a.memoKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        }) */
+        })
         return data
       }, [])
       return uniqueArr
@@ -610,7 +621,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -733,7 +744,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       // try {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMemo',
+        url: 'service/tp.saveMemo',
         param: { memo: memo }
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -802,7 +813,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -953,7 +964,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
+        url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')

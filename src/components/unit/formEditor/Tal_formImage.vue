@@ -126,22 +126,36 @@ export default {
             try {
             // eslint-disable-next-line no-undef
               var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log(compressedFile)
               console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              var src = null
+              if (compressedFile instanceof Blob) {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+                const decodImg = atob(src.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], compressedFile.name)
+              } else {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              }
+
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              var src = URL.createObjectURL(compressedFile)
               console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
-              this.selectFileList.push({ previewImgUrl: src, addYn: true, file: compressedFile })
-              this.$emit('success', { targetKey: this.targetKey, selectFileList: [{ previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: compressedFile }], originalType: 'image' })
+              this.selectFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
+              this.$emit('success', { targetKey: this.targetKey, selectFileList: [{ previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }], originalType: 'image' })
               if (this.$refs.selectFile.files.length === 1) {
                 this.previewImgUrl = src
-                this.firstFile = { previewImgUrl: src, addYn: true, file: compressedFile }
+                this.firstFile = { previewImgUrl: src, addYn: true, file: newFile }
               } else {
               // if (thisthis.$refs.selectFile.files.length > 1) {
                 if (this.fileCnt > 0) {
-                  this.$emit('setMultiFile', { file: compressedFile, previewImgUrl: src })
+                  this.$emit('setMultiFile', { file: newFile, previewImgUrl: src })
                 } else {
-                  this.firstFile = { previewImgUrl: src, addYn: true, file: compressedFile }
+                  this.firstFile = { previewImgUrl: src, addYn: true, file: newFile }
                 }
               // }
               }

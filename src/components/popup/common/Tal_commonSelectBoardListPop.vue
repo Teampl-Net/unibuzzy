@@ -25,6 +25,11 @@ export default {
     boardValue: {},
     type: {}
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   data () {
     return {
       boardList: [],
@@ -72,7 +77,7 @@ export default {
       paramMap.set('teamKey', this.boardDetail.creTeamKey)
       paramMap.set('currentTeamKey', this.boardDetail.creTeamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
-      paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
       // console.log(result)
@@ -89,7 +94,7 @@ export default {
         param.targetKey = this.boardDetail.contentsKey
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveMCabContents',
+        url: 'service/tp.saveMCabContents',
         param: { mCabContents: param }
       })
       // console.log(result)

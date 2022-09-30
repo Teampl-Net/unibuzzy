@@ -150,7 +150,15 @@ export default {
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
       this.mainChanList = resultList.data.content
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
+      var newArr = []
+      for (var i = 0; i < this.mainChanList.length; i++) {
+        if (!this.$getDetail('TEAM', this.mainChanList[i].teamKey) || this.$getDetail('TEAM', this.mainChanList[i].teamKey).length === 0) {
+          newArr.push(this.mainChanList[i])
+        }
+      }
+      if (newArr.length > 0) {
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+      }
     },
     async recvNoti (e) {
       /* var message
