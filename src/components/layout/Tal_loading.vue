@@ -1,5 +1,5 @@
 <template>
-    <div class="loadingWrap">
+    <div v-if="shows" class="loadingWrap">
         <div class="loadingcontainer">
             <img class="boombox" src="../../assets/images/common/message_logo.png" alt="">
             <div class="shadow"></div>
@@ -14,6 +14,11 @@
 export default {
   name: 'app',
   mounted () {
+    var this_ = this
+    setTimeout(() => {
+      this_.shows = false
+      // this_.$showToastPop('네트워크 상태가 불안정합니다. 잠시후 다시 시도해주세요')
+    }, 5000)
   },
   setup () {
     // eslint-disable-next-line no-unused-vars
@@ -21,6 +26,7 @@ export default {
   },
   data () {
     return {
+      shows: true
     }
   },
   methods: {

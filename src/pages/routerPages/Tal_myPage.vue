@@ -1,6 +1,6 @@
 <template>
   <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0;">
-    <loadingCompo v-show="loadingYn === true"/>
+    <loadingCompo v-if="loadingYn === true"/>
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
         <!-- <div class="myPagePicImgWrap">

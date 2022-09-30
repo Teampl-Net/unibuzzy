@@ -129,7 +129,6 @@
     </div>
   </div>
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-
 </template>
 <script>
 /* eslint-disable */
@@ -336,7 +335,7 @@ export default {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
-    // console.log(this.params)
+    console.log(this.params)
     if (this.params.bodyFullStr) {
       if (this.params.UseAnOtherYn) {
         // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
@@ -817,7 +816,7 @@ export default {
           param.jobkindId = result.contents.jobkindId
           var resultList = await this.$getContentsList(param)
           var detailData = resultList.content[0]
-          this.$store.commit('D_CHANNEL/MU_ADD_CONTENTS', [detailData])
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
         } catch (error) {
           console.error(error)
           this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')

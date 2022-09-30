@@ -251,7 +251,7 @@ export default {
     GE_CHANNEL_DETAIL: {
     },
     GE_NEW_MEMO_LIST: {
-      handler (value, old) {
+      async handler (value, old) {
         var newArr = []
         if (!value || value.length === 0) return
         // var memoContents = value[0]
@@ -259,6 +259,8 @@ export default {
         var index = this.GE_DISP_CONT_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
           content = this.GE_DISP_CONT_LIST[index]
+          var count = await this.$getMemoCount({ targetKey: content.contentsKey })
+          this.GE_DISP_CONT_LIST[index].memoCount = count
         }
         if (!content) return
         if (content.jobkindId === 'ALIM') {
@@ -268,6 +270,7 @@ export default {
           ]
           var idx = this.alimContentsList.findIndex((item) => item.contentsKey === value[0].targetKey)
           this.alimContentsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.alimContentsList[idx].memoCount = count
         } else {
           newArr = [
             value[0],
@@ -277,6 +280,7 @@ export default {
           var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
           // alert(idx1)
           this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.boardContentsList[idx1].memoCount = count
         }
       },
       deep: true
@@ -285,8 +289,6 @@ export default {
       handler (value, old) {
         var newArr = []
         if (this.chanAlimYn) {
-          // eslint-disable-next-line no-debugger
-          debugger
           if (value[0].creTeamKey === this.chanDetail.teamKey) {
             if (value[0].jobkindId === 'ALIM') {
               newArr = [

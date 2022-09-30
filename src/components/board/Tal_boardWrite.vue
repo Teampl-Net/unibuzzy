@@ -259,7 +259,7 @@ export default {
       paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'service/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -279,7 +279,7 @@ export default {
       // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'service/tp.getCabinetDetail',
+      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -547,6 +547,14 @@ export default {
           if (!this.modiYn && !this.UseAnOtherYn) {
             this.$emit('successWrite', newP)
           }
+
+          // eslint-disable-next-line no-new-object
+          /* var params = new Object()
+          params.contentsKey = result.contents.contentsKey
+          params.jobkindId = result.contents.jobkindId
+          var resultList = await this.$getContentsList(param)
+          var detailData = resultList.content[0]
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
         }
       } catch (error) {
         console.error(error)
@@ -653,7 +661,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('fileServer/tp.uploadFile', form,
+            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
@@ -714,7 +722,7 @@ export default {
           }
         }
       } else {
-        this.$showToastPop('파일을 선택해 주세요.')
+        alert('파일을 선택해 주세요.')
       }
       return true
     },

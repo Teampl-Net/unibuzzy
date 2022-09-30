@@ -1,6 +1,6 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
-    <!-- <loadingCompo v-show="loadingYn" /> -->
+    <!-- <loadingCompo v-if="loadingYn" /> -->
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
@@ -348,10 +348,10 @@ export default {
                   await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
                 } else {
                   if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                     return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                     // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                     return
                   }

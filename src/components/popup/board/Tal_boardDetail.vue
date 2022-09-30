@@ -331,6 +331,7 @@ export default {
         if (this.mobileYn) {
           onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
         } else {
+          // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
           // console.log(result)
         }
@@ -473,6 +474,7 @@ export default {
     },
 
     async download1 (fileKey, path) {
+      // eslint-disable-next-line no-unused-vars
       var result = await this.$downloadFile(fileKey, path)
       // console.log(result)
       /* var aTag

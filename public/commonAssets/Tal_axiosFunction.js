@@ -502,7 +502,7 @@ export const methods = {
       param: param
     })
     // result = response
-    return response
+    return response.data
   },
   async changeDispName (inputParam) {
     // eslint-disable-next-line no-new-object
@@ -547,5 +547,6 @@ export default {
     Vue.config.globalProperties.$changeDispName = methods.changeDispName
     Vue.config.globalProperties.$getMobileYn = methods.getMobileYn
     Vue.config.globalProperties.$getContentsOnly = methods.getContentsOnly
+    Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
 <div class="" style="width: 100%; height: 100%; position: relative; padding: 0 1rem; padding-top: 10px; overflow: hidden; float: left;">
-  <loadingCompo v-show="loadingYn === true"/>
+  <loadingCompo v-if="loadingYn === true"/>
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
     <!-- <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/> -->
     <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="padding: 0 1rem ; margin-top: 10px;" @changeTab="changeTab"></gActiveBar>

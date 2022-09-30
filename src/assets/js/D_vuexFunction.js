@@ -236,7 +236,7 @@ const functions = {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
         ;
       } else {
-        this.openPop({ targetKey: JSON.parse(notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).ISub, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
       }
     }
   },
@@ -262,11 +262,11 @@ const functions = {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
         ;
       } else {
-        if (notiDetail.jobkindId === 'ALIM') {
+        /*  if (notiDetail.jobkindId === 'ALIM') {
           this.openPop({ targetKey: notiDetail.creTeamKey, nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
         } else if (notiDetail.jobkindId === 'BOAR') {
           this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
-        }
+        } */
       }
     } else {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
@@ -276,7 +276,7 @@ const functions = {
           // }
         }
       } else {
-        this.openPop({ targetKey: notiDetail.creTeamKey, nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+        // this.openPop({ targetKey: notiDetail.creTeamKey, nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
       }
     }
   },

@@ -99,7 +99,7 @@
 <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
-  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
+  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :params="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
 <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
@@ -109,7 +109,7 @@
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '@/components/list/Tal_commonList.vue'
 import findContentsList from '@/components/popup/common/Tal_findContentsList.vue'
-import boardWrite from '@/components/board/Tal_boardWrite.vue'
+import boardWrite from '@/components/popup/D_writeContents.vue'
 
 export default {
   components: {
@@ -547,10 +547,13 @@ export default {
       params.targetType = 'writeBoard'
       params.actorList = this.actorList
       params.targetNameMtext = this.propData.nameMtext
+      params.teamKey = this.propData.currentTeamKey
       params.currentTeamKey = this.propData.currentTeamKey
       params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
       params.cabinetKey = this.CAB_DETAIL.cabinetKey
       params.value = this.CAB_DETAIL
+      params.contentsJobkindId = 'BOAR'
+
       this.boardWriteData = {}
       this.boardWriteData = params
       var history = this.$store.getters['D_HISTORY/hStack']

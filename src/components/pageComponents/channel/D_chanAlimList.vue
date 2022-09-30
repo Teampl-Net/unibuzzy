@@ -330,8 +330,6 @@ export default {
       this.$emit('closeLoading')
     },
     async confirmOk () {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.errorBoxYn = false
       if (this.currentConfirmType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
@@ -499,6 +497,7 @@ export default {
         params.targetKey = this.CHANNEL_DETAIL.teamKey
         params.targetType = 'writePush'
         params.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
+        params.contentsJobkindId = 'ALIM'
         this.writePushData = {}
         this.writePushData = params
         var history = this.$store.getters['D_HISTORY/hStack']
@@ -510,6 +509,7 @@ export default {
         var param = {}
         param.targetType = 'writeBoard'
         param.selectBoardYn = true
+        param.contentsJobkindId = 'BOAR'
         param.teamKey = this.CHANNEL_DETAIL.teamKey
         param.targetKey = this.CHANNEL_DETAIL.teamKey
         param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
