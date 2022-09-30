@@ -794,6 +794,7 @@ export default {
                 await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo)
               } else {
                 if (this.targetTye === 'chanDetail' && this.targetKey === Number(this.notiDetail.creTeamKey)) return
+                if (currentPage !== this.popId) return
                 if (this.notiDetail.jobkindId === 'ALIM') {
                   this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.jobkindId === 'BOAR') {
@@ -811,6 +812,7 @@ export default {
                 }
               } else {
                 if (this.targetTye === 'chanDetail' && this.targetKey === Number(this.notiDetail.creTeamKey)) return
+                if (currentPage !== this.popId) return
                 this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
               }
             }
@@ -823,6 +825,7 @@ export default {
                 ;
               } else {
                 if (this.targetTye === 'chanDetail' && this.targetKey === Number(this.notiDetail.creTeamKey)) return
+                if (currentPage !== this.popId) return
                 this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                 // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
               }
@@ -831,6 +834,7 @@ export default {
             if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               // alert(Number(JSON.parse(this.notiDetail.userDo).userKey))
             } else {
+              if (currentPage !== this.popId) return
               if (this.targetTye === 'chanDetail' && this.targetKey === Number(this.notiDetail.creTeamKey)) return
               if (this.notiDetail.actType === 'FL') {
                 this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
@@ -849,6 +853,7 @@ export default {
                 memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
                 await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
               } else {
+                if (currentPage !== this.popId) return
                 if (this.notiDetail.jobkindId === 'ALIM') {
                   this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                 } else if (this.notiDetail.jobkindId === 'BOAR') {
