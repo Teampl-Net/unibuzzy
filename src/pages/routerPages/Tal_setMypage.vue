@@ -141,7 +141,6 @@ export default {
   methods: {
     cleanApp () {
         this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-        alert('삭제 완료')
         this.$router.push('/')
         this.$emit('closeXPop')
     },

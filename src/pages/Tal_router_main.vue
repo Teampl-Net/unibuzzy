@@ -205,7 +205,6 @@ export default {
       // // console.log(param)
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
-      alert(resultList.content.length)
       return resultList.content
       // alert(JSON.stringify(detailData))
     },

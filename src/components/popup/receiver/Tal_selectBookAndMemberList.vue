@@ -145,14 +145,14 @@ export default {
                 if (indexOf === -1) {
                     this.setSelectedList.memberList.push(data)
                 }else{
-                    alert('중복선택')
+                    this.$showToastPop('중복선택되었습니다.')
                 }
             }else if (type === 'C') {
                 var indexOf = this.setSelectedList.bookList.findIndex(i => i.cabinetKey === data.cabinetKey);
                 if (indexOf === -1) {
                     this.setSelectedList.bookList.push(data)
                 }else{
-                    alert('중복선택')
+                    this.$showToastPop('중복선택되었습니다.')
                 }
 
             }

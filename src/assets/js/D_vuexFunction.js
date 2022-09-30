@@ -178,9 +178,10 @@ const functions = {
     console.log(paramMap)
     var resultList = await methods.getTeamList(paramMap)
 
-    console.log(resultList)
-
+    // console.log(resultList)
+    // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
     var response = resultList.data.content[0]
+
     var team = null
     response.teamTypeText = commonMethods.teamTypeString(response.teamType)
     var title = '[더알림]' + commonMethods.changeText(response.nameMtext)

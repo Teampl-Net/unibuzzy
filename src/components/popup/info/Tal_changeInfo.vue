@@ -109,7 +109,6 @@ export default {
         this.sendOk = true
         this.$refs.valueBox.readOnly = true
       } else {
-            alert(result.data.message)
             this.token = ''
             this.holdingEmail = ''
             this.sendOk = false
@@ -189,7 +188,6 @@ export default {
             this.$router.replace({ path: '/' })
             this.$emit('successUpdate')
         } else {
-            alert(result.data.message)
             this.token = ''
             this.holdingEmail = ''
             this.sendOk = false

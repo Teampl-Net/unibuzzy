@@ -234,8 +234,8 @@ export default {
       console.log(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (cont) {
-        // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
-        // console.log(cont[0])
+        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
+        console.log(cont[0])
         return cont[0]
       } else {
         // console.log(cont)
@@ -272,10 +272,10 @@ export default {
     },
     CONT_DETAIL: {
       handler (value, old) {
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        // console.log(value)
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        // console.log(old)
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
+        console.log(value)
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
+        console.log(old)
         if (value) {
           this.onLoadFunction()
         }
@@ -452,6 +452,7 @@ export default {
       }
     },
     longClickAlertClick (btnType) {
+      alert(btnType)
       if (btnType === 'download') this.imgDownload()
       else if (btnType === 'share');
       else if (btnType === 'preview') {

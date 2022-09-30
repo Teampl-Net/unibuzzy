@@ -235,6 +235,7 @@ export default {
       // debugger
       if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList')
+      console.log(this.chanDetail.targetKey)
       await this.$addChanList(this.chanDetail.targetKey)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
       this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)

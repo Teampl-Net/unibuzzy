@@ -290,16 +290,15 @@ export default {
           params.targetKey = result.teamKey
           params.teamKey = result.teamKey
           params.newChan = true
+          this.newChannelInPool()
         }
 
         // if(delYn === true && this.chanDetail.modiYn === true) {
         //   params.deleteYn = delYn
         // }
-
         this.$emit('successCreChan', params)
       }
     },
-
     changeTeamInfo (data) {
         var temp = this.CHANNEL_DETAIL
       temp.nameMtext = data.nameMtext
@@ -313,10 +312,26 @@ export default {
       // console.log(temp)
       // this.$emit('closeLoading')
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', temp)
+    },
+    async newChannelInPool () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.chanDetail.targetKey)
+      paramMap.set('fUserKey', this.GE_USER)
+      var resultList = await this.$getTeamList(paramMap)
+      var response = resultList.data.content[0]
+      response.detailPageYn = true
+      var team = null
+      var teamList = this.$getDetail('TEAM', this.chanDetail.targetKey)
+      team = teamList[0]
+      response.ELEMENTS = team.ELEMENTS
+      await this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
     }
 
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     getChanBoxSize () {
       return {
         // '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'

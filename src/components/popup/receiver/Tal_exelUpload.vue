@@ -159,7 +159,7 @@ export default {
               })
           }
         } else {
-          alert('파일을 선택해주세요')
+          this.$showToastPop('파일을 선택해주세요.')
         }
       }
     },

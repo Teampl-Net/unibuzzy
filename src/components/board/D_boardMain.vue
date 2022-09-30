@@ -313,7 +313,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -919,7 +919,7 @@ export default {
   },
   watch: {
     CHANNEL_DETAIL (value, old) {
-      alert('채널 변화 생김요!')
+      // alert('채널 변화 생김요!')
     },
     pageUpdate (value, old) {
       this.backClick()

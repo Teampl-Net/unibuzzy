@@ -210,7 +210,7 @@ export default {
         async deleteCabinet(data,index){
             var param = {}
             param.cabinetKey = data.cabinetKey
-            param.currentTeamKey = this.propData.currentTeamKey
+            param.currentTeamKey = data.teamKey || data.creTeamKey
             param.menuType = data.menuType
             try{
                 // this.cabinetList.splice(index, 1)

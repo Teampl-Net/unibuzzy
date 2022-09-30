@@ -374,7 +374,7 @@ export default {
           // var selFile = this.selectFileList[i].file
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        this.$showToastPop('파일을 선택해주세요.')
       }
       return true
     }

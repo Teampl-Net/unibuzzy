@@ -1,7 +1,7 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <loadingCompo style="z-index: 9999999 !important; position:absolute; top:0; left:0;" v-show="loadingYn" />
-      <pushPop @closePushPop="closePushPop" @openDetailPop="openDetailPop" v-if="notiDetailShowYn" :detailVal="notiDetail" />
+      <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail" />
       <transition name="showModal">
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
@@ -98,7 +98,7 @@ import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
 import memberManagement from '../member/Tal_memberManagement.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
-import editBoardPop from '../../popup/Tal_editBoardList.vue'
+import editBoardPop from '../D_editBoardList.vue'
 import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
 import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
@@ -679,19 +679,19 @@ export default {
       return changeTxt
       // if (changeTxt !== undefined) { return changeTxt }
     },
-    openDetailPop (params) {
-      var setParams = params
-      if (this.targetType === 'pushList') {
-        setParams.targetType = 'pushDetail'
-        this.openPop(setParams)
-      } else {
-        this.openPop(params)
-      }
-      this.openPop(params)
-      setTimeout(() => {
-        this.notiDetailShowYn = false
-      }, 200)
-    },
+    // openDetailPop (params) {
+    //   var setParams = params
+    //   if (this.targetType === 'pushList') {
+    //     setParams.targetType = 'pushDetail'
+    //     this.openPop(setParams)
+    //   } else {
+    //     this.openPop(params)
+    //   }
+    //   this.openPop(params)
+    //   setTimeout(() => {
+    //     this.notiDetailShowYn = false
+    //   }, 200)
+    // },
     closePushPop () {
       this.notiDetailShowYn = false
     },
