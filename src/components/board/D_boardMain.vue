@@ -99,7 +99,7 @@
 <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
-  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :params="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
+  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
 <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
@@ -109,7 +109,7 @@
 // import findContentsList from '../Tal_findContentsList.vue'
 import boardList from '@/components/list/Tal_commonList.vue'
 import findContentsList from '@/components/popup/common/Tal_findContentsList.vue'
-import boardWrite from '@/components/popup/D_writeContents.vue'
+import boardWrite from '@/components/board/Tal_boardWrite.vue'
 
 export default {
   components: {
@@ -890,17 +890,17 @@ export default {
     },
     BOARD_CONT_LIST () {
       var contentList = []
-      var vFoolChanIdx, vFoolContentIdx
-      var vFoolChanInfo = null
-      var vFoolContList = []
+      var vPoolChanIdx, vPoolContentIdx
+      var vPoolChanInfo = null
+      var vPoolContList = []
       for (let i = 0; i < this.mCabContentsList.length; i++) {
-        vFoolChanIdx = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mCabContentsList[i].creTeamKey)
-        vFoolChanInfo = this.GE_MAIN_CHAN_LIST[vFoolChanIdx]
-        vFoolContList = vFoolChanInfo.ELEMENTS.boardList
-        vFoolContentIdx = vFoolContList.findIndex((item) => item.mccKey === this.mCabContentsList[i].mccKey)
+        vPoolChanIdx = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mCabContentsList[i].creTeamKey)
+        vPoolChanInfo = this.GE_MAIN_CHAN_LIST[vPoolChanIdx]
+        vPoolContList = vPoolChanInfo.ELEMENTS.boardList
+        vPoolContentIdx = vPoolContList.findIndex((item) => item.mccKey === this.mCabContentsList[i].mccKey)
 
-        if (vFoolContentIdx !== -1) {
-          contentList.push(vFoolContList[vFoolContentIdx])
+        if (vPoolContentIdx !== -1) {
+          contentList.push(vPoolContList[vPoolContentIdx])
         } else {
           contentList.push(this.mCabContentsList[i])
         }
@@ -918,6 +918,12 @@ export default {
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    GE_NEW_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     }
   },
   watch: {
@@ -931,6 +937,44 @@ export default {
       this.changeTab(this.viewTab)
     },
     historyStack (value, old) {
+    },
+    GE_NEW_MEMO_LIST: {
+      async handler (value, old) {
+        var newArr = []
+        if (!value || value.length === 0) return
+        // var memoContents = value[0]
+        var content = null
+        var index = this.mCabContentsList.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+        if (index !== -1) {
+          content = this.mCabContentsList[index]
+          var count = await this.$getMemoCount({ targetKey: content.contentsKey })
+          this.mCabContentsList[index].memoCount = count
+        }
+        if (!content) return
+        newArr = [
+          value[0],
+          ...content.D_MEMO_LIST
+        ]
+        // alert(JSON.stringify(this.boardContentsList))
+        var idx1 = this.mCabContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
+        // alert(idx1)
+        this.mCabContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
+        this.mCabContentsList[idx1].memoCount = count
+      },
+      deep: true
+    },
+    GE_NEW_CONT_LIST: {
+      handler (value, old) {
+        var newArr = []
+        if (value[0].cabinetKey === this.CAB_DETAIL.cabinetKey) {
+          newArr = [
+            value[0],
+            ...this.mCabContentsList
+          ]
+          this.mCabContentsList = this.replaceArr(newArr)
+        }
+      },
+      deep: true
     }
   }
 
