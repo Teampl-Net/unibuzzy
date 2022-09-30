@@ -306,7 +306,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
+      url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -484,7 +484,7 @@ export const commonMethods = {
     var width = image.width
     var height = image.height
     var fileSize = file.size
-    var size = 900
+    var size = 1400
     if (fileSize > 6000000) {
       size = 700
     } else if (fileSize > 3000000) {
@@ -514,6 +514,29 @@ export const commonMethods = {
     const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
     var newFile = new File([Bfile], file.name)
     return { path: imgBase64, file: newFile }
+  },
+  async handleImageUpload (file) {
+    // eslint-disable-next-line no-debugger
+    debugger
+    const imageFile = file
+    const options = {
+      maxSizeMB: 1, // 허용하는 최대 사이즈 지정
+      maxWidthOrHeight: 1400, // 허용하는 최대 width, height 값 지정
+      useWebWorker: true // webworker 사용 여부
+    }
+    try {
+      // eslint-disable-next-line no-undef
+      const compressedFile = await imageCompression(imageFile, options)
+      // 압축된 이미지 리턴
+      // eslint-disable-next-line no-undef
+      // await uploadToServer(compressedFile) // 블라블라
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(compressedFile)
+      return { path: compressedFile.path, file: compressedFile }
+    } catch (error) {
+      console.log(error)
+    }
   },
   async saveFileSize (image, file) {
     var result = await commonMethods.getCanvasNewFile(image, file)
@@ -782,5 +805,6 @@ export default {
     Vue.config.globalProperties.$findATagDelete = commonMethods.findATagDelete
     Vue.config.globalProperties.$makeHistoryObj = commonMethods.makeHistoryObj
     Vue.config.globalProperties.$countingTotalMemo = commonMethods.countingTotalMemo
+    Vue.config.globalProperties.$handleImageUpload = commonMethods.handleImageUpload
   }
 }

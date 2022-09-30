@@ -24,7 +24,7 @@
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
-            <input class="formImageFile" multiple type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+            <input class="formImageFile" multiple type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100% - 30px)">
                 <div  class="fl mright-05" :style="settingImgSize" style="width:100%;">
                     <img  class="editorImg" style="width:100%;" :class="{addTrue :  firstFile.addYn}" :src="firstFile.previewImgUrl" />
@@ -100,18 +100,18 @@ export default {
     }
   },
   methods: {
-    async previewFile () {
+    async handleImageUpload (event) {
       this.selectFile = null
-      this.previewImgUrl = null
-      // 선택된 파일이 있는가?
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-          // eslint-disable-next-line no-unused-vars
-          var tt = this.selectFile
-
           let fileExt = this.selectFile.name.substring(
             this.selectFile.name.lastIndexOf('.') + 1
           )
@@ -120,48 +120,41 @@ export default {
           if (
             ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
           ) {
-          // FileReader 를 활용하여 파일을 읽는다
-            var reader = new FileReader()
-            var thisthis = this
-            reader.onload = e => {
-              var image = new Image()
-              image.onload = async function () {
-                // Resize image
-                var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
+            console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+            console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
 
-                if (thisthis.$refs.selectFile.files.length === 1) {
-                  this.previewImgUrl = result.path
-                }
+            try {
+            // eslint-disable-next-line no-undef
+              var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+              var src = URL.createObjectURL(compressedFile)
+              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
-                thisthis.selectFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
-                thisthis.$emit('success', { targetKey: thisthis.targetKey, selectFileList: [{ previewImgUrl: result.path, originalFile: thisthis.selectFile, addYn: true, file: result.file }], originalType: 'image' })
-                if (thisthis.$refs.selectFile.files.length === 1) {
-                  thisthis.firstFile = { previewImgUrl: result.path, addYn: true, file: result.file }
+              this.selectFileList.push({ previewImgUrl: src, addYn: true, file: compressedFile })
+              this.$emit('success', { targetKey: this.targetKey, selectFileList: [{ previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: compressedFile }], originalType: 'image' })
+              if (this.$refs.selectFile.files.length === 1) {
+                this.previewImgUrl = src
+                this.firstFile = { previewImgUrl: src, addYn: true, file: compressedFile }
+              } else {
+              // if (thisthis.$refs.selectFile.files.length > 1) {
+                if (this.fileCnt > 0) {
+                  this.$emit('setMultiFile', { file: compressedFile, previewImgUrl: src })
                 } else {
-                  // if (thisthis.$refs.selectFile.files.length > 1) {
-                  if (thisthis.fileCnt > 0) {
-                    thisthis.$emit('setMultiFile', { file: result.file, previewImgUrl: result.path })
-                  } else {
-                    thisthis.firstFile = { previewImgUrl: result.path, addYn: true, file: result.file }
-                  }
-                  // }
+                  this.firstFile = { previewImgUrl: src, addYn: true, file: compressedFile }
                 }
-                // this.$emit('updateImgForm', this.previewImgUrl)
-                setTimeout(() => {
-                  thisthis.cardHeight = thisthis.$refs.imageBox.scrollHeight
-                }, 10)
-                thisthis.fileCnt += 1
-                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+              // }
               }
-              image.onerror = function () {
-
-              }
-              image.src = e.target.result
-              // this.previewImgUrl = e.target.result
+              var this_ = this
+              // this.$emit('updateImgForm', this.previewImgUrl)
+              setTimeout(() => {
+                this_.cardHeight = this_.$refs.imageBox.scrollHeight
+              }, 10)
+              this_.fileCnt += 1
+            /* await uploadToServer(compressedFile) */ // write your own logic
+            } catch (error) {
+              console.log(error)
             }
-            reader.readAsDataURL(this.selectFile)
-            // await this.$editorImgResize(this.selectFile)
           }
         }
       } else {
@@ -170,6 +163,29 @@ export default {
         this.selectFile = null
         this.previewImgUrl = null
       }
+    },
+
+    async previewFile (file) {
+      this.previewImgUrl = null
+
+      var reader = new FileReader()
+      var thisthis = this
+      reader.onload = e => {
+        var image = new Image()
+        image.onload = async function () {
+          // Resize image
+          var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
+
+          return result
+        }
+        image.onerror = function () {
+
+        }
+        image.src = e.target.result
+        // this.previewImgUrl = e.target.result
+      }
+      reader.readAsDataURL(file)
+      // await this.$editorImgResize(this.selectFile)
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */

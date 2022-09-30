@@ -2,7 +2,7 @@
     <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
     <form  @submit.prevent="formSubmit" class="font14 commonBlack fl mleft-1" style="overflow: hidden;cursor: pointer; text-align: center; padding: 4px 8px; background-color: #fff; height: 27px; margin-top: 2px;border-radius: 8px; position: relative; border:1px solid black;" method="post">
          파일 선택
-        <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="previewFile"/>
+        <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
     </form>
     <div v-if="this.sFileList.length > 0" style="width: 100%; min-height: 50px; margin-top: 10px; float: left; overflow: auto hidden;">
         <div :style="attachFileWidth" style="min-width: 100%;float: left; height: 50px; overflow: hiden;">
@@ -54,6 +54,70 @@ export default {
     }
   },
   methods: {
+    async handleImageUpload (event) {
+      this.selectFile = null
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
+      if (this.$refs.selectFile.files.length > 0) {
+        // 0 번째 파일을 가져 온다.
+        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+          this.selectFile = null
+          this.gAttachKey += 1
+          this.selectFile = this.$refs.selectFile.files[k]
+          let fileExt = this.selectFile.name.substring(
+            this.selectFile.name.lastIndexOf('.') + 1
+          )
+          // 소문자로 변환
+          fileExt = fileExt.toLowerCase()
+          if (
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+          ) {
+            console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+            console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
+
+            try {
+              this.selectFile = this.$refs.selectFile.files[this.uploadCnt]
+              // eslint-disable-next-line no-undef
+              var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+              var src = URL.createObjectURL(compressedFile)
+              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+              this.preImgUr = src
+              this.selectFile = compressedFile
+              this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: compressedFile })
+              this.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: compressedFile }])
+              this.uploadCnt += 1
+            /* await uploadToServer(compressedFile) */ // write your own logic
+            } catch (error) {
+              console.log(error)
+            }
+          } else {
+            if (this.selectFile.size > 10000000) {
+              this.errorShowYn = true
+              return true
+            }
+            // console.log('#####')
+            if (!this.sFileList) {
+              this.sFileList = []
+            }
+            // console.log(this.sFileList)
+            this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
+            this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
+          }
+        }
+      } else {
+        // 파일을 선택하지 않았을때
+        this.$emit('noneFile')
+        this.selectFile = null
+        this.previewImgUrl = null
+      }
+    },
     async previewFile () {
       this.preImgUrl = null
       // 선택된 파일이 있는가?

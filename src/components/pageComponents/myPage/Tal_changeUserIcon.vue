@@ -15,7 +15,7 @@
           </div>
 
           <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
-              <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="previewFile"/>
+              <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
           </form>
           <div class="fl textLeft w-100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
             <p class="fl fontBold font14 mtop-05">터치해서 이미지를 변경할 수 있습니다.</p>
@@ -79,6 +79,71 @@ export default {
     changeBtnClick () {
       this.$refs.selectFile.click()
     },
+    async handleImageUpload (event) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
+      if (this.$refs.selectFile.files.length > 0) {
+        // 0 번째 파일을 가져 온다.
+        this.selectedImgPath = ''
+        this.selectedImgFilekey = ''
+        this.selectFile = null
+        this.previewImgUrl = null
+        this.cropperYn = true
+
+        this.selectFile = this.$refs.selectFile.files[0]
+        let fileExt = this.selectFile.name.substring(
+          this.selectFile.name.lastIndexOf('.') + 1
+        )
+        // 소문자로 변환
+        fileExt = fileExt.toLowerCase()
+        if (
+          ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ) {
+          console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+          console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
+
+          try {
+            // eslint-disable-next-line no-undef
+            var compressedFile = await this.$imageCompression(this.selectFile, options)
+            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+            var src = URL.createObjectURL(compressedFile)
+            console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+            this.previewImgUrl = src
+            this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: compressedFile })
+
+            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+            this.refImg = this.$refs.image
+            // // console.log(this.cropper)
+
+            this.cropper = new Cropper(this.refImg, {
+              viewMode: '1',
+              dragMode: 'move',
+              preview: '.cropperPreviewImg',
+              aspectRatio: 1 / 1,
+              cropBoxResizable: true,
+              wheelZoomRatio: 0.1,
+              movable: false
+            })
+            this.cropper.replace(this.previewImgUrl)
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      } else {
+        // 파일을 선택하지 않았을때
+        this.$emit('noneFile')
+        this.selectFile = null
+        this.previewImgUrl = null
+      }
+    },
+
     async previewFile () {
       // 선택된 파일이 있는가?
       if (this.$refs.selectFile.files.length > 0) {
@@ -190,7 +255,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data'

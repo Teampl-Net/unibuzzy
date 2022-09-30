@@ -69,6 +69,8 @@ import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
+
+import imageCompression from 'browser-image-compression'
 // import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
@@ -201,6 +203,7 @@ axios.interceptors.response.use(function (response) {
 app.config.silent = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$Vuex = Vuex
+app.config.globalProperties.$imageCompression = imageCompression
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
 
