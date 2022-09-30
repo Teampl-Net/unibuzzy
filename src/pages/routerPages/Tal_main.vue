@@ -109,7 +109,7 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
@@ -118,7 +118,7 @@ export default {
         if (this.GE_MAIN_CHAN_LIST.length > 0) {
           await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
         } else {
-          await this.$store.dispatch('D_CHANNEL/AC_MAIN_CHAN_LIST', response.data.teamList)
+          await this.$store.dispatch('D_CHANNEL/MU_ADD_CHANNEL', response.data.teamList)
         }
         // var test = await this.$actionVuex('TEAM', null, true, false, null)
         // console.log(this.mainChanList)

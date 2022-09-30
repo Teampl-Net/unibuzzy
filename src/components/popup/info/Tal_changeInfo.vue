@@ -96,7 +96,7 @@ export default {
       param.address = this.infoValue
       this.holdingEmail = this.infoValue
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.sendMail',
+        url: 'https://mo.d-alim.com/service/tp.sendMail',
         param: param
       })
       if (result.data.result) {
@@ -177,7 +177,7 @@ export default {
         param.token = this.token
         param.address = this.holdingEmail
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.checkValidation',
+            url: 'https://mo.d-alim.com/service/tp.checkValidation',
             param: param
         })
 
