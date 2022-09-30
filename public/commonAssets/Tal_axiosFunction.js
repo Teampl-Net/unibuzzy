@@ -494,6 +494,16 @@ export const methods = {
     // result = response
     return response
   },
+  async getMemoCount (param) {
+    // var result = null
+    if (param.targetKey === null) return false
+    var response = await commonAxiosFunction({
+      url: 'service/tp.getMemoCount',
+      param: param
+    })
+    // result = response
+    return response
+  },
   async changeDispName (inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
