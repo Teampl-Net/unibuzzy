@@ -186,7 +186,7 @@ const functions = {
     response.teamTypeText = commonMethods.teamTypeString(response.teamType)
     var title = '[더알림]' + commonMethods.changeText(response.nameMtext)
     var message = commonMethods.changeText(response.memoMtext)
-    // response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
+    response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
 
     response.detailPageYn = true
     var teamList = functions.getDetail('TEAM', teamKey)

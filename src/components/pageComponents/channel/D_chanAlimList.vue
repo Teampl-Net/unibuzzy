@@ -393,9 +393,9 @@ export default {
       }
     },
     async copyText () {
-      var shareItem = { title: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), text: this.copyTextStr, url: this.copyTextStr }
+      var shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), text: '[더알림] ' + this.$changeText(this.chanItem.nameMtext), url: this.copyTextStr }
+        shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
       }
       if (navigator.share) {
         navigator.share(shareItem)
