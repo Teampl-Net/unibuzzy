@@ -141,8 +141,8 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
-    if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
-    g_axiosQueue.push('userLoginCheck')
+    // if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
+    // g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     // testYn = false
@@ -175,8 +175,8 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
-    g_axiosQueue.splice(queueIndex, 1)
+    // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
+    // g_axiosQueue.splice(queueIndex, 1)
     if (result.data.resultCode === 'OK') {
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')

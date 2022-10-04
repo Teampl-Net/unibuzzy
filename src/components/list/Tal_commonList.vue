@@ -504,6 +504,15 @@ export default {
       this.currentConfirmType = ''
       this.confirmPopShowYn = false
     },
+    findContent (key) {
+      for (let i = 0; i < this.commonListData.length; i++) {
+        if (this.commonListData[i].contentsKey === key) {
+          return i
+          break
+        }
+      }
+      return -1
+    },
     async contentsWich (key) {
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
@@ -515,6 +524,12 @@ export default {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
           this.memoOpenClick({key: this.targetCKey, teamKey: null})
+          var idx = this.findContent(tempKey)
+          if (idx !== -1) {
+            this.$nextTick(() => {
+              this.alimBigView(this.commonListData[idx])
+            })
+          }
           this.targetCKey = null
         }
       }
@@ -820,6 +835,7 @@ export default {
       // if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
     },
     alimBigView (alim) {
+      // alert(alim.contentsKey)
         alim.bigYn = true
       // contentsKey, alim.attachMfilekey
         document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'

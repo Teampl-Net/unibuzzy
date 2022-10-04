@@ -561,7 +561,7 @@ export default {
         }
       } catch (error) {
         console.error(error)
-        this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+        // this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
       } finally {
         this.$emit('closeXPop', true)
         this.sendLoadingYn = false
@@ -725,7 +725,7 @@ export default {
           }
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        this.$showToastPop('파일을 선택해 주세요.')
       }
       return true
     },

@@ -67,6 +67,9 @@ export default {
   },
   mounted () {
     this.loadingYn = false
+    console.log('userLoginCheck')
+    this.$userLoginCheck()
+    console.log('userLoginCheck')
   },
   data () {
     return {

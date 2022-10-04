@@ -47,7 +47,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <pre  id="boardBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr)"></pre>
+        <pre  id="contentsBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr)"></pre>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -198,6 +198,10 @@ export default {
     // console.log('########################')
     // console.log(this.detailVal)
     // console.log('########################')
+    var this_ = this
+    this.$nextTick(() => {
+      this_.addImgEvnt()
+    })
   },
   computed: {
     historyStack () {
@@ -234,8 +238,8 @@ export default {
       console.log(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (cont) {
-        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
-        console.log(cont[0])
+        // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
+        // console.log(cont[0])
         return cont[0]
       } else {
         // console.log(cont)
@@ -274,7 +278,7 @@ export default {
       handler (value, old) {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
         console.log(value)
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
         console.log(old)
         if (value) {
           this.onLoadFunction()
@@ -444,7 +448,7 @@ export default {
       if (this.systemName !== 'Android' && this.systemName !== 'android') {
         return
       }
-      var contentsATagList = document.querySelectorAll('#boardBodyArea a')
+      var contentsATagList = document.querySelectorAll('#contentsBodyArea a')
       if (contentsATagList && contentsATagList.length > 0) {
         for (var i = 0; i < contentsATagList.length; i++) {
           contentsATagList[i].target = '_blank'
@@ -600,8 +604,8 @@ export default {
     },
     addImgEvnt () {
       // console.log(this.CONT_DETAIL)
-
-      this.clickImgList = document.querySelectorAll('#boardBodyArea img')
+      this.clickImgList = document.querySelectorAll('#contentsBodyArea img')
+      // alert(JSON.stringify(this.clickImgList))
       for (let m = 0; m < this.clickImgList.length; m++) {
         var thisthis = this
         thisthis.clickImgList[m].addEventListener('touchstart', () => {
@@ -931,7 +935,7 @@ export default {
           }
         }
         var bodyImgFileList = []
-        var addFalseImgList = document.querySelectorAll('#boardBodyArea .formCard .addFalse')
+        var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
         if (addFalseImgList) {
           for (var s = 0; s < this.CONT_DETAIL.attachFileList.length; s++) {
             var attFile = this.CONT_DETAIL.attachFileList[s]

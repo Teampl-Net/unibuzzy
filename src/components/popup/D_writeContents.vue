@@ -822,7 +822,7 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
         } catch (error) {
           console.error(error)
-          this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+          // this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
         } finally {
           this.sendLoadingYn = false
           this.closeXPop(true)
