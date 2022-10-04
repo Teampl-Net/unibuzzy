@@ -404,6 +404,46 @@ const D_CHANNEL = {
               state.addContsList.splice(0, 30)
             }
             state.addContsList.unshift(payload[i])
+          } else {
+            var dataList = null
+            if (payload[i].jobkindId === 'BOAR') {
+              dataList = chanDetail.ELEMENTS.boardList[idx2]
+            } else {
+              dataList = chanDetail.ELEMENTS.alimList[idx2]
+            }
+            if (!dataList.D_MEMO_LIST) {
+              dataList.D_MEMO_LIST = []
+            }
+            if (!payload[i].D_MEMO_LIST) payload[i].D_MEMO_LIST = []
+
+            if (!payload[i].D_MEMO_LIST || payload[i].D_MEMO_LIST.length === 0) {
+              payload[i].D_MEMO_LIST = payload[i].memoList
+            }
+            // alert('ok')
+            if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
+              var newArr = []
+              if (payload[i].D_MEMO_LIST.length > 0) {
+                newArr = [...newArr, ...payload[i].D_MEMO_LIST]
+              }
+              if (dataList.D_MEMO_LIST.length > 0) {
+                newArr = [...newArr, ...dataList.D_MEMO_LIST]
+              }
+              if (newArr && newArr.length > 0) {
+                var uniqueArr = newArr.reduce(function (data, current) {
+                  // var addData = []
+                  if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                    data.push(current)
+                  }
+                  return data
+                }, [])
+                payload[i].MEMO_LIST = uniqueArr
+              }
+            }
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else {
+              chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
+            }
           }
         }
       }
