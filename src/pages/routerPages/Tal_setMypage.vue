@@ -44,14 +44,14 @@
           <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(GE_USER.creDate, true)}}</td></tr> -->
           <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
           <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">이용약관</th></tr>
-          <tr>
+          <tr @click="checkAppVersion" v-if="isMobile">
             <th class="font16">
               버전정보
-              <p class="font10">최신버전: 1.1.8</p>
+              <p class="font10">최신버전: {{lastVersion}}</p>
             </th>
             <td class="textRight font16">{{appVersion}}</td></tr>
             <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">캐시정보 삭제</th></tr>
-            <tr v-if="isMobile" @click="reloadApp"><th class="font16 cursorP" colspan="2">캐시삭제 및 다시시작</th></tr>
+            <tr v-if="isMobile && this.systemName === 'android' || this.systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">캐시삭제 및 다시시작</th></tr>
             <!-- <tr @click="this.myChanListPopYn = true">
               <th>
                 내 채널 -->
@@ -67,6 +67,7 @@
         <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
 
+      <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
       <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
       <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
     </div>
@@ -97,7 +98,7 @@ export default {
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
-      appVersion: '1.1.8',
+      appVersion: 0,
       logOutShowYn: false,
       showPolicyPopYn: false,
       policyType: 'useTheAlim',
@@ -109,7 +110,12 @@ export default {
       changeUserIconPop: null,
       reloadShowText: '',
       reloadShowYn: false,
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      appInfo: null,
+      lastVersion: 0,
+      checkVersionPopShowYn: false,
+      checkVersionText: '',
+      systemName: 'iOS'
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -117,6 +123,17 @@ export default {
 
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', '설정')
+    // alert(JSON.stringify(localStorage.getItem('appInfo')))
+    if (this.isMobile) {
+        this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
+        console.log(this.appInfo)
+        console.log('this.appInfo')
+        if (this.appInfo) {
+            this.appVersion = this.appInfo.current
+            this.lastVersion = this.appInfo.last
+        }
+    }
+    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
 
     /* var history = localStorage.getItem('popHistoryStack').split('$#$')
     this.pageHistoryName = 'page' + (history.length - 1) */
@@ -144,6 +161,39 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    checkAppVersion () {
+        if (this.systemName === 'android' || this.systemName === 'Android') {
+            if (this.appInfo.current !== this.appInfo.last) {
+            // alert('최신버전으로 업데이트 해주세요')
+            this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+            this.checkVersionPopShowYn = true
+            // window.open(appInfo.playStoreUrl, '_blank')
+          }
+        }
+        
+    },
+    goPlayStore () {
+        if (this.systemName === 'android' || this.systemName === 'Android') {
+            var aTag = document.getElementById('updateAppPage')
+            if (aTag == null) {
+              aTag = document.createElement('a')
+              aTag.id = 'updateAppPage'
+              aTag.style.display = 'none'
+              document.body.appendChild(aTag)
+            }
+            aTag.href = this.appInfo.playStoreUrl
+            // aTag.target = '_blank'
+
+            // aTag.click()
+            aTag.click()
+            onMessage('closeApp', 'requestUserPermission').then(res => {
+                aTag.click()
+            })
+        }
+        
+            
+            // document.body.removeChild(aTag)
+    },
     reloadApp () {
         this.reloadShowText ='앱을 재시작하시겠습니까?'
         this.reloadShowYn = true
@@ -236,6 +286,16 @@ export default {
 
       }
     },
+    callPhone (num) {
+            if (num != undefined && num != null && num != '') {
+                if(this.systemName !== 'Android' && this.systemName !== 'android')
+                    document.location.href='tel:' + num
+                else
+                    onMessage('REQ', 'callphone', num)
+            } else {
+                alert('전화번호 정보가 없습니다')
+            }
+        },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
     }

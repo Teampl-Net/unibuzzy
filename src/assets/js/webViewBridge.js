@@ -128,7 +128,25 @@ const isJsonString = (str) => {
 
         } else if (message.type === 'appInfo') {
           console.log(message.appInfo)
-          alert(JSON.stringify(message.appInfo))
+          var appInfo = JSON.parse(message.appInfo)
+          localStorage.setItem('appInfo', message.appInfo)
+          /* if (appInfo.current !== appInfo.last) {
+            // alert('최신버전으로 업데이트 해주세요')
+            var aTag
+            aTag = document.getElementById('updateAppPage')
+            if (aTag == null) {
+              aTag = document.createElement('a')
+              aTag.id = 'hiddenDownloaderForAndroid'
+              aTag.style.display = 'none'
+              document.body.appendChild(aTag)
+            }
+            aTag.href = appInfo.playStoreUrl
+            // aTag.target = '_blank'
+
+            aTag.click()
+            document.body.removeChild(aTag)
+            // window.open(appInfo.playStoreUrl, '_blank')
+          } */
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

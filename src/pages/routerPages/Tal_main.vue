@@ -49,12 +49,14 @@ export default {
   },
   created () {
     // onMessage('REQ', 'removeAllNoti')
-    this.$emit('openLoading')
+    // this.$emit('openLoading')
     if (!this.GE_USER) {
       this.$router.push('/policies')
       return
     }
-    this.getMainBoard()
+    this.getMainBoard().then(res => {
+      this.loadingYn = false
+    })
     this.loadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
@@ -161,6 +163,7 @@ export default {
     goProfile () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      this.loadingYn = true
       // param.targetType = 'bookMemberDetail'
       param.targetType = 'setMypage'
       param.readOnlyYn = true
@@ -169,12 +172,15 @@ export default {
     },
     async reloadPage () {
       this.loadingYn = true
-      /* this.$refs.topAlim.refreshList()
-      this.$refs.topChan.reLoad() */
-      /* await this.getMainBoard() */
-      /* await this.$refs.topAlim.reLoad()
-      await this.$refs.topChan.reLoad() */
-      this.loadingYn = false
+      this.getMainBoard().then(res => {
+        this.loadingYn = false
+      })
+      this.$store.commit('D_HISTORY/setRemovePage', '')
+      this.$store.commit('D_HISTORY/updateStack', [])
+      // console.log(this.GE_MAIN_CHAN_LIST)
+      // document.addEventListener('message', e => this.recvNoti(e))
+      // // window.addEventListener('message', e => this.recvNoti(e))
+      this.$emit('changePageHeader', '더알림')
     },
     closeApp () {
       // onMessage('REQ', 'reloadApp')
