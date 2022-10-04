@@ -295,20 +295,26 @@ export default {
             } */
     },
     GE_NEW_MEMO_LIST: {
-      handler (value, old) {
-        //  alert(true)
+      async handler (value, old) {
         var newArr = []
-        // alert(true)
         if (!value || value.length === 0) return
-        // var memoContents = value[0]
-        var memo = null
-        memo = this.CONT_DETAIL
-        if (!memo) return
-        newArr = [
-          value[0],
-          ...memo.D_MEMO_LIST
-        ]
+        var content = null
+        content = this.CONT_DETAIL
+        var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+        this.CONT_DETAIL.memoCount = count
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.CONT_DETAIL)
+        var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        if (memoAleadyIdx !== -1) {
+          content.D_MEMO_LIST[memoAleadyIdx].D_MEMO_LIST = value[0]
+          newArr = content.D_MEMO_LIST
+        } else {
+          newArr = [
+            value[0],
+            ...content.D_MEMO_LIST
+          ]
+        }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.CONT_DETAIL)
       },
       deep: true
     }
@@ -588,7 +594,7 @@ export default {
         // inParam.deleteYn = true
 
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -599,7 +605,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -642,7 +648,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -784,7 +790,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -891,7 +897,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -932,6 +938,10 @@ export default {
         if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
           data.push(current)
         }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.memoKey - a.memoKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
         return data
       }, [])
       return uniqueArr
@@ -953,7 +963,7 @@ export default {
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
 
@@ -1003,7 +1013,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -1026,7 +1036,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result === true || result.data.result === 'true') {
