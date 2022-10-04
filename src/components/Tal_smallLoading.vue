@@ -6,9 +6,9 @@
 <script>
 export default {
   created () {
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.hide()
-    }, 1000)
+    }, 1000) */
   },
   methods: {
     show () {

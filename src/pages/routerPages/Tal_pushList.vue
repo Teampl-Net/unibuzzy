@@ -31,9 +31,10 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
+          <gLoadingS v-if="!this.GE_DISP_CONT_LIST || this.GE_DISP_CONT_LIST.length === 0"/>
           <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
           <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && GE_DISP_CONT_LIST.length === 0 "/>
+          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if=" emptyYn && GE_DISP_CONT_LIST.length === 0 "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -261,7 +262,6 @@ export default {
       async handler (value, old) {
         var newArr = []
         if (!value || value.length === 0) return
-        // var memoContents = value[0]
         var content = null
         var index = this.GE_DISP_CONT_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
@@ -411,11 +411,13 @@ export default {
     },
     GE_DISP_CONT_LIST () {
       var idx1, idx2
-      var test = []
       var chanDetail = null
       var dataList = null
       var i = 0
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      // this.spinerShowYn = true
       if (this.viewMainTab === 'P') {
+        var test = []
         for (i = 0; i < this.alimContentsList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
           if (idx1 !== -1) {
@@ -435,7 +437,9 @@ export default {
             test.push(this.alimContentsList[i])
           }
         }
+        return test
       } else {
+        var boardL = []
         for (i = 0; i < this.boardContentsList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
@@ -444,16 +448,13 @@ export default {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
           if (idx2 !== -1) {
-            test.push(dataList[idx2])
+            boardL.push(dataList[idx2])
           } else {
-            test.push(this.boardContentsList[i])
+            boardL.push(this.boardContentsList[i])
           }
         }
+        return boardL
       }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (test.length === 0) this.emptyYn = true
-
-      return test
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -1046,6 +1047,7 @@ export default {
     },
     changeMainTab (tab) {
       // this.targetCKey = null
+      this.viewMainTab = tab
       this.emptyYn = false
       this.targetCKey = null
       this.loadMoreDESCYn = true
@@ -1054,7 +1056,11 @@ export default {
       this.findKeyList.toCreDateStr = null
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
-      this.viewMainTab = tab
+      /* if (tab === 'P') {
+        this.boardContentsList = []
+      } else if (tab === 'B') {
+        this.alimContentsList = []
+      } */
       this.changeTab('N')
       this.offsetInt = 0
       this.$refs.activeBar.switchtab(0)
@@ -1499,7 +1505,8 @@ export default {
       currentConfirmType: '',
       confirmPopShowYn: false,
       confirmType: 'timeout',
-      axiosQueue: []
+      axiosQueue: [],
+      spinerShowYn: false
     }
   }
 }

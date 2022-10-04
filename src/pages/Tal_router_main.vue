@@ -341,17 +341,21 @@ export default {
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
+                // alert('왔슴다')
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
+                  // alert(JSON.stringify(memo_))
                   memo_.jobkindId = this.notiDetail.jobkindId
+                  // alert(true)
                   memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
                   await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
                 } else {
+                  var memos = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
                   if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: memos.targetKey, creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                     return
                   } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                    this.goChanDetail({ contentsKey: memos.targetKey, creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                     // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                     return
                   }

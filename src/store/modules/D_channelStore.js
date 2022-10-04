@@ -60,7 +60,6 @@ const D_CHANNEL = {
       var chanIndex = state.chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
       if (chanIndex === -1) return
       var chan = state.chanList[chanIndex]
-
       if (payload.parentMemoKey) {
         index = state.addMemoList.findIndex((item) => item.memoKey === payload.parentMemoKey)
         if (index !== -1) {
