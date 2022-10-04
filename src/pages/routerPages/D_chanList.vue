@@ -259,18 +259,28 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
         }
         this.channelList = resultList.content
+      // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      //   this.endListYn = true
+      // } else {
+      //   this.endListYn = false
+      // }
+      // this.endList = false
+      // this.endListSetFunc(resultList)
+    },
+    endListSetFunc (resultList) {
+      if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
+        if (this.offsetInt > 0) this.offsetInt -= 1
       } else {
         this.endListYn = false
+        this.offsetInt += 1
       }
-      this.endList = false
     },
-
     async loadMore (pageSize) {
       if (this.endListYn === false ) {
-        this.offsetInt += 1
         var resultList = await this.getChannelList()
+
         console.log(resultList)
         if (resultList === undefined) return
         var addList = []
@@ -287,11 +297,11 @@ export default {
           ...resultList.content
         ]
         this.channelList = newArr
-        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-          this.endListYn = true
-        } else {
-          this.endListYn = false
-        }
+        // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        //   this.endListYn = true
+        // } else {
+        //   this.endListYn = false
+        // }
 
       } else {
         this.$refs.gChannelListCompo.loadingRefHide()
@@ -407,6 +417,7 @@ export default {
       var resultList = result.data
       // console.log('#######################')
       // console.log(resultList)
+      this.endListSetFunc(resultList)
       return resultList
     },
 

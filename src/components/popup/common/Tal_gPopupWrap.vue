@@ -1,7 +1,7 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
       <loadingCompo style="z-index: 9999999 !important; position:absolute; top:0; left:0;" v-if="loadingYn" />
-      <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail" />
+      <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
         <fullModal  @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
@@ -18,7 +18,7 @@
         <pushList :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
       <pushBox @closeLoading="this.loadingYn = false" v-if="this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative; padding: 0px 0.5rem; " v-if="this.targetType === 'chanList'">
+      <div class="pagePaddingWrap" style=" position: relative; padding: 48px 0.5rem 0 0.5rem; " v-if="this.targetType === 'chanList'">
         <chanList :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <changeInfo @closeLoading="this.loadingYn = false"  @successUpdate="successchangeUserInfo" :kind="this.changInfoType" v-if="this.targetType === 'changeInfo'" />
