@@ -388,12 +388,20 @@ export default {
     },
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength() {
-      var boardListLength = this.BOARD_CONTENT_LIST.length === 0 ? 1 : this.BOARD_CONTENT_LIST.length * 45 + 10
-      this.$nextTick(() => {
-        if (this.$refs.boardRef) {
-          this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
-        }
-      })
+      if (this.boardContentList) {
+        var boardListLength = this.boardContentList.length === 0 ? 1 : this.boardContentList.length * 45 + 10
+        this.$nextTick(() => {
+            if (this.$refs.boardRef) {
+            this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
+            }
+        })
+      } else {
+        this.$nextTick(() => {
+            if (this.$refs.boardRef) {
+            this.$refs.boardRef.style.setProperty('--menuHeight', ('30px'))
+            }
+        })
+      }
     },
     boardDropDown () {
       if (this.BOARD_CONTENT_LIST.length !== 0) {
@@ -404,12 +412,20 @@ export default {
     /** 화면상 주소록의 높이를 cabinetList.length를 통해 구해주는 함수 */
     bookListLength () {
       if (this.adminYn === true) {
-        var bookListHeight = this.CABINET_LIST.length === 0 ? 1 : this.CABINET_LIST.length * 45 + 10
-        this.$nextTick(()=> {
-          if (this.$refs.addressBookGroupRef) {
-            this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
-          }
-        })
+        if (this.cabinetList) {
+            var bookListHeight = this.cabinetList.length === 0 ? 1 : this.cabinetList.length * 45 + 10
+            this.$nextTick(()=> {
+                if (this.$refs.addressBookGroupRef) {
+                    this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+                }
+            })
+        } else {
+            this.$nextTick(()=> {
+                if (this.$refs.addressBookGroupRef) {
+                    this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', ('30px'))
+                }
+            })
+        }
       }
     },
     bookDropDown () {

@@ -179,7 +179,8 @@ export default {
       this.loadingYn = false
     },
     closeApp () {
-      onMessage('closeApp', 'requestUserPermission')
+      onMessage('REQ', 'reloadApp')
+      // onMessage('closeApp', 'requestUserPermission')
       this.appCloseYn = false
     },
     forceRerender () {
