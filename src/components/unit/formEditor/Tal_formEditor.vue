@@ -522,6 +522,66 @@ export default {
     openSelectFilePop () {
       this.$refs.selectFile.click()
     },
+    async handleImageUpload (event) {
+      this.selectFile = null
+      this.previewImgUrl = null
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
+      if (this.$refs.selectFile.files.length > 0) {
+        // 0 번째 파일을 가져 온다.
+        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+          this.selectFile = this.$refs.selectFile.files[k]
+          let fileExt = this.selectFile.name.substring(
+            this.selectFile.name.lastIndexOf('.') + 1
+          )
+          // 소문자로 변환
+          fileExt = fileExt.toLowerCase()
+          if (
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+          ) {
+            console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+            console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
+
+            try {
+            // eslint-disable-next-line no-undef
+              var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log(compressedFile)
+              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              var src = null
+              if (compressedFile instanceof Blob) {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+                const decodImg = atob(src.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], compressedFile.name)
+              } else {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              }
+
+              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+              this.addFormCard('image', newFile)
+            /* await uploadToServer(compressedFile) */ // write your own logic
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        }
+      } else {
+        // 파일을 선택하지 않았을때
+        this.$emit('noneFile')
+        this.selectFile = null
+        this.previewImgUrl = null
+      }
+    },
     previewFile () {
       this.selectFile = null
       this.previewImgUrl = null

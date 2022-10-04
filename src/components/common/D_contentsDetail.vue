@@ -16,7 +16,7 @@
             <p class=" font18 fontBold commonColor cursorDragText" style="word-break: break-word;">
               <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
               <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type:'BOAR', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: alim})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: alim})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{CONT_DETAIL.title}}
             </p>
             <!-- <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
@@ -30,13 +30,12 @@
           </div>
 
         </div>
-        <!-- <div v-if="fileDownloadAreaYn" style="position: relative;width: 100%; height: 30px; float: left; "> -->
-        <div v-if="this.CONT_DETAIL_D_ATTATCH_FILE_LIST && this.CONT_DETAIL_D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
+        <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
             <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
             <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
             <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
                 <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
-                <templete v-for="(value, index) in this.CONT_DETAIL_D_ATTATCH_FILE_LIST" :key="index">
+                <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
                 <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
                     <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
                     <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
@@ -331,7 +330,7 @@ export default {
         }
         // console.log('this.CHANNEL_DETAIL')
         // console.log(this.CHANNEL_DETAIL)
-        if (!this.CONT_DETAIL) {
+        if (!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST)) {
           await this.getContentsDetail()
         // this.getContentsList()
         } else {
@@ -344,7 +343,9 @@ export default {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
         }
-        if (this.CONT_DETAIL.attachFileList && !this.CONT_DETAIL_D_ATTATCH_FILE_LIST) {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
           this.settingFileList()
         }
         if (this.CONT_DETAIL.D_MEMO_LIST) {
@@ -934,6 +935,10 @@ export default {
       this.saveMemoLoadingYn = false
     },
     async settingFileList () {
+      var test = this.CONT_DETAIL
+      console.log(test)
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
         var attachFileList = []
         for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {

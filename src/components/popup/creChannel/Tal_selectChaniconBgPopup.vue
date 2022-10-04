@@ -20,7 +20,7 @@
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFile" id="input-file" @change="previewFile"/>
+                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFile" id="input-file" @change="handleImageUpload"/>
               </form>
               <div class="fl textLeft w-100P">
                 <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
@@ -239,6 +239,85 @@ export default {
       this.selectedId = value.imageFilekey
       this.selectPath = value.domainPath + value.pathMtext
     },
+    async handleImageUpload (event) {
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
+      if (this.$refs.selectFile.files.length > 0) {
+        // 0 번째 파일을 가져 온다.
+        this.selectedImgPath = ''
+        this.selectedImgFilekey = ''
+        this.selectFile = null
+        this.previewImgUrl = null
+
+        this.selectFile = this.$refs.selectFile.files[0]
+        let fileExt = this.selectFile.name.substring(
+          this.selectFile.name.lastIndexOf('.') + 1
+        )
+        // 소문자로 변환
+        fileExt = fileExt.toLowerCase()
+        if (
+          ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ) {
+          console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+          console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
+
+          try {
+            // eslint-disable-next-line no-undef
+            var compressedFile = await this.$imageCompression(this.selectFile, options)
+            console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+            var src = null
+            if (compressedFile instanceof Blob) {
+              src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              const decodImg = atob(src.split(',')[1])
+              const array = []
+              for (let i = 0; i < decodImg.length; i++) {
+                array.push(decodImg.charCodeAt(i))
+              }
+              const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+              var newFile = new File([Bfile], compressedFile.name)
+            } else {
+              src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+            }
+
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+            console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+            this.previewImgUrl = src
+            this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
+
+            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
+            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
+            this.refImg = this.$refs.image
+            // // console.log(this.cropper)
+
+            this.cropper = new Cropper(this.refImg, {
+              viewMode: '1',
+              dragMode: 'move',
+              preview: '.cropperPreviewImg',
+              aspectRatio: (this.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
+              cropBoxResizable: true,
+              wheelZoomRatio: 0.1,
+              movable: false
+            })
+
+            this.cropper.replace(this.previewImgUrl)
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      } else {
+        // 파일을 선택하지 않았을때
+        this.$emit('noneFile')
+        this.selectFile = null
+        this.previewImgUrl = null
+      }
+    },
+
     async previewFile () {
       if (this.$refs.selectFile.files.length > 0) {
         this.selectedImgPath = ''

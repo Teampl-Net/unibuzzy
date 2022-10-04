@@ -83,15 +83,29 @@ export default {
               this.selectFile = this.$refs.selectFile.files[this.uploadCnt]
               // eslint-disable-next-line no-undef
               var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log(compressedFile)
               console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              var src = null
+              if (compressedFile instanceof Blob) {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+                const decodImg = atob(src.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], compressedFile.name)
+              } else {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              }
+
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              var src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
               console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.preImgUr = src
               this.selectFile = compressedFile
-              this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: compressedFile })
-              this.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: compressedFile }])
+              this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
+              this.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile }])
               this.uploadCnt += 1
             /* await uploadToServer(compressedFile) */ // write your own logic
             } catch (error) {

@@ -169,7 +169,7 @@ export default {
               }
               /* this.editorType = 'complex' */
               var file = item.getAsFile();
-              this.previewFile(file)
+              this.handleImageUpload(file)
               // console.log(file);
           //uploadFile(file);
           } else {
@@ -946,6 +946,59 @@ export default {
     openSelectFilePop () {
       this.$refs.selectFile.click()
     },
+    async handleImageUpload (file) {
+      debugger
+      this.selectFile = null
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+
+        // 0 번째 파일을 가져 온다.
+          let fileExt = file.name.substring(
+            file.name.lastIndexOf('.') + 1
+          )
+          // 소문자로 변환
+          fileExt = fileExt.toLowerCase()
+          if (
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+          ) {
+            console.log('originalFile instanceof Blob', file instanceof Blob) // true
+            console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
+
+            try {
+            // eslint-disable-next-line no-undef
+              var compressedFile = await this.$imageCompression(file, options)
+              console.log(compressedFile)
+              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              var src = null
+              if (compressedFile instanceof Blob) {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+                const decodImg = atob(src.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], compressedFile.name)
+              } else {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              }
+
+              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+              this.$refs.complexEditor.addFormCard('image', src, true)
+              this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
+            
+            } catch (error) {
+              console.log(error)
+            }
+          }
+    },
+
+
     async previewFile (file) {
       let fileExt = file.name.substring(
         file.name.lastIndexOf('.') + 1

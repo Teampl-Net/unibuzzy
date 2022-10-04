@@ -114,13 +114,26 @@ export default {
           try {
             // eslint-disable-next-line no-undef
             var compressedFile = await this.$imageCompression(this.selectFile, options)
+            console.log(compressedFile)
             console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
-            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-            var src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
-            console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+            var src = null
+            if (compressedFile instanceof Blob) {
+              src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              const decodImg = atob(src.split(',')[1])
+              const array = []
+              for (let i = 0; i < decodImg.length; i++) {
+                array.push(decodImg.charCodeAt(i))
+              }
+              const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+              var newFile = new File([Bfile], compressedFile.name)
+            } else {
+              src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+            }
 
+            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+            console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
             this.previewImgUrl = src
-            this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: compressedFile })
+            this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
 
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
