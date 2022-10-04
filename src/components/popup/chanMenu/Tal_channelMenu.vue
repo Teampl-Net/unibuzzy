@@ -115,14 +115,14 @@ export default {
     },
     CABINET_LIST () {
       if (this.cabinetList.length === 0) {
-          return
+          return this.cabinetList
       }
       return this.cabinetList
     },
     BOARD_CONTENT_LIST () {
       if (this.boardContentList.length === 0) {
-          return
-      }debugger
+          return this.boardContentList
+      }
       return this.boardContentList
     }
 
@@ -389,8 +389,10 @@ export default {
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength() {
       var boardListLength = this.BOARD_CONTENT_LIST.length === 0 ? 1 : this.BOARD_CONTENT_LIST.length * 45 + 10
-      this.$nextTick(()=> {
-        this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
+      this.$nextTick(() => {
+        if (this.$refs.boardRef) {
+          this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
+        }
       })
     },
     boardDropDown () {
@@ -404,7 +406,9 @@ export default {
       if (this.adminYn === true) {
         var bookListHeight = this.CABINET_LIST.length === 0 ? 1 : this.CABINET_LIST.length * 45 + 10
         this.$nextTick(()=> {
-          this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+          if (this.$refs.addressBookGroupRef) {
+            this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+          }
         })
       }
     },

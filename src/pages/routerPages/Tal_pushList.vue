@@ -1079,7 +1079,8 @@ export default {
       var contentDetail
       if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.alimContentsList,
+          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
+          // ...this.alimContentsList,
           ...resultList.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
@@ -1109,7 +1110,8 @@ export default {
         }
       } else {
         newArr = [
-          ...this.boardContentsList,
+          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
+          // ...this.boardContentsList,
           ...resultList.content
         ]
         var tempArr = this.replaceArr(newArr)

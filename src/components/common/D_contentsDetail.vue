@@ -238,16 +238,14 @@ export default {
       }
     },
     CONT_DETAIL () {
-      // eslint-disable-next-line no-debugger
-      debugger
       console.log(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (cont) {
-        // console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
-        // console.log(cont[0])
+        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
+        console.log(cont)
         return cont[0]
       } else {
-        // console.log(cont)
+        console.log(cont)
         return null
       }
     },
@@ -379,8 +377,6 @@ export default {
       param.cabinetKey = this.detailVal.cabinetKey
       var resultList = await this.$getCabinetDetail(param)
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
-      // eslint-disable-next-line no-debugger
-      debugger
       this.cabinetDetail = resultList
       // this.updateStoreData(resultList.mCabinet)
     },
@@ -389,10 +385,14 @@ export default {
       var param = new Object()
       param.contentsKey = this.detailVal.contentsKey
       param.jobkindId = this.detailVal.jobkindId
-      // // console.log(param)
-      // // console.log('param')
+      console.log('getContentsDetail - param')
+      console.log(param)
+      console.log('getContentsDetail - this.detailVal')
+      console.log(this.detailVal)
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
+      console.log('getContentsDetail - detailData')
+      console.log(detailData)
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
       if (!detailData.D_MEMO_LIST) detailData.D_MEMO_LIST = []
