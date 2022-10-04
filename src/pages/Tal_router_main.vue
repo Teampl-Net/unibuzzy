@@ -366,6 +366,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
     this.$userLoginCheck(true)
     /* const searchParams = new URLSearchParams(location.search)
     // eslint-disable-next-line no-unused-vars

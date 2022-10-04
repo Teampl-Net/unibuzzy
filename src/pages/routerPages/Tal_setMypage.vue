@@ -51,6 +51,7 @@
             </th>
             <td class="textRight font16">{{appVersion}}</td></tr>
             <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">캐시정보 삭제</th></tr>
+            <tr v-if="isMobile" @click="reloadApp"><th class="font16 cursorP" colspan="2">캐시삭제 및 다시시작</th></tr>
             <!-- <tr @click="this.myChanListPopYn = true">
               <th>
                 내 채널 -->
@@ -66,6 +67,7 @@
         <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
       </div>
 
+      <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
       <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
     </div>
 </template>
@@ -78,7 +80,7 @@ import policyPop from '../../components/pageComponents/myPage/Tal_policyPop.vue'
 import settingAlim from '../../components/pageComponents/myPage/Tal_SettingAlimDetail.vue'
 import userImgSelectCompo from '../../components/pageComponents/myPage/Tal_changeUserIcon.vue'
 /* import pushPop from '../../components/popup/Tal_pushDetailPopup.vue' */
-
+import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   name: 'myPage',
   components: {
@@ -104,7 +106,10 @@ export default {
       changeYn: false,
       errorBoxYn:false,
       errorBoxText : '관리자에게 문의하세요.',
-      changeUserIconPop: null
+      changeUserIconPop: null,
+      reloadShowText: '',
+      reloadShowYn: false,
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -139,6 +144,13 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    reloadApp () {
+        this.reloadShowText ='앱을 재시작하시겠습니까?'
+        this.reloadShowYn = true
+    },
+    reloadOk () {
+        onMessage('REQ', 'reloadApp')
+    },
     cleanApp () {
         this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         this.$router.push('/')
