@@ -648,7 +648,8 @@ export default {
             url: 'service/tp.deleteContents',
             param: param
           })
-          this.$emit('refresh')
+          this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
+          // this.$emit('refresh')
           this.$showToastPop('알림 발송을 취소하였습니다.')
         } finally {
           this.saveMemoLoadingYn = false

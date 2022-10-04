@@ -113,6 +113,7 @@ export default {
       this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
     } else {
       this_.getPushContentsList().then(response => {
+        if (!response || response === '') return
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = []
         var cont
@@ -199,7 +200,7 @@ export default {
           this_.endListSetFunc(response)
         }
         this_.scrolledYn = false
-        if (newArr.length > 0) {
+        if (response.content.length > 0) {
           this_.canLoadYn = true
         }
         this_.loadingYn = false
@@ -1099,12 +1100,13 @@ export default {
       this.targetCKey = null
       this.loadMoreDESCYn = true
       var resultList = await this.getPushContentsList(pSize, 0)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      this.endListSetFunc(resultList)
+      if (!resultList || resultList === '') return
       var newArr = []
       var cont
       var tempContentDetail
       var contentDetail
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      this.endListSetFunc(resultList)
       if (this.viewMainTab === 'P') {
         newArr = [
           // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
@@ -1170,6 +1172,7 @@ export default {
       }
     },
     endListSetFunc (resultList) {
+      if (resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
@@ -1185,7 +1188,10 @@ export default {
         this.canLoadYn = false
         var resultList = await this.getPushContentsList()
         console.log(resultList)
-        if (resultList === undefined) return
+        if (resultList === undefined || resultList === '') {
+          this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+          return
+        }
         var newArr = []
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         if (descYn) {
@@ -1261,6 +1267,7 @@ export default {
       // this.offsetInt = 0
       this.emptyYn = false
       var resultList = await this.getPushContentsList()
+      if (!resultList || resultList === '') return
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
@@ -1304,6 +1311,7 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(10, 0)
+      if (!resultList || resultList === '') return
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
@@ -1363,6 +1371,7 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
+      if (!resultList || resultList === '') return
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
