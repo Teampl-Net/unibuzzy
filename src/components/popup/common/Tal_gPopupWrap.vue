@@ -740,7 +740,7 @@ export default {
       var detailData = resultList.content[0]
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
 
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
       var paramMap = new Map()

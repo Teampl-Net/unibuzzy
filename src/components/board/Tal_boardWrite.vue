@@ -541,15 +541,28 @@ export default {
           newP.cabinetKey = result.contents.cabinetKey
 
           var newParam = {}
-          param.contentsKey = result.contents.contentsKey
-          param.jobkindId = 'BOAR'
+          newParam.contentsKey = result.contents.contentsKey
+          newParam.jobkindId = 'BOAR'
           await this.$getContentsList(newParam).then(newReslute => {
+            // eslint-disable-next-line no-debugger
+            debugger
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
           })
+          /* if (!this.modiYn) {
+            await this.$getContentsList(newParam).then(newReslute => {
+              // eslint-disable-next-line no-debugger
+              debugger
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [newReslute.content])
+            })
+          } else {
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', result.contents)
+          } */
           this.progressShowYn = false
           if (!this.modiYn && !this.UseAnOtherYn) {
             this.$emit('successWrite', newP)
-          }
+          } /* else if (this.modiYn) {
+            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [result.contents])
+          } */
 
           // eslint-disable-next-line no-new-object
           /* var params = new Object()

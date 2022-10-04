@@ -31,8 +31,8 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <commonList id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
           <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -135,7 +135,7 @@ export default {
             }
             if (!cont.D_MEMO_LIST) {
               cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
             // eslint-disable-next-line no-redeclare
               var newArr = [
@@ -144,7 +144,7 @@ export default {
               ]
               var newList = this.replaceMemoArr(newArr)
               cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             }
           }
         } else {
@@ -165,7 +165,7 @@ export default {
 
             if (!cont.D_MEMO_LIST) {
               cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
             // eslint-disable-next-line no-redeclare
               var newArr = [
@@ -175,7 +175,7 @@ export default {
               // eslint-disable-next-line no-redeclare
               var newList = this.replaceMemoArr(newArr)
               cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             }
           }
         }
@@ -246,7 +246,13 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
-    GE_DISP_CONT_LIST: {
+    GE_DEL_CONT_LIST: {
+      handler (value, old) {
+        if (value) {
+          this.delContents(value[0])
+        }
+      },
+      deep: true
     },
     GE_CHANNEL_DETAIL: {
     },
@@ -384,6 +390,9 @@ export default {
     }
   },
   computed: {
+    GE_DEL_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
+    },
     GE_CHANNEL_DETAIL () {
       if (this.chanAlimYn) {
         var team = this.$getDetail('TEAM', this.chanDetail.teamKey)
@@ -408,15 +417,19 @@ export default {
       if (this.viewMainTab === 'P') {
         for (i = 0; i < this.alimContentsList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
-          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.alimList
-          idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx1 !== -1) {
+            chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+            dataList = chanDetail.ELEMENTS.alimList
+            idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
 
-          if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
-          if (idx2 !== -1) {
-            test.push(dataList[idx2])
+            if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
+            if (idx2 !== -1) {
+              test.push(dataList[idx2])
+            } else {
+              test.push(this.alimContentsList[i])
+            }
           } else {
             test.push(this.alimContentsList[i])
           }
@@ -470,6 +483,20 @@ export default {
     } */
   },
   methods: {
+    delContents (cont) {
+      var idx = null
+      if (cont.jobkindId === 'BOAR') {
+        idx = this.boardContentsList.findIndex((item) => item.mccKey === cont.mccKey)
+        if (idx !== -1) {
+          this.boardContentsList.splice(idx, 1)
+        }
+      } else {
+        idx = this.alimContentsList.findIndex((item) => item.mccKey === cont.mccKey)
+        if (idx !== -1) {
+          this.alimContentsList.splice(idx, 1)
+        }
+      }
+    },
     async targetKeyYn (targetKey, jobkindId) {
       var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
       // eslint-disable-next-line no-debugger
@@ -501,9 +528,10 @@ export default {
             } else {
               contentDetail = null
             }
+            console.log(cont.D_MEMO_LIST)
             if (!cont.D_MEMO_LIST) {
               cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
               // eslint-disable-next-line no-redeclare
               var newArr = [
@@ -512,7 +540,7 @@ export default {
               ]
               var newList = this.replaceMemoArr(newArr)
               cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             }
           }
         } else {
@@ -533,7 +561,7 @@ export default {
 
             if (!cont.D_MEMO_LIST) {
               cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
               // eslint-disable-next-line no-redeclare
               var newArr = [
@@ -543,7 +571,7 @@ export default {
               // eslint-disable-next-line no-redeclare
               var newList = this.replaceMemoArr(newArr)
               cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             }
           }
         }
@@ -594,7 +622,7 @@ export default {
 
       cont.D_MEMO_LIST = newList
 
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
     },
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -658,7 +686,7 @@ export default {
 
         // this.currentMemoList = cont.D_MEMO_LIST
         // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
         // this.currentMemoObj = cont
         // this.memoSetCount(response.totalElements)
       }
@@ -785,7 +813,7 @@ export default {
           // cont.memoCount = newList.length
           cont.memoCount += 1
           // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
       this.saveMemoLoadingYn = false
@@ -1096,7 +1124,7 @@ export default {
           }
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
             var newArr = [
@@ -1105,43 +1133,40 @@ export default {
             ]
             var newList = this.replaceMemoArr(newArr)
             cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
       } else {
         newArr = [
           // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
-          // ...this.boardContentsList,
+          // ...this.alimContentsList,
           ...resultList.content
         ]
-        var tempArr = this.replaceArr(newArr)
-        for (let i = 0; i < tempArr.length; i++) {
-          cont = tempArr[i]
-          tempContentDetail = []
+        this.boardContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.boardContentsList.length; i++) {
+          cont = this.boardContentsList[i]
+
           tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
             contentDetail = null
           }
-
           if (!cont.D_MEMO_LIST) {
             cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
             var newArr = [
               ...contentDetail.D_MEMO_LIST,
               ...cont.memoList
             ]
-            // eslint-disable-next-line no-redeclare
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+            var newList1 = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList1
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
-          tempArr[i] = cont
         }
-        this.boardContentsList = tempArr
       }
     },
     endListSetFunc (resultList) {

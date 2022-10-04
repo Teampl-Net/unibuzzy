@@ -12,12 +12,16 @@ const D_CHANNEL = {
     addChanList: [],
     addMemoList: [],
     addManagerList: [],
-    addShowProfileUserList: []
+    addShowProfileUserList: [],
+    delContentsList: []
 
   },
   getters: {
     GE_MAIN_CHAN_LIST (state) {
       return state.chanList
+    },
+    GE_DEL_CONT_LIST (state) {
+      return state.delContentsList
     },
     GE_NEW_CONT_LIST (state) {
       return state.addContsList
@@ -448,7 +452,9 @@ const D_CHANNEL = {
         }
       }
       state.chanList = chanList
-      if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
+      if (chanDetail) {
+        if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
+      }
     },
     MU_ADD_MAIN_CHAN_LIST: (state, payload) => {
       if (!payload.initYn) {
@@ -510,6 +516,9 @@ const D_CHANNEL = {
       state.chanList[idx1] = chanDetail
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
       return true
+    },
+    MU_DEL_CONT_LIST: (state, payload) => {
+      state.delContentsList.unshift(payload)
     }
   },
   // dispatch 를 사용하면 됨

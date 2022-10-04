@@ -496,46 +496,115 @@ export default {
       this.selectBoardPopShowYn = false
       this.$emit('closeAndNewPop', value)
     },
-    editable (type) {
+    editable (type, allYn) {
       this.reportYn = false
-      if (this.tempData) {
-        if (this.tempData.contentsKey) {
-          if (type === 'edit') {
-            this.openUpdateContentsPop()
-          } else if (type === 'delete') {
-            this.boardFuncClick('BOAR')
-          } else if (type === 'move' || type === 'copy') {
-            this.openSelectBoardPop(type)
+      // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
+
+      if (this.CONT_DETAIL.contentsKey) {
+        if (type === 'edit') {
+          if (this.CONT_DETAIL.jobkindId === 'BOAR') {
+            // this.deleteConfirm('board')
+            this.editBoard()
           }
-        } else if (this.tempData.memoKey) {
-          if (type === 'edit') {
-            // alert('메모 수정')
-            this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
-            // this.openUpdateContentsPop()
-          } else if (type === 'delete') {
-            // alert('메모 삭제')
-            this.deleteConfirm('memo')
-            // this.deleteMemo({ memoKey: this.tempData.memoKey })
-            // this.boardFuncClick('BOAR')
+          //
+        } else if (type === 'delete') {
+          if (allYn) {
+            this.deleteAlimAll()
+          } else {
+            if (this.CONT_DETAIL.jobkindId === 'ALIM') {
+              this.deleteConfirm('alim')
+            } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
+              this.deleteConfirm('board')
+            }
           }
+        } else if (type === 'alimBloc') {
+          // alert('ss')
+        } else if (type === 'move' || type === 'copy') {
+          this.moveOrCopyContent(type)
+        } else if (type === 'writeBoard') {
+          this.makeNewContents(type)
+        } else if (type === 'writeAlim') {
+          this.makeNewContents(type)
+        }
+      } else if (this.tempData.memoKey) {
+        if (type === 'edit') {
+          // alert('메모 수정')
+          this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
+          // this.openUpdateContentsPop()
+        } else if (type === 'delete') {
+          // alert('메모 삭제')
+          this.deleteConfirm('memo')
+          // this.deleteMemo({ memoKey: this.tempData.memoKey })
+          // this.boardFuncClick('BOAR')
         }
       }
     },
     deleteConfirm (data) {
-      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo')) {
+      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
+        // console.log(data)
         this.tempData = data
       }
-      if (data === 'memo' || this.tempData.memoKey) {
+
+      if (data === 'memo' || (this.tempData && this.tempData.memoKey)) {
         this.confirmText = '댓글을 삭제하시겠습니까?'
         if (this.tempData.parentMemoKey) {
           this.confirmText = '대댓글을 삭제하시겠습니까?'
         }
         this.currentConfirmType = 'memoDEL'
+      } else if (data === 'alim' || this.CONT_DETAIL.jobkindId === 'ALIM') {
+        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.currentConfirmType = 'alimDEL'
+      } else if (data === 'board' || this.CONT_DETAIL.jobkindId === 'BOAR') {
+        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.currentConfirmType = 'boardDEL'
       }
-
-      // // console.log(this.tempData)
+      // console.log(this.tempData);
       this.confirmType = 'two'
       this.confirmPopShowYn = true
+    },
+    editBoard () {
+      // console.log();
+      var param = {}
+      param.targetKey = this.CONT_DETAIL.contentsKey
+      param.targetType = 'writeBoard'
+      param.creTeamKey = this.CONT_DETAIL.creTeamKey
+      if (this.CONT_DETAIL.attachMfilekey) { param.attachMfilekey = this.CONT_DETAIL.attachMfilekey }
+      param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
+      param.modiContentsKey = this.CONT_DETAIL.contentsKey
+      param.titleStr = this.CONT_DETAIL.title
+      // param.parentAttachTrueFileList = this.attachTrueFileList
+      this.$emit('openPop', param)
+    },
+    async deleteAlim (allYn) {
+      // console.log(this.tempData)
+      var inParam = {}
+      if (this.CONT_DETAIL.jobkindId === 'ALIM') {
+        if (allYn) {
+
+        }
+        inParam.mccKey = this.CONT_DETAIL.mccKey
+        inParam.jobkindId = 'ALIM'
+        // inParam.teamKey = this.tempData.creTeamKey
+        // inParam.deleteYn = true
+
+        await this.$commonAxiosFunction({
+          url: 'service/tp.deleteMCabContents',
+          param: inParam
+        })
+      } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
+        // // console.log(this.alimDetail)
+        inParam.mccKey = this.CONT_DETAIL.mccKey
+        inParam.contentsKey = this.CONT_DETAIL.contentsKey
+        inParam.jobkindId = 'BOAR'
+        inParam.teamKey = this.CONT_DETAIL.creTeamKey
+        inParam.deleteYn = true
+        await this.$commonAxiosFunction({
+          url: 'service/tp.deleteContents',
+          param: inParam
+        })
+      }
+      this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+      this.$emit('closeXPop', true)
     },
     report (type) {
       var targetKind
@@ -704,7 +773,7 @@ export default {
       }
       this.confirmPopShowYn = true
     },
-    async confirmOk () {
+    /* async confirmOk () {
       this.confirmType = false
       this.confirmPopShowYn = false
       if (this.currentConfirmType === 'deleteBoar') {
@@ -740,6 +809,42 @@ export default {
       } else if (this.currentConfirmType === 'memoDEL') {
         this.deleteMemo({ memoKey: this.tempData.memoKey })
       }
+    }, */
+    confirmOk () {
+      this.confirmType = 'timeout'
+      if (this.currentConfirmType === 'BLOC') {
+        this.currentConfirmType = ''
+        // console.log(this.tempData);
+        var param = {}
+        param.actType = 'BLOC'
+        if (this.tempData.memoKey) {
+          param.targetKind = 'U'
+          param.targetKey = this.tempData.creUserKey
+        } else if (this.tempData.contentsKey) {
+          param.targetKind = 'C'
+          param.targetKey = this.tempData.contentsKey
+        } else {
+          this.confirmText = '알수 없는 오류입니다.'
+        }
+        param.creUserKey = this.GE_USER.userKey
+        this.confirmText = '해당 유저를 차단했습니다.'
+        this.saveActAxiosFunc(param)
+      } else if (this.currentConfirmType === 'memoDEL') {
+        this.deleteMemo({ memoKey: this.tempData.memoKey })
+        this.$emit('showToastPop', '댓글을 삭제하였습니다.')
+      } else if (this.currentConfirmType === 'alimDEL') {
+        this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
+        this.deleteAlim()
+      } else if (this.currentConfirmType === 'boardDEL') {
+        this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+        this.deleteAlim()
+      } else if (this.currentConfirmType === 'alimCancel') {
+        // this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+        this.alimCancle()
+      }
+
+      this.currentConfirmType = ''
+      this.confirmPopShowYn = false
     },
     mememoCancel () {
       this.mememoValue = null

@@ -231,6 +231,15 @@ export default {
   },
 
   methods: {
+    delContents (cont) {
+      var idx = null
+      if (cont.jobkindId === 'BOAR') {
+        idx = this.mCabContentsList.findIndex((item) => item.mccKey === cont.mccKey)
+        if (idx !== -1) {
+          this.mCabContentsList.splice(idx, 1)
+        }
+      }
+    },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
@@ -924,11 +933,22 @@ export default {
     },
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+    },
+    GE_DEL_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
     }
   },
   watch: {
     CHANNEL_DETAIL (value, old) {
       // alert('채널 변화 생김요!')
+    },
+    GE_DEL_CONT_LIST: {
+      handler (value, old) {
+        if (value) {
+          this.delContents(value[0])
+        }
+      },
+      deep: true
     },
     pageUpdate (value, old) {
       this.backClick()

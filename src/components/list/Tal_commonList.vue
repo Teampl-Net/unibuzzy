@@ -313,8 +313,8 @@ export default {
           param: inParam
         })
       }
-      var index = this.commonListData.findIndex((item) => item.mccKey === inParam.mccKey)
-      this.commonListData = this.commonListData.splice(index, 1)
+      this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+      // this.$emit('delContents', inParam)
     },
     async deleteAlimAll () {
         var contents
