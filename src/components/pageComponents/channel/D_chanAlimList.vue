@@ -639,7 +639,7 @@ export default {
   watch: {
     CHANNEL_DETAIL: {
       handler (value, old) {
-        if (value && value.D_CHAN_AUTH.followYn) {
+        if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
         }
       },

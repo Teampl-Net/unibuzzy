@@ -185,8 +185,8 @@ export default {
   created () {
     // // console.log('this.detailVal')
     // // console.log(this.detailVal)
-    // // console.log('this.CHANNEL_DETAIL')
-    // // console.log(this.CHANNEL_DETAIL)
+    console.log('this.CAB_DETAIL')
+    console.log(this.CAB_DETAIL)
     this.readyFunction()
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
@@ -214,9 +214,10 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     CHANNEL_DETAIL () {
-      // console.log('!!! CHANNEL_DETAIL !!!')
       // console.log(this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
+      console.log('!!! CHANNEL_DETAIL !!!')
+      console.log(chan)
       if (chan) {
         this.getCabinetDetail(chan[0].teamKey)
         return chan[0]
@@ -227,6 +228,10 @@ export default {
     CAB_DETAIL () {
       if (this.detailVal.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
+        // eslint-disable-next-line no-debugger
+        debugger
+        console.log(this.cabinetDetail.mCabinet)
+        console.log('this.cabinetDetail.mCabinet')
         return this.cabinetDetail.mCabinet
       } else {
         return null
@@ -393,7 +398,9 @@ export default {
       if (!detailData.D_MEMO_LIST) detailData.D_MEMO_LIST = []
       // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
       // console.log(detailData)
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [detailData])
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     onLoadFunction () {
       var thisthis = this

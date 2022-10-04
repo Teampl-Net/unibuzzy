@@ -82,8 +82,7 @@ export default {
       searchFilterList: [],
       search1: '',
       search2: '',
-      search3: '',
-      userKey: this.GE_USER.userKey
+      search3: ''
     }
   },
   updated () {
