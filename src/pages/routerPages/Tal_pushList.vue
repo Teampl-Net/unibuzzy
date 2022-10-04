@@ -31,9 +31,9 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" :commonListData="this.GE_DISP_CONT_LIST" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && CHANNEL_DETAIL && CHANNEL_DETAIL.ELEMENTS.alimList.length === 0 "/> -->
+          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && GE_DISP_CONT_LIST.length === 0 "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -451,6 +451,8 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (test.length === 0) this.emptyYn = true
+
       return test
     },
     GE_USER () {
@@ -966,13 +968,7 @@ export default {
     openUserProfile (params) {
       this.$emit('openUserProfile', params)
     },
-    changeMainTab (tab) {
-      // this.targetCKey = null
-      this.viewMainTab = tab
-      this.offsetInt = 0
-      this.refreshList()
-      this.$emit('changeMainTab', tab)
-    },
+
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
@@ -1047,6 +1043,24 @@ export default {
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 800)
+    },
+    changeMainTab (tab) {
+      // this.targetCKey = null
+      this.emptyYn = false
+      this.targetCKey = null
+      this.loadMoreDESCYn = true
+      this.findKeyList.searchKey = null
+      this.findKeyList.creTeamNameMtext = null
+      this.findKeyList.toCreDateStr = null
+      this.findKeyList.fromCreDateStr = null
+      this.resultSearchKeyList = []
+      this.viewMainTab = tab
+      this.changeTab('N')
+      this.offsetInt = 0
+      this.$refs.activeBar.switchtab(0)
+      // this.refreshList()
+      this.canLoadYn = true
+      this.$emit('changeMainTab', tab)
     },
     introPushPageTab () {
       if (this.viewTab === 'N') {
@@ -1172,7 +1186,7 @@ export default {
       }
     },
     endListSetFunc (resultList) {
-      if (resultList === '') return
+      if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
@@ -1186,47 +1200,53 @@ export default {
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
-        var resultList = await this.getPushContentsList()
-        console.log(resultList)
-        if (resultList === undefined || resultList === '') {
-          this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
-          return
-        }
-        var newArr = []
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-        if (descYn) {
-          if (this.viewMainTab === 'P') {
-            newArr = [
-              ...this.alimContentsList,
-              ...resultList.content
-            ]
-            this.alimContentsList = this.replaceArr(newArr)
-          } else {
-            newArr = [
-              ...this.boardContentsList,
-              ...resultList.content
-            ]
-            this.boardContentsList = this.replaceArr(newArr)
+        try {
+          var resultList = await this.getPushContentsList()
+          console.log(resultList)
+          if (resultList === undefined || resultList === '') {
+            this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
+            return
           }
-        } else {
-          if (this.viewMainTab === 'P') {
-            newArr = [
-              ...resultList.content,
-              ...this.alimContentsList
-            ]
-            this.alimContentsList = this.replaceArr(newArr)
+          var newArr = []
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+          if (descYn) {
+            if (this.viewMainTab === 'P') {
+              newArr = [
+                ...this.alimContentsList,
+                ...resultList.content
+              ]
+              this.alimContentsList = this.replaceArr(newArr)
+            } else {
+              newArr = [
+                ...this.boardContentsList,
+                ...resultList.content
+              ]
+              this.boardContentsList = this.replaceArr(newArr)
+            }
           } else {
-            newArr = [
-              ...resultList.content,
-              ...this.boardContentsList
-            ]
-            this.boardContentsList = this.replaceArr(newArr)
+            if (this.viewMainTab === 'P') {
+              newArr = [
+                ...resultList.content,
+                ...this.alimContentsList
+              ]
+              this.alimContentsList = this.replaceArr(newArr)
+            } else {
+              newArr = [
+                ...resultList.content,
+                ...this.boardContentsList
+              ]
+              this.boardContentsList = this.replaceArr(newArr)
+            }
           }
+          await this.endListSetFunc(resultList)
+          this.contentsList = this.replaceArr(newArr)
+
+          this.$emit('numberOfElements', resultList.totalElements)
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.canLoadYn = true
         }
-        await this.endListSetFunc(resultList)
-        this.contentsList = this.replaceArr(newArr)
-        this.canLoadYn = true
-        this.$emit('numberOfElements', resultList.totalElements)
       } else {
         this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
@@ -1257,6 +1277,7 @@ export default {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
     },
     async changeTab (tabName) {
+      this.emptyYn = false
       this.targetCKey = null
       this.offsetInt = 0
       /* if (this.viewTab !== tabName) {
@@ -1265,24 +1286,28 @@ export default {
       this.viewTab = tabName
 
       // this.offsetInt = 0
-      this.emptyYn = false
+      // this.emptyYn = false
       var resultList = await this.getPushContentsList()
-      if (!resultList || resultList === '') return
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      var contentList = []
+      if (resultList && resultList.content) {
+        contentList = resultList.content
+      }
+      // if (!resultList || resultList === '') return
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
           // ...this.alimContentsList,
-          ...resultList.content
+          ...contentList
         ]
         this.alimContentsList = this.replaceArr(newArr)
       } else {
         newArr = [
           // ...this.boardContentsList,
-          ...resultList.content
+          ...contentList
         ]
         this.boardContentsList = this.replaceArr(newArr)
       }
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
       this.endListSetFunc(resultList)
       this.findPopShowYn = false
       this.introPushPageTab()
@@ -1447,7 +1472,7 @@ export default {
       axiosResultTempList: [],
       /* readCheckBoxYn: false, */
       currentTabName: '최신',
-      emptyYn: true,
+      emptyYn: false,
       loadMoreDESCYn: null,
       targetCKey: null,
       failPopYn: false,

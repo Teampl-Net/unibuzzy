@@ -1024,20 +1024,26 @@ export default {
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
-        param: { memo: memo }
-      })
-      if (result.data.result === true || result.data.result === 'true') {
-        this.memoShowYn = false
-        // if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
-        //   await this.getMemoList(true)
-        // } else {
-        //   await this.getMemoList()
-        // }
-        this.getMemoList(true)
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        if (result.data.result === true || result.data.result === 'true') {
+          this.memoShowYn = false
+          // if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+          //   await this.getMemoList(true)
+          // } else {
+          //   await this.getMemoList()
+          // }
+          this.getMemoList(true)
+        }
+      } catch (e) {
+        console.error('D_contentsDetail 오류')
+        console.error(e)
+      } finally {
+        this.saveMemoLoadingYn = false
       }
-      this.saveMemoLoadingYn = false
     },
     async settingFileList () {
       var test = this.CONT_DETAIL

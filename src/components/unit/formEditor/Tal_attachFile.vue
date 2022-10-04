@@ -100,7 +100,7 @@ export default {
               }
 
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.preImgUr = src
               this.selectFile = compressedFile

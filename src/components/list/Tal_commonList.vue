@@ -93,10 +93,10 @@
                 <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
-                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" />
+                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick"/>
 
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
-                <div v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
+                <div v-if="this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
@@ -169,9 +169,11 @@ export default {
   watch: {
   },
   updated() {
-    if (this.commonListData.length) {
-      if (this.targetCKey) {
-        this.contentsWich()
+    if (this.commonListData) {
+      if (this.commonListData.length) {
+        if (this.targetCKey) {
+          this.contentsWich()
+        }
       }
     }
     this.settingAtag()
@@ -380,7 +382,8 @@ export default {
             this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
           } else if (type === 'delete') {
             // 댓글 삭제
-            this.deleteConfirm('memo')
+            // this.deleteConfirm('memo')
+            this.deleteMemo('memo')
           }
         }
       }
@@ -396,13 +399,14 @@ export default {
         this.tempData = data
       }
 
-      if (data === 'memo' || this.tempData.memoKey) {
-        this.confirmText = '댓글을 삭제하시겠습니까?'
-        if (this.tempData.parentMemoKey){
-          this.confirmText = '대댓글을 삭제하시겠습니까?'
-        }
-        this.currentConfirmType = 'memoDEL'
-      } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
+      // if (data === 'memo' || this.tempData.memoKey) {
+        // this.confirmText = '댓글을 삭제하시겠습니까?'
+        // if (this.tempData.parentMemoKey){
+        //   this.confirmText = '대댓글을 삭제하시겠습니까?'
+        // }
+        // this.currentConfirmType = 'memoDEL'
+      // } else
+      if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
         this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
         this.currentConfirmType = 'alimDEL'
       } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
@@ -487,9 +491,9 @@ export default {
         param.creUserKey = this.GE_USER.userKey
         this.confirmText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
-      } else if (this.currentConfirmType === 'memoDEL') {
-        this.deleteMemo({ memoKey: this.tempData.memoKey })
-        this.$emit('showToastPop', '댓글을 삭제하였습니다.')
+      // } else if (this.currentConfirmType === 'memoDEL') {
+      //   this.deleteMemo({ memoKey: this.tempData.memoKey })
+      //   this.$emit('showToastPop', '댓글을 삭제하였습니다.')
       } else if (this.currentConfirmType === 'alimDEL') {
         this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
         this.deleteAlim()
@@ -568,7 +572,9 @@ export default {
     //   }
     // },
     deleteMemo (param) {
-      this.$emit('deleteMemo', param)
+      console.log('********* deleteMemo **********')
+      if (param.memoKey) this.tempData = param
+      this.$emit('deleteMemo', this.tempData)
     },
     setIntervalTimer(date, contentsKey){
       var time = this.$cancelTimer(date)
@@ -752,88 +758,27 @@ export default {
       this.$emit('writeMememo', data)
     },
     async memoOpenClick (param) {
-      // console.log(param)
       var key = param.key
       var teamKey = param.teamKey
-      // if (this.findMemoOpend(key) !== -1) this.openMemoList.splice(this.findMemoOpend(key), 1)
-      this.openMemoList.push(key)
+      if (this.findMemoOpend(key) !== -1) {
+        this.openMemoList.splice(this.findMemoOpend(key), 1)
+      } else {
+        this.openMemoList.push(key)
+      }
+      // // console.log(this.openMemoList)
+      // if (document.getElementById('alimMemo'+key)) {
+      //     document.getElementById('alimMemo'+key).style.display = 'none'
+      // } else if (document.getElementById('borderLine'+key)) {
+      //     document.getElementById('borderLine'+key).style.display = 'none'
+      // }
 
-      // console.log(this.openMemoList)
-      if (document.getElementById('alimMemo'+key)) {
-            document.getElementById('alimMemo'+key).style.display = 'none'
-        } else if (document.getElementById('borderLine'+key)) {
-            document.getElementById('borderLine'+key).style.display = 'none'
-        }
-
-        if (document.getElementById('alimMemo'+key)) {
-            document.getElementById('alimMemo'+key).style.display = 'block'
-        } else if (document.getElementById('borderLine'+key)) {
-            document.getElementById('borderLine'+key).style.display = 'block'
-        }
+      // if (document.getElementById('alimMemo'+key)) {
+      //     document.getElementById('alimMemo'+key).style.display = 'block'
+      // } else if (document.getElementById('borderLine'+key)) {
+      //     document.getElementById('borderLine'+key).style.display = 'block'
+      // }
 
       this.$emit('memoOpenClick', param)
-      // this.currentMemoList = new Array()
-      // this.pageSize = 5
-      // this.offsetInt = 0
-      // this.selectedConentsKey = param.key
-
-      // this.currentContentsKey = param.key
-
-      // var cont = null
-
-      // var indexOf = this.commonListData.Index(i => i.contentsKey === this.selectedConentsKey)
-      // if (indexOf !== -1) {
-      //   teamKey = this.commonListData[indexOf].creTeamKey
-
-      //   var contList = await this.$getContentsDetail(null, this.selectedConentsKey, teamKey)
-      //   // console.log('!!!contList!!!')
-      //   // console.log(contList)
-      //   if (contList) {
-      //       cont = contList[0]
-      //   }
-      //   // console.log('###cont###')
-      //   // console.log(cont)
-      //   debugger
-
-      //   if (!cont.D_MEMO_LIST) {
-      //     this.currentMemoObj = cont
-      //     cont.D_MEMO_LIST = new Array()
-      //     var response = await this.getContentsMemoList(key, null, null, teamKey)
-      //     cont.D_MEMO_LIST = response.memoList
-      //   }
-      //   // if (cont && cont.D_MEMO_LIST && cont.D_MEMO_LIST.length > 0) {
-      //   //     this.currentMemoObj = cont
-      //   // } else {
-      //       // if (cont.D_MEMO_LIST) {
-      //       //   cont.D_MEMO_LIST = new Array()
-      //       //   this.currentMemoObj = cont
-      //       //   var response = await this.getContentsMemoList(key, null, null, teamKey)
-      //       //   cont.D_MEMO_LIST = [
-      //       //       ...cont.D_MEMO_LIST,
-      //       //       ...response.memoList
-      //       //   ]
-      //       //   // console.log('###D_MEMO_LIST###')
-      //       //   // console.log(cont.D_MEMO_LIST)
-      //       // } else {
-
-      //       // }
-      //   // }
-      //   // // console.log('!!!!!!!!!!!!')
-      //   // // console.log(cont)
-      //   // // console.log('!!!!!!!!!!!!')
-      //   this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-      //   this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-
-        // // console.log(document.getElementById('alimMemo'+key))
-
-        // this.currentMemoList = cont.D_MEMO_LIST
-
-      //   // console.log('!!!!!!!!!!!!')
-      //   // console.log(this.currentMemoList)
-      //   // console.log('!!!!!!!!!!!!')
-      //   this.currentContentsKey = key
-      // }
-      // if (this.offsetInt === cont.totalMemoCount) this.showMoreMemoTextYn = false
     },
     alimBigView (alim) {
       // alert(alim.contentsKey)

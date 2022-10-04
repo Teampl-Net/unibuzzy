@@ -188,7 +188,6 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
-      debugger
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
@@ -332,6 +331,9 @@ const D_CHANNEL = {
           payload[i].D_MEMO_LIST = payload[i].memoList
         }
         // alert('ok')
+        if (!payload[i].D_MEMO_LIST) {
+          payload[i].D_MEMO_LIST = []
+        }
         if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
           var newArr = []
           if (payload[i].D_MEMO_LIST.length > 0) {
@@ -424,6 +426,9 @@ const D_CHANNEL = {
               payload[i].D_MEMO_LIST = payload[i].memoList
             }
             // alert('ok')
+            if (!payload[i].D_MEMO_LIST) {
+              payload[i].D_MEMO_LIST = []
+            }
             if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
               var newArr = []
               if (payload[i].D_MEMO_LIST.length > 0) {

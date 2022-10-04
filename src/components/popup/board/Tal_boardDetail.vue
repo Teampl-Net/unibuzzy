@@ -901,20 +901,27 @@ export default {
       memo.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       memo.creUserName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
       memo.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
-        param: { memo: memo }
-      })
-      if (result.data.result === true || result.data.result === 'true') {
-        /* this.confirmText = '댓글 저장 성공'
-        this.confirmPopShowYn = true */
-        this.memoShowYn = false
-        await this.getContentsList()
-        await this.getMemoList(true)
-        this.pointAni()
-        /* this.scrollMove(-1) */
+      try{
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        if (result.data.result === true || result.data.result === 'true') {
+          /* this.confirmText = '댓글 저장 성공'
+          this.confirmPopShowYn = true */
+          this.memoShowYn = false
+          await this.getContentsList()
+          await this.getMemoList(true)
+          this.pointAni()
+          /* this.scrollMove(-1) */
+        }
+      } catch (e) {
+        console.error('Tal_boardDetail 오류')
+        console.error(e)
+      } finally {
+        this.saveMemoLoadingYn = false
       }
-      this.saveMemoLoadingYn = false
+
     },
     settingAddFalseList (attachYn) {
       if (this.alimDetail !== undefined && this.alimDetail !== null && this.alimDetail !== '' && this.alimDetail.length > 0) {

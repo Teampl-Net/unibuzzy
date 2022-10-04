@@ -71,17 +71,17 @@ export default {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
 
         var detailData = test[idx1]
-
-        idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
-        if (idx2 !== -1) {
-          contList[i] = detailData.ELEMENTS.alimList[idx2]
-        } else {
+        if (detailData.ELEMENTS) {
           idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
           if (idx2 !== -1) {
-            contList[i] = detailData.ELEMENTS.boardList[idx2]
+            contList[i] = detailData.ELEMENTS.alimList[idx2]
+          } else {
+            idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+            if (idx2 !== -1) {
+              contList[i] = detailData.ELEMENTS.boardList[idx2]
+            }
           }
         }
-
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
       return contList

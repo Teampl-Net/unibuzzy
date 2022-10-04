@@ -130,9 +130,7 @@ export default {
         // console.log(this.mainChanList)
         var teamList = this.GE_MAIN_CHAN_LIST
         console.log(this.GE_MAIN_CHAN_LIST)
-        // eslint-disable-next-line no-debugger
-        debugger
-        // eslint-disable-next-line no-debugger
+
         this.mainAlimList = response.data.alimList
         var index = null
         var poolList = null

@@ -133,6 +133,9 @@
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
     <writePush  ref="chanAlimListWritePushRefs"  @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' />
   </div>
+  <div v-if="writeBoardYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
+    <boardWrite @closeXPop="closeWritePushPop" @successWrite="successWriteBoard" :propData="writeBoardData" @openPop='openItem' />
+  </div>
 
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
   <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
@@ -149,6 +152,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from './Tal_chanFollowInfo.vue'
 import writePush from '../../popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import boardWrite from '../../board/Tal_boardWrite.vue'
 export default {
   data () {
     return {
@@ -180,7 +184,10 @@ export default {
       currentConfirmType: '',
       currentPushListMainTab: 'P',
       requestYn: false,
-      axiosQueue: []
+      axiosQueue: [],
+      writeBoardYn: false,
+      writeBoardData: {},
+      writeBoardPopId: ''
       // errorPopYn: false
     }
   },
@@ -191,7 +198,8 @@ export default {
     pushList,
     chanDetailComp,
     welcomePopUp,
-    writePush
+    writePush,
+    boardWrite
   },
   created () {
     this.$emit('openLoading')
@@ -492,6 +500,7 @@ export default {
       this.detailShowYn = false
     },
     openWritePushPop () {
+      var history = this.$store.getters['D_HISTORY/hStack']
       if (this.currentPushListMainTab === 'P') {
       // eslint-disable-next-line no-new-object
         var params = new Object()
@@ -501,10 +510,9 @@ export default {
         params.contentsJobkindId = 'ALIM'
         this.writePushData = {}
         this.writePushData = params
-        var history = this.$store.getters['D_HISTORY/hStack']
         this.writePopId = 'writePush' + history.length
         history.push(this.writePopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        // this.$store.commit('D_HISTORY/updateStack', history)
         this.writePushYn = true
       } else if (this.currentPushListMainTab === 'B') {
         var param = {}
@@ -514,8 +522,16 @@ export default {
         param.teamKey = this.CHANNEL_DETAIL.teamKey
         param.targetKey = this.CHANNEL_DETAIL.teamKey
         param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
-        this.$emit('openPop', param)
+        this.writeBoardData = {}
+        this.writeBoardData = param
+        history = this.$store.getters['D_HISTORY/hStack']
+        this.writeBoardPopId = 'writePush' + history.length
+        history.push(this.writeBoardPopId)
+
+        this.writeBoardYn = true
+        // this.$emit('openPop', param)
       }
+      this.$store.commit('D_HISTORY/updateStack', history)
       // this.$emit('openPop', params)
     },
     openPushDetailPop (param) {
@@ -558,6 +574,7 @@ export default {
         await this.refreshList()
       } */
       this.writePushYn = false
+      this.writeBoardYn = false
     },
     openPop () {
       this.alimListToDetail = true

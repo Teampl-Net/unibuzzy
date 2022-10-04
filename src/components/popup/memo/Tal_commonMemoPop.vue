@@ -99,9 +99,15 @@ export default {
     },
     saveMemo () {
       // document.getElementById('memoTextTag').contentEditable = false
-      var html = document.getElementById('memoTextTag').innerHTML
-      html = this.$findUrlChangeAtag(html)
-      this.$emit('saveMemoText', html)
+      var inputMemoArea = document.getElementById('memoTextTag')
+      var regText = inputMemoArea.innerText
+      if (regText.trim() !== '') {
+        var html = inputMemoArea.innerHTML
+        html = this.$findUrlChangeAtag(html)
+        this.$emit('saveMemoText', html)
+      } else {
+        this.$showToastPop('댓글의 내용을 입력해주세요.')
+      }
     }
   }
 }

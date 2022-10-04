@@ -753,13 +753,16 @@ export const commonMethods = {
     return resultObj
   },
   countingTotalMemo (list) {
+    // console.log(list)
     var count = 0
     for (let i = 0; i < list.length; i++) {
       if (list[i].cmemoList.length > 0) {
-        count += 1
+        for (let idx = 0; idx < list[i].cmemoList.length; idx++) {
+          count += 1
+        }
       }
     }
-    console.log('counting Memo : ' + (count + list.length))
+    // console.log('counting Memo : ' + (count + list.length))
     return count + list.length
   }
 }

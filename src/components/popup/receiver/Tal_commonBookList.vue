@@ -325,6 +325,9 @@ export default {
 
         },
         async changePosTeamMenu(event) {
+            var oldIndex = event.oldIndex
+            var newIndex = event.newIndex
+
             var paramSet = new Object()
             var teamMenuList = new Array()
             var menu = new Object()
@@ -336,19 +339,35 @@ export default {
                 if(index === i) {
                     menu = {}
                     var tt = this.addressBookList[i]
-                    menu.teamKey = this.propObject.currentTeamKey
+                    menu.teamKey = this.addressBookList[i].creTeamKey
                     if(this.addressBookList[i].menuType) menu.menuType = 'G'
                     if(this.addressBookList[i].parentMenuKey) menu.parentMenuKey = this.addressBookList[i].parentMenuKey
                     if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
                     if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
                     if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
                     // console.log(menu);
+                    console.log(menu)
                     teamMenuList.push(menu)
                     break
                 }
                 }
             }
-            // console.log(teamMenuList)
+            // var tempList = this.addressBookList
+            // if (oldIndex < newIndex) {
+            //     // 선택한 값이 아래로 이동 (인덱스가 큰 쪽으로)
+            //     tempList.splice(newIndex + 1, 0, tempList[oldIndex])
+            //     tempList.splice(oldIndex, 1)
+            // } else if (oldIndex > newIndex) {
+            //     // 선택한 값이 위로 이동 (인덱스가 작은 쪽으로)
+            //     tempList.splice(newIndex, 0, tempList[oldIndex])
+            //     tempList.splice(oldIndex + 1, 1)
+            // }
+            // this.addressBookList = []
+            // this.addressBookList = tempList
+            // console.log(tempList)
+            // paramSet.teamMenuList = tempList
+
+            console.log(teamMenuList)
             paramSet.teamMenuList = teamMenuList
             var result = await this.$commonAxiosFunction(
                 {
