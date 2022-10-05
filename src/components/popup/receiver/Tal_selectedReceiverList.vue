@@ -56,7 +56,7 @@ export default {
         }
     },
     created() {
-        this.upDatePage()
+        this.upDatePage(this.listData)
         this.sessionUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
 
     },
@@ -103,6 +103,7 @@ export default {
 
         //유민참고
         upDatePage(data) {
+            debugger
             if (data) {
                 if (data.bookList !== undefined && data.bookList !== null) {
                     this.teamList.bookList = data.bookList

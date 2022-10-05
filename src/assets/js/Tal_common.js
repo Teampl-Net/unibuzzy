@@ -334,6 +334,7 @@ export const commonMethods = {
   checkUserAuth (data) {
     //
     var authList = { R: false, W: false, V: false }
+    if (!data) return authList
     for (var i = 0; i < data.length; i++) {
       if (data[i].shareType === 'W' && authList.W === false) {
         authList.W = true

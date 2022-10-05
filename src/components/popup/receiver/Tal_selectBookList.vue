@@ -26,6 +26,8 @@ export default {
     pSelectedList: {}
   },
   created () {
+    debugger
+    console.log(this.pSelectedList)
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
       this.selectedList = this.pSelectedList
@@ -126,16 +128,17 @@ export default {
     /* oepnPop (param) {
       this.$emit('openPop', param)
     }, */
-    sendReceivers () {
+    sendReceivers (data) {
       // // eslint-disable-next-line no-new-object
       var param = {}
       // // console.log(this.selectedList)
       // // console.log(this.selectedList.memberList)
       // console.log('sendReceiver sendReceiver sendReceiver sendReceiver')
       // console.log(this.selectedList)
-      param.data = this.selectedList
+      // param.data = this.selectedList
+      // debugger
       // console.log(param)
-      this.$emit('sendReceivers', param)
+      this.$emit('sendReceivers', data)
       // this.$emit('selectedList', this.selectedList)
     },
     // 유민참고

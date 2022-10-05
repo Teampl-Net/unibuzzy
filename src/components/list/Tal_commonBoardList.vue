@@ -1,4 +1,3 @@
-
 <template>
   <!-- <div style="width: 100%; height: 100%; position: relative; overflow: hidden; float: left;"> -->
     <!-- <div id="boardPageHeader" ref="boardListHeader" class="boardListHeader"  :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >

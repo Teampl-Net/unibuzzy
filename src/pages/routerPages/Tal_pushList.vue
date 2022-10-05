@@ -113,6 +113,7 @@ export default {
       this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
     } else {
       this_.getPushContentsList().then(response => {
+        console.log(response.content)
         if (!response || response === '') return
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = []
@@ -1077,6 +1078,8 @@ export default {
     changeMainTab (tab) {
       // this.targetCKey = null
       this.$emit('changeMainTab', tab)
+      this.canLoadYn = true
+      this.endListYn = false
       this.viewMainTab = tab
       this.offsetInt = 0
       this.emptyYn = false
