@@ -1,5 +1,6 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
+    <gConfirmPop :confirmText="netText" confirmType='one' @no='netBoxShowYn = false' v-if="netBoxShowYn"/>
     <!-- <loadingCompo v-if="loadingYn" /> -->
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
@@ -53,7 +54,9 @@ export default {
       notiDetailShowYn: false,
       reloadYn: false,
       testData: { contentsKey: 1001172, creUserKey: 1 },
-      systemName: 'iOS'
+      systemName: 'iOS',
+      netBoxShowYn: false,
+      netText: ''
     }
   },
   props: {},
@@ -69,6 +72,9 @@ export default {
   mounted () {
   },
   computed: {
+    netState () {
+      return this.$store.getters['D_USER/GE_NET_STATE']
+    },
     getWindowSize () {
       return {
         '--widndowWidth': window.innerWidth + 'px'
@@ -85,6 +91,17 @@ export default {
   //   // console.log(true)
   // },
   watch: {
+    netState: {
+      handler (value, old) {
+        if (old === false && value) {
+          this.netText = '네트워크가 연결되었습니다!<br>'
+        } else if (old && value === false) {
+          this.netText = '네트워크 연결이 해제되었습니다.<br>'
+        }
+        this.netBoxShowYn = true
+      },
+      deep: true
+    },
     async deepLinkQueue (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {

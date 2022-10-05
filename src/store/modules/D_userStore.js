@@ -12,7 +12,9 @@ const D_USER = {
     creDate: '',
     deviceId: '',
     picMfilekey: '', */
-    userInfo: null
+    userInfo: null,
+    deviceInfo: null,
+    netStateYn: null
   },
   getters: {
     /* GE_USER_USER_NAME: state => state.userNameMtext,
@@ -50,6 +52,38 @@ const D_USER = {
         fcmKey: state.fcmKey,
         deviceId: state.deviceId
       } */
+    },
+    GE_DEVICE (state) {
+      // if (!state.userInfo) {
+      //   state.userInfo.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // }
+      return state.deviceInfo /* {
+          userNameMtext: state.userNameMtext,
+          userDispMtext: state.userDispMtext,
+          userKey: state.userKey,
+          userEmail: state.userEmail,
+          userProfileImg: state.userProfileImg,
+          phoneLast: state.phoneLast,
+          picMfilekey: state.picMfilekey,
+          fcmKey: state.fcmKey,
+          deviceId: state.deviceId
+        } */
+    },
+    GE_NET_STATE (state) {
+      // if (!state.userInfo) {
+      //   state.userInfo.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+      // }
+      return state.netStateYn /* {
+            userNameMtext: state.userNameMtext,
+            userDispMtext: state.userDispMtext,
+            userKey: state.userKey,
+            userEmail: state.userEmail,
+            userProfileImg: state.userProfileImg,
+            phoneLast: state.phoneLast,
+            picMfilekey: state.picMfilekey,
+            fcmKey: state.fcmKey,
+            deviceId: state.deviceId
+          } */
     }
   },
   mutations: {
@@ -79,11 +113,17 @@ const D_USER = {
       state.picMfilekey = payload.picMfilekey
       state.fcmKey = payload.fcmKey
       state.deviceId = payload.deviceId */
+    },
+    MU_NET_STATE (state, payload) {
+      state.netStateYn = payload
     }
   },
   actions: {
     AC_USER ({ commit }, payload) {
       commit('MU_USER', payload)
+    },
+    AC_NET_STATE ({ commit }, payload) {
+      commit('MU_NET_STATE', payload)
     }
   }
 }
