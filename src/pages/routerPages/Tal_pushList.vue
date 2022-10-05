@@ -31,9 +31,9 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_CONT_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && GE_DISP_CONT_LIST.length === 0 "/>
+          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:99; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -263,14 +263,28 @@ export default {
         if (!value || value.length === 0) return
         // var memoContents = value[0]
         var content = null
-        var index = this.GE_DISP_CONT_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
-        if (index !== -1) {
-          content = this.GE_DISP_CONT_LIST[index]
-          var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-          this.GE_DISP_CONT_LIST[index].memoCount = count
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_CONT_LIST[index])
+        var index
+        var count
+        if ((this.viewMainTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewMainTab === 'B' && value[0].jobkindId === 'ALIM')) return
+        if (this.viewMainTab === 'P') {
+          index = this.GE_DISP_ALIM_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+          if (index !== -1) {
+            content = this.GE_DISP_ALIM_LIST[index]
+            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+            this.GE_DISP_ALIM_LIST[index].memoCount = count
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALIM_LIST[index])
+          }
+        } else {
+          index = this.GE_DISP_BOAR_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+          if (index !== -1) {
+            content = this.GE_DISP_BOAR_LIST[index]
+            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+            this.GE_DISP_BOAR_LIST[index].memoCount = count
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_BOAR_LIST[index])
+          }
         }
         if (!content) return
+
         if (content.jobkindId === 'ALIM') {
           var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
           if (memoAleadyIdx !== -1) {
@@ -413,45 +427,53 @@ export default {
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
-    GE_DISP_CONT_LIST () {
+    GE_DISP_ALIM_LIST () {
       var idx1, idx2
       var test = []
       var chanDetail = null
       var dataList = null
       var i = 0
-      if (this.viewMainTab === 'P') {
-        for (i = 0; i < this.alimContentsList.length; i++) {
-          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
-          if (idx1 !== -1) {
-            chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-            dataList = chanDetail.ELEMENTS.alimList
-            idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-
-            if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
-            if (idx2 !== -1) {
-              test.push(dataList[idx2])
-            } else {
-              test.push(this.alimContentsList[i])
-            }
-          } else {
-            test.push(this.alimContentsList[i])
-          }
-        }
-      } else {
-        for (i = 0; i < this.boardContentsList.length; i++) {
-          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
+      for (i = 0; i < this.alimContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
+        if (idx1 !== -1) {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.boardList
-          idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
+          dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+
+          if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
           if (idx2 !== -1) {
             test.push(dataList[idx2])
           } else {
-            test.push(this.boardContentsList[i])
+            test.push(this.alimContentsList[i])
           }
+        } else {
+          test.push(this.alimContentsList[i])
+        }
+      }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (test.length === 0) this.emptyYn = true
+
+      return test
+    },
+    GE_DISP_BOAR_LIST () {
+      var idx1, idx2
+      var test = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      for (i = 0; i < this.boardContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
+        chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+        dataList = chanDetail.ELEMENTS.boardList
+        idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+        if (idx2 !== -1) {
+          test.push(dataList[idx2])
+        } else {
+          test.push(this.boardContentsList[i])
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -1032,6 +1054,7 @@ export default {
     async refreshAll () {
       // 새로고침
       this.targetCKey = null
+      this.offsetInt = 0
       this.loadMoreDESCYn = true
       this.findKeyList.searchKey = null
       this.findKeyList.creTeamNameMtext = null
@@ -1040,7 +1063,6 @@ export default {
       this.resultSearchKeyList = []
       this.changeMainTab('P')
       this.changeTab('N')
-      this.offsetInt = 0
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
@@ -1050,6 +1072,9 @@ export default {
     },
     changeMainTab (tab) {
       // this.targetCKey = null
+      this.$emit('changeMainTab', tab)
+      this.viewMainTab = tab
+      this.offsetInt = 0
       this.emptyYn = false
       this.targetCKey = null
       this.loadMoreDESCYn = true
@@ -1058,13 +1083,11 @@ export default {
       this.findKeyList.toCreDateStr = null
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
-      this.viewMainTab = tab
-      this.changeTab('N')
-      this.offsetInt = 0
+      this.justChangeTabPosition('N')
       this.$refs.activeBar.switchtab(0)
+      // this.$refs.activeBar.switchtab(0)
       // this.refreshList()
       this.canLoadYn = true
-      this.$emit('changeMainTab', tab)
     },
     introPushPageTab () {
       if (this.viewTab === 'N') {
@@ -1124,7 +1147,7 @@ export default {
       var tempContentDetail
       var contentDetail
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      this.endListSetFunc(resultList)
+      // this.endListSetFunc(resultList)
       if (this.viewMainTab === 'P') {
         newArr = [
           // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
@@ -1262,8 +1285,10 @@ export default {
       this.$emit('openPop', value)
     },
     replaceArr (arr) {
+      // var this_ = this
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
@@ -1279,6 +1304,14 @@ export default {
     // },
     subHeaderEvent (request) {
       if (request === 'pushBox') { this.goPushBox() } else if (request === 'search') { this.goSearch() }
+    },
+    justChangeTabPosition (tabName) {
+      this.targetCKey = null
+      this.offsetInt = 0
+      /* if (this.viewTab !== tabName) {
+        this.readCheckBoxYn = false
+      } */
+      this.viewTab = tabName
     },
     async changeTab (tabName) {
       this.emptyYn = false
