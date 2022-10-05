@@ -1,6 +1,7 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
+    <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
   <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
     <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
     <p class="font20 fontBold" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
@@ -83,7 +84,9 @@
           <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-          <boardList  :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"  @refresh='refresh' @openPop="openPop" />
+          <boardList  :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
+            @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
+            @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'/>
           <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
         </div>
       </div>
@@ -101,6 +104,14 @@
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
   <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
+<div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="this.memoShowYn = false"></div>
+<transition name="showMemoPop">
+  <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
+</transition>
+
+<imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
+<imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+
 <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
@@ -110,12 +121,17 @@
 import boardList from '@/components/list/Tal_commonList.vue'
 import findContentsList from '@/components/popup/common/Tal_findContentsList.vue'
 import boardWrite from '@/components/board/Tal_boardWrite.vue'
+import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
+import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
+import { onMessage } from '../../assets/js/webviewInterface'
 
 export default {
   components: {
     findContentsList,
     boardList,
-    boardWrite
+    boardWrite,
+    imgLongClickPop,
+    imgPreviewPop
   },
   props: {
     propData: {}
@@ -226,11 +242,215 @@ export default {
       selectBoardType: null,
       boardDetailValue: null,
       selectBoardPopShowYn: false,
-      cabinetDetail: null
+      cabinetDetail: null,
+      alertPopId: null,
+      selectImgObject: {},
+      selectImgParam: {},
+      imgDetailAlertShowYn: false,
+      mememoValue: {},
+      currentContentsKey: '',
+      memoShowYn: false,
+      writeMemoTempTeamKey: '',
+      mobileYn: this.$getMobileYn(),
+      axiosQueue: [],
+      saveMemoLoadingYn: false
     }
   },
 
   methods: {
+    async getContentsMemoList (key, pageSize, offsetInt) {
+      if (this.axiosQueue.findIndex((item) => item === 'getContentsMemoList') !== -1) return
+      this.axiosQueue.push('getContentsMemoList')
+      var memo = {}
+      memo.targetKind = 'C'
+      memo.targetKey = key
+      // eslint-disable-next-line no-unused-vars
+      var idx, cont
+
+      idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === key)
+      if (idx !== -1) cont = this.BOARD_CONT_LIST[idx]
+
+      if (pageSize) memo.pageSize = pageSize
+      else memo.pageSize = this.pagesize
+      if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
+      else memo.offsetInt = this.offsetInt
+
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemoList',
+        param: memo
+      })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
+      this.axiosQueue.splice(queueIndex, 1)
+
+      return result.data.memoList
+    },
+    async saveMemo (text) {
+      if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
+      this.axiosQueue.push('saveMemo')
+      this.saveMemoLoadingYn = true
+      // eslint-disable-next-line no-new-object
+      var memo = new Object()
+      memo.parentMemoKey = null
+      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
+        memo.parentMemoKey = this.mememoValue.parentMemoKey
+      }
+      memo.bodyFullStr = text
+      /* memo.bodyFilekey  */
+      memo.targetKind = 'C'
+      memo.targetKey = this.currentContentsKey
+      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
+      memo.creUserKey = this.GE_USER.userKey
+      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+      memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
+        this.axiosQueue.splice(queueIndex, 1)
+        if (result.data.result === true || result.data.result === 'true') {
+          /* this.confirmText = '댓글 저장 성공'
+          this.confirmPopShowYn = true */
+          this.memoShowYn = false
+          // await this.getContentsList()
+          // await this.getBoardMemoList(true)
+
+          // this.currentMemoList = []
+          // var cont = this.currentMemoObj
+          var idx, memoLength, cont
+          // if (this.viewMainTab === 'P') {
+          idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === this.currentContentsKey)
+          if (idx !== -1) {
+            memoLength = this.BOARD_CONT_LIST[idx].memoList.length
+            cont = this.BOARD_CONT_LIST[idx]
+          }
+
+          if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
+            var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
+            if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
+            var newArr = [
+              ...response,
+              ...cont.D_MEMO_LIST
+            ]
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            // cont.memoCount = newList.length
+            cont.memoCount += 1
+            // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      } catch (e) {
+        console.error('D_boardMain 오류')
+        console.error(e)
+      } finally {
+        this.saveMemoLoadingYn = false
+      }
+    },
+    longClickAlertClick (btnType) {
+      if (btnType === 'download') this.imgDownload()
+      else if (btnType === 'share');
+      else if (btnType === 'preview') {
+        this.backClick()
+        this.previewPopShowYn = true
+      }
+    },
+    async imgDownload () {
+      try {
+        if (this.mobileYn) {
+          onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
+        } else {
+          await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
+        }
+        this.$showToastPop('저장되었습니다!')
+        this.backClick()
+        // this.failPopYn = true
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async yesLoadMore (contentKey) {
+      var cont, idx
+      idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === contentKey)
+      if (idx !== -1) cont = this.BOARD_CONT_LIST[idx]
+      var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
+      var newArr = [
+        ...cont.D_MEMO_LIST,
+        ...response
+      ]
+      var newList = await this.replaceMemoArr(newArr)
+      cont.D_MEMO_LIST = newList
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+    },
+    deleteConfirm (data) {
+      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
+        this.tempData = data
+      }
+
+      if (data === 'memo' || this.tempData.memoKey) {
+        this.errorBoxText = '댓글을 삭제하시겠습니까?'
+        if (this.tempData.parentMemoKey) {
+          this.errorBoxText = '대댓글을 삭제하시겠습니까?'
+        }
+        this.currentConfirmType = 'memoDEL'
+      } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
+        this.errorBoxText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.currentConfirmType = 'alimDEL'
+      } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
+        this.errorBoxText = '게시글을 삭제 하시겠습니까?'
+        this.currentConfirmType = 'boardDEL'
+      }
+      this.confirmType = 'two'
+      this.errorBoxYn = true
+    },
+    writeMemo (param) {
+      this.mememoValue = null
+      this.memoShowYn = true
+      var idx
+      idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === param.contentsKey)
+      if (idx !== -1) {
+        this.currentContentsKey = this.BOARD_CONT_LIST[idx].contentsKey
+      } else {
+        this.memoShowYn = false
+        this.$showToastPop('작성 setting 중 오류')
+        return
+      }
+      this.writeMemoTempTeamKey = param.teamKey
+    },
+    writeMememo (memo) {
+      this.mememoValue = {}
+      this.currentContentsKey = memo.memo.targetKey
+      this.mememoValue = memo
+      this.memoShowYn = true
+    },
+    /* 이미지 다운로드 */
+    imgLongClick (param) {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      history.push(this.alertPopId)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      this.selectImgObject = param.selectObj
+      this.selectImgParam = param.previewParam
+      this.imgDetailAlertShowYn = true
+    },
+    makeNewContents (data) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = data.contentsKey
+      param.targetType = data.writeType === 'BOAR' ? 'writeBoard' : data.writeType === 'ALIM' ? 'writePush' : undefined
+      param.writeType = data.writeType
+      param.creTeamKey = data.creTeamKey
+      param.currentTeamKey = data.creTeamKey
+      if (data.attachMfilekey) { param.attachMfilekey = data.attachMfilekey }
+      // eslint-disable-next-line no-undef
+      param.bodyFullStr = Base64.decode(data.bodyFullStr)
+      param.UseAnOtherYn = true
+      param.selectBoardYn = true
+      param.modiContentsKey = data.contentsKey
+      param.titleStr = data.title
+      this.$emit('openPop', param)
+    },
     delContents (cont) {
       var idx = null
       if (cont.jobkindId === 'BOAR') {
@@ -322,7 +542,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -429,6 +649,14 @@ export default {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.writePopId === hStack[hStack.length - 1]) {
         this.closeWriteBoardPop()
+      } else if (this.alertPopId === hStack[hStack.length - 1]) {
+        var removePage = history[history.length - 1]
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.imgDetailAlertShowYn = false
+      } else {
+        this.previewPopShowYn = false
       }
     },
     closeWriteBoardPop () {
@@ -872,6 +1100,19 @@ export default {
         this.$refs.boardListCompo.loadingRefHide()
       }
       this.findPopShowYn = false
+    },
+    replaceMemoArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.memoKey - a.memoKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
     }
   },
   computed: {
@@ -1124,4 +1365,7 @@ background: #fbfbfb;
 padding: 10px; width: 90%; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;
 }
 .chanImgRound{ width: 90px; height: 90px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
+.boardMainMemoBoxBackground{
+width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;
+}
 </style>

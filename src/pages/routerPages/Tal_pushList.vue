@@ -31,8 +31,8 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @showToastPop="showToastPop" @openPop="openUserProfile" @memoOpenClick="memoOpenClick" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
           <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -790,7 +790,6 @@ export default {
       if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
-
       memo.bodyFullStr = text
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
@@ -799,53 +798,58 @@ export default {
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      // try {
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
-        param: { memo: memo }
-      })
-      var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
-      this.axiosQueue.splice(queueIndex, 1)
-      if (result.data.result === true || result.data.result === 'true') {
-        /* this.confirmText = '댓글 저장 성공'
-        this.confirmPopShowYn = true */
-        this.memoShowYn = false
-        // await this.getContentsList()
-        // await this.getBoardMemoList(true)
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
+        this.axiosQueue.splice(queueIndex, 1)
+        if (result.data.result === true || result.data.result === 'true') {
+          /* this.confirmText = '댓글 저장 성공'
+          this.confirmPopShowYn = true */
+          this.memoShowYn = false
+          // await this.getContentsList()
+          // await this.getBoardMemoList(true)
 
-        // this.currentMemoList = []
-        // var cont = this.currentMemoObj
-        var idx, memoLength, cont
-        if (this.viewMainTab === 'P') {
-          idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-          if (idx !== -1) {
-            memoLength = this.alimContentsList[idx].memoList.length
-            cont = this.alimContentsList[idx]
+          // this.currentMemoList = []
+          // var cont = this.currentMemoObj
+          var idx, memoLength, cont
+          if (this.viewMainTab === 'P') {
+            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+            if (idx !== -1) {
+              memoLength = this.alimContentsList[idx].memoList.length
+              cont = this.alimContentsList[idx]
+            }
+          } else if (this.viewMainTab === 'B') {
+            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+            if (idx !== -1) {
+              memoLength = this.boardContentsList[idx].memoList.length
+              cont = this.boardContentsList[idx]
+            }
           }
-        } else if (this.viewMainTab === 'B') {
-          idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-          if (idx !== -1) {
-            memoLength = this.boardContentsList[idx].memoList.length
-            cont = this.boardContentsList[idx]
+
+          if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
+            var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
+            if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
+            var newArr = [
+              ...response,
+              ...cont.D_MEMO_LIST
+            ]
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            // cont.memoCount = newList.length
+            cont.memoCount += 1
+            // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
-
-        if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
-          var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
-          if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
-          var newArr = [
-            ...response,
-            ...cont.D_MEMO_LIST
-          ]
-          var newList = this.replaceMemoArr(newArr)
-          cont.D_MEMO_LIST = newList
-          // cont.memoCount = newList.length
-          cont.memoCount += 1
-          // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-        }
+      } catch (e) {
+        console.error('Tal_pushList 오류')
+        console.error(e)
+      } finally {
+        this.saveMemoLoadingYn = false
       }
-      this.saveMemoLoadingYn = false
     },
     memoOpenClick (params) {
     },
@@ -1084,6 +1088,7 @@ export default {
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
       this.justChangeTabPosition('N')
+      // this.changeTab('N')
       this.$refs.activeBar.switchtab(0)
       // this.$refs.activeBar.switchtab(0)
       // this.refreshList()

@@ -991,7 +991,7 @@ export default {
 
               this.$refs.complexEditor.addFormCard('image', src, true)
               this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
-            
+
             } catch (error) {
               console.log(error)
             }
