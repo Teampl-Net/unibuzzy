@@ -366,7 +366,8 @@ export default {
 
       param.jobkindId = 'BOAR'
       param.creTeamKey = 377 // 더알림 공식 채널 teamKey
-      param.cabinetKey = 11015 // 더알림 공식 채널의 문의 게시판 키
+      param.cabinetKey = 11015 // 더알림 공식 채널의 오류 게시판 키
+      // param.cabinetKey = 12006 // 더알림 공식 채널의 문의 게시판 키
       param.onlyManagerYn = true
       // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
       // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext

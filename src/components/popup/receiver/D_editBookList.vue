@@ -453,6 +453,7 @@ export default {
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'
             param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
+            param.editBookOpend = true
 
             this.$emit('openPop', param)
 

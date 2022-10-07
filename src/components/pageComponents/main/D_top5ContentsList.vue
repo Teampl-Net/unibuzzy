@@ -102,6 +102,7 @@ export default {
         var newArr = []
         if (!value) return
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
+        if (this.$dateCalc(this.GE_DISP_CONT_LIST[0].creDate, value[0].creDate) === true) return
         newArr = [
           value[0],
           ...this.contentsList

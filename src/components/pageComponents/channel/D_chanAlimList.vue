@@ -532,6 +532,7 @@ export default {
         // this.$emit('openPop', param)
       }
       this.$store.commit('D_HISTORY/updateStack', history)
+      console.log(history)
       // this.$emit('openPop', params)
     },
     openPushDetailPop (param) {

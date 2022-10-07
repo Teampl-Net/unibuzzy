@@ -37,6 +37,11 @@ export default {
     // eslint-disable-next-line vue/no-mutating-props
     this.propData.memberListOpen = true
     this.pList = a
+    console.log('**********************')
+    console.log(this.pList)
+    console.log(this.pSelectedList)
+    console.log(this.propData.memberListOpen)
+    if (this.propData.editBookOpend === true) { this.pList = [] }
   },
   components: { memberListCompo, selectedListCompo },
   methods: {
@@ -104,6 +109,7 @@ export default {
     },
     changeSelectMemberList (data) {
       this.selectedList.memberList = data
+      console.log(this.selectedList.memberList)
 
       this.$refs.selectedListCompo.upDatePage()
     },

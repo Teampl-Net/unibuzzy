@@ -98,14 +98,15 @@
     </div>
     <div class="itemWrite fl" style="border-bottom: none;">
       <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상
-        {{1111 + this.shareGroup.type}}</p>
+        <!-- {{1111 + this.shareGroup.type}} -->
+        </p>
       <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
-        <input v-model="this.shareGroup.type" class="h-100P fl" type="radio" name="shareTypeRadio" value="A" id="shareAll"><label class="fl font14 mleft-05 mtop-02" for="shareAll">전체</label>
-        <input v-model="this.shareGroup.type" class="h-100P fl mleft-1" type="radio"  name="shareTypeRadio" value="S" id="shareSelect"><label class="fl font14 mleft-05 mtop-02" for="shareSelect">선택</label>
+        <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl" type="radio" name="shareTypeRadio" value="A" id="shareAll"><label class="fl font14 mleft-05 mtop-02" for="shareAll">전체</label>
+        <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl mleft-1" type="radio"  name="shareTypeRadio" value="S" id="shareSelect"><label class="fl font14 mleft-05 mtop-02" for="shareSelect">선택</label>
       </div>
     </div>
     <div class="fl" style="width: 100%;">
-      <div v-show="this.shareType === 'select'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
+      <div v-show="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
         <p class="font16 commonBlack" v-if="selectedShareList.length === 0">{{selectedReceiver}}</p>
         <template v-if="selectedShareList.length > 0">
           <div v-for="(data, index) in selectedShareList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
@@ -120,7 +121,7 @@
     <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
     <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
       <div class="subItemWrite" :style="writePermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl" style="">작성</p>
+        <p class="textLeft mleft-15 font16 fl" :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">작성</p>
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
           <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
@@ -132,15 +133,10 @@
             </div>
           </template>
         </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex" >
-            {{permissionWGroup.type}}
-            <input v-model="permissionWGroup.type" class="h-100P fl" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
-            <input v-model="permissionWGroup.type" class="h-100P fl" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
-            <input v-model="permissionWGroup.type" class="h-100P fl" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
-
-          <!-- <div><input class="h-100P fl" type="radio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('W', 'A')" name="writePermissionAllYn" value="use"  id="writeTrue"><label class="fl font14 mleft-05" for="writeTrue">전체</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionAllYn ===  false ? true : false" @click="changePermission('W', 'N')" name="writePermissionAllYn" value="unuse" id="writeFalse"><label class="fl font14  mleft-05" for="writeFalse">사용 안함</label></div>
-          <div><input class="h-100P fl mleft-1" type="radio" :checked="this.writePermissionSelectYn ===  true ? true : false " @click="changePermission('W', 'S')" name="writePermissionAllYn" value="unuse" id="writeSelect"><label class="fl font14  mleft-05" for="writeSelect">선택 지정</label></div> -->
+        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;" >
+            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
+            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
+            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('W')" v-if="this.shareGroup.type == 'A' && this.permissionWGroup.type === 'S'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
           <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
@@ -153,11 +149,11 @@
           </template>
         </div>
       </div>
-
       <div class="subItemWrite" :style="readPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl " style="">열람</p>
+        <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">열람</p>
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
+          <!-- 공유 대상이 선택이면서  -->
           <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
           <template v-if="selectedReadList.length > 0">
             <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
@@ -167,10 +163,10 @@
             </div>
           </template>
         </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex">
-          <input v-model="permissionVGroup.type" class="h-100P fl" type="radio" name="perVRadio"  :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('V', 'A')"  value="A"  id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
-            <input v-model="permissionVGroup.type" class="h-100P fl" type="radio" name="perVRadio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('V', 'N')"  value="N"  id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
-            <input v-model="permissionVGroup.type" class="h-100P fl" type="radio" name="perVRadio" :checked="this.writePermissionAllYn ===  true ? true : false" @click="changePermission('V', 'S')" value="S"  id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
+        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
+          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
+          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'N')" value="N" id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
+          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('V')" v-if=" this.permissionVGroup.type === 'S' && this.shareGroup.type == 'A'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
           <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
@@ -184,7 +180,7 @@
         </div>
       </div>
       <div class="subItemWrite" :style="commentPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl " style="">댓글</p>
+        <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'" >
           <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
@@ -196,10 +192,11 @@
             </div>
           </template>
         </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="">
-          <input v-model="permissionRGroup.type" class="h-100P fl" type="radio" name="perRRadio"  @click="changePermission('R', 'A')"  value="A"  id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
-            <input v-model="permissionRGroup.type" class="h-100P fl" type="radio" name="perRRadio"  @click="changePermission('R', 'N')"  value="N"  id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
-            <input v-model="permissionRGroup.type" class="h-100P fl" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S"  id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
+
+        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
+          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
+          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
+          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('R')" v-if="this.shareGroup.type == 'A'  && this.permissionRGroup.type === 'S'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
           <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
@@ -221,7 +218,7 @@
   <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
   <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
 <!-- @sendReceivers="setOk" -->
-  <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='this.selectedList.data' />
+  <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
 
 </template>
@@ -246,7 +243,9 @@ export default {
 
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
-
+    if (this.shareGroup.type === 'S') {
+      this.changeSelectType()
+    }
     this.chanProps = this.modiBoardDetailProps
     this.chanProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
 
@@ -294,7 +293,7 @@ export default {
       okPopYn: false,
       popId: null,
       boardDetail: {},
-      selectBoardTypeText: '게시판의 유형을 선택해주세요',
+      selectBoardTypeText: '게시판의 유형을 선택해주세요.',
       selectId: '',
       shareType: 'select', // 공유 대상자 (팔로워 전체: all, 대상 선택: select)
       selectTypePopShowYn: false,
@@ -316,7 +315,7 @@ export default {
       sharePermissionShowYn: false,
       statusSelectShowYn: false,
       selectShareYn: false,
-      selectedReceiver: '게시판을 공유할 대상을 선택해주세요',
+      selectedReceiver: '게시판을 공유할 대상을 선택해주세요.',
       writePermission: '작성권한',
       readPermission: '열람권한',
       commentPermission: '댓글권한',
@@ -337,22 +336,48 @@ export default {
       permissionSelectedYn: { W: false, R: false, V: false },
       boardName: '',
       dbSelectedList: { bookList: [], memberList: [] },
-      currentPermissionType: '',
+      // currentPermissionType: '',
       currentSelectBookType: '',
       selectedShareList: [],
       selectedWriteList: [],
       selectedReadList: [],
       selectedCommentList: [],
-      shareGroup: { type: 'A', shareList: [] },
+      shareGroup: { type: 'A', selectedList: [] },
       permissionWGroup: { type: 'A', selectedList: [] },
       permissionRGroup: { type: 'A', selectedList: [] },
-      permissionVGroup: { type: 'A', selectedList: [] }
+      permissionVGroup: { type: 'A', selectedList: [] },
+      permissionSelectedList: []
 
     }
   },
-  components: { selectType, selectBookList, receiverAccessList },
+  components: {
+    selectType,
+    selectBookList,
+    receiverAccessList
+  },
   // emits: ['openPop', 'goPage'],
   methods: {
+    changeSelectType () {
+      // debugger
+      if (this.shareGroup.type === 'S') {
+        // alert(true)
+        this.permissionWGroup.type = 'S'
+        this.permissionVGroup.type = 'S'
+        this.permissionRGroup.type = 'S'
+      } else if (this.shareGroup.type === 'A') {
+        this.permissionWGroup.type = 'A'
+        this.permissionVGroup.type = 'A'
+        this.permissionRGroup.type = 'A'
+      }
+      this.permissionWGroup.selectedList = {}
+      this.permissionVGroup.selectedList = {}
+      this.permissionRGroup.selectedList = {}
+      this.shareGroup.selectedList = {}
+      this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.'
+      this.writePermission = '클릭하여 권한을 설정해주세요.'
+      this.readPermission = '클릭하여 권한을 설정해주세요.'
+      this.commentPermission = '클릭하여 권한을 설정해주세요.'
+    },
     closeFuncPop () {
       this.changeFunc()
       this.functionPopShowYn = false
@@ -417,200 +442,200 @@ export default {
       if (data.mCabinet.picBgPath) {
         this.selectedColor = data.mCabinet.picBgPath
       }
-      if (data.mCabinet.mShareItemList.length > 0) {
-        var indexOf = data.mCabinet.cabShareList.findIndex(i => i.accessKind === 'T')
-
-        if (data.mCabinet.cabShareList) {
-          var tempList = []
-          var tempList2 = []
-          for (var s = 0; s < data.mCabinet.cabShareList.length; s++) {
-            if (data.mCabinet.cabShareList[s].accessKind === 'C') {
-              tempList.push({ cabinetKey: data.mCabinet.cabShareList[s].accessKey, cabinetNameMtext: this.$changeText(data.mCabinet.cabShareList[s].cabinetNameMtext) })
-            } else if (data.mCabinet.cabShareList[s].accessKind === 'U') {
-              var uName = data.mCabinet.cabShareList[s].userDispMtext
-              if (!uName) {
-                uName = data.mCabinet.cabShareList[s].userNameMtext
-              }
-
-              tempList2.push({ userKey: data.mCabinet.cabShareList[s].accessKey, userDispMtext: uName })
+      var mCabinet = data.mCabinet
+      console.log('------------------ mCabinet, ShareList, ItemList -----------------')
+      var cabShareList = mCabinet.cabShareList
+      var mShareItemList = mCabinet.mShareItemList
+      console.log(mCabinet)
+      console.log(cabShareList)
+      console.log(mShareItemList)
+      // 공유 리스트에서 공유 대상이 전체(T)인지 선택인지 구분
+      var findListInT = cabShareList.findIndex(i => i.accessKind === 'T')
+      if (findListInT !== -1) {
+        this.shareGroup.type = 'A'
+        this.selectedReceiver = '전체에게 공유 중'
+      } else {
+        this.shareGroup.type = 'S'
+        this.shareGroup.selectedList = { bookList: [], memberList: [] }
+        var shareMemCount = 0
+        var shareBookCount = 0
+        if (cabShareList) {
+          for (let i = 0; i < cabShareList.length; i++) {
+            if (cabShareList[i].accessKind === 'C') {
+              shareBookCount += 1
+              this.shareGroup.selectedList.bookList.push(cabShareList[i])
+            }
+            if (cabShareList[i].accessKind === 'U') {
+              shareMemCount += 1
+              this.shareGroup.selectedList.memberList.push(cabShareList[i])
             }
           }
-          var listData = { bookList: tempList, memberList: tempList2 }
+          // this.selectedList = {}
+          console.log('------------------ this.shareGroup.selectedList -----------------')
+          console.log(this.shareGroup.selectedList)
+          // this.selectedList.data = this.shareGroup.selectedList
+          this.selectedReceiver = shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
+        }
+        /* this.permissionWGroup.type = 'S'
+        this.permissionRGroup.type = 'S'
+        this.permissionVGroup.type = 'S' */
+        // var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
+        // var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
+        // this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      }
+      // this.selectShareList = data.mCabinet.cabShareList
+      // this.selectItemList = data.mCabinet.mShareItemList
+
+      // 권한을 사용하는지 안하는지 체크하기 위해 한개라도 W,V,R 값이 있으면 ture로 변환 없으면 type = 'N' 처리
+      var w = false
+      var v = false
+      var r = false
+
+      this.permissionWGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
+      this.permissionVGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
+      this.permissionRGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
+      // 공유 아이템 중 W, V, R을 찾아 Radio버튼 setting
+      for (let i = 0; i < mShareItemList.length; i++) {
+        var cIndex = null
+
+        cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
+        if (mShareItemList[i].accessKind === 'C') {
+          mShareItemList[i].cabinetNameMtext = cabShareList[cIndex].cabinetNameMtext
+        }
+        if (mShareItemList[i].accessKind === 'U') {
+          mShareItemList[i].userDispMtext = cabShareList[cIndex].userDispMtext
+          mShareItemList[i].userNameMtext = cabShareList[cIndex].userNameMtext
+        }
+        // // eslint-disable-next-line no-debugger
+        // debugger
+        if (mShareItemList[i].shareType === 'W') {
+          if (mShareItemList[i].accessKind === 'T') {
+            this.permissionWGroup.type = 'A'
+          } else {
+            this.permissionWGroup.type = 'S'
+            if (mShareItemList[i].accessKind === 'C') {
+              // this.permissionWGroup.selectedList.bookList = []
+              this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
+            }
+            if (mShareItemList[i].accessKind === 'U') {
+              // this.permissionWGroup.selectedList.memberList = []
+              this.permissionWGroup.selectedList.memberList.push(mShareItemList[i])
+            }
+          }
+          w = true
           //
-          this.selectedList.data = listData
-        }
-        if (indexOf !== -1) {
-          this.shareGroup.type = 'A'
-          // this.changeShareType('all')
-          /* this.writePermissionAllYn = false
-          this.readPermissionAllYn = false
-          this.commentPermissionAllYn = false */
-
-          // var findPermission = ''
-          // var findPermissionW = data.mCabinet.mShareItemList.findIndex(i => i.shareType === 'W')
-          // var findPermissionV = data.mCabinet.mShareItemList.findIndex(i => i.shareType === 'V')
-          // var findPermissionR = data.mCabinet.mShareItemList.findIndex(i => i.shareType === 'R')
-
-          /* this.selectedReceiver = '전체에게 공유 중'
-          this.writePermission = '전체에게 권한 부여'
-          this.readPermission = '전체에게 권한 부여'
-          this.commentPermission = '전체에게 권한 부여' */
-          var sharList = data.mCabinet.mShareItemList
-
-          for (let i = 0; i < sharList.length; i++) {
-            if (sharList[i].shareType === 'W') {
-              if (sharList[i].accessKind === 'T') {
-                this.writePermissionAllYn = true
-              } else {
-                this.writePermissionSelectYn = true
-                const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'W').length
-                this.writePermission = count + '명(그룹)에게 권한 부여'
-              }
-            } else if (sharList[i].shareType === 'V') {
-              if (sharList[i].accessKind === 'T') {
-                this.readPermissionAllYn = true
-              } else {
-                this.readPermissionSelectYn = true
-                const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'V').length
-                this.readPermission = count + '명(그룹)에게 권한 부여'
-              }
-            } else if (sharList[i].shareType === 'R') {
-              if (sharList[i].accessKind === 'T') {
-                this.commentPermissionAllYn = true
-              } else {
-                this.commentPermissionSelectYn = true
-                const count = data.mCabinet.mShareItemList.filter(i => i.shareType === 'R').length
-                this.commentPermission = count + '명(그룹)에게 권한 부여'
-              }
+        } else if (mShareItemList[i].shareType === 'V') {
+          if (mShareItemList[i].accessKind === 'T') {
+            this.permissionVGroup.type = 'A'
+          } else {
+            this.permissionVGroup.type = 'S'
+            if (mShareItemList[i].accessKind === 'C') {
+              // this.permissionVGroup.selectedList.bookList = []
+              this.permissionVGroup.selectedList.bookList.push(mShareItemList[i])
+            }
+            if (mShareItemList[i].accessKind === 'U') {
+              // this.permissionVGroup.selectedList.memberList = []
+              this.permissionVGroup.selectedList.memberList.push(mShareItemList[i])
             }
           }
-          console.log('***************************')
-          console.log(data.mCabinet.mShareItemList)
-        } else {
-          this.changeShareType('select')
-          this.selectedReceiver = data.mCabinet.cabShareList.length + '명(그룹)에게 공유 중'
-          var W = 0; var R = 0; var V = 0
-          for (let i = 0; i < data.mCabinet.mShareItemList.length; i++) {
-            if (data.mCabinet.mShareItemList[i].shareType === 'W') W += 1
-            if (data.mCabinet.mShareItemList[i].shareType === 'V') V += 1
-            if (data.mCabinet.mShareItemList[i].shareType === 'R') R += 1
+          v = true
+          //
+        } else if (mShareItemList[i].shareType === 'R') {
+          if (mShareItemList[i].accessKind === 'T') {
+            this.permissionRGroup.type = 'A'
+          } else {
+            this.permissionRGroup.type = 'S'
+            if (mShareItemList[i].accessKind === 'C') {
+              // this.permissionRGroup.selectedList.bookList = []
+              this.permissionRGroup.selectedList.bookList.push(mShareItemList[i])
+            }
+            if (mShareItemList[i].accessKind === 'U') {
+              // this.permissionRGroup.selectedList.memberList = []
+              this.permissionRGroup.selectedList.memberList.push(mShareItemList[i])
+            }
           }
-          this.writePermission = W + '명(그룹)에게 권한 부여'
-          this.readPermission = V + '명(그룹)에게 권한 부여'
-          this.commentPermission = R + '명(그룹)에게 권한 부여'
+          r = true
         }
-        console.log(data.mCabinet.cabShareList)
-        console.log(data.mCabinet.mShareItemList)
-        this.selectShareList = data.mCabinet.cabShareList
-        this.selectItemList = data.mCabinet.mShareItemList
-        console.log('-------------SELECT SHARE LIST ------------------')
-        console.log(this.selectShareList)
-        console.log('-------------SELECT ITEM LIST ------------------')
-        console.log(this.selectItemList)
-      } else {
-        // 처음 만들었으면 // mShareList.length === 0
-        this.changeShareType('all')
-
-        this.writePermissionAllYn = false
-        this.readPermissionAllYn = false
-        this.commentPermissionAllYn = false
       }
+      if (w === false && this.shareGroup.type !== 'S') this.permissionWGroup.type = 'N'
+      if (v === false && this.shareGroup.type !== 'S') this.permissionVGroup.type = 'N'
+      if (r === false && this.shareGroup.type !== 'S') this.permissionRGroup.type = 'N'
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      console.log(this.permissionWGroup.selectedList)
+      console.log(this.permissionVGroup.selectedList)
+      console.log(this.permissionRGroup.selectedList)
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+      var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
+      var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
+      this.writePermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+
+      cabinetCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'C').length
+      userCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'U').length
+      this.readPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+
+      cabinetCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'C').length
+      userCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'U').length
+      this.commentPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+
+      console.log(this.permissionWGroup.type)
+      console.log(this.permissionVGroup.type)
+      console.log(this.permissionRGroup.type)
+
+      console.log(this.permissionWGroup.selectedList)
+      console.log(this.permissionVGroup.selectedList)
+      console.log(this.permissionRGroup.selectedList)
     },
-    /* setOk (data) {
-      console.log('-------------------')
-      console.log(data)
-      var text = ''
-      var selectLength = 0
-      var tempSelectedList = {}
-      if (data.bookList) {
-        if (data.bookList.length > 0) {
-          // itemList 중복 제거
-          var indexOf = this.selectItemList.findIndex(i => i.shareType === data.bookList[0].shareType)
-          while (indexOf !== -1) {
-            this.selectItemList.splice(indexOf, 1)
-            indexOf = this.selectItemList.findIndex(i => i.shareType === data.bookList[0].shareType)
-          }
-
-          for (let i = 0; i < data.bookList.length; i++) {
-            var teampItemList = {}
-            // if(teampItemList.shareType !== data.bookList[i].shareType ){
-            teampItemList.shareType = data.bookList[i].shareType
-            teampItemList.shareSeq = data.bookList[i].shareSeq
-
-            this.selectItemList.push(teampItemList)
-            tempSelectedList = {}
-            tempSelectedList.type = 'group'
-            tempSelectedList.name = data.bookList[i].cabinetNameMtext
-            if (this.currentPermissionType === 'W') this.selectedWriteList.push(tempSelectedList)
-            if (this.currentPermissionType === 'V') this.selectedReadList.push(tempSelectedList)
-            if (this.currentPermissionType === 'R') this.selectedCommentList.push(tempSelectedList)
-          }
-          text = '그룹: ' + data.bookList[0].cabinetNameMtext
-
-          selectLength += data.bookList.length
-          console.log(this.selectItemList)
-        }
-      }
-      if (data.memberList) {
-        if (data.memberList.length > 0) {
-          // itemList 중복 제거
-          indexOf = this.selectItemList.findIndex(i => i.shareType === data.memberList[0].shareType)
-          while (indexOf !== -1) {
-            this.selectItemList.splice(indexOf, 1)
-            indexOf = this.selectItemList.findIndex(i => i.shareType === data.memberList[0].shareType)
-          }
-
-          for (let i = 0; i < data.memberList.length; i++) {
-            teampItemList = {}
-            teampItemList.shareType = data.memberList[i].shareType
-            teampItemList.shareSeq = data.memberList[i].shareSeq
-            this.selectItemList.push(teampItemList)
-            tempSelectedList = {}
-            tempSelectedList.type = 'person'
-            tempSelectedList.name = this.$changeText(data.memberList[i].userDispMtext) || this.$changeText(data.memberList[i].userNameMtext)
-            if (this.currentPermissionType === 'W') this.selectedWriteList.push(tempSelectedList); console.log(this.selectedWriteList)
-            if (this.currentPermissionType === 'V') this.selectedReadList.push(tempSelectedList); console.log(this.selectedReadList)
-            if (this.currentPermissionType === 'R') this.selectedCommentList.push(tempSelectedList); console.log(this.selectedCommentList)
-          }
-          text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList[0].userNameMtext)
-          selectLength += data.memberList.length
-        }
-      }
-
-      if ((selectLength - 1) > 0) {
-        text += '외 ' + (selectLength - 1) + '명'
-      } else if ((selectLength - 1) === 0) {
-        text += ''
-      } else {
-        text = '권한 대상자가 없습니다.'
-      }
-
-      if (this.currentPermissionType === 'W') this.writePermission = text
-      if (this.currentPermissionType === 'V') this.readPermission = text
-      if (this.currentPermissionType === 'R') this.commentPermission = text
-
-      this.receiverAccessListYn = false
-      // // console.log('this.selectItemList')
-      // // console.log(this.selectItemList)
-      // // console.log('this.selectShareList')
-      // // console.log(this.selectShareList)
-    },
- */
     selectShareActorItem (itemType) {
       console.log('selectShareActorItem')
       console.log(itemType)
-      this.currentPermissionType = itemType
-      if (itemType === 'V') { this.permissionSelectedYn.V = true }
-      if (itemType === 'R') { this.permissionSelectedYn.R = true }
-      if (itemType === 'W') { this.permissionSelectedYn.W = true }
-      if (this.selectedList.data) {
-        if (this.selectedList.data.bookList || this.selectedList.data.memberList) {
+      this.currentSelectBookType = itemType
+      if (itemType === 'V') {
+        this.permissionSelectedYn.V = true
+      }
+      if (itemType === 'R') {
+        this.permissionSelectedYn.R = true
+      }
+      if (itemType === 'W') {
+        this.permissionSelectedYn.W = true
+      }
+      console.log(this.shareGroup.type)
+      if (this.shareGroup.type === 'S') {
+        console.log('*************************')
+        console.log(this.shareGroup.selectedList)
+        this.permissionSelectedList = []
+        if (itemType === 'V') {
+          this.permissionSelectedList = this.permissionVGroup.selectedList
+        }
+        if (itemType === 'R') {
+          this.permissionSelectedList = this.permissionRGroup.selectedList
+        }
+        if (itemType === 'W') {
+          this.permissionSelectedList = this.permissionWGroup.selectedList
+        }
+        console.log('ㅅㅄㅄㅄㅄ')
+        console.log(this.shareGroup.selectedList)
+        this.selectedList = {}
+        if (this.shareGroup.selectedList && ((this.shareGroup.selectedList.bookList && this.shareGroup.selectedList.bookList.length > 0) || (this.shareGroup.selectedList.memberList && this.shareGroup.selectedList.memberList.length > 0))) {
+          this.selectedList.data = this.shareGroup.selectedList
           this.shareActorItemType = itemType
           this.receiverAccessListYn = true
+        } else {
+          this.$showToastPop('먼저 공유대상을 선택해주세요.')
         }
       }
+      // if (this.selectedList.data) {
+      //   if (this.selectedList.data.bookList || this.selectedList.data.memberList) {
+      //     this.shareActorItemType = itemType
+      //     this.receiverAccessListYn = true
+      //   }
+      // }
     },
     async updateCabinet () {
+      // console.log(this.permissionWGroup.selectedList)
+      // console.log(this.permissionVGroup.selectedList)
+      // console.log(this.permissionRGroup.selectedList)
+
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // eslint-disable-next-line no-new-object
@@ -635,24 +660,42 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (this.shareGroup.type === 'A') {
+        share = {}
         share.accessKind = 'T'
         share.accessKey = this.modiBoardDetailProps.teamKey
+        share.cabinetKey = this.modiBoardDetailProps.cabinetKey
         share.shareSeq = 0
         shareList.push(share)
       } else if (this.shareGroup.type === 'S') {
+        console.log('this.shareGroup.selectedList')
+        console.log(this.shareGroup.selectedList)
         shareSeqList = this.shareGroup.selectedList.bookList
         for (var i = 0; i < shareSeqList.length; i++) {
+          share = {}
           share.accessKind = 'C'
-          share.accessKey = shareSeqList[i].cabinetKey
-          share.shareSeq = shareSeqList[i].shareSeq
-          shareList.push(share)
+          share.accessKey = shareSeqList[i].accessKey
+          share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          share.shareSeq = shareSeqList[i].accessKey
+          if (shareSeqList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(shareSeqList[i].cabinetNameMtext)
+          var index = shareList.findIndex(item => item.shareSeq === shareSeqList[i].accessKey)
+          if (index === -1) {
+            shareList.push(share)
+          }
         }
-        shareSeqList = this.shareGroup.selectedList.bookList
+        shareSeqList = this.shareGroup.selectedList.memberList
         for (i = 0; i < shareSeqList.length; i++) {
+          share = {}
           share.accessKind = 'U'
-          share.accessKey = shareSeqList[i].userKey
-          share.shareSeq = shareSeqList[i].shareSeq
-          shareList.push(share)
+          share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          if (shareSeqList[i].userDispMtext) share.userDispMtext = this.$changeText(shareSeqList[i].userDispMtext)
+          if (shareSeqList[i].userNameMtext) share.userNameMtext = this.$changeText(shareSeqList[i].userNameMtext)
+          share.accessKey = shareSeqList[i].accessKey
+          // hare.accessKey = shareSeqList[i].cabinetKey
+          share.shareSeq = shareSeqList[i].accessKey
+          index = shareList.findIndex(item => item.shareSeq === shareSeqList[i].accessKey)
+          if (index === -1) {
+            shareList.push(share)
+          }
         }
       }
       console.log(this.permissionWGroup)
@@ -662,7 +705,8 @@ export default {
       if (this.permissionWGroup.type === 'A') {
         for (var sh = 0; sh < shareList.length; sh++) {
           item = {}
-          item.shareSeq = shareList[sh].shareSeq
+          // item.shareSeq = shareList[sh].accessKey
+          item.shareSeq = 0
           item.shareType = 'W' // 작성
           itemList.push(item)
         }
@@ -671,18 +715,22 @@ export default {
       } else if (this.permissionWGroup.type === 'S') {
         if (this.permissionWGroup.selectedList.bookList) {
           for (let i = 0; i < this.permissionWGroup.selectedList.bookList.length; i++) {
-            var index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.bookList[i].accessKey)
+            index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.bookList[i].accessKey)
             if (index === -1) {
               share = {}
               share.accessKind = 'C'
               share.accessKey = this.permissionWGroup.selectedList.bookList[i].accessKey
-              share.cabinetKey = this.permissionWGroup.selectedList.bookList[i].cabinetKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
+              if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
+
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'W'
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             teampItemList.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
+            if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -690,17 +738,23 @@ export default {
 
         if (this.permissionWGroup.selectedList.memberList) {
           for (let i = 0; i < this.permissionWGroup.selectedList.memberList.length; i++) {
-            index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.memberList[i].userKey)
+            index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.memberList[i].accessKey)
             if (index === -1) {
               share = {}
               share.accessKind = 'U'
-              share.accessKey = this.permissionWGroup.selectedList.memberList[i].userKey
-              share.shareSeq = this.permissionWGroup.selectedList.memberList[i].userKey
+              share.accessKey = this.permissionWGroup.selectedList.memberList[i].accessKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+              share.shareSeq = this.permissionWGroup.selectedList.memberList[i].accessKey
+              if (this.permissionWGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userDispMtext)
+              if (this.permissionWGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userNameMtext)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'W'
-            teampItemList.shareSeq = this.permissionWGroup.selectedList.memberList[i].userKey
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            teampItemList.shareSeq = this.permissionWGroup.selectedList.memberList[i].accessKey
+            if (this.permissionWGroup.selectedList.memberList[i].userDispMtext) teampItemList.userDispMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userDispMtext)
+            if (this.permissionWGroup.selectedList.memberList[i].userNameMtext) teampItemList.userNameMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userNameMtext)
             itemList.push(teampItemList)
           }
         }
@@ -713,7 +767,8 @@ export default {
       if (this.permissionVGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
           item = {}
-          item.shareSeq = shareList[sh].shareSeq
+          // item.shareSeq = shareList[sh].accessKey
+          item.shareSeq = 0
           item.shareType = 'V' // 작성
           itemList.push(item)
         }
@@ -726,14 +781,17 @@ export default {
             if (index === -1) {
               share = {}
               share.accessKind = 'C'
-              share.cabinetKey = this.permissionVGroup.selectedList.bookList[i].cabinetKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.accessKey = this.permissionVGroup.selectedList.bookList[i].accessKey
               share.shareSeq = this.permissionVGroup.selectedList.bookList[i].accessKey
+              if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'V'
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             teampItemList.shareSeq = this.permissionVGroup.selectedList.bookList[i].accessKey
+            if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -741,18 +799,24 @@ export default {
 
         if (this.permissionVGroup.selectedList.memberList) {
           for (let i = 0; i < this.permissionVGroup.selectedList.memberList.length; i++) {
-            index = shareList.findIndex(item => item.shareSeq === this.permissionVGroup.selectedList.memberList[i].userKey)
+            index = shareList.findIndex(item => item.shareSeq === this.permissionVGroup.selectedList.memberList[i].accessKey)
             if (index === -1) {
               share = {}
               share.accessKind = 'U'
-              share.accessKey = this.permissionVGroup.selectedList.memberList[i].userKey
-              share.shareSeq = this.permissionVGroup.selectedList.memberList[i].userKey
+              share.accessKey = this.permissionVGroup.selectedList.memberList[i].accessKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+              share.shareSeq = this.permissionVGroup.selectedList.memberList[i].accessKey
+              if (this.permissionVGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userDispMtext)
+              if (this.permissionVGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userNameMtext)
               shareList.push(share)
             }
 
             teampItemList = {}
             teampItemList.shareType = 'V'
-            teampItemList.shareSeq = this.permissionVGroup.selectedList.memberList[i].shareSeq
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            teampItemList.shareSeq = this.permissionVGroup.selectedList.memberList[i].accessKey
+            if (this.permissionVGroup.selectedList.memberList[i].userDispMtext) teampItemList.userDispMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userDispMtext)
+            if (this.permissionVGroup.selectedList.memberList[i].userNameMtext) teampItemList.userNameMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userNameMtext)
             itemList.push(teampItemList)
           }
         }
@@ -765,7 +829,8 @@ export default {
       if (this.permissionRGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
           item = {}
-          item.shareSeq = shareList[sh].shareSeq
+          // item.shareSeq = shareList[sh].accessKey
+          item.shareSeq = 0
           item.shareType = 'R' // 작성
           itemList.push(item)
         }
@@ -779,13 +844,16 @@ export default {
               share = {}
               share.accessKind = 'C'
               share.accessKey = this.permissionRGroup.selectedList.bookList[i].accessKey
-              share.cabinetKey = this.permissionRGroup.selectedList.bookList[i].cabinetKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionRGroup.selectedList.bookList[i].accessKey
+              if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'R'
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             teampItemList.shareSeq = this.permissionRGroup.selectedList.bookList[i].accessKey
+            if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -793,46 +861,30 @@ export default {
 
         if (this.permissionRGroup.selectedList.memberList) {
           for (let i = 0; i < this.permissionRGroup.selectedList.memberList.length; i++) {
-            index = shareList.findIndex(item => item.shareSeq === this.permissionRGroup.selectedList.memberList[i].userKey)
+            index = shareList.findIndex(item => item.shareSeq === this.permissionRGroup.selectedList.memberList[i].accessKey)
             if (index === -1) {
               share = {}
               share.accessKind = 'U'
-              share.accessKey = this.permissionRGroup.selectedList.memberList[i].userKey
-              share.shareSeq = this.permissionRGroup.selectedList.memberList[i].userKey
+              share.accessKey = this.permissionRGroup.selectedList.memberList[i].accessKey
+              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+              share.shareSeq = this.permissionRGroup.selectedList.memberList[i].accessKey
+              if (this.permissionRGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userDispMtext)
+              if (this.permissionRGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userNameMtext)
               shareList.push(share)
             }
 
             teampItemList = {}
             teampItemList.shareType = 'R'
-            teampItemList.shareSeq = this.permissionRGroup.selectedList.memberList[i].shareSeq
+            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            teampItemList.shareSeq = this.permissionRGroup.selectedList.memberList[i].accessKey
+            if (this.permissionRGroup.selectedList.memberList[i].userDispMtext) teampItemList.userDispMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userDispMtext)
+            if (this.permissionRGroup.selectedList.memberList[i].userNameMtext) teampItemList.userNameMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userNameMtext)
             itemList.push(teampItemList)
           }
         }
       }
-
       cabinet.creteamkey = this.CHANNEL_DETAIL.teamKey
-      /* if (this.chanInfo.value) {
-        cabinet.creuserkey = this.chanInfo.value.creUserKey
-      } else {
-        cabinet.creuserkey = this.chanInfo.creUserKey
-      } */
       cabinet.picBgPath = this.selectedColor
-
-      /*
-      // cabinet.shareList = shareList
-      // cabinet.itemList = itemList
-      /*
-
-      // 대상 하나하나 > acc
-      select *from TpCabinetShare;
-      -- shareList : 공유대상 리스트
-      -- [{ accessKind / accessKey / cabinetKey / shareSeq }, { U / accessKey / cabinetKey / shareSeq }, { T / accessKey / cabinetKey / shareSeq }]
-
-      select *from TpCabinetShareItem;
-      -- itemList : 권한 리스트
-      -- [{shareType / shareSeq}, {shareType, shareSeq}] */
-
-      // cabinet.tempKeyList = [0, 1, 2, 3]
       cabinet.shareList = shareList
       cabinet.itemList = itemList
 
@@ -851,6 +903,7 @@ export default {
       this.$emit('closePop')
     },
     showSelectBookPop (type) {
+      console.log(type)
       this.currentSelectBookType = type
       if (type === 'select') {
         this.selectedList = this.shareType.selectedList
@@ -903,59 +956,118 @@ export default {
         this.statusSelectShowYn = false
       }
     },
-    setSelectedList (datas) {
-      // this.selectItemList = []
-      // this.selectShareList = []
-      this.selectedShareList = []
-      var data = datas
-      this.selectBookListShowYn = false
-      /* var text = ''
-      var selectLength = 0
-      var tempSelectedList = {}
-
-      var dataLength = 0 */
-      // var shareType = ''
-      // if(this.currentSelectBookType === 'write'){this.writePermission = this.selectedReceiver; shareType }
-      // if(this.currentSelectBookType === 'read'){this.readPermission = this.selectedReceiver}
-      // if(this.currentSelectBookType === 'comment'){this.commentPermission = this.selectedReceiver}
-      if (data.bookList) {
+    receiverPoolInSetting (datas) {
+      console.log('%%%%%%%%%%%%%%%')
+      console.log(datas)
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(this.currentSelectBookType)
+      var bookCount, memberCount
+      if (datas.bookList) {
         var settingBookList = []
-        /*
-        if (data.bookList.length > 0) {
-          text = '그룹: ' + data.bookList[0].cabinetNameMtext || data.bookList.cabinetNameMtext
-          selectLength += data.bookList.length
-          dataLength += data.bookList.length
-        } */
         const books = datas.bookList
+        bookCount = books.length
         for (var i = 0; i < books.length; i++) {
-          /*  var indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.bookList[i].shareSeq)
-          while (indexOf !== -1) {
-            this.selectShareList.splice(indexOf, 1)
-            indexOf = this.selectShareList.findIndex(item => item.shareSeq === data.bookList[i].shareSeq)
-          } */
           var tempList = {}
-          tempList.accessKey = books[i].cabinetKey
+          tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
+          tempList.accessKey = books[i].shareSeq
           tempList.accessKind = 'C'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.shareSeq = books[i].shareSeq
           settingBookList.push(tempList)
-          // eslint-disable-next-line no-debugger
-
-          /* if (indexOf === -1) {
-            var tempList = {}
-            tempList.accessKey = data.bookList[i].cabinetKey
-            tempList.accessKind = 'C'
-            tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-            tempList.shareSeq = data.bookList[i].shareSeq
-            this.selectShareList.push(tempList)
+        }
+        if (this.currentSelectBookType === 'W') {
+          if (!this.permissionWGroup.selectedList.bookList) {
+            this.permissionWGroup.selectedList.bookList = []
           }
-          tempSelectedList = {}
-          tempSelectedList.type = 'group'
-          tempSelectedList.name = data.bookList[i].cabinetNameMtext
-          this.selectedShareList.push(tempSelectedList) */
+          // this.permissionWGroup.selectedList.bookList = []
+          this.permissionWGroup.selectedList.bookList = settingBookList
+        } else if (this.currentSelectBookType === 'V') {
+          if (!this.permissionVGroup.selectedList.bookList) {
+            this.permissionVGroup.selectedList.bookList = []
+          }
+          // this.permissionVGroup.selectedList.bookList = []
+          this.permissionVGroup.selectedList.bookList = settingBookList
+        } else if (this.currentSelectBookType === 'R') {
+          if (!this.permissionRGroup.selectedList.bookList) {
+            this.permissionRGroup.selectedList.bookList = []
+          }
+          // this.permissionRGroup.selectedList.bookList = []
+          this.permissionRGroup.selectedList.bookList = settingBookList
+        }
+      }
+      if (datas.memberList) {
+        const members = datas.memberList
+        var settingMemList = []
+        memberCount = members.length
+        for (let i = 0; i < members.length; i++) {
+          tempList = {}
+          tempList.userDispMtext = this.$changeText(members[i].userDispMtext)
+          tempList.userNameMtext = this.$changeText(members[i].userNameMtext)
+          tempList.accessKey = members[i].accessKey
+          tempList.accessKind = 'U'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = members[i].shareSeq
+          settingMemList.push(tempList)
+        }
+
+        if (this.currentSelectBookType === 'W') {
+          if (!this.permissionWGroup.selectedList.memberList) {
+            this.permissionWGroup.selectedList.memberList = []
+          }
+          // this.permissionWGroup.selectedList.memberList = []
+          this.permissionWGroup.selectedList.memberList = settingMemList
+        } else if (this.currentSelectBookType === 'V') {
+          if (!this.permissionVGroup.selectedList.memberList) {
+            this.permissionVGroup.selectedList.memberList = []
+          }
+          // this.permissionVGroup.selectedList.memberList = []
+          this.permissionVGroup.selectedList.memberList = settingMemList
+        } else if (this.currentSelectBookType === 'R') {
+          if (!this.permissionRGroup.selectedList.memberList) {
+            this.permissionRGroup.selectedList.memberList = []
+          }
+          // this.permissionRGroup.selectedList.memberList = []
+          this.permissionRGroup.selectedList.memberList = settingMemList
+        }
+      }
+      console.log('---- setTextPermission -----')
+      console.log(bookCount + ' ' + memberCount)
+      console.log(this.currentSelectBookType)
+
+      if (this.currentSelectBookType === 'W') {
+        this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      } else if (this.currentSelectBookType === 'V') {
+        this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      } else if (this.currentSelectBookType === 'R') {
+        this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      }
+    },
+    setSelectedList (datas) {
+      // 권한 선택시 실행
+      console.log('-------------------------------------')
+      this.selectedShareList = []
+      var data = datas
+      this.selectBookListShowYn = false
+      var bookCount, memberCount
+      console.log(datas)
+      if (data.bookList) {
+        var settingBookList = []
+        bookCount = data.bookList.length
+        const books = datas.bookList
+        for (var i = 0; i < books.length; i++) {
+          var tempList = {}
+          tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
+          tempList.accessKey = books[i].shareSeq
+          tempList.accessKind = 'C'
+          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.shareSeq = books[i].shareSeq
+
+          settingBookList.push(tempList)
         }
         // eslint-disable-next-line no-debugger
         debugger
+
         if (this.currentSelectBookType === 'select') {
           if (!this.shareGroup.selectedList.bookList) {
             this.shareGroup.selectedList.bookList = []
@@ -980,16 +1092,13 @@ export default {
           }
         }
       }
-
       if (data.memberList) {
-        /* if (data.memberList.length > 0) {
-          text = '개인: ' + this.$changeText(data.memberList[0].userDispMtext) || this.$changeText(data.memberList.userDispMtext)
-          selectLength += data.memberList.length
-          dataLength += data.memberList.length
-        } */
         var settingMemList = []
+        memberCount = data.memberList.length
         for (let i = 0; i < data.memberList.length; i++) {
           tempList = {}
+          tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
+          tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
           tempList.accessKey = data.memberList[i].userKey
           tempList.accessKind = 'U'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
@@ -1020,41 +1129,42 @@ export default {
           }
         }
       }
-
-      /* if (this.currentSelectBookType === 'select') {
-        this.selectedList = []
-
-        this.selectedList = datas
-        if (selectLength !== 1) { this.selectedReceiver = text + ' 외 ' + (selectLength - 1) + '개' }
-        if (selectLength === 1) { this.selectedReceiver = text }
-
-        if (dataLength === 0) {
-          this.selectedReceiver = '0명에게 공유중'
-        }
+      console.log('---- setTextPermission -----')
+      console.log(bookCount + ' ' + memberCount)
+      console.log(this.currentSelectBookType)
+      if (bookCount === undefined) bookCount = 0
+      if (memberCount === undefined) memberCount = 0
+      if (this.currentSelectBookType === 'select') {
+        this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
       } else {
-        var shareType = ''
-        if (this.currentSelectBookType === 'write') shareType = 'W'
-        if (this.currentSelectBookType === 'read') shareType = 'V'
-        if (this.currentSelectBookType === 'comment') shareType = 'R'
-
-        this.currentPermissionType = shareType
-
-        if (data.bookList) {
-          for (let i = 0; i < data.bookList.length; i++) {
-            data.bookList[i].shareType = shareType
-          }
+        if (this.currentSelectBookType === 'W') {
+          this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+        } else if (this.currentSelectBookType === 'V') {
+          this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+        } else if (this.currentSelectBookType === 'R') {
+          this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
         }
+      }
 
-        if (data.memberList) {
-          for (let i = 0; i < data.memberList.length; i++) {
-            data.memberList[i].shareType = shareType
-          }
-        }
-        this.setOk(data)
-      } */
-      /* console.log(this.selectShareList) */
+      // this.setTextPermission(bookCount, memberCount)
     },
-
+    // // 작성, 열람, 댓글의 텍스트를 셋팅해준다.
+    // setTextPermission (bookCount, memberCount) {
+    //   console.log('---- setTextPermission -----')
+    //   console.log(bookCount + ' ' + memberCount)
+    //   console.log(this.currentSelectBookType)
+    //   if (this.currentSelectBookType === 'select') {
+    //     this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+    //   } else {
+    //     if (this.currentSelectBookType === 'W') {
+    //       this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+    //     } else if (this.currentSelectBookType === 'V') {
+    //       this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+    //     } else if (this.currentSelectBookType === 'R') {
+    //       this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+    //     }
+    //   }
+    // },
     changeShareType (type) {
       this.shareType = type
     },
@@ -1258,7 +1368,7 @@ input:-internal-autofill-selected {
   width: 100%;
   min-height: 45px;
   float: left;
-  display: flex;
+  /* display: flex; */
   align-items: center;
 }
 .creChanIntroTextWrap{padding: 10px 0; float: left; }

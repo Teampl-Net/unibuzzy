@@ -61,34 +61,43 @@ export default {
     props: {
         propData: {},
         selectBookNList: {},
-        itemType: {}
+        itemType: {},
+        selectList: {}
     },
     created() {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.popId = 'selectBookNMemPop' + history.length
         history.push(this.popId)
         this.$store.commit('D_HISTORY/updateStack', history)
-        // this.bookList = this.selectBookNList.data.bookList
-        // this.memberList = this.selectBookNList.data.memberList
+
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
             if (this.selectBookNList.memberList.length > 0) {
-                this.memberList = this.selectBookNList.memberList
-                    for (var i = 0; i < this.bookList.length; i++) {
-                        this.bookList[i].selectedYn = false
-                    }
-                    for (var i = 0; i < this.memberList.length; i++) {
+                this.memberList = [...this.selectBookNList.memberList]
+                for (var i = 0; i < this.memberList.length; i++) {
                     this.memberList[i].selectedYn = false
                 }
-                }
+            }
         }
         if (this.selectBookNList.bookList !== undefined && this.selectBookNList.bookList !== null && this.selectBookNList.bookList !== []) {
             if (this.selectBookNList.bookList.length > 0) {
-                this.bookList = this.selectBookNList.bookList
+                this.bookList = [...this.selectBookNList.bookList]
                 for (var i = 0; i < this.bookList.length; i++) {
                     this.bookList[i].selectedYn = false
                 }
             }
         }
+        console.log(this.selectList)
+        if (this.selectList) {
+            if (this.selectList.bookList){
+                this.selectedBookList = this.selectList.bookList
+            }
+            if (this.selectList.memberList){
+                this.selectedMemberList = this.selectList.memberList
+            }
+        }
+        this.$nextTick(() => {
+            this.setParentSelectList()
+        })
     },
     computed: {
         historyStack () {
@@ -117,55 +126,97 @@ export default {
             bookList:[],
             memberList: [],
             itemList: [],
-            setSelectedList: { bookList: [], memberList: [] }
+            setSelectedList: { bookList: [], memberList: [] },
+            selectedBookList: {},
+            selectedMemberList: {}
         }
     },
     components: {
         pageTopCompo
     },
     methods: {
+        setParentSelectList () {
+            if (this.memberList) {
+                for (var i = 0; i < this.memberList.length; i++) {
+                    this.memberList[i].selectedYn = false
+
+                    for (var s = 0; s < this.selectedMemberList.length; s++) {
+                        if (this.selectedMemberList[s].userKey === this.memberList[i].userKey || this.selectedMemberList[s].accessKey === this.memberList[i].userKey) {
+                        this.memberList[i].selectedYn = true
+                        this.setSelectedList.memberList.push(this.memberList[i])
+                        break
+                        }
+                    }
+                }
+            }
+            if(this.bookList) {
+                for (var i = 0; i < this.bookList.length; i ++) {
+                    this.bookList[i].selectedYn = false
+                    for (var s = 0; s < this.selectedBookList.length; s ++) {
+                        // console.log(this.selectedBookList[s].accessKey + '??' + this.bookList[i].accessKey )
+                        if (this.selectedBookList[s].accessKey === this.bookList[i].accessKey) {
+                            this.bookList[i].selectedYn = true
+                            console.log('setParentSelectList')
+                            console.log(this.bookList[i])
+                            this.setSelectedList.bookList.push(this.bookList[i])
+                            break
+                        }
+                    }
+                }
+            }
+            this.$emit('addSelectList', this.setSelectedList)
+        },
         clickList(data) {
             // console.log(data);
         },
         addSelectedList(data, index, type) {
-
             // var indexOf = this.activeTabList.findIndex(i => i.name === tabName); // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
 
-            if (this.memberList.length > 0 && type === 'U') {
-                this.memberList[index].selectedYn = true
-            }
-            if (this.bookList.length > 0 && type === 'C') {
-                this.bookList[index].selectedYn = true
-            }
+            // if (this.memberList.length > 0 && type === 'U') {
+            //     this.memberList[index].selectedYn = true
+            // }
+            // if (this.bookList.length > 0 && type === 'C') {
+            //     this.bookList[index].selectedYn = true
+            // }
 
             data.shareType = this.itemType
+            console.log('***************************')
+            console.log(data)
+            console.log(type)
 
             if (type === 'U') {
-                var indexOf = this.setSelectedList.memberList.findIndex(i => i.userKey === data.userKey);
+                var indexOf = this.setSelectedList.memberList.findIndex(i => (i.userKey === data.userKey && i.selectedYn === true) || i.shareSeq === data.shareSeq && i.selectedYn === true)
                 if (indexOf === -1) {
+                    data.selectedYn = true
+                    // data.shareSeq = data.userKey
+                    // data.accessKey = data.userKey
                     this.setSelectedList.memberList.push(data)
                 }else{
                     this.$showToastPop('중복선택되었습니다.')
                 }
             }else if (type === 'C') {
-                var indexOf = this.setSelectedList.bookList.findIndex(i => i.cabinetKey === data.cabinetKey);
+                var indexOf = this.setSelectedList.bookList.findIndex(i => (i.accessKey === data.accessKey && i.selectedYn === true) || i.shareSeq === data.shareSeq && i.selectedYn === true)
                 if (indexOf === -1) {
+                    data.selectedYn = true
+                    // data.shareSeq = data.cabinetKey
+                    // data.accessKey = data.cabinetKey
                     this.setSelectedList.bookList.push(data)
                 }else{
                     this.$showToastPop('중복선택되었습니다.')
                 }
 
             }
+            console.log(this.setSelectedList)
             this.$emit('addSelectList', this.setSelectedList)
         },
         delSelectList (key, type) {
             if (type === 'U') {
-                var indexOf = this.memberList.findIndex(i => i.userKey === key);
+                var indexOf = this.memberList.findIndex(i => i.userKey === key && i.selectedYn === true);
                 if (indexOf !== -1) {
                     this.memberList[indexOf].selectedYn = false
                 }
             }else if (type === 'C') {
-                var indexOf = this.bookList.findIndex(i => i.cabinetKey === key);
+                var indexOf = this.bookList.findIndex(i => i.cabinetKey === key && i.selectedYn === true);
                 if (indexOf !== -1) {
                     this.bookList[indexOf].selectedYn = false
                 }

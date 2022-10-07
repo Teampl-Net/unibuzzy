@@ -765,6 +765,15 @@ export const commonMethods = {
     }
     // console.log('counting Memo : ' + (count + list.length))
     return count + list.length
+  },
+  dateCalc (date1, date2) {
+    const dateOne = new Date(date1)
+    const dateTwo = new Date(date2)
+
+    var distance = dateOne.getTime() - dateTwo.getTime()
+    var dateYn = distance > 0
+    console.log('두 날짜 사이는 ' + dateYn ? '첫번째 인자값이 더 최신입니다.' : '두번째 인자값이 더 최신입니다.')
+    return dateYn
   }
 }
 
@@ -810,5 +819,6 @@ export default {
     Vue.config.globalProperties.$makeHistoryObj = commonMethods.makeHistoryObj
     Vue.config.globalProperties.$countingTotalMemo = commonMethods.countingTotalMemo
     Vue.config.globalProperties.$handleImageUpload = commonMethods.handleImageUpload
+    Vue.config.globalProperties.$dateCalc = commonMethods.dateCalc
   }
 }

@@ -3,7 +3,7 @@
     <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
         <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
-                <template v-for="(data, index) in listData" :key='data'>
+                <template v-for="(data, index) in memberList" :key='data'>
                     <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; min-height:60px; position: relative;"  >
                         <div v-if="data.userProfileImg" :style="'background-image: url(' + (data.domainPath? data.domainPath + data.userProfileImg : data.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                           <!-- <img :src="data.userProfileImg" /> -->
@@ -22,7 +22,7 @@
 
                             <img src="../../../assets/images/common/callPhoneIcon.svg" v-if="mobileYn" @click="callPhone(data.phoneEnc)" style="width: 20px;" class="mright-15" alt="">
 
-                            <img v-if="propData.value.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
+                            <img v-if="propData.creUserKey !== data.userKey" src="../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
                             <img v-else src="../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
                         </div>
                         <div v-if="selectPopYn === true" class="fr" style="height: 100%; width: 30px; display:flex; flex-shrink: 0; flex-grow: 0; ">
@@ -89,6 +89,7 @@ export default {
     if (this.pSearchFilterList) {
       this.searchFilterList = this.pSearchFilterList
     }
+    this.memberList = this.listData
   },
   beforeUnmount () {
     // eslint-disable-next-line vue/no-mutating-props
@@ -97,18 +98,24 @@ export default {
     this.propData.managerOpenYn = true
   },
   created () {
-    if (this.pSearchFilterList) {
-      this.searchFilterList = this.pSearchFilterList
-    }
-    // eslint-disable-next-line vue/no-mutating-props
-    if (!this.propData.value) this.propData.value = {}
-    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
-    // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
-    if (this.parentSelectList) {
-      // console.log(this.parentSelectList)
-      this.selectedMemberList = []
-      this.selectedMemberList = this.parentSelectList.memberList
-    }
+    this.$nextTick(() => {
+      this.memberList = this.listData
+      if (this.pSearchFilterList) {
+        this.searchFilterList = this.pSearchFilterList
+      }
+      // eslint-disable-next-line vue/no-mutating-props
+      // if (!this.propData.value) this.propData.value = {}
+      if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+      // this.teamName = this.$changeText(this.teamInfo.nameMtext).substr(0, 5) + '...'
+      if (this.parentSelectList) {
+        console.log('%%%%%')
+        console.log(this.parentSelectList)
+        // console.log(this.parentSelectList)
+        this.selectedMemberList = []
+        this.selectedMemberList = this.parentSelectList.memberList
+        this.setParentSelectList()
+      }
+    })
   },
   methods: {
     setPhone (num) {
@@ -127,15 +134,18 @@ export default {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
     },
     setParentSelectList () {
-      if (this.parentSelectList) {
-        if (this.parentSelectList.memberList) {
-          for (var i = 0; i < this.memberList.length; i++) {
-            this.memberList[i].selectedYn = false
-            for (var s = 0; s < this.parentSelectList.memberList.length; s++) {
-              if (this.parentSelectList.memberList[s].userKey === this.memberList[i].userKey) {
-                this.memberList[i].selectedYn = true
-                break
-              }
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(this.selectedMemberList)
+      console.log(this.memberList)
+      if (this.selectedMemberList) {
+        for (var i = 0; i < this.memberList.length; i++) {
+          this.memberList[i].selectedYn = false
+          for (var s = 0; s < this.selectedMemberList.length; s++) {
+            if (this.selectedMemberList[s].userKey === this.memberList[i].userKey || this.selectedMemberList[s].accessKey === this.memberList[i].userKey) {
+              this.memberList[i].selectedYn = true
+              // this.selectedList.push(this.memberList[i])
+              break
             }
           }
         }
@@ -204,15 +214,23 @@ export default {
     },
     addSelectedList (data, index) {
       if (!this.selectedMemberList) this.selectedMemberList = []
+
+      console.log('add ' + data.accessKey)
+      if (!data.accessKey) data.accessKey = data.userKey
+      console.log('add after' + data.accessKey)
+
       data.shareSeq = data.userKey
       this.selectedMemberList.push(data)
+      console.log('===========================')
+      console.log(data)
+      console.log(this.selectedMemberList)
       // console.log('@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#')
       // console.log(this.selectedMemberList)
       this.$emit('changeSelectMemberList', this.selectedMemberList)
       // // eslint-disable-next-line no-debugger
       // debugger
       // eslint-disable-next-line vue/no-mutating-props
-      this.listData[index].selectedYn = true
+      this.memberList[index].selectedYn = true
       // // console.log(this.listData)
       // var tt = this.listData
     },
@@ -221,7 +239,7 @@ export default {
     },
     deSelectList (index) {
       // eslint-disable-next-line vue/no-mutating-props
-      this.listData[index].selectedYn = false
+      this.memberList[index].selectedYn = false
     },
     updateData (obj) {
       this.addMemberPopYn = false

@@ -3,10 +3,10 @@
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
     <div class="longHeight w-100P" style="position:absolute; top:50px; h overflow: auto;" >
-        <div style="width: 100%; position: relative; float: left;">
-          <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList'  />
-        </div>
-        <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="height: 310px; position: absolute; bottom: 50px; left: 0px;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
+      <div style="width: 100%; position: relative; float: left;">
+        <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' />
+      </div>
+      <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" style="height: 310px; position: absolute; bottom: 50px; left: 0px;" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
 
@@ -23,10 +23,32 @@ export default {
     detailSelectedYn: {},
     propData: {},
     parentList: {},
-    itemType: {} // W: 작성/ V: 열람/ R: 댓글
+    itemType: {}, // W: 작성/ V: 열람/ R: 댓글
+    selectList: {} // 공유대상에서 선택한 북 & 멤버 리스트
   },
   created () {
+    console.log(this.selectList)
+    console.log(this.chanInfo)
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    // console.log(this.parentList)
 
+
+    // if (!this.selectList) {
+    //   // console.log(this.propData)
+    //   var paramMap = new Map()
+    //   paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+    //   paramMap.set('sysCabinetCode', 'USER')
+    //   paramMap.set('adminYn', true)
+    //   var result = await this.$commonAxiosFunction({
+    //       url: 'service/tp.getTeamMenuList',
+    //       param: Object.fromEntries(paramMap)
+    //   })
+    //   this.bookList = result.data
+    //   for(var i = 0; i < this.bookList.length; i ++) {
+    //       var changeT = this.bookList[i].cabinetNameMtext
+    //       this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
+    //   }
+    // }
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
@@ -108,6 +130,8 @@ export default {
 
     },
     sendReceivers (data) {
+      console.log('$$$$$$$$$$$$$$$')
+      console.log(data)
       if(data.bookList){
         if (data.bookList.length > 0 ) {
           for (var i = 0; i < data.bookList.length; i++) {
@@ -124,8 +148,11 @@ export default {
           }
         }
       }
+      console.log('^^^^^^^^^^^^^^^')
+      console.log(data)
 
       this.$emit('sendReceivers', data)
+      this.$emit('closeXPop')
     },
     addSelectList (data) {
       this.setSelectedList = data

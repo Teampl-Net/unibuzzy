@@ -1,13 +1,13 @@
 <template>
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' @sendOk='editPop' />
-      <div class="selectBookListContents">
-        <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
-        <transition name="showGroup">
-            <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
-        </transition>
-      </div>
-      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
+    <div class="selectBookListContents">
+      <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+      <transition name="showGroup">
+          <memberList :listData="memberList" :parentSelectList="this.selectedList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+      </transition>
+    </div>
+    <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
 </div>
 
 </template>
@@ -26,11 +26,31 @@ export default {
     pSelectedList: {}
   },
   created () {
-    debugger
+    // console.log(this.historyStack)
     console.log(this.pSelectedList)
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
+
       this.selectedList = this.pSelectedList
+
+      var param = {}
+      if (this.selectedList.bookList) {
+        var test1 = this.selectedList.bookList
+        for (let i = 0; i < test1.length; i++) {
+          test1[i].selectedYn = true
+        }
+        param.bookList = test1
+      }
+
+      if (this.selectedList.memberListst) {
+        var test2 = this.selectedList.memberListst
+        for (let i = 0; i < test2.length; i++) {
+          test2[i].selectedYn = true
+        }
+        param.memberList = test2
+      }
+      localStorage.setItem('ori', JSON.stringify(param))
+      // localStorage.setItem('ori', JSON.stringify(this.selectedList))
     }
 
     if (this.selectedListYn) {
@@ -51,7 +71,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      this.backClick()
+      // this.backClick()
     },
     historyStack (value, old) {
     }
@@ -73,7 +93,8 @@ export default {
       selectedTeamList: [],
       selectedMemberList: [],
       selectedList: {},
-      selectBookDetail: null
+      selectBookDetail: null,
+      oriList: {}
     }
   },
   methods: {
@@ -116,15 +137,15 @@ export default {
         this.editMemberSelectedList()
         //
     },
-    editPop () {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params = this.propData
-      params.targetType = 'editBookList'
-      params.currentTeamKey = this.propData.targetKey
-      params.value = ''
-      this.$emit('openPop', params)
-    },
+    // editPop () {
+    //   // eslint-disable-next-line no-new-object
+    //   var params = new Object()
+    //   params = this.propData
+    //   params.targetType = 'editBookList'
+    //   params.currentTeamKey = this.propData.targetKey
+    //   params.value = ''
+    //   this.$emit('openPop', params)
+    // },
     /* oepnPop (param) {
       this.$emit('openPop', param)
     }, */
@@ -163,7 +184,12 @@ export default {
 
     changeSelectBookList (data) {
       // eslint-disable-next-line vue/no-mutating-props
-      this.selectedList.bookList = data
+      console.log(data)
+      this.selectedList.bookList = []
+      for (let i = 0; i < data.length; i++) {
+        this.selectedList.bookList.push(data[i])
+      }
+      // this.selectedList.bookList = data
       this.$refs.selectedListCompo.upDatePage()
     },
     changeSelectedList (selectedListData) {
@@ -219,13 +245,15 @@ export default {
     },
 
     backClick () {
+      // this.selectedList = JSON.parse(localStorage.getItem('ori'))
 
       var hStack = this.$store.getters['D_HISTORY/hStack']
-
-      var removePage = hStack[hStack.length - 1]
-
+      console.log(' back back back back back back back ')
+      console.log(hStack)
+      console.log(this.subPopId)
       if (this.subPopId === hStack[hStack.length - 1] ) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        var removePage = hStack[hStack.length - 1]
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
         // this.detailOpenYn = false
@@ -233,11 +261,16 @@ export default {
         this.memberEditYn = false
         this.receiverTitle = '주소록 선택'
         this.detailOpenYn = false
+        return
       } else {
         // hStack = hStack.filter((element, index) => index < hStack.length - 1)
         // this.$store.commit('D_HISTORY/setRemovePage', removePage)
         // this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
+        var oriParam = JSON.parse(localStorage.getItem('ori'))
+        // oriParam.
+        // oriParam.closeYn = true
+        this.$emit('sendReceivers', oriParam)
       }
     },
     async openMCabUserList (data) {
@@ -251,6 +284,8 @@ export default {
         this.subPopId = 'commonBookMemberList' + history.length
         history.push(this.subPopId)
         this.$store.commit('D_HISTORY/updateStack', history)
+        console.log(' open open open open open open open open open ')
+        console.log(history)
 
         this.receiverTitle = '구성원 관리'
          if (this.selectPopYn) {

@@ -50,13 +50,12 @@ export default {
     CAB_DETAIL () {
         if (this.cabinetList.length === 0) {
             return []
-        }debugger
-        for (var i = 0; i <this.cabinetList.length; i++) {
-
-             console.log(this.cabinetList[i])
-            /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
         }
-        debugger
+        // for (var i = 0; i <this.cabinetList.length; i++) {
+
+            //  console.log(this.cabinetList[i])
+            /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
+        // }
         return this.cabinetList
     },
     GE_USER () {

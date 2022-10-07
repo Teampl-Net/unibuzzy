@@ -76,40 +76,50 @@ export default {
         }
     },
     async created () {
+        this.addressBookList = this.listData
         this.propObject = this.propData
         if(this.selectPopYn){
-            this.selectedBookList = []
-            if(this.parentSelectList) {
+            console.log('this.parentSelectList')
+            console.log(this.parentSelectList)
+            if(this.parentSelectList && this.parentSelectList.bookList) {
                 this.selectedBookList = this.parentSelectList.bookList
+                console.log('this.selectedBookList')
+                console.log(this.selectedBookList)
             }
         }
         await this.getTeamCabList()
         this.changeSelectedList()
-        this.addressBookList = this.listData
+        this.settingCheck()
     },
     updated () {
         /* this.changeSelectedList()
         this.addressBookList = this.listData */
     },
     watch: {
-        parentSelectList: function () {
-            if(this.parentSelectList) {
-                if (this.parentSelectList.bookList) {
-                    for (var i = 0; i < this.cabinetList.length; i ++) {
-                        this.cabinetList[i].selectedYn = false
-                        for (var s = 0; s < this.parentSelectList.bookList.length; s ++) {
-                            if (this.parentSelectList.bookList[s].cabinetKey === this.cabinetList[i].cabinetKey) {
-                                this.cabinetList[i].selectedYn = true
-                                break
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        // selectedBookList: {
+        // this.parentSelectList.bookList: {
+
+        //     immediate: true,
+        //     handler (value, old){
+        //         console.log('book : 2')
+        //         // console.log('value: ')
+        //         // console.log(value)
+        //         // console.log('-----')
+        //         this.settingCheck()
+        //     },
+        //     deep: true
+        // },
         listData () {
             this.addressBookList = this.listData
-        }
+        },
+        // addressBookList: {
+        //     immediate: true,
+        //     handler (value, old){
+        //         console.log('book : 4')
+        //         this.settingCheck()
+        //     },
+        //     deep: true
+        // },
     },
     components: {
         // loadingCompo,
@@ -126,6 +136,25 @@ export default {
     },
 
     methods:{
+        settingCheck () {
+            if(this.selectedBookList) {
+                for (var i = 0; i < this.addressBookList.length; i ++) {
+                    this.addressBookList[i].selectedYn = false
+                    for (var s = 0; s < this.selectedBookList.length; s ++) {
+                        if (this.selectedBookList[s].accessKey === this.addressBookList[i].cabinetKey) {
+                            this.addressBookList[i].selectedYn = true
+                            // if (this.addressBookList[i].accessKey === undefined || this.addressBookList[i].accessKey === null || this.addressBookList[i].accessKey === '') {
+                            //     this.addressBookList[i].accessKey = this.selectedBookList[s].accessKey
+                            // }
+                            break
+                        }
+                    }
+                }
+            }
+
+
+
+        },
         inputFocusOut(data, index){
             if (data.cabinetNameMtext !== this.cabinetInputText ) {
                 this.updateCabinet(data)
@@ -230,12 +259,12 @@ export default {
             }
         },
         addSelectedList(data, index) {
-
             if(!this.selectedBookList){
                 this.selectedBookList = []
             }
             data.shareSeq = data.cabinetKey
-            var indexOf = this.selectedBookList.findIndex(i => i.cabinetKey === data.cabinetKey);
+            if (!data.accessKey) data.accessKey = data.cabinetKey
+            var indexOf = this.selectedBookList.findIndex(i => i.accessKey === data.cabinetKey);
             if (indexOf === -1) {
                 this.selectedBookList.push(data)
                 this.addressBookList[index].selectedYn = true

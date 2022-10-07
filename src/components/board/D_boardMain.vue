@@ -84,10 +84,17 @@
           <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+          <!-- {{CAB_DETAIL.shareAuth}}
+          {{CAB_DETAIL.blindYn}} -->
           <boardList  :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
             @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
             @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'/>
           <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && mCabContentsList.length === 0 " />
+          <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
+            @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
+            ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
+            :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove"
+            @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' /> -->
         </div>
       </div>
     </div>
@@ -143,6 +150,8 @@ export default {
     await this.getCabinetDetail()
     var this_ = this
     this_.getContentsList().then(response => {
+      console.log('===============')
+      console.log(response)
       this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
       var newArr = [
         ...this_.mCabContentsList,
@@ -564,7 +573,54 @@ export default {
         param.creUserKey = this.GE_USER.userKey
         this.errorBoxText = '해당 유저를 차단했습니다.'
         this.saveActAxiosFunc(param)
+      } else if (this.currentConfirmType === 'memoDEL') {
+        this.deleteMemo({ memoKey: this.tempData.memoKey, contentsKey: this.tempData.targetKey, parentMemoKey: this.tempData.parentMemoKey })
       }
+    },
+    async deleteMemo (param) {
+      if (this.axiosQueue.findIndex((item) => item === 'deleteMemo') !== -1) return
+      var memo = {}
+      memo.memoKey = param.memoKey
+      this.axiosQueue.push('deleteMemo')
+      var result = await this.$commonAxiosFunction({
+        url: 'service//tp.deleteMemo',
+        param: memo
+      })
+      var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
+      this.axiosQueue.splice(queueIndex, 1)
+      var index
+      if (result.data.result === true) {
+        var idx, cont
+
+        idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === this.tempData.targetKey)
+        if (idx !== -1) cont = this.BOARD_CONT_LIST[idx]
+
+        index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+        var cmemoListIdx
+        if (param.parentMemoKey) {
+          for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
+            if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
+              index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
+              if (index !== -1) {
+                cmemoListIdx = i
+                break
+              }
+            }
+          }
+          cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+        } else {
+          cont.D_MEMO_LIST.splice(index, 1)
+        }
+        cont.memoCount -= 1
+        // cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
+
+        // this.currentMemoList = cont.D_MEMO_LIST
+        // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+        // this.currentMemoObj = cont
+        // this.memoSetCount(response.totalElements)
+      }
+      this.$showToastPop('댓글을 삭제하였습니다.')
     },
     report (type) {
       var targetKind
@@ -894,6 +950,11 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
+      console.log('****************************')
+      console.log(resultList)
+      for (var i = 0; i < resultList.length; i++) {
+        // resultList.
+      }
 
       return resultList
     },
@@ -970,8 +1031,10 @@ export default {
       this.scrollMove()
     },
     scrollMove () {
-      var ScrollWrap = this.$refs.commonBoardListWrapCompo
-      ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
+      this.$nextTick(() => {
+        var ScrollWrap = this.$refs.commonBoardListWrapCompo
+        ScrollWrap.scrollTo({ top: 0, behavior: 'smooth' })
+      })
     },
     async requestSearchList (param) {
       if (param) {

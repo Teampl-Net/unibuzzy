@@ -2,7 +2,6 @@
 <!-- <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
 <div v-if="loadYn">
   <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
-
   <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" style="overflow: hidden scroll;">
     <div class="menuHeader" :class="{editmenuHeader: editYn === true}">
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
@@ -17,7 +16,7 @@
           주소록
           ({{this.CABINET_LIST.length}})
         </p>
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
+        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
           <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
         </div>
       </div>
@@ -31,7 +30,7 @@
           ({{this.BOARD_CONTENT_LIST.length}})
         </p>
 
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 90px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
+        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
           <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.BOARD_CONTENT_LIST" @chanMenuClick="chanMenuClick" />
         </div>
       </div>
@@ -518,10 +517,10 @@ export default {
 .calcMarginLeft { margin-left: 2rem !important; }
 .menuHeader {
   padding: 0.5rem 0;
-  position: absolute;
-  top: 0rem;
-  left: 0;
-  width: 100%;
+  /* position: absolute; */
+  /* top: 0rem; */
+  /* left: 0; */
+  width: 80%;
   height: 50px;
   border-bottom: 1px solid #fff;
   /* width: 80%; */
@@ -540,6 +539,9 @@ export default {
   right: 0;
   width: 80%; */
   max-width:500px;
+  position: fixed;
+  right: 0;
+  top: 0;
 }
 .menuHeader p{color: #FFFFFF; text-align: center;}
 

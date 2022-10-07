@@ -39,17 +39,25 @@ export default {
     async saveCabinet () {
       var param = {}
       param.creMenuYn = true
+      console.log('gggggggggggggggggggg')
+      console.log(this.propData)
       var cabinet = this.propData.cabinet
+      // delete cabinet.value
       cabinet.cabinetNameMtext = this.inputAddressBookName
       param.cabinet = cabinet
-      await this.$saveCabinet(param).then(response => {
+
+      try {
+        await this.$saveCabinet(param)
         var thisParam = {}
         thisParam.cabinetType = 'address'
         this.$emit('saveCabinet', thisParam)
-      }).catch(error => {
+      } catch (error) {
         console.error(error)
         this.$showToastPop('저장 중 문제가 발생했습니다. 다시 시도해주세요.')
-      })
+      } finally {
+
+      }
+
       this.closePop()
     },
     closePop () {
