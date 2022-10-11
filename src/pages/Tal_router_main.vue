@@ -289,10 +289,14 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          if (JSON.parse(message.pushMessage).backgroundYn) {
+            this.notiDetail = JSON.parse(message.pushMessage)
           } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
+            if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+              this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+            } else {
+              this.notiDetail = JSON.parse(message.pushMessage).noti.data
+            }
           }
           var currentPage = this.$store.getters['D_HISTORY/hCPage']
 
