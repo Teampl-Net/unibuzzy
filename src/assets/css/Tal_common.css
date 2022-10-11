@@ -451,6 +451,19 @@ p{margin-bottom: 0; font-size: 1.5rem;}
     100% { transform: translateX(var(--widndowWidth));}
 }
 
+.showUp-enter {animation: showUp-dialog-fade-in 0.2s ease;}
+.showUp-leave {animation: showUp-dialog-fade-out 0.2s ease forwards;}
+.showUp-enter-active {animation: showUp-dialog-fade-in 0.2s ease;}
+.showUp-leave-active {animation: showUp-dialog-fade-out 0.2s ease forwards;}
+@keyframes showUp-dialog-fade-in {
+    0% {transform: translateY(100%);}
+    100% {transform: translateY(0);}
+}
+@keyframes showUp-dialog-fade-out {
+    0% {transform: translateY(0);}
+    100% { transform: translateY(100%);}
+}
+
 
 .showGroup-enter {animation: showGroup-dialog-fade-in 0.2s ease;}
 .showGroup-leave {animation: showGroup-dialog-fade-out 0.2s ease forwards;}

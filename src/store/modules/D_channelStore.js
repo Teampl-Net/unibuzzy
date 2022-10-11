@@ -13,7 +13,8 @@ const D_CHANNEL = {
     addMemoList: [],
     addManagerList: [],
     addShowProfileUserList: [],
-    delContentsList: []
+    delContentsList: [],
+    chanNotiQueue: []
 
   },
   getters: {
@@ -40,6 +41,9 @@ const D_CHANNEL = {
     },
     GE_RECENT_CHANGE_TEAM (state) {
       return state.recentChangeTeamKey
+    },
+    GE_CHANNEL_NOTI_QUEUE (state) {
+      return state.chanNotiQueue
     }
   },
   mutations: {
@@ -51,6 +55,7 @@ const D_CHANNEL = {
       state.addMemoList = []
       state.addManagerList = []
       state.addShowProfileUserList = []
+      state.chanNotiQueue = []
       return true
     },
     MU_REPLACE_NEW_MEMO: (state, payload) => {
@@ -523,6 +528,12 @@ const D_CHANNEL = {
     },
     MU_DEL_CONT_LIST: (state, payload) => {
       state.delContentsList.unshift(payload)
+    },
+    MU_CHANNEL_NOTI_QUEUE: (state, payload) => {
+      state.chanNotiQueue.unshift(payload)
+    },
+    MU_CHANNEL_NOTI_QUEUE_REPLACE: (state, payload) => {
+      state.chanNotiQueue = payload
     }
   },
   // dispatch 를 사용하면 됨
@@ -595,6 +606,9 @@ const D_CHANNEL = {
     },
     AC_RECENT_CHANGE_TEAM: ({ commit }, payload) => {
       commit('MU_RECENT_CHANGE_TEAM', payload)
+    },
+    AC_CHANNEL_NOTI_QUEUE: ({ commit }, payload) => {
+      commit('MU_CHANNEL_NOTI_QUEUE', payload)
     },
     AC_REPLACE_CHANNEL: ({ commit }, payload) => {
       if (payload.ELEMENTS) {

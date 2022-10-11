@@ -166,7 +166,7 @@ const functions = {
     console.log(paramMap)
     var resultList = await methods.getTeamList(paramMap)
 
-    // console.log(resultList)
+    console.log(resultList)
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
     var response = resultList.data.content[0]
 
@@ -174,7 +174,7 @@ const functions = {
     response.teamTypeText = commonMethods.teamTypeString(response.teamType)
     var title = '[더알림]' + commonMethods.changeText(response.nameMtext)
     var message = commonMethods.changeText(response.memoMtext)
-    response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
+    // response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
 
     response.detailPageYn = true
     var teamList = functions.getDetail('TEAM', teamKey)
@@ -288,11 +288,11 @@ const functions = {
     return user
   },
   async settingChanNoti (message) {
-    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
+    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || notiDetail.actType === 'RM' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
       await functions.addChanList(Number(notiDetail.creTeamKey))
     }
 
-    if ((this.targetType === 'memberManagement') && ((notiDetail.actType === 'ME' || notiDetail.actType === 'FM') || (notiDetail.actType === 'MA'))) {
+    if (((notiDetail.actType === 'ME' || notiDetail.actType === 'FM') || notiDetail.actType === 'RM' || (notiDetail.actType === 'MA'))) {
       var channelL = functions.getDetail('TEAM', Number(JSON.parse(notiDetail.userDo).targetKey))
       if (channelL) {
         var user = null
@@ -301,6 +301,12 @@ const functions = {
           if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
         } else if (notiDetail.actType === 'MA') {
           user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          if (Number(JSON.parse(notiDetail.userDo).userKey) === g_user.userKey) {
+            if (user.memberYn === 1 || user.memberYn === true) {
+            } else {
+              store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
+            }
+          }
           // channelL[0].ELEMENTS.showProfileUserList.push(user)
           if (user.length === 1) store.commit('D_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
         }

@@ -12,7 +12,7 @@
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
         </div>
-        <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl pagePaddingWrap" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 10px;" />
+        <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
         <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -218,6 +218,7 @@ export default {
     if (this.box) {
       this.box.addEventListener('scroll', this.handleScroll)
     }
+    this.findPaddingTopPush()
   },
   mounted () {
     this.box = document.getElementsByClassName('pushListWrapWrap')[0]
@@ -679,7 +680,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -889,7 +890,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1034,7 +1035,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -1060,7 +1061,8 @@ export default {
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
-        this.paddingTop = element.clientHeight + 55
+        // alert(element.clientHeight)
+        this.paddingTop = element.clientHeight + 75
       }
     },
     checkShowReload () {
@@ -1406,19 +1408,20 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       this.offsetInt = 0
       this.targetCKey = null
+      this.findPaddingTopPush()
       var resultList = await this.getPushContentsList(10, 0)
       if (!resultList || resultList === '') return
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.alimContentsList,
+          // ...this.alimContentsList,
           ...resultList.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
       } else {
         newArr = [
-          ...this.boardContentsList,
+          // ...this.boardContentsList,
           ...resultList.content
         ]
         this.boardContentsList = this.replaceArr(newArr)
@@ -1452,6 +1455,7 @@ export default {
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
+      this.findPopShowYn = false
       return resultArray
     },
     async changeSearchList (type) {
@@ -1466,19 +1470,24 @@ export default {
       var pageSize = 10
       this.offsetInt = 0
       this.targetCKey = null
+      // alert(this.resultSearchKeyList.length)
+      if (this.resultSearchKeyList.length === 0) {
+        this.paddingTop = 75
+      }
+      // this.findPaddingTopPush()
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
       if (!resultList || resultList === '') return
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       var newArr = []
       if (this.viewMainTab === 'P') {
         newArr = [
-          ...this.alimContentsList,
+          // ...this.alimContentsList,
           ...resultList.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
       } else {
         newArr = [
-          ...this.boardContentsList,
+          // ...this.boardContentsList,
           ...resultList.content
         ]
         this.boardContentsList = this.replaceArr(newArr)
@@ -1521,7 +1530,7 @@ export default {
     return {
       alimContentsList: [],
       boardContentsList: [],
-      paddingTop: 0,
+      paddingTop: 75,
       pushListReloadShowYn: false,
       imgUrl: '',
       firstContOffsetY: null,

@@ -55,6 +55,7 @@
               </div>
               <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
               <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <!-- <img style="width: 20px; float: left; margin-right: 5px;" src="../../assets/images/board/securityDoc.svg" alt="">  -->
                 <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
@@ -167,6 +168,7 @@ export default {
 
   },
   created () {
+    this.loadingRefShow()
   },
   watch: {
   },
@@ -1027,11 +1029,13 @@ export default {
     },
     loadingRefShow(){
       // // console.log('show');
-      this.$refs.sLoadingPush.show()
+      if (this.$refs.sLoadingPush)
+        this.$refs.sLoadingPush.show()
     },
     loadingRefHide(){
       // // console.log('hide');
-      this.$refs.sLoadingPush.hide()
+      if (this.$refs.sLoadingPush)
+        this.$refs.sLoadingPush.hide()
     },
     resizeText (text, name) {
       if (text) {
@@ -1194,13 +1198,14 @@ export default {
       return str
     },
     setBodyLength (str) {
+        if (!str) return
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
         return str
     },
     setCutYn (str) {
         var result = false
-
+        if (!str) return
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
         var temp = document.createElement('div')

@@ -13,7 +13,7 @@
         <div class="w-100P top5ChannelRow" :style="index === chanList.length - 1 ? 'border: none!important;' : ''"  v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" >
         <div class="top5ChanLogoImgWrap" :style="'background-image: url(' + ( value.logoDomainPath? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; position: relative; background-position: center;">
             <img src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 18px; height: 18px; position: absolute; top: -15px;"  alt="소유주 아이콘"/>
-            <img src="../../../assets/images/common/icon_setting_gear.svg" v-else-if="value.managerKey > 0" style="width: 18px; height: 18px; position: absolute; top: -10px;" alt="매니저 아이콘">
+            <img src="../../../assets/images/common/icon_setting_gear.svg" v-else-if="value.managerKey > 0 && value.memberYn" style="width: 18px; height: 18px; position: absolute; top: -10px;" alt="매니저 아이콘">
         </div>
             <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
             <div class=" text-start mr-04 w-100P" style="height: 25px;" >

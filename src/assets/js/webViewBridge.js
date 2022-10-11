@@ -2,7 +2,7 @@
 import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
-
+import { onMessage } from '../../assets/js/webviewInterface'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -130,6 +130,34 @@ const isJsonString = (str) => {
           console.log(message.appInfo)
           var appInfo = JSON.parse(message.appInfo)
           localStorage.setItem('appInfo', message.appInfo)
+          if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+            var systemName = localStorage.getItem('systemName')
+          }
+
+          if (systemName === 'android' || systemName === 'Android') {
+            if (appInfo.current !== appInfo.last) {
+              // alert('최신버전으로 업데이트 해주세요')
+              alert('앱을 최신 버전으로 업데이트 해주세요.')
+              // this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+              // this.checkVersionPopShowYn = true
+              // window.open(appInfo.playStoreUrl, '_blank')
+              var aTag = document.getElementById('updateAppPage')
+              if (aTag == null) {
+                aTag = document.createElement('a')
+                aTag.id = 'updateAppPage'
+                aTag.style.display = 'none'
+                document.body.appendChild(aTag)
+              }
+              aTag.href = this.appInfo.playStoreUrl
+              // aTag.target = '_blank'
+
+              // aTag.click()
+              aTag.click()
+              onMessage('closeApp', 'requestUserPermission').then(res => {
+                aTag.click()
+              })
+            }
+          }
           /* if (appInfo.current !== appInfo.last) {
             // alert('최신버전으로 업데이트 해주세요')
             var aTag

@@ -342,13 +342,16 @@ export default {
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
+              alert(this.notiDetail.actType)
+              if ((Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) && (this.notiDetail.actType !== 'MA')) {
                 return
               }
+              alert(JSON.stringify(this.notiDetail))
               if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               } else {
                 this.$router.replace({ path: '/' })
-                if (this.notiDetail.actType === 'FL') {
+                alert(JSON.stringify(this.notiDetail))
+                if (this.notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP') {
                   this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
                   this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })

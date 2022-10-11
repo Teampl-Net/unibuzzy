@@ -4,13 +4,12 @@
   <loadingCompo v-if="loadingYn === true"/>
   <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.scrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
     <!-- <gSearchBox @changeSearchList="changeSearchList" :tab="this.viewTab" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList"/> -->
-    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="padding: 0 1rem ; margin-top: 10px;" @changeTab="changeTab"></gActiveBar>
+    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.chanFindPopShowYn = true" :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
   </div>
     <findChannelList @searchList="requestSearchList" v-if="chanFindPopShowYn" @closePop='chanFindPopShowYn = false' />
   <!-- <div style="height: calc(100% - 60px); padding: 0.2rem 0;"> -->
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
   <!-- <div id="chanListWrap" ref="chanListWrap" style="padding-top: 140px; overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr"> -->
-    <div v-show="zzz" style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{scrollDirection}}, {{this.scrollPosition}}</div>
     <gEmty :tabName="currentTabName" contentName="채널" v-if="emptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
     <gChannelList v-show="listShowYn" ref="gChannelListCompo" :imgUrl="this.imgUrl" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
@@ -176,7 +175,7 @@ export default {
     findPaddingTopChan () {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
-        this.paddingTop = element.clientHeight
+        this.paddingTop = element.clientHeight + 20
       }
     },
     async refreshAll () {
@@ -460,6 +459,10 @@ export default {
     },
     async changeSearchList(idx) {
       this.resultSearchKeyList.splice(idx, 1)
+      if (this.resultSearchKeyList.length === 0) {
+        this.paddingTop = 20
+      }
+      this.offsetInt = 0
       var resultList = await this.getChannelList()
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
@@ -482,7 +485,7 @@ export default {
   data () {
     return {
       channelList: [],
-      paddingTop: 0,
+      paddingTop: 20,
       imgUrl: '',
       box: null,
       scrollPosition: 0,

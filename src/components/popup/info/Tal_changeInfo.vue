@@ -23,6 +23,7 @@
         </div>
     </div>
   </div>
+  <gConfirmPop :confirmText='errorBoxText' confirmType="timeout" @no="errorBoxYn = false" v-if="errorBoxYn"/>
 </div>
 </template>
 
@@ -45,7 +46,9 @@ export default {
       holdingEmail: '',
       Timer: null,
       TimeCounter: 300,
-      TimerStr: "인증번호 입력"
+      TimerStr: "인증번호 입력",
+      errorBoxText: '',
+      errorBoxYn: false
     }
   },
   created () {
@@ -81,12 +84,14 @@ export default {
     sendMsg () {
         if (this.regEmail(this.infoValue.trim())) {
             if (this.GE_USER.userEmail === this.infoValue) {
-                alert('현재이메일과 변경이메일이 동일합니다')
+                this.errorBoxText = '현재이메일과 변경이메일이 동일합니다'
+                this.errorBoxYn = true
                 return
             }
             this.sendEmail()
         }else {
-            alert('이메일 형식이 올바르지 않습니다')
+            this.errorBoxText = '이메일 형식이 올바르지 않습니다'
+            this.errorBoxYn = true
         }
     },
     async sendEmail () {
@@ -99,6 +104,7 @@ export default {
         url: 'service/tp.sendMail',
         param: param
       })
+      debugger
       if (result.data.result) {
         // console.log(result.data.result)
         if(this.Timer != null){
@@ -109,13 +115,18 @@ export default {
         this.sendOk = true
         this.$refs.valueBox.readOnly = true
       } else {
+            if (result.data.message && result.data.message != '') {
+                this.errorBoxText = result.data.message
+                this.errorBoxYn = true
+            }
             this.token = ''
             this.holdingEmail = ''
             this.sendOk = false
             this.infoValue = ''
             this.timerStop(this.Timer)
             this.Timer = null
-            TimerStr= '인증번호 입력'
+            this.TimerStr= '인증번호 입력'
+            
       }
     },
     timerStart () {
@@ -171,7 +182,8 @@ export default {
         var param = new Object()
         param.userKey = this.GE_USER.userKey
         if (this.token === undefined || this.token === null || this.token === '') {
-            alert('인증번호를 입력해 주세요')
+            this.errorBoxText = '인증번호를 입력해 주세요'
+            this.errorBoxYn = true
             return
         }
         param.token = this.token

@@ -1,6 +1,6 @@
 <template>
     <!-- <div class="layerPopup"> -->
-        <div class="spinner" v-if="shows"></div>
+        <div v-if="showYn" ref="sSpinner" class="spinner"></div>
     <!-- </div> -->
 </template>
 <script>
@@ -11,21 +11,19 @@ export default {
     //   this_.shows = false
     // }, 6000)
   },
-  methods: {
-    show () {
-      if (document.getElementsByClassName('spinner')) {
-        document.getElementsByClassName('spinner')[0].style.display = 'block'
-      }
-    },
-    hide () {
-      if (document.getElementsByClassName('spinner')) {
-        document.getElementsByClassName('spinner')[0].style.display = 'none'
-      }
-    }
-  },
   data () {
     return {
-      shows: true
+      showYn: false
+    }
+  },
+  methods: {
+    show () {
+      this.showYn = true
+      // this.$refs.sSpinner.style.display = 'block'
+    },
+    hide () {
+      this.showYn = false
+      // this.$refs.sSpinner.style.display = 'none'
     }
   }
 }
