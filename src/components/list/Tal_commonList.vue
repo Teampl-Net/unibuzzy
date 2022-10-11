@@ -53,10 +53,10 @@
                   </div>
                 </div>
               </div>
-              <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="'열람 권한이 없는 컨텐츠 입니다.'"></div>
-              <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="'열람 권한이 없는 컨텐츠 입니다.'"></div>
+              <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
                 <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div v-show="!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="alimCheckContents">
@@ -195,6 +195,12 @@ export default {
     })
   },
   methods: {
+    notPerText(){
+      var html = '<div class="w-100P fl textCenter commonColor font14">'
+      html += '열람 권한이 없습니다.'
+      html += '</div>'
+      return html
+    },
     getTotalMemoCount (alim) {
       var count
       for (let i = 0; i < alim.D_MEMO_LIST.length; i++) {
@@ -238,6 +244,8 @@ export default {
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (param) {
+      console.log('#param')
+      console.log(param)
       var userKey = param.userKey
       var currentContentsKey = param.contentsKey
       var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)

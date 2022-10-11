@@ -558,6 +558,8 @@ const D_CHANNEL = {
       }
     },
     AC_REPLACE_CONTENTS_ONLY_USERDO: ({ commit }, payload) => { // 컨텐츠 부분 치환 (ALIM/BOARD)
+      console.log('act list : ')
+      console.log(payload)
       if (payload.length > 0) {
         commit('MU_REPLACE_CONTENTS_ONLY_USERDO', payload)
       }

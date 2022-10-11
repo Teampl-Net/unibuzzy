@@ -1137,6 +1137,18 @@ export default {
         //   ...this.CAB_DETAIL.boardList,
         //   ...resultList.content
         // ]
+
+        // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
+        if (resultList.content) {
+          if (resultList.content.length > 0) {
+            for (let i = 0; i < resultList.content.length; i++) {
+              if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
+                resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
+              }
+            }
+          }
+        }
+
         const newArr = [
           ...this.mCabContentsList,
           ...resultList.content

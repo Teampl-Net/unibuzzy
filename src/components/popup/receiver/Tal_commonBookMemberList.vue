@@ -180,24 +180,27 @@ export default {
       this.$emit('delAddress', param)
     },
     async deleteMember (data, index) {
-      if (this.propData.value.creUserKey !== data.userKey) {
-        if (this.propData.selectMemberType === 'manager') {
-          this.$emit('deleteManager', data)
-        } else {
-          var param = {}
-          param.mccKey = data.mccKey
-          param.jobkindId = data.jobkindId
-          var result = await this.$commonAxiosFunction({
-            url: 'service/tp.deleteMCabContents',
-            param: param
-          })
-          if (result.data === 'true' || result.data === true) {
-            this.memberList = []
-            this.$emit('refreshList')
-            this.$showToastPop('주소가 삭제되었습니다.')
-          }
+      console.log(this.propData)
+      console.log(data)
+      // 주소록 관리에서 주소 삭제가 안되기에 주석처리 하였음.
+      // if (this.propData.value.creUserKey !== data.userKey) {
+      if (this.propData.selectMemberType === 'manager') {
+        this.$emit('deleteManager', data)
+      } else {
+        var param = {}
+        param.mccKey = data.mccKey
+        param.jobkindId = data.jobkindId
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.deleteMCabContents',
+          param: param
+        })
+        if (result.data === 'true' || result.data === true) {
+          this.memberList = []
+          this.$emit('refreshList')
+          this.$showToastPop('주소가 삭제되었습니다.')
         }
       }
+      // }
     },
     openModiPop (data, index) {
       if (!this.editYn) {

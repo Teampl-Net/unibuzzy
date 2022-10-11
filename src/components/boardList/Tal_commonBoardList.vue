@@ -32,7 +32,7 @@
             <p class="font12 fr lightGray">{{this.$changeDateFormat(board.creDate)}}</p>
           <!-- </div> -->
           </div>
-          <div v-if="(shareAuth && shareAuth.V === false) && board.creUserKey !== userKey" @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="'열람 권한이 없는 컨텐츠 입니다.'"></div>
+          <div v-if="(shareAuth && shareAuth.V === false) && board.creUserKey !== userKey" @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
           <pre v-else @click="goDetail(board)" class="font14 cursorP mbottom-05 bodyFullStr cursorDragText" v-html="setBodyLength(board.bodyFullStr)"></pre>
           <div id="alimCheckArea">
             <div class="alimCheckContents">
@@ -144,6 +144,12 @@ export default {
   },
   /* emits: ['goDetail'], */
   methods: {
+    notPerText(){
+      var html = '<div class="w-100P fl textCenter commonColor font14">'
+      html += '열람 권한이 없는 컨텐츠 입니다.'
+      html += '</div>'
+      return html
+    },
     userNameClick ( userKey, teamKey, blindYn) {
       if(blindYn === false){
         var param = {}

@@ -1,14 +1,15 @@
 <template>
     <!-- <div class="layerPopup"> -->
-        <div class="spinner"></div>
+        <div class="spinner" v-if="shows"></div>
     <!-- </div> -->
 </template>
 <script>
 export default {
   created () {
-    setTimeout(() => {
-      this.hide()
-    }, 1000)
+    // var this_ = this
+    // setTimeout(() => {
+    //   this_.shows = false
+    // }, 6000)
   },
   methods: {
     show () {
@@ -20,6 +21,11 @@ export default {
       if (document.getElementsByClassName('spinner')) {
         document.getElementsByClassName('spinner')[0].style.display = 'none'
       }
+    }
+  },
+  data () {
+    return {
+      shows: true
     }
   }
 }

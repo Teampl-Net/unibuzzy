@@ -779,9 +779,19 @@ export default {
           return
         }
       }
+      // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+      // var testCont = this.alimContentsList[testIdx]
+      // console.log(testIdx)
+      // console.log(testCont)
+
       this.writeMemoTempTeamKey = param.teamKey
     },
     async saveMemo (text) {
+      // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+      // var testCont = this.alimContentsList[testIdx]
+      // console.log(testIdx)
+      // console.log(testCont)
+      // #책
       if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
       this.axiosQueue.push('saveMemo')
       this.saveMemoLoadingYn = true
@@ -816,6 +826,8 @@ export default {
           // this.currentMemoList = []
           // var cont = this.currentMemoObj
           var idx, memoLength, cont
+          console.log('@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@')
+
           if (this.viewMainTab === 'P') {
             idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
             if (idx !== -1) {
@@ -838,11 +850,13 @@ export default {
               ...cont.D_MEMO_LIST
             ]
             var newList = this.replaceMemoArr(newArr)
+            console.log('cont : ')
+            console.log(cont)
             cont.D_MEMO_LIST = newList
             // cont.memoCount = newList.length
             cont.memoCount += 1
             // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+            // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
       } catch (e) {
@@ -1242,6 +1256,18 @@ export default {
             this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
             return
           }
+
+          // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
+          if (resultList.content) {
+            if (resultList.content.length > 0) {
+              for (let i = 0; i < resultList.content.length; i++) {
+                if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
+                  resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
+                }
+              }
+            }
+          }
+
           var newArr = []
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
           if (descYn) {

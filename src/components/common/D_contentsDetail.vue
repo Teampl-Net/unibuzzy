@@ -436,11 +436,11 @@ export default {
         }, 300)
       }
     },
-    memoUserNameClick (userKey) {
-      this.userNameClick(userKey, this.CONT_DETAIL.creTeamKey, false)
+    memoUserNameClick (params) {
+      this.userNameClick(params.userKey, this.CONT_DETAIL.creTeamKey, false)
     },
     userNameClick (userKey, teamKey, blindYn) {
-      // // console.log('zzz')
+      console.log('zzz : ' + userKey + 'teamKey : ' + teamKey)
       if (blindYn === false) {
         var param = {}
         param.targetType = 'bookMemberDetail'

@@ -16,14 +16,14 @@
         </div> -->
         <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
-          <div @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.tartgetKey })" v-if="memo.userProfileImg"  class="memoPicImgWrap">
+          <div @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-if="memo.userProfileImg"  class="memoPicImgWrap">
             <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
           </div>
           <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
             <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
             <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
-            <ppp @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.tartgetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
+            <ppp @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
           </p>
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
@@ -47,11 +47,11 @@
                 <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
                 <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
                 <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
-                    <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.tartgetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
+                    <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
                     <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
                     <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
                         <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-                        <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.tartgetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
+                        <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
                     <pre id="cMemoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
