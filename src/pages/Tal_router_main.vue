@@ -129,7 +129,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -207,11 +207,10 @@ export default {
       memo.targetKey = targetKey
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
-      // alert(JSON.stringify(memos))
       return memos
     },
     async getContentsYn (contentsKey, jobkindId) {
@@ -223,7 +222,6 @@ export default {
       // // console.log('param')
       var resultList = await this.$getContentsList(param)
       return resultList.content
-      // alert(JSON.stringify(detailData))
     },
     async settingUserDo (userDo) {
       var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
@@ -253,7 +251,6 @@ export default {
       if (data.popCloseYn === true) this.closePushPop()
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      // alert(true)
       if (data.targetType === 'chanDetail') {
         param.targetType = 'chanDetail'
         param.teamKey = data.creTeamKey
@@ -346,15 +343,12 @@ export default {
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              alert(this.notiDetail.actType)
               if ((Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) && (this.notiDetail.actType !== 'MA')) {
                 return
               }
-              alert(JSON.stringify(this.notiDetail))
               if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
               } else {
                 this.$router.replace({ path: '/' })
-                alert(JSON.stringify(this.notiDetail))
                 if (this.notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP') {
                   this.goChanDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
                 } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
@@ -365,12 +359,9 @@ export default {
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
               if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-                // alert('왔슴다')
                 var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                  // alert(JSON.stringify(memo_))
                   memo_.jobkindId = this.notiDetail.jobkindId
-                  // alert(true)
                   memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
                   await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
                 } else {

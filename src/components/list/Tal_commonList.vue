@@ -319,7 +319,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -332,7 +332,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -475,7 +475,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -576,7 +576,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.deleteMemo',
+    //     url: 'https://mo.d-alim.com/service/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -674,7 +674,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'service/tp.deleteContents',
+            url: 'https://mo.d-alim.com/service/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -707,7 +707,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'service/tp.saveMemo',
+    //       url: 'https://mo.d-alim.com/service/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -894,7 +894,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.getMemoList',
+    //     url: 'https://mo.d-alim.com/service/tp.getMemoList',
     //     param: memo
     //   })
 

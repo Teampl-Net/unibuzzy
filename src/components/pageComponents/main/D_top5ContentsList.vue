@@ -84,6 +84,8 @@ export default {
         }
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
+      console.log('#####################')
+      console.log(contList)
       return contList
     },
     GE_NEW_CONT_LIST () {
@@ -165,6 +167,8 @@ export default {
         param.allYn = true
       }
       resultData = await this.$getContentsList(param)
+      console.log('%%%%%%%%%%%%')
+      console.log(resultData)
 
       this.contentsList = resultData.content
       return resultData

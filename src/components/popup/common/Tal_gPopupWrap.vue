@@ -43,8 +43,10 @@
 
       <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
-      <followerManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'followerManagement'" @openPop='openPop'/>
-      <managerManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'managerManagement'" @openPop='openPop'/>
+      <!-- <followerManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'followerManagement'" @openPop='openPop'/> -->
+      <!-- <managerManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'managerManagement'" @openPop='openPop'/> -->
+      <memberManagement :propData="this.params" ref="mamberManagementCompo" v-if="this.targetType === 'memberManagement'" @openPop='openPop'/>
+
       <selectAddressBookList :propData="this.params" v-if="this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if="this.targetType === 'setMypage'">
         <setMypage v-if="this.targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
@@ -96,8 +98,10 @@ import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 import selectBookList from '../receiver/Tal_selectBookList.vue'
 
 import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
-import followerManagement from '../member/D_manageFollowerList.vue'
-import managerManagement from '../member/D_manageManagerList.vue'
+// import followerManagement from '../member/D_manageFollowerList.vue'
+// import managerManagement from '../member/D_manageManagerList.vue'
+import memberManagement from '../member/Tal_memberManagement.vue'
+
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
 import editBoardPop from '../D_editBoardList.vue'
@@ -198,8 +202,9 @@ export default {
     pushPop,
     editManagerList,
     selectMemberPop,
-    followerManagement,
-    managerManagement,
+    // followerManagement,
+    // managerManagement,
+    memberManagement,
     selectAddressBookList,
     selectBookList,
     loadingCompo,
@@ -289,7 +294,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -504,7 +509,8 @@ export default {
       } else if (this.targetType === 'followerManagement') {
         this.headerTitle = '멤버 관리'
         this.helpYn = true
-      } else if (this.targetType === 'managerManagement') {
+      // } else if (this.targetType === 'managerManagement') {
+      } else if (this.targetType === 'memberManagement') {
         this.headerTitle = '매니저 관리'
         this.helpYn = true
       } else if (this.targetType === 'editBoard') {
@@ -734,7 +740,7 @@ export default {
       memo.memoKey = memoKey
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -766,7 +772,7 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')

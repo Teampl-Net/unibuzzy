@@ -1,7 +1,7 @@
 <template>
 <!-- :class="{ssss: tabList.length > 3}" -->
-    <div style="float: left; width: 100%;margin-top: 0;  background: rgb(220, 221, 235);">
-        <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" >
+    <div style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
+        <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
             <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
                 <!-- <p :style="activebarWidth" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p> -->
                 <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>

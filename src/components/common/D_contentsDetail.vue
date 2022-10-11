@@ -56,7 +56,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <div v-if="!detailVal.nonMemYn" class="w-100P fl mbottom-05">
+            <div v-if="!detailVal.nonMemYn" class="w-100P fr mbottom-05" >
                 <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
                 <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
             </div>
@@ -80,7 +80,9 @@
               data-clipboard-action="copy" id="boardDetailCopyBody" @click="openSelectSharePop"
                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
             </div>
-            <gBtnSmall v-if="!detailVal.nonMemYn && (CONT_DETAIL.jobkindId === 'ALIM' || this.CAB_DETAIL.replyYn)" btnTitle="댓글 쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+            <gBtnSmall v-if="!detailVal.nonMemYn && (CONT_DETAIL.jobkindId === 'ALIM' || this.CAB_DETAIL.replyYn)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+            <!-- <gBtnSmall v-if="!detailVal.nonMemYn && (this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/> -->
+
             <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <!-- <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText" -->
@@ -594,7 +596,7 @@ export default {
         // inParam.deleteYn = true
 
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -605,7 +607,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -648,7 +650,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -790,7 +792,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -865,7 +867,7 @@ export default {
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
-      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL.shareAuth.R === true) {
+      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
@@ -875,7 +877,7 @@ export default {
       }
     },
     writeMememo (memo) {
-      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || this.CAB_DETAIL?.shareAuth.R === true) {
+      if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
         if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== '') {
@@ -897,7 +899,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -963,7 +965,7 @@ export default {
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
 
@@ -1013,7 +1015,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -1036,7 +1038,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result === true || result.data.result === 'true') {

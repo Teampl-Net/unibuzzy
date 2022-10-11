@@ -101,7 +101,7 @@ export default {
       param.address = this.infoValue
       this.holdingEmail = this.infoValue
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.sendMail',
+        url: 'https://mo.d-alim.com/service/tp.sendMail',
         param: param
       })
       debugger
@@ -126,7 +126,7 @@ export default {
             this.timerStop(this.Timer)
             this.Timer = null
             this.TimerStr= '인증번호 입력'
-            
+
       }
     },
     timerStart () {
@@ -189,7 +189,7 @@ export default {
         param.token = this.token
         param.address = this.holdingEmail
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.checkValidation',
+            url: 'https://mo.d-alim.com/service/tp.checkValidation',
             param: param
         })
 

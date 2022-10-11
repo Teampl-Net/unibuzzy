@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div style="width: 100%;float: left; min-height: 50px; position: relative;">
-                  <gActiveBar modeType="write" :tabList="this.activeTabList" ref="actBar" style="width: 100%; position: absolute;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
+                  <gActiveBar modeType="write" :tabList="this.activeTabList" ref="actBar" style="width: 100%; position: absolute; background: transparent !important;" class="mbottom-05 fl mtop-05" @changeTab= "changeTab" />
                   <!-- <div class="titleAddArea" >
                     <input type="checkbox" v-model="titleShowYn" class="fl" style="margin-top: 5px; margin-right: 5px;" name="" id="titleShow">
                     <label class="fl" for="titleShow">제목 추가</label>
@@ -441,7 +441,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: 'service/tp.승인 처리',
+        //   url: 'https://mo.d-alim.com/service/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -461,7 +461,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: ''service/tp.거절 처리',
+        //   url: ''https://mo.d-alim.com/service/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){

@@ -79,14 +79,8 @@
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
         <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-          <div v-if="receptMemPopShowYn" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
-          <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="receptMemPopShowYn" @closeXPop="receptMemPopShowYn = false" />
-          {{CHANNEL_DETAIL.D_CHAN_AUTH.memberYn}}
-          <!-- {{this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr + '//' + this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus}} -->
-          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
-            <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="receptMemPopShowYn = true" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업신청</p>
-            <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="receptMemPopShowYn = true" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업대기중</p>
-            <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  @click="receptMemPopShowYn = true" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p>
+          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
+            <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'color:white' : '' " >공개</p>
             <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >내정보공개</p> -->
           </div>
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
@@ -152,9 +146,8 @@
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
   <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
-<gConfirmPop @no="qConfirmPopShowYn = false" :confirmText='qConfirmText' confirmType='two' @ok="okSaveMember" v-if="qConfirmPopShowYn" />
-</div>
 
+</div>
 </template>
 
 <script>
@@ -166,7 +159,6 @@ import welcomePopUp from './Tal_chanFollowInfo.vue'
 import writePush from '../../popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import boardWrite from '../../board/Tal_boardWrite.vue'
-import recMemberPop from '../../popup/member/D_recMemberPop.vue'
 export default {
   data () {
     return {
@@ -201,11 +193,7 @@ export default {
       axiosQueue: [],
       writeBoardYn: false,
       writeBoardData: {},
-      writeBoardPopId: '',
-      receptMemPopShowYn: false,
-      notiQueueList: [],
-      qConfirmPopShowYn: false,
-      qConfirmText: ''
+      writeBoardPopId: ''
       // errorPopYn: false
     }
   },
@@ -218,8 +206,7 @@ export default {
     chanDetailComp,
     welcomePopUp,
     writePush,
-    boardWrite,
-    recMemberPop
+    boardWrite
   },
   created () {
     this.$emit('openLoading')
@@ -244,16 +231,6 @@ export default {
     }
   },
   methods: {
-    checkManagerAndMember (qList) {
-      /* if (qList.length === 0) return
-      var test = qList[0]
-      alert(JSON.stringify(test))
-      this.qConfirmText = test.message
-      this.qConfirmPopShowYn = true */
-      /* for (var q = 0; q < qList.length; q++) {
-
-      } */
-    },
     setNotiScroll (key) {
       this.$refs.ChanAlimListPushListCompo.setNotiScroll(key)
     },
@@ -288,51 +265,6 @@ export default {
         await this.$addChanList(this.chanDetail.targetKey)
       } */
       this.$emit('closeLoading')
-      /*
-      alert(this.qConfirmText) */
-      /* if (this.qConfirmText !== '') {
-        this.qConfirmPopShowYn = true
-      } */
-      this.checkNotiQueue()
-    },
-    async okSaveMember () {
-      var param = {}
-      param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
-      param.teamKey = this.CHANNEL_DETAIL.teamKey
-      param.userName = this.$changeText(this.GE_USER.userDispMtext) || this.$changeText(this.GE_USER.userNameMtext)
-      param.userKey = this.GE_USER.userKey
-      param.memberYn = true
-      var params = { follower: param, doType: 'AP' }
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
-        param: params
-      })
-      if (result.data.result === true) {
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) {
-          this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn = false
-        } else {
-          this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn = true
-        }
-      }
-      await this.$addChanList(this.chanDetail.targetKey)
-      this.qConfirmPopShowYn = false
-      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
-    },
-    checkNotiQueue () {
-      var queue = this.GE_CHANNEL_NOTI_QUEUE
-      if (!queue || queue.length === 0) return
-      var index = queue.findIndex((item) => Number(item.creTeamKey) === this.CHANNEL_DETAIL.teamKey)
-      if (index !== 1) {
-        if (this.CHANNEL_DETAIL.userTeamInfo.memberYn === true || this.CHANNEL_DETAIL.userTeamInfo.memberYn === 1) {
-
-        } else {
-          this.qConfirmText = '채널의 관리자로 지정되었습니다.<br>확인을 누르면 멤버로 자동 등업되며<br> 관리자의 권한을 가지게 됩니다.'
-          this.qConfirmPopShowYn = true
-        }
-        queue.splice(index, 1)
-        // alert(JSON.stringify(queue))
-        this.$store.commit('D_CHANNEL/MU_CHANNEL_NOTI_QUEUE_REPLACE', queue)
-      }
     },
     targetContentScrollMove (wich) {
       if (wich || this.chanDetail.targetContentsKey) {
@@ -547,7 +479,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
+        url: 'https://mo.d-alim.com/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
@@ -715,24 +647,9 @@ export default {
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail) {
-        console.log(detail[0].copyTextStr)
-        if (!detail[0].copyTextStr) {
-          // alert('come')
-          var title = '[더알림]' + this.$changeText(detail[0].nameMtext)
-          var message = this.$changeText(detail[0].memoMtext)
-          detail[0].copyTextStr = this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title)
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
-        }
         return detail[0]
       } else {
         return null
-      }
-    },
-    REQ_MEM_OBJ () {
-      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus) {
-        return { reqMemberStatus: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus, reqMemberStr: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr }
-      } else {
-        return { reqMemberStatus: '00', reqMemberStr: null }
       }
     },
     GE_RECENT_CHANGE_TEAM () {
@@ -751,30 +668,9 @@ export default {
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
-    },
-    GE_CHANNEL_NOTI_QUEUE () {
-      return this.$store.getters['D_CHANNEL/GE_CHANNEL_NOTI_QUEUE']
     }
   },
   watch: {
-    GE_CHANNEL_NOTI_QUEUE: {
-      handler () {
-        this.checkNotiQueue()
-      }
-      /* immediate: true,
-      handler (value, old) {
-        if (!value || value.length === 0) return
-        var newList = value
-        var index = newList.findIndex((item) => Number(item.creTeamKey) === this.CHANNEL_DETAIL.teamKey)
-        if (index !== 1) {
-          this.qConfirmText = newList[index].message
-          // this.qConfirmPopShowYn = true
-          newList = newList.splice(index, 1)
-          this.$store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', newList)
-        }
-      },
-      deep: true */
-    },
     CHANNEL_DETAIL: {
       handler (value, old) {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {

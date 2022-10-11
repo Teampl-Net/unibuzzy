@@ -817,7 +817,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
