@@ -61,7 +61,8 @@ export default {
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       currentTabName: '구독중',
-      emptyYn: true
+      emptyYn: true,
+      axiosQueueList: []
     }
   },
   components: {
@@ -139,6 +140,9 @@ export default {
       return text
     },
     async getContentsList () {
+      var idx = this.axiosQueueList.findIndex((item) => item === 'getContentsList')
+      if (idx !== -1) return
+      this.axiosQueueList.push('getContentsList')
       var paramMap = new Map()
       if (this.viewTab === 'user') {
         paramMap.set('userKey', this.GE_USER.userKey)
@@ -149,6 +153,8 @@ export default {
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
       var resultList = await this.$getTeamList(paramMap)
+      idx = this.axiosQueueList.findIndex((item) => item === 'getContentsList')
+      this.axiosQueueList.splice(idx, 1)
       this.mainChanList = resultList.data.content
       var newArr = []
       for (var i = 0; i < this.mainChanList.length; i++) {

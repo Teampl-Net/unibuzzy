@@ -171,6 +171,15 @@ export default {
     this.loadingRefShow()
   },
   watch: {
+    notiScrollTarget: {
+      handler (value, old) {
+        if (value) {
+           this.contentsWich(value)
+           alert(value)
+        }
+      },
+      deep: true
+    },
   },
   updated() {
     if (this.commonListData) {
@@ -530,6 +539,8 @@ export default {
       return -1
     },
     async contentsWich (key) {
+      // alert(true)
+      if (!this.targetCKey && key) {this.targetCKey = key}
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
       if(channelItemBoxDom.scrollHeight <= 50) {
@@ -790,7 +801,7 @@ export default {
       //     document.getElementById('borderLine'+key).style.display = 'block'
       // }
 
-      this.$emit('memoOpenClick', param)
+      // this.$emit('memoOpenClick', param)
     },
     alimBigView (alim) {
       // alert(alim.contentsKey)
@@ -1240,7 +1251,8 @@ export default {
       stickerList: [ ]
     },
     chanAlimYn: Boolean,
-    targetContentsKey: {}
+    targetContentsKey: {},
+    notiScrollTarget: {}
   },
   computed: {
     GE_USER () {

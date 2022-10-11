@@ -261,6 +261,8 @@ export default {
     closeLogoutPop (request) {
       this.logOutShowYn = false
       if (request !== undefined && request !== null && request !== '') {
+        this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+        this.$store.commit('D_USER/MU_CLEAN_USER')
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         localStorage.setItem('loginYn', false)

@@ -125,7 +125,6 @@ const isJsonString = (str) => {
           var current = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
-
         } else if (message.type === 'appInfo') {
           console.log(message.appInfo)
           var appInfo = JSON.parse(message.appInfo)
@@ -137,7 +136,7 @@ const isJsonString = (str) => {
           if (systemName === 'android' || systemName === 'Android') {
             if (appInfo.current !== appInfo.last) {
               // alert('최신버전으로 업데이트 해주세요')
-              alert('앱을 최신 버전으로 업데이트 해주세요.')
+              /* alert('앱을 최신 버전으로 업데이트 해주세요.')
               // this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
               // this.checkVersionPopShowYn = true
               // window.open(appInfo.playStoreUrl, '_blank')
@@ -155,7 +154,7 @@ const isJsonString = (str) => {
               aTag.click()
               onMessage('closeApp', 'requestUserPermission').then(res => {
                 aTag.click()
-              })
+              }) */
             }
           }
           /* if (appInfo.current !== appInfo.last) {
@@ -197,6 +196,9 @@ const isJsonString = (str) => {
               document.body.removeChild(aTag)
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
+        } else if (message.type === 'activeApp') {
+          // alert(message.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

@@ -114,6 +114,9 @@ const D_USER = {
       state.fcmKey = payload.fcmKey
       state.deviceId = payload.deviceId */
     },
+    MU_CLEAN_USER (state, payload) {
+      state.userInfo = {}
+    },
     MU_NET_STATE (state, payload) {
       state.netStateYn = payload
     }

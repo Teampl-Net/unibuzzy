@@ -496,11 +496,15 @@ export const methods = {
   },
   async getMemoCount (param) {
     // var result = null
+    if (g_axiosQueue.findIndex((item) => item === 'getMemoCount') !== -1) return
+    g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
     var response = await commonAxiosFunction({
       url: 'service/tp.getMemoCount',
       param: param
     })
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
+    g_axiosQueue.splice(queueIndex, 1)
     // result = response
     return response.data
   },

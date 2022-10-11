@@ -196,11 +196,17 @@ const functions = {
         message = e.data
       }
       if (message.type === 'pushmsg') {
-        if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-          notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+        if (JSON.parse(message.pushMessage).backgroundYn) {
+          notiDetail = JSON.parse(message.pushMessage)
         } else {
-          notiDetail = JSON.parse(message.pushMessage).noti.data
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
         }
+
+        //  alert(JSON.stringify(notiDetail))
         if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
           functions.settingAlimNoti(message)
         } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {

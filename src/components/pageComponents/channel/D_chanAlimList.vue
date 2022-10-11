@@ -127,6 +127,12 @@
   <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
     <pushList :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim'/>
     <!-- <div v-else style="">
+        notiScrollTarget: {
+      handler (value, old) {
+        alert(value)
+      },
+      deep: true
+    },
       <p>구독하고 알림을 받아보세요!</p>
     </div> -->
   </div>
@@ -204,7 +210,8 @@ export default {
     }
   },
   props: {
-    chanDetail: {}
+    chanDetail: {},
+    notiScrollTarget: {}
   },
   components: {
     pushList,
@@ -246,6 +253,9 @@ export default {
       /* for (var q = 0; q < qList.length; q++) {
 
       } */
+    },
+    setNotiScroll (key) {
+      this.$refs.ChanAlimListPushListCompo.setNotiScroll(key)
     },
     toAlimFromBoard (tab) {
       this.$refs.ChanAlimListPushListCompo.changeMainTab(tab)
@@ -325,7 +335,7 @@ export default {
       }
     },
     targetContentScrollMove (wich) {
-      if (this.chanDetail.targetContentsKey) {
+      if (wich || this.chanDetail.targetContentsKey) {
         const unit = this.$refs.scrollBox
         unit.scrollTo({ top: 500, behavior: 'smooth' })
         var blockBox = document.getElementById('summaryWrap')
@@ -363,11 +373,6 @@ export default {
       } else {
         result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
       }
-      // // console.log(result)
-      // eslint-disable-next-line no-debugger
-      debugger
-      console.log('#########################')
-      console.log(result)
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
