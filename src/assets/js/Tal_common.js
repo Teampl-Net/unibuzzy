@@ -450,6 +450,26 @@ export const commonMethods = {
       document.getElementById('toastPop').remove()
     }, 2000)
   },
+  addConsole (html) {
+    var consoleDiv = document.getElementById('testConsole')
+    if (!consoleDiv) {
+      consoleDiv = document.createElement('div')
+      consoleDiv.style.position = 'fixed'
+      consoleDiv.id = 'testConsole'
+      document.body.appendChild(consoleDiv)
+    } else {
+      var toastDiv = document.createElement('div')
+      var innerHTML = ''
+      innerHTML += '<p style="font-size:16px; text-align: left;">'
+      innerHTML += html
+      innerHTML += '</p>'
+      toastDiv.innerHTML = innerHTML
+
+      consoleDiv.appendChild(toastDiv)
+    // consoleDiv.appendChild
+    }
+    // var thisthis = this
+  },
   getFileExt (fileName) {
     let fileExt = fileName.substring(
       fileName.lastIndexOf('.') + 1
@@ -820,5 +840,6 @@ export default {
     Vue.config.globalProperties.$countingTotalMemo = commonMethods.countingTotalMemo
     Vue.config.globalProperties.$handleImageUpload = commonMethods.handleImageUpload
     Vue.config.globalProperties.$dateCalc = commonMethods.dateCalc
+    Vue.config.globalProperties.$addConsole = commonMethods.addConsole
   }
 }

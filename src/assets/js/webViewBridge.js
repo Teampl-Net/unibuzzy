@@ -126,7 +126,6 @@ const isJsonString = (str) => {
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
         } else if (message.type === 'appInfo') {
-          console.log(message.appInfo)
           var appInfo = JSON.parse(message.appInfo)
           localStorage.setItem('appInfo', message.appInfo)
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
@@ -197,6 +196,10 @@ const isJsonString = (str) => {
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
         } else if (message.type === 'activeApp') {
+          // alert(message.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
+        } else if (message.type === 'addConsole') {
+          this.$addConsole(message.log)
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }

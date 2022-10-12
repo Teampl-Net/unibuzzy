@@ -212,6 +212,25 @@ app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
 app.mount('#app')
+console.log(document.getElementById('testConsole'))
+var consoleDiv = document.getElementById('testConsole')
+if (!consoleDiv) {
+  consoleDiv = document.createElement('div')
+  consoleDiv.style.position = 'fixed'
+  consoleDiv.id = 'testConsole'
+  document.body.appendChild(consoleDiv)
+} else {
+  var toastDiv = document.createElement('div')
+  var innerHTML = ''
+  innerHTML += '<p style="font-size:16px; text-align: left;">'
+  innerHTML += new Date() + ': 앱 기동완료'
+  innerHTML += '</p>'
+  toastDiv.innerHTML = innerHTML
+
+  consoleDiv.appendChild(toastDiv)
+  // consoleDiv.appendChild
+}
+
 document.title = '더알림'
 
 localStorage.setItem('loginYn', false)
