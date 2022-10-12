@@ -479,7 +479,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: '/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
@@ -647,6 +647,18 @@ export default {
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail) {
+        console.log(detail[0].copyTextStr)
+        if (!detail[0].copyTextStr) {
+          // alert('come')
+          var title = '[더알림]' + this.$changeText(detail[0].nameMtext)
+          var message = this.$changeText(detail[0].memoMtext)
+          var this_ = this
+          this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {
+            detail[0].copyTextStr = res
+            // alert(detail[0].copyTextStr)
+            this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
+          })
+        }
         return detail[0]
       } else {
         return null
