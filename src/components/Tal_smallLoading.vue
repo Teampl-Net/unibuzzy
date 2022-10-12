@@ -6,10 +6,12 @@
 <script>
 export default {
   created () {
-    // var this_ = this
-    // setTimeout(() => {
-    //   this_.shows = false
-    // }, 6000)
+    console.log('start')
+    var this_ = this
+    setTimeout(() => {
+      this_.showYn = false
+      console.log('end')
+    }, 3000)
   },
   data () {
     return {
