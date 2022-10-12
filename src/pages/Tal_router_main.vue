@@ -107,10 +107,13 @@ export default {
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (value.length > 0) {
           var target = value[value.length - 1]
+          if (!target) return
           // eslint-disable-next-line no-new-object
           var param = new Object()
+          if (!target.targetType || (target.targetType !== 'chanDetail' || target.targetType !== 'pushDetail' || target.targetType !== 'boardDetail')) return
           param.targetType = target.targetKind
           param.targetKey = target.targetKey
+          // alert(JSON.stringify(param))
           this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
           this.openPop(param)
         }
