@@ -200,7 +200,8 @@ const isJsonString = (str) => {
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
-          // this.$addConsole(message.log)
+          // alert(JSON.stringify(message.log))
+          this.$addConsole(message.log)
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }

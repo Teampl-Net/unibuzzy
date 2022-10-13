@@ -306,7 +306,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -451,23 +451,25 @@ export const commonMethods = {
     }, 2000)
   },
   addConsole (html) {
-    var consoleDiv = document.getElementById('testConsole')
-    if (!consoleDiv) {
-      consoleDiv = document.createElement('div')
-      consoleDiv.style.position = 'fixed'
-      consoleDiv.id = 'testConsole'
-      document.body.appendChild(consoleDiv)
-    } else {
-      var toastDiv = document.createElement('div')
-      var innerHTML = ''
-      innerHTML += '<p style="font-size:16px; text-align: left;">'
-      innerHTML += html
-      innerHTML += '</p>'
-      toastDiv.innerHTML = innerHTML
+    // var consoleDiv = document.getElementById('testConsole')
+    // if (!consoleDiv) {
+    //   consoleDiv = document.createElement('div')
+    //   consoleDiv.style.position = 'fixed'
+    //   consoleDiv.id = 'testConsole'
+    //   document.body.appendChild(consoleDiv)
+    // }
+    // var toastDiv = document.createElement('div')
+    // console.log(html)
+    // alert(JSON.stringify(html))
+    // var innerHTML = ''
+    // innerHTML += '<p style="font-size:16px; text-align: left;">'
+    // innerHTML += html
+    // innerHTML += '</p>'
+    // toastDiv.innerHTML = innerHTML
 
-      consoleDiv.appendChild(toastDiv)
+    // consoleDiv.appendChild(toastDiv)
     // consoleDiv.appendChild
-    }
+
     // var thisthis = this
   },
   getFileExt (fileName) {

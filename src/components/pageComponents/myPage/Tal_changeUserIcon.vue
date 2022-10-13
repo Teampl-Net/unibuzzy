@@ -255,7 +255,9 @@ export default {
         array.push(decodImg.charCodeAt(i))
       }
       const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-      const files = new File([Bfile], this.selectFile.name)
+      var newSelectFileName = this.selectFile.name
+      newSelectFileName = newSelectFileName.replaceAll(' ', '')
+      const files = new File([Bfile], newSelectFileName)
 
       return files
     },

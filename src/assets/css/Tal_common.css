@@ -95,6 +95,20 @@ input, select {
   .font11{font-size: 9px !important}
   .font10{font-size: 8px !important}
 
+  .img-w78{width: 78px !important}
+  .img-w77{width: 77px !important}
+  .img-w76{width: 76px !important}
+  .img-w75{width: 75px !important}
+  .img-w74{width: 74px !important}
+  .img-w73{width: 73px !important}
+  .img-w72{width: 72px !important}
+  .img-w71{width: 71px !important}
+  .img-w60{width: 60px !important}
+  .img-w69{width: 69px !important}
+  .img-w68{width: 68px !important}
+  .img-w67{width: 67px !important}
+  .img-w66{width: 66px !important}
+
   .img-w30{width: 28px !important}
   .img-w29{width: 27px !important}
   .img-w28{width: 26px !important}
@@ -187,6 +201,22 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .fontNomal{font-weight: normal}
 .fontBold{font-weight: bold;}
+
+.img-w78{width: 78px !important}
+.img-w77{width: 77px !important}
+.img-w76{width: 76px !important}
+.img-w75{width: 75px !important}
+.img-w74{width: 74px !important}
+.img-w73{width: 73px !important}
+.img-w72{width: 72px !important}
+.img-w71{width: 71px !important}
+.img-w60{width: 60px !important}
+.img-w69{width: 69px !important}
+.img-w68{width: 68px !important}
+.img-w67{width: 67px !important}
+.img-w66{width: 66px !important}
+
+
 .img-w30{width: 30px}
 .img-w29{width: 29px}
 .img-w28{width: 28px}
@@ -621,6 +651,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
   animation-name: fadein; animation-duration: 0.5s;
   animation-fill-mode: forwards;
+
+
   position: absolute;
   bottom: 2rem;
 

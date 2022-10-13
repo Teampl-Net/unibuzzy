@@ -463,6 +463,7 @@ export default {
           for (let i = 0; i < cabShareList.length; i++) {
             if (cabShareList[i].accessKind === 'C') {
               shareBookCount += 1
+              cabShareList[i].cabinetKey = cabShareList[i].accessKey
               this.shareGroup.selectedList.bookList.push(cabShareList[i])
             }
             if (cabShareList[i].accessKind === 'U') {
@@ -500,6 +501,7 @@ export default {
 
         cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
         if (mShareItemList[i].accessKind === 'C') {
+          mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
           mShareItemList[i].cabinetNameMtext = cabShareList[cIndex].cabinetNameMtext
         }
         if (mShareItemList[i].accessKind === 'U') {
@@ -566,17 +568,18 @@ export default {
       console.log(this.permissionRGroup.selectedList)
       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 
-      var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
-      var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
-      this.writePermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+      // var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
+      // var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
+      // this.writePermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
 
-      cabinetCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'C').length
-      userCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'U').length
-      this.readPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+      // cabinetCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'C').length
+      // userCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'U').length
+      // this.readPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
 
-      cabinetCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'C').length
-      userCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'U').length
-      this.commentPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+      // cabinetCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'C').length
+      // userCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'U').length
+      // this.commentPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
+      this.setTextPermission()
 
       console.log(this.permissionWGroup.type)
       console.log(this.permissionVGroup.type)
@@ -906,7 +909,7 @@ export default {
       console.log(type)
       this.currentSelectBookType = type
       if (type === 'select') {
-        this.selectedList = this.shareType.selectedList
+        this.selectedList = this.shareGroup.selectedList
       } else {
         if (type === 'W') {
           this.selectedList = this.permissionWGroup.selectedList
@@ -962,11 +965,11 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       console.log(this.currentSelectBookType)
-      var bookCount, memberCount
+      // var bookCount, memberCount
       if (datas.bookList) {
         var settingBookList = []
         const books = datas.bookList
-        bookCount = books.length
+        // bookCount = books.length
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
           tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
@@ -999,7 +1002,7 @@ export default {
       if (datas.memberList) {
         const members = datas.memberList
         var settingMemList = []
-        memberCount = members.length
+        // memberCount = members.length
         for (let i = 0; i < members.length; i++) {
           tempList = {}
           tempList.userDispMtext = this.$changeText(members[i].userDispMtext)
@@ -1031,17 +1034,18 @@ export default {
           this.permissionRGroup.selectedList.memberList = settingMemList
         }
       }
-      console.log('---- setTextPermission -----')
-      console.log(bookCount + ' ' + memberCount)
-      console.log(this.currentSelectBookType)
+      // console.log('---- setTextPermission -----')
+      // console.log(bookCount + ' ' + memberCount)
+      // console.log(this.currentSelectBookType)
 
-      if (this.currentSelectBookType === 'W') {
-        this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      } else if (this.currentSelectBookType === 'V') {
-        this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      } else if (this.currentSelectBookType === 'R') {
-        this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      }
+      // if (this.currentSelectBookType === 'W') {
+      //   this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      // } else if (this.currentSelectBookType === 'V') {
+      //   this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      // } else if (this.currentSelectBookType === 'R') {
+      //   this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      // }
+      this.setTextPermission()
     },
     setSelectedList (datas) {
       // 권한 선택시 실행
@@ -1049,25 +1053,29 @@ export default {
       this.selectedShareList = []
       var data = datas
       this.selectBookListShowYn = false
-      var bookCount, memberCount
+      // var bookCount, memberCount
       console.log(datas)
       if (data.bookList) {
         var settingBookList = []
-        bookCount = data.bookList.length
+        // bookCount = data.bookList.length
         const books = datas.bookList
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
+          // tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
+          // tempList.accessKey = books[i].shareSeq
+          // tempList.accessKind = 'C'
+          // tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          // tempList.shareSeq = books[i].shareSeq
           tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
-          tempList.accessKey = books[i].shareSeq
+          tempList.accessKey = books[i].accessKey
           tempList.accessKind = 'C'
-          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          // tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          tempList.cabinetKey = books[i].accessKey
+          // mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
           tempList.shareSeq = books[i].shareSeq
 
           settingBookList.push(tempList)
         }
-        // eslint-disable-next-line no-debugger
-        debugger
-
         if (this.currentSelectBookType === 'select') {
           if (!this.shareGroup.selectedList.bookList) {
             this.shareGroup.selectedList.bookList = []
@@ -1094,7 +1102,7 @@ export default {
       }
       if (data.memberList) {
         var settingMemList = []
-        memberCount = data.memberList.length
+        // memberCount = data.memberList.length
         for (let i = 0; i < data.memberList.length; i++) {
           tempList = {}
           tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
@@ -1129,42 +1137,57 @@ export default {
           }
         }
       }
-      console.log('---- setTextPermission -----')
-      console.log(bookCount + ' ' + memberCount)
-      console.log(this.currentSelectBookType)
-      if (bookCount === undefined) bookCount = 0
-      if (memberCount === undefined) memberCount = 0
-      if (this.currentSelectBookType === 'select') {
-        this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      } else {
-        if (this.currentSelectBookType === 'W') {
-          this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-        } else if (this.currentSelectBookType === 'V') {
-          this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-        } else if (this.currentSelectBookType === 'R') {
-          this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-        }
-      }
-
+      // console.log('---- setTextPermission -----')
+      // console.log(bookCount + ' ' + memberCount)
+      // console.log(this.currentSelectBookType)
+      // if (bookCount === undefined) bookCount = 0
+      // if (memberCount === undefined) memberCount = 0
+      // if (this.currentSelectBookType === 'select') {
+      //   this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      // } else {
+      //   if (this.currentSelectBookType === 'W') {
+      //     this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      //   } else if (this.currentSelectBookType === 'V') {
+      //     this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      //   } else if (this.currentSelectBookType === 'R') {
+      //     this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
+      //   }
+      // }
+      this.setTextPermission()
       // this.setTextPermission(bookCount, memberCount)
     },
     // // 작성, 열람, 댓글의 텍스트를 셋팅해준다.
-    // setTextPermission (bookCount, memberCount) {
-    //   console.log('---- setTextPermission -----')
-    //   console.log(bookCount + ' ' + memberCount)
-    //   console.log(this.currentSelectBookType)
-    //   if (this.currentSelectBookType === 'select') {
-    //     this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-    //   } else {
-    //     if (this.currentSelectBookType === 'W') {
-    //       this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-    //     } else if (this.currentSelectBookType === 'V') {
-    //       this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-    //     } else if (this.currentSelectBookType === 'R') {
-    //       this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-    //     }
-    //   }
-    // },
+    setTextPermission () {
+      console.log('---- setTextPermission -----')
+      var sharMem, sharBook, WMem, WBook, VMem, VBook, RMem, RBook
+      if (this.shareGroup.selectedList.bookList) { sharBook = this.shareGroup.selectedList.bookList.length !== 0 ? this.shareGroup.selectedList.bookList.length + '개 그룹' : '' } else { sharBook = '' }
+      if (this.shareGroup.selectedList.memberList) { sharMem = this.shareGroup.selectedList.memberList.length !== 0 ? this.shareGroup.selectedList.memberList.length + '명' : '' } else { sharMem = '' }
+
+      if (this.permissionWGroup.selectedList.bookList) { WBook = this.permissionWGroup.selectedList.bookList.length !== 0 ? this.permissionWGroup.selectedList.bookList.length + '개 그룹' : '' } else { WBook = '' }
+      if (this.permissionWGroup.selectedList.memberList) { WMem = this.permissionWGroup.selectedList.memberList.length !== 0 ? this.permissionWGroup.selectedList.memberList.length + '명' : '' } else { WMem = '' }
+
+      if (this.permissionVGroup.selectedList.bookList) { VBook = this.permissionVGroup.selectedList.bookList.length !== 0 ? this.permissionVGroup.selectedList.bookList.length + '개 그룹' : '' } else { VBook = '' }
+      if (this.permissionVGroup.selectedList.memberList) { VMem = this.permissionVGroup.selectedList.memberList.length !== 0 ? this.permissionVGroup.selectedList.memberList.length + '명' : '' } else { VMem = '' }
+
+      if (this.permissionRGroup.selectedList.bookList) { RBook = this.permissionRGroup.selectedList.bookList.length !== 0 ? this.permissionRGroup.selectedList.bookList.length + '개 그룹' : '' } else { RBook = '' }
+      if (this.permissionRGroup.selectedList.memberList) { RMem = this.permissionRGroup.selectedList.memberList.length !== 0 ? this.permissionRGroup.selectedList.memberList.length + '명' : '' } else { RMem = '' }
+
+      if (sharBook === '' && sharMem === '') { this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.' } else {
+        this.selectedReceiver = sharBook + (sharBook !== '' ? sharMem !== '' ? ', ' : '' : '') + sharMem + ' 에게 권한 부여 중'
+      }
+
+      if (WBook === '' && WMem === '') { this.writePermission = '클릭하여 권한을 설정해주세요.' } else {
+        this.writePermission = WBook + (WBook !== '' ? WMem !== '' ? ', ' : '' : '') + WMem + ' 에게 권한 부여 중'
+      }
+
+      if (VBook === '' && VMem === '') { this.readPermission = '클릭하여 권한을 설정해주세요.' } else {
+        this.readPermission = VBook + (VBook !== '' ? VMem !== '' ? ', ' : '' : '') + VMem + ' 에게 권한 부여 중'
+      }
+
+      if (RBook === '' && RMem === '') { this.commentPermission = '클릭하여 권한을 설정해주세요.' } else {
+        this.commentPermission = RBook + (RBook !== '' ? RMem !== '' ? ', ' : '' : '') + RMem + ' 에게 권한 부여 중'
+      }
+    },
     changeShareType (type) {
       this.shareType = type
     },

@@ -10,7 +10,7 @@
     <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
     <div class="userProfileTextWrap" >
       <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)}}</p>
-      <img src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
+      <img  src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
         <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
         <span class="profileTitle font14" ref="userEmail" @click="this.$showToastPop('해당 게시물의 알림을 활성화 했습니다.')">이메일</span>
@@ -50,6 +50,7 @@ export default {
   created () {
     // onMessage('REQ', 'removeAllNoti')
     // this.$emit('openLoading')
+    this.$addConsole('tal_main.vue created')
     if (!this.GE_USER) {
       this.$router.push('/policies')
       return
@@ -68,6 +69,7 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', [0]) */
   },
   mounted () {
+    this.$addConsole('tal_main.vue mounted')
     this.loadingYn = false
     console.log('userLoginCheck')
     this.$userLoginCheck()
@@ -114,7 +116,7 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)

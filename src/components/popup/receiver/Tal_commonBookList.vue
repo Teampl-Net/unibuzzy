@@ -78,7 +78,10 @@ export default {
     async created () {
         this.addressBookList = this.listData
         this.propObject = this.propData
+        // 임시
+        // this.enabled = true
         if(this.selectPopYn){
+            this.enabled = true
             console.log('this.parentSelectList')
             console.log(this.parentSelectList)
             if(this.parentSelectList && this.parentSelectList.bookList) {
@@ -90,6 +93,8 @@ export default {
         await this.getTeamCabList()
         this.changeSelectedList()
         this.settingCheck()
+        console.log('===== Created CommmonBookList ====')
+        console.log(this.addressBookList)
     },
     updated () {
         /* this.changeSelectedList()
@@ -111,6 +116,7 @@ export default {
         // },
         listData () {
             this.addressBookList = this.listData
+            this.settingCheck()
         },
         // addressBookList: {
         //     immediate: true,
@@ -215,7 +221,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getTeamMenuList',
+                url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.cabinetList = result.data
@@ -244,7 +250,7 @@ export default {
             try{
                 // this.cabinetList.splice(index, 1)
                 var result = await this.$commonAxiosFunction({
-                    url: 'service/tp.deleteCabinet',
+                    url: 'https://mo.d-alim.com/service/tp.deleteCabinet',
                     param: param
                 })
                 if(result.data === 'true' || result.data === true){
@@ -345,7 +351,7 @@ export default {
 
             var result = null
             var response = await this.$commonAxiosFunction({
-                url: 'service/tp.saveCabinet',
+                url: 'https://mo.d-alim.com/service/tp.saveCabinet',
                 param: paramSet
             })
             result = response.data
@@ -356,31 +362,35 @@ export default {
         async changePosTeamMenu(event) {
             var oldIndex = event.oldIndex
             var newIndex = event.newIndex
+            console.log('----------')
+            console.log(this.addressBookList)
 
             var paramSet = new Object()
-            var teamMenuList = new Array()
-            var menu = new Object()
-            var cardList = document.getElementsByClassName('commonBookCard')
-            var index = null
-            for (var s = cardList.length - 1 ; s >=0; s--) {
-                index = Number(cardList[s].getAttribute('index'))
-                for (var i = 0; i < this.addressBookList.length; i ++) {
-                if(index === i) {
-                    menu = {}
-                    var tt = this.addressBookList[i]
-                    menu.teamKey = this.addressBookList[i].creTeamKey
-                    if(this.addressBookList[i].menuType) menu.menuType = 'G'
-                    if(this.addressBookList[i].parentMenuKey) menu.parentMenuKey = this.addressBookList[i].parentMenuKey
-                    if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
-                    if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
-                    if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
-                    // console.log(menu);
-                    console.log(menu)
-                    teamMenuList.push(menu)
-                    break
-                }
-                }
-            }
+            // var teamMenuList = new Array()
+            // var menu = new Object()
+            // var cardList = document.getElementsByClassName('commonBookCard')
+            // var index = null
+            // for (var s = cardList.length - 1 ; s >=0; s--) {
+            //     index = Number(cardList[s].getAttribute('index'))
+            //     for (var i = 0; i < this.addressBookList.length; i ++) {
+            //     if(index === i) {
+            //         menu = {}
+            //         var tt = this.addressBookList[i]
+            //         menu.teamKey = this.addressBookList[i].creTeamKey
+            //         if(this.addressBookList[i].menuType) menu.menuType = 'G'
+            //         if(this.addressBookList[i].parentMenuKey) menu.parentMenuKey = this.addressBookList[i].parentMenuKey
+            //         if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
+            //         if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
+            //         if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
+            //         // console.log(menu);
+            //         // console.log(menu)
+            //         teamMenuList.push(menu)
+            //         break
+            //     }
+            //     }
+            // }
+
+
             // var tempList = this.addressBookList
             // if (oldIndex < newIndex) {
             //     // 선택한 값이 아래로 이동 (인덱스가 큰 쪽으로)
@@ -395,19 +405,26 @@ export default {
             // this.addressBookList = tempList
             // console.log(tempList)
             // paramSet.teamMenuList = tempList
-
-            console.log(teamMenuList)
-            paramSet.teamMenuList = teamMenuList
+            var tempList = []
+            for (var index = 0; index < this.addressBookList.length; index++) {
+                var temp = {}
+                temp = this.addressBookList[index]
+                temp.menuType = 'G'
+                tempList.push(temp)
+            }
+            console.log(' ----- teamMenuList -----')
+            console.log([...tempList])
+            paramSet.teamMenuList = [...tempList]
             var result = await this.$commonAxiosFunction(
                 {
-                url: 'service/tp.changePosTeamMenu',
+                url: 'https://mo.d-alim.com/service/tp.changePosTeamMenu',
                 param: paramSet
                 }
             )
+            console.log(' ----- changePosTeamMenu result -----')
+            console.log(result)
 
-            // this.$emit('getBookList')
-
-
+            this.$emit('getBookList')
 
         }
     }

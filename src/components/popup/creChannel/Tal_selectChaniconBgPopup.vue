@@ -14,13 +14,13 @@
           <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
             <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
               <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
-                <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" @change="changeImg" :src="previewImgUrl" alt="" class="preview hidden">
+              <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
+                <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
                 <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
               </div>
               <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFile" id="input-file" @change="handleImageUpload"/>
+                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
               </form>
               <div class="fl textLeft w-100P">
                 <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
@@ -123,8 +123,8 @@ export default {
     }
   },
   methods: {
-    changeImgClick () {
-      if (this.cropperYn === false) this.$refs.selectFile.click()
+    imgClickToInput () {
+      if (this.cropperYn === false) this.$refs.selectFileChangeIconNBG.click()
     },
     changeBtnClick () {
       // this.cropper.destroy()
@@ -132,7 +132,7 @@ export default {
       // this.uploadFileList = []
       // this.changeImgYn = false
       // this.changeImgYn = true
-      this.$refs.selectFile.click()
+      this.$refs.selectFileChangeIconNBG.click()
       // this.previewFile()
     },
     dataSetting () {
@@ -246,14 +246,24 @@ export default {
         useWebWorker: true
       }
 
-      if (this.$refs.selectFile.files.length > 0) {
+      if (this.$refs.selectFileChangeIconNBG.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         this.selectedImgPath = ''
         this.selectedImgFilekey = ''
         this.selectFile = null
         this.previewImgUrl = null
+        this.cropperYn = true
 
-        this.selectFile = this.$refs.selectFile.files[0]
+        this.selectFile = this.$refs.selectFileChangeIconNBG.files[0]
+        // var selectFileName = this.selectFile.name
+        // this.selectFile.name = this.selectFile.name.replaceAll(' ', '')
+        // console.log(selectFileName)
+        // console.log(' ----- selectFileName -------')
+        // selectFileName = selectFileName.replaceAll(' ', '')
+        // console.log(selectFileName)
+        // this.selectFile.name = selectFileName
+        // console.log(this.selectFile.name)
+
         let fileExt = this.selectFile.name.substring(
           this.selectFile.name.lastIndexOf('.') + 1
         )
@@ -268,6 +278,11 @@ export default {
           try {
             // eslint-disable-next-line no-undef
             var compressedFile = await this.$imageCompression(this.selectFile, options)
+            console.log('sssssssssaaa', compressedFile)
+            compressedFile.name = compressedFile.name.replaceAll(' ', '')
+            console.log('_______________________')
+            console.log(compressedFile.name)
+
             console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
             console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
             var src = null
@@ -279,21 +294,27 @@ export default {
                 array.push(decodImg.charCodeAt(i))
               }
               const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-              var newFile = new File([Bfile], compressedFile.name)
+              var newFileName = compressedFile.name
+              newFileName = newFileName.replaceAll(' ', '')
+              console.log('_______________________')
+              console.log(newFileName)
+              var newFile = new File([Bfile], newFileName)
             } else {
               src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              console.log(src)
             }
-
-            console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-            console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+            console.log(` @@ compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+            console.log(newFile)
+            // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
-
+            console.log('this.uploadFileList', this.uploadFileList)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             this.refImg = this.$refs.image
-            // // console.log(this.cropper)
+
+            console.log(this.refImg)
 
             this.cropper = new Cropper(this.refImg, {
               viewMode: '1',
@@ -319,19 +340,21 @@ export default {
     },
 
     async previewFile () {
-      if (this.$refs.selectFile.files.length > 0) {
+      if (this.$refs.selectFileChangeIconNBG.files.length > 0) {
         this.selectedImgPath = ''
         this.selectedImgFilekey = ''
         this.selectFile = null
         this.previewImgUrl = null
+        this.cropperYn = true
         // 0 번째 파일을 가져 온다.
-        // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-        // this.selectFile = this.$refs.selectFile.files[k]
-        this.selectFile = this.$refs.selectFile.files[0]
+        // for (var k = 0; k < this.$refs.selectFileChangeIconNBG.files.length; k++) {
+        // this.selectFile = this.$refs.selectFileChangeIconNBG.files[k]
+        this.selectFile = this.$refs.selectFileChangeIconNBG.files[0]
         // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
         // eslint-disable-next-line no-unused-vars
         var tt = this.selectFile
-
+        // console.log('#######################')
+        // console.log(this.selectFile.name)
         let fileExt = this.selectFile.name.substring(
           this.selectFile.name.lastIndexOf('.') + 1
         )
@@ -343,7 +366,6 @@ export default {
         // FileReader 를 활용하여 파일을 읽는다
           var reader = new FileReader()
           var thisthis = this
-          this.cropperYn = true
           reader.onload = e => {
             var image = new Image()
             image.onload = async function () {
@@ -411,7 +433,11 @@ export default {
         array.push(decodImg.charCodeAt(i))
       }
       const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-      const files = new File([Bfile], this.selectFile.name)
+      var newSelectFileName = this.selectFile.name
+      newSelectFileName = newSelectFileName.replaceAll(' ', '')
+      const files = new File([Bfile], newSelectFileName)
+      console.log('============= crop img ================')
+      console.log(files)
 
       return files
     },
@@ -427,6 +453,7 @@ export default {
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (this.uploadFileList[i]).file)
+
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,

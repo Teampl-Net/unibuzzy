@@ -41,7 +41,7 @@
         </div>
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="this.memoShowYn = false"></div>
         <transition name="showMemoPop">
-          <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
+          <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: absolute; bottom:0;left:0; z-index:999999;"/>
         </transition>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
         <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
@@ -742,7 +742,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -874,7 +874,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -952,7 +952,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1100,7 +1100,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')

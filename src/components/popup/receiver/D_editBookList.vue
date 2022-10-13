@@ -58,7 +58,12 @@
         <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'직접<br>추가'"></p></div>
         <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="!editYn &&  detailOpenYn && plusMenuShowYn" ><p style="font-size:14px;" v-html="'유저<br>선택'"></p></div>
         <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.addNewBook() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
-        <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div>
+
+        <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
+        <!-- <img src="../../../assets/images/button/Icon_AddressBookBtn.svg" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78"> -->
+        <img src="../../../assets/images/button/Icon_AddressBookBtn.svg" @click="this.$refs.bookListCompoRef.creAddressPop()" v-if="!editYn && !plusMenuShowYn && !detailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+        <img src="../../../assets/images/button/Icon_AddMemberBtn.svg" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn && detailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+
         <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn" >
           <img style="width: 20px; margin-bottom: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
@@ -184,7 +189,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('searchKeyStr', 'sSub' + (index + 1))
             var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getMCabUserGroupList',
+            url: 'https://mo.d-alim.com/service/tp.getMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
         if (result.data.length > 0) {
@@ -213,7 +218,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getTeamMenuList',
+                url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -295,7 +300,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getMCabContentsList',
+                url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -439,7 +444,7 @@ export default {
             params.teamKey = this.CHANNEL_DETAIL.teamKey
             params.showProfileYn = true
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getFollowerList',
+                url: 'https://mo.d-alim.com/service/tp.getFollowerList',
                 param: params
             })
 

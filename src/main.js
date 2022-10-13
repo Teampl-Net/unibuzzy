@@ -67,9 +67,7 @@ import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
 import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
-
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
-
 import imageCompression from 'browser-image-compression'
 // import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
@@ -211,10 +209,31 @@ app.config.globalProperties.$store = store
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('setItem', '')
+
 app.mount('#app')
+// console.log(document.getElementById('testConsole'))
+// var consoleDiv = document.getElementById('testConsole')
+// if (!consoleDiv) {
+//   consoleDiv = document.createElement('div')
+//   consoleDiv.style.backgroundColor = '#ccc'
+//   consoleDiv.style.position = 'fixed'
+//   consoleDiv.id = 'testConsole'
+//   document.body.appendChild(consoleDiv)
+// }
+// var toastDiv = document.createElement('div')
+// var innerHTML = ''
+// innerHTML += '<p style="font-size:16px; text-align: left;">'
+// innerHTML += new Date() + ': 앱 기동완료'
+// innerHTML += '</p>'
+// toastDiv.innerHTML = innerHTML
+
+// consoleDiv.appendChild(toastDiv)
+// consoleDiv.appendChild
+
 document.title = '더알림'
 
 localStorage.setItem('loginYn', false)
+
 /* this.$userLoginCheck(true).then(response => {
   this.$getMainboard()
 }) */

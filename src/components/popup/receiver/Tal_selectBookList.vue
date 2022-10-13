@@ -49,6 +49,9 @@ export default {
         }
         param.memberList = test2
       }
+      console.log('*****************')
+      console.log(this.pSelectedList)
+      console.log(param)
       localStorage.setItem('ori', JSON.stringify(param))
       // localStorage.setItem('ori', JSON.stringify(this.selectedList))
     }
@@ -105,7 +108,7 @@ export default {
         paramMap.set('sysCabinetCode', 'USER')
         paramMap.set('adminYn', true)
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getTeamMenuList',
+            url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
             param: Object.fromEntries(paramMap)
         })
         this.bookList = result.data
@@ -121,7 +124,7 @@ export default {
         paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
         paramMap.set('jobkindId', 'USER')
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getMCabContentsList',
+            url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
             param: Object.fromEntries(paramMap)
         })
         this.memberList = result.data
@@ -196,6 +199,7 @@ export default {
       this.selectedList = selectedListData
       this.editMemberSelectedList()
       this.editBookSelectedList()
+      // #wowns
       this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
@@ -249,8 +253,8 @@ export default {
 
       var hStack = this.$store.getters['D_HISTORY/hStack']
       console.log(' back back back back back back back ')
-      console.log(hStack)
-      console.log(this.subPopId)
+      // console.log(hStack)
+      // console.log(this.subPopId)
       if (this.subPopId === hStack[hStack.length - 1] ) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         var removePage = hStack[hStack.length - 1]
@@ -268,6 +272,7 @@ export default {
         // this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
         var oriParam = JSON.parse(localStorage.getItem('ori'))
+        console.log(oriParam)
         // oriParam.
         // oriParam.closeYn = true
         this.$emit('sendReceivers', oriParam)

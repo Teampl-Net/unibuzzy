@@ -16,21 +16,23 @@
           주소록
           ({{this.CABINET_LIST.length}})
         </p>
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
+        <!-- <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" > -->
+        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
           <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
         </div>
       </div>
 
       <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
 
-      <div class="fl w-100P mtop-2" :style="!CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn ? 'margin-top:calc(50px + 0.5rem) !important;' : 'margin-top:1rem;'" >
+      <!-- <div class="fl w-100P mtop-2" :style="!CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn ? 'margin-top: 1rem !important;' : 'margin-top:1rem;'" > -->
+      <div class="fl w-100P mtop-2" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn) ? 'margin-top: 1rem !important;' : 'margin-top:calc(50px + 1rem);'" >
         <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
           <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
           게시판
           ({{this.BOARD_CONTENT_LIST.length}})
         </p>
 
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
+        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
           <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.BOARD_CONTENT_LIST" @chanMenuClick="chanMenuClick" />
         </div>
       </div>
@@ -242,7 +244,7 @@ export default {
       params.userKey = this.GE_USER.userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: params
       })
       // console.log(result.data.content[0])
@@ -336,7 +338,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: 'service/tp.getTeamMenuList',
+          url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       var tempList = []

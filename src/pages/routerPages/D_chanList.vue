@@ -15,7 +15,8 @@
     <!-- <searchChannel class="moveBox" v-if="viewTab === 'search'"/> -->
     <!-- <myChanList @openManagerChanDetail="openManagerChanDetail" v-if="myChanListPopYn" @closePop="this.myChanListPopYn = false" /> -->
   </div>
-  <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div>
+  <!-- <div class="btnPlus" @click="clickCreateChannel" ><p style="font-size:40px;">+</p></div> -->
+  <img src="../../assets/images/button/Icon_CreChanBtn.svg" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
   <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
     <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
   </div>
