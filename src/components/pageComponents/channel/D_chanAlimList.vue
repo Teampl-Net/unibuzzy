@@ -231,8 +231,9 @@ export default {
     }
   },
   methods: {
-    setNotiScroll (key) {
-      this.$refs.ChanAlimListPushListCompo.setNotiScroll(key)
+    setNotiScroll (key, jobkindId) {
+      // alert(jobkindId)
+      this.$refs.ChanAlimListPushListCompo.setNotiScroll(key, jobkindId)
     },
     toAlimFromBoard (tab) {
       this.$refs.ChanAlimListPushListCompo.changeMainTab(tab)
@@ -266,7 +267,15 @@ export default {
       } */
       this.$emit('closeLoading')
     },
-    targetContentScrollMove (wich) {
+    targetContentScrollMove (wich, jobkindId) {
+      if (wich && jobkindId) {
+        var tabName = 'P'
+        if (jobkindId === 'BOAR') {
+          tabName = 'B'
+        }
+        this.changeMainTab(tabName)
+        this.$refs.ChanAlimListPushListCompo.changeMainTab(tabName)
+      }
       if (wich || this.chanDetail.targetContentsKey) {
         const unit = this.$refs.scrollBox
         unit.scrollTo({ top: 500, behavior: 'smooth' })
@@ -479,7 +488,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: '/service/tp.saveFollower',
+        url: 'https://mo.d-alim.com/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

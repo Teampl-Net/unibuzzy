@@ -515,9 +515,14 @@ export default {
     } */
   },
   methods: {
-    setNotiScroll (key) {
+    async setNotiScroll (key, jobkindId) {
       // alert(key)
+      this.targetCKey = key
+      // eslint-disable-next-line no-unused-vars
+      var targetYn = await this.targetKeyYn(key, jobkindId)
+      // if (targetYn !== false) {
       this.$refs.pushListChangeTabLoadingComp.contentsWich(key)
+      // }
     },
     delContents (cont) {
       var idx = null
@@ -541,6 +546,19 @@ export default {
         this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
         this.targetCKey = null
         this.failPopYn = true
+        var index = null
+        if (jobkindId === 'ALIM') {
+          index = this.alimContentsList.findIndex((item) => item.contentsKey === targetKey)
+          if (index !== -1) {
+            this.alimContentsList.splice(index, 1)
+          }
+        } else {
+          index = this.boardContentsList.findIndex((item) => item.contentsKey === targetKey)
+          if (index !== -1) {
+            this.boardContentsList.splice(index, 1)
+          }
+        }
+        return false
       }
       var this_ = this
       await this_.getPushContentsList().then(response => {
@@ -639,6 +657,7 @@ export default {
         var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
         this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
       })
+      return true
     },
     async yesLoadMore (contentKey) {
       var cont, idx

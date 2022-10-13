@@ -240,6 +240,7 @@ const functions = {
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
     var resultList = await methods.getContentsList(param)
+    if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },

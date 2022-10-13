@@ -820,8 +820,8 @@ export default {
                   /* this.detailVal = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
                   this.successChanParam = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
                   this.settingPop(true) */
-                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).targetKey))
-                  this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).targetKey))
+                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
+                  this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
                   // param.targetContentsKey
                 } else {
                   if (currentPage !== this.popId) return
@@ -857,9 +857,16 @@ export default {
               if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                 ;
               } else {
-                if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) return
+                if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
+                  /* this.detailVal = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
+                  this.successChanParam = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
+                  this.settingPop(true) */
+                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).ISub), this.notiDetail.jobkindId)
+                  this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).ISub), this.notiDetail.jobkindId)
+                  // param.targetContentsKey
+                }
                 if (currentPage !== this.popId) return
-                this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
+                this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                 // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
               }
             }

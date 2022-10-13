@@ -311,7 +311,7 @@ export const commonMethods = {
     })
     console.log(JSON.parse(result.data.shortLink))
     var response = JSON.parse(result.data.shortLink).shortLink
-
+    // alert(response)
     return response
   },
   addHistoryStack (n) {

@@ -104,9 +104,10 @@ const isJsonString = (str) => {
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'deepLinkUrl') {
+          // alert(message.url)
           store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
-          // alert(message.url)
+          // alert(urlString)
           const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com', ''))
           var queList = []
           for (const param of params) {
@@ -199,7 +200,7 @@ const isJsonString = (str) => {
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
-          this.$addConsole(message.log)
+          // this.$addConsole(message.log)
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }

@@ -132,7 +132,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'https://mo.d-alim.comhttps://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -210,7 +210,7 @@ export default {
       memo.targetKey = targetKey
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'https://mo.d-alim.comhttps://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -341,6 +341,8 @@ export default {
                 if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
                   ;
                 } else {
+                  console.log('goDetail')
+                  // alert(true)
                   this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
                   // this.goChanDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
                 }
