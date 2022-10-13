@@ -114,6 +114,7 @@ export default {
       this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
     } else {
       this_.getPushContentsList().then(response => {
+        if (!response || !response.content) return
         console.log(response.content)
         if (!response || response === '') return
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
@@ -438,21 +439,34 @@ export default {
       var i = 0
       for (i = 0; i < this.alimContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
-        if (idx1 !== -1) {
+        if (idx1 === -1) {
+          var this_ = this
+          var teamKey = this.alimContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then(() => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+            dataList = chanDetail.ELEMENTS.boardList
+            idx2 = dataList.findIndex((item) => item.mccKey === this_.alimContentsList[i].mccKey)
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+            if (idx2 !== -1) {
+              test.push(dataList[idx2])
+            } else {
+              test.push(this_.alimContentsList[i])
+            }
+          })
+        } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.alimList
+          dataList = chanDetail.ELEMENTS.boardList
           idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-
-          if (test && test.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey) !== -1) continue // 중복 방지
           if (idx2 !== -1) {
             test.push(dataList[idx2])
           } else {
             test.push(this.alimContentsList[i])
           }
-        } else {
-          test.push(this.alimContentsList[i])
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -468,15 +482,34 @@ export default {
       var i = 0
       for (i = 0; i < this.boardContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
-        chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-        dataList = chanDetail.ELEMENTS.boardList
-        idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-        if (idx2 !== -1) {
-          test.push(dataList[idx2])
+        if (idx1 === -1) {
+          var this_ = this
+          var teamKey = this.boardContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then(() => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+            dataList = chanDetail.ELEMENTS.boardList
+            idx2 = dataList.findIndex((item) => item.mccKey === this_.boardContentsList[i].mccKey)
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+            if (idx2 !== -1) {
+              test.push(dataList[idx2])
+            } else {
+              test.push(this_.boardContentsList[i])
+            }
+          })
         } else {
-          test.push(this.boardContentsList[i])
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          dataList = chanDetail.ELEMENTS.boardList
+          idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            test.push(dataList[idx2])
+          } else {
+            test.push(this.boardContentsList[i])
+          }
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
@@ -561,7 +594,11 @@ export default {
         return false
       }
       var this_ = this
+      this.loadMoreDESCYn = false
       await this_.getPushContentsList().then(response => {
+        console.log('getContents-------------------------------------------------------')
+        if (!response || !response.content) return
+        console.log(response.content)
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = []
         var cont
@@ -656,6 +693,7 @@ export default {
 
         var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
         this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
+        this_.$refs.pushListChangeTabLoadingComp.contentsWich(targetKey)
       })
       return true
     },
@@ -704,7 +742,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -836,7 +874,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveMemo',
+          url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -914,7 +952,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -976,6 +1014,9 @@ export default {
         if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
           param.targetContentsKey = this.targetCKey
           param.DESCYn = this.loadMoreDESCYn
+          if (this.loadMoreDESCYn === false) {
+            param.offsetInt = this.upOffSetInt
+          }
         }
         if (this.viewTab === 'N') {
           param.creTeamKey = this.chanDetailKey
@@ -1059,7 +1100,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
+        url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -1261,6 +1302,9 @@ export default {
       }
     },
     endListSetFunc (resultList) {
+      if (!this.loadMoreDESCYn) {
+        return
+      }
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
@@ -1272,6 +1316,8 @@ export default {
     },
     async loadMore (descYn) {
       console.log('this.canLoadYn : ' + this.canLoadYn + ' this.endListYn : ' + this.endListYn)
+      console.log('this.descYn : ' + descYn + ' this.canUpLoadYn : ' + this.canUpLoadYn)
+      if (!descYn && !this.canUpLoadYn) return
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
@@ -1310,7 +1356,16 @@ export default {
               ]
               this.boardContentsList = this.replaceArr(newArr)
             }
+            await this.endListSetFunc(resultList)
           } else {
+            if (resultList.content.length < 0) {
+              this.canUpLoadYn = false
+            } else {
+              /*  console.log('여기를 봐야지요')
+              console.log(resultList.content)
+              console.log(this.upOffsetInt) */
+              this.upOffSetInt += 1
+            }
             if (this.viewMainTab === 'P') {
               newArr = [
                 ...resultList.content,
@@ -1324,8 +1379,14 @@ export default {
               ]
               this.boardContentsList = this.replaceArr(newArr)
             }
+            console.log('newArr[0]')
+            // eslint-disable-next-line no-unused-vars
+            var scroll = document.getElementById('memoCard' + newArr[1].contentsKey)
+            // ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
+            // eslint-disable-next-line no-debugger
+            debugger
+            console.log(newArr[0])
           }
-          await this.endListSetFunc(resultList)
           this.contentsList = this.replaceArr(newArr)
 
           this.$emit('numberOfElements', resultList.totalElements)
@@ -1603,7 +1664,9 @@ export default {
       currentConfirmType: '',
       confirmPopShowYn: false,
       confirmType: 'timeout',
-      axiosQueue: []
+      axiosQueue: [],
+      canUpLoadYn: true,
+      upOffSetInt: 0
     }
   }
 }

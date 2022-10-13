@@ -110,12 +110,18 @@ export default {
           if (!target) return
           // eslint-disable-next-line no-new-object
           var param = new Object()
-          if (!target.targetType || (target.targetType !== 'chanDetail' || target.targetType !== 'pushDetail' || target.targetType !== 'boardDetail')) return
+          console.log(target)
+          // alert(JSON.stringify(target))
+          if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'pushDetail' || target.targetKind === 'boardDetail')) return
           param.targetType = target.targetKind
-          param.targetKey = target.targetKey
+          param.creTeamKey = Number(target.targetKey)
           // alert(JSON.stringify(param))
+
+          // eslint-disable-next-line no-debugger
+          debugger
+          // 현재 에러남
+          this.goChanDetail(param)
           this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
-          this.openPop(param)
         }
       }
     }
@@ -132,7 +138,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.comhttps://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'https://mo.d-alim.comservice/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -164,6 +170,7 @@ export default {
     },
     openPop (params) {
       this.popParams = params
+      // alert(JSON.stringify(params))
       this.popShowYn = true
       this.showMenuYn = false
     },
@@ -210,7 +217,7 @@ export default {
       memo.targetKey = targetKey
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.comhttps://mo.d-alim.com/service/tp.getMemoList',
+        url: 'https://mo.d-alim.comservice/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -250,12 +257,16 @@ export default {
       return D_CONT_USER_DO
     },
     goChanDetail (data) {
+      // eslint-disable-next-line no-debugger
+      debugger
       // console.log(data)
-      if (data.popCloseYn === true) this.closePushPop()
+      // if (data.popCloseYn === true) this.closePushPop()
+      console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       if (data.targetType === 'chanDetail') {
         param.targetType = 'chanDetail'
+        console.log(data)
         param.teamKey = data.creTeamKey
         param.targetKey = data.creTeamKey
         param.nameMtext = data.nameMtext

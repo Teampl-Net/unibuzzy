@@ -61,7 +61,7 @@ export default {
       param.reqMemberStatus = '01'
       params = { follower: param, doType: 'RQ' }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

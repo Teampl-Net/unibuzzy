@@ -183,7 +183,7 @@ const functions = {
       response.ELEMENTS = team.ELEMENTS
       await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
     } else {
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response)
+      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
     }
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
@@ -288,7 +288,7 @@ const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+      url: 'service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     var user = result.data.content

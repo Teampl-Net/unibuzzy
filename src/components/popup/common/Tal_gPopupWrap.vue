@@ -294,7 +294,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -740,7 +740,7 @@ export default {
       memo.memoKey = memoKey
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -772,7 +772,7 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')
@@ -820,8 +820,9 @@ export default {
                   /* this.detailVal = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
                   this.successChanParam = { contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' }
                   this.settingPop(true) */
+                  console.log(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
                   await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
-                  this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
+                  await this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
                   // param.targetContentsKey
                 } else {
                   if (currentPage !== this.popId) return

@@ -125,7 +125,7 @@
 </template>
 <script>
 // import findContentsList from '../Tal_findContentsList.vue'
-import boardList from '@/components/list/Tal_commonList.vue'
+import boardList from '@/components/list/D_commonList.vue'
 import findContentsList from '@/components/popup/common/Tal_findContentsList.vue'
 import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
