@@ -668,9 +668,23 @@ export default {
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
           })
         }
-        return detail[0]
+        if (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn) {
+          return this.CHANNEL_DETAIL
+        } else {
+          console.log('CHANNEL_DETAIL')
+          console.log(detail[0])
+          return detail[0]
+        }
       } else {
-        return null
+        if (this.CHANNEL_DETAIL) {
+          console.log('CHANNEL_DETAIL')
+          console.log(this.CHANNEL_DETAIL)
+          return this.CHANNEL_DETAIL
+        } else {
+          console.log('CHANNEL_DETAIL')
+          console.log('null')
+          return null
+        }
       }
     },
     GE_RECENT_CHANGE_TEAM () {
