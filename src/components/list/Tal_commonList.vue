@@ -54,8 +54,8 @@
                   </div>
                 </div>
               </div>
-              <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
-              <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
               <!-- <img style="width: 20px; float: left; margin-right: 5px;" src="../../assets/images/board/securityDoc.svg" alt="">  -->
                 <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
                 <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
@@ -79,7 +79,7 @@
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
-                  <div class="fr w-100P mtop-05" v-show="(alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR') && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)">
+                  <div class="fr w-100P mtop-05" v-show="(alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR') && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)">
                     <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''">
                     <!-- <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''"> -->
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
@@ -320,7 +320,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
+          url: 'service/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -333,7 +333,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
       }
@@ -476,7 +476,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -577,7 +577,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+    //     url: 'service/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -675,7 +675,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com/service/tp.deleteContents',
+            url: 'service/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -708,7 +708,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'https://mo.d-alim.com/service/tp.saveMemo',
+    //       url: 'service/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -895,7 +895,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://mo.d-alim.com/service/tp.getMemoList',
+    //     url: 'service/tp.getMemoList',
     //     param: memo
     //   })
 
