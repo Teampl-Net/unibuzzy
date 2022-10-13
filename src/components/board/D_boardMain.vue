@@ -86,10 +86,10 @@
         <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <!-- {{CAB_DETAIL.shareAuth}}
           {{CAB_DETAIL.blindYn}} -->
-          <boardList  :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
+          <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
             @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
             @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'/>
-          <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn || BOARD_CONT_LIST.length === 0 " />
+          <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
           <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
             @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
             ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
@@ -288,7 +288,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -316,7 +316,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveMemo',
+          url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -517,7 +517,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -555,7 +555,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -587,7 +587,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: '/service//tp.deleteMemo',
+        url: 'service//tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1021,15 +1021,20 @@ export default {
       // this.mCabContentsList = []
       this.emptyYn = false
       var resultList = await this.getContentsList()
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      this.mCabContentsList = this.replaceArr(resultList.content)
-
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
+      // if (resultList)
+      if (!resultList || (resultList.content && resultList.content.length === 0)) {
+        this.mCabContentsList = []
       } else {
-        this.offsetInt += 1
-        this.endListYn = false
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.mCabContentsList = this.replaceArr(resultList.content)
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.endListYn = true
+        } else {
+          this.offsetInt += 1
+          this.endListYn = false
+        }
       }
+
       if (this.mCabContentsList.length === 0) this.emptyYn = true
       // this.$refs.boardListCompo.loadingRefHide()
       this.scrollMove()
@@ -1135,6 +1140,10 @@ export default {
         if (this.mCabContentsList && (!this.CAB_DETAIL.totalContentsCount > this.mCabContentsList.length)) return
 
         var resultList = await this.getContentsList()
+        if (!resultList) {
+          resultList = {}
+          resultList.content = []
+        }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
         // const newArr = [
@@ -1223,6 +1232,7 @@ export default {
       var vPoolChanInfo = null
       var vPoolContList = []
       if (!this.mCabContentsList) {
+        // this.emptyYn = true
         return []
       }
       for (let i = 0; i < this.mCabContentsList.length; i++) {

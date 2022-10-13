@@ -169,7 +169,11 @@ export default {
 
   },
   created () {
-    this.loadingRefShow()
+    console.log('this.emptyYn')
+    console.log(this.emptyYn)
+    if (!this.emptyYn) {
+      this.loadingRefShow()
+    }
   },
   watch: {
     notiScrollTarget: {
@@ -183,7 +187,13 @@ export default {
     },
   },
   updated() {
+    console.log('this.emptyYn')
+    console.log(this.emptyYn)
+    if (this.emptyYn) {
+      this.loadingRefHide()
+    }
     if (this.commonListData) {
+
       if (this.commonListData.length) {
         if (this.targetCKey) {
           this.contentsWich()
@@ -1040,12 +1050,18 @@ export default {
 
     },
     loadingRefShow(){
+      console.log(this.emptyYn)
+      if (this.emptyYn) return
         /* if (this.commonListData && this.commonListData.length === 0) {
             return
         } */
       // // console.log('show');
       if (this.$refs.sLoadingPush)
         this.$refs.sLoadingPush.show()
+        var this_ = this
+        setTimeout(() => {
+          this_.$refs.sLoadingPush.hide()
+        }, 4000)
     },
     loadingRefHide(){
       // // console.log('hide');
@@ -1256,7 +1272,8 @@ export default {
     },
     chanAlimYn: Boolean,
     targetContentsKey: {},
-    notiScrollTarget: {}
+    notiScrollTarget: {},
+    emptyYn: Boolean
   },
   computed: {
     GE_USER () {
@@ -1324,6 +1341,6 @@ export default {
 }
 
 .alimListMemoBoxBackground{
-  width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
+  width: 100% !important; height: 100% !important; background: #00000036 !important; position: absolute !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
 
 </style>
