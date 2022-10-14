@@ -506,11 +506,11 @@ export default {
         cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
         if (mShareItemList[i].accessKind === 'C') {
           mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
-          mShareItemList[i].cabinetNameMtext = cabShareList[cIndex].cabinetNameMtext
+          mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         }
         if (mShareItemList[i].accessKind === 'U') {
-          mShareItemList[i].userDispMtext = cabShareList[cIndex].userDispMtext
-          mShareItemList[i].userNameMtext = cabShareList[cIndex].userNameMtext
+          mShareItemList[i].userDispMtext = this.$changeText(cabShareList[cIndex].userDispMtext)
+          mShareItemList[i].userNameMtext = this.$changeText(cabShareList[cIndex].userNameMtext)
         }
         // // eslint-disable-next-line no-debugger
         // debugger
