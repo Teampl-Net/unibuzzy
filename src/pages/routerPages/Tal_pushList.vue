@@ -189,6 +189,8 @@ export default {
           this_.requestSearchList(this_.readySearchList)
         }
         this_.introPushPageTab()
+        // eslint-disable-next-line no-debugger
+        debugger
         if (this_.targetCKey) {
           this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
           /* if (Response !== true) {
@@ -200,6 +202,7 @@ export default {
           this_.canLoadYn = true
           this_.loadMore(true)
         } else {
+          this_.loadMoreDESCYn = true
           this_.endListSetFunc(response)
         }
         this_.scrolledYn = false
@@ -328,6 +331,7 @@ export default {
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
+        if (!value[0] || !value) return
         if (this.chanAlimYn) {
           if (value[0].creTeamKey === this.chanDetail.teamKey) {
             if (value[0].jobkindId === 'ALIM') {
@@ -437,6 +441,9 @@ export default {
       var chanDetail = null
       var dataList = null
       var i = 0
+      if (!this.computedYn) return
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.computedYn = false
       for (i = 0; i < this.alimContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
         if (idx1 === -1) {
@@ -471,7 +478,8 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (test.length === 0) this.emptyYn = true
-
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.computedYn = true
       return this.replaceArr(test)
     },
     GE_DISP_BOAR_LIST () {
@@ -1302,6 +1310,8 @@ export default {
       }
     },
     endListSetFunc (resultList) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (!this.loadMoreDESCYn) {
         return
       }
@@ -1667,7 +1677,8 @@ export default {
       confirmType: 'timeout',
       axiosQueue: [],
       canUpLoadYn: true,
-      upOffSetInt: 0
+      upOffSetInt: 0,
+      computedYn: true
     }
   }
 }

@@ -158,6 +158,8 @@ const functions = {
     }
   },
   async addChanList (teamKey) {
+    if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+    g_axiosQueue.push('addChanList')
     var paramMap = new Map()
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
@@ -185,6 +187,8 @@ const functions = {
     } else {
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
     }
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+    g_axiosQueue.splice(queueIndex, 1)
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
   recvNoti (e) {
@@ -288,7 +292,7 @@ const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+      url: 'service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     var user = result.data.content

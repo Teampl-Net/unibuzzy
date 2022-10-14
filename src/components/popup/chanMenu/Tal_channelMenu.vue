@@ -98,7 +98,8 @@ export default {
   props:{
     addChanList:{},
     propData: {},
-    chanAlimListTeamKey: {}
+    chanAlimListTeamKey: {},
+    pPopId: {}
   },
 
   computed: {
@@ -131,7 +132,7 @@ export default {
   watch: {
     pageUpdate (value, old) {
       var hStack = this.$store.getters['D_HISTORY/hStack']
-      if ('chanMenu' + this.chanAlimListTeamKey === hStack[hStack.length - 1]) {
+      if (this.$setParentsId(this.pPopId, 'chanMenu' + this.chanAlimListTeamKey) === hStack[hStack.length - 1]) {
         this.goNo()
       }
     },
@@ -142,10 +143,13 @@ export default {
     }
   },
   created() {
+    console.log(this.pPopId)
+    debugger
     // console.log('CHANNEL_DETAIL')
     // console.log(this.CHANNEL_DETAIL)
     var history = this.$store.getters['D_HISTORY/hStack']
-    history.push('chanMenu' + this.chanAlimListTeamKey)
+    this.writePopId = this.$setParentsId(this.pPopId, 'chanMenu' + this.chanAlimListTeamKey)
+    history.push(this.$setParentsId(this.pPopId, 'chanMenu' + this.chanAlimListTeamKey))
     this.$store.commit('D_HISTORY/updateStack', history)
     this.screenHeight = window.innerHeight
     // this. myBoardList =
@@ -207,7 +211,7 @@ export default {
   emits: ['openPop', 'goPage'],
   methods: {
     /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
-    convenienceFunc (targetType) {
+    async convenienceFunc (targetType) {
       var param = {}
       param.targetType = targetType
       // 알림신청의 경우 신청 사유를 작성 해야하기에 Yn을 추가하였습니다.
@@ -221,9 +225,16 @@ export default {
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.targetKey = this.chanAlimListTeamKey
       param.currentTeamKey = this.chanAlimListTeamKey
-
+      
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      await this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      await this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('openItem', param)
-      this.goNo()
+      this.closeYn = true
+      
+      this.$emit('closePop')
     },
     myChanEdit(){
       var param = {}
@@ -244,7 +255,7 @@ export default {
       params.userKey = this.GE_USER.userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: params
       })
       // console.log(result.data.content[0])
@@ -338,7 +349,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
+          url: 'service/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       })
       var tempList = []

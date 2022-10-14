@@ -796,6 +796,9 @@ export const commonMethods = {
     var dateYn = distance > 0
     console.log('두 날짜 사이는 ' + dateYn ? '첫번째 인자값이 더 최신입니다.' : '두번째 인자값이 더 최신입니다.')
     return dateYn
+  },
+  setParentsId (pId, setId) {
+    return pId + '|||' + setId
   }
 }
 
@@ -843,5 +846,6 @@ export default {
     Vue.config.globalProperties.$handleImageUpload = commonMethods.handleImageUpload
     Vue.config.globalProperties.$dateCalc = commonMethods.dateCalc
     Vue.config.globalProperties.$addConsole = commonMethods.addConsole
+    Vue.config.globalProperties.$setParentsId = commonMethods.setParentsId
   }
 }

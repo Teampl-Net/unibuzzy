@@ -170,7 +170,8 @@ export default {
   },
   props: {
     chanDetail: {},
-    notiScrollTarget: {}
+    notiScrollTarget: {},
+    pPopId: {}
   },
   components: {
     pushList,
@@ -181,6 +182,8 @@ export default {
     match
   },
   created () {
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log(this.pPopId)
     this.$emit('openLoading')
     this.readyFunction()
   },
@@ -524,6 +527,10 @@ export default {
         this.writePushData = {}
         this.writePushData = params
         this.writePopId = 'writePush' + history.length
+        console.log(this.pPopId)
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
         history.push(this.writePopId)
         // this.$store.commit('D_HISTORY/updateStack', history)
         this.writePushYn = true
@@ -538,7 +545,8 @@ export default {
         this.writeBoardData = {}
         this.writeBoardData = param
         history = this.$store.getters['D_HISTORY/hStack']
-        this.writeBoardPopId = 'writePush' + history.length
+        this.writeBoardPopId = 'writeBoard' + history.length
+        this.writeBoardPopId = this.$setParentsId(this.pPopId, this.writeBoardPopId)
         history.push(this.writeBoardPopId)
 
         this.writeBoardYn = true
@@ -569,9 +577,16 @@ export default {
     },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
       if (this.writePopId === hStack[hStack.length - 1]) {
-        var history = this.$store.getters['D_HISTORY/hStack']
-        var removePage = history[history.length - 1]
+        history = history.filter((element, index) => index < history.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', history)
+        this.closeWritePushPop()
+      } else if (this.writeBoardPopId === hStack[hStack.length - 1]) {
+        // var history = this.$store.getters['D_HISTORY/hStack']
+        // var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', history)
@@ -707,7 +722,7 @@ export default {
     },
     pageUpdate (value, old) {
       this.backClick()
-      /* if (this.popId === hStack[hStack.length - 1]) {
+      /* if (this.pPopId === hStack[hStack.length - 1]) {
             this.closeSubPop()
         } */
     },

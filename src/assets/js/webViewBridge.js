@@ -118,6 +118,7 @@ const isJsonString = (str) => {
 
           store.commit('D_HISTORY/changeDeepLinkQueue', queList)
         } else if (message.type === 'goback') {
+          if (!store.getters['D_USER/GE_NET_STATE']) return
           var history = store.getters['D_HISTORY/hStack']
           var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
@@ -201,7 +202,7 @@ const isJsonString = (str) => {
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
           // alert(JSON.stringify(message.log))
-          this.$addConsole(message.log)
+          // this.$addConsole(message.log)
           // alert(message.activeYn)
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }

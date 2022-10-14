@@ -148,7 +148,7 @@ export default {
       param.reqMemberStatus = '99'
       params = { follower: param, doType: 'AP' }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       console.log('params')
@@ -191,7 +191,7 @@ export default {
       } */
 
       result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+          url: 'service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -208,7 +208,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+          url: 'service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -233,7 +233,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteManager',
+        url: 'service/tp.deleteManager',
         param: param
       })
 
@@ -243,7 +243,7 @@ export default {
       debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveManager',
+        url: 'service/tp.saveManager',
         param: param
       })
       console.log(result)

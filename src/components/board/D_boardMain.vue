@@ -108,7 +108,7 @@
 </div>
 <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
-<div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:99999">
+<div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999">
   <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
 </div>
 <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="this.memoShowYn = false"></div>
@@ -141,7 +141,8 @@ export default {
     imgPreviewPop
   },
   props: {
-    propData: {}
+    propData: {},
+    pPopId: {}
   },
   created () {
     // console.log(this.CAB_DETAIL)
@@ -288,7 +289,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -316,7 +317,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveMemo',
+          url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -440,6 +441,7 @@ export default {
     imgLongClick (param) {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
+      this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
       this.selectImgObject = param.selectObj
@@ -517,7 +519,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -555,7 +557,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -587,7 +589,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service//tp.deleteMemo',
+        url: 'service//tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -855,6 +857,7 @@ export default {
       this.boardWriteData = params
       var history = this.$store.getters['D_HISTORY/hStack']
       this.writePopId = 'writeBoard' + history.length
+      this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
       this.$store.commit('D_HISTORY/updateStack', history)
 

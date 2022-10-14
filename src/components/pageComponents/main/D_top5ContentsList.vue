@@ -64,28 +64,29 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
-      var idx1, idx2
+      // var idx1, idx2
       var contList = this.contentsList
-      var test = this.GE_MAIN_CHAN_LIST
+      /* var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
-
-        var detailData = test[idx1]
-        if (detailData.ELEMENTS) {
-          idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
-          if (idx2 !== -1) {
-            contList[i] = detailData.ELEMENTS.alimList[idx2]
-          } else {
+        if (idx1 !== -1) {
+          var detailData = test[idx1]
+          if (detailData.ELEMENTS) {
             idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
             if (idx2 !== -1) {
-              contList[i] = detailData.ELEMENTS.boardList[idx2]
+              contList[i] = detailData.ELEMENTS.alimList[idx2]
+            } else {
+              idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+              if (idx2 !== -1) {
+                contList[i] = detailData.ELEMENTS.boardList[idx2]
+              }
             }
           }
         }
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
       console.log('#####################')
-      console.log(contList)
+      console.log(contList) */
       return contList
     },
     GE_NEW_CONT_LIST () {
@@ -101,15 +102,17 @@ export default {
     },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
-        var newArr = []
-        if (!value) return
+        /* if (!value || !value[0]) return
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
-        if (this.$dateCalc(this.GE_DISP_CONT_LIST[0].creDate, value[0].creDate) === true) return
-        newArr = [
-          value[0],
-          ...this.contentsList
-        ]
-        this.contentsList = this.replaceArr(newArr)
+        // if (this.$dateCalc(this.GE_DISP_CONT_LIST[0].creDate, value[0].creDate) === true) return
+        if (this.contentsList.findIndex((item) => item.contentsKey > value[0].contentsKey)) return
+        if (this.contentsList.findIndex((item) => item.contentsKey === value[0].contentsKey) === -1) {
+          var newArr = this.contentsList
+          // eslint-disable-next-line no-debugger
+          debugger
+          newArr.unshift(value[0])
+          this.contentsList = this.replaceArr(newArr)
+        } */
       },
       deep: true
     }
@@ -121,7 +124,7 @@ export default {
   methods: {
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
+        if (data.findIndex((item) => item.contentsKEey === current.contentsKEey) === -1) {
           data.push(current)
         }
         return data

@@ -86,6 +86,7 @@ export default {
     props: {
         chanInfo: {},
         propData: {},
+        pPopId: {}
     },
     created (){
         this.getBookList()
@@ -395,6 +396,7 @@ export default {
             this.setBookSearchFilter()
             var history = this.$store.getters['D_HISTORY/hStack']
             this.selectPopId = 'selectMemeberPopup' + history.length
+            this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
             history.push(this.selectPopId)
             this.$store.commit('D_HISTORY/updateStack', history)
 
@@ -428,6 +430,7 @@ export default {
             if (!this.mobileYn) {
                 var history = this.$store.getters['D_HISTORY/hStack']
                 this.excelPopId = 'excelUploadPop' + history.length
+                this.excelPopId = this.$setParentsId(this.pPopId, this.excelPopId)
                 history.push(this.excelPopId)
                 this.$store.commit('D_HISTORY/updateStack', history)
 
