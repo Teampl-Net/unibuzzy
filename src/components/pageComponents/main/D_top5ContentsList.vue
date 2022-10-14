@@ -69,17 +69,16 @@ export default {
       var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
-        if (idx1 !== -1) {
-          var detailData = test[idx1]
-          if (detailData.ELEMENTS) {
+
+        var detailData = test[idx1]
+        if (detailData.ELEMENTS) {
+          idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+          if (idx2 !== -1) {
+            contList[i] = detailData.ELEMENTS.alimList[idx2]
+          } else {
             idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
             if (idx2 !== -1) {
-              contList[i] = detailData.ELEMENTS.alimList[idx2]
-            } else {
-              idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
-              if (idx2 !== -1) {
-                contList[i] = detailData.ELEMENTS.boardList[idx2]
-              }
+              contList[i] = detailData.ELEMENTS.boardList[idx2]
             }
           }
         }
@@ -102,17 +101,15 @@ export default {
     },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
-        /* if (!value || !value[0]) return
+        var newArr = []
+        if (!value) return
         if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
-        // if (this.$dateCalc(this.GE_DISP_CONT_LIST[0].creDate, value[0].creDate) === true) return
-        if (this.contentsList.findIndex((item) => item.contentsKey > value[0].contentsKey)) return
-        if (this.contentsList.findIndex((item) => item.contentsKey === value[0].contentsKey) === -1) {
-          var newArr = this.contentsList
-          // eslint-disable-next-line no-debugger
-          debugger
-          newArr.unshift(value[0])
-          this.contentsList = this.replaceArr(newArr)
-        } */
+        if (this.$dateCalc(this.GE_DISP_CONT_LIST[0].creDate, value[0].creDate) === true) return
+        newArr = [
+          value[0],
+          ...this.contentsList
+        ]
+        this.contentsList = this.replaceArr(newArr)
       },
       deep: true
     }
@@ -124,7 +121,7 @@ export default {
   methods: {
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => item.contentsKEey === current.contentsKEey) === -1) {
+        if (data.findIndex((item) => item.contentsKey === current.contentsKey) === -1) {
           data.push(current)
         }
         return data
