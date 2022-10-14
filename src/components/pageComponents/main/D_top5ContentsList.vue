@@ -64,9 +64,9 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
-      // var idx1, idx2
+      var idx1, idx2
       var contList = this.contentsList
-      /* var test = this.GE_MAIN_CHAN_LIST
+      var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
         if (idx1 !== -1) {
@@ -86,7 +86,7 @@ export default {
         // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
       console.log('#####################')
-      console.log(contList) */
+      console.log(contList)
       return contList
     },
     GE_NEW_CONT_LIST () {

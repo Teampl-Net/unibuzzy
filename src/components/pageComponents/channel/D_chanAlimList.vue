@@ -667,7 +667,7 @@ export default {
         console.log(detail[0])
         // eslint-disable-next-line no-debugger
         debugger
-        if (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn) {
+        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
         } else {
           console.log('CHANNEL_DETAIL')
