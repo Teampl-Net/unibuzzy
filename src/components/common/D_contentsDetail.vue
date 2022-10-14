@@ -1127,11 +1127,12 @@ export default {
       var result = null
       var saveYn = true
       var temp = []
-      if (!this.CONT_DETAIL.D_CONT_USER_DO) {
-        this.CONT_DETAIL.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      var tempDetail = this.CONT_DETAIL
+      if (!tempDetail.D_CONT_USER_DO) {
+        tempDetail.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
       }
-      if (this.CONT_DETAIL.D_CONT_USER_DO) {
-        temp = this.CONT_DETAIL.D_CONT_USER_DO
+      if (tempDetail.D_CONT_USER_DO) {
+        temp = tempDetail.D_CONT_USER_DO
       }
       for (var i = 0; i < temp.length; i++) {
         if (temp[i].doType === act.doType) {
@@ -1150,32 +1151,35 @@ export default {
       param.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       if (saveYn === false) {
         param.doKey = act.doKey
-        result = this.$saveUserDo(param, 'delete')
+        result = await this.$saveUserDo(param, 'delete')
         if (act.doType === 'LI') {
-          this.CONT_DETAIL.likeCount -= 1
+          tempDetail.likeCount -= 1
         }
         for (i = 0; i < temp.length; i++) {
           if (temp[i].doType === act.doType) {
             temp[i].doKey = 0
           }
         }
-        this.CONT_DETAIL.D_CONT_USER_DO = temp
-        this.changeData += 1
+        tempDetail.D_CONT_USER_DO = temp
       } else {
         param.actYn = true
         param.targetKind = 'C'
         var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
-          // debugger
+          console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+          // eslint-disable-next-line no-debugger
+          debugger
           for (var d = temp.length - 1; d >= 0; d--) {
             if (temp[d].doType === act.doType) {
               temp[d].doKey = result.doKey
             }
           }
           // temp.push({ doType: act.doType, doKey: result.doKey })
-          this_.CONT_DETAIL.D_CONT_USER_DO = temp
-          this_.changeData += 1
-          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [this_.CONT_DETAIL])
+          tempDetail.D_CONT_USER_DO = temp
+          tempDetail.likeCount = result.doCount
+          console.log(('두번째 saveUserdo'))
+          console.log(tempDetail)
+          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         })
         for (var d = temp.length - 1; d >= 0; d--) {
           if (temp[d].doType === act.doType) {
@@ -1183,9 +1187,11 @@ export default {
           }
         }
         if (act.doType === 'LI') {
-          this.CONT_DETAIL.likeCount += 1
+          tempDetail.likeCount += 1
         }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [this.CONT_DETAIL])
+        console.log(('첫번째 saveUserdo'))
+        console.log(tempDetail)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         // }
       }
     },

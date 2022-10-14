@@ -447,7 +447,7 @@ export default {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
             dataList = chanDetail.ELEMENTS.boardList
-            idx2 = dataList.findIndex((item) => item.mccKey === this_.alimContentsList[i].mccKey)
+            idx2 = dataList.findIndex((item) => item.contentsKey === this_.alimContentsList[i].contentsKey)
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
             if (idx2 !== -1) {
@@ -458,8 +458,8 @@ export default {
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.boardList
-          idx2 = dataList.findIndex((item) => item.mccKey === this.alimContentsList[i].mccKey)
+          dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
           if (idx2 !== -1) {
@@ -490,7 +490,7 @@ export default {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
             dataList = chanDetail.ELEMENTS.boardList
-            idx2 = dataList.findIndex((item) => item.mccKey === this_.boardContentsList[i].mccKey)
+            idx2 = dataList.findIndex((item) => item.contentsKey === this_.boardContentsList[i].contentsKey)
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
             if (idx2 !== -1) {

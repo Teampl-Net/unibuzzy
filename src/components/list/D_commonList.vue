@@ -1206,7 +1206,7 @@ export default {
             }
             // temp.push({ doType: act.doType, doKey: result.doKey })
             this_.commonListData[idx].D_CONT_USER_DO = temp
-            this_.changeData += 1
+            this.commonListData[idx].likeCount = result.doCount
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', this.commonListData)
         })
         for (var d = temp.length - 1; d >= 0; d--) {
