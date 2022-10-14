@@ -336,6 +336,18 @@ export default {
           message = e.data
         }
         if (message.type === 'pushmsg') {
+          if (this.netState === false || this.netState === 'false') {
+            this.netText = '네트워크 연결이 끊어졌습니다.<br> 잠시후 다시시도 해주세요'
+            /* if (this.netBoxShowYn === true) {
+              this.netBoxShowYn = true
+            } */
+            this.netBoxShowYn = true
+            var this_ = this
+            setTimeout(() => {
+              this_.netBoxShowYn = false
+            }, 2000)
+            return
+          }
           if (JSON.parse(message.pushMessage).backgroundYn) {
             this.notiDetail = JSON.parse(message.pushMessage)
           } else {
