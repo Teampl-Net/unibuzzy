@@ -9,10 +9,10 @@
       </transition>
       <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
       v-if="targetType !=='writeBoard' && targetType !=='writePush'" :followYn="this.headerFollowYn"
-      @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
+      @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if=" popId &&  this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
-      <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='bgcolor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
+      <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='this.bgblackYn = true' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if=" popId &&  this.targetType === 'pushList'">
         <pushList :pPopId="popId" :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
@@ -338,9 +338,6 @@ export default {
     openDetailYn (bool) {
       this.memberDetailOpen = bool
     },
-    bgcolor (data) {
-      this.bgblackYn = data
-    },
     openChannelItem (data) {
       /* if (data.targetType === 'boardMain') {
         var history = this.$store.getters['D_HISTORY/hStack']
@@ -519,7 +516,6 @@ export default {
         this.headerTitle = '채널 관리'
       } else if (this.targetType === 'chanInfo') {
         this.headerTitle = '채널 상세'
-        this.bgblackYn = true
       } else if (this.targetType === 'autoAnswer') {
         this.headerTitle = '자동 응답'
       } else if (this.targetType === 'memberForm') {

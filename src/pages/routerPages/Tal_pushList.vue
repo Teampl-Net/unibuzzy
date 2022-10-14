@@ -40,13 +40,13 @@
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
         </div>
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="this.memoShowYn = false"></div>
-        <transition name="showMemoPop">
-          <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: absolute; bottom:0;left:0; z-index:999999;"/>
-        </transition>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
         <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
+        <transition name="showMemoPop">
+          <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:99999998; height: fit-content;" />
+        </transition>
     </div>
     <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
   <!-- </div> -->
@@ -417,6 +417,12 @@ export default {
     }
   },
   computed: {
+    getWindowSizeBottom () {
+      console.log(window.innerHeight)
+      return {
+        '--widndowHeight': window.innerHeight + 'px'
+      }
+    },
     GE_DEL_CONT_LIST () {
       return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
     },

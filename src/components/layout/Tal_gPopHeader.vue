@@ -43,7 +43,7 @@ export default {
     chanAlimListTeamKey: {},
     subTitlebtnList: {},
     thisPopN: {},
-    bgblack: {},
+    bgblack: { type: Boolean, default: false },
     managerBtn: {},
     memberDetailOpen: {},
     targetType: {},
@@ -100,12 +100,14 @@ export default {
     helpButtonPop
   },
   created () {
+    console.log(this.bgblack)
     // // console.log(this.chanName)
     // // console.log(this.chanAlimListTeamKey)
   },
   watch: {
     bgblack () {
-
+      console.log('--- gPopHeader ---')
+      console.log(this.bgblack)
     }
   }
 }

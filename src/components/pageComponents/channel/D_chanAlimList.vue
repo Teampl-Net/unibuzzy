@@ -1,7 +1,7 @@
 
 <template>
 <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
-  <p class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> {{changeText(CHANNEL_DETAIL.nameMtext)}}</p>
+  <div class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -15,7 +15,7 @@
       </div>
       <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
         <div class="fl font16  w-100P">
-          <p class="font15 textLeft fl">
+          <p class="font15 textLeft fl" >
             <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
             {{this.CHANNEL_DETAIL.teamTypeText}}
           </p>
@@ -479,7 +479,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
+        url: 'https://mo.d-alim.com/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
@@ -710,13 +710,16 @@ export default {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
         }
+        if (value && value.blackYn) {
+          this.$emit('bgcolor', value.blackYn)
+        }
       },
       deep: true
     },
     GE_RECENT_CHANGE_TEAM (value, old) {
-      if (value === this.CHANNEL_DETAIL.teamKey) {
-        // console.log('team [' + value + ']의 관련 정보가 변경되었음')
-      }
+      // if (value === this.CHANNEL_DETAIL.teamKey) {
+      // console.log('team [' + value + ']의 관련 정보가 변경되었음')
+      // }
     },
     GE_MAIN_CHAN_LIST (value, old) {
     },

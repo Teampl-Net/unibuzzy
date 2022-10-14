@@ -136,13 +136,17 @@ export default {
     },
     methods: {
         setParentSelectList () {
+            console.log(this.selectedMemberList)
+            console.log(this.memberList)
+            debugger
             if (this.memberList) {
                 for (var i = 0; i < this.memberList.length; i++) {
                     this.memberList[i].selectedYn = false
 
                     for (var s = 0; s < this.selectedMemberList.length; s++) {
-                        if (this.selectedMemberList[s].userKey === this.memberList[i].userKey || this.selectedMemberList[s].accessKey === this.memberList[i].userKey) {
+                        if (this.selectedMemberList[s].accessKey === this.memberList[i].accessKey) {
                         this.memberList[i].selectedYn = true
+                        this.memberList[i].shareSeq = this.memberList[i].accessKey
                         this.setSelectedList.memberList.push(this.memberList[i])
                         break
                         }
@@ -158,6 +162,7 @@ export default {
                             this.bookList[i].selectedYn = true
                             console.log('setParentSelectList')
                             console.log(this.bookList[i])
+                            this.bookList[i].shareSeq = this.bookList[i].accessKey
                             this.setSelectedList.bookList.push(this.bookList[i])
                             break
                         }
@@ -181,11 +186,12 @@ export default {
 
             data.shareType = this.itemType
             console.log('***************************')
+            console.log(this.setSelectedList.bookList)
             console.log(data)
             console.log(type)
 
             if (type === 'U') {
-                var indexOf = this.setSelectedList.memberList.findIndex(i => (i.userKey === data.userKey && i.selectedYn === true) || i.shareSeq === data.shareSeq && i.selectedYn === true)
+                var indexOf = this.setSelectedList.memberList.findIndex(i => (i.shareSeq === data.shareSeq && i.selectedYn === true))
                 if (indexOf === -1) {
                     data.selectedYn = true
                     // data.shareSeq = data.userKey
@@ -195,7 +201,7 @@ export default {
                     this.$showToastPop('중복선택되었습니다.')
                 }
             }else if (type === 'C') {
-                var indexOf = this.setSelectedList.bookList.findIndex(i => (i.accessKey === data.accessKey && i.selectedYn === true) || i.shareSeq === data.shareSeq && i.selectedYn === true)
+                var indexOf = this.setSelectedList.bookList.findIndex(i => (i.cabinetKey === data.cabinetKey && i.selectedYn === true))
                 if (indexOf === -1) {
                     data.selectedYn = true
                     // data.shareSeq = data.cabinetKey

@@ -1,6 +1,6 @@
 <template>
-
   <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
+    <loadingCompo v-if="loadingYn" />
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName' />
     <div class="itemWrite">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">게시판명</p>
@@ -225,7 +225,7 @@
 </template>
 
 <script>
-// import loadingCompo from '../../components/layout/Tal_loading.vue'
+import loadingCompo from '../../components/layout/Tal_loading.vue'
 import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
 import selectBookList from './receiver/Tal_selectBookList.vue'
@@ -239,7 +239,8 @@ export default {
   },
   created () {
     // 로딩 닫기는 디테일을 가져오고 난 뒤
-    this.$emit('openLoading')
+    // this.$emit('openLoading')
+    this.loadingYn = true
     /* var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
     history.push(this.popId)
@@ -350,14 +351,16 @@ export default {
       permissionWGroup: { type: 'A', selectedList: [] },
       permissionRGroup: { type: 'A', selectedList: [] },
       permissionVGroup: { type: 'A', selectedList: [] },
-      permissionSelectedList: []
+      permissionSelectedList: [],
+      loadingYn: false
 
     }
   },
   components: {
     selectType,
     selectBookList,
-    receiverAccessList
+    receiverAccessList,
+    loadingCompo
   },
   // emits: ['openPop', 'goPage'],
   methods: {
@@ -465,6 +468,7 @@ export default {
         var shareBookCount = 0
         if (cabShareList) {
           for (let i = 0; i < cabShareList.length; i++) {
+            if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
             if (cabShareList[i].accessKind === 'C') {
               shareBookCount += 1
               cabShareList[i].cabinetKey = cabShareList[i].accessKey
@@ -478,6 +482,7 @@ export default {
           // this.selectedList = {}
           console.log('------------------ this.shareGroup.selectedList -----------------')
           console.log(this.shareGroup.selectedList)
+          console.log(cabShareList)
           // this.selectedList.data = this.shareGroup.selectedList
           this.selectedReceiver = shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
         }
@@ -500,15 +505,21 @@ export default {
       this.permissionVGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
       this.permissionRGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
       // 공유 아이템 중 W, V, R을 찾아 Radio버튼 setting
+      console.log(mShareItemList)
+      // eslint-disable-next-line no-debugger
+      debugger
       for (let i = 0; i < mShareItemList.length; i++) {
+        if (mShareItemList[i].accessKey === undefined || mShareItemList[i].accessKey === null || mShareItemList[i].accessKey === '') continue
         var cIndex = null
 
         cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
         if (mShareItemList[i].accessKind === 'C') {
           mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
+
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         }
         if (mShareItemList[i].accessKind === 'U') {
+          mShareItemList[i].shareSeq = mShareItemList[i].accessKey
           mShareItemList[i].userDispMtext = this.$changeText(cabShareList[cIndex].userDispMtext)
           mShareItemList[i].userNameMtext = this.$changeText(cabShareList[cIndex].userNameMtext)
         }
@@ -566,6 +577,11 @@ export default {
       if (w === false && this.shareGroup.type !== 'S') this.permissionWGroup.type = 'N'
       if (v === false && this.shareGroup.type !== 'S') this.permissionVGroup.type = 'N'
       if (r === false && this.shareGroup.type !== 'S') this.permissionRGroup.type = 'N'
+      if (findListInT === -1) {
+        this.permissionWGroup.type = 'S'
+        this.permissionVGroup.type = 'S'
+        this.permissionRGroup.type = 'S'
+      }
       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       console.log(this.permissionWGroup.selectedList)
       console.log(this.permissionVGroup.selectedList)
@@ -593,7 +609,8 @@ export default {
       console.log(this.permissionVGroup.selectedList)
       console.log(this.permissionRGroup.selectedList)
 
-      this.$emit('closeLoading')
+      // this.$emit('closeLoading')
+      this.loadingYn = false
     },
     selectShareActorItem (itemType) {
       console.log('selectShareActorItem')
@@ -622,7 +639,6 @@ export default {
         if (itemType === 'W') {
           this.permissionSelectedList = this.permissionWGroup.selectedList
         }
-        console.log('ㅅㅄㅄㅄㅄ')
         console.log(this.shareGroup.selectedList)
         this.selectedList = {}
         if (this.shareGroup.selectedList && ((this.shareGroup.selectedList.bookList && this.shareGroup.selectedList.bookList.length > 0) || (this.shareGroup.selectedList.memberList && this.shareGroup.selectedList.memberList.length > 0))) {
@@ -678,6 +694,7 @@ export default {
       } else if (this.shareGroup.type === 'S') {
         console.log('this.shareGroup.selectedList')
         console.log(this.shareGroup.selectedList)
+        if (!this.shareGroup.selectedList.bookList) this.shareGroup.selectedList.bookList = []
         shareSeqList = this.shareGroup.selectedList.bookList
         for (var i = 0; i < shareSeqList.length; i++) {
           share = {}
