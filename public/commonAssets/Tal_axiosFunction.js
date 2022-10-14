@@ -179,11 +179,13 @@ export const methods = {
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
+    console.log('^&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&^')
+    console.log(result.data)
     if (result.data.resultCode === 'OK') {
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')
       if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-        store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+        // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         localStorage.setItem('user', JSON.stringify(result.data.userMap))
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
         store.dispatch('D_USER/AC_USER', result.data.userMap)
@@ -196,7 +198,7 @@ export const methods = {
     } else {
       // var user = store.getters['D_USER/GE_USER']
       if (user === undefined || user === null || user === '') {
-        store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+        // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace('/policies')
