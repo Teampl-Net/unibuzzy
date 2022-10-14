@@ -1,4 +1,5 @@
 <template>
+
   <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
     <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName' />
     <div class="itemWrite">
@@ -24,7 +25,7 @@
     <div class="itemWrite">
       <p class="fontBold textLeft font16 fl " style="width: 100px;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="text-align: left;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray" >{{okFunctionList}}</div>
+      <div style="text-align: left; overflow: scroll;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray d" >{{okFunctionList}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
@@ -124,7 +125,7 @@
         <p class="textLeft mleft-15 font16 fl" :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">작성</p>
         <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
-          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0" style="overflow: auto;">{{writePermission}}</p>
           <template v-if="selectedWriteList.length > 0">
             <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -134,12 +135,12 @@
           </template>
         </div>
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;" >
-            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
-            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
-            <input v-model="permissionWGroup.type" class="h-100P fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
+            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
+            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
+            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('W')" v-if="this.shareGroup.type == 'A' && this.permissionWGroup.type === 'S'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
-          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0">{{writePermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0" style="overflow: auto;">{{writePermission}}</p>
           <template v-if="selectedWriteList.length > 0">
             <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -154,7 +155,7 @@
         <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
           <!-- 공유 대상이 선택이면서  -->
-          <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedReadList.length === 0" style="overflow: auto;">{{readPermission}}</p>
           <template v-if="selectedReadList.length > 0">
             <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -164,12 +165,12 @@
           </template>
         </div>
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
-          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
-          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'N')" value="N" id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
-          <input v-model="permissionVGroup.type" class="h-100P fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
+          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
+          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'N')" value="N" id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
+          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('V')" v-if=" this.permissionVGroup.type === 'S' && this.shareGroup.type == 'A'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
-          <p class="font16 commonBlack" v-if="selectedReadList.length === 0">{{readPermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedReadList.length === 0" style="overflow: auto;">{{readPermission}}</p>
           <template v-if="selectedReadList.length > 0">
             <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -183,7 +184,7 @@
         <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'" >
-          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0" style="overflow: auto;">{{commentPermission}}</p>
           <template v-if="selectedCommentList.length > 0">
             <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -194,12 +195,12 @@
         </div>
 
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
-          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
-          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
-          <input v-model="permissionRGroup.type" class="h-100P fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
+          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
+          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
+          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('R')" v-if="this.shareGroup.type == 'A'  && this.permissionRGroup.type === 'S'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
-          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0">{{commentPermission}}</p>
+          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0" style="overflow: auto;">{{commentPermission}}</p>
           <template v-if="selectedCommentList.length > 0">
             <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
               <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
@@ -224,6 +225,7 @@
 </template>
 
 <script>
+// import loadingCompo from '../../components/layout/Tal_loading.vue'
 import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
 import selectBookList from './receiver/Tal_selectBookList.vue'
@@ -236,6 +238,8 @@ export default {
     chanName: {}
   },
   created () {
+    // 로딩 닫기는 디테일을 가져오고 난 뒤
+    this.$emit('openLoading')
     /* var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
     history.push(this.popId)
@@ -588,6 +592,8 @@ export default {
       console.log(this.permissionWGroup.selectedList)
       console.log(this.permissionVGroup.selectedList)
       console.log(this.permissionRGroup.selectedList)
+
+      this.$emit('closeLoading')
     },
     selectShareActorItem (itemType) {
       console.log('selectShareActorItem')

@@ -51,7 +51,7 @@ export default {
       // console.log(param)
       // 서비스가 나오면 여기서 axios로 데이터 받아 set해주기!!!!
       // var result = await this.$commonAxiosFunction({
-      //   url : 'https://mo.d-alim.com/service/tp.getChanMemberForm',
+      //   url : 'service/tp.getChanMemberForm',
       //   param: param
       // })
       this.memberFormList = this.dummyData
@@ -62,7 +62,7 @@ export default {
       // param.key = key
       // param.activeYn = true
       // var result = await this.$commonAxiosFunction({
-      //   url : 'https://mo.d-alim.com/service/tp.changeMQuestion',
+      //   url : 'service/tp.changeMQuestion',
       //   param: param
       // })
       data.activeYn = !data.activeYn

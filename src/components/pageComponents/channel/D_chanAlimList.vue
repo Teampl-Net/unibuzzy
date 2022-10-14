@@ -42,7 +42,6 @@
       <p class="font16 fl w-100P">구독자 {{CHANNEL_DETAIL.followerCount}}명</p>
       <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{CHANNEL_DETAIL.totalContentsCount}}건</p>
     </div>
-
     <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
         <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; align-items: center;">
           <div @click="goProfile" :style="'background-image: url(' + (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.GE_USER.userProfileImg : this.GE_USER.userProfileImg) + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;"></div>
@@ -55,7 +54,6 @@
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
-
         <!--  -->
         <div v-if="readyFinYn === false && (!CHANNEL_DETAIL.D_CHAN_AUTH === true || CHANNEL_DETAIL.D_CHAN_AUTH.followYn === undefined)" class="fl w-100P">
           <match :color="'#6768a7'"/>
@@ -73,7 +71,7 @@
             <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
           </div>
         </div>
-        <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div v-else-if="readyFinYn || CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
           <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
         </div>
@@ -478,7 +476,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
@@ -651,6 +649,9 @@ export default {
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
           })
         }
+        console.log(detail[0])
+        // eslint-disable-next-line no-debugger
+        debugger
         if (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn) {
           return this.CHANNEL_DETAIL
         } else {

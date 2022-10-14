@@ -326,7 +326,7 @@ export default {
     },
     async saveActAxiosFunc (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       if (result.data.result === true) {
@@ -336,6 +336,8 @@ export default {
     closeXPop () {
       this.resultPopShowYn = false
       this.$emit('closeXPop')
+      this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      this.$store.commit('D_USER/MU_CLEAN_USER')
       localStorage.setItem('loginYn', false)
       localStorage.setItem('user', '')
       localStorage.setItem('sessionUser', '')

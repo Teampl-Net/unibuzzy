@@ -472,7 +472,7 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (test.length === 0) this.emptyYn = true
 
-      return test
+      return this.replaceArr(test)
     },
     GE_DISP_BOAR_LIST () {
       var idx1, idx2
@@ -515,7 +515,7 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (test.length === 0) this.emptyYn = true
 
-      return test
+      return this.replaceArr(test)
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -742,7 +742,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
+        url: 'service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -874,7 +874,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com/service/tp.saveMemo',
+          url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -952,7 +952,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1100,7 +1100,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
+        url: 'service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -1407,13 +1407,14 @@ export default {
     },
     replaceArr (arr) {
       // var this_ = this
+      if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
+        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.mccKey - a.mccKey
+          return b.contentsKey - a.contentsKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data

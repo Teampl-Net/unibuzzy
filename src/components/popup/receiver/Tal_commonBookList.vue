@@ -221,7 +221,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
+                url: 'service/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.cabinetList = result.data
@@ -250,7 +250,7 @@ export default {
             try{
                 // this.cabinetList.splice(index, 1)
                 var result = await this.$commonAxiosFunction({
-                    url: 'https://mo.d-alim.com/service/tp.deleteCabinet',
+                    url: 'service/tp.deleteCabinet',
                     param: param
                 })
                 if(result.data === 'true' || result.data === true){
@@ -351,7 +351,7 @@ export default {
 
             var result = null
             var response = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com/service/tp.saveCabinet',
+                url: 'service/tp.saveCabinet',
                 param: paramSet
             })
             result = response.data
@@ -417,7 +417,7 @@ export default {
             paramSet.teamMenuList = [...tempList]
             var result = await this.$commonAxiosFunction(
                 {
-                url: 'https://mo.d-alim.com/service/tp.changePosTeamMenu',
+                url: 'service/tp.changePosTeamMenu',
                 param: paramSet
                 }
             )
