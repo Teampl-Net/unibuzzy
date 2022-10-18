@@ -262,7 +262,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+        url: 'service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -282,7 +282,7 @@ export default {
       // paramMap.set('userKey', this.GE_USER.userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+      //   url: 'service/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -529,6 +529,8 @@ export default {
           param.contentsKey = this.propData.modiContentsKey
         }
         var result = await this.$saveContents(param)
+        // eslint-disable-next-line no-debugger
+        debugger
         if (result.result === true) {
           // eslint-disable-next-line no-new-object
           var newP = new Object()

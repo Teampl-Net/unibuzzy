@@ -169,7 +169,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: 'https://mo.d-alim.com/service/tp.getUserList',
+                    // url: 'service/tp.getUserList',
                     // param: param
                     // })
                     // // console.log(response)
@@ -216,7 +216,7 @@ export default {
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+                url: 'service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             var list = []
@@ -338,7 +338,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'https://mo.d-alim.com/service/tp.deleteManager',
+                url: 'service/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}
