@@ -306,7 +306,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -333,6 +333,8 @@ export const commonMethods = {
   },
   checkUserAuth (data) {
     //
+    // eslint-disable-next-line no-debugger
+    debugger
     var authList = { R: false, W: false, V: false }
     if (!data) return authList
     for (var i = 0; i < data.length; i++) {

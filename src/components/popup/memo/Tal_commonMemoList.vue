@@ -28,7 +28,7 @@
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <pre ref="editCommentBox" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
+          <pre ref="editCommentBox" @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
           <pre v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
@@ -54,7 +54,7 @@
                         <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
-                    <pre id="cMemoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
+                    <pre id="cMemoEditBoxId" ref="cMemoEditBoxId" class="editableContent cMemoEditBoxClass font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
                     <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr"></pre>
                     <div v-if="editIndex === index && editCIndex === cIndex">
                       <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
@@ -149,7 +149,15 @@ export default {
   },
   watch: {
   },
+  updated () {
+  },
   methods: {
+    focusOn () {
+      this.$emit('cMemoEditYn', true)
+    },
+    focusOut () {
+      this.$emit('cMemoEditYn', false)
+    },
     settingNameTagEvent () {
       // eslint-disable-next-line no-debugger
       // debugger
@@ -222,12 +230,14 @@ export default {
         this.editCIndex = cindex
         this.cMemoEditYn = true
       }
+      // this.focusOn()
       this.inputText = this.$decodeHTML(data.bodyFullStr)
     },
     cancelEdit () {
       this.editIndex = ''
       this.editCIndex = ''
       this.cMemoEditYn = false
+      // this.focusOn()
     },
 
     async editEnd (data) {
@@ -258,7 +268,7 @@ export default {
       memo.deleteYn = false
       // console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       // console.log(result)
@@ -267,6 +277,7 @@ export default {
         this.editIndex = ''
         this.editCIndex = ''
         this.cMemoEditYn = false
+        // this.focusOn()
         // this.$emit('editTrue', memo)
         this.$showToastPop('댓글이 수정되었습니다.')
       }

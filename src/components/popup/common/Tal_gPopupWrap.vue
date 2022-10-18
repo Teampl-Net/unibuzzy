@@ -1,9 +1,9 @@
 <template>
-    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap" ref="commonWrap" >
+    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap">
       <loadingCompo style="z-index: 9999999 !important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
-        <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+        <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
                                         />
       </transition>
@@ -63,7 +63,7 @@
       <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
 
       <creAddressBook :pPopId="popId" v-if=" popId &&  this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
-
+      <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 9999999999999999999999999999999999999999999999;"/>
     </div>
 </template>
 
@@ -120,14 +120,14 @@ import creAddressBook from '../receiver/D_creAddressBook.vue'
 export default {
   async created () {
     await this.settingPop()
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
+    // document.addEventListener('message', e => this.recvNoti(e))
+    // window.addEventListener('message', e => this.recvNoti(e))
     /* this.$addHistoryStack('pop' + this.thisPopN) */
     localStorage.setItem('notiReloadPage', 'none')
   },
   unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
+    // document.removeEventListener('message', e => this.recvNoti(e))
+    // window.removeEventListener('message', e => this.recvNoti(e))
   },
   data () {
     return {
@@ -171,7 +171,9 @@ export default {
       selectedBookNMemberList: {},
       headerFollowYn: false,
       axiosQueue: [],
-      notiScrollTarget: null
+      notiScrollTarget: null,
+      errorText: '',
+      failPopYn: false
     }
   },
   props: {
@@ -294,7 +296,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -402,19 +404,18 @@ export default {
       this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
       // var tt = this.params
-      if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail') {
+      if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail' || this.targetType === 'boardDetail') {
         this.detailVal = target
+        this.headerTitle = '상세'
         // var chan = this.$getDetail('TEAM', target.targetKey)
         if (this.detailVal.value) {
           if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
             this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
-          } else {
-            this.headerTitle = '상세'
           }
-        } else {
-          this.headerTitle = '상세'
         }
-        this.popId = this.targetType + this.detailVal.targetKey || this.detailVal.contentsKey || this.detailVal.teamKey
+        console.log('popId만듦-----------------------------------------------------------------')
+        console.log(this.detailVal)
+        this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey || this.detailVal.teamKey
 
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
@@ -544,7 +545,13 @@ export default {
       if (!this.popId) {
         this.popId = 'gPopup' + this.thisPopN
       }
-      // alert(this.popId)
+      console.log('----------팝업 추가-----------')
+      console.log(this.popId)
+      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      gPopHistory.push(this.popId)
+      console.log('----------현재팝업은-----------')
+      console.log(gPopHistory)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
       var history = this.$store.getters['D_HISTORY/hStack']
       history.push(this.popId)
       this.$store.commit('D_HISTORY/updateStack', history)
@@ -574,6 +581,10 @@ export default {
       console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'followerManagement') reloadYn = true
       this.popShowYn = false
+      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
+
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -614,13 +625,7 @@ export default {
       /* } */
     },
     toAlimFromBoard () {
-      // alert(1)
-      // if (this.toAlimFromBoardYn === false) {
-      // alert(2)
-      // this.toAlimFromBoardYn = true
       this.$emit('toAlimFromBoard')
-      // } else {
-      // alert(3)
     },
     toAlimThisPageClose () {
       this.$refs.gPopChanAlimList.toAlimFromBoard('P')
@@ -710,7 +715,6 @@ export default {
     goChanDetail (data) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      // alert(true)
       if (data.targetType === 'chanDetail') {
         param.targetType = 'chanDetail'
         param.teamKey = data.creTeamKey
@@ -728,17 +732,78 @@ export default {
       }
       this.openPop(param)
     },
-    goDetail (value) {
+    async targetKeyYn (targetKey, jobkindId) {
+      // var result = null
+      var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
+      if (detail.contentsList.length === 0) {
+        return false
+      } else {
+        if (detail.contentsList[0].jobkindId === 'BOAR') {
+          return detail.contentsList[0].cabinetKey
+        } else {
+          return true
+        }
+      }
+    },
+    async goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'pushDetail'
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      var indexOf = null
+      if (currentPage === this.popId) {
+
+      }
+      if (value.jobkindId === 'ALIM') {
+        param.targetType = 'pushDetail'
+        indexOf = currentPage.indexOf('pushDetail')
+      } else {
+        param.targetType = 'boardDetail'
+        indexOf = currentPage.indexOf('boardDetail')
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
+
+      if (indexOf !== -1) {
+        if (this.params.targetKey === value.contentsKey) {
+          return
+        }
+      }
+      var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
+      console.log('과연??있나요?' + targetYn)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (targetYn !== false && targetYn !== 'false') {
+        param.targetKey = value.contentsKey
+        // param.targetType = value.contentsKey
+        if (value.jobkindId === 'BOAR') {
+          param.cabinetKey = targetYn
+        }
+        param.contentsKey = value.contentsKey
+        param.jobkindId = value.jobkindId
+        param.teamKey = value.creTeamKey
+        param.value = value
+        this.openPop(param)
+      } else {
+        this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+        this.failPopYn = true
+      }
+    },
+    /* goDetail (value) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (value.jobkindId === 'ALIM') {
+        param.targetType = 'pushDetail'
+      } else {
+        param.targetType = 'boardDetail'
+      }
+      param.targetKey = value.contentsKey
       param.contentsKey = value.contentsKey
       param.teamKey = value.creTeamKey
       param.value = value
       this.openPop(param)
-    },
+    }, */
     async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
-      // alert(true)
       var memo = {}
       memo.targetKind = 'C'
       memo.parentMemoKey = parentMemoKey
@@ -746,7 +811,7 @@ export default {
       memo.memoKey = memoKey
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -778,197 +843,121 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')
       this.axiosQueue = this.axiosQueue.splice(index, 1)
-      // alert(JSON.stringify(result.data))
       var user = result.data.content
       return user
     },
     goScrollTarget (targetKey) {
       this.notiScrollTarget = targetKey
     },
-    async recvNoti (e) {
-      var message
-      if (this.$isJsonString(e.data) === true) {
-        message = JSON.parse(e.data)
-      } else {
-        message = e.data
-      }
-      if (message.type === 'pushmsg') {
-        if (JSON.parse(message.pushMessage).backgroundYn) {
-          this.notiDetail = JSON.parse(message.pushMessage)
-        } else {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
+    async recvNotiFromMain (notiDetail, arrivedYn) {
+      var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      var currentPop = popHistory[popHistory.length - 1]
+      console.log(this.popId, '***', currentPop)
+      if (currentPop !== this.popId) {
+        if (this.$refs.commonGPopWrap.recvNotiFromMain) {
+          this.$refs.commonGPopWrap.recvNotiFromMain(notiDetail, arrivedYn)
         }
-
-        var currentPage = this.$store.getters['D_HISTORY/hCPage']
-
-        if ((currentPage === 0 || currentPage === undefined)) {} else {
-          if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-            if (Number(JSON.parse(this.notiDetail.userDo).userKey) === this.GE_USER.userKey) {
-              return
-            }
-            if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                var memo = await this.getContentsMemoList(Number(JSON.parse(this.notiDetail.userDo).targetKey), Number(JSON.parse(this.notiDetail.userDo).ISub))
-                memo.jobkindId = this.notiDetail.jobkindId
-                memo.creTeamKey = Number(this.notiDetail.creTeamKey)
-                await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo)
-              } else {
-                if (currentPage !== this.popId) {
-                  console.log(this.popId)
-                  // eslint-disable-next-line no-debugger
-                  debugger
-                  if (currentPage.indexOf(this.popId) === -1) return
-                }
-                /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
-                  console.log(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
-                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
-                  await this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).targetKey), this.notiDetail.jobkindId)
+        return
+      }
+      if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+        if (Number(JSON.parse(notiDetail.userDo).userKey) === this.GE_USER.userKey) {
+          return
+        }
+        if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+          if (arrivedYn === true || arrivedYn === 'true') {
+            var memo = await this.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+            memo.jobkindId = notiDetail.jobkindId
+            memo.creTeamKey = Number(notiDetail.creTeamKey)
+            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo)
+          } else {
+            /* if (this.chanAlimListTeamKey === Number(notiDetail.creTeamKey)) {
+                  console.log(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
+                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
+                  await this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
                   // param.targetContentsKey
                 } else {
                   if (currentPage !== this.popId) return
-                  if (this.notiDetail.jobkindId === 'ALIM') {
-                    this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-                  } else if (this.notiDetail.jobkindId === 'BOAR') {
-                    this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
-                    // this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
+                  if (notiDetail.jobkindId === 'ALIM') {
+                    this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  } else if (notiDetail.jobkindId === 'BOAR') {
+                    this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
+                    // this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, jobkindId: notiDetail.jobkindId, targetType: 'boardDetail' })
                   }
                 } */
-                /* if (currentPage !== this.popId) {
+            /* if (currentPage !== this.popId) {
                     if (currentPage.findIndex((item) => item === 'write') === -1) return
                     return
                 } */
-                if (this.notiDetail.jobkindId === 'ALIM') {
-                  this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-                } else if (this.notiDetail.jobkindId === 'BOAR') {
-                  this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
-                  // this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
-                }
-              }
-            } else {
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                if (this.notiDetail.jobkindId !== 'BOAR') {
-                  if (currentPage !== this.popId) {
-                    console.log(this.popId)
-                    // eslint-disable-next-line no-debugger
-                    debugger
-                    if (currentPage.indexOf(this.popId) !== -1) {
-                      window.blur()
-                    } else {
-                      return
-                    }
-                  }
-                  /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) return */
-                  this.notiDetailShowYn = true // wowns
-                  // if (this.$route.path === '/') {
-                  //   this.$refs.mainRouterView.getMainBoard()
-                  // }
-                }
-              } else {
-                /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) return */
-                if (currentPage !== this.popId) {
-                  console.log(this.popId)
-                  // eslint-disable-next-line no-debugger
-                  debugger
-                  if (currentPage.indexOf(this.popId) !== -1) {
-                    window.blur()
-                  } else {
-                    return
-                  }
-                }
-                this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), jobkindId: this.notiDetail.jobkindId, creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-              }
+            if (notiDetail.jobkindId === 'ALIM') {
+              this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+            } else if (notiDetail.jobkindId === 'BOAR') {
+              this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
+              // this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, jobkindId: notiDetail.jobkindId, targetType: 'boardDetail' })
             }
-          } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'CABI') {
-            if (Number(JSON.parse(this.notiDetail.userDo).userKey) === Number(this.GE_USER.userKey)) {
-              return
-            }
-            if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                ;
-              } else {
-                /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
-                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(this.notiDetail.userDo).ISub), this.notiDetail.jobkindId)
-                  this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(this.notiDetail.userDo).ISub), this.notiDetail.jobkindId)
-                  // param.targetContentsKey
-                } */
-                if (currentPage !== this.popId) {
-                  console.log(this.popId)
-                  // eslint-disable-next-line no-debugger
-                  debugger
-                  if (currentPage.indexOf(this.popId) !== -1) {
-                    window.blur()
-                  } else {
-                    return
-                  }
-                }
-                this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
-                // this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
-              }
-            }
-          } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-            if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-              // alert(Number(JSON.parse(this.notiDetail.userDo).userKey))
-            } else {
-              if (currentPage !== this.popId) {
-                console.log(this.popId)
-                // eslint-disable-next-line no-debugger
-                debugger
-                if (currentPage.indexOf(this.popId) !== -1) {
-                  window.blur()
-                } else {
-                  return
-                }
-              }
-              /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) {
+          }
+        } else {
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (arrivedYn === true || arrivedYn === 'true') {
+          } else {
+            this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+          }
+        }
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
+        if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(this.GE_USER.userKey)) {
+          return
+        }
+        if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+          if (arrivedYn === true || arrivedYn === 'true') {
+            ;
+          } else {
+            this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).ISub), creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
+            // this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).ISub), cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, jobkindId: notiDetail.jobkindId, targetType: 'boardDetail' })
+          }
+        }
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
+        if (arrivedYn === true || arrivedYn === 'true') {
+        } else {
+          /* if (this.chanAlimListTeamKey === Number(notiDetail.creTeamKey)) {
                 return
               } */
-              if (this.notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP') {
-                this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-              } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-              } else if (this.notiDetail.actType === 'MA') {
-                this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
-              }
-            }
-          } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {
-            if (this.notiDetail.actYn === true || this.notiDetail.actYn === 'true') {
-              var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(this.notiDetail.userDo).ISub), Number(JSON.parse(this.notiDetail.userDo).targetKey))
-              if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
-                // alert(JSON.stringify(memo))
-                memo_.jobkindId = this.notiDetail.jobkindId
-                memo_.creTeamKey = Number(this.notiDetail.creTeamKey)
-                await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
-              } else {
-                /* if (this.chanAlimListTeamKey === Number(this.notiDetail.creTeamKey)) return */
-                if (currentPage !== this.popId) {
-                  console.log(this.popId)
-                  // eslint-disable-next-line no-debugger
-                  debugger
-                  if (currentPage.indexOf(this.popId) !== -1) {
-                    window.blur()
-                  } else {
-                    return
-                  }
-                }
-                if (this.notiDetail.jobkindId === 'ALIM') {
-                  this.goDetail({ contentsKey: memo_.targetKey, creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
-                } else if (this.notiDetail.jobkindId === 'BOAR') {
-                  this.goDetail({ contentsKey: memo_.targetKey, creTeamKey: Number(this.notiDetail.creTeamKey), jobkindId: this.notiDetail.jobkindId, targetType: 'chanDetail' })
-                  // this.goDetail({ contentsKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(this.notiDetail.userDo).targetName, jobkindId: this.notiDetail.jobkindId, targetType: 'boardDetail' })
-                }
-              }
+          if (notiDetail.actType === 'FL' || notiDetail.actType === 'RQ' || notiDetail.actType === 'AP') {
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+          } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+          } else if (notiDetail.actType === 'MA') {
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+          }
+        }
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
+        if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+          var memo_ = await this.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
+          if (arrivedYn === true || arrivedYn === 'true') {
+            memo_.jobkindId = notiDetail.jobkindId
+            memo_.creTeamKey = Number(notiDetail.creTeamKey)
+            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
+          } else {
+            if (notiDetail.jobkindId === 'ALIM') {
+              this.goDetail({ contentsKey: memo_.targetKey, creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
+            } else if (notiDetail.jobkindId === 'BOAR') {
+              this.goDetail({ contentsKey: memo_.targetKey, creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
+              // this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, jobkindId: notiDetail.jobkindId, targetType: 'boardDetail' })
             }
           }
         }
+      }
+    },
+    async recvNoti (e) {
+      // var message
+      if (this.$isJsonString(e.data) === true) {
+        // message = JSON.parse(e.data)
+      } else {
+        // message = e.data
       }
     }
   }

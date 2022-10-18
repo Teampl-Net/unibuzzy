@@ -7,7 +7,7 @@
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='returnPopShowYn = false'  style="z-index: 99999999999999999999999999999999999999999999999;" v-if="returnPopShowYn"/>
     <!-- <loadingCompo v-if="loadingYn" /> -->
     <transition name="showModal">
-      <fullModal @successWrite="successWriteBoard" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
+      <fullModal @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
     </transition>
     <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
@@ -29,6 +29,7 @@
       </router-view> -->
     </div>
     <TalFooter @changePath="changePath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
+    <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 9999999999999999999999999999999999999999999999;"/>
   </div>
 </template>
 
@@ -62,7 +63,9 @@ export default {
       netBoxShowYn: false,
       netText: '',
       shadowScreenShowYn: false,
-      returnPopShowYn: false
+      returnPopShowYn: false,
+      errorText: '',
+      failPopYn: false
     }
   },
   props: {},
@@ -165,7 +168,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
+        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -216,6 +219,9 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
+      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
       // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
 
       if (reloadYn) {
@@ -244,7 +250,7 @@ export default {
       memo.targetKey = targetKey
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -283,14 +289,37 @@ export default {
       }
       return D_CONT_USER_DO
     },
-    goDetail (value) {
+    async targetKeyYn (targetKey, jobkindId) {
+      // var result = null
+      var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
+      if (detail.contentsList.length === 0) {
+        return false
+      } else {
+        return true
+      }
+    },
+    async goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'pushDetail'
-      param.contentsKey = value.contentsKey
-      param.teamKey = value.creTeamKey
-      param.value = value
-      this.openPop(param)
+      if (value.jobkindId === 'ALIM') {
+        param.targetType = 'pushDetail'
+      } else {
+        param.targetType = 'boardDetail'
+      }
+      var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
+      console.log('과연??있나요?' + targetYn)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (targetYn === true || targetYn === 'true') {
+        param.targetKey = value.contentsKey
+        param.contentsKey = value.contentsKey
+        param.teamKey = value.creTeamKey
+        param.value = value
+        this.openPop(param)
+      } else {
+        this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+        this.failPopYn = true
+      }
     },
     goDetail_back (data) {
       // eslint-disable-next-line no-debugger
@@ -440,6 +469,8 @@ export default {
                 }
               }
             }
+          } else {
+            this.$refs.mainGPopWrap.recvNotiFromMain(this.notiDetail, JSON.parse(message.pushMessage).arrivedYn)
           }
         }
       } catch (err) {

@@ -20,7 +20,7 @@
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-                    {{resizeText(alim.title, alim.nameMtext)}}
+                    {{(alim.jobkindId === 'BOAR' && (this.$checkUserAuth(alim.shareItem).V === false && alim.titleBlindYn) && alim.creUserKey !== this.GE_USER.userKey)? '열람 권한이 없습니다.' : resizeText(alim.title, alim.nameMtext)}}
                   </p>
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
@@ -58,7 +58,7 @@
               <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
               <!-- <img style="width: 20px; float: left; margin-right: 5px;" src="../../assets/images/board/securityDoc.svg" alt="">  -->
                 <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div v-show="!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" class="alimCheckContents">
@@ -91,13 +91,13 @@
                 </div>
               </div>
               <!-- <div class="alimListMemoBorder" v-if="findMemoOpend(alim.contentsKey) !== -1 && commonListData.memoList.length > 0" :id="'borderLine'+alim.contentsKey" ></div> -->
-              <div class="alimListMemoBorder" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
+              <div class="alimListMemoBorder" v-show="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
               <!-- <div class="w-100P fl" v-if="findMemoOpend(alim.contentsKey) !== -1 " style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" > -->
               <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1">
                 <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
-                  <gMemoList v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick"/>
+                  <gMemoList @cMemoEditYn="cMemoEditYn" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick"/>
 
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
                 <div v-if="this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
@@ -217,6 +217,10 @@ export default {
     })
   },
   methods: {
+    cMemoEditYn (editYn) {
+      // alert(editYn)
+      this.$emit('cMemoEditYn', editYn)
+    },
     notPerText(){
       var html = '<div class="w-100P fl textCenter commonColor font14">'
       html += '열람 권한이 없습니다.'
@@ -330,7 +334,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -343,7 +347,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -486,7 +490,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -587,7 +591,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.deleteMemo',
+    //     url: 'https://mo.d-alim.com/service/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -685,7 +689,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'service/tp.deleteContents',
+            url: 'https://mo.d-alim.com/service/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -718,7 +722,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'service/tp.saveMemo',
+    //       url: 'https://mo.d-alim.com/service/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -906,7 +910,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.getMemoList',
+    //     url: 'https://mo.d-alim.com/service/tp.getMemoList',
     //     param: memo
     //   })
 
@@ -1285,7 +1289,8 @@ export default {
     chanAlimYn: Boolean,
     targetContentsKey: {},
     notiScrollTarget: {},
-    emptyYn: Boolean
+    emptyYn: Boolean,
+    scollPosition: {}
   },
   computed: {
     GE_USER () {

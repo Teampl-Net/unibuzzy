@@ -114,7 +114,7 @@
     </div>
     <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div>
     <!-- <transition name="showMemoPop"> -->
-      <gMemoPop transition="showMemoPop" :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
+      <gMemoPop transition="showMemoPop" :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     <!-- </transition> -->
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
@@ -173,7 +173,8 @@ export default {
       systemName: localStorage.getItem('systemName'),
       loadingYn: false,
       saveMemoLoadingYn: false,
-      cabinetDetail: null
+      cabinetDetail: null,
+      resetMemoYn: false
     }
   },
   props: {
@@ -229,19 +230,22 @@ export default {
       }
     },
     CAB_DETAIL () {
+      console.log(this.detailVal)
       if (this.detailVal.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
+
         // eslint-disable-next-line no-debugger
         debugger
         console.log(this.cabinetDetail.mCabinet)
         console.log('this.cabinetDetail.mCabinet')
+        // this.cabinetDetail.mCabinet.shareAuth = this.$checkUserAuth(this.cabinetDetail.mCabinet.mShareItemList)
         return this.cabinetDetail.mCabinet
       } else {
         return null
       }
     },
     CONT_DETAIL () {
-      console.log(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
+      console.log(null, this.detailVal.contentsKey, this.detailVal.teamKey)
       var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (cont) {
         console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
@@ -388,6 +392,9 @@ export default {
       param.cabinetKey = this.detailVal.cabinetKey
       var resultList = await this.$getCabinetDetail(param)
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
+      console.log(this.detailVal)
+      // eslint-disable-next-line no-debugger
+      debugger
       this.cabinetDetail = resultList
       // this.updateStoreData(resultList.mCabinet)
     },
@@ -598,7 +605,7 @@ export default {
         // inParam.deleteYn = true
 
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -609,7 +616,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -652,7 +659,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -795,7 +802,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -871,6 +878,9 @@ export default {
     },
     writeMemo () {
       if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
+        if (this.mememoValue) {
+          this.resetMemoYn = true
+        }
         this.mememoValue = null
         this.memoShowYn = true
       } else {
@@ -887,6 +897,17 @@ export default {
           data.parentMemoKey = memo.parentMemoKey
         }
         data.memo = memo
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (!this.mememoValue) {
+          this.resetMemoYn = true
+        } else {
+          if (this.mememoValue.parentMemoKey !== data.parentMemoKey) {
+            this.resetMemoYn = true
+          } else {
+            this.resetMemoYn = false
+          }
+        }
         // eslint-disable-next-line no-new-object
         this.mememoValue = new Object()
         this.mememoValue = data
@@ -902,7 +923,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -968,7 +989,7 @@ export default {
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
 
@@ -1018,7 +1039,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -1041,7 +1062,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result === true || result.data.result === 'true') {

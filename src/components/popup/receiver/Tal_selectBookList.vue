@@ -34,6 +34,7 @@ export default {
       this.selectedList = this.pSelectedList
 
       var param = {}
+      debugger
       if (this.selectedList.bookList) {
         var test1 = this.selectedList.bookList
         for (let i = 0; i < test1.length; i++) {
@@ -108,7 +109,7 @@ export default {
         paramMap.set('sysCabinetCode', 'USER')
         paramMap.set('adminYn', true)
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getTeamMenuList',
+            url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
             param: Object.fromEntries(paramMap)
         })
         this.bookList = result.data
@@ -124,7 +125,7 @@ export default {
         paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
         paramMap.set('jobkindId', 'USER')
         var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getMCabContentsList',
+            url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
             param: Object.fromEntries(paramMap)
         })
         this.memberList = result.data
@@ -203,6 +204,7 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
+      debugger
       if(this.selectedList.memberList){
         var changeList = this.selectedList.memberList
         for(var m = 0; m < this.memberList.length; m ++) {
@@ -216,6 +218,7 @@ export default {
       }
     },
     editBookSelectedList () {
+      debugger
       if(this.selectedList.bookList){
         var changeList = this.selectedList.bookList
         for(var m = 0; m < this.bookList.length; m ++) {

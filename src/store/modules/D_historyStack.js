@@ -5,6 +5,7 @@ const D_historyStack = {
   state: {
     archivingServerList: [],
     historyStack: [0],
+    gPopStack: [],
     currentPage: null,
     removePage: 0,
     canRemoveYn: true,
@@ -23,6 +24,9 @@ const D_historyStack = {
     },
     updateStack (state, stack) {
       state.historyStack = stack // state의 account변수에 넘겨 받은 account값을 입력함
+    },
+    updateGpopStack (state, stack) {
+      state.gPopStack = stack // state의 account변수에 넘겨 받은 account값을 입력함
     },
     setRemovePage (state, page) {
       state.removePage = page
@@ -55,6 +59,9 @@ const D_historyStack = {
     AC_UPDATE_HISTORY ({ commit }, payload) {
       commit('updateAxiosQueue', payload)
     },
+    AC_UPDATE_GPOP_STACK ({ commit }, payload) {
+      commit('updateGpopStack', payload)
+    },
     AC_ADD_AXIOS_QUEUE ({ commit, state }, payload) {
       commit('updateAxiosQueue', payload.push(payload))
     },
@@ -76,6 +83,9 @@ const D_historyStack = {
     },
     canRYn (state) {
       return state.canRemoveYn
+    },
+    GE_GPOP_STACK (state) {
+      return state.gPopStack
     },
     hStack (state) {
       return state.historyStack

@@ -25,7 +25,7 @@
     <div class="itemWrite">
       <p class="fontBold textLeft font16 fl " style="width: 100px;">기능 </p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="text-align: left; overflow: scroll;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray d" >{{okFunctionList}}</div>
+      <div style="text-align: left; overflow: scroll;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray d" >{{CAB_FUNCTION_TEXT}}</div>
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
@@ -92,6 +92,15 @@
           </label>
         </div>
       </div>
+      <div class="itemWrite">
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">미권한자 제목 비공개</p>
+        <div class="toggleInputWrap">
+          <input type="checkbox" v-model="titleBlindYn" id="toggle4" hidden>
+          <label for="toggle4" class="toggleSwitch">
+            <span class="toggleButton"></span>
+          </label>
+        </div>
+      </div>
       </div>
       <!-- <div style="padding: 0 8px; margin-top: 30px;">
         <div @click="nextStep" class="creChanBigBtn">다음</div>
@@ -108,14 +117,10 @@
     </div>
     <div class="fl" style="width: 100%;">
       <div v-show="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
-        <p class="font16 commonBlack" v-if="selectedShareList.length === 0">{{selectedReceiver}}</p>
-        <template v-if="selectedShareList.length > 0">
-          <div v-for="(data, index) in selectedShareList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-            <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-            <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-            {{data.name}}
-          </div>
-        </template>
+        <p class="font16 commonBlack">{{setSelectText(this.shareGroup.selectedList)}}</p>  <!-- v-if="selectedShareList.length === 0" -->
+        <!-- <template v-if="selectedShareList.length > 0">
+          {{setSelectText(this.selectedShareList)}}
+        </template> -->
         </div>
     </div>
 
@@ -123,16 +128,8 @@
     <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
       <div class="subItemWrite" :style="writePermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
         <p class="textLeft mleft-15 font16 fl" :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">작성</p>
-        <!-- <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft">{{writePermission}}</div> -->
         <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
-          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0" style="overflow: auto;">{{writePermission}}</p>
-          <template v-if="selectedWriteList.length > 0">
-            <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          {{setSelectText(this.permissionWGroup.selectedList)}}
         </div>
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;" >
             <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
@@ -140,29 +137,16 @@
             <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('W')" v-if="this.shareGroup.type == 'A' && this.permissionWGroup.type === 'S'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
-          <p class="font16 commonBlack" v-if="selectedWriteList.length === 0" style="overflow: auto;">{{writePermission}}</p>
-          <template v-if="selectedWriteList.length > 0">
-            <div v-for="(data, index) in selectedWriteList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionWGroup.selectedList)}}</p>
+          <!-- <template v-if="selectedWriteList.length > 0">
+            {{setSelectText(this.selectedWriteList)}}
+          </template> -->
         </div>
       </div>
       <div class="subItemWrite" :style="readPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
         <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">열람</p>
-        <!-- <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft">{{readPermission}}</div> -->
         <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
-          <!-- 공유 대상이 선택이면서  -->
-          <p class="font16 commonBlack" v-if="selectedReadList.length === 0" style="overflow: auto;">{{readPermission}}</p>
-          <template v-if="selectedReadList.length > 0">
-            <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          {{setSelectText(this.permissionVGroup.selectedList)}}
         </div>
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
           <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
@@ -170,46 +154,27 @@
           <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('V')" v-if=" this.permissionVGroup.type === 'S' && this.shareGroup.type == 'A'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
-          <p class="font16 commonBlack" v-if="selectedReadList.length === 0" style="overflow: auto;">{{readPermission}}</p>
-          <template v-if="selectedReadList.length > 0">
-            <div v-for="(data, index) in selectedReadList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionVGroup.selectedList)}}</p>
         </div>
       </div>
       <div class="subItemWrite" :style="commentPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
         <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">댓글</p>
         <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
         <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'" >
-          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0" style="overflow: auto;">{{commentPermission}}</p>
-          <template v-if="selectedCommentList.length > 0">
-            <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          {{setSelectText(this.permissionRGroup.selectedList)}}
         </div>
-
         <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
           <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
           <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
           <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
         </div>
         <div @click="showSelectBookPop('R')" v-if="this.shareGroup.type == 'A'  && this.permissionRGroup.type === 'S'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
-          <p class="font16 commonBlack" v-if="selectedCommentList.length === 0" style="overflow: auto;">{{commentPermission}}</p>
-          <template v-if="selectedCommentList.length > 0">
-            <div v-for="(data, index) in selectedCommentList" class="fl" :class="{'mleft-05' : index !== 0}" :key="index" style="display:flex;align-items: center; padding: 0 5px; border: 1px solid #ccc; border-radius: 10px;">
-              <img v-if="data.type === 'person'" class="fl " style="width:15px" src="../../assets/images/main/main_subscriber.png" alt="">
-              <img v-else class="fl " style="width:15px; margin-right:5px;" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-              {{data.name}}
-            </div>
-          </template>
+          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionRGroup.selectedList)}}</p>
         </div>
       </div>
+      <!-- <div style="float: left; width: 100%; ">
+        <input type="checkbox" v-model="titleBlindYn" class="fl" name="" id="titleBlindYnInput"> <label class="font16 textLeft fl" for="titleBlindYnInput">열람 권한 없을 때: 제목까지 비공개</label>
+      </div> -->
     </div>
   <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
     <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
@@ -260,6 +225,31 @@ export default {
     //
   },
   computed: {
+    CAB_FUNCTION_TEXT () {
+      var text = ''
+      if (this.replyYnInput === true) {
+        text += '댓글O'
+      } else {
+        text += '댓글X'
+      }
+      if (this.fileYnInput === true) {
+        text += '/파일O'
+      } else {
+        text += '/파일X'
+      }
+      if (this.blindYn === true) {
+        text += '/익명'
+      } else {
+        text += '/실명'
+      }
+      if (this.titleBlindYn === true) {
+        text += '/미권한자 제목비공개'
+      } else {
+        text += '/미권한자 제목공개'
+      }
+
+      return text
+    },
     CHANNEL_DETAIL () {
       var team = this.$getDetail('TEAM', this.modiBoardDetailProps.teamKey)
       if (team) {
@@ -330,8 +320,6 @@ export default {
       shareActorItemType: '',
       selectShareList: [],
       selectItemList: [],
-      // okFunctionList:'작성자명/댓글지원O/파일업로드O',
-      okFunctionList: '댓글 지원 O',
       writePermissionAllYn: true,
       readPermissionAllYn: true,
       commentPermissionAllYn: true,
@@ -343,16 +331,17 @@ export default {
       dbSelectedList: { bookList: [], memberList: [] },
       // currentPermissionType: '',
       currentSelectBookType: '',
-      selectedShareList: [],
-      selectedWriteList: [],
-      selectedReadList: [],
-      selectedCommentList: [],
-      shareGroup: { type: 'A', selectedList: [] },
-      permissionWGroup: { type: 'A', selectedList: [] },
-      permissionRGroup: { type: 'A', selectedList: [] },
-      permissionVGroup: { type: 'A', selectedList: [] },
+      selectedShareList: { bookList: [], memberList: [] },
+      selectedWriteList: { bookList: [], memberList: [] },
+      selectedReadList: { bookList: [], memberList: [] },
+      selectedCommentList: { bookList: [], memberList: [] },
+      shareGroup: { type: 'A', selectedList: { bookList: [], memberList: [] } },
+      permissionWGroup: { type: 'A', selectedList: { bookList: [], memberList: [] } },
+      permissionRGroup: { type: 'A', selectedList: { bookList: [], memberList: [] } },
+      permissionVGroup: { type: 'A', selectedList: { bookList: [], memberList: [] } },
       permissionSelectedList: [],
-      loadingYn: false
+      loadingYn: false,
+      titleBlindYn: false
 
     }
   },
@@ -376,17 +365,39 @@ export default {
         this.permissionVGroup.type = 'A'
         this.permissionRGroup.type = 'A'
       }
-      this.permissionWGroup.selectedList = {}
-      this.permissionVGroup.selectedList = {}
-      this.permissionRGroup.selectedList = {}
-      this.shareGroup.selectedList = {}
+      this.permissionWGroup.selectedList = { bookList: [], memberList: [] }
+      this.permissionVGroup.selectedList = { bookList: [], memberList: [] }
+      this.permissionRGroup.selectedList = { bookList: [], memberList: [] }
+      this.shareGroup.selectedList = { bookList: [], memberList: [] }
       this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.'
       this.writePermission = '클릭하여 권한을 설정해주세요.'
       this.readPermission = '클릭하여 권한을 설정해주세요.'
       this.commentPermission = '클릭하여 권한을 설정해주세요.'
     },
+    setSelectText (selectGroup) {
+      if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
+      var bookSize = selectGroup.bookList.length
+      var memberSize = selectGroup.memberList.length
+      var text = ''
+      if (bookSize === 0 && memberSize === 0) {
+        text = '선택된 대상 없음'
+        return text
+      } else {
+        if (bookSize && bookSize > 0) {
+          text += bookSize + '개 그룹'
+          if (memberSize > 0) {
+            text += ', '
+          }
+        }
+        if (memberSize && memberSize > 0) {
+          text += memberSize + '명'
+        }
+        text += '이 선택됨'
+        return text
+      }
+    },
     closeFuncPop () {
-      this.changeFunc()
+      // this.changeFunc()
       this.functionPopShowYn = false
     },
     openPop (param) {
@@ -441,41 +452,43 @@ export default {
       }
       // console.log(data)
       // 작성자명/댓글지원O/파일업로드O
-      this.okFunctionList = ''
-      // if(data.mCabinet.blindYn === 1){this.okFunctionList += '익명/'; this.blindYn = true }else{this.okFunctionList += '실명/'; this.blindYn = false}
-      if (data.mCabinet.replyYn === 1) { this.replyYnInput = true; this.okFunctionList += '댓글 지원O' } else { this.okFunctionList += '댓글 지원X'; this.replyYnInput = false }
-      if (data.mCabinet.fileYn === 1) { this.okFunctionList += '/파일업로드O'; this.fileYnInput = true } else { this.okFunctionList += '/파일업로드X'; this.fileYnInput = false }
-      if (data.mCabinet.blindYn === 1) { this.okFunctionList += '/익명'; this.blindYn = true } else { this.okFunctionList += '/실명'; this.blindYn = false }
+      if (data.mCabinet.replyYn === 1) { this.replyYnInput = true } else { this.replyYnInput = false }
+      if (data.mCabinet.fileYn === 1) { this.fileYnInput = true } else { this.fileYnInput = false }
+      if (data.mCabinet.blindYn === 1) { this.blindYn = true } else { this.blindYn = false }
+      if (data.mCabinet.titleBlindYn === 1) { this.titleBlindYn = true } else { this.titleBlindYn = false }
       if (data.mCabinet.picBgPath) {
         this.selectedColor = data.mCabinet.picBgPath
       }
       var mCabinet = data.mCabinet
       console.log('------------------ mCabinet, ShareList, ItemList -----------------')
+
       var cabShareList = mCabinet.cabShareList
       var mShareItemList = mCabinet.mShareItemList
       console.log(mCabinet)
       console.log(cabShareList)
       console.log(mShareItemList)
+      // eslint-disable-next-line no-debugger
+      debugger
       // 공유 리스트에서 공유 대상이 전체(T)인지 선택인지 구분
       var findListInT = cabShareList.findIndex(i => i.accessKind === 'T')
       if (findListInT !== -1) {
         this.shareGroup.type = 'A'
-        this.selectedReceiver = '전체에게 공유 중'
+        // this.selectedReceiver = '전체에게 공유 중'
       } else {
         this.shareGroup.type = 'S'
         this.shareGroup.selectedList = { bookList: [], memberList: [] }
-        var shareMemCount = 0
-        var shareBookCount = 0
+        // var shareMemCount = 0
+        // var shareBookCount = 0
         if (cabShareList) {
           for (let i = 0; i < cabShareList.length; i++) {
             if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
             if (cabShareList[i].accessKind === 'C') {
-              shareBookCount += 1
+              /* shareBookCount += 1 */
               cabShareList[i].cabinetKey = cabShareList[i].accessKey
               this.shareGroup.selectedList.bookList.push(cabShareList[i])
             }
             if (cabShareList[i].accessKind === 'U') {
-              shareMemCount += 1
+              // shareMemCount += 1
               this.shareGroup.selectedList.memberList.push(cabShareList[i])
             }
           }
@@ -484,7 +497,7 @@ export default {
           console.log(this.shareGroup.selectedList)
           console.log(cabShareList)
           // this.selectedList.data = this.shareGroup.selectedList
-          this.selectedReceiver = shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
+          // this.selectedReceiver = this.shareGroup.selectedList  shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
         }
         /* this.permissionWGroup.type = 'S'
         this.permissionRGroup.type = 'S'
@@ -506,20 +519,22 @@ export default {
       this.permissionRGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
       // 공유 아이템 중 W, V, R을 찾아 Radio버튼 setting
       console.log(mShareItemList)
-      // eslint-disable-next-line no-debugger
-      debugger
       for (let i = 0; i < mShareItemList.length; i++) {
         if (mShareItemList[i].accessKey === undefined || mShareItemList[i].accessKey === null || mShareItemList[i].accessKey === '') continue
         var cIndex = null
 
         cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
         if (mShareItemList[i].accessKind === 'C') {
-          mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
-
+          // mShareItemList[i].accessKey = mShareItemList[i].accessKey
+          mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
+          mShareItemList[i].cabinetKey = cabShareList[cIndex].accessKey
+          // eslint-disable-next-line no-debugger
+          debugger
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         }
         if (mShareItemList[i].accessKind === 'U') {
-          mShareItemList[i].shareSeq = mShareItemList[i].accessKey
+          mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
+          mShareItemList[i].userKey = cabShareList[cIndex].accessKey
           mShareItemList[i].userDispMtext = this.$changeText(cabShareList[cIndex].userDispMtext)
           mShareItemList[i].userNameMtext = this.$changeText(cabShareList[cIndex].userNameMtext)
         }
@@ -531,6 +546,8 @@ export default {
           } else {
             this.permissionWGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
+              // eslint-disable-next-line no-debugger
+              debugger
               // this.permissionWGroup.selectedList.bookList = []
               this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
             }
@@ -639,7 +656,8 @@ export default {
         if (itemType === 'W') {
           this.permissionSelectedList = this.permissionWGroup.selectedList
         }
-        console.log(this.shareGroup.selectedList)
+        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        console.log(this.permissionSelectedList)
         this.selectedList = {}
         if (this.shareGroup.selectedList && ((this.shareGroup.selectedList.bookList && this.shareGroup.selectedList.bookList.length > 0) || (this.shareGroup.selectedList.memberList && this.shareGroup.selectedList.memberList.length > 0))) {
           this.selectedList.data = this.shareGroup.selectedList
@@ -682,8 +700,6 @@ export default {
       // // console.log(this.shareType)
       var teampItemList = {}
       var shareSeqList = null
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.shareGroup.type === 'A') {
         share = {}
         share.accessKind = 'T'
@@ -703,30 +719,36 @@ export default {
           share.cabinetKey = this.modiBoardDetailProps.cabinetKey
           share.shareSeq = shareSeqList[i].accessKey
           if (shareSeqList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(shareSeqList[i].cabinetNameMtext)
-          var index = shareList.findIndex(item => item.shareSeq === shareSeqList[i].accessKey)
+          var index = shareList.findIndex(item => item.accessKey === shareSeqList[i].accessKey)
           if (index === -1) {
             shareList.push(share)
           }
         }
-        shareSeqList = this.shareGroup.selectedList.memberList
-        for (i = 0; i < shareSeqList.length; i++) {
+        // eslint-disable-next-line no-array-constructor
+        /* shareSeqList = new Array()
+        shareSeqList = this.shareGroup.selectedList.memberList */
+        for (i = 0; i < this.shareGroup.selectedList.length; i++) {
           share = {}
           share.accessKind = 'U'
           share.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          if (shareSeqList[i].userDispMtext) share.userDispMtext = this.$changeText(shareSeqList[i].userDispMtext)
-          if (shareSeqList[i].userNameMtext) share.userNameMtext = this.$changeText(shareSeqList[i].userNameMtext)
-          share.accessKey = shareSeqList[i].accessKey
+          if (this.shareGroup.selectedList[i].userDispMtext) share.userDispMtext = this.$changeText(this.shareGroup.selectedList[i].userDispMtext)
+          if (this.shareGroup.selectedList[i].userNameMtext) share.userNameMtext = this.$changeText(this.shareGroup.selectedList[i].userNameMtext)
+          if (this.shareGroup.selectedList[i].accessKey) {
+            share.accessKey = shareSeqList[i].accessKey
+          } else if (this.shareGroup.selectedList[i].userKey) {
+            share.accessKey = this.shareGroup.selectedList[i].userKey
+          }
           // hare.accessKey = shareSeqList[i].cabinetKey
-          share.shareSeq = shareSeqList[i].accessKey
-          index = shareList.findIndex(item => item.shareSeq === shareSeqList[i].accessKey)
-          if (index === -1) {
+          share.shareSeq = this.shareGroup.selectedList[i].accessKey
+          index = shareList.findIndex(item => item.accessKey === this.shareGroup.selectedList[i].accessKey)
+          if (index === -1 && !share.accessKey) {
             shareList.push(share)
           }
         }
       }
+      console.log('2222this.shareGroup.selectedList')
+      console.log(shareList)
       console.log(this.permissionWGroup)
-      // eslint-disable-next-line no-debugger
-      debugger
       /* W 권한 처리 */
       if (this.permissionWGroup.type === 'A') {
         for (var sh = 0; sh < shareList.length; sh++) {
@@ -749,7 +771,8 @@ export default {
               share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
               if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
-
+              console.log('shareList.push')
+              console.log(share)
               shareList.push(share)
             }
             teampItemList = {}
@@ -773,6 +796,8 @@ export default {
               share.shareSeq = this.permissionWGroup.selectedList.memberList[i].accessKey
               if (this.permissionWGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userDispMtext)
               if (this.permissionWGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userNameMtext)
+              console.log('shareList.push')
+              console.log(share)
               shareList.push(share)
             }
             teampItemList = {}
@@ -787,8 +812,6 @@ export default {
       }
 
       console.log(this.permissionVGroup)
-      // eslint-disable-next-line no-debugger
-      debugger
       /* V 권한 처리 */
       if (this.permissionVGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
@@ -913,7 +936,7 @@ export default {
       cabinet.picBgPath = this.selectedColor
       cabinet.shareList = shareList
       cabinet.itemList = itemList
-
+      cabinet.titleBlindYn = this.titleBlindYn
       param.cabinet = cabinet
       param.creMenuYn = false
 
@@ -962,17 +985,6 @@ export default {
       this.$store.commit('D_HISTORY/updateStack', history)
       this.selectTypePopShowYn = false
     },
-    changeFunc () {
-      // console.log(this.blindYn)
-      this.okFunctionList = (this.replyYnInput === true ? '댓글O' : '댓글X') + (this.fileYnInput === true ? '/파일O' : '/파일X') + (this.blindYn === true ? '/익명' : '/실명')
-    },
-    // replyYnChange () {
-    // if (!this.replyYnInput) {
-    //   this.okFunctionList = '댓글 지원O'
-    // } else {
-    //   this.okFunctionList = '댓글 지원X'
-    // }
-    // },
     click () {
       var toggle0 = document.getElementById('toggle0')
       this.show = !toggle0.checked
@@ -996,10 +1008,16 @@ export default {
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
           tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
-          tempList.accessKey = books[i].shareSeq
+          var accKey = null
+          if (books[i].shareSeq) {
+            accKey = books[i].shareSeq
+          } else if (books[i].accessKey) {
+            accKey = books[i].accessKey
+          }
+          tempList.accessKey = accKey
           tempList.accessKind = 'C'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          tempList.shareSeq = books[i].shareSeq
+          tempList.shareSeq = accKey
           settingBookList.push(tempList)
         }
         if (this.currentSelectBookType === 'W') {
@@ -1030,10 +1048,16 @@ export default {
           tempList = {}
           tempList.userDispMtext = this.$changeText(members[i].userDispMtext)
           tempList.userNameMtext = this.$changeText(members[i].userNameMtext)
-          tempList.accessKey = members[i].accessKey
+          var mAccKey = null
+          if (members[i].shareSeq) {
+            mAccKey = members[i].shareSeq
+          } else if (members[i].accessKey) {
+            mAccKey = members[i].accessKey
+          }
+          tempList.accessKey = mAccKey
           tempList.accessKind = 'U'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          tempList.shareSeq = members[i].shareSeq
+          tempList.shareSeq = mAccKey
           settingMemList.push(tempList)
         }
 
@@ -1181,7 +1205,7 @@ export default {
     },
     // // 작성, 열람, 댓글의 텍스트를 셋팅해준다.
     setTextPermission () {
-      console.log('---- setTextPermission -----')
+      /* console.log('---- setTextPermission -----')
       var sharMem, sharBook, WMem, WBook, VMem, VBook, RMem, RBook
       if (this.shareGroup.selectedList.bookList) { sharBook = this.shareGroup.selectedList.bookList.length !== 0 ? this.shareGroup.selectedList.bookList.length + '개 그룹' : '' } else { sharBook = '' }
       if (this.shareGroup.selectedList.memberList) { sharMem = this.shareGroup.selectedList.memberList.length !== 0 ? this.shareGroup.selectedList.memberList.length + '명' : '' } else { sharMem = '' }
@@ -1194,12 +1218,12 @@ export default {
 
       if (this.permissionRGroup.selectedList.bookList) { RBook = this.permissionRGroup.selectedList.bookList.length !== 0 ? this.permissionRGroup.selectedList.bookList.length + '개 그룹' : '' } else { RBook = '' }
       if (this.permissionRGroup.selectedList.memberList) { RMem = this.permissionRGroup.selectedList.memberList.length !== 0 ? this.permissionRGroup.selectedList.memberList.length + '명' : '' } else { RMem = '' }
-
-      if (sharBook === '' && sharMem === '') { this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.' } else {
+ */
+      /* if (sharBook === '' && sharMem === '') { this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.' } else {
         this.selectedReceiver = sharBook + (sharBook !== '' ? sharMem !== '' ? ', ' : '' : '') + sharMem + ' 에게 권한 부여 중'
-      }
+      } */
 
-      if (WBook === '' && WMem === '') { this.writePermission = '클릭하여 권한을 설정해주세요.' } else {
+      /* if (WBook === '' && WMem === '') { this.writePermission = '클릭하여 권한을 설정해주세요.' } else {
         this.writePermission = WBook + (WBook !== '' ? WMem !== '' ? ', ' : '' : '') + WMem + ' 에게 권한 부여 중'
       }
 
@@ -1209,7 +1233,7 @@ export default {
 
       if (RBook === '' && RMem === '') { this.commentPermission = '클릭하여 권한을 설정해주세요.' } else {
         this.commentPermission = RBook + (RBook !== '' ? RMem !== '' ? ', ' : '' : '') + RMem + ' 에게 권한 부여 중'
-      }
+      } */
     },
     changeShareType (type) {
       this.shareType = type
@@ -1396,6 +1420,16 @@ input:-internal-autofill-selected {
 }
 
 #toggle3:checked ~ .toggleSwitch .toggleButton {
+  /* 100% -> 끝위치, 2.8rem -> 버튼 크기 */
+  left: calc(100% - 25px);
+  background: #fff;
+}
+/* 네 번째 토글 */
+#toggle4:checked ~ .toggleSwitch {
+  background: #6768A7;
+}
+
+#toggle4:checked ~ .toggleSwitch .toggleButton {
   /* 100% -> 끝위치, 2.8rem -> 버튼 크기 */
   left: calc(100% - 25px);
   background: #fff;

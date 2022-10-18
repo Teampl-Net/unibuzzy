@@ -152,7 +152,7 @@ export default {
 
                     if(this.GE_USER.userProfileImg){
                         this.userProfileImg = this.GE_USER.userProfileImg
-                        this.domainPath = this.GE_USER.domainPath
+                        this.domainPath = this.GE_USER.domainPath || ''
                         this.picMfilekey = this.GE_USER.picMfilekey
                     }
                     if (this.GE_USER.userEmail)
@@ -169,7 +169,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: 'service/tp.getUserList',
+                    // url: 'https://mo.d-alim.com/service/tp.getUserList',
                     // param: param
                     // })
                     // // console.log(response)
@@ -195,7 +195,7 @@ export default {
             confirmText: '',
             readOnlyYn:false,
             userProfileImg : undefined,
-            domainPath : undefined,
+            domainPath : '',
             systemName: 'iOS',
             mobileYn: this.$getMobileYn(),
             popSize: 0,
@@ -216,7 +216,7 @@ export default {
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getFollowerList',
+                url: 'https://mo.d-alim.com/service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             var list = []
@@ -228,7 +228,9 @@ export default {
                 var data = list[indexOf]
                 this.userProfileImg = data.userProfileImg
                 if (data.domainPath) {
-                    this.domainPath = data.domainPath
+                    this.domainPath = data.domainPath 
+                } else {
+                    this.domain
                 }
                 this.memName = this.$changeText(data.userDispMtext)
                 this.memEmail = data.userEmail
@@ -336,7 +338,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.deleteManager',
+                url: 'https://mo.d-alim.com/service/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}

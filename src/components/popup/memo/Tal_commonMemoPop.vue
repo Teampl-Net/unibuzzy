@@ -1,10 +1,11 @@
 <template>
     <div style="width: calc(100% ; border-radius: 15px 15px 0 0; left: 0px; min-height: 80px; padding: 15px 10px; box-shadow: 0 0 9px 4px #00000036; position: absolute; z-index: 999; bottom: 0; background: #fff;">
-      <div v-if="meMemoData !== null"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
+      <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
         <!-- <div class="w-100P fl"> -->
           <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
           <!-- <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p> -->
-          <div class="fl mleft-05 mright-05 font14 commonBlack" style="text-align: left;" v-html="textReSize(meMemoData.memo.bodyFullStr)"></div>
+          <!-- {{meMemoData.memo.bodyFullStr}} -->
+          <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
         <!-- </div> -->
         <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
           <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
@@ -24,55 +25,79 @@
 // eslint-disable-next-line
 export default {
   props: {
-    mememo: {}
-  },
-  created () {
-
+    mememo: {},
+    resetMemoYn: {}
   },
   data () {
     return {
       memoText: '',
-      meMemoData: null
+      meMemoData: null,
+      okResetYn: false
     }
   },
+  updated () {
+    this.settingPop()
+    // this.okResetYn = false
+    /* if (this.resetMemoYn && !this.okResetYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      document.getElementById('memoTextTag').innerHTML = ''
+      this.okResetYn = false
+      // eslint-disable-next-line vue/no-mutating-props
+      // this.resetMemoYn = false
+    } else {
+      this.okResetYn = true
+    } */
+  },
   mounted () {
-    document.querySelector('#memoTextTag').addEventListener('paste', (e) => {
-      e.preventDefault()
-      var textData = (e.originalEvent || e).clipboardData.getData('Text')
-      document.execCommand('insertHTML', false, textData)
-    })
-    this.$refs.memoTextTag.focus()
-    if (this.mememo) this.setMememo()
-
-    document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
-      var keycode = event.keyCode
-      if (keycode === 8 || keycode === 46) {
-        try {
-          var s = window.getSelection()
-          var r = s.getRangeAt(0)
-          var el = r.startContainer.parentElement
-          if (el.classList.contains('parentNameCard')) {
-            if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
-              event.preventDefault()
-              el.remove()
-            }
-          }
-        } catch (error) {
-          // alert(error)
-        }
-      }
-    })
+    this.settingPop()
   },
   methods: {
+    settingPop () {
+      document.querySelector('#memoTextTag').addEventListener('paste', (e) => {
+        e.preventDefault()
+        var textData = (e.originalEvent || e).clipboardData.getData('Text')
+        document.execCommand('insertHTML', false, textData)
+      })
+      this.$refs.memoTextTag.focus()
+      if (this.mememo) this.setMememo()
+
+      document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
+        var keycode = event.keyCode
+        if (keycode === 8 || keycode === 46) {
+          try {
+            var s = window.getSelection()
+            var r = s.getRangeAt(0)
+            var el = r.startContainer.parentElement
+            if (el.classList.contains('parentNameCard')) {
+              if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
+                event.preventDefault()
+                el.remove()
+              }
+            }
+          } catch (error) {
+          // alert(error)
+          }
+        }
+      })
+    },
     textReSize (text) {
-      if (text.length >= 20) text = text > 20 ? text.substring(0, 64) + '..' : text.substring(0, 64)
-      return text
+      var returnT = text
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (text.length >= 20) {
+        returnT = text.substring(0, 64) + '..'
+      } else {
+        returnT = text.substring(0, 64)
+      }
+      return returnT
     },
     setMememo () {
       this.meMemoData = this.mememo
+      console.log(this.meMemoData)
       // console.log(this.meMemoData)
       var myCreHtml = null
-      myCreHtml = '<span style="padding:0 5px; border-radius: 10px;" class="parentNameCard fl CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
+      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard fl CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
       // myCreHtml += '<p class="font14 fl">'
       myCreHtml += '@' + this.$changeText(this.meMemoData.memo.userDispMtext || this.meMemoData.memo.userNameMtext)
       // myCreHtml += '</p>'
@@ -80,6 +105,13 @@ export default {
       this.$nextTick(() => {
         try {
           this.$refs.memoTextTag.focus()
+          console.log(myCreHtml)
+          // eslint-disable-next-line no-debugger
+          debugger
+          var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
+          for (var i = 0; i < spanTag.length; i++) {
+            spanTag[i].remove()
+          }
           this.$pasteHtmlAtCaret(myCreHtml)
         } catch (error) {
           // console.log(error)

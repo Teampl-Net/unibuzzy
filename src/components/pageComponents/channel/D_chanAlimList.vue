@@ -85,7 +85,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-    <pushList :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim'/>
+    <pushList @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim'/>
     <!-- <div v-else style="">
         notiScrollTarget: {
       handler (value, old) {
@@ -98,14 +98,16 @@
   </div>
 
   <!-- <div class="btnPlus" v-show="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
-  <img src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P'" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
-  <img src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'B'" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <img src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <img src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
 
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="CHANNEL_DETAIL.detailShowYn" >
     <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn" :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;"></chanDetailComp>
   </div>
+  <!-- <p style="position: fixed; top: 0; left: 50%;" >{{focusEle}}</p> -->
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
+  <!-- <p style="position: fixed; top: 0; left: 0;">{{this.gMemoEditYn}}</p> -->
   <div v-if="writePushYn" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
     <writePush  ref="chanAlimListWritePushRefs"  @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' />
   </div>
@@ -164,7 +166,10 @@ export default {
       writeBoardYn: false,
       writeBoardData: {},
       writeBoardPopId: '',
-      readyFinYn: false
+      readyFinYn: false,
+      gMemoEditYn: false,
+      focusEle: '',
+      bigBtnShowYn: true
       // errorPopYn: false
     }
   },
@@ -186,8 +191,10 @@ export default {
     console.log(this.pPopId)
     this.$emit('openLoading')
     this.readyFunction()
+    this.focusEle = document.activeElement.classList
   },
   updated () {
+    this.focusEle = document.activeElement.classList
     this.box = this.$refs.scrollBox
     if (this.box) {
       this.box.addEventListener('scroll', this.updateScroll)
@@ -206,6 +213,28 @@ export default {
     }
   },
   methods: {
+    changeMemoEditYn (gMemoEditYn) {
+      // alert(gMemoEditYn)
+      this.bigBtnShowYn = gMemoEditYn
+      /* var memo = document.querySelectorAll('[contenteditable=true]')
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (memo) {
+        for (var i = 0; i < memo.length; i++) {
+          memo[i].addEventListener('focus', (e) => {
+            this.bigBtnShowYn = false
+            // alert(true)
+          })
+          memo[i].addEventListener('blur', (e) => {
+            this.bigBtnShowYn = true
+            // alert(true)
+          })
+        }
+      } */
+    },
+    alertFunction () {
+      // alert(true)
+    },
     checkBGColor () {
       // document.getElementById('chanAlimListBG')
       // this.$refs.chanAlimListBG.

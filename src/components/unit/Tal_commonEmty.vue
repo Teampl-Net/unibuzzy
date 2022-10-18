@@ -32,6 +32,8 @@ export default {
         this.midleText = '구독중인 채널이 없습니다.'
       } else if (this.tabName === '내 채널') {
         this.midleText = '내가 관리하는 채널이 없습니다.'
+      } else if (this.tabName === '전체') {
+        this.midleText = '조회된 채널이 없습니다.'
       } else {
         this.midleText = '현재 서비스에 문제가 있습니다. 잠시후 다시 시도해보세요.'
       }

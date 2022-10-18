@@ -31,8 +31,8 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
-          <commonList @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
+          <commonList @cMemoEditYn="cMemoEditYn" @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' />
           <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -45,7 +45,7 @@
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
         <transition name="showMemoPop">
-          <gMemoPop ref="gMemoRef" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:99999998; height: fit-content;" />
+          <gMemoPop ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:99999998; height: fit-content;" />
         </transition>
     </div>
     <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
@@ -562,6 +562,9 @@ export default {
     } */
   },
   methods: {
+    cMemoEditYn (editYn) {
+      this.$emit('cMemoEditYn', editYn)
+    },
     async setNotiScroll (key, jobkindId) {
       // alert(key)
       this.targetCKey = key
@@ -593,6 +596,8 @@ export default {
         this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
         this.targetCKey = null
         this.failPopYn = true
+        this.canLoadYn = true
+        this.loadMore()
         var index = null
         if (jobkindId === 'ALIM') {
           index = this.alimContentsList.findIndex((item) => item.contentsKey === targetKey)
@@ -745,6 +750,17 @@ export default {
       return uniqueArr
     },
     writeMememo (memo) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (!this.mememoValue) {
+        this.resetMemoYn = true
+      } else {
+        if (this.mememoValue.memo.memoKey !== memo.memo.memoKey) {
+          this.resetMemoYn = true
+        } else {
+          this.resetMemoYn = false
+        }
+      }
       this.mememoValue = {}
       this.currentContentsKey = memo.memo.targetKey
       this.mememoValue = memo
@@ -756,7 +772,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -834,6 +850,19 @@ export default {
       this.mememoValue = null
     },
     writeMemo (param) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.resetMemoYn = false
+      if (this.mememoValue) {
+        this.resetMemoYn = true
+        this.mememoValue = null
+      } else {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (this.currentContentsKey !== param.contentsKey) {
+          this.resetMemoYn = true
+        }
+      }
       this.mememoValue = null
       this.memoShowYn = true
       var idx
@@ -888,7 +917,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -966,7 +995,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1114,7 +1143,7 @@ export default {
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('jobkindId', 'ALIM')
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -1211,6 +1240,7 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
+      this.scrollIngYn = true
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
@@ -1684,7 +1714,9 @@ export default {
       axiosQueue: [],
       canUpLoadYn: true,
       upOffSetInt: 0,
-      computedYn: true
+      computedYn: true,
+      resetMemoYn: false
+      // scrollIngYn: false
     }
   }
 }

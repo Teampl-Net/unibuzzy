@@ -11,7 +11,7 @@
                         <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                             <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
                         </div>
-                        <p class="fl font15 commonBlack  receiverTeamText">{{data.cabinetNameMtext}}</p>
+                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.cabinetNameMtext)}}</p>
                     </div>
                     <!-- <div @click="addSelectedList(data, index, 'C')" class="fr" style="position: relative; height: 100%;">
                         <div style="background-color:#a9aacd; width:40px; height: 40px; border-radius: 100%; line-height:40px; position:absolute; top:40px; right: 5px; transform: translateY(-40px)">
@@ -144,6 +144,9 @@ export default {
                     this.memberList[i].selectedYn = false
 
                     for (var s = 0; s < this.selectedMemberList.length; s++) {
+                        if (!this.memberList[i].accessKey && this.memberList[i].shareSeq) {
+                            this.memberList[i].accessKey = this.memberList[i].shareSeq
+                        }
                         if (this.selectedMemberList[s].accessKey === this.memberList[i].accessKey) {
                         this.memberList[i].selectedYn = true
                         this.memberList[i].shareSeq = this.memberList[i].accessKey

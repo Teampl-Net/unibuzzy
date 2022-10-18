@@ -200,13 +200,13 @@ export default {
     introChanPageTab () {
       if (this.viewTab === 'user') {
         this.currentTabName = '구독중'
-        this.imgUrl = '/resource/common/placeholder_white.png'
+        // this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'all') {
         this.currentTabName = '전체'
-        this.imgUrl = '/resource/common/placeholder_white.png'
+        // this.imgUrl = '/resource/common/placeholder_white.png'
       } else if (this.viewTab === 'mychannel') {
         this.currentTabName = '내 채널'
-        this.imgUrl = '/resource/common/placeholder_white.png'
+        // this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
     getAbsoluteTop (element) {

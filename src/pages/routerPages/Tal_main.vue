@@ -61,6 +61,7 @@ export default {
     this.loadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
+    this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', [])
     // console.log(this.GE_MAIN_CHAN_LIST)
     // document.addEventListener('message', e => this.recvNoti(e))
     // // window.addEventListener('message', e => this.recvNoti(e))
@@ -116,7 +117,7 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://mo.d-alim.com/service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
