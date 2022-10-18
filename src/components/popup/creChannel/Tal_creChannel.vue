@@ -201,7 +201,11 @@ export default {
       this.inputChannelName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
       this.inputChannelMemo = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
       this.selectBg.selectedId = this.CHANNEL_DETAIL.picMfilekey
-      this.selectBg.selectPath = this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext
+      if (this.CHANNEL_DETAIL.bgDomainPath) {
+        this.selectBg.selectPath = this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext
+      } else {
+        this.selectBg.selectPath = this.CHANNEL_DETAIL.bgPathMtext
+      }
       this.selectBg.iconType = this.CHANNEL_DETAIL.bgPathMtext.length > 30 ? 'img' : 'icon'
       this.selectIcon.selectedId = this.CHANNEL_DETAIL.logoFilekey
       this.selectIcon.selectPath = this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext
@@ -227,9 +231,12 @@ export default {
       this.typePopYn = false
     },
     setIconOrBGData (param) {
+      debugger
       if (this.iconBgPopupYn === 'iconPop') {
         this.selectIcon = param
       } else if (this.iconBgPopupYn === 'bgPop') {
+        console.log(this.selectBg)
+        debugger
         this.selectBg = param
       }
       this.iconBgPopupYn = false

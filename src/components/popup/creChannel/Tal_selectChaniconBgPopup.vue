@@ -237,7 +237,11 @@ export default {
     },
     selectChanInfo (value) {
       this.selectedId = value.imageFilekey
-      this.selectPath = value.domainPath + value.pathMtext
+      if (value.domainPath) {
+        this.selectPath = value.domainPath + value.pathMtext
+      } else {
+        this.selectPath = value.pathMtext
+      }
     },
     async handleImageUpload (event) {
       const options = {

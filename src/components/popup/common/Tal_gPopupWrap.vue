@@ -408,9 +408,24 @@ export default {
         this.detailVal = target
         this.headerTitle = '상세'
         // var chan = this.$getDetail('TEAM', target.targetKey)
-        if (this.detailVal.value) {
-          if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
-            this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+        // eslint-disable-next-line no-debugger
+        debugger
+        console.log()
+        if (this.detailVal.notiYn) {
+          if (this.detailVal.jobkindId === 'BOAR') {
+            if (this.detailVal.cabinetNameMtext) {
+              this.headerTitle = this.changeText(this.detailVal.cabinetNameMtext)
+            }
+          } else if (this.detailVal.jobkindId === 'ALIM') {
+            if (this.detailVal.nameMtext) {
+              this.headerTitle = this.changeText(this.detailVal.nameMtext)
+            }
+          }
+        } else {
+          if (this.detailVal.value) {
+            if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
+              this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+            }
           }
         }
         console.log('popId만듦-----------------------------------------------------------------')
@@ -738,11 +753,7 @@ export default {
       if (detail.contentsList.length === 0) {
         return false
       } else {
-        if (detail.contentsList[0].jobkindId === 'BOAR') {
-          return detail.contentsList[0].cabinetKey
-        } else {
-          return true
-        }
+        return detail.contentsList[0]
       }
     },
     async goDetail (value) {
@@ -777,12 +788,17 @@ export default {
         param.targetKey = value.contentsKey
         // param.targetType = value.contentsKey
         if (value.jobkindId === 'BOAR') {
-          param.cabinetKey = targetYn
+          param.cabinetKey = targetYn.cabinetKey
+          param.cabinetNameMtext = targetYn.cabinetNameMtext
+        } else {
+          param.nameMtext = targetYn.nameMtext
+          param.teamName = targetYn.nameMtext
         }
         param.contentsKey = value.contentsKey
         param.jobkindId = value.jobkindId
         param.teamKey = value.creTeamKey
         param.value = value
+        param.notiYn = true
         this.openPop(param)
       } else {
         this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'

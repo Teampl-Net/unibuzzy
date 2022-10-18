@@ -295,7 +295,7 @@ export default {
       if (detail.contentsList.length === 0) {
         return false
       } else {
-        return true
+        return detail.contentsList[0]
       }
     },
     async goDetail (value) {
@@ -308,12 +308,20 @@ export default {
       }
       var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
       console.log('과연??있나요?' + targetYn)
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (targetYn === true || targetYn === 'true') {
+      if (targetYn !== false && targetYn !== 'false') {
         param.targetKey = value.contentsKey
+        // param.targetType = value.contentsKey
+        if (value.jobkindId === 'BOAR') {
+          param.cabinetKey = targetYn.cabinetKey
+          param.cabinetNameMtext = targetYn.cabinetNameMtext
+        } else {
+          param.nameMtext = targetYn.nameMtext
+          param.teamName = targetYn.nameMtext
+        }
         param.contentsKey = value.contentsKey
+        param.jobkindId = value.jobkindId
         param.teamKey = value.creTeamKey
+        param.notiYn = true
         param.value = value
         this.openPop(param)
       } else {
