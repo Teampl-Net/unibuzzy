@@ -13,7 +13,7 @@
                         <div style="width: 100px;float: left; height: 100%;">
 
                         </div> -->
-                        <div @click="!selectPopYn? openModiPop(data,index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
+                        <div @click="!selectPopYn ? openModiPop(data, index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
                             <p class="fl font16 commonBlack">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
                             <p class="fl font12 commonBlack" v-if="data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true)">{{this.setPhone(data.phoneEnc)}}</p>
                             <p class="fl font11 commonBlack" v-if="!data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true) ">등록된 번호가 없습니다.</p>
@@ -203,12 +203,15 @@ export default {
       // }
     },
     openModiPop (data, index) {
+      // console.log(data)
+      // console.log(this.teamInfo.teamKey)
       if (!this.editYn) {
         this.newYn = false
         // this.addMemberPopYn = true
         data.targetType = 'bookMemberDetail'
-        data.currentCabinetKey = this.propData.cabinetKey
+        data.currentCabinetKey = data.cabinetKey
         data.currentTeamKey = this.teamInfo.teamKey
+        data.teamKey = this.teamInfo.teamKey
         data.readOnlyYn = true
         this.$emit('openAddPop', data)
       }

@@ -131,7 +131,6 @@
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
 </template>
 <script>
-/* eslint-disable */
 import commonConfirmPop from './confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../unit/formEditor/Tal_formEditor.vue'
 import attachFileList from '../unit/formEditor/Tal_attachFile.vue'
@@ -139,7 +138,7 @@ export default {
   props: {
     params: {},
     sendOk: {},
-    replyData: {},
+    replyData: {}
   },
   watch: {
     sendOk: function () {
@@ -153,52 +152,52 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     // debugger
     // console.log(this.params)
-    document.querySelector("#pageMsgAreaWrap").addEventListener("paste", (e) => {
+    document.querySelector('#pageMsgAreaWrap').addEventListener('paste', (e) => {
       // console.log(e)
-      var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+      var items = (e.clipboardData || e.originalEvent.clipboardData).items
 
-      for (let i of items) {
-          var item = i;
-          if (item.type.indexOf("image") !== -1) {
-              if (this.viewTab != 'complex') {
-                  this.$refs.actBar.switchtab(1)
-                  this.viewTab = 'complex'
-              }
-              /* this.editorType = 'complex' */
-              var file = item.getAsFile();
-              this.handleImageUpload(file)
-              // console.log(file);
-          //uploadFile(file);
-          } else {
-            // e.preventDefault()
-            /* const text = (e.originalEvent || e).clipboardData.getData('text/plain');
-            document.execCommand("insertHTML", false, text); */
-            // const getText = (e.originalEvent || e).clipboardData.getData('text/plain')
-            // var pastedData = event.clipboardData ||  window.clipboardData;
-
-            // const selection = document.getSelection();
-            // const range = selection.getRangeAt(0);
-            // const start = range.startOffset; // 텍스트 선택 시작 위치
-            // const end = range.endOffset; // 텍스트 선택 마지막 위치
-            // if (this.viewTab != 'complex') {
-              // const text = document.getElementById('textMsgBoxPush').textContent
-              // const before = text.slice(0, start)
-              // const after = text.slice(end)
-
-              // // console.log(start)
-              // // console.log(before)
-              // // console.log(after)
-              // document.getElementById('textMsgBoxPush').textContent = before + getText + after;
-              // document.getElementById('textMsgBoxPush').textContent = getText;
-              // const text = (e.originalEvent || e).clipboardData.getData('text/html')
-            // }
-            // e.preventDefault()
-            // const text = (e.originalEvent || e).clipboardData.getData('text/html');
-            // document.execCommand("insertHTML", false, text);
+      for (const i of items) {
+        var item = i
+        if (item.type.indexOf('image') !== -1) {
+          if (this.viewTab !== 'complex') {
+            this.$refs.actBar.switchtab(1)
+            this.viewTab = 'complex'
           }
+          /* this.editorType = 'complex' */
+          var file = item.getAsFile()
+          this.handleImageUpload(file)
+          // console.log(file);
+          // uploadFile(file);
+        } else {
+          // e.preventDefault()
+          /* const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+            document.execCommand("insertHTML", false, text); */
+          // const getText = (e.originalEvent || e).clipboardData.getData('text/plain')
+          // var pastedData = event.clipboardData ||  window.clipboardData;
+
+          // const selection = document.getSelection();
+          // const range = selection.getRangeAt(0);
+          // const start = range.startOffset; // 텍스트 선택 시작 위치
+          // const end = range.endOffset; // 텍스트 선택 마지막 위치
+          // if (this.viewTab != 'complex') {
+          // const text = document.getElementById('textMsgBoxPush').textContent
+          // const before = text.slice(0, start)
+          // const after = text.slice(end)
+
+          // // console.log(start)
+          // // console.log(before)
+          // // console.log(after)
+          // document.getElementById('textMsgBoxPush').textContent = before + getText + after;
+          // document.getElementById('textMsgBoxPush').textContent = getText;
+          // const text = (e.originalEvent || e).clipboardData.getData('text/html')
+          // }
+          // e.preventDefault()
+          // const text = (e.originalEvent || e).clipboardData.getData('text/html');
+          // document.execCommand("insertHTML", false, text);
+        }
       }
       e.preventDefault()
       var textData = (e.originalEvent || e).clipboardData.getData('Text')
@@ -208,7 +207,7 @@ export default {
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
     if (textArea) {
-        textArea.addEventListener('focus', () => {
+      textArea.addEventListener('focus', () => {
         document.querySelector('#alimWrap').style.height = this.screenInnerHeight
         document.querySelector('#alimWrap').style.width = this.screenInnerWidth
       })
@@ -279,7 +278,7 @@ export default {
       progressShowYn: false,
       editorType: 'text',
       receiverPopYn: false,
-      receiverList: {memberList: [], bookList: []},
+      receiverList: { memberList: [], bookList: [] },
       receiverText: '수신자를 선택해주세요',
       allRecvYn: true,
       selectedReceiverList: [],
@@ -303,16 +302,15 @@ export default {
       bodyString: ''
       // formCardHeight: 0
 
-
     }
   },
   computed: {
     GE_USER () {
-        return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['D_USER/GE_USER']
     },
     setScrollWidth () {
-        var w = 150 * this.receiverTotalNum
-        return 'width: ' + w + 'px'
+      var w = 150 * this.receiverTotalNum
+      return 'width: ' + w + 'px'
     },
     // calcFormCardHeight() {
     //   if (this.formCardHeight) {
@@ -334,7 +332,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
@@ -369,12 +367,12 @@ export default {
       this.canReplyYn = true
       // document.getElementById('replyInput')
     }
-    if (this.params.requestPushYn){
+    if (this.params.requestPushYn) {
       this.requestPushYn = true
     }
   },
   methods: {
-    settingAlim() {
+    settingAlim () {
       var temp = document.createElement('div')
       temp.innerHTML = this.bodyString
       if (temp.getElementsByClassName('formCard').length > 0) {
@@ -430,10 +428,9 @@ export default {
       } else {
         document.getElementById('textMsgBoxPush').innerHTML = this.$findATagDelete(this.bodyString)
       }
-
     },
     async requestPushAgreeClick () {
-      if (this.checkRequstAgree() === true){
+      if (this.checkRequstAgree() === true) {
         var param = {}
         param.requestKey = this.params.requestKey
         param.answerRequestMsg = this.answerRequestMsg
@@ -453,7 +450,7 @@ export default {
       }
     },
     async requestPushDisagreeClick () {
-      if (this.checkRequstAgree() === true){
+      if (this.checkRequstAgree() === true) {
         var param = {}
         param.requestKey = this.params.requestKey
         param.answerRequestMsg = this.answerRequestMsg
@@ -473,18 +470,18 @@ export default {
       }
     },
     delRecvList (type, index) {
-        if (type === 'm') {
-            this.receiverList.memberList.splice(index, 1)
-        } else if (type === 'b') {
-            this.receiverList.bookList.splice(index, 1)
-        }
-        this.receiverTotalNum -= 1
+      if (type === 'm') {
+        this.receiverList.memberList.splice(index, 1)
+      } else if (type === 'b') {
+        this.receiverList.bookList.splice(index, 1)
+      }
+      this.receiverTotalNum -= 1
     },
     checkRequstAgree () {
       var checkYn = false
       if (this.answerRequestMsg.replaceAll(' ', '') !== '') {
         checkYn = true
-      }else {
+      } else {
         this.errorText = '응답메시지를 입력해주세요.'
         this.failPopYn = true
         return
@@ -503,13 +500,13 @@ export default {
         this.uploadFileList.push(upList)
       }
     },
-    encodeUTF8(str){// 특수문자도 포함할 경우  encodeURIComponent(str) 를 사용.     
-      return encodeURI(str);
+    encodeUTF8 (str) { //  특수문자도 포함할 경우 encodeURIComponent(str)를 사용.
+      return encodeURI(str)
     },
-    openPop(param){
+    openPop (param) {
       // console.log('param');
       // console.log(param);
-      this.$emit('openPop',param)
+      this.$emit('openPop', param)
     },
     changeTab (tab) {
       this.viewTab = tab
@@ -521,81 +518,19 @@ export default {
     // setReceiverText(){
     // this.$changeText(this.params.targetNameMtext)
     // },
-    setSelectedList(obj) {
-        var mList = []
-        var bList = []
-        var myMList = []
-        var myBList = []
-        // console.log('2!@#!@#!@@@@@2222')
-        // console.log(this.receiverList)
-        // console.log(obj)
-        if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
-            myMList = this.receiverList.memberList
-        }
-        if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
-            myBList = this.receiverList.bookList
-        }
-
-        // if (obj.bookList && obj.bookList.length > 0) {
-        //     bList = obj.bookList
-        //     if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
-        //         myBList = this.receiverList.bookList
-        //         for (var mb = 0; mb < myBList.length; mb ++) {
-        //             for (var b = obj.bookList.length - 1; b >= 0; b --) {
-        //                 if (obj.bookList[b].cabinetKey === myBList[mb].cabinetKey) {
-        //                   bList = bList.splice(b, 1)
-        //                   // break
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     if (bList === undefined || bList === null) bList = []
-        // }
-
-        // if (obj.memberList && obj.memberList.length > 0) {
-        //     mList = obj.memberList
-        //     if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
-        //         // console.log('this.receiverList')
-        //         // console.log(this.receiverList)
-        //         mList = this.receiverList.memberList
-
-        //         for (var mm = 0; mm < myMList.length; mm ++) {
-        //             for (var m = obj.memberList.length - 1; m >= 0; m --) {
-        //                 if (obj.memberList[m].userKey === myMList[mm].userKey) {
-        //                   mList = mList.splice(m, 1)
-        //                   // break
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     if (mList === undefined || mList === null) mList = []
-        // }
-        // if (myMList.length > 0) {
-        //     if (mList.length > 0) {
-        //         this.receiverList.memberList = [
-        //             ...myMList,
-        //             ...mList
-        //         ]
-        //     }
-        // } else {
-        //     if(mList.length > 0) {
-        //         this.receiverList.memberList = mList
-        //     }
-        // }
-
-        // if (myBList.length > 0) {
-        //     if (bList.length > 0) {
-        //         this.receiverList.bookList = [
-        //             ...myBList,
-        //             ...bList
-        //         ]
-        //     }
-        // } else {
-        //     if(bList.length > 0) {
-        //         this.receiverList.bookList = bList
-        //     }
-        // }
-
+    setSelectedList (obj) {
+      var mList = []
+      var bList = []
+      var myMList = []
+      var myBList = []
+      console.log('2!@#!@#!@@@@@2222')
+      console.log(obj)
+      if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
+        myMList = this.receiverList.memberList
+      }
+      if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
+        myBList = this.receiverList.bookList
+      }
 
       this.list = []
       this.selectedReceiverList = []
@@ -604,42 +539,39 @@ export default {
       // console.log(this.receiverList.bookList);
       // var shareItemBookList = []
       // eslint-disable-next-line no-new-object
-
-
     },
     settingRecvList () {
-        var shareItemBookObject = new Object()
-        if (this.receiverList.bookList) {
-            for (let i = 0; i < this.receiverList.bookList.length; i++) {
-            var selectedBookList = this.receiverList.bookList[i]
+      var shareItemBookObject = {}
+      if (this.receiverList.bookList) {
+        for (let i = 0; i < this.receiverList.bookList.length; i++) {
+          var selectedBookList = this.receiverList.bookList[i]
 
-            shareItemBookObject = {}
-            shareItemBookObject.accessKind = 'C'
-            shareItemBookObject.accessKey = selectedBookList.cabinetKey
+          shareItemBookObject = {}
+          shareItemBookObject.accessKind = 'C'
+          shareItemBookObject.accessKey = selectedBookList.cabinetKey
 
-            /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-            // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
-            // this.list.push(shareItemBookObject)
-            this.receiverText += selectedBookList.cabinetNameMtext + ', '
-            this.selectedReceiverList.push(shareItemBookObject)
-            }
-            /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-
+          /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
+          // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
+          // this.list.push(shareItemBookObject)
+          this.receiverText += selectedBookList.cabinetNameMtext + ', '
+          this.selectedReceiverList.push(shareItemBookObject)
         }
-        // var shareItemMemberList = []
-        // eslint-disable-next-line no-new-object
-        var shareItemMemberObject = new Object()
-        if (this.receiverList.memberList) {
-            for (let i = 0; i < this.receiverList.memberList.length; i++) {
-            var selectedMemberList = this.receiverList.memberList[i]
-            shareItemMemberObject = {}
-            shareItemMemberObject.accessKind = 'U'
-            shareItemMemberObject.accessKey = selectedMemberList.userKey
-            /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-            this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
-            this.selectedReceiverList.push(shareItemMemberObject)
-            }
+        /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+      }
+      // var shareItemMemberList = []
+      // eslint-disable-next-line no-new-object
+      var shareItemMemberObject = {}
+      if (this.receiverList.memberList) {
+        for (let i = 0; i < this.receiverList.memberList.length; i++) {
+          var selectedMemberList = this.receiverList.memberList[i]
+          shareItemMemberObject = {}
+          shareItemMemberObject.accessKind = 'U'
+          shareItemMemberObject.accessKey = selectedMemberList.userKey
+          /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
+          this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
+          this.selectedReceiverList.push(shareItemMemberObject)
         }
+      }
     },
     openPushReceiverSelect () {
       var param = {}
@@ -650,8 +582,7 @@ export default {
       param.pSelectedList = this.receiverList
       // console.log(this.params)
       // console.log(param)
-
-      this.$emit('openPop',param)
+      this.$emit('openPop', param)
       // this.receiverPopYn = true
     },
     setParamInnerHtml (formCard) {
@@ -671,7 +602,7 @@ export default {
       this.clickPageTopBtn()
       // this.formEditorShowYn = false
     },
-    confirmNo(){
+    confirmNo () {
       this.complexOkYn = false
       // console.log(this.propFormData)
     },
@@ -685,26 +616,26 @@ export default {
       }
     },
     async sendMsg () {
-        this.checkPopYn=false
-        var paramImgList = []
-        this.sendLoadingYn = true
+      this.checkPopYn = false
+      // var paramImgList = []
+      this.sendLoadingYn = true
 
-        try {
-          var param = {}
-          var innerHtml =''
-          param.bodyHtmlYn = true //기본알림또한 html형식으로 들어감
-          var targetMsgDiv = null
-          // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
-          if (this.uploadFileList.length > 0) {
-              this.progressShowYn = true
-              await this.formSubmit()
-              setTimeout(() => {
-                this.progressShowYn = false
-              }, 2000)
-          } else {
-          }
+      try {
+        var param = {}
+        var innerHtml = ''
+        param.bodyHtmlYn = true // 기본알림또한 html형식으로 들어감
+        var targetMsgDiv = null
+        // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+        if (this.uploadFileList.length > 0) {
+          this.progressShowYn = true
+          await this.formSubmit()
+          setTimeout(() => {
+            this.progressShowYn = false
+          }, 2000)
+        } else {
+        }
 
-          if(this.viewTab === 'complex') {
+        if (this.viewTab === 'complex') {
           // this.$refs.complexEditor.setParamInnerHtml()
           param.bodyHtmlYn = true
           /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
@@ -717,120 +648,117 @@ export default {
               }
               param.imgList = imgList
               */
-              var formList = document.querySelectorAll('#msgBox .formCard')
-              if (formList) {
-                for (var f = 0; f < formList.length; f++) {
-                    formList[f].contentEditable = false
-                    // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-                    if (formList[f].id === 'formEditText') {
-                      var innerHtml = formList[f].innerHTML
-                      formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
-                    }
-                    // if (formList[f].id)
-                }
-              param.getBodyHtmlYn = true
+          var formList = document.querySelectorAll('#msgBox .formCard')
+          if (formList) {
+            for (var f = 0; f < formList.length; f++) {
+              formList[f].contentEditable = false
+              // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+              if (formList[f].id === 'formEditText') {
+                innerHtml = formList[f].innerHTML
+                formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
               }
-              targetMsgDiv = document.getElementById('msgBox')
-              innerHtml = targetMsgDiv.innerHTML
-
-          } else if (this.viewTab === 'text') {
-              // param.bodyHtmlYn = false
-              document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
-              //
-              targetMsgDiv = document.getElementById('textMsgBoxPush')
-              innerHtml = targetMsgDiv.innerHTML
-              innerHtml = this.$findUrlChangeAtag(innerHtml)
+              // if (formList[f].id)
+            }
+            param.getBodyHtmlYn = true
           }
-
-          // innerHtml = this.$findUrlChangeAtag(innerHtml)
-          // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
-
-          param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-          param.allRecvYn = this.allRecvYn
-          var attachFileList = await this.setAttachFileList()
-          if (attachFileList.length > 0) {
-              param.attachFileList = attachFileList
-          }
-          if (this.allRecvYn === true) {
-
-          } else {
-              // console.log(this.param)
-              if(this.replyPopYn) {
-              param.parentContentsKey = this.params.targetContentsKey
-              param.actorList = [{accessKind: 'U', accessKey: this.params.creUserKey}]
-              } else {
-              await this.settingRecvList()
-              if (this.selectedReceiverList.length > 0) {
-                  param.actorList = this.selectedReceiverList
-              } else {
-                  this.errorText = '수신자를 선택해주세요'
-                  this.failPopYn = true
-                  return
-              }
-              }
-          }
-          param.teamName = this.$changeText(this.params.targetNameMtext)
-          param.creTeamKey = this.params.targetKey || this.creTeamKey
-          if (this.params.currentTeamKey || this.params.creTeamKey){
-            param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
-          }
-          // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-          // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-          param.creUserKey = this.GE_USER.userKey
-          if(this.writePushTitle !== '') {
-              param.title = this.writePushTitle
-          } else {
-              // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
-              param.title = this.$titleToBody(targetMsgDiv)
-          }
+          targetMsgDiv = document.getElementById('msgBox')
+          innerHtml = targetMsgDiv.innerHTML
+        } else if (this.viewTab === 'text') {
+          // param.bodyHtmlYn = false
+          document.querySelectorAll('#textMsgBoxPush')[0].contentEditable = false
           //
-          param.jobkindId = 'ALIM'
-          param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+          targetMsgDiv = document.getElementById('textMsgBoxPush')
+          innerHtml = targetMsgDiv.innerHTML
+          innerHtml = this.$findUrlChangeAtag(innerHtml)
+        }
 
-          param.showCreNameYn = this.showCreNameYn
-          param.canReplyYn = this.canReplyYn
-          //
-          var result
-          if (this.requestPushYn === true) {
-              param.requestTitle = this.requestTitle
+        // innerHtml = this.$findUrlChangeAtag(innerHtml)
+        // innerHtml = this.encodeUTF8(targetMsgDiv.innerHTML)
 
-              // result = this.$saveContents(param)
-              // this.closeXPop(true)
-              // this.sendLoadingYn = false
-              this.okPopYn = true
+        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+        param.allRecvYn = this.allRecvYn
+        var attachFileList = await this.setAttachFileList()
+        if (attachFileList.length > 0) {
+          param.attachFileList = attachFileList
+        }
+        if (this.allRecvYn === true) {
+
+        } else {
+          // console.log(this.param)
+          if (this.replyPopYn) {
+            param.parentContentsKey = this.params.targetContentsKey
+            param.actorList = [{ accessKind: 'U', accessKey: this.params.creUserKey }]
+          } else {
+            await this.settingRecvList()
+            if (this.selectedReceiverList.length > 0) {
+              param.actorList = this.selectedReceiverList
+            } else {
+              this.errorText = '수신자를 선택해주세요'
+              this.failPopYn = true
               return
+            }
           }
-          result = await this.$saveContents(param)
-          /* if (result.contents) {
+        }
+        param.teamName = this.$changeText(this.params.targetNameMtext)
+        param.creTeamKey = this.params.targetKey || this.creTeamKey
+        if (this.params.currentTeamKey || this.params.creTeamKey) {
+          param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
+        }
+        // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+        // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+        param.creUserKey = this.GE_USER.userKey
+        if (this.writePushTitle !== '') {
+          param.title = this.writePushTitle
+        } else {
+          // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
+          param.title = this.$titleToBody(targetMsgDiv)
+        }
+        //
+        param.jobkindId = 'ALIM'
+        param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+
+        param.showCreNameYn = this.showCreNameYn
+        param.canReplyYn = this.canReplyYn
+        //
+        var result
+        if (this.requestPushYn === true) {
+          param.requestTitle = this.requestTitle
+
+          // result = this.$saveContents(param)
+          // this.closeXPop(true)
+          // this.sendLoadingYn = false
+          this.okPopYn = true
+          return
+        }
+        result = await this.$saveContents(param)
+        /* if (result.contents) {
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [result.contents] )
           }
           var isMobile = /Mobi/i.test(window.navigator.userAgent);
           debugger */
-          var isMobile = /Mobi/i.test(window.navigator.userAgent);
-          /* if (!isMobile) {
+        // var isMobile = /Mobi/i.test(window.navigator.userAgent)
+        /* if (!isMobile) {
       // eslint-disable-next-line no-new-object
               this.closeXPop(true)
           } else {
               this.closeXPop(true)
           } */
-          // this.closeXPop(true)
-          var param = new Object()
-          param.contentsKey = result.contents.contentsKey
-          param.jobkindId = result.contents.jobkindId
-          var resultList = await this.$getContentsList(param)
-          var detailData = resultList.content[0]
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-        } catch (error) {
-          console.error(error)
-          // this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
-        } finally {
-          this.sendLoadingYn = false
-          this.closeXPop(true)
-        }
+        // this.closeXPop(true)
+        param = {}
+        param.contentsKey = result.contents.contentsKey
+        param.jobkindId = result.contents.jobkindId
+        var resultList = await this.$getContentsList(param)
+        var detailData = resultList.content[0]
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      } catch (error) {
+        console.error(error)
+        // this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
+      } finally {
+        this.sendLoadingYn = false
+        this.closeXPop(true)
+      }
 
-
-       /*  } */
-
+      /*  } */
     },
     closeXPop (reloadYn) {
       var history = this.$store.getters['D_HISTORY/hStack']
@@ -838,7 +766,7 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
-        //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
+      //  글로벌 히스토리 리스트 변수의 마지막 값을 지워주며 내 페이지를 닫는 close함수 실행
       // if (this.params.writeType) {
       //   this.$parent.propParams.writeType = 'ALIM'
       //   if (this.params.writeType === 'ALIM') {
@@ -846,18 +774,18 @@ export default {
       //     // this.$emit('toAlimFromBoard' , 'P')
       //   }
       // }
-     this.$emit('closeXPop')
+      this.$emit('closeXPop')
     },
     setAttachFileList () {
-      var newAttachFileList = new Array()
-      var setObj = new Object()
+      var newAttachFileList = []
+      var setObj = {}
       for (var i = 0; i < this.uploadFileList.length; i++) {
-        setObj = new Object()
+        setObj = {}
         setObj.addYn = true
         if (this.uploadFileList[i].attachYn) {
-            setObj.attachYn = true
+          setObj.attachYn = true
         } else {
-            setObj.attachYn = false
+          setObj.attachYn = false
         }
         setObj.fileKey = this.uploadFileList[i].fileKey
         setObj.fileName = (this.uploadFileList[i])[0].file.name
@@ -877,7 +805,7 @@ export default {
     },
     async clickPageTopBtn () {
       // 취소를 누르거나 유효성 검사 (이 함수)에 통과하지 못하면 값을 다시 가져와야함. 그러므로 --> this.complexOkYn = false
-      if(this.viewTab === 'complex' && this.complexOkYn === false) {
+      if (this.viewTab === 'complex' && this.complexOkYn === false) {
         this.complexOkYn = true
         await this.$refs.complexEditor.setParamInnerHtml()
       } else {
@@ -903,13 +831,13 @@ export default {
         }
 
         var msgData = ''
-        if(this.viewTab === 'complex') {
+        if (this.viewTab === 'complex') {
           msgData = document.getElementById('msgBox').innerText
         } else if (this.viewTab === 'text') {
           msgData = document.getElementById('textMsgBoxPush').innerText
         }
         msgData = msgData.trim()
-        if (msgData !== undefined && msgData !== null && msgData !== '' && msgData !== '클릭하여 내용을 작성해주세요' || this.uploadFileList.length > 0) {
+        if (msgData !== undefined && msgData !== null && msgData !== '' && (msgData !== '클릭하여 내용을 작성해주세요' || this.uploadFileList.length > 0)) {
         } else {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true
@@ -947,7 +875,6 @@ export default {
       this.$refs.selectFile.click()
     },
     async handleImageUpload (file) {
-      debugger
       this.selectFile = null
       const options = {
         maxSizeMB: 1,
@@ -955,49 +882,47 @@ export default {
         useWebWorker: true
       }
 
-        // 0 번째 파일을 가져 온다.
-          let fileExt = file.name.substring(
-            file.name.lastIndexOf('.') + 1
-          )
-          // 소문자로 변환
-          fileExt = fileExt.toLowerCase()
-          if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
-          ) {
-            console.log('originalFile instanceof Blob', file instanceof Blob) // true
-            console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
+      // 0 번째 파일을 가져 온다.
+      let fileExt = file.name.substring(
+        file.name.lastIndexOf('.') + 1
+      )
+      // 소문자로 변환
+      fileExt = fileExt.toLowerCase()
+      if (
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+      ) {
+        console.log('originalFile instanceof Blob', file instanceof Blob) // true
+        console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
 
-            try {
-            // eslint-disable-next-line no-undef
-              var compressedFile = await this.$imageCompression(file, options)
-              console.log(compressedFile)
-              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
-              var src = null
-              if (compressedFile instanceof Blob) {
-                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
-                const decodImg = atob(src.split(',')[1])
-                const array = []
-                for (let i = 0; i < decodImg.length; i++) {
-                  array.push(decodImg.charCodeAt(i))
-                }
-                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-                var newFile = new File([Bfile], compressedFile.name)
-              } else {
-                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
-              }
-
-              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
-
-              this.$refs.complexEditor.addFormCard('image', src, true)
-              this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
-
-            } catch (error) {
-              console.log(error)
+        try {
+          // eslint-disable-next-line no-undef
+          var compressedFile = await this.$imageCompression(file, options)
+          console.log(compressedFile)
+          console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+          var src = null
+          if (compressedFile instanceof Blob) {
+            src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+            const decodImg = atob(src.split(',')[1])
+            const array = []
+            for (let i = 0; i < decodImg.length; i++) {
+              array.push(decodImg.charCodeAt(i))
             }
+            const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+            var newFile = new File([Bfile], compressedFile.name)
+          } else {
+            src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
           }
-    },
 
+          console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+          console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+          this.$refs.complexEditor.addFormCard('image', src, true)
+          this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
 
     async previewFile (file) {
       let fileExt = file.name.substring(
@@ -1030,20 +955,18 @@ export default {
         reader.readAsDataURL(file)
         // await this.$editorImgResize(this.selectFile)
       }
-        // var result = await this.$previewFile(file)
-        // if (result !== undefined && result !== null && result !== ''){
-        //   this.$refs.complexEditor.addFormCard('image', result.url, true)
-        //   this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
-        // }
+      // var result = await this.$previewFile(file)
+      // if (result !== undefined && result !== null && result !== ''){
+      //   this.$refs.complexEditor.addFormCard('image', result.url, true)
+      //   this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.url, addYn: true, file: result.file }], originalType: 'image' })
+      // }
       /* if (thisthis.$refs.selectFile.files.length > 1) {
         thisthis.$emit('setMultiFile', thisthis.selectFileList)
       } */
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
-        var testtest = this.uploadFileList
-        // console.log(this.uploadFileList)
-        var iList = document.querySelectorAll(".formCard .addTrue")
+        var iList = document.querySelectorAll('.formCard .addTrue')
         // Form 필드 생성
         // if (!this.selectFileList.length) return
         var form = new FormData()
@@ -1057,7 +980,7 @@ export default {
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
-                /* {
+              /* {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total
                   thisthis.uploadFileList[i].percentage = Math.round(percentage)
@@ -1070,7 +993,7 @@ export default {
               })
             .then(res => {
               // console.log(res)
-              if(res.data.length > 0) {
+              if (res.data.length > 0) {
                 if ((this.uploadFileList[i])[0].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
                 } else {
@@ -1088,29 +1011,28 @@ export default {
             })
         }
         // console.log(this.uploadFileList)
-        var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-
                 // console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                 // console.log(uploadFile[0].previewImgUrl)
                 // console.log(iList[il].src)
                 // console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
-                    if (iList[il].src === uploadFile[0].previewImgUrl) {
-                        iList[il].src = uploadFile.filePath
-                        // eslint-disable-next-line no-unused-vars
-                        iList[il].setAttribute('fileKey', uploadFile.fileKey)
-                        iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
-                        iList[il].classList.remove('addTrue')
-                        iList[il].classList.add('addFalse')
-                        break
-                    } else {
+                  if (iList[il].src === uploadFile[0].previewImgUrl) {
+                    iList[il].src = uploadFile.filePath
+                    // eslint-disable-next-line no-unused-vars
+                    iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                    iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                    iList[il].classList.remove('addTrue')
+                    iList[il].classList.add('addFalse')
+                    break
+                  } else {
 
-                    }
+                  }
                 }
               }
             } else {
@@ -1135,11 +1057,11 @@ export default {
       }
     },
     setSelectedAttachFileList (sFile) {
-        if (sFile[0].addYn === true) {
-            this.uploadFileList.push(sFile)
-        }
-        // console.log(this.uploadFileList)
-    },
+      if (sFile[0].addYn === true) {
+        this.uploadFileList.push(sFile)
+      }
+      // console.log(this.uploadFileList)
+    }
   },
 
   components: {

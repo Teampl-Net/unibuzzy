@@ -12,7 +12,6 @@
 
 </template>
 <script>
-/* eslint-disable */
 import bookList from './Tal_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
@@ -26,15 +25,14 @@ export default {
     pSelectedList: {}
   },
   created () {
-    // console.log(this.historyStack)
+    console.log('##################')
     console.log(this.pSelectedList)
+    // eslint-disable-next-line vue/no-mutating-props
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
-
       this.selectedList = this.pSelectedList
 
       var param = {}
-      debugger
       if (this.selectedList.bookList) {
         var test1 = this.selectedList.bookList
         for (let i = 0; i < test1.length; i++) {
@@ -62,7 +60,6 @@ export default {
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
     this.getBookList()
-
   },
 
   computed: {
@@ -84,7 +81,7 @@ export default {
   data () {
     return {
       memberList: [],
-      bookList:[],
+      bookList: [],
       popId: null,
       subPopId: null,
       selectedYn: false,
@@ -103,43 +100,43 @@ export default {
   },
   methods: {
     async getBookList () {
-        // console.log(this.propData)
-        var paramMap = new Map()
-        paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
-        paramMap.set('sysCabinetCode', 'USER')
-        paramMap.set('adminYn', true)
-        var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getTeamMenuList',
-            param: Object.fromEntries(paramMap)
-        })
-        this.bookList = result.data
-        for(var i = 0; i < this.bookList.length; i ++) {
-            var changeT = this.bookList[i].cabinetNameMtext
-            this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
-        }
-        this.editBookSelectedList()
-        //
+      // console.log(this.propData)
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+      paramMap.set('sysCabinetCode', 'USER')
+      paramMap.set('adminYn', true)
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getTeamMenuList',
+        param: Object.fromEntries(paramMap)
+      })
+      this.bookList = result.data
+      for (var i = 0; i < this.bookList.length; i++) {
+        var changeT = this.bookList[i].cabinetNameMtext
+        this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
+      }
+      this.editBookSelectedList()
+      //
     },
     async getBookMemberList () {
-        var paramMap = new Map()
-        paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
-        paramMap.set('jobkindId', 'USER')
-        var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getMCabContentsList',
-            param: Object.fromEntries(paramMap)
-        })
-        this.memberList = result.data
-          if (this.memberList) { // dispName이 없을시 userName으로 대체
-        for (var i =0; i < this.memberList.length; i ++) {
-            if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+      var paramMap = new Map()
+      paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
+      paramMap.set('jobkindId', 'USER')
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getMCabContentsList',
+        param: Object.fromEntries(paramMap)
+      })
+      this.memberList = result.data
+      if (this.memberList) { // dispName이 없을시 userName으로 대체
+        for (var i = 0; i < this.memberList.length; i++) {
+          if (this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
 
-                } else {
-                    this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
-                }
-            }
+          } else {
+            this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+          }
         }
-        this.editMemberSelectedList()
-        //
+      }
+      this.editMemberSelectedList()
+      //
     },
     // editPop () {
     //   // eslint-disable-next-line no-new-object
@@ -154,17 +151,7 @@ export default {
       this.$emit('openPop', param)
     }, */
     sendReceivers (data) {
-      // // eslint-disable-next-line no-new-object
-      var param = {}
-      // // console.log(this.selectedList)
-      // // console.log(this.selectedList.memberList)
-      // console.log('sendReceiver sendReceiver sendReceiver sendReceiver')
-      // console.log(this.selectedList)
-      // param.data = this.selectedList
-      // debugger
-      // console.log(param)
       this.$emit('sendReceivers', data)
-      // this.$emit('selectedList', this.selectedList)
     },
     // 유민참고
     changeSelectMemberList (data) {
@@ -177,7 +164,7 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     addMe (data) {
-      if(this.selectedList.memberList) {
+      if (this.selectedList.memberList) {
         this.selectedList.memberList.unshift(data)
       } else {
         this.selectedList.memberList = []
@@ -204,12 +191,13 @@ export default {
       this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
+      // eslint-disable-next-line no-debugger
       debugger
-      if(this.selectedList.memberList){
+      if (this.selectedList.memberList) {
         var changeList = this.selectedList.memberList
-        for(var m = 0; m < this.memberList.length; m ++) {
+        for (var m = 0; m < this.memberList.length; m++) {
           this.memberList[m].selectedYn = false
-          for(var c = 0; c < changeList.length; c++) {
+          for (var c = 0; c < changeList.length; c++) {
             if (changeList[c].userKey === this.memberList[m].userKey) {
               this.memberList[m].selectedYn = true
             }
@@ -218,12 +206,13 @@ export default {
       }
     },
     editBookSelectedList () {
+      // eslint-disable-next-line no-debugger
       debugger
-      if(this.selectedList.bookList){
+      if (this.selectedList.bookList) {
         var changeList = this.selectedList.bookList
-        for(var m = 0; m < this.bookList.length; m ++) {
+        for (var m = 0; m < this.bookList.length; m++) {
           this.bookList[m].selectedYn = false
-          for(var c = 0; c < changeList.length; c++) {
+          for (var c = 0; c < changeList.length; c++) {
             if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
               this.bookList[m].selectedYn = true
             }
@@ -258,7 +247,7 @@ export default {
       console.log(' back back back back back back back ')
       // console.log(hStack)
       // console.log(this.subPopId)
-      if (this.subPopId === hStack[hStack.length - 1] ) {
+      if (this.subPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         var removePage = hStack[hStack.length - 1]
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -268,7 +257,6 @@ export default {
         this.memberEditYn = false
         this.receiverTitle = '주소록 선택'
         this.detailOpenYn = false
-        return
       } else {
         // hStack = hStack.filter((element, index) => index < hStack.length - 1)
         // this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -296,7 +284,7 @@ export default {
         console.log(history)
 
         this.receiverTitle = '구성원 관리'
-         if (this.selectPopYn) {
+        if (this.selectPopYn) {
           this.receiverTitle = '대상 선택'
           // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
         }
@@ -306,7 +294,6 @@ export default {
         } else {
           this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
         } */
-
       }
     },
     addAllClick () {

@@ -85,7 +85,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-    <pushList @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim'/>
+    <pushList @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
     <!-- <div v-else style="">
         notiScrollTarget: {
       handler (value, old) {
@@ -98,8 +98,8 @@
   </div>
 
   <!-- <div class="btnPlus" v-show="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
-  <img src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
-  <img src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
 
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="CHANNEL_DETAIL.detailShowYn" >
@@ -213,6 +213,14 @@ export default {
     }
   },
   methods: {
+    memoEdit (editYn) {
+      var btn = document.getElementById('writeBtn')
+      if (editYn === true) {
+        btn.style.display = 'none'
+      } else {
+        btn.style.display = 'block'
+      }
+    },
     changeMemoEditYn (gMemoEditYn) {
       // alert(gMemoEditYn)
       this.bigBtnShowYn = gMemoEditYn
@@ -695,6 +703,14 @@ export default {
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
           })
         }
+        if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
+
+        if (detail[0] && (detail[0].blackYn !== undefined && detail[0].blackYn !== null && detail[0].blackYn !== '')) {
+          this.$emit('bgcolor', detail[0].blackYn)
+        } else {
+          this.$emit('bgcolor', false)
+        }
+
         console.log(detail[0])
         // eslint-disable-next-line no-debugger
         debugger
@@ -709,6 +725,12 @@ export default {
         if (this.CHANNEL_DETAIL) {
           console.log('CHANNEL_DETAIL')
           console.log(this.CHANNEL_DETAIL)
+
+          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.blackYn !== undefined && this.CHANNEL_DETAIL.blackYn !== null && this.CHANNEL_DETAIL.blackYn !== '')) {
+            this.$emit('bgcolor', this.CHANNEL_DETAIL.blackYn)
+          } else {
+            this.$emit('bgcolor', false)
+          }
           return this.CHANNEL_DETAIL
         } else {
           console.log('CHANNEL_DETAIL')
@@ -741,9 +763,13 @@ export default {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
         }
-        if (value && value.blackYn) {
-          this.$emit('bgcolor', value.blackYn)
+        var blackYn = false
+        if (value && (value.blackYn !== undefined && value.blackYn !== null && value.blackYn !== '')) {
+          if (value.blackYn === 1) {
+            blackYn = true
+          }
         }
+        this.$emit('bgcolor', blackYn)
       },
       deep: true
     },

@@ -211,9 +211,11 @@ export default {
       this.selectIcon.selectPath = this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext
       this.selectIcon.iconType = this.CHANNEL_DETAIL.logoPathMtext.length > 30 ? 'img' : 'icon'
       if (this.CHANNEL_DETAIL.blackYn === 1) {
-        this.btnColor = this.CHANNEL_DETAIL.blackYn = true
+        this.btnColor = true
+        // this.btnColor = this.CHANNEL_DETAIL.blackYn = true
       } else {
-        this.btnColor = this.CHANNEL_DETAIL.blackYn = false
+        this.btnColor = false
+        // this.btnColor = this.CHANNEL_DETAIL.blackYn = false
       }
       var param = {}
       param.teamType = this.CHANNEL_DETAIL.teamType
@@ -331,6 +333,7 @@ export default {
         // if(delYn === true && this.chanDetail.modiYn === true) {
         //   params.deleteYn = delYn
         // }
+        await this.$addChanList(this.chanDetail.targetKey)
         this.$emit('successCreChan', params)
       }
     },
@@ -343,6 +346,7 @@ export default {
       temp.picMfilekey = data.picMfilekey
       temp.teamKeyWord = data.teamKeyWord
       temp.creUserName = data.creUserName
+      // temp.blackYn = data.blackYn
       debugger
       // console.log(temp)
       // this.$emit('closeLoading')
@@ -356,9 +360,6 @@ export default {
       var response = resultList.data.content[0]
       response.detailPageYn = true
       var team = null
-      var teamList = this.$getDetail('TEAM', this.chanDetail.targetKey)
-      team = teamList[0]
-      response.ELEMENTS = team.ELEMENTS
       await this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
     }
 

@@ -225,7 +225,7 @@ export default {
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.targetKey = this.chanAlimListTeamKey
       param.currentTeamKey = this.chanAlimListTeamKey
-      
+
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -233,7 +233,7 @@ export default {
       await this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('openItem', param)
       this.closeYn = true
-      
+
       this.$emit('closePop')
     },
     myChanEdit(){

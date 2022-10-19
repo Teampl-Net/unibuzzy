@@ -12,7 +12,7 @@
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if=" popId &&  this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
-      <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='this.bgblackYn = true' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
+      <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="pagePaddingWrap" style="padding-top: 50px;" v-if=" popId &&  this.targetType === 'pushList'">
         <pushList :pPopId="popId" :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
@@ -271,6 +271,12 @@ export default {
     }
   },
   methods: {
+    setBgColor (param) {
+      // alert(param)
+      var test = false
+      if (param === 1 || param === true) { test = true }
+      this.bgblackYn = test
+    },
     emitFunc (emitName, param) {
       this.$emit(emitName, param)
     },
@@ -310,6 +316,8 @@ export default {
       // console.log('selectedReceiverBookNMemberList')
       // console.log(this.targetType)
       // console.log(param.data.memberList)
+      console.log('***************************************')
+      console.log(param)
       if (!param.emit) {
         param.emit = true
         this.$emit('selectedReceiverBookNMemberList', param)
@@ -776,7 +784,9 @@ export default {
       debugger
 
       if (indexOf !== -1) {
-        if (this.params.targetKey === value.contentsKey) {
+        //  if (this.params.targetKey === value.contentsKey) {
+        if (this.params.targetKey === undefined || this.params.targetKey === null || this.params.targetKey === '' ||
+         value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
           return
         }
       }

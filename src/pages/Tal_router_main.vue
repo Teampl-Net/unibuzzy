@@ -301,11 +301,24 @@ export default {
     async goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      // var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      // var indexOf = null
+      // if (currentPage === this.popId) {
+
+      // }
       if (value.jobkindId === 'ALIM') {
         param.targetType = 'pushDetail'
+        // indexOf = currentPage.indexOf('pushDetail')
       } else {
         param.targetType = 'boardDetail'
+        // indexOf = currentPage.indexOf('boardDetail')
       }
+      // if (indexOf !== -1) {
+      //  if (this.params.targetKey === value.contentsKey) {
+      // if (value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
+      //   return
+      // }
+      // }
       var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
       console.log('과연??있나요?' + targetYn)
       if (targetYn !== false && targetYn !== 'false') {

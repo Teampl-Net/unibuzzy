@@ -439,11 +439,18 @@ export default {
       const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
       var newSelectFileName = this.selectFile.name
       newSelectFileName = newSelectFileName.replaceAll(' ', '')
-      const files = new File([Bfile], newSelectFileName)
+      newSelectFileName = newSelectFileName.replaceAll('-', '')
+      // console.log(encodeURIComponent(newSelectFileName))
+      console.log(this.convertFilename(newSelectFileName))
+      const files = new File([Bfile], this.convertFilename(newSelectFileName))
       console.log('============= crop img ================')
       console.log(files)
 
       return files
+    },
+    convertFilename (orgnStr) {
+      const reg = /[^\w\sㄱ-힣]|[\\_]/g
+      return reg.test(orgnStr)
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {

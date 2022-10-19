@@ -98,7 +98,7 @@
                 <!-- <gMemoList ref="commonPushListMemoRefs" v-if="currentMemoList.length > 0 " :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="currentMemoList" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- <gMemoList :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " @loadMore='loadMoreMemo' :id="'memoList'+alim.contentsKey" :memoList="[...alim.memoList]" @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" /> -->
                   <!-- @deleteMemo='deleteConfirm' @editTrue='getContentsMemoList(alim.contentsKey)' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo" @findMemoAni="findMemoAni" -->
-                  <gMemoList @cMemoEditYn="cMemoEditYn" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick"/>
+                  <gMemoList @cMemoEditYn="cMemoEditYn" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick" @memoEdit='memoEdit'/>
 
                 <!-- <div ref="commonPushListMemoMoreRefs" style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold; display:none" class="font14 commonColor" @click="yesLoadMore">{{moreMemoText}}</div> -->
                 <div v-if="this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>                <!-- <p v-else>작성된 댓글이 없습니다.</p> -->
@@ -218,6 +218,9 @@ export default {
     })
   },
   methods: {
+    memoEdit (editYn) {
+      this.$emit('memoEdit', editYn)
+    },
     cMemoEditYn (editYn) {
       // alert(editYn)
       this.$emit('cMemoEditYn', editYn)
@@ -255,6 +258,7 @@ export default {
       return result
     },
     clickCard (alim) {
+      console.log(alim)
         if (alim.jobkindId === 'ALIM') {
             this.goDetail(alim)
             /* if (alim.bigYn) {
@@ -267,7 +271,7 @@ export default {
         }
     },
     clickInfo (data) {
-      // console.log(data)
+      console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (param) {

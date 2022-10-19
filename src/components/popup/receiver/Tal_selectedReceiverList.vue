@@ -56,7 +56,7 @@ export default {
         }
     },
     created() {
-        this.upDatePage(this.listData)
+        // this.upDatePage(this.listData)
         this.sessionUserInfo = JSON.parse(localStorage.getItem('sessionUser'))
 
     },

@@ -221,14 +221,15 @@ export default {
             })
             var list = []
             list = result.data.content
-            // console.log(list)
+            console.log(list)
+            console.log(this.propData)
             var indexOf = list.findIndex(i => i.userKey === this.propData.userKey);
-            // console.log(indexOf)
+            console.log(indexOf)
             if (indexOf !== -1) {
                 var data = list[indexOf]
                 this.userProfileImg = data.userProfileImg
                 if (data.domainPath) {
-                    this.domainPath = data.domainPath 
+                    this.domainPath = data.domainPath
                 } else {
                     this.domain
                 }

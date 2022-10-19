@@ -8,18 +8,17 @@
           </div>
           <p class="fl font14 " style="margin: 0.5rem" v-else >삭제된 댓글입니다.</p>
       </div> -->
-
       <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
         <!-- <div v-if="memo.parentMemoKey" style="width:20px;position: absolute; left: 0; top: 50%; transform: translateY(-50%);" class="fl"> -->
         <!-- <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
           <img  src="../../../assets/images/common/icon-turn-right.svg" style="max-width:20px;" class=" " alt="">
         </div> -->
-        <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;">
+        <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" >
           <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
           <div @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-if="memo.userProfileImg"  class="memoPicImgWrap">
             <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
           </div>
-          <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+          <img @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
           <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
             <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
             <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
@@ -152,6 +151,9 @@ export default {
   updated () {
   },
   methods: {
+    hi () {
+      alert('hi')
+    },
     focusOn () {
       this.$emit('cMemoEditYn', true)
     },
@@ -230,6 +232,7 @@ export default {
         this.editCIndex = cindex
         this.cMemoEditYn = true
       }
+      this.$emit('memoEdit', true)
       // this.focusOn()
       this.inputText = this.$decodeHTML(data.bodyFullStr)
     },
@@ -237,6 +240,7 @@ export default {
       this.editIndex = ''
       this.editCIndex = ''
       this.cMemoEditYn = false
+      this.$emit('memoEdit', false)
       // this.focusOn()
     },
 

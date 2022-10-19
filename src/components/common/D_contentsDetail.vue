@@ -367,7 +367,7 @@ export default {
         }
         // console.log('###############################!!!!##############################')
       } catch (e) {
-        // console.log(e)
+        // alert(JSON.stringify(e))
       }
       this.loadingYn = false
     },
@@ -385,6 +385,8 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail (teamKey) {
+      console.log('############# getCabinetDetail ##############')
+      console.log(this.detailVal)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData
@@ -392,7 +394,6 @@ export default {
       param.cabinetKey = this.detailVal.cabinetKey
       var resultList = await this.$getCabinetDetail(param)
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
-      console.log(this.detailVal)
       // eslint-disable-next-line no-debugger
       debugger
       this.cabinetDetail = resultList
@@ -535,7 +536,6 @@ export default {
             }
           }
         } else if (type === 'alimBloc') {
-          // alert('ss')
         } else if (type === 'move' || type === 'copy') {
           this.moveOrCopyContent(type)
         } else if (type === 'writeBoard') {
@@ -545,11 +545,9 @@ export default {
         }
       } else if (this.tempData.memoKey) {
         if (type === 'edit') {
-          // alert('메모 수정')
           this.$refs.boardMemoListCompo[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
           // this.openUpdateContentsPop()
         } else if (type === 'delete') {
-          // alert('메모 삭제')
           this.deleteConfirm('memo')
           // this.deleteMemo({ memoKey: this.tempData.memoKey })
           // this.boardFuncClick('BOAR')
@@ -695,12 +693,12 @@ export default {
     openSelectSharePop () {
       if (navigator.share) {
         navigator.share({ title: '더알림', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
-      } else alert('지원하지 않는 브라우저입니다.')
+      // } else alert('지원하지 않는 브라우저입니다.')
+      } else this.$showToastPop('지원하지 않는 브라우저입니다.')
     },
     addImgEvnt () {
       // console.log(this.CONT_DETAIL)
       this.clickImgList = document.querySelectorAll('#contentsBodyArea img')
-      // alert(JSON.stringify(this.clickImgList))
       for (let m = 0; m < this.clickImgList.length; m++) {
         var thisthis = this
         thisthis.clickImgList[m].addEventListener('touchstart', () => {
