@@ -26,8 +26,8 @@
             </div> -->
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray"  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</p>
-            <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
-            <p v-if="CONT_DETAIL.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(CONT_DETAIL.updDate) + ')'}}</p>
+            <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</p>
+            <p v-if="CONT_DETAIL.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(CONT_DETAIL.updDate, true) + ')'}}</p>
           </div>
 
         </div>
@@ -47,7 +47,7 @@
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <pre  id="contentsBodyArea" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr)"></pre>
+        <pre  id="contentsBodyArea"  @click="memoShowYn = false" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr)"></pre>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -112,9 +112,9 @@
       </div>
 
     </div>
-    <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div>
+    <!-- <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div> -->
     <!-- <transition name="showMemoPop"> -->
-      <gMemoPop transition="showMemoPop" :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
+      <gMemoPop transition="showMemoPop"  :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
     <!-- </transition> -->
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
@@ -677,6 +677,7 @@ export default {
       this.currentConfirmType = 'BLOC'
     },
     contentMenuClick (params) {
+      this.memoShowYn = false
       this.contentOwner = params.ownerYn
       this.contentType = params.type
       if (params.tempData) {
@@ -708,6 +709,7 @@ export default {
           thisthis.clickImgList[m].style.opacity = 0.8
           setTimeout(() => {
             if (thisthis.clickEndYn === false) {
+              thisthis.memoShowYn = false
               thisthis.selectImgObject.path = thisthis.clickImgList[m].src
               thisthis.selectImgObject.fileKey = Number(thisthis.clickImgList[m].attributes.filekey.value)
               thisthis.selectImgIndex = m
@@ -728,6 +730,7 @@ export default {
           thisthis.clickImgList[m].style.opacity = 0.8
           setTimeout(() => {
             if (thisthis.clickEndYn === false) {
+              thisthis.memoShowYn = false
               thisthis.selectImgObject.path = thisthis.clickImgList[m].src
               thisthis.selectImgObject.fileKey = Number(thisthis.clickImgList[m].attributes.filekey.value)
               this.openImgDetailAlert(thisthis.clickImgList[m])

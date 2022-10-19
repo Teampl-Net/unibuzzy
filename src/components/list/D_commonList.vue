@@ -8,7 +8,7 @@
         <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
           <div @click="clickInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
-              <div class="commonPushListTopArea">
+              <div class="commonPushListTopArea" :style="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn? 'border-bottom: none; margin-bottom: 0;' : ''">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
@@ -54,11 +54,12 @@
                   </div>
                 </div>
               </div>
-              <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
-              <div v-else-if="(!this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
+              <div v-if="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && !alim.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
+              <div v-else-if="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn" @cick="zzz" class="" ></div>
               <!-- <img style="width: 20px; float: left; margin-right: 5px;" src="../../assets/images/board/securityDoc.svg" alt="">  -->
-                <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-                <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+              <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
 
               <div id="alimCheckArea">
                 <div v-show="!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" class="alimCheckContents">

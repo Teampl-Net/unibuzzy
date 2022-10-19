@@ -41,7 +41,9 @@
         </div>
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="this.memoShowYn = false"></div>
         <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
-        <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+        <transition name="showUp">
+            <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+        </transition>
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
         <transition name="showMemoPop">
@@ -925,6 +927,7 @@ export default {
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
         this.axiosQueue.splice(queueIndex, 1)
         if (result.data.result === true || result.data.result === 'true') {
+          // alert(true)
           /* this.confirmText = '댓글 저장 성공'
           this.confirmPopShowYn = true */
           this.memoShowYn = false
@@ -1242,6 +1245,7 @@ export default {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
+      this.imgDetailAlertShowYn = false
       this.scrollIngYn = true
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
