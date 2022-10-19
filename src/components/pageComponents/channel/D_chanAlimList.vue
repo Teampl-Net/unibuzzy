@@ -688,8 +688,10 @@ export default {
           var message = this.$changeText(detail[0].memoMtext)
           var this_ = this
           this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {
+            console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
+            console.log(res)
             detail[0].copyTextStr = res
-            // alert(detail[0].copyTextStr)
+            console.log(detail[0].copyTextStr)
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
           })
         }

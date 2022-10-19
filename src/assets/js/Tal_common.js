@@ -291,6 +291,8 @@ export const commonMethods = {
     return Math.abs(a - b)
   },
   async makeShareLink (key, type, message, title) {
+    // eslint-disable-next-line no-debugger
+    debugger
     var paramMap = new Map()
     paramMap.set('pageType', type)
     paramMap.set('targetKey', key)

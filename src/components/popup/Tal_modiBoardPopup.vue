@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="itemWrite">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">미권한자 제목 비공개</p>
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">제목 비공개(미권한자)</p>
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="titleBlindYn" id="toggle4" hidden>
           <label for="toggle4" class="toggleSwitch">
@@ -243,9 +243,9 @@ export default {
         text += '/실명'
       }
       if (this.titleBlindYn === true) {
-        text += '/미권한자 제목비공개'
+        text += '/제목 비공개(미권한자)'
       } else {
-        text += '/미권한자 제목공개'
+        text += '/제목 공개(미권한자)'
       }
 
       return text
