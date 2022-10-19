@@ -69,16 +69,18 @@ export default {
       var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
-
-        var detailData = test[idx1]
-        if (detailData.ELEMENTS) {
-          idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
-          if (idx2 !== -1) {
-            contList[i] = detailData.ELEMENTS.alimList[idx2]
-          } else {
+        if (idx1 === -1) {
+        } else {
+          var detailData = test[idx1]
+          if (detailData.ELEMENTS) {
             idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
             if (idx2 !== -1) {
-              contList[i] = detailData.ELEMENTS.boardList[idx2]
+              contList[i] = detailData.ELEMENTS.alimList[idx2]
+            } else {
+              idx2 = detailData.ELEMENTS.alimList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+              if (idx2 !== -1) {
+                contList[i] = detailData.ELEMENTS.boardList[idx2]
+              }
             }
           }
         }

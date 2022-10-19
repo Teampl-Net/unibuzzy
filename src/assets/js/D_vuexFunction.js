@@ -138,7 +138,7 @@ const functions = {
       if (teamKey) {
         var teamList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
         var result = teamList.filter(data => data.teamKey === teamKey)
-        if (result) {
+        if (result && result.length > 0) {
           teamDetail = result[0]
         } else {
           return null
@@ -158,8 +158,9 @@ const functions = {
     }
   },
   async addChanList (teamKey) {
-    if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
-    g_axiosQueue.push('addChanList')
+    var result = null
+    // if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+    // g_axiosQueue.push('addChanList')
     var paramMap = new Map()
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
@@ -173,22 +174,28 @@ const functions = {
     var response = resultList.data.content[0]
 
     var team = null
-    response.teamTypeText = commonMethods.teamTypeString(response.teamType)
-    var title = '[더알림]' + commonMethods.changeText(response.nameMtext)
-    var message = commonMethods.changeText(response.memoMtext)
-    // response.copyTextStr = await commonMethods.makeShareLink(response.teamKey, 'chanDetail', message, title)
-
     response.detailPageYn = true
-    var teamList = functions.getDetail('TEAM', teamKey)
+    var teamList = await functions.getDetail('TEAM', teamKey)
+    // var queueIndex = null
     if (teamList && teamList.length > 0) {
+      console.log('이미있던 채널맞음')
       team = teamList[0]
       response.ELEMENTS = team.ELEMENTS
+
+      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+      // g_axiosQueue.splice(queueIndex, 1)
       await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
+      result = true
     } else {
+      console.log('없던 채널이라 추가했음----------------------------------------------------------')
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
+
+      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+      // g_axiosQueue.splice(queueIndex, 1)
+      result = false
     }
-    var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
-    g_axiosQueue.splice(queueIndex, 1)
+    // alert('result:' + result)
+    return result
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
   recvNoti (e) {

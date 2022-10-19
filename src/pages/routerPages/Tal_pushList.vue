@@ -456,21 +456,28 @@ export default {
       this.computedYn = false
       for (i = 0; i < this.alimContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
+        // alert(this.alimContentsList[i].creTeamKey + '**')
         if (idx1 === -1) {
           var this_ = this
           var teamKey = this.alimContentsList[i].creTeamKey
+          // alert(this.alimContentsList[i].creTeamKey)
           // eslint-disable-next-line vue/no-async-in-computed-properties
-          this.$addChanList(teamKey).then(() => {
+          this.$addChanList(teamKey).then((res) => {
+            // alert('res' + res)
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-            dataList = chanDetail.ELEMENTS.boardList
-            idx2 = dataList.findIndex((item) => item.contentsKey === this_.alimContentsList[i].contentsKey)
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-            if (idx2 !== -1) {
-              test.push(dataList[idx2])
-            } else {
+            if (idx1 === -1) {
               test.push(this_.alimContentsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              dataList = chanDetail.ELEMENTS.alimList
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.alimContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                test.push(dataList[idx2])
+              } else {
+                test.push(this_.alimContentsList[i])
+              }
             }
           })
         } else {
@@ -506,15 +513,19 @@ export default {
           // eslint-disable-next-line vue/no-async-in-computed-properties
           this.$addChanList(teamKey).then(() => {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-            dataList = chanDetail.ELEMENTS.boardList
-            idx2 = dataList.findIndex((item) => item.contentsKey === this_.boardContentsList[i].contentsKey)
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-            if (idx2 !== -1) {
-              test.push(dataList[idx2])
+            if (idx1 === -1) {
+              test.push(this_.alimContentsList[i])
             } else {
-              test.push(this_.boardContentsList[i])
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              dataList = chanDetail.ELEMENTS.boardList
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.boardContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                test.push(dataList[idx2])
+              } else {
+                test.push(this_.boardContentsList[i])
+              }
             }
           })
         } else {
