@@ -174,7 +174,8 @@ export default {
       loadingYn: false,
       saveMemoLoadingYn: false,
       cabinetDetail: null,
-      resetMemoYn: false
+      resetMemoYn: false,
+      cDetail: null
     }
   },
   props: {
@@ -223,7 +224,9 @@ export default {
       console.log('!!! CHANNEL_DETAIL !!!')
       console.log(chan)
       if (chan) {
-        this.getCabinetDetail(chan[0].teamKey)
+        if (this.detailVal.jobkindId === 'BOAR') {
+          this.getCabinetDetail(chan[0].teamKey)
+        }
         return chan[0]
       } else {
         return null
@@ -245,8 +248,12 @@ export default {
       }
     },
     CONT_DETAIL () {
-      console.log(null, this.detailVal.contentsKey, this.detailVal.teamKey)
-      var cont = this.$getContentsDetail(null, this.detailVal.contentsKey, this.CHANNEL_DETAIL.teamKey)
+      if (!this.cDetail) return
+      console.log(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
+      var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
+      if (!cont) {
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
+      }
       if (cont) {
         console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
         console.log(cont)
@@ -310,7 +317,7 @@ export default {
         content = this.CONT_DETAIL
         var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
         this.CONT_DETAIL.memoCount = count
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.CONT_DETAIL)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
         if (memoAleadyIdx !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx].D_MEMO_LIST = value[0]
@@ -322,7 +329,7 @@ export default {
           ]
         }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.CONT_DETAIL)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true
     }
@@ -419,6 +426,7 @@ export default {
       // console.log(detailData)
       // eslint-disable-next-line no-debugger
       debugger
+      this.cDetail = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     onLoadFunction () {

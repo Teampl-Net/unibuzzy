@@ -129,10 +129,11 @@ const functions = {
     }
   },
   getContentsDetail (teamDetail, targetKey, teamKey) {
-    if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
-    g_axiosQueue.push('getContentsDetail')
+    // if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
+    // g_axiosQueue.push('getContentsDetail')
     var detailData
     var dataList
+    debugger
     if (!targetKey) return null
     if (!teamDetail) {
       if (teamKey) {
@@ -152,8 +153,8 @@ const functions = {
       if (!detailData || detailData.length === 0) {
         detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
       }
-      var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
-      g_axiosQueue.splice(queueIndex, 1)
+      // var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
+      // g_axiosQueue.splice(queueIndex, 1)
       return detailData
     }
   },
