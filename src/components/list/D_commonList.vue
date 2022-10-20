@@ -53,7 +53,7 @@
                       <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
                   </div>
                   <div @click="clickCard(alim)"  v-if="alim.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                  <statCodeComponent :teamKey="alim.creTeamKey" :contentsKey="alim.contentsKey" v-if="alim.workStatYn" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
+                  <statCodeComponent :teamKey="alim.creTeamKey" :contentsKey="alim.contentsKey" v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
                 </div>
               </div>
               <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
