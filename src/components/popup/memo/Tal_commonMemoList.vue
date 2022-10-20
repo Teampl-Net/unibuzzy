@@ -27,8 +27,8 @@
         </div>
         <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
         <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <pre ref="editCommentBox" @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
-          <pre v-else style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
+          <pre ref="editCommentBox"  @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
+          <pre v-else :id="'memoFullStr'+memo.memoKey" style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
         </div>
         <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
           <div v-if="editIndex === index && editCIndex === ''">
@@ -54,7 +54,7 @@
                         <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
                     </div>
                     <pre id="cMemoEditBoxId" ref="cMemoEditBoxId" class="editableContent cMemoEditBoxClass font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
-                    <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr"></pre>
+                    <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr" :id="'memoFullStr' + cMemo.memoKey" ></pre>
                     <div v-if="editIndex === index && editCIndex === cIndex">
                       <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
                       <div class="memoActionArea font13"  @click="cancelEdit(cMemo, index)" >취소</div>
@@ -269,7 +269,7 @@ export default {
       memo.deleteYn = false
       // console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemo',
+        url: 'https://mo.d-alim.com/service/tp.saveMemo',
         param: { memo: memo }
       })
       // console.log(result)

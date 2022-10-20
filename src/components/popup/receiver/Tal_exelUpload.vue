@@ -101,7 +101,7 @@ export default {
     },
     async test () {
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.uploadTpUserRequireListExcelFile',
+        url: 'https://mo.d-alim.com/service/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })
@@ -126,7 +126,7 @@ export default {
             this.isUploading = true
 
             this.$axios
-              .post('service/tp.uploadTpUserRequireListExcelFile', form, {
+              .post('https://mo.d-alim.com/service/tp.uploadTpUserRequireListExcelFile', form, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -175,7 +175,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveMUserFromExcelFile',
+        url: 'https://mo.d-alim.com/service/tp.saveMUserFromExcelFile',
         param: {
           excelList: this.excelFileList,
           cabinetKey: this.cabinetKey,

@@ -45,7 +45,7 @@ export async function commonAxiosFunction (setItem) {
 
 export async function checkSession () {
   var result = false
-  await axios.post('service/tp.checkSession', { withCredentials: true }
+  await axios.post('https://mo.d-alim.com/service/tp.checkSession', { withCredentials: true }
   ).then(response => {
     result = response
   }).catch((error) => {
@@ -69,14 +69,12 @@ export function isMobile () {
 }
 
 export async function saveUser (userProfile) {
-  // eslint-disable-next-line no-new-object
-  var user = new Object()//
-  var testYn = localStorage.getItem('testYn')
-  if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-    methods.userLoginCheck()
-  }
-  // eslint-disable-next-line no-new-object
-  var setParam = new Object()
+  var user = {}
+  // var testYn = localStorage.getItem('testYn')
+  // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+  //   methods.userLoginCheck()
+  // }
+  var setParam = {}
   user.soType = userProfile.soType
   if (userProfile.email !== undefined && userProfile.email !== null && userProfile.email !== '') { user.soEmail = userProfile.email }
   if (userProfile.name !== undefined && userProfile.name !== null && userProfile.name !== '') {
@@ -111,7 +109,7 @@ export async function saveUser (userProfile) {
   // 9443 화면 10443 서비스 12443 파일
   setParam.user = user
   var result = await commonAxiosFunction({
-    url: 'service/tp.saveUser',
+    url: 'https://mo.d-alim.com/service/tp.saveUser',
     param: setParam,
     firstYn: true
   })
@@ -123,7 +121,7 @@ export async function saveUser (userProfile) {
     debugger
     store.dispatch('D_USER/AC_USER', result.data)
     localStorage.setItem('sessionUser', JSON.stringify(result.data))
-    localStorage.setItem('testYn', false)
+    // localStorage.setItem('testYn', false)
     await methods.userLoginCheck(true)
     router.replace({ path: '/' })
   } else {
@@ -144,40 +142,42 @@ export const methods = {
     // if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
     // g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
-    var testYn = localStorage.getItem('testYn')
-    // testYn = false
-    if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-      // 수망고
-    //   paramMap.set('fcmKey', '123456789')
-    //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-      // 정재준테스트
-      paramMap.set('fcmKey', '22222222')
-      paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
 
-      // // 최유민테스트
-      // paramMap.set('fcmKey', '11111111')
-      // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    window.localStorage.removeItem('testYn')
+    // var testYn = localStorage.getItem('testYn')
+    // // testYn = false
+    // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+    //   // 수망고
+    // //   paramMap.set('fcmKey', '123456789')
+    // //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    //   // 정재준테스트
+    //   paramMap.set('fcmKey', '22222222')
+    //   paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
 
-      // paramMap.set('fcmKey', '33333333')
-      // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-    } else {
-      localStorage.setItem('testYn', false)
-      var user = store.getters['D_USER/GE_USER']
-      if (user === undefined || user === null || user === '') {
-        localStorage.setItem('sessionUser', '')
-        localStorage.setItem('user', '')
-        router.replace('/policies')
-        return
-      }
+    //   // // 최유민테스트
+    //   // paramMap.set('fcmKey', '11111111')
+    //   // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
 
-      if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
-      if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
-      paramMap.set('userEmail', user.userEmail)
-      paramMap.set('soEmail', user.soEmail)
+    //   // paramMap.set('fcmKey', '33333333')
+    //   // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    // } else {
+    // localStorage.setItem('testYn', false)
+    var user = store.getters['D_USER/GE_USER']
+    if (user === undefined || user === null || user === '') {
+      localStorage.setItem('sessionUser', '')
+      localStorage.setItem('user', '')
+      router.replace('/policies')
+      return
     }
 
+    if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
+    if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
+    paramMap.set('userEmail', user.userEmail)
+    paramMap.set('soEmail', user.soEmail)
+    // }
+
     paramMap.set('mobileYn', isMobile())
-    var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    var result = await axios.post('https://mo.d-alim.com/service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
     console.log('^&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&^')
@@ -188,17 +188,17 @@ export const methods = {
       /* if (result.data.userTeamList) {
         await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [result.data.userTeamList])
       } */
-      if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-        // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-        localStorage.setItem('user', JSON.stringify(result.data.userMap))
-        localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-        store.dispatch('D_USER/AC_USER', result.data.userMap)
-      }
-      // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-      localStorage.setItem('loginYn', true)
-      if (maingoYn) {
-        router.replace({ name: 'main', params: { testYn: true } })
-      }
+      // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+      //   // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      //   localStorage.setItem('user', JSON.stringify(result.data.userMap))
+      //   localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+      //   store.dispatch('D_USER/AC_USER', result.data.userMap)
+      // }
+      // // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+      // localStorage.setItem('loginYn', true)
+      // if (maingoYn) {
+      //   router.replace({ name: 'main', params: { testYn: true } })
+      // }
     } else {
       // var user = store.getters['D_USER/GE_USER']
       if (user === undefined || user === null || user === '') {
@@ -218,7 +218,7 @@ export const methods = {
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getUserTeamList',
+      url: 'https://mo.d-alim.com/service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
     })
     resultList = result
@@ -252,7 +252,7 @@ export const methods = {
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'service/tp.getContentsList',
+      url: 'https://mo.d-alim.com/service/tp.getContentsList',
       param: paramSet
     })
     resultList = result.data
@@ -267,7 +267,7 @@ export const methods = {
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'service/tp.getContents',
+      url: 'https://mo.d-alim.com/service/tp.getContents',
       param: paramSet
     })
     resultList = result.data
@@ -280,7 +280,7 @@ export const methods = {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = 'service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'service/tp.saveUserDo' }
+    if (type === 'delete') { urlSet = 'https://mo.d-alim.com/service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'https://mo.d-alim.com/service/tp.saveUserDo' }
     param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
@@ -300,7 +300,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveSticker',
+      url: 'https://mo.d-alim.com/service/tp.saveSticker',
       param: param
     })
     result = response.data
@@ -316,7 +316,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.getStickerList',
+      url: 'https://mo.d-alim.com/service/tp.getStickerList',
       param: param
     })
     result = response.data
@@ -328,8 +328,8 @@ export const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    var urlSet = 'service/tp.saveFollower'
-    if (type === 'del') { urlSet = 'service/tp.deleteFollower' } else if (type === 'save') {
+    var urlSet = 'https://mo.d-alim.com/service/tp.saveFollower'
+    if (type === 'del') { urlSet = 'https://mo.d-alim.com/service/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
@@ -345,7 +345,7 @@ export const methods = {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveTeamRequest',
+      url: 'https://mo.d-alim.com/service/tp.saveTeamRequest',
       param: { teamRequest: teamRequest }
     })
     result = response.data
@@ -360,7 +360,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.createTeamForReq',
+      url: 'https://mo.d-alim.com/service/tp.createTeamForReq',
       param: paramSet
     })
     result = response.data
@@ -374,7 +374,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.getTeamReqList',
+      url: 'https://mo.d-alim.com/service/tp.getTeamReqList',
       param: paramSet
     })
     result = response.data
@@ -395,7 +395,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveContents',
+      url: 'https://mo.d-alim.com/service/tp.saveContents',
       param: paramSet
     })
     result = response.data
@@ -409,7 +409,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.getCodeList',
+      url: 'https://mo.d-alim.com/service/tp.getCodeList',
       param: paramSet
     })
     result = response.data
@@ -438,7 +438,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveFollower',
+      url: 'https://mo.d-alim.com/service/tp.saveFollower',
       param: paramSet
     })
     result = response.data
@@ -452,7 +452,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveCabinet',
+      url: 'https://mo.d-alim.com/service/tp.saveCabinet',
       param: paramSet
     })
     result = response.data
@@ -466,7 +466,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.deleteCabinet',
+      url: 'https://mo.d-alim.com/service/tp.deleteCabinet',
       param: paramSet
     })
     result = response.data
@@ -480,7 +480,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.getTeamMenuList',
+      url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     result = response.data
@@ -494,7 +494,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.getCabinetDetail',
+      url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
       param: paramSet
     })
     result = response.data
@@ -505,7 +505,7 @@ export const methods = {
   async saveMCabContents (paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveMCabContents',
+      url: 'https://mo.d-alim.com/service/tp.saveMCabContents',
       param: paramSet
     })
     // result = response
@@ -517,7 +517,7 @@ export const methods = {
     g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
     var response = await commonAxiosFunction({
-      url: 'service/tp.getMemoCount',
+      url: 'https://mo.d-alim.com/service/tp.getMemoCount',
       param: param
     })
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
@@ -534,7 +534,7 @@ export const methods = {
     console.log(param)
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service/tp.saveUser',
+      url: 'https://mo.d-alim.com/service/tp.saveUser',
       param: param
     })
     console.log(response)

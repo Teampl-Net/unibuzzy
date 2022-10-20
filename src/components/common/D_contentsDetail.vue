@@ -17,7 +17,7 @@
             <p class=" font18 fontBold commonColor cursorDragText" style="word-break: break-word;">
               <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
               <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: alim})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{CONT_DETAIL.title}}
             </p>
             <!-- <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
@@ -575,6 +575,9 @@ export default {
           // this.boardFuncClick('BOAR')
         }
       }
+      if (type === 'textCopy') {
+        this.textCopy()
+      }
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
@@ -598,6 +601,31 @@ export default {
       // console.log(this.tempData);
       this.confirmType = 'two'
       this.confirmPopShowYn = true
+    },
+    textCopy () {
+      const textarea = document.createElement('textarea')
+      document.body.appendChild(textarea)
+      try {
+        // textarea.style.display = 'none'
+        var contKey, content
+        if (this.tempData.memoKey) {
+          contKey = this.tempData.memoKey
+          content = document.getElementById('memoFullStr' + contKey).innerText
+        } else {
+          // contKey = this.tempData.contentsKey
+          content = document.getElementById('contentsBodyArea').innerText
+        }
+        textarea.value = content
+        textarea.select()
+        // 복사 후 textarea 지우기
+        this.$showToastPop('복사되었습니다.')
+      } catch (error) {
+        console.log(error)
+        this.$showToastPop('복사하지 못했습니다.')
+      } finally {
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+      }
     },
     editBoard () {
       // console.log();
@@ -625,7 +653,7 @@ export default {
         // inParam.deleteYn = true
 
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -636,7 +664,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -679,7 +707,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -706,6 +734,8 @@ export default {
         // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
+      console.log('%%%%%%%%%%%%%%%%%%%%%')
+      console.log(params)
       this.reportYn = true
     },
     async download1 (fileKey, path) {
@@ -825,7 +855,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -956,7 +986,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
+        url: 'https://mo.d-alim.com/service/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -1022,7 +1052,7 @@ export default {
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemoList',
+        url: 'https://mo.d-alim.com/service/tp.getMemoList',
         param: memo
       })
 
@@ -1072,7 +1102,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getUserDoListPage',
+        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -1095,7 +1125,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: 'https://mo.d-alim.com/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result === true || result.data.result === 'true') {

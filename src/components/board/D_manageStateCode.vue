@@ -101,7 +101,7 @@ export default {
             await this.$getContentsList(newParam).then(newReslute => {
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
             })
-            this.$showToastPop('업무 상태가' + this.$changeText(this.selectedCodeObj.cabinetNameMtext) + '변경되었습니다.')
+            this.$showToastPop('업무 상태가 변경되었습니다.')
             this.closeSelectPop()
 
             // eslint-disable-next-line no-new-object

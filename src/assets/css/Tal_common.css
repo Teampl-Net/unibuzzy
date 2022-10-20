@@ -39,7 +39,7 @@ pre span{
   font-size: 14px !important;
 }
 
-.cursorDragAll {
+/* .cursorDragAll {
   -webkit-user-select: all !important;
   -moz-user-select: all !important;
   -ms-use-select: all !important;
@@ -56,7 +56,7 @@ pre span{
   -moz-user-select: none !important;
   -ms-use-select: none !important;
   user-select: none !important;
-}
+} */
 
 .editableContent {
   -webkit-user-select: auto !important;
