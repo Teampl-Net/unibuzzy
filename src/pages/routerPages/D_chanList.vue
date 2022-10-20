@@ -384,11 +384,11 @@ export default {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       if (this.viewTab === 'user') {
-        paramMap.set('userKey', userKey)
+       //  paramMap.set('userKey', userKey)
       } else if (this.viewTab === 'all') {
         paramMap.set('fUserKey', userKey)
       } else if (this.viewTab === 'mychannel') {
-        paramMap.set('userKey', userKey)
+        // paramMap.set('userKey', userKey)
         paramMap.set('managerYn', true)
       }
       if (this.resultSearchKeyList.length > 0) {

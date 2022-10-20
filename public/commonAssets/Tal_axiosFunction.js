@@ -185,6 +185,9 @@ export const methods = {
     if (result.data.resultCode === 'OK') {
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')
+      /* if (result.data.userTeamList) {
+        await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [result.data.userTeamList])
+      } */
       if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
         // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         localStorage.setItem('user', JSON.stringify(result.data.userMap))

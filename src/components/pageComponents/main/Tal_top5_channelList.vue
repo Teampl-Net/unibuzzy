@@ -154,6 +154,7 @@ export default {
       }
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
+      console.log('------------실행됨---------------------------------')
       var resultList = await this.$getTeamList(paramMap)
       this.chanList = resultList.data.content
     },
