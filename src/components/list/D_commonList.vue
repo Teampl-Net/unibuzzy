@@ -163,7 +163,9 @@ export default {
       showMoreMemoTextYn: false,
       moreMemoText: '댓글 더보기',
       saveMemoLoadingYn: false,
-      currentMemoTotal:0
+      currentMemoTotal:0,
+      currentMemoKey: 0,
+      tempMemoData: {}
     }
   },
   components: {
@@ -771,6 +773,11 @@ export default {
     //   this.mememoValue = null
     // },
     writeMemo (key, creTeamKey) {
+      if (this.currentMemoKey !== key) {
+        // this.tempMemoData = ''
+        this.$emit('clearMemo')
+      }
+      this.currentMemoKey = key
       var findIndex = this.openMemoList.indexOf(key)
       if (findIndex === -1) this.memoOpenClick({key : key, teamKey : creTeamKey})
       // this.memoShowYn = true
@@ -789,6 +796,11 @@ export default {
       // console.log(el)
     },
     writeMememo (memo) {
+      if (this.currentMemoKey !== memo.memoKey) {
+        // this.tempMemoData = ''
+        this.$emit('clearMemo')
+      }
+      this.currentMemoKey = memo.memoKey
       var data = {}
       data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임
       if (memo.parentMemoKey !== undefined && memo.parentMemoKey !== null && memo.parentMemoKey !== ''){
@@ -1295,7 +1307,8 @@ export default {
     targetContentsKey: {},
     notiScrollTarget: {},
     emptyYn: Boolean,
-    scollPosition: {}
+    scollPosition: {},
+    tempWriteMemoData: {}
   },
   computed: {
     GE_USER () {

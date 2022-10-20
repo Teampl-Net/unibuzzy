@@ -150,6 +150,10 @@ export default {
       if (history[history.length - 1] === this.popId) { // 글로벌 히스토리 리스트 변수의 마지막 값과 현 페이지의 아이디가 같은 값일때 (= 마지막 페이지가 내 페이지 일 때) close 함수 실행되도록
         this.closeXPop()
       }
+    },
+    receiverList (value, old) {
+      console.log('----------------------------=-===--=-')
+      console.log(value)
     }
   },
   mounted () {
@@ -579,7 +583,9 @@ export default {
       param.targetKey = this.params.targetKey
       param.teamKey = this.params.targetKey
       param.teamNameMtext = this.params.teamNameMtext
-      param.pSelectedList = this.receiverList
+
+      var selectedList = this.receiverList
+      param.pSelectedList = selectedList
       // console.log(this.params)
       // console.log(param)
       this.$emit('openPop', param)

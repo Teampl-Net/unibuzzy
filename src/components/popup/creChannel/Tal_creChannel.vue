@@ -11,7 +11,7 @@
       </form>
 
       <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
-          <p class="font14" style="color:#aaa;"> <img src="../../../assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> 채널 삭제 </p>
+          <p class="font14" style="color:#aaa;"> <img src="../../../assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> 채널삭제 </p>
         </div>
 
       <div id='chboxtest' >
@@ -305,13 +305,13 @@ export default {
       if(this.deleteYn === true){
         params.deleteYn = true
         gParam.deleteYn = true || 1
-
+        this.pageType = '삭제'
       }
 
-    debugger
+      var aaa = this.chanDetail
 
       var result = await this.$requestCreChan(gParam)
-      debugger
+      console.log(result)
       if (result.result === true || result.result === 'true') {
         this.checkPopYn = false
         this.okPopYn = true
@@ -330,10 +330,15 @@ export default {
           this.newChannelInPool()
         }
 
+        if(this.deleteYn !== true) await this.$addChanList(this.chanDetail.targetKey)
+
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        console.log(params)
+
         // if(delYn === true && this.chanDetail.modiYn === true) {
         //   params.deleteYn = delYn
         // }
-        await this.$addChanList(this.chanDetail.targetKey)
+
         this.$emit('successCreChan', params)
       }
     },
@@ -346,6 +351,7 @@ export default {
       temp.picMfilekey = data.picMfilekey
       temp.teamKeyWord = data.teamKeyWord
       temp.creUserName = data.creUserName
+      temp.deleteYn = data.deleteYn
       // temp.blackYn = data.blackYn
       debugger
       // console.log(temp)

@@ -21,7 +21,7 @@
                 <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
             </select> -->
           </div>
-          <div   class="fl" style="display: flex; width: 45%;height: 100%; align-items: center; justify-content: space-around;">
+          <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around;">
             <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
             <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
             <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>

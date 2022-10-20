@@ -30,7 +30,8 @@ export default {
     // eslint-disable-next-line vue/no-mutating-props
     this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
     if (this.pSelectedList) {
-      this.selectedList = this.pSelectedList
+      var tempdata = this.pSelectedList
+      this.selectedList = tempdata
 
       var param = {}
       if (this.selectedList.bookList) {
@@ -75,6 +76,10 @@ export default {
       // this.backClick()
     },
     historyStack (value, old) {
+    },
+    pSelectedList (value, old) {
+      console.log('######!!!!!!!!##########!!!!!!!!!########')
+      console.log(value)
     }
   },
   components: { bookList, memberList, selectedListCompo },

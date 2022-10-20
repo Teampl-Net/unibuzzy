@@ -100,7 +100,7 @@
           </div>
           <div class="boardBorder"></div>
           <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="CONT_DETAIL.D_MEMO_LIST" @deleteMemo='deleteConfirm' @editTrue='editMemo' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"/>
+            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="CONT_DETAIL.D_MEMO_LIST" @deleteMemo='deleteConfirm' @editTrue='editMemo' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @clearMemo='clearMemo' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -112,9 +112,9 @@
       </div>
 
     </div>
-    <!-- <div v-if="memoShowYn" class="memoBoxBackground" @click="this.memoShowYn = false"></div> -->
+    <div v-if="memoShowYn" class="memoBoxBackground" @click="memoPopNo()"></div>
     <!-- <transition name="showMemoPop"> -->
-      <gMemoPop transition="showMemoPop"  :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' />
+    <gMemoPop transition="showMemoPop" ref="contentDetailMemoPop" :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData' />
     <!-- </transition> -->
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
     <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
@@ -175,7 +175,10 @@ export default {
       saveMemoLoadingYn: false,
       cabinetDetail: null,
       resetMemoYn: false,
-      cDetail: null
+      detailComputedStartYn: false,
+      cDetail: null,
+      currentMemoKey: 0,
+      tempMemoData: {}
     }
   },
   props: {
@@ -247,6 +250,7 @@ export default {
         return null
       }
     },
+    // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
       if (!this.cDetail) return
       console.log(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
@@ -335,6 +339,14 @@ export default {
     }
   },
   methods: {
+    memoPopNo () {
+      this.memoShowYn = false
+      this.tempMemoData = this.$refs.contentDetailMemoPop.getMemoData()
+      // document.body.focus()
+    },
+    clearMemo () {
+      this.tempMemoData = undefined
+    },
     memoCountCheck () {
       if (this.CONT_DETAIL.D_MEMO_LIST.length > 0) {
         var memoTotalCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
@@ -428,6 +440,7 @@ export default {
       debugger
       this.cDetail = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      this.detailComputedStartYn = !this.detailComputedStartYn
     },
     onLoadFunction () {
       var thisthis = this
@@ -887,6 +900,11 @@ export default {
     },
     writeMemo () {
       if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
+        if (this.currentMemoKey !== this.CONT_DETAIL.contentsKey) {
+          // this.$emit('clearMemo')
+          this.clearMemo()
+        }
+        this.currentMemoKey = this.CONT_DETAIL.contentsKey
         if (this.mememoValue) {
           this.resetMemoYn = true
         }
@@ -899,6 +917,11 @@ export default {
       }
     },
     writeMememo (memo) {
+      if (this.currentMemoKey !== memo.memoKey) {
+        // this.$emit('clearMemo')
+        this.clearMemo()
+      }
+      this.currentMemoKey = memo.memoKey
       if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
         var data = {}
         data.parentMemoKey = memo.memoKey // 대댓글때 사용하는것임

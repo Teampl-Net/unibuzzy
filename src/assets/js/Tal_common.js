@@ -722,6 +722,8 @@ export const commonMethods = {
     if (window.getSelection) {
       // IE9 and non-IE
       sel = window.getSelection()
+      console.log(sel.focusNode.childNodes)
+      // if (sel.focusNode)
       if (sel.getRangeAt && sel.rangeCount) {
         range = sel.getRangeAt(0)
         range.deleteContents()
@@ -733,6 +735,8 @@ export const commonMethods = {
         var frag = document.createDocumentFragment()
         var node
         var lastNode
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^')
+        console.log(sel)
         while ((node = el.firstChild)) {
           lastNode = frag.appendChild(node)
         }

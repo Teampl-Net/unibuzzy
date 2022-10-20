@@ -25,8 +25,16 @@
 export default {
   props: {
     mememo: {},
-    resetMemoYn: {}
+    resetMemoYn: {},
+    writeMemoTempData: {}
   },
+  // watch: {
+  //   writeMemoTempData () {
+  //     if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
+  //       this.setMemoData(this.writeMemoTempData)
+  //     }
+  //   }
+  // },
   data () {
     return {
       memoText: '',
@@ -52,15 +60,29 @@ export default {
     this.settingPop()
   },
   methods: {
+    getMemoData () {
+      return this.$refs.memoTextTag.innerHTML
+    },
+    setMemoData (data) {
+      this.$refs.memoTextTag.focus()
+      this.$pasteHtmlAtCaret(data)
+    },
+    clearMemo () {
+      this.meMemoData = null
+      this.$refs.memoTextTag.innerText = ''
+    },
     settingPop () {
       document.querySelector('#memoTextTag').addEventListener('paste', (e) => {
         e.preventDefault()
         var textData = (e.originalEvent || e).clipboardData.getData('Text')
         document.execCommand('insertHTML', false, textData)
       })
-      this.$refs.memoTextTag.focus()
-      if (this.mememo) this.setMememo()
-
+      // this.$refs.memoTextTag.focus()
+      if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
+        this.setMemoData(this.writeMemoTempData)
+      } else {
+        if (this.mememo) this.setMememo()
+      }
       document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
         var keycode = event.keyCode
         if (keycode === 8 || keycode === 46) {
@@ -79,6 +101,7 @@ export default {
           }
         }
       })
+      this.$refs.memoTextTag.focus()
     },
     textReSize (text) {
       var returnT = text
@@ -96,7 +119,7 @@ export default {
       console.log(this.meMemoData)
       // console.log(this.meMemoData)
       var myCreHtml = null
-      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard fl CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
+      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
       // myCreHtml += '<p class="font14 fl">'
       myCreHtml += '@' + this.$changeText(this.meMemoData.memo.userDispMtext || this.meMemoData.memo.userNameMtext)
       // myCreHtml += '</p>'

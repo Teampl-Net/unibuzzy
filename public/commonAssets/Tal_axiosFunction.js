@@ -216,6 +216,7 @@ export const methods = {
   async getTeamList (paramMap) {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+
     var result = await commonAxiosFunction({
       url: 'service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)

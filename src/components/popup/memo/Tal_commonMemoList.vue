@@ -151,9 +151,6 @@ export default {
   updated () {
   },
   methods: {
-    hi () {
-      alert('hi')
-    },
     focusOn () {
       this.$emit('cMemoEditYn', true)
     },
