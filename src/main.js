@@ -27,7 +27,7 @@ import TalFooter from './components/layout/Tal_gFooter.vue'
 import commonList from './components/list/D_commonList.vue'
 import gChannelList from './components/list/D_commonChanList.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
-import gColorPicker from './components/unit/Tal_colorPicker.vue'
+import gColorPicker from './components/unit/D_colorPicker.vue'
 
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import smallPop from './components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'

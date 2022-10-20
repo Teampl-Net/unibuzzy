@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.searchResultWrap{min-height: 1rem;padding: 0.2rem 0; padding-top: 0.6rem; /* background: rgb(220, 221, 235); */ width: 100%;float: left;margin-bottom: 0.2rem; border-bottom: 1px solid #d1d1d1;}
+.searchResultWrap{min-height: 1rem;padding: 0.2rem 0; padding-top: 0.6rem; /* background: rgb(220, 221, 235); */ width: 100%;float: left; /* border-bottom: 1px solid #d1d1d1 */;}
 .searchResultBox{margin-right: 0.8rem; min-width:60px;margin-bottom: 5px; max-width: 120px;    border: 1px solid #d1d1d1;/*  border: 2px solid none;background-color: #bfbfda6b; */ position: relative; border-radius: 10px; float: left; height: 26px; line-height: 26px; padding: 0 0.7rem; padding-right: 1.5rem; font-size: 12px; background: #FFF;}
 .searchResultBox img{position: absolute; right: 0.3rem; top: 0.3rem;}
 </style>

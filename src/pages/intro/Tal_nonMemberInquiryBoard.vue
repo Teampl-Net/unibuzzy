@@ -39,7 +39,7 @@
 
 <script>
 
-import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
+import findContentsList from '../../components/popup/common/D_findContentsList.vue'
 // import boardList from '../../components/list/del_Tal_commonBoardList.vue'
 import boardList from '@/components/list/D_commonList.vue'
 export default {

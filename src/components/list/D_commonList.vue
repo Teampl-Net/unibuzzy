@@ -34,7 +34,7 @@
                       </p>
                   </div>
                 </div>
-                <div class="fl w-100P">
+                <div class="fl w-100P" style="padding: 5px 0; ">
                   <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                   </div>
@@ -52,6 +52,8 @@
                       <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
                       <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
                   </div>
+                  <div @click="clickCard(alim)"  v-if="alim.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <statCodeComponent :teamKey="alim.creTeamKey" :contentsKey="alim.contentsKey" v-if="alim.workStatYn" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
                 </div>
               </div>
               <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
@@ -124,6 +126,7 @@
 // import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
 import { onMessage } from '../../assets/js/webviewInterface'
+import statCodeComponent from '../board/D_manageStateCode.vue'
 export default {
     data: function () {
     return { // 데이터 정의
@@ -169,7 +172,7 @@ export default {
     }
   },
   components: {
-
+    statCodeComponent
   },
   created () {
     console.log('this.emptyYn')
@@ -1137,6 +1140,7 @@ export default {
         }
       } else {
         param.targetType = 'boardDetail'
+        debugger
         param.cabinetNameMtext = data.cabinetNameMtext
         param.teamKey = data.creTeamKey
         param.targetKey = data.contentsKey

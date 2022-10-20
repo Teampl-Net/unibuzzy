@@ -17,7 +17,7 @@
 
             </div>
         </div>
-        <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap" style="padding-top: 0; width: 100%; float: left">
+        <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap" style="padding-top: 0; box-shadow: 0 4px 4px -4px #ccc; width: 100%; float: left; background: #fff;">
             <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
         </div>
     </div>

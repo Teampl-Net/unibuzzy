@@ -142,7 +142,11 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           // 현재 에러남
-          this.goDetail(param)
+          if (target.targetKind === 'chanDetail') {
+            this.goChanDetail(param)
+          } else {
+            this.goDetail(param)
+          }
           this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
         }
       }
@@ -342,7 +346,7 @@ export default {
         this.failPopYn = true
       }
     },
-    goDetail_back (data) {
+    goChanDetail (data) {
       // eslint-disable-next-line no-debugger
       debugger
       // console.log(data)

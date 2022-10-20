@@ -334,9 +334,6 @@ export const commonMethods = {
     return resultlist
   },
   checkUserAuth (data) {
-    //
-    // eslint-disable-next-line no-debugger
-    debugger
     var authList = { R: false, W: false, V: false }
     if (!data) return authList
     for (var i = 0; i < data.length; i++) {

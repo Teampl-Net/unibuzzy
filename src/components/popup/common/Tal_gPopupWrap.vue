@@ -260,10 +260,22 @@ export default {
           var target = value[value.length - 1]
           // eslint-disable-next-line no-new-object
           var param = new Object()
+          console.log(target)
+          // alert(JSON.stringify(target))
+          if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'pushDetail' || target.targetKind === 'boardDetail')) return
           param.targetType = target.targetKind
-          param.targetKey = target.targetKey
+          param.creTeamKey = Number(target.targetKey)
+          // alert(JSON.stringify(param))
+
+          // eslint-disable-next-line no-debugger
+          debugger
+          // 현재 에러남
+          if (target.targetKind === 'chanDetail') {
+            this.goChanDetail(param)
+          } else {
+            this.goDetail(param)
+          }
           this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
-          this.openPop(param)
         }
       }
     },
@@ -433,6 +445,9 @@ export default {
           if (this.detailVal.value) {
             if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
               this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
+            }
+            if (this.detailVal.jobkindId && this.detailVal.jobkindId === 'BOAR' && this.detailVal.value.cabinetNameMtext) {
+              this.headerTitle = this.changeText(this.detailVal.value.cabinetNameMtext)
             }
           }
         }

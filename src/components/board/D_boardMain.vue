@@ -55,16 +55,19 @@
               </div>
             </div>
           </div>
-          <div style="display:flex; align-items: center; justify-content: space-around; max-width:100px; width:40%;">
+          <div style="display:flex; align-items: center; justify-content: space-around; max-width:150px; width:55%;">
 
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.W === true" class="fr img-w20" src="../../assets/images/board/icon_square_pen.svg" alt="">
-            <img v-else class="fr img-w20" src="../../assets/images/board/icon_square_pen_solid.svg" alt="">
+            <img v-if="CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true" class="fr img-w20 mleft-05" style="width: 25px; margin-top: 3px;" src="../../assets/images/board/workStatYnIcon.svg" alt="">
 
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.V === true" class="fr img-w20" src="../../assets/images/board/icon_eyes.svg" alt="">
-            <img v-else class="fr img-w20" src="../../assets/images/board/icon_eyes_solid.svg" alt="">
+            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.W === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen.svg" alt="">
+            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen_solid.svg" alt="">
 
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.R === true" class="fr img-w20" src="../../assets/images/common/icon_comment.svg" alt="">
-            <img v-else class="fr img-w20" src="../../assets/images/common/icon_comment_solid.svg" alt="">
+            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.V === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes.svg" alt="">
+            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes_solid.svg" alt="">
+
+            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.R === true" class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment.svg" alt="">
+            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment_solid.svg" alt="">
+            <!-- <img v-else class="fr img-w20" src="../../assets/images/common/icon_comment_solid.svg" alt=""> -->
           </div>
         </div>
 
@@ -78,12 +81,12 @@
     <div class="boardItemBox" id="boardItemBox" style="">
       <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
         <transition name="showModal">
-          <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+          <findContentsList :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
         </transition>
         <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
-          <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl mbottom-1" @changeTab= "changeTab"  style=" width:calc(100%);"/>
+          <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
         </div>
-        <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+        <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); " class="commonBoardListWrap" ref="commonBoardListWrapCompo">
           <!-- {{CAB_DETAIL.shareAuth}}
           {{CAB_DETAIL.blindYn}} -->
           <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
@@ -125,9 +128,9 @@
 <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
 </template>
 <script>
-// import findContentsList from '../Tal_findContentsList.vue'
+// import findContentsList from '../D_findContentsList.vue'
 import boardList from '@/components/list/D_commonList.vue'
-import findContentsList from '@/components/popup/common/Tal_findContentsList.vue'
+import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
@@ -744,7 +747,11 @@ export default {
     },
     findPaddingTopBoard () {
       var element = document.getElementById('searchResultWrapLength')
-      this.paddingTop = element.clientHeight
+      if (element) {
+        this.paddingTop = element.clientHeight - 10
+      } else {
+        this.paddingTop = 0
+      }
     },
     async refreshAll () {
       // 새로고침
@@ -942,6 +949,8 @@ export default {
           param.toCreDateStr = this.findKeyList.toCreDateStr
         } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+          param.workStatCodeKey = this.findKeyList.workStatCodeKey
         }
       }
       param.jobkindId = 'BOAR'
@@ -1068,6 +1077,9 @@ export default {
           this.findKeyList.toCreDateStr = param.toCreDateStr
         } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
+        } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+          this.findKeyList.workStatCodeKey = param.workStatCodeKey
+          this.findKeyList.codeNameMtext = param.codeNameMtext
         }
       }
 
@@ -1107,6 +1119,12 @@ export default {
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
+      if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+        searchObj.typeName = '필터'
+        searchObj.type = 'workStatCodeKey'
+        searchObj.keyword = param.codeNameMtext
+        resultArray.push(searchObj)
+      }
       return resultArray
     },
     async changeSearchList (type) {
@@ -1115,8 +1133,13 @@ export default {
       } else if (type === 'creDate') {
         delete this.findKeyList.toCreDateStr
         delete this.findKeyList.fromCreDateStr
+      } else if (type === 'workStatCodeKey') {
+        delete this.findKeyList.workStatCodeKey
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
+      if (this.resultSearchKeyList.length === 0) {
+        this.paddingTop = 0
+      }
       // await this.getCabinetDetail()
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content

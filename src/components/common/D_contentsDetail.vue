@@ -26,10 +26,10 @@
             </div> -->
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
             <p class="font12 fl lightGray"  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</p>
+            <p v-if="CONT_DETAIL.updDate" class="font12 fr lightGray">{{'(업데이트: ' + this.$changeDateFormat(CONT_DETAIL.updDate, true) + ')'}}</p>
             <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</p>
-            <p v-if="CONT_DETAIL.updDate" class="font12 fl lightGray">{{'(업데이트: ' + this.$changeDateFormat(CONT_DETAIL.updDate, true) + ')'}}</p>
           </div>
-
+          <statCodeComponent style="float: right; margin-bottom: 7px; margin-top: 3px;" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
         </div>
         <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
             <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
@@ -108,9 +108,8 @@
           <!-- <gBtnSmall class="mr-04 gBtnSmall addClick_popupClick.test()_addClick" btnTitle="상세보기" /> -->
           <!-- <gBtnSmall  class="mr-04 gBtnSmall"  btnTitle="링크열기" /> -->
         <!-- </div> -->
-        <div class="pushDetailPaperEffect" />
       </div>
-
+      <div class="paperEffect" ><div class="pushDetailPaperEffect"></div></div>
     </div>
     <div v-if="memoShowYn" class="memoBoxBackground" @click="memoPopNo()"></div>
     <!-- <transition name="showMemoPop"> -->
@@ -127,6 +126,7 @@
 import loadingCompo from '@/components/layout/Tal_loading.vue'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
+import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 /* import manageStickerPop from '../sticker/Tal_manageStickerPop.vue' */
 export default {
   data () {
@@ -188,7 +188,8 @@ export default {
   components: {
     /* manageStickerPop, */
     imgPreviewPop,
-    loadingCompo
+    loadingCompo,
+    statCodeComponent
   },
   created () {
     // // console.log('this.detailVal')
@@ -1316,7 +1317,7 @@ export default {
   position: relative;
   width: 100%;
   margin: auto;
-  border-radius: 0.8rem;
+  border-radius: 0.8rem 0.8rem 0 0;
   background-color: #ffffff;
   color: #363c5f;
   padding: 1.5rem;
@@ -1324,10 +1325,16 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
   min-height: 22rem;
   padding-bottom: 3rem;
+  float: left;
+  margin-bottom: -10px;
 
+}
+
+.paperEffect {
+    width: 100%; float: left; min-height: 50px; background: #FFF; position: relative; border-radius: 0 0 0 0.8rem;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
 }
 
 .showMemoPop-enter {

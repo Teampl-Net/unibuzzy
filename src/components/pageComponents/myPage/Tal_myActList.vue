@@ -26,7 +26,7 @@
 
 <script>
 import myActContentList from './Tal_myActContentsList.vue'
-import findContentsList from '../../popup/common/Tal_findContentsList.vue'
+import findContentsList from '../../popup/common/D_findContentsList.vue'
 import roundTab from '../../unit/selectBox/Tal_roundTab.vue'
 export default {
   props: {

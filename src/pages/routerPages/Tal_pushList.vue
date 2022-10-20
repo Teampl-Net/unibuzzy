@@ -15,7 +15,7 @@
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
-        <findContentsList :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' ? 'C_STAT' : ''" :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
       </transition>
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
@@ -57,7 +57,7 @@
 import pushLoadingCompo from '../../components/layout/Tal_loading.vue'
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import findContentsList from '../../components/popup/common/Tal_findContentsList.vue'
+import findContentsList from '../../components/popup/common/D_findContentsList.vue'
 import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 /* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
@@ -1075,6 +1075,8 @@ export default {
             param.toCreDateStr = this.findKeyList.toCreDateStr
           } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
             param.fromCreDateStr = this.findKeyList.fromCreDateStr
+          } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+            param.workStatCodeKey = this.findKeyList.workStatCodeKey
           }
         }
         param.findLogReadYn = null
@@ -1228,6 +1230,7 @@ export default {
       }, 800)
     },
     changeMainTab (tab) {
+      this.paddingTop = 75
       // this.targetCKey = null
       this.$emit('changeMainTab', tab)
       this.canLoadYn = true
@@ -1564,31 +1567,44 @@ export default {
           this.findKeyList.toCreDateStr = param.toCreDateStr
         } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
+        } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+          this.findKeyList.workStatCodeKey = param.workStatCodeKey
+          this.findKeyList.codeNameMtext = param.codeNameMtext
         }
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       this.offsetInt = 0
       this.targetCKey = null
       this.findPaddingTopPush()
       var resultList = await this.getPushContentsList(10, 0)
-      if (!resultList || resultList === '') return
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      var newArr = []
-      if (this.viewMainTab === 'P') {
-        newArr = [
-          // ...this.alimContentsList,
-          ...resultList.content
-        ]
-        this.alimContentsList = this.replaceArr(newArr)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (resultList === '') {
+        if (this.viewMainTab === 'P') {
+          this.alimContentsList = []
+        } else {
+          this.boardContentsList = []
+        }
       } else {
-        newArr = [
-          // ...this.boardContentsList,
-          ...resultList.content
-        ]
-        this.boardContentsList = this.replaceArr(newArr)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        var newArr = []
+        if (this.viewMainTab === 'P') {
+          newArr = [
+          // ...this.alimContentsList,
+            ...resultList.content
+          ]
+          this.alimContentsList = this.replaceArr(newArr)
+        } else {
+          newArr = [
+            // ...this.boardContentsList,
+            ...resultList.content
+          ]
+          this.boardContentsList = this.replaceArr(newArr)
+        }
+        this.endListSetFunc(resultList)
       }
-
-      this.endListSetFunc(resultList)
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -1616,6 +1632,12 @@ export default {
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
+      if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+        searchObj.typeName = '필터'
+        searchObj.type = 'workStatCodeKey'
+        searchObj.keyword = param.codeNameMtext
+        resultArray.push(searchObj)
+      }
       this.findPopShowYn = false
       return resultArray
     },
@@ -1625,6 +1647,8 @@ export default {
       } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
         delete this.findKeyList.toCreDateStr
         delete this.findKeyList.fromCreDateStr
+      } else if (type === 'workStatCodeKey') {
+        delete this.findKeyList.workStatCodeKey
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)
@@ -1637,23 +1661,32 @@ export default {
       }
       // this.findPaddingTopPush()
       var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
-      if (!resultList || resultList === '') return
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      var newArr = []
-      if (this.viewMainTab === 'P') {
-        newArr = [
-          // ...this.alimContentsList,
-          ...resultList.content
-        ]
-        this.alimContentsList = this.replaceArr(newArr)
+      if (resultList === '') {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (this.viewMainTab === 'P') {
+          this.alimContentsList = []
+        } else {
+          this.boardContentsList = []
+        }
       } else {
-        newArr = [
-          // ...this.boardContentsList,
-          ...resultList.content
-        ]
-        this.boardContentsList = this.replaceArr(newArr)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        var newArr = []
+        if (this.viewMainTab === 'P') {
+          newArr = [
+          // ...this.alimContentsList,
+            ...resultList.content
+          ]
+          this.alimContentsList = this.replaceArr(newArr)
+        } else {
+          newArr = [
+            // ...this.boardContentsList,
+            ...resultList.content
+          ]
+          this.boardContentsList = this.replaceArr(newArr)
+        }
+        this.endListSetFunc(resultList)
       }
-      this.endListSetFunc(resultList)
     },
     /* 이미지 다운로드 */
     imgLongClick (param) {

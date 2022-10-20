@@ -30,7 +30,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 // import myObserver from '../../components/Tal_ScrollObserver.vue'
-import findContentsList from './common/Tal_findContentsList.vue'
+import findContentsList from './common/D_findContentsList.vue'
 // import searchResult from '../../components/unit/Tal_searchResult.vue'
 // eslint-disable-next-line no-unused-vars
 export default {

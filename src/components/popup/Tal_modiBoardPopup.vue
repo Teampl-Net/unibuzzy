@@ -29,7 +29,7 @@
     </div>
     <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
     <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
-    <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 350px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
+    <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
       <popHeader @closeXPop="closeFuncPop" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
       <div class="pagePaddingWrap" style="width: 100%;">
         <!-- <div class="itemWrite" style="width: 100%;">
@@ -66,6 +66,15 @@
         </div>
       </div> -->
       <div class="itemWrite">
+        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">상태설정</p>
+        <div class="toggleInputWrap">
+          <input type="checkbox" v-model="workStatYn" id="toggle0" hidden>
+          <label for="toggle0" class="toggleSwitch">
+            <span class="toggleButton"></span>
+          </label>
+        </div>
+      </div>
+      <div class="itemWrite">
         <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="replyYnInput" id="toggle1" hidden>
@@ -92,7 +101,7 @@
           </label>
         </div>
       </div>
-      <div class="itemWrite">
+      <div class="itemWrite" style="border-bottom: none;">
         <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">제목 비공개(미권한자)</p>
         <div class="toggleInputWrap">
           <input type="checkbox" v-model="titleBlindYn" id="toggle4" hidden>
@@ -227,10 +236,15 @@ export default {
   computed: {
     CAB_FUNCTION_TEXT () {
       var text = ''
-      if (this.replyYnInput === true) {
-        text += '댓글O'
+      if (this.workStatYn === true) {
+        text += '상태O'
       } else {
-        text += '댓글X'
+        text += '상태X'
+      }
+      if (this.replyYnInput === true) {
+        text += '/댓글O'
+      } else {
+        text += '/댓글X'
       }
       if (this.fileYnInput === true) {
         text += '/파일O'
@@ -295,6 +309,7 @@ export default {
       blindYn: false, // 익명게시판
       fileYnInput: false, // 파일업로드 게시판
       replyYnInput: false, // 댓글 지원 게시판
+      workStatYn: false, // 상태설정 게시판
       show: false,
       multiStatus: [
         '진행 중',
@@ -452,6 +467,7 @@ export default {
       }
       // console.log(data)
       // 작성자명/댓글지원O/파일업로드O
+      if (data.mCabinet.workStatYn === 1) { this.workStatYn = true } else { this.workStatYn = false }
       if (data.mCabinet.replyYn === 1) { this.replyYnInput = true } else { this.replyYnInput = false }
       if (data.mCabinet.fileYn === 1) { this.fileYnInput = true } else { this.fileYnInput = false }
       if (data.mCabinet.blindYn === 1) { this.blindYn = true } else { this.blindYn = false }
@@ -690,6 +706,7 @@ export default {
       cabinet.blindYn = this.blindYn
       cabinet.fileYn = this.fileYnInput
       cabinet.replyYn = this.replyYnInput
+      cabinet.workStatYn = this.workStatYn
       var shareList = []
       var itemList = []
       // eslint-disable-next-line no-new-object
