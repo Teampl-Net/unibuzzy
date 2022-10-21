@@ -257,7 +257,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .CWhiteColor{ color: #F1F1FF !important; }
 .CWhiteBgColor{ background-color: #F1F1FF !important;}
-
+.attachFileBg {background-color: #AEB0FB !important;}
 .whiteColor{color: #fff;}
 .deepColor{color: #3E3F6A;}
 .commonBlue{color: #3b3dce!important;}
@@ -270,10 +270,11 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
 .commonRed{color:#DC143C}
 
-.commonGray{color: #9C9C9C}
+.commonGray{color: #9C9C9C !important;}
+.commonGrayBG {background-color: #F8F8FF !important;}
 .commonPurpleBG{background-color: #F8F8FF;}
 .deepBorderColor{border: #5F61BD;}
-.commonGrayBorderColor{border: #9C9C9C;}
+.commonGrayBorderColor{border: 1px solid #9C9C9C !important;}
 /* 불투명 색: #dcddeb */
 
 
@@ -711,4 +712,3 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 .vel-img-title, .btn__close {
     display: none!important;
 }
-

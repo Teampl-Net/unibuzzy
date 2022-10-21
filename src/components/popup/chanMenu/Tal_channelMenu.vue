@@ -160,13 +160,13 @@ export default {
         this_.bookListLength()
         this_.loadYn = true
         this_.$showAxiosLoading(false)
-        
+
       })
     })
     // this. myBoardList =
   },
   mounted () {
-    
+
 
     // this.cabinetList = this.$groupDummyList()
     // if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length === 0) {
