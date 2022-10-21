@@ -269,7 +269,13 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .whitePurpleBG{background-color: #f4f4f9 !important}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
 .commonRed{color:#DC143C}
+
+.commonGray{color: #9C9C9C}
+.commonPurpleBG{background-color: #F8F8FF;}
+.deepBorderColor{border: #5F61BD;}
+.commonGrayBorderColor{border: #9C9C9C;}
 /* 불투명 색: #dcddeb */
+
 
 .w-10P{width: 10%;}
 .w-20P{width: 20%;}
@@ -705,3 +711,4 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 .vel-img-title, .btn__close {
     display: none!important;
 }
+
