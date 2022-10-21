@@ -140,7 +140,7 @@ export default {
       localStorage.setItem('notiReloadPage', 'none')
     }
     if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
-        var resultList = await this.getChannelList()
+        var resultList = await this.getChannelList(null, null, true)
         var newArr = []
         for (var i = 0; i < resultList.content.length; i++) {
             if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -247,7 +247,7 @@ export default {
         pSize = Number(this.offsetInt) * 10
       }
       this.endList = true
-      var resultList = await this.getChannelList(pSize, 0)
+      var resultList = await this.getChannelList(pSize, 0, null)
       this.channelList = resultList.content
       var newArr = []
         for (var i = 0; i < resultList.content.length; i++) {
@@ -331,7 +331,7 @@ export default {
       this.offsetInt = 0
       this.listShowYn = false
       this.emptyYn = false
-      var resultList = await this.getChannelList()
+      var resultList = await this.getChannelList(null, null, true)
       var addList = []
         for (var i = 0; i < resultList.content.length; i++) {
             if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -378,10 +378,13 @@ export default {
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
     },
 
-    async getChannelList (pageSize, offsetInput) {
+    async getChannelList (pageSize, offsetInput, loadingYn) {
       if (this.axiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
 	  this.axiosQueue.push('getChannelList')
       var paramMap = new Map()
+      if (loadingYn) {
+        this.$showAxiosLoading(true)
+      }
       var userKey = this.GE_USER.userKey
       if (this.viewTab === 'user') {
         paramMap.set('userKey', userKey)
@@ -405,6 +408,7 @@ export default {
         paramMap.set('pageSize', 10)
       }
       var result = await this.$getTeamList(paramMap)
+      this.$showAxiosLoading(false)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getChannelList')
       this.axiosQueue.splice(queueIndex, 1)
       // var pageable = resultList.pageable
@@ -423,7 +427,7 @@ export default {
 
     async requestSearchList (paramMap) {
       this.resultSearchKeyList = await this.castingSearchMap(paramMap)
-      var resultList = await this.getChannelList()
+      var resultList = await this.getChannelList(null, null, true)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -464,7 +468,7 @@ export default {
         this.paddingTop = 20
       }
       this.offsetInt = 0
-      var resultList = await this.getChannelList()
+      var resultList = await this.getChannelList(null, null, true)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {

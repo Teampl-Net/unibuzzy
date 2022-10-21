@@ -1,6 +1,6 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
-
+    <gAxiosLoading class="fl"/>
     <div v-if="shadowScreenShowYn" @click="returnEvent" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999999999999999999999999999;">
     </div>
     <gConfirmPop :confirmText="netText" confirmType='no' @no='netBoxShowYn = false' v-if="netBoxShowYn" style="z-index: 9999999999999999999999999999999999999999999999;"/>

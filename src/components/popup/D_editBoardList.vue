@@ -156,11 +156,13 @@ export default {
     },
     async getTeamMenuList () {
       var paramMap = new Map()
+      this.$showAxiosLoading(true)
       paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap)
+      this.$showAxiosLoading(false)
       // var uniqueArr = []
       // if (result && result.length > 0) {
       //   var newArr = []

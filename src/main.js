@@ -52,6 +52,7 @@ import VueEasyLightbox from 'vue-easy-lightbox'
 /* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
+import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
 
 import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 
@@ -119,6 +120,7 @@ app.component('gStepProgress', gStepProgress)
 app.component('imgLongClickPop', imgLongClickPop)
 app.component(VueCropper)
 app.component('gSelectBoardPop', gSelectBoardPop)
+app.component('gAxiosLoading', gAxiosLoading)
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(uploadFile)

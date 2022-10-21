@@ -5,7 +5,7 @@
 
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true "/> -->
-      <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/>
+      <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; z-index: 9999999999999999999999999999999999999999999999999; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/>
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <div :style="!popYn ? 'padding: 0 1rem ; padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end;">
@@ -96,7 +96,6 @@ export default {
     if (this.chanAlimYn) { this.currentTeamKey = this.chanDetail.teamKey } else {
       this.currentTeamKey = 0
     }
-
     this.$emit('changePageHeader', '알림')
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
@@ -116,7 +115,7 @@ export default {
     if (this.targetCKey) {
       this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
     } else {
-      this_.getPushContentsList().then(response => {
+      this_.getPushContentsList(null, null, true).then(response => {
         if (!response || !response.content) return
         console.log(response.content)
         if (!response || response === '') return
@@ -641,7 +640,7 @@ export default {
       }
       var this_ = this
       this.loadMoreDESCYn = false
-      await this_.getPushContentsList().then(response => {
+      await this_.getPushContentsList(null, null, true).then(response => {
         console.log('getContents-------------------------------------------------------')
         if (!response || !response.content) return
         console.log(response.content)
@@ -1053,9 +1052,13 @@ export default {
       }
     },
 
-    async getPushContentsList (pageSize, offsetInput) {
+    async getPushContentsList (pageSize, offsetInput, loadingYn) {
       if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
         this.axiosQueue.push('getPushContentsList')
+        this.$emit('closeLoading')
+        if (loadingYn) {
+          this.$showAxiosLoading(true)
+        }
         // @point
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -1117,6 +1120,7 @@ export default {
           }
         }
         var result = await this.$getContentsList(param)
+        this.$showAxiosLoading(false)
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.axiosQueue.splice(queueIndex, 1)
         var resultList = result
@@ -1305,7 +1309,7 @@ export default {
       }
       this.targetCKey = null
       this.loadMoreDESCYn = true
-      var resultList = await this.getPushContentsList(pSize, 0)
+      var resultList = await this.getPushContentsList(pSize, 0, true)
       if (!resultList || resultList === '') return
       var newArr = []
       var cont
@@ -1524,7 +1528,7 @@ export default {
 
       // this.offsetInt = 0
       // this.emptyYn = false
-      var resultList = await this.getPushContentsList()
+      var resultList = await this.getPushContentsList(null, null, true)
       var contentList = []
       if (resultList && resultList.content) {
         contentList = resultList.content
@@ -1578,7 +1582,7 @@ export default {
       this.offsetInt = 0
       this.targetCKey = null
       this.findPaddingTopPush()
-      var resultList = await this.getPushContentsList(10, 0)
+      var resultList = await this.getPushContentsList(10, 0, true)
       // eslint-disable-next-line no-debugger
       debugger
       if (resultList === '') {
@@ -1660,7 +1664,7 @@ export default {
         this.paddingTop = 75
       }
       // this.findPaddingTopPush()
-      var resultList = await this.getPushContentsList(pageSize, this.offsetInt)
+      var resultList = await this.getPushContentsList(pageSize, this.offsetInt, true)
       if (resultList === '') {
         // eslint-disable-next-line no-debugger
         debugger

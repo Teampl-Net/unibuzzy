@@ -1114,10 +1114,6 @@ export default {
       console.log(this.emptyYn)
       if (!this.$refs.sLoadingPush) return
       if (this.emptyYn) return
-        /* if (this.commonListData && this.commonListData.length === 0) {
-            return
-        } */
-      // // console.log('show');
       if (this.$refs.sLoadingPush)
         this.$refs.sLoadingPush.show()
         var this_ = this

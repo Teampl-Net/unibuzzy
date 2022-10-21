@@ -804,6 +804,16 @@ export const commonMethods = {
   },
   setParentsId (pId, setId) {
     return pId + '|||' + setId
+  },
+  showAxiosLoading (showYn) {
+    var loadingCompo = document.getElementById('axiosShadow')
+    if (!loadingCompo || loadingCompo.length === 0) return
+    if (showYn) {
+      loadingCompo.style.display = 'flex'
+      setTimeout(() => {
+        loadingCompo.style.display = 'none'
+      }, 3000)
+    } else loadingCompo.style.display = 'none'
   }
 }
 
@@ -852,5 +862,6 @@ export default {
     Vue.config.globalProperties.$dateCalc = commonMethods.dateCalc
     Vue.config.globalProperties.$addConsole = commonMethods.addConsole
     Vue.config.globalProperties.$setParentsId = commonMethods.setParentsId
+    Vue.config.globalProperties.$showAxiosLoading = commonMethods.showAxiosLoading
   }
 }

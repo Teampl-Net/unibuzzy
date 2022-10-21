@@ -1,6 +1,6 @@
 <template>
     <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap">
-      <loadingCompo style="z-index: 9999999 !important; position:absolute; top:0; left:0;" v-if="loadingYn" />
+      <loadingCompo style="z-index: 999999999999999999999999999999999999999999999999999999999999 !important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
         <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'

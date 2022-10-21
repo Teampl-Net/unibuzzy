@@ -165,6 +165,7 @@ export default {
     async getMyActContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      this.$showAxiosLoading(true)
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
       } else {
@@ -216,6 +217,7 @@ export default {
           this.$refs.myActContentRef.myPageLoadingRefHide()
         }
       }
+      this.$showAxiosLoading(false)
       var resultList = result
       this.$emit('closeLoading')
       return resultList

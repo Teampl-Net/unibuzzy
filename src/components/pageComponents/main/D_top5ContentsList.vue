@@ -243,8 +243,10 @@ export default {
     async changeTab (tabName) {
       // alert(tabName)
       // this.pushList = [] ///######
+      this.$showAxiosLoading(true)
       this.viewTab = tabName
       await this.getContentsList()
+      this.$showAxiosLoading(false)
     },
     async reLoad () {
       this.changeTab('A')

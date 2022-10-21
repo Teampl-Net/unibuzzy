@@ -143,8 +143,7 @@ export default {
     }
   },
   created() {
-    console.log(this.pPopId)
-    debugger
+    this.$showAxiosLoading(true)
     // console.log('CHANNEL_DETAIL')
     // console.log(this.CHANNEL_DETAIL)
     var history = this.$store.getters['D_HISTORY/hStack']
@@ -152,18 +151,22 @@ export default {
     history.push(this.$setParentsId(this.pPopId, 'chanMenu' + this.chanAlimListTeamKey))
     this.$store.commit('D_HISTORY/updateStack', history)
     this.screenHeight = window.innerHeight
+    var this_ = this
+    this.getFollowerList().then(response => {
+    })
+    this_.getTeamCabList().then(temp => {
+      this_.getTeamMenuList().then(teemp => {
+        this_.boardListLength()
+        this_.bookListLength()
+        this_.loadYn = true
+        this_.$showAxiosLoading(false)
+        
+      })
+    })
     // this. myBoardList =
   },
   mounted () {
-    this.getFollowerList().then(response => {
-    })
-    this.getTeamCabList().then(temp => {
-      this.getTeamMenuList().then(teemp => {
-        this.boardListLength()
-        this.bookListLength()
-        this.loadYn = true
-      })
-    })
+    
 
     // this.cabinetList = this.$groupDummyList()
     // if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length === 0) {

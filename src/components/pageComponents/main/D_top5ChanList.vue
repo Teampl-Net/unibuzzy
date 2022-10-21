@@ -214,7 +214,9 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
+      this.$showAxiosLoading(true)
       await this.getContentsList()
+      this.$showAxiosLoading(false)
       // if (this.chanList.length === 0) this.emptyYn = true
     }
   }

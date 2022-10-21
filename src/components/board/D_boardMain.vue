@@ -39,7 +39,7 @@
         </div>
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
           <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
-          <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.CAB_DETAIL.totalContentsCount}}개</p>
+          <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements}}개</p>
         </div>
 
         <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
@@ -209,8 +209,6 @@ export default {
         })
       }
     }
-    console.log('##################### CAB_DETAIL #################')
-    console.log(this.CAB_DETAIL)
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -765,9 +763,6 @@ export default {
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
-      setTimeout(() => {
-        this.$emit('closeLoading')
-      }, 500)
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
@@ -908,6 +903,8 @@ export default {
       if (resultList && resultList.mCabinet) {
         this.cabinetDetail = resultList.mCabinet
       }
+      console.log('##################### CAB_DETAIL #################')
+      console.log(this.cabinetDetail)
       // this.updateStoreData(resultList.mCabinet)
       // eslint-disable-next-line no-new-object
 
@@ -927,6 +924,8 @@ export default {
       /* if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       } */
+      this.$emit('closeLoading')
+      this.$showAxiosLoading(true)
       param.cabinetKey = this.propData.targetKey
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
@@ -976,8 +975,12 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
+      this.$showAxiosLoading(false)
       console.log('****************************')
       console.log(resultList)
+      if (this.viewTab === 'N') {
+        this.totalElements = resultList.totalElements
+      }
       for (var i = 0; i < resultList.length; i++) {
         // resultList.
       }

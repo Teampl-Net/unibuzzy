@@ -122,6 +122,7 @@ export default {
     async getManagingList (typeName, actionType) {
       if (actionType === 'tab') this.managingList = []
       var result= {}
+      this.$showAxiosLoading(true)
       if (typeName === 'Show') {
         var paramMap = new Map()
         paramMap.set('showProfileYn', true)
@@ -131,6 +132,7 @@ export default {
           url: 'https://mo.d-alim.com/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
+        this.$showAxiosLoading(false)
         this.showUserList = result.data.content
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_SHOW_PROFILE_USER', this.showUserList)
       // } else if (typeName === 'Mem') {

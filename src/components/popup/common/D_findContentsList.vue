@@ -22,7 +22,7 @@
           placeholder="날짜를 선택해주세요"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div v-if="tpGroupCode.length > 5" class="findPopMainSearchArea">
+        <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea">
             <select v-model="stateCode" class="searchInput selectInput font14 mtop-05" name="" id="statCodeKeyInput">
                 <option hidden value="0">업무 상태를 선택해주세요</option>
                 <option v-for="(value, index) in this.stateCodeList" :key="index" :value="value.codeKey">{{this.$changeText(value.codeNameMtext)}}</option>
