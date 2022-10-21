@@ -115,7 +115,7 @@ export default {
     if (this.targetCKey) {
       this.targetKeyYn(this.targetCKey, this.targetContents.jobkindId)
     } else {
-      this_.getPushContentsList(null, null, true).then(response => {
+      this_.getPushContentsList(null, null, false).then(response => {
         if (!response || !response.content) return
         console.log(response.content)
         if (!response || response === '') return

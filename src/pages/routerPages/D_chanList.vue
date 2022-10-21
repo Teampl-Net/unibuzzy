@@ -140,7 +140,7 @@ export default {
       localStorage.setItem('notiReloadPage', 'none')
     }
     if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
-        var resultList = await this.getChannelList(null, null, true)
+        var resultList = await this.getChannelList(null, null, false)
         var newArr = []
         for (var i = 0; i < resultList.content.length; i++) {
             if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
