@@ -1562,6 +1562,8 @@ export default {
 
     /* 검색 */
     async requestSearchList (param) {
+      this.offsetInt = 0
+      this.targetCKey = null
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -1579,8 +1581,6 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      this.offsetInt = 0
-      this.targetCKey = null
       this.findPaddingTopPush()
       var resultList = await this.getPushContentsList(10, 0, true)
       // eslint-disable-next-line no-debugger
@@ -1609,6 +1609,7 @@ export default {
         }
         this.endListSetFunc(resultList)
       }
+      this.scrollMove()
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -1646,6 +1647,8 @@ export default {
       return resultArray
     },
     async changeSearchList (type) {
+      this.offsetInt = 0
+      this.targetCKey = null
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
@@ -1657,8 +1660,6 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)
       var pageSize = 10
-      this.offsetInt = 0
-      this.targetCKey = null
       // alert(this.resultSearchKeyList.length)
       if (this.resultSearchKeyList.length === 0) {
         this.paddingTop = 75
@@ -1691,6 +1692,7 @@ export default {
         }
         this.endListSetFunc(resultList)
       }
+      this.scrollMove()
     },
     /* 이미지 다운로드 */
     imgLongClick (param) {

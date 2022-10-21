@@ -3,6 +3,7 @@
 
 // import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from '../../assets/js/Tal_common'
+import { functions } from '../../assets/js/D_vuexFunction'
 const D_CHANNEL = {
   namespaced: true,
   state: {
@@ -311,60 +312,103 @@ const D_CHANNEL = {
     MU_REPLACE_CONTENTS: (state, payload) => {
       var idx1, idx2
       var chanList = state.chanList
+      if (payload.length === 0) return
+      if (!payload[0]) return
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
-      var chanDetail = chanList[idx1]
-      for (var i = 0; i < payload.length; i++) {
-        if (payload[i].jobkindId === 'BOAR') {
-          idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
-        } else {
-          idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
-        }
-        if (idx2 === -1) continue
-        var dataList = null
-        if (payload[i].jobkindId === 'BOAR') {
-          dataList = chanDetail.ELEMENTS.boardList[idx2]
-        } else {
-          dataList = chanDetail.ELEMENTS.alimList[idx2]
-        }
-        if (!dataList.D_MEMO_LIST) {
-          dataList.D_MEMO_LIST = []
-        }
-        if (!payload[i].D_MEMO_LIST) payload[i].D_MEMO_LIST = []
-
-        if (!payload[i].D_MEMO_LIST || payload[i].D_MEMO_LIST.length === 0) {
-          payload[i].D_MEMO_LIST = payload[i].memoList
-        }
-        // alert('ok')
-        if (!payload[i].D_MEMO_LIST) {
-          payload[i].D_MEMO_LIST = []
-        }
-        if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
-          var newArr = []
-          if (payload[i].D_MEMO_LIST.length > 0) {
-            newArr = [...newArr, ...payload[i].D_MEMO_LIST]
-          }
-          if (dataList.D_MEMO_LIST.length > 0) {
-            newArr = [...newArr, ...dataList.D_MEMO_LIST]
-          }
-          if (newArr && newArr.length > 0) {
-            var uniqueArr = newArr.reduce(function (data, current) {
-              // var addData = []
-              if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
-                data.push(current)
-              }
-              return data
-            }, [])
-            payload[i].MEMO_LIST = uniqueArr
-          }
-        }
-        if (idx2 !== -1) {
+      if (idx1 !== -1) {
+        var chanDetail = chanList[idx1]
+        for (var i = 0; i < payload.length; i++) {
           if (payload[i].jobkindId === 'BOAR') {
-            chanDetail.ELEMENTS.boardList[idx2] = payload[i]
+            idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           } else {
-            chanDetail.ELEMENTS.alimList[idx2] = payload[i]
+            idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+          }
+          // alert(idx2)
+          if (idx2 === -1) {
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList.push(payload[i])
+              idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+            } else {
+              chanList[idx1].ELEMENTS.alimList.push(payload[i])
+              idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+            }
+            if (state.addContsList.length > 30) {
+              state.addContsList.splice(0, 30)
+            }
+            state.addContsList.unshift(payload[i])
+          }
+
+          var dataList = null
+          if (payload[i].jobkindId === 'BOAR') {
+            dataList = chanDetail.ELEMENTS.boardList[idx2]
+          } else {
+            dataList = chanDetail.ELEMENTS.alimList[idx2]
+          }
+          if (!dataList.D_MEMO_LIST) {
+            dataList.D_MEMO_LIST = []
+          }
+
+          if (!payload[i].memoList || !payload[i].memoList.length === 0) {
+            functions.getContentsMemoList(dataList.contentsKey).then((res) => {
+              var newArr = res
+              if (newArr && newArr.length > 0) {
+                var uniqueArr = newArr.reduce(function (data, current) {
+                  // var addData = []
+                  if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                    data.push(current)
+                  }
+                  data = data.sort(function (a, b) { // num으로 오름차순 정렬
+                    return b.memoKey - a.memoKey
+                    // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+                  })
+                  return data
+                }, [])
+                payload[i].D_MEMO_LIST = uniqueArr
+              }
+            })
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else {
+              chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
+            }
+          } else {
+            if (dataList.D_MEMO_LIST.length !== payload[i].memoList.length) {
+              var newArr = []
+              if (dataList.D_MEMO_LIST && dataList.D_MEMO_LIST.length > 0) {
+                for (var q = 0; q < dataList.D_MEMO_LIST.length; q++) {
+                  newArr.push(dataList.D_MEMO_LIST[q])
+                }
+              }
+              for (var s = 0; s < payload[i].memoList.length; s++) {
+                newArr.push(payload[i].memoList[s])
+              }
+              debugger
+              if (newArr && newArr.length > 0) {
+                var uniqueArr = newArr.reduce(function (data, current) {
+                  // var addData = []
+                  if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                    data.push(current)
+                  }
+                  data = data.sort(function (a, b) { // num으로 오름차순 정렬
+                    return b.memoKey - a.memoKey
+                    // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+                  })
+                  return data
+                }, [])
+                payload[i].D_MEMO_LIST = uniqueArr
+              } else {
+                payload[i].D_MEMO_LIST = []
+              }
+            }
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else {
+              chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
+            }
           }
         }
       }
+      state.chanList = chanList
       if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
     },
     MU_REPLACE_CONTENTS_MEMO_LIST: (state, payload) => {
@@ -394,6 +438,7 @@ const D_CHANNEL = {
       var idx1, idx2
       var chanList = state.chanList
       if (payload.length === 0) return
+      if (!payload[0]) return
       idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
       if (idx1 !== -1) {
         var chanDetail = chanList[idx1]
@@ -407,49 +452,77 @@ const D_CHANNEL = {
           if (idx2 === -1) {
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(payload[i])
+              idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
+              idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
             }
             if (state.addContsList.length > 30) {
               state.addContsList.splice(0, 30)
             }
             state.addContsList.unshift(payload[i])
-          } else {
-            var dataList = null
-            if (payload[i].jobkindId === 'BOAR') {
-              dataList = chanDetail.ELEMENTS.boardList[idx2]
-            } else {
-              dataList = chanDetail.ELEMENTS.alimList[idx2]
-            }
-            if (!dataList.D_MEMO_LIST) {
-              dataList.D_MEMO_LIST = []
-            }
-            if (!payload[i].D_MEMO_LIST) payload[i].D_MEMO_LIST = []
+          }
 
-            if (!payload[i].D_MEMO_LIST || payload[i].D_MEMO_LIST.length === 0) {
-              payload[i].D_MEMO_LIST = payload[i].memoList
-            }
-            // alert('ok')
-            if (!payload[i].D_MEMO_LIST) {
-              payload[i].D_MEMO_LIST = []
-            }
-            if (dataList.D_MEMO_LIST.length !== payload[i].D_MEMO_LIST.length) {
-              var newArr = []
-              if (payload[i].D_MEMO_LIST.length > 0) {
-                newArr = [...newArr, ...payload[i].D_MEMO_LIST]
-              }
-              if (dataList.D_MEMO_LIST.length > 0) {
-                newArr = [...newArr, ...dataList.D_MEMO_LIST]
-              }
+          var dataList = null
+          if (payload[i].jobkindId === 'BOAR') {
+            dataList = chanDetail.ELEMENTS.boardList[idx2]
+          } else {
+            dataList = chanDetail.ELEMENTS.alimList[idx2]
+          }
+          if (!dataList.D_MEMO_LIST) {
+            dataList.D_MEMO_LIST = []
+          }
+
+          if (!payload[i].memoList || !payload[i].memoList.length === 0) {
+            functions.getContentsMemoList(dataList.contentsKey).then((res) => {
+              var newArr = res
               if (newArr && newArr.length > 0) {
                 var uniqueArr = newArr.reduce(function (data, current) {
                   // var addData = []
                   if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
                     data.push(current)
                   }
+                  data = data.sort(function (a, b) { // num으로 오름차순 정렬
+                    return b.memoKey - a.memoKey
+                    // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+                  })
                   return data
                 }, [])
-                payload[i].MEMO_LIST = uniqueArr
+                payload[i].D_MEMO_LIST = uniqueArr
+              }
+            })
+            if (payload[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else {
+              chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
+            }
+          } else {
+            if (dataList.D_MEMO_LIST.length !== payload[i].memoList.length) {
+              var newArr = []
+              if (dataList.D_MEMO_LIST && dataList.D_MEMO_LIST.length > 0) {
+                for (var q = 0; q < dataList.D_MEMO_LIST.length; q++) {
+                  newArr.push(dataList.D_MEMO_LIST[q])
+                }
+              }
+              for (var s = 0; s < payload[i].memoList.length; s++) {
+                newArr.push(payload[i].memoList[s])
+              }
+              debugger
+              if (newArr && newArr.length > 0) {
+                var uniqueArr = newArr.reduce(function (data, current) {
+                  // var addData = []
+                  if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                    data.push(current)
+                  }
+                  data = data.sort(function (a, b) { // num으로 오름차순 정렬
+                    return b.memoKey - a.memoKey
+                    // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+                  })
+                  return data
+                }, [])
+                payload[i].D_MEMO_LIST = uniqueArr
+              } else {
+                payload[i].D_MEMO_LIST = []
               }
             }
             if (payload[i].jobkindId === 'BOAR') {

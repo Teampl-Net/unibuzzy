@@ -434,7 +434,7 @@ export default {
       console.log(detailData)
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
-      if (!detailData.D_MEMO_LIST) detailData.D_MEMO_LIST = []
+      if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
       // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
       // console.log(detailData)
       // eslint-disable-next-line no-debugger

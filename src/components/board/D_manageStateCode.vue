@@ -23,6 +23,7 @@ export default {
     return {
       selectPopShowYn: false,
       selectPopId: null,
+      nullObj: { codeKey: 0, codeNameMtext: '상태없음' },
       selectedCodeObj: { codeKey: null, codeNameMtext: null },
       colorList: [
         '#FFCDD2',
@@ -77,7 +78,7 @@ export default {
         if (idx !== -1) {
           this.selectedCodeObj = this.codeList[idx]
         } else {
-          this.selectedCodeObj = this.codeList[0]
+          this.selectedCodeObj = this.nullObj
         }
       }
     },
@@ -126,7 +127,7 @@ export default {
     DISP_CODE_VALUE () {
       if (!this.codeList) return null
       if (!this.currentCodeKey) {
-        return { codeNameMtext: this.codeList[0].codeNameMtext, codeKey: this.codeList[0].codeKey }
+        return this.nullObj
       }
       var idx = this.codeList.findIndex((item) => item.codeKey === this.currentCodeKey)
       if (idx === -1) return null

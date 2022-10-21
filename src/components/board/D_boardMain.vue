@@ -1071,6 +1071,7 @@ export default {
       })
     },
     async requestSearchList (param) {
+      this.offsetInt = 0
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -1088,12 +1089,18 @@ export default {
 
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       var resultList = await this.getContentsList()
+      console.log(resultList)
       this.mCabContentsList = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
+      if (!resultList || resultList === '') {
         this.endListYn = false
+      } else {
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.endListYn = true
+        } else {
+          this.endListYn = false
+        }
       }
+      this.scrollMove()
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
@@ -1131,6 +1138,7 @@ export default {
       return resultArray
     },
     async changeSearchList (type) {
+      this.offsetInt = 0
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
       } else if (type === 'creDate') {
@@ -1147,11 +1155,16 @@ export default {
       var resultList = await this.getContentsList()
       this.mCabContentsList = resultList.content
       this.findPaddingTopBoard()
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.endListYn = true
-      } else {
+      if (!resultList || resultList === '') {
         this.endListYn = false
+      } else {
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.endListYn = true
+        } else {
+          this.endListYn = false
+        }
       }
+      this.scrollMove()
       // await this.getCabinetDetail()
 
       this.findPopShowYn = false
@@ -1216,12 +1229,15 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         this.updateStoreData(tempCabData)
-
-        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-          this.endListYn = true
-        } else {
-          this.offsetInt += 1
+        if (!resultList || resultList === '') {
           this.endListYn = false
+        } else {
+          if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+            this.endListYn = true
+          } else {
+            this.offsetInt += 1
+            this.endListYn = false
+          }
         }
       } else {
         this.$refs.boardListCompo.loadingRefHide()

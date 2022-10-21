@@ -7,12 +7,12 @@ import { mapGetters, mapActions } from 'vuex'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './Tal_common'
 var this_ = this
-var g_user = store.getters['D_USER/GE_USER']
+// var g_user = store.getters['D_USER/GE_USER']
 var g_axiosQueue = []
 document.addEventListener('message', e => functions.recvNoti(e))
 window.addEventListener('message', e => functions.recvNoti(e))
 var notiDetail
-const isJsonString = (str) => {
+export const isJsonString = (str) => {
   try {
     JSON.parse(str)
   } catch (e) {
@@ -21,7 +21,7 @@ const isJsonString = (str) => {
   return true
 }
 
-const functions = {
+export const functions = {
   /* ...mapActions('D_USER', [
     'AC_USER'
   ]),
@@ -34,6 +34,20 @@ const functions = {
   ...mapActions('D_CONTENTS', [
     'AC_MAIN_BOARD_LIST'
   ]), */
+  async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
+    var memo = {}
+    memo.targetKind = 'C'
+    memo.parentMemoKey = parentMemoKey
+    memo.targetKey = targetKey
+    memo.memoKey = memoKey
+
+    var result = await this.$commonAxiosFunction({
+      url: 'service/tp.getMemoList',
+      param: memo
+    })
+    var memos = result.data.memoList[0]
+    return memos
+  },
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'TEAM' || type === 'CABI' || type === 'CONT') {
@@ -234,7 +248,7 @@ const functions = {
     }
   },
   async settingCabiNoti (message) {
-    await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+    await this.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
     /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return
     } */
@@ -254,6 +268,7 @@ const functions = {
     var resultList = await methods.getContentsList(param)
     if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]
+    debugger
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async settingAlimNoti (message) {
@@ -320,7 +335,7 @@ const functions = {
           if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
         } else if (notiDetail.actType === 'MA') {
           user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
-          if (Number(JSON.parse(notiDetail.userDo).userKey) === g_user.userKey) {
+          if (Number(JSON.parse(notiDetail.userDo).userKey) === store.getters['D_USER/GE_USER'].userKey) {
             if (user.memberYn === 1 || user.memberYn === true) {
             } else {
               store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
@@ -343,7 +358,11 @@ const functions = {
       }
     }
   },
-  settingMemoNoti (message) {
+  async settingMemoNoti (message) {
+    var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
+    memo_.jobkindId = notiDetail.jobkindId
+    memo_.creTeamKey = Number(notiDetail.creTeamKey)
+    await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
 
@@ -366,5 +385,6 @@ export default {
     Vue.config.globalProperties.$getBoardCabinetDetail = functions.getBoardCabinetDetail
     Vue.config.globalProperties.$getContentsDetail = functions.getContentsDetail
     Vue.config.globalProperties.$addChanList = functions.addChanList
+    Vue.config.globalProperties.$getContentsMemoList = functions.getContentsMemoList
   }
 }

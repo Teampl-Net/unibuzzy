@@ -789,6 +789,7 @@ export default {
       if (currentPage === this.popId) {
 
       }
+      console.log(this.popId)
       if (value.jobkindId === 'ALIM') {
         param.targetType = 'pushDetail'
         indexOf = currentPage.indexOf('pushDetail')
@@ -796,14 +797,21 @@ export default {
         param.targetType = 'boardDetail'
         indexOf = currentPage.indexOf('boardDetail')
       }
-      // eslint-disable-next-line no-debugger
-      debugger
-
+      console.log(this.params)
+      console.log(value)
       if (indexOf !== -1) {
         //  if (this.params.targetKey === value.contentsKey) {
-        if (this.params.targetKey === undefined || this.params.targetKey === null || this.params.targetKey === '' ||
+        if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' ||
          value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
           return
+        }
+        console.log(this.params.contentsKey + '**' + value.contentsKey)
+        if (this.params.contentsKey === value.contentsKey) {
+          await this.$addContents(value.contentsKey, value.jobkindId)
+          return
+          // alert('같은 컨텐츠')
+        } else {
+          // alert('다른 컨텐츠')
         }
       }
       var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
@@ -912,10 +920,10 @@ export default {
         }
         if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
           if (arrivedYn === true || arrivedYn === 'true') {
-            var memo = await this.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+            /* var memo = await this.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
             memo.jobkindId = notiDetail.jobkindId
             memo.creTeamKey = Number(notiDetail.creTeamKey)
-            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo)
+            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo) */
           } else {
             /* if (this.chanAlimListTeamKey === Number(notiDetail.creTeamKey)) {
                   console.log(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
@@ -943,8 +951,6 @@ export default {
             }
           }
         } else {
-          // eslint-disable-next-line no-debugger
-          debugger
           if (arrivedYn === true || arrivedYn === 'true') {
           } else {
             this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
@@ -982,7 +988,7 @@ export default {
           if (arrivedYn === true || arrivedYn === 'true') {
             memo_.jobkindId = notiDetail.jobkindId
             memo_.creTeamKey = Number(notiDetail.creTeamKey)
-            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
+            // await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo_)
           } else {
             if (notiDetail.jobkindId === 'ALIM') {
               this.goDetail({ contentsKey: memo_.targetKey, creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
