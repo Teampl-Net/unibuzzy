@@ -59,6 +59,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.propData)
     document.querySelector('#textMsgAskBox').addEventListener('paste', (e) => {
       var items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const i of items) {
@@ -122,6 +123,7 @@ export default {
     // console.log(this.addFalseList)
   },
   props: {
+    propData: {}
   },
   methods: {
     async previewFile (file) {
@@ -328,63 +330,71 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
-      if (this.uploadFileList.length > 0) {
-        this.checkPopYn = false
-        this.progressShowYn = true
-        await this.uploadFile()
-        setTimeout(() => {
-          this.progressShowYn = false
-        }, 2000)
-        this.sendLoadingYn = true
-      } else {
-        this.sendLoadingYn = true
-      }
-      param.attachFileList = await this.setAttachFileList()
-      var innerHtml = ''
-      if (this.viewTab === 'complex') {
-        param.bodyHtmlYn = true
-        var formList = document.querySelectorAll('#msgBox .formCard')
-        if (formList) {
-          for (var f = 0; f < formList.length; f++) {
-            formList[f].contentEditable = false
-            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-            if (formList[f].id === 'formEditText') {
-              var formTextinnerHtml = formList[f].innerHTML
-              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
-            }
-          }
-          param.getBodyHtmlYn = true
+      try {
+        if (this.uploadFileList.length > 0) {
+          this.checkPopYn = false
+          this.progressShowYn = true
+          await this.uploadFile()
+          setTimeout(() => {
+            this.progressShowYn = false
+          }, 2000)
+          this.sendLoadingYn = true
+        } else {
+          this.sendLoadingYn = true
         }
-        innerHtml = document.getElementById('msgBox').innerHTML
-      } else if (this.viewTab === 'text') {
-        param.bodyHtmlYn = false
-        document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-        innerHtml = document.getElementById('textMsgBox').innerHTML
-        innerHtml = this.$findUrlChangeAtag(innerHtml)
-      }
-      param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+        param.attachFileList = await this.setAttachFileList()
+        var innerHtml = ''
+        if (this.viewTab === 'complex') {
+          param.bodyHtmlYn = true
+          var formList = document.querySelectorAll('#msgBox .formCard')
+          if (formList) {
+            for (var f = 0; f < formList.length; f++) {
+              formList[f].contentEditable = false
+              // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+              if (formList[f].id === 'formEditText') {
+                var formTextinnerHtml = formList[f].innerHTML
+                formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+              }
+            }
+            param.getBodyHtmlYn = true
+          }
+          innerHtml = document.getElementById('msgBox').innerHTML
+        } else if (this.viewTab === 'text') {
+          param.bodyHtmlYn = false
+          document.querySelectorAll('#textMsgBox')[0].contentEditable = false
+          innerHtml = document.getElementById('textMsgBox').innerHTML
+          innerHtml = this.$findUrlChangeAtag(innerHtml)
+        }
+        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
-      param.jobkindId = 'BOAR'
-      param.creTeamKey = 377 // 더알림 공식 채널 teamKey
-      param.cabinetKey = 11015 // 더알림 공식 채널의 오류 게시판 키
-      // param.cabinetKey = 12006 // 더알림 공식 채널의 문의 게시판 키
-      param.onlyManagerYn = true
-      // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
-      // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
-      param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
-      param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.cabinetName = 'KO$^$문의하기게시판'
-      param.title = this.askTitle
-      param.showCreNameYn = true
-      this.checkPopYn = false
-      var result = await this.$saveContents(param)
-      // console.log(result)
-      if (result.result === true) {
-        // this.$emit('successSave')
+        param.jobkindId = 'BOAR'
+        param.creTeamKey = 377 // 더알림 공식 채널 teamKey
+
+        // param.cabinetKey = 12006 // 더알림 공식 채널의 오류 게시판 키
+        if (this.propData.jobKind === 'ERRO') param.cabinetKey = 12006
+        // param.cabinetKey = 11188 // 더알림 공식 채널의 문의 게시판 키
+        if (this.propData.jobKind === 'QUES') param.cabinetKey = 11188
+
+        param.onlyManagerYn = true
+        // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
+        // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
+        param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
+        param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
+        param.cabinetName = 'KO$^$문의하기게시판'
+        param.title = this.askTitle
+        param.showCreNameYn = true
+        this.checkPopYn = false
+        await this.$saveContents(param).then((result) => {
+          this.$showToastPop('정상적으로 접수 되었습니다.')
+        })
+      } catch (error) {
+        console.log('----- 문의접수, 오류접수 에러 -----')
+        console.log(error)
+        this.$showToastPop('예기치 못한 이유로 접수되지 못했습니다.')
+      } finally {
         this.$emit('closeXPop', true)
+        this.sendLoadingYn = false
       }
-      this.$emit('closeXPop', true)
-      this.sendLoadingYn = false
     },
     async uploadFile () {
       if (this.uploadFileList.length > 0) {

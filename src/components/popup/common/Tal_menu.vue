@@ -9,7 +9,7 @@
         <div class="menuRow"  v-for="(value, index) in menuList" :key="index">
           <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
           <div v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</div>
-          <div v-else v-on:click="openPop(value.link)">{{value.menuText}}</div>
+          <div v-else v-on:click="openPop(value.link, value.jobKind)">{{value.menuText}}</div>
         </div>
       </div>
   </div>
@@ -29,7 +29,8 @@ export default {
         { iconUrl: 'http://placehold.it/25', menuText: '마이페이지', link: 'myPage', type: 'page' },
         { iconUrl: 'http://placehold.it/25', menuText: '더알림이란?', link: 'theAlimInfo', type: 'pop' },
         { iconUrl: 'http://placehold.it/25', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
-        { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' }
+        { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop', jobKind: 'QUES' },
+        { iconUrl: 'http://placehold.it/25', menuText: '오류접수', link: 'askTal', type: 'pop', jobKind: 'ERRO' }
         /* { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' } */
         // { iconUrl: '', menuText: 'Q&A', link: 'qna' }
       ]
@@ -42,10 +43,11 @@ export default {
     goPage (link) {
       this.$emit('goPage', link)
     },
-    openPop (link) {
+    openPop (link, jobKind) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = link
+      params.jobKind = jobKind
       this.$emit('openPop', params)
     }
   }

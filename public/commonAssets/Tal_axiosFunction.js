@@ -45,7 +45,7 @@ export async function commonAxiosFunction (setItem) {
 
 export async function checkSession () {
   var result = false
-  await axios.post('https://mo.d-alim.com/service/tp.checkSession', { withCredentials: true }
+  await axios.post('service/tp.checkSession', { withCredentials: true }
   ).then(response => {
     result = response
   }).catch((error) => {
@@ -109,7 +109,7 @@ export async function saveUser (userProfile) {
   // 9443 화면 10443 서비스 12443 파일
   setParam.user = user
   var result = await commonAxiosFunction({
-    url: 'https://mo.d-alim.com/service/tp.saveUser',
+    url: 'service/tp.saveUser',
     param: setParam,
     firstYn: true
   })
@@ -177,7 +177,7 @@ export const methods = {
     // }
 
     paramMap.set('mobileYn', isMobile())
-    var result = await axios.post('https://mo.d-alim.com/service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
     console.log('^&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&^')
@@ -218,7 +218,7 @@ export const methods = {
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
 
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getUserTeamList',
+      url: 'service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
     })
     resultList = result
@@ -252,7 +252,7 @@ export const methods = {
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getContentsList',
+      url: 'service/tp.getContentsList',
       param: paramSet
     })
     resultList = result.data
@@ -267,7 +267,7 @@ export const methods = {
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getContents',
+      url: 'service/tp.getContents',
       param: paramSet
     })
     resultList = result.data
@@ -280,7 +280,7 @@ export const methods = {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = 'https://mo.d-alim.com/service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'https://mo.d-alim.com/service/tp.saveUserDo' }
+    if (type === 'delete') { urlSet = 'service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'service/tp.saveUserDo' }
     param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
@@ -300,7 +300,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveSticker',
+      url: 'service/tp.saveSticker',
       param: param
     })
     result = response.data
@@ -316,7 +316,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getStickerList',
+      url: 'service/tp.getStickerList',
       param: param
     })
     result = response.data
@@ -328,8 +328,8 @@ export const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    var urlSet = 'https://mo.d-alim.com/service/tp.saveFollower'
-    if (type === 'del') { urlSet = 'https://mo.d-alim.com/service/tp.deleteFollower' } else if (type === 'save') {
+    var urlSet = 'service/tp.saveFollower'
+    if (type === 'del') { urlSet = 'service/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
@@ -345,7 +345,7 @@ export const methods = {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveTeamRequest',
+      url: 'service/tp.saveTeamRequest',
       param: { teamRequest: teamRequest }
     })
     result = response.data
@@ -360,7 +360,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.createTeamForReq',
+      url: 'service/tp.createTeamForReq',
       param: paramSet
     })
     result = response.data
@@ -374,7 +374,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getTeamReqList',
+      url: 'service/tp.getTeamReqList',
       param: paramSet
     })
     result = response.data
@@ -395,7 +395,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveContents',
+      url: 'service/tp.saveContents',
       param: paramSet
     })
     result = response.data
@@ -409,7 +409,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getCodeList',
+      url: 'service/tp.getCodeList',
       param: paramSet
     })
     result = response.data
@@ -438,7 +438,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveFollower',
+      url: 'service/tp.saveFollower',
       param: paramSet
     })
     result = response.data
@@ -452,7 +452,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveCabinet',
+      url: 'service/tp.saveCabinet',
       param: paramSet
     })
     result = response.data
@@ -466,7 +466,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.deleteCabinet',
+      url: 'service/tp.deleteCabinet',
       param: paramSet
     })
     result = response.data
@@ -480,7 +480,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
+      url: 'service/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     result = response.data
@@ -494,7 +494,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+      url: 'service/tp.getCabinetDetail',
       param: paramSet
     })
     result = response.data
@@ -505,7 +505,7 @@ export const methods = {
   async saveMCabContents (paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveMCabContents',
+      url: 'service/tp.saveMCabContents',
       param: paramSet
     })
     // result = response
@@ -517,7 +517,7 @@ export const methods = {
     g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getMemoCount',
+      url: 'service/tp.getMemoCount',
       param: param
     })
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
@@ -534,7 +534,7 @@ export const methods = {
     console.log(param)
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveUser',
+      url: 'service/tp.saveUser',
       param: param
     })
     console.log(response)

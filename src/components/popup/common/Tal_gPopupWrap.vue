@@ -22,7 +22,7 @@
         <chanList :pPopId="popId" :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="successchangeUserInfo" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
-      <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop"/>
+      <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.params' />
       <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
       <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
@@ -314,7 +314,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       // console.log(result)
@@ -479,7 +479,8 @@ export default {
       } else if (this.targetType === 'qna') {
         this.headerTitle = 'Q&A'
       } else if (this.targetType === 'askTal') {
-        this.headerTitle = '문의하기'
+        if (target.jobKind === 'QUES') this.headerTitle = '문의하기'
+        if (target.jobKind === 'ERRO') this.headerTitle = '오류접수'
       } else if (this.targetType === 'theAlimInfo') {
         this.headerTitle = '더알림이란?'
       } else if (this.targetType === 'changeMobile') {
@@ -852,7 +853,7 @@ export default {
       memo.memoKey = memoKey
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var memos = result.data.memoList[0]
@@ -884,7 +885,7 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+        url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')

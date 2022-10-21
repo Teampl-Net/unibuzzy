@@ -300,7 +300,7 @@ const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.getFollowerList',
+      url: 'service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     var user = result.data.content
