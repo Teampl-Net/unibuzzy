@@ -6,7 +6,7 @@
     </div> -->
     <!-- v-if="toolBoxShowYn" -->
     <div style="width: 100%; float: left; ">
-      <div style="position: fixed; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 50px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 10px;z-index: 999; background: #FFFFFF;">
+      <div style="position: fixed; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 10px;z-index: 999; background: #FFFFFF;">
           <div class="fl h-100P " style="width: 25%;">
             <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
             <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">

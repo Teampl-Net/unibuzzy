@@ -33,9 +33,9 @@
         <div class="fl w-100P mtop-1 " style="display: flex; align-items: center; padding: 0 1.5rem;">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">옵션</p>
           <div style="min-height: 2rem; float: left;">
-            <checkBtnArea class="mleft-05" title='작성자공개' :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
-            <checkBtnArea class="mleft-05" title='댓글허용' :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
-            <checkBtnArea class="mleft-05" title='제목추가' :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
+            <checkBtnArea class="mleft-05 mtop-05" title='작성자공개' :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
+            <checkBtnArea class="mleft-05 mtop-05" title='댓글허용' :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
+            <checkBtnArea class="mleft-05 mtop-05" title='제목추가' :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
           </div>
         </div>
 
@@ -57,7 +57,7 @@
         </div>
       </div>
   </div>
-  <gBtnSmall class="font20 " style="position: absolute; bottom:8%; left:50%; transform: translateX(-50%); border: 2px solid #FFFFFF;width: 100px; line-height: 30px;" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" />
+  <gBtnSmall class="font20 " style="position: absolute; bottom:9%; left:50%; transform: translateX(-50%); border: 2px solid #FFFFFF; width: 120px; line-height: 35px !important; height: 35px; font-size:16px"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" />
 
   <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
   <gConfirmPop :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
@@ -741,7 +741,7 @@ export default {
       /* border-radius: 0.8rem 0.8rem 0 0; */
       border-radius: 0.8rem;
       /* height: 90%; */
-      height: 80%;
+      height: 78%;
 
       /* background-color: #f9f9f9; */
       background-color: #f5f5f5;

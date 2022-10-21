@@ -42,7 +42,7 @@ export const functions = {
     memo.memoKey = memoKey
 
     var result = await this.$commonAxiosFunction({
-      url: 'service/tp.getMemoList',
+      url: 'https://mo.d-alim.com/service/tp.getMemoList',
       param: memo
     })
     var memos = result.data.memoList[0]
@@ -315,7 +315,7 @@ export const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'service/tp.getFollowerList',
+      url: 'https://mo.d-alim.com/service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     var user = result.data.content

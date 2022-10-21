@@ -64,7 +64,7 @@ export default {
       // paramMap.set('followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getSampleList',
+        url: 'https://mo.d-alim.com/service/tp.getSampleList',
         sample: param
       })
       // eslint-disable-next-line no-debugger
