@@ -530,7 +530,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveClaimLog',
         param: param
       })
       // console.log(result.data.result)
@@ -577,7 +577,7 @@ export default {
         this.currentConfirmType = ''
         // console.log(this.tempData)
         var param = {}
-        param.actType = 'BLOC'
+        param.claimType = 'BLOC'
         if (this.tempData.memoKey) {
           param.targetKind = 'U'
           param.targetKey = this.tempData.creUserKey
@@ -664,7 +664,7 @@ export default {
         this.errorBoxText = '해당 유저가 신고되었습니다.'
       }
       var param = {}
-      param.actType = 'REPO'
+      param.claimType = 'REPO'
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
       param.creUserKey = this.GE_USER.userKey

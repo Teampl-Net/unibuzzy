@@ -119,7 +119,7 @@
         <gMemoPop ref="gMemoRef" transition="showMemoPop" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="position: fixed; bottom:0;left:0; z-index:999999;"/>
       </transition> -->
       <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
-      <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
+      <gReport v-if="reportYn" @closePop="reportYn = false" :contentsInfo="tempData" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
 </template>
 <script>
@@ -413,7 +413,7 @@ export default {
               }
 
             }
-          }else if (type === 'alimBloc'){
+          } else if (type === 'alimBloc'){
             // alert('ss')
           } else if (type === 'move' || type === 'copy') {
             this.moveOrCopyContent(type)
@@ -421,6 +421,8 @@ export default {
             this.makeNewContents(type)
           } else if (type === 'writeAlim') {
             this.makeNewContents(type)
+          } else if (type === 'subScribe') {
+            this.subScribeContents(type)
           }
         } else if (this.tempData.memoKey) {
           if (type === 'edit') {
@@ -436,6 +438,48 @@ export default {
           this.textCopy()
         }
       }
+    },
+    async subScribeContents (act) {
+      var result = null
+      var saveYn = true
+      var temp = []
+      var subsYn = this.tempData.subsYn
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = this.tempData.contentsKey
+      param.targetKind = 'C'
+      if (param.targetKey === null) { return }
+      if (subsYn !== null && subsYn !== undefined) {
+        param.subsYn = !subsYn
+      } else {
+        param.subsYn = true
+      }
+      if (this.tempData.subsKey) {
+        param.subsKey = this.tempData.subsKey
+      }
+      console.log(this.tempData)
+      debugger
+      param.userKey = this.GE_USER.userKey
+      var req = 'save'
+      var reqText = ' 되었습니다.'
+      if (!param.subsYn) {
+        req = 'delete'
+        reqText = ' 해제되었습니다.'
+      }
+      var this_ = this
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSubscribe',
+        param: { subscribe: param }
+      })
+      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      console.log(result)
+      var index = this.commonListData.findIndex((item) => item.contentsKey === param.targetKey)
+      if (index !== -1) {
+        this.commonListData[index].subsYn = param.subsYn
+      }
+      /* if (result === true) {
+        await this.$emit('refresh')
+      } */
     },
     textCopy () {
       const textarea = document.createElement('textarea')
@@ -516,7 +560,7 @@ export default {
       }
 
       var param = {}
-      param.actType = 'REPO'
+      param.claimType = 'REPO'
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
       param.creUserKey = this.GE_USER.userKey
@@ -527,7 +571,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveClaimLog',
         param: param
       })
       // console.log(result.data.result)
@@ -551,7 +595,7 @@ export default {
         this.currentConfirmType = ''
         // console.log(this.tempData);
         var param = {}
-        param.actType = 'BLOC'
+        param.claimType = 'BLOC'
         if (this.tempData.memoKey) {
           param.targetKind = 'U'
           param.targetKey = this.tempData.creUserKey
@@ -1208,16 +1252,14 @@ export default {
       var saveYn = true
       var temp = []
       if (!this.commonListData[idx].D_CONT_USER_DO) {
-        this.commonListData[idx].D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        this.commonListData[idx].D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
       }
       if (this.commonListData[idx].D_CONT_USER_DO) {
         temp = this.commonListData[idx].D_CONT_USER_DO
       }
-      for (var i = 0; i < temp.length; i ++) {
-        if (temp[i].doType === act.doType) {
-            if (temp[i].doKey === 1) return
-        }
-      }
+      debugger
+      var indexOf = temp.findIndex(i => i.doType === act.doType)
+      if (temp[indexOf].doKey === 1) return
       // this.pushDetail = JSON.parse(this.detailVal).data
       if (Number(act.doKey) > 0) {
         saveYn = false
@@ -1234,11 +1276,8 @@ export default {
         if (act.doType === 'LI') {
           this.commonListData[idx].likeCount -= 1
         }
-        for (var i = 0; i < temp.length; i++) {
-          if(temp[i].doType === act.doType) {
-            temp[i].doKey = 0
-          }
-        }
+        temp[indexOf].doKey = 0
+        
         this.commonListData[idx].D_CONT_USER_DO = temp
         this.changeData += 1
       } else {
@@ -1247,21 +1286,13 @@ export default {
         var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
           // debugger
-            for (var d = temp.length - 1; d >= 0 ; d--) {
-                if (temp[d].doType === act.doType) {
-                    temp[d].doKey = result.doKey
-                }
-            }
+            temp[indexOf].doKey = result.doKey
             // temp.push({ doType: act.doType, doKey: result.doKey })
             this_.commonListData[idx].D_CONT_USER_DO = temp
             this.commonListData[idx].likeCount = result.doCount
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', this.commonListData)
         })
-        for (var d = temp.length - 1; d >= 0; d--) {
-          if (temp[d].doType === act.doType) {
-            temp[d].doKey = 1
-          }
-        }
+        temp[indexOf].doKey = 1
         /* temp.push({ doType: act.doType, doKey: 1 }) */
         if (act.doType === 'LI') {
             this.commonListData[idx].likeCount += 1

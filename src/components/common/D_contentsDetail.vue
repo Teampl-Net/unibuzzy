@@ -116,7 +116,7 @@
     <gMemoPop transition="showMemoPop" ref="contentDetailMemoPop" :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData' />
     <!-- </transition> -->
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
-    <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
+    <gReport :contentsInfo="this.CONT_DETAIL" v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
     <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
     <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="CONT_DETAIL.jobkindId === 'BOAR' && selectBoardPopShowYn" :boardDetail="CONT_DETAIL" :boardValue="CAB_DETAIL" />
@@ -564,6 +564,8 @@ export default {
           this.makeNewContents(type)
         } else if (type === 'writeAlim') {
           this.makeNewContents(type)
+        } else if (type === 'subScribe') {
+          this.subScribeContents(type)
         }
       } else if (this.tempData.memoKey) {
         if (type === 'edit') {
@@ -697,7 +699,7 @@ export default {
       }
 
       var param = {}
-      param.actType = 'REPO'
+      param.claimType = 'REPO'
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
       param.creUserKey = this.GE_USER.userKey
@@ -707,7 +709,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveClaimLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -887,7 +889,7 @@ export default {
         this.currentConfirmType = ''
         // console.log(this.tempData);
         var param = {}
-        param.actType = 'BLOC'
+        param.claimType = 'BLOC'
         if (this.tempData.memoKey) {
           param.targetKind = 'U'
           param.targetKey = this.tempData.creUserKey
@@ -979,6 +981,38 @@ export default {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true
       }
+    },
+    async subScribeContents (act) {
+      var result = null
+      var subsYn = this.CONT_DETAIL.subsYn
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = this.CONT_DETAIL.contentsKey
+      param.targetKind = 'C'
+      if (param.targetKey === null) { return }
+      if (subsYn !== null && subsYn !== undefined) {
+        param.subsYn = !subsYn
+      } else {
+        param.subsYn = true
+      }
+      param.userKey = this.GE_USER.userKey
+      // var req = 'save'
+      var reqText = ' 되었습니다.'
+      if (!param.subsYn) {
+        // req = 'delete'
+        reqText = ' 해제되었습니다.'
+      }
+      // eslint-disable-next-line no-redeclare
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSubscribe',
+        param: { subscribe: param }
+      })
+      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      console.log(result)
+      this.cDetail.subsYn = param.subsYn
+      /* if (result === true) {
+        await this.$emit('refresh')
+      } */
     },
     async deleteMemo (param) {
       // console.log(param)
@@ -1182,7 +1216,7 @@ export default {
       return changeText
     },
     async settingUserDo (userDo) {
-      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
 
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
@@ -1196,6 +1230,9 @@ export default {
           }
           if (userDo[i].doType === 'RE') {
             D_CONT_USER_DO[2].doKey = true
+          }
+          if (userDo[i].doType === 'SB') {
+            D_CONT_USER_DO[3].doKey = userDo[i].doKey
           }
           /* if (userDo[i].doType === 'SK') {
             this.userDoStickerList.push(userDo[i].sticker)
@@ -1215,7 +1252,7 @@ export default {
       var temp = []
       var tempDetail = this.CONT_DETAIL
       if (!tempDetail.D_CONT_USER_DO) {
-        tempDetail.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        tempDetail.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
       }
       if (tempDetail.D_CONT_USER_DO) {
         temp = tempDetail.D_CONT_USER_DO

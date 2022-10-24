@@ -314,7 +314,7 @@ export default {
       if (this.agreeOut === true) {
         this.resultPopShowYn = true
         var param = {}
-        param.actKey = 'DEL'
+        param.claimType = 'DEL'
         param.targetType = 'A'
         param.targetKey = this.creUser
         param.creUserKey = this.creUser
@@ -326,7 +326,7 @@ export default {
     },
     async saveActAxiosFunc (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.saveActLog',
+        url: 'service/tp.saveClaimLog',
         param: param
       })
       if (result.data.result === true) {

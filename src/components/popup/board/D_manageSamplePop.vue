@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
-                <gBtnSmall btnThema="light" btnTitle="취소" />
+                <gBtnSmall @click="closeXPop" btnThema="light" btnTitle="취소" />
                 <gBtnSmall btnTitle="선택" class="mright-05" />
             </div>
         </div>
@@ -56,6 +56,9 @@ export default {
     },
     closeSamplePop () {
       this.samplePopShowYn = false
+    },
+    closeXPop () {
+      this.$emit('closeXPop')
     },
     async getGuidList (teamKey, userKey, showProfileYn, managerYn) {
       // eslint-disable-next-line no-new-object

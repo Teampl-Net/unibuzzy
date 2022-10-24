@@ -621,7 +621,7 @@ const D_CHANNEL = {
       if (payload.length > 0) {
         for (var i = 0; i < payload.length; i++) {
           var userDo = payload[i].userDoList
-          var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+          var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
           if (userDo) {
             var index = userDo.findIndex((item) => item.doType === 'ST')
             if (index >= 0) {
@@ -634,6 +634,10 @@ const D_CHANNEL = {
             index = userDo.findIndex((item) => item.doType === 'RE')
             if (index >= 0) {
               userDoList[2].doKey = userDo[index].doKey
+            }
+            index = userDo.findIndex((item) => item.doType === 'SB')
+            if (index >= 0) {
+              userDoList[3].doKey = userDo[index].doKey
             }
           }
           payload[i].D_CONT_USER_DO = userDoList
@@ -652,7 +656,7 @@ const D_CHANNEL = {
       if (!payload) return
       for (var i = 0; i < payload.length; i++) {
         var userDo = payload[i].userDoList
-        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
         if (userDo) {
           var index = userDo.findIndex((item) => item.doType === 'ST')
           if (index >= 0) {
@@ -665,6 +669,10 @@ const D_CHANNEL = {
           index = userDo.findIndex((item) => item.doType === 'RE')
           if (index >= 0) {
             userDoList[2].doKey = userDo[index].doKey
+          }
+          index = userDo.findIndex((item) => item.doType === 'SB')
+          if (index >= 0) {
+            userDoList[3].doKey = userDo[index].doKey
           }
         }
         payload[i].D_CONT_USER_DO = userDoList

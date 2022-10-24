@@ -248,6 +248,7 @@ export const methods = {
     var paramSet = new Object()
     if (inputParam) {
       paramSet = inputParam
+      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
     // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null

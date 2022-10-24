@@ -271,7 +271,7 @@ export default {
       return resultList.content
     },
     async settingUserDo (userDo) {
-      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
 
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
@@ -285,6 +285,9 @@ export default {
           }
           if (userDo[i].doType === 'RE') {
             D_CONT_USER_DO[2].doKey = true
+          }
+          if (userDo[i].doType === 'SB') {
+            D_CONT_USER_DO[3].doKey = userDo[i].doKey
           }
           /* if (userDo[i].doType === 'SK') {
             this.userDoStickerList.push(userDo[i].sticker)
