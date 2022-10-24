@@ -2,7 +2,7 @@
 
   <div class="fl w-100P rowBaseCss" :class="selectedYn === true ? 'lightPurpleBgColor ' : 'whiteBGColor'">
     <div v-if="propData[0].jobkindId === 'USER'" class="fl w-100P" style="display: flex;
-    flex-direction: row; align-items: center; justify-content: space-between;">
+    flex-direction: row; align-items: center; justify-content: space-between">
 
       <div class="imgCircle middleBgColor fl" style="min-width:50px; min-height:50px">
         <img src="" class='fl img-20'>
@@ -19,9 +19,8 @@
         </div>
       </div>
 
-      <div  @click="emit('SELE')" class="fl selectedSpan">
-        <img v-if="this.selectedYn === false" src=""/>
-        <img v-if="this.selectedYn === true" src="../../../assets/images/common/check.svg"/>
+      <div  @click="emit('SELE')" class="fl selectedSpan" style="padding: 0; display: flex; justify-content: center;" >
+        <img style="width=50%; " v-if="this.selectedYn === true" src="../../../assets/images/common/check.svg"/>
       </div>
     </div>
 
@@ -92,6 +91,7 @@ height: 70px;
 left: 0px;
 top: 143px;
 background: #F5F5F9;
+padding: 5%;
   }
 
 .selectedSpan{
@@ -107,5 +107,7 @@ background: #5F61BD;
 /* 더알림1 */
 
 border: 1.5px solid #5F61BD;
+
+border-radius: 50%;
 }
 </style>
