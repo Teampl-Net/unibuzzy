@@ -93,6 +93,7 @@ import boardDetail from '@/components/common/D_contentsDetail.vue'
 import editBookList from '../receiver/D_editBookList.vue'
 import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
+// import editManagerList from '../member/D_manageFollowerList.vue'
 // import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 
@@ -101,6 +102,7 @@ import selectBookList from '../receiver/Tal_selectBookList.vue'
 import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
 // import followerManagement from '../member/D_manageFollowerList.vue'
 // import managerManagement from '../member/D_manageManagerList.vue'
+// import memberManagement from '../member/D_manageFollowerList.vue'
 import memberManagement from '../member/Tal_memberManagement.vue'
 
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
@@ -454,7 +456,11 @@ export default {
         }
         console.log('popId만듦-----------------------------------------------------------------')
         console.log(this.detailVal)
-        this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey || this.detailVal.teamKey
+        if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
+          this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey
+        } else if (this.targetType === 'chanDetail') {
+          this.popId = this.targetType + this.detailVal.teamKey || this.detailVal.targetKey
+        }
 
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
@@ -550,6 +556,7 @@ export default {
         this.helpYn = true
       // } else if (this.targetType === 'managerManagement') {
       } else if (this.targetType === 'memberManagement') {
+        /* this.headerTitle = '구독자 관리' */
         this.headerTitle = '매니저 관리'
         this.helpYn = true
       } else if (this.targetType === 'editBoard') {
@@ -783,62 +790,66 @@ export default {
       }
     },
     async goDetail (value) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // var history = this.$store.getters['D_HISTORY/hStack']
-      var currentPage = this.$store.getters['D_HISTORY/hCPage']
-      var indexOf = null
-      if (currentPage === this.popId) {
+      if (value.targetType === 'chanDetail') {
+        this.goChanDetail(value)
+      } else {
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        // var history = this.$store.getters['D_HISTORY/hStack']
+        var currentPage = this.$store.getters['D_HISTORY/hCPage']
+        var indexOf = null
+        if (currentPage === this.popId) {
 
-      }
-      console.log(this.popId)
-      if (value.jobkindId === 'ALIM') {
-        param.targetType = 'pushDetail'
-        indexOf = currentPage.indexOf('pushDetail')
-      } else {
-        param.targetType = 'boardDetail'
-        indexOf = currentPage.indexOf('boardDetail')
-      }
-      console.log(this.params)
-      console.log(value)
-      if (indexOf !== -1) {
+        }
+        console.log(this.popId)
+        if (value.jobkindId === 'ALIM') {
+          param.targetType = 'pushDetail'
+          indexOf = currentPage.indexOf('pushDetail')
+        } else {
+          param.targetType = 'boardDetail'
+          indexOf = currentPage.indexOf('boardDetail')
+        }
+        console.log(this.params)
+        console.log(value)
+        if (indexOf !== -1) {
         //  if (this.params.targetKey === value.contentsKey) {
-        if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' ||
+          if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' ||
          value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
-          return
-        }
-        console.log(this.params.contentsKey + '**' + value.contentsKey)
-        if (this.params.contentsKey === value.contentsKey) {
-          await this.$addContents(value.contentsKey, value.jobkindId)
-          return
+            return
+          }
+          console.log(this.params.contentsKey + '**' + value.contentsKey)
+          if (this.params.contentsKey === value.contentsKey) {
+            await this.$addContents(value.contentsKey, value.jobkindId)
+            return
           // alert('같은 컨텐츠')
-        } else {
+          } else {
           // alert('다른 컨텐츠')
+          }
         }
-      }
-      var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
-      console.log('과연??있나요?' + targetYn)
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (targetYn !== false && targetYn !== 'false') {
-        param.targetKey = value.contentsKey
-        // param.targetType = value.contentsKey
-        if (value.jobkindId === 'BOAR') {
-          param.cabinetKey = targetYn.cabinetKey
-          param.cabinetNameMtext = targetYn.cabinetNameMtext
+        var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
+        console.log('과연??있나요?' + targetYn)
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (targetYn !== false && targetYn !== 'false') {
+          param.targetKey = value.contentsKey
+          // param.targetType = value.contentsKey
+          if (value.jobkindId === 'BOAR') {
+            param.cabinetKey = targetYn.cabinetKey
+            param.cabinetNameMtext = targetYn.cabinetNameMtext
+          } else {
+            param.nameMtext = targetYn.nameMtext
+            param.teamName = targetYn.nameMtext
+          }
+          param.contentsKey = value.contentsKey
+          param.jobkindId = value.jobkindId
+          param.teamKey = value.creTeamKey
+          param.value = value
+          param.notiYn = true
+          this.openPop(param)
         } else {
-          param.nameMtext = targetYn.nameMtext
-          param.teamName = targetYn.nameMtext
+          this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+          this.failPopYn = true
         }
-        param.contentsKey = value.contentsKey
-        param.jobkindId = value.jobkindId
-        param.teamKey = value.creTeamKey
-        param.value = value
-        param.notiYn = true
-        this.openPop(param)
-      } else {
-        this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
-        this.failPopYn = true
       }
     },
     /* goDetail (value) {
