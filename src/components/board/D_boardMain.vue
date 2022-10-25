@@ -305,7 +305,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'service//tp.getMemoList',
+        url: 'service/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -333,7 +333,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service//tp.saveMemo',
+          url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -535,7 +535,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service//tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -573,7 +573,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service//tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
         this.refresh()
@@ -872,7 +872,9 @@ export default {
       params.cabinetKey = this.CAB_DETAIL.cabinetKey
       params.value = this.CAB_DETAIL
       params.contentsJobkindId = 'BOAR'
-
+      if (this.CAB_DETAIL.guideFullStr) {
+        params.guideFullStr = this.CAB_DETAIL.guideFullStr
+      }
       this.boardWriteData = {}
       this.boardWriteData = params
       var history = this.$store.getters['D_HISTORY/hStack']

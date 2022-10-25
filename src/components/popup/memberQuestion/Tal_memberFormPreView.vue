@@ -48,7 +48,7 @@ export default {
       // param.formKey = this.propData.formKey
       // param.teamKey = this.propData.teamKey
       // var result = await this.$commonAxiosFunction({
-      //   url : 'service//tp.getMQuestion',
+      //   url : 'service/tp.getMQuestion',
       //   param: param
       // })
       // this.mQuestList = result

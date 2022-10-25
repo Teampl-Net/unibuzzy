@@ -153,7 +153,7 @@ export default {
     this.screenInnerWidth = window.innerWidth
     // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
     console.log(this.params)
-    if (this.params.bodyFullStr) {
+    if (this.params.bodyFullStr || this.propData.guideFullStr) {
       if (this.contentType === 'ALIM') {
         if (this.params.UseAnOtherYn) {
           // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
@@ -175,6 +175,12 @@ export default {
           // console.log('WOW!!!!' + this.decodeContents(this.bodyString))
           this.modiYn = true
         }
+        if (this.propData.guideFullStr) {
+          // eslint-disable-next-line no-debugger
+          debugger
+          this.bodyString = this.decodeContents(this.propData.guideFullStr)
+        }
+        console.log(this.bodyString)
         if (this.propData.titleStr) {
           this.writePushTitle = this.propData.titleStr
         }
@@ -303,7 +309,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'service//tp.getCabinetDetail',
+        url: 'service/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -314,6 +320,23 @@ export default {
     async selectBoard (data, index) {
       this.selectBoardIndex = index
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
+      // var cardList = document.querySelectorAll('.commonFormCard')
+      if (mCabinet.guideFullStr) {
+        /* for (var i = 0; i < cardList.length; i++) {
+          cardList[i].remove()
+        } */
+        // this.bodyString = this.decodeContents(mCabinet.guideFullStr)
+        // eslint-disable-next-line no-debugger
+        // debugger
+        this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
+        // this.settingAlim()
+      } else {
+        // this.$refs.complexEditor.addFormCard('text')
+        /* this.bodyString = ''
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.settingAlim() */
+      }
       var mCabinetShare = mCabinet.mShareItemList
       // console.log(mCabinetShare)
 
@@ -587,6 +610,27 @@ export default {
           jsonObj.pSrc = formC[i].querySelector('img').src
           jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
         }
+        newArr.push(jsonObj)
+      }
+      if (formC && formC.length === 0) {
+        var firstSettingDiv = document.createElement('div')
+        firstSettingDiv.classList.add('formText')
+        firstSettingDiv.classList.add('editableContent')
+        firstSettingDiv.classList.add('formCardTextid')
+        firstSettingDiv.classList.add('formCard')
+        firstSettingDiv.attributes.formidx = 0
+        firstSettingDiv.attributes.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
+        firstSettingDiv.id = 'formEditText'
+        firstSettingDiv.attributes.contentEditable = false
+        firstSettingDiv.style.padding = '0px 20px'
+        firstSettingDiv.style.display = 'inline-block'
+        firstSettingDiv.style.width = '100%'
+        firstSettingDiv.style.borderRight = 'rgb(204, 204, 204)'
+        firstSettingDiv.style.wordBreak = 'break-all'
+        firstSettingDiv.innerHTML = this.bodyString
+        jsonObj.innerHtml = this.$findATagDelete(firstSettingDiv.innerHTML)
+        jsonObj.type = 'text'
+        imgYn = false
         newArr.push(jsonObj)
       }
       this.propFormData = newArr

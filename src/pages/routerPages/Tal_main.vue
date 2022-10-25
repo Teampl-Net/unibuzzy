@@ -17,6 +17,7 @@
         <span class="grayBlack font14" ref="userEmail">{{this.GE_USER.userEmail}}</span>
       </div>
       <div>
+        <!-- <button v-long-click="() => test(true)">+</button> -->
         <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
         <span @click="test" class="profileTitle font14" ref="userMobile">휴대폰</span>
         <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
@@ -108,6 +109,9 @@ export default {
     // top5Title
   },
   methods: {
+    test () {
+      alert(true)
+    },
     async getMainBoard () {
       if (this.axiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.axiosQueue.push('getMainBoard')
@@ -118,7 +122,7 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service//tp.getMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
       this.$showAxiosLoading(false)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')

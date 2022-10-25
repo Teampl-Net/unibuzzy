@@ -185,6 +185,12 @@
         <input type="checkbox" v-model="titleBlindYn" class="fl" name="" id="titleBlindYnInput"> <label class="font16 textLeft fl" for="titleBlindYnInput">열람 권한 없을 때: 제목까지 비공개</label>
       </div> -->
     </div>
+    <div class="itemWrite" style="border: none; border-top: 1px solid #ccc; margin-top: 10px;">
+      <p class="fontBold textLeft font16 fl " style="width: 100px; ">제시글</p>
+      <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
+      <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
+      <div style="text-align: left; overflow: scroll; max-height: 100px;" v-html="this.guideSampleInnerHtml? '제시글 있음': '제시글 없음'" @click="this.samplePopShowYn = true" class="fl textOverdot inputBoxThema font16 lightGray d" ></div>
+    </div>
   <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
     <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
     <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
@@ -195,7 +201,7 @@
 <!-- @sendReceivers="setOk" -->
   <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
   <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
-
+  <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
 </template>
 
 <script>
@@ -205,6 +211,7 @@ import selectType from './Tal_addChannelMenu.vue'
 import selectBookList from './receiver/Tal_selectBookList.vue'
 // import selectBookList from './receiver/Tal_selectBookList.vue'
 import receiverAccessList from './receiver/Tal_selectReceiverAccessList.vue'
+import selectSampleListPop from './board/D_manageSamplePop.vue'
 export default {
   props: {
     modiBoardDetailProps: {},
@@ -356,7 +363,9 @@ export default {
       permissionVGroup: { type: 'A', selectedList: { bookList: [], memberList: [] } },
       permissionSelectedList: [],
       loadingYn: false,
-      titleBlindYn: false
+      titleBlindYn: false,
+      samplePopShowYn: false,
+      guideSampleInnerHtml: ''
 
     }
   },
@@ -364,10 +373,17 @@ export default {
     selectType,
     selectBookList,
     receiverAccessList,
-    loadingCompo
+    loadingCompo,
+    selectSampleListPop
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    setSampleGuide (iHtml) {
+      this.guideSampleInnerHtml = iHtml
+    },
+    closeSampleListPop () {
+      this.samplePopShowYn = false
+    },
     changeSelectType () {
       // debugger
       if (this.shareGroup.type === 'S') {
@@ -474,6 +490,9 @@ export default {
       if (data.mCabinet.titleBlindYn === 1) { this.titleBlindYn = true } else { this.titleBlindYn = false }
       if (data.mCabinet.picBgPath) {
         this.selectedColor = data.mCabinet.picBgPath
+      }
+      if (data.mCabinet.guideFullStr) {
+        this.guideSampleInnerHtml = this.decodeContents(data.mCabinet.guideFullStr)
       }
       var mCabinet = data.mCabinet
       console.log('------------------ mCabinet, ShareList, ItemList -----------------')
@@ -707,6 +726,9 @@ export default {
       cabinet.fileYn = this.fileYnInput
       cabinet.replyYn = this.replyYnInput
       cabinet.workStatYn = this.workStatYn
+      if (this.guideSampleInnerHtml) {
+        cabinet.guideFullStr = this.guideSampleInnerHtml
+      }
       var shareList = []
       var itemList = []
       // eslint-disable-next-line no-new-object
@@ -1297,6 +1319,11 @@ export default {
       } else {
         this.sharePermissionShowYn = true
       }
+    },
+    decodeContents (data) {
+      // eslint-disable-next-line no-undef
+      var changeText = Base64.decode(data)
+      return changeText
     }
   }
 
@@ -1457,9 +1484,16 @@ input:-internal-autofill-selected {
 }
 .toggleLine{width: 100%; float: left;}
 .itemWrite{
+    float: left;
   display: flex; align-items: center;
   min-height: 65px;
+  width: 100%;
   border-bottom: 1px solid #ccc;
+      align-items: flex-start;
+      padding: 10px 0px;
+}
+.itemWrite > p {
+    margin-top: 4px;
 }
 .subItemWrite{
   width: 100%;

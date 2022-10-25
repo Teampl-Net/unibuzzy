@@ -15,13 +15,16 @@
                 </select> -->
                 <div style="width: 100%; height: calc(100% - 40px); float: left;">
                     <div style="width: 100%; height: 35px; float: left; position: relative;">
-                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">템플릿</p>
+                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">목록</p>
                         <!-- <gBtnSmall @click="openPreviewArea" btnTitle="미리보기" style="position: absolute; right: 5px; top: 0px; "/> -->
                     </div>
                     <div style="width: 100%; height: 100px; float: left;">
                         <div v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index" style="float: left; width: 90px; height: 100px; display: flex; flex-direction: column; align-items: center;" >
-                            <div :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'selectedSample': ''" style="width: 80px; height: 80px; box-shadow: rgb(140 140 140 / 26%) 0px 0px 3px 1px; float: left; border-radius: 5px;">
-                                <p class="font14 commonBlack" :style="value.sampleKey === this.selectedSampleObj.sampleKey? 'font-weight: bold;' : ''">{{this.$changeText(value.titleMtext)}}</p>
+                            <div :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'selectedSample': ''" style="width: 80px; padding: 10px;height: 80px; box-shadow: rgb(140 140 140 / 26%) 0px 0px 3px 1px; float: left; border-radius: 5px;">
+                                <img src="../../../assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" style="width: 35px;" alt="">
+                                <img src="../../../assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" style="width: 35px;" alt="">
+                                <img src="../../../assets/images/common/marketIcon.svg" v-if="value.sampleKey === 8" style="width: 35px;" alt="">
+                                <p class="font14 commonBlack fontBold mtop-05" :style="value.sampleKey === this.selectedSampleObj.sampleKey? 'font-weight: bold;' : ''">{{this.$changeText(value.titleMtext)}}</p>
                             </div>
                         </div>
                     </div>
@@ -34,7 +37,7 @@
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
                 <gBtnSmall @click="closeXPop" btnThema="light" btnTitle="취소" />
-                <gBtnSmall @click="okSelectSample" btnTitle="선택" class="mright-05" />
+                <gBtnSmall @click="okSelectSample" btnTitle="복사하기" class="mright-05" />
             </div>
         </div>
     </div>
@@ -46,15 +49,37 @@ export default {
       sampleList: [],
       selectedSampleObj: { sampleKey: 0, bodyMinStr: '템플릿을 선택해주세요', bodyFullStr: '템플릿을 선택해주세요' },
       activeTabList: [{ display: '오류용', name: 'E' }, { display: '문의용', name: 'Q' }],
-      previewShowYn: false
+      previewShowYn: false,
+      popId: null
     }
   },
   created () {
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'selectSamplePop' + history.length
+    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
     this.getGuidList()
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.closeXPop()
+    },
+    historyStack (value, old) {
+    }
   },
   methods: {
     okSelectSample () {
       this.$emit('okSelectSample', this.selectedSampleObj)
+      this.closeXPop()
     },
     openPreviewArea () {
       this.previewShowYn = true
@@ -63,7 +88,14 @@ export default {
       this.selectedSampleObj = obj
     },
     closeXPop () {
-      this.$emit('closeXPop')
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('closeXPop')
+      }
     },
     async getGuidList (teamKey, userKey, showProfileYn, managerYn) {
       // eslint-disable-next-line no-new-object
@@ -72,7 +104,7 @@ export default {
       // paramMap.set('followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'service//tp.getSampleList',
+        url: 'service/tp.getSampleList',
         param: { sample: param }
       })
       // eslint-disable-next-line no-debugger

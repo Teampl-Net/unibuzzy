@@ -304,6 +304,10 @@ export default {
         this.confirmText = '업데이트를 기다려주세요!'
         this.confirmPopShowYn = true
         return false
+      } else if (type === 'text') {
+        if (src) {
+          formElement.innerHtml = src
+        }
       }
 
       this.formCardList.push(formElement)
