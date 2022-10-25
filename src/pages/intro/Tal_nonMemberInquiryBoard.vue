@@ -233,7 +233,8 @@ export default {
     openWriteBoard () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = 'writeBoard'
+      params.targetType = 'writeContents'
+      params.contentsJobkindId = 'BOAR'
       params.targetNameMtext = 'KO$^$더알림'
       params.currentTeamKey = 377
       params.cabinetNameMtext = '비회원 문의게시판'

@@ -108,12 +108,14 @@
     @click="refreshAll" >
       <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
     </div>
-  <div class="btnPlus" @click="openWriteBoard" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true" ><p style="font-size:40px;">+</p></div>
+
+  <img id='writeBtn' src="../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
 </div>
 <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
 <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999">
-  <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/>
+  <!-- <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/> -->
+  <writeContents  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
 </div>
 <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
 <transition name="showMemoPop">
@@ -131,7 +133,9 @@
 // import findContentsList from '../D_findContentsList.vue'
 import boardList from '@/components/list/D_commonList.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
-import boardWrite from '@/components/board/Tal_boardWrite.vue'
+// import boardWrite from '@/components/board/Tal_boardWrite.vue'
+import writeContents from '../../components/popup/D_writeContents.vue'
+
 import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
@@ -140,7 +144,8 @@ export default {
   components: {
     findContentsList,
     boardList,
-    boardWrite,
+    // boardWrite,
+    writeContents,
     imgLongClickPop,
     imgPreviewPop
   },
@@ -530,7 +535,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveClaimLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -680,9 +685,11 @@ export default {
     openUpdateContentsPop () {
       var param = {}
       param.targetKey = this.tempData.contentsKey
-      param.targetType = 'writeBoard'
+      param.targetType = 'writeContents'
       param.creTeamKey = this.tempData.creTeamKey
       if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
+      // console.log('######################')
+      // console.log(this.tempData.bodyFullStr)
       param.bodyFullStr = this.tempData.bodyFullStr
       param.modiContentsKey = this.tempData.contentsKey
       param.titleStr = this.tempData.title
@@ -855,11 +862,12 @@ export default {
     openWriteBoard () {
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = 'writeBoard'
+      params.targetType = 'writeContents'
       params.actorList = this.actorList
       params.targetNameMtext = this.propData.nameMtext
       params.teamKey = this.propData.currentTeamKey
       params.currentTeamKey = this.propData.currentTeamKey
+      params.bodyFullStr = ''
       params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
       params.cabinetKey = this.CAB_DETAIL.cabinetKey
       params.value = this.CAB_DETAIL
@@ -868,7 +876,7 @@ export default {
       this.boardWriteData = {}
       this.boardWriteData = params
       var history = this.$store.getters['D_HISTORY/hStack']
-      this.writePopId = 'writeBoard' + history.length
+      this.writePopId = 'writeContents' + history.length
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
       this.$store.commit('D_HISTORY/updateStack', history)

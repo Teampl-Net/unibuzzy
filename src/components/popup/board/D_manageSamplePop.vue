@@ -64,7 +64,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'GUIDE_'
-      // paramMap.set('followerType', 'M')
+      // para'https://mo.d-alim.com/service/'followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
         url: 'https://mo.d-alim.com/service/tp.getSampleList',

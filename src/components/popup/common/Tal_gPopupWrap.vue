@@ -1,5 +1,5 @@
 <template>
-    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writePush' || this.targetType === 'writeBoard'? 'background: transparent' : ''" class="commonPopWrap">
+    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writeContents'? 'background: transparent' : ''" class="commonPopWrap">
       <loadingCompo style="z-index: 999999999999999999999999999999999999999999999999999999999999 !important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
@@ -8,7 +8,7 @@
                                         />
       </transition>
       <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
-      v-if="targetType !=='writeBoard' && targetType !=='writePush'" :followYn="this.headerFollowYn"
+      v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if=" popId &&  this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
@@ -27,7 +27,10 @@
       <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
-      <writePush :pPopId="popId" ref="writePushCompo" v-if=" popId &&  this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+
+      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.params.contentsJobkindId" :params="this.params" :propData="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+
+      <!-- <boardWrite :pPopId="popId" @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 
       <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="params.pSelectedList" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
@@ -40,8 +43,6 @@
 
       <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-
-      <boardWrite :pPopId="popId" @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' />
       <selectMemberPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
       <!-- <followerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'followerManagement'" @openPop='openPop'/> -->
       <!-- <managerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'managerManagement'" @openPop='openPop'/> -->
@@ -82,7 +83,7 @@ import leaveTal from '../info/Tal_leaveTheAlim.vue'
 
 // import selectChanType from './Tal_creChannelStep00.vue'
 import createChannel from '../creChannel/Tal_creChannel.vue'
-import writePush from '../D_writeContents.vue'
+import writeContents from '../D_writeContents.vue'
 
 import chanMenu from '../chanMenu/Tal_channelMenu.vue'
 // import addChanMenu from '../popup/Tal_addChannelMenu.vue'
@@ -92,7 +93,7 @@ import boardDetail from '@/components/common/D_contentsDetail.vue'
 import editBookList from '../receiver/D_editBookList.vue'
 import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
-import boardWrite from '@/components/board/Tal_boardWrite.vue'
+// import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
 
 import selectBookList from '../receiver/Tal_selectBookList.vue'
@@ -194,13 +195,13 @@ export default {
     question,
     leaveTal,
     createChannel,
-    writePush,
+    writeContents,
     chanMenu,
     boardMain,
     boardDetail,
     editBookList,
     bookMemberDetail,
-    boardWrite,
+    // boardWrite,
     pushPop,
     editManagerList,
     selectMemberPop,
@@ -338,7 +339,7 @@ export default {
         if (this.targetType === 'chanDetail') {
           this.$refs.gPopChanAlimList.setSelectedList(param.data)
         } else {
-          this.$refs.writePushCompo.setSelectedList(param.data)
+          this.$refs.writeContentsCompo.setSelectedList(param.data)
         }
       }
     },
@@ -401,7 +402,7 @@ export default {
 
     // },
     async successWriteBoard (inParam) {
-      if (this.targetType === 'writeBoard') {
+      if (this.targetType === 'writeContent') {
         this.$emit('successWrite', inParam)
       } else {
         await this.closePop()
@@ -497,8 +498,9 @@ export default {
         } else {
           this.headerTitle = '채널 생성'
         }
-      } else if (this.targetType === 'writePush') {
-        this.headerTitle = '알림 작성'
+      } else if (this.targetType === 'writeContents') {
+        // this.headerTitle = '게시글 작성'
+        // this.headerTitle = '알림 작성'
       } else if (this.targetType === 'boardMain') {
         // this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
       } else if (this.targetType === 'editBookList') {
@@ -524,8 +526,8 @@ export default {
             }
           }
         }
-      } else if (this.targetType === 'writeBoard') {
-        this.headerTitle = '게시글 작성'
+      // } else if (this.targetType === 'writeBoard') {
+      //   this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
         if (this.params.value) {
           this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)

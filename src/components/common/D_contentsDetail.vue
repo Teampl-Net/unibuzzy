@@ -633,7 +633,8 @@ export default {
       // console.log();
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
-      param.targetType = 'writeBoard'
+      param.targetType = 'writeContents'
+      param.contentsJobkindId = 'BOAR'
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
       if (this.CONT_DETAIL.attachMfilekey) { param.attachMfilekey = this.CONT_DETAIL.attachMfilekey }
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
@@ -709,7 +710,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveClaimLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -824,7 +825,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = this.CONT_DETAIL.contentsKey
-      param.targetType = 'writeBOAR'
+      param.targetType = 'writeContents'
+      param.contentsJobkindId = this.CONT_DETAIL.jobkindId
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
       if (this.CONT_DETAIL.attachMfilekey) { param.attachMfilekey = this.CONT_DETAIL.attachMfilekey }
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
@@ -1004,7 +1006,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSubscribe',
+        url: 'https://mo.d-alim.com/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)

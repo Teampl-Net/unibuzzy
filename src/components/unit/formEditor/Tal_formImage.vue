@@ -47,8 +47,21 @@ export default {
     // eslint-disable-next-line no-unused-vars
     var test = this.$refs.imageBox
 
+    console.log('!!!!!!!!!!!!!!')
+    console.log(this.pSrc)
+    console.log(this.multiFileSrc)
+
     this.cardHeight = this.$refs.imageBox.scrollHeight
-    this.$refs.selectFile.click()
+    // if (!this.pSrc) {
+    //   this.$refs.selectFile.click()
+    // }
+    if (this.pasteImgYn === false) {
+      if (this.pSrc) return
+      if (this.multiFileSrc) return
+      this.$refs.selectFile.click()
+    } else {
+      this.$emit('pasteEnd')
+    }
   },
   created () {
     if (this.selectFileListProp !== undefined && this.selectFileListProp !== null && this.selectFileListProp !== {} && this.selectFileListProp.length > 0) {
@@ -60,7 +73,7 @@ export default {
     targetKey: {},
     pSrc: {},
     pFilekey: {},
-
+    pasteImgYn: { type: Boolean, default: false },
     multiFileSrc: {}
   },
   data () {

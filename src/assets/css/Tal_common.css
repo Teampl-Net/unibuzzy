@@ -29,6 +29,8 @@ body {
   list-style: none !important;
 }
 pre {
+  margin: 0 !important;
+
   white-space: pre-wrap; word-break: break-all; overflow: auto;
   font-family: KoPubDotumMedium !important;
   font-size: 14px !important;
@@ -241,16 +243,31 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .CDeepColor{ color: #5F61BD !important; }
 .CDeepBgColor{ background-color: #5F61BD !important;}
+.CDeepBorderColor{ border: 1px solid #5F61BD !important;}
+
+
+.CWhiteGrayColor{ color: #F5F5F9 !important; }
+.CWhiteGrayBgColor{ background-color: #F5F5F9 !important;}
+.CWhiteGrayBoarderColor{ border: 1px solid #F5F5F9 !important;}
+
+
+.CWDeepGrayColor{ color: #A7A7A7 !important; }
+.CWDeepGrayBgColor{ background-color: #A7A7A7 !important;}
+.CWDeepGrayBoarderColor{ border: 1px solid #A7A7A7 !important;}
 
 .CBaseColor{ color: #6768A8 !important; }
 .CBaseBgColor{ background-color: #6768A8 !important;}
 
 .CMiddleColor{ color: #7978BD !important; }
 .CMiddleBgColor{ background-color: #7978BD !important;}
+.CMiddleBorderColor{ border: 1px solid #7978BD !important;}
 .CErrorColor{ color: #BE4D4D;}
 .CErrorBgColor{ color: #BE4D4D;}
-/* .CLightColor{ color: #C0BFF9 !important; }
-.CLightBgColor{ background-color: #C0BFF9 !important;} */
+
+.CLightPurpleColor{ color: #C0BFF9 !important; }
+.CLightPurpleBgColor{ background-color: #C0BFF9 !important;}
+.CLightPurpleBorderColor{ border: 1px solid#C0BFF9 !important;}
+.CWhitePurpleBgColor{ background-color: #F6F6FF !important;}
 
 .CLightColor{ color: #D6D6E7 !important; }
 .CLightBgColor{ background-color: #D6D6E7 !important;}
@@ -263,8 +280,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .commonBlue{color: #3b3dce!important;}
 .commonColor{color:#6768A7;}
 .commonBlack{color: #303030;}
-.grayBlack{color: #505050;}
-.lightGray{color: #A1A1A1;}
+.grayBlack{color: #505050 !important; }
+.lightGray{color: #A1A1A1 !important;}
 .whitePurple{color: #f4f4f9}
 .whitePurpleBG{background-color: #f4f4f9 !important}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
@@ -275,6 +292,9 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .commonPurpleBG{background-color: #F8F8FF;}
 .deepBorderColor{border: #5F61BD;}
 .commonGrayBorderColor{border: 1px solid #9C9C9C !important;}
+
+.commonDarkGray { color: #6D6D6D;}
+
 /* 불투명 색: #dcddeb */
 
 
@@ -301,7 +321,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mNone{margin: none;}
 .mr-04{margin-right: 0.4rem}
 .ml-04{margin-left: 0.4rem;}
-
+.mleft-0 {margin-left: 0rem !important;}
+.mleft-01{margin-left: 0.1rem !important;}
 .mleft-05{margin-left: 0.5rem;}
 .mleft-1{margin-left: 1rem;}
 
@@ -369,6 +390,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mt-header{margin-top: 50px;}
  /* .profileTitle{font-size: 15px; font-weight: bold; color: #6768A7;} */
 
+ .selectPadding {
+  padding: 0 7.5px !important;
+}
+.noneSelectPadding {
+  padding: 0 15px !important;
+}
  .pushDetailPaperEffect {
   content: '';
   position: absolute;

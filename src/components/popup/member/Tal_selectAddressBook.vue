@@ -7,7 +7,7 @@
 </template>
 <script>
 /* eslint-disable */
-import bookList from '../receiver/Tal_commonBookList.vue'
+import bookList from '../receiver/receiverUnit/D_commonBookList.vue'
 import selectedListCompo from '../receiver/Tal_selectedReceiverList.vue'
 export default {
   components: { bookList, selectedListCompo },

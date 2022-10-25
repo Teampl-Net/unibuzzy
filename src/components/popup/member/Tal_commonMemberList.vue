@@ -1,7 +1,7 @@
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
     <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :style="currentTab === 'Mem' ? !member.memberYn ? 'display: none !important;' : '' : ''" :key="index" >
-      <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
+      <div class="fl w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
           <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
         </div>
@@ -86,7 +86,7 @@ export default {
       this.openCommonAlertPopShowYn = false
     },
     clickAlertPopBtn (eventType) {
-      if (eventType === 'sendPush') this.openPop('writePush', this.selectedMember)
+      if (eventType === 'sendPush') this.openPop('writeContents', this.selectedMember)
       else if (eventType === 'sendEmail') this.sendMail()
       else if (eventType === 'callPhone') this.callPhone()
       else if (eventType === 'sendSms') this.sendSms()

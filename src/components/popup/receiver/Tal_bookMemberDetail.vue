@@ -244,7 +244,8 @@ export default {
         },
         sendPushAlim () {
             var param = {}
-            param.targetType = 'writePush'
+            param.targetType = 'writeContents'
+            param.contentsJobkindId = 'ALIM'
             param.teamKey =  this.propData.teamKey
             param.userKey = this.propData.userKey
             param.userName = this.memName

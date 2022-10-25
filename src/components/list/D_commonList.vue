@@ -375,7 +375,9 @@ export default {
       // console.log();
       var param = {}
       param.targetKey = this.tempData.contentsKey
-      param.targetType = 'writeBoard'
+      param.targetType = 'writeContents'
+      param.contentsJobkindId = 'BOAR'
+
       param.creTeamKey = this.tempData.creTeamKey
       if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
       param.bodyFullStr = this.tempData.bodyFullStr
@@ -468,7 +470,7 @@ export default {
       }
       var this_ = this
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSubscribe',
+        url: 'https://mo.d-alim.com/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
@@ -571,7 +573,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveClaimLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -1277,7 +1279,7 @@ export default {
           this.commonListData[idx].likeCount -= 1
         }
         temp[indexOf].doKey = 0
-        
+
         this.commonListData[idx].D_CONT_USER_DO = temp
         this.changeData += 1
       } else {

@@ -12,7 +12,7 @@
 
 </template>
 <script>
-import bookList from './Tal_commonBookList.vue'
+import bookList from './receiverUnit/D_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 import selectedListCompo from './Tal_selectedReceiverList.vue'
 export default {

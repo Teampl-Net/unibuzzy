@@ -638,7 +638,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetKey = this.alimDetail[0].contentsKey
-      param.targetType = 'writeBoard'
+      param.targetType = 'writeContents'
+      param.contentsJobkindId = this.alimDetail[0].jobkindId
       param.creTeamKey = this.alimDetail[0].creTeamKey
       if (this.alimDetail[0].attachMfilekey) { param.attachMfilekey = this.alimDetail[0].attachMfilekey }
       param.bodyFullStr = this.alimDetail[0].bodyFullStr

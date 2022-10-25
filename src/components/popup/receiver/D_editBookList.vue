@@ -79,7 +79,7 @@
 // eslint-disable-next-line
 import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/D_findContentsList.vue'
-import bookListCompo from './Tal_commonBookList.vue'
+import bookListCompo from './receiverUnit/D_commonBookList.vue'
 import memberList from './Tal_commonBookMemberList.vue'
 import excelUploadPop from './Tal_excelUpload.vue'
 export default {
@@ -212,6 +212,7 @@ export default {
             this.searchKeyword
         }, */
         async getBookList () {
+            this.bookList = []
             this.$showAxiosLoading(true)
             var paramMap = new Map()
             paramMap.set('cabinetNameMtext', this.searchKeyword)

@@ -331,7 +331,7 @@ export default {
       this.offsetInt = 0
       this.listShowYn = false
       this.emptyYn = false
-      var resultList = await this.getChannelList(null, null, true)
+      var resultList = await this.getChannelList(undefined, undefined, true)
       var addList = []
         for (var i = 0; i < resultList.content.length; i++) {
             if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
