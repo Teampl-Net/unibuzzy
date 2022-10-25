@@ -303,7 +303,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.getCabinetDetail',
+        url: 'service//tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -629,15 +629,18 @@ export default {
             formList[f].contentEditable = false
             // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
             if (formList[f].id === 'formEditText') {
+              formList[f].classList.remove('formEditorTextPadding')
               var formTextinnerHtml = formList[f].innerHTML
               formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
+              // formList[f].innerHTML = innerHtml[f].replaceAll('formEditorTextPadding', '')
             }
           }
           param.getBodyHtmlYn = true
         }
         innerHtml = document.getElementById('msgBox').innerHTML
-        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
+        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
+        // param.bodyFullStr = innerHtml.replaceAll('formEditorTextPadding', '')
         param.jobkindId = 'BOAR'
         if (this.selectBoardYn === true) {
           param.cabinetKey = this.selectBoardCabinetKey
@@ -742,10 +745,10 @@ export default {
             formList[f].contentEditable = false
             // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
             if (formList[f].id === 'formEditText') {
+              formList[f].classList.remove('formEditorTextPadding')
               innerHtml = formList[f].innerHTML
               formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
             }
-            // if (formList[f].id)
           }
           param.getBodyHtmlYn = true
         }

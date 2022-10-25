@@ -7,71 +7,69 @@
     <table class="myChanMenuTable">
 
       <tr @click="editChanDetaillClick">
-        <th class="font16 w-100P">
-          <div class="myChanMenuImgArea editMychanRow">
-            <img class="img-w23 chanImg" src="../../../assets/images/main/icon_channer.png"/>
+        <th class="font16">
+          <div class="myChanMenuImgArea">
+            <img class="fl img-w23" src="../../../assets/images/main/icon_channer.png"/>
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
           </div>
-          <div class="fl mleft-05" style="height: 80%;">
-          <p class="font16">채널 관리</p>
-          <p class="font14">채널정보를 수정할 수 있어요.</p>
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_back.png" alt="">
-          </div>
+          <p class="font16 fl mleft-05" style="">채널</p>
+          <!-- <p style="background-color: blue; clear: both;" class="font16 mleft-05">dddd</p> -->
+
         </th>
+        <td class="">
+          <gBtnSmall class="fr" @click="editChanDetaillClick" btnTitle="편집" />
+          <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
+        </td>
       </tr>
 
       <tr @click="managerEditClick('manager')">
-        <th class="font16 w-100P">
-          <div class="myChanMenuImgArea editMychanRow">
-            <img class="img-w27 chanImg" src="../../../assets/images/common/icon_manager.svg">
+        <th class="font16">
+          <div class="myChanMenuImgArea">
+            <img class="fl img-w25" src="../../../assets/images/common/icon_manager.svg">
             <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
-          <div class="fl mleft-05" style="height: 80%;">
-            <p class="font16">공개/매니저 관리</p>
-            <p class="font14">멤버 관리, 매니저 임명을 할 수 있어요.</p>
-            <!-- <p class="font16 fl mleft-05">공개{{managerYn ? '/매니저' : ''}}</p> -->
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_back.png" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
-          </div>
+          <p class="font16 fl mleft-05">공개/매니저</p>
+          <!-- <p class="font16 fl mleft-05">공개{{managerYn ? '/매니저' : ''}}</p> -->
         </th>
+        <td class="">
+          <gBtnSmall class="fr" @click="managerEditClick('manager')" btnTitle="관리" />
+          <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
+        </td>
       </tr>
+      <!-- <tr >
+        <th class="font16">
+          <div class="myChanMenuImgArea">
+            <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg">
+          </div>
+          <p class="font16 fl mleft-05">공개대상</p>
+        </th>
+        <td class="">
+          <gBtnSmall class="fr" @click="managerEditClick('member')" btnTitle="관리" />
+        </td>
+      </tr> -->
 
       <tr @click="addressEditClick">
-        <th class="font16 w-100P">
-          <div class="myChanMenuImgArea editMychanRow">
-            <img class="img-w25 chanImg" src="../../../assets/images/channel/channer_addressBook.svg">
+        <th class="font16">
+          <div class="myChanMenuImgArea">
+            <img class="fl img-w25" src="../../../assets/images/channel/channer_addressBook.svg">
           </div>
-          <div class="fl mleft-05" style="height: 80%;">
-            <p class="font16">주소록 관리</p>
-            <p class="font14">주소록을 생성, 수정할 수 있어요.</p>
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_back.png" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
-          </div>
-        </th>
+          <p class="font16 fl mleft-05">주소록</p>
+          </th>
+        <td class="">
+          <gBtnSmall class="fr" @click="addressEditClick" btnTitle="관리" />
+          <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
+        </td>
       </tr>
 
       <tr @click="boardEditClick">
-        <th class="font16 w-100P">
-          <div class="myChanMenuImgArea editMychanRow">
-            <img class="img-w25 chanImg" src="../../../assets/images/channel/channer_board_color.png">
+        <th class="font16">
+          <div class="myChanMenuImgArea">
+            <img src="../../../assets/images/channel/channer_board_color.png" class="fl img-w25" >
           </div>
-          <div class="fl mleft-05" style="height: 80%;">
-            <p class="font16">게시판 관리</p>
-            <p class="font14">게시판을 생성, 수정할 수 있어요.</p>
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_back.png" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
-          </div>
-        </th>
+          <p class="font16 fl mleft-05">게시판</p>
+          </th>
         <td class="">
-          <!-- <gBtnSmall class="fr" @click="boardEditClick" btnTitle="관리" /> -->
+          <gBtnSmall class="fr" @click="boardEditClick" btnTitle="관리" />
           <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_back.png" alt=""> -->
         </td>
       </tr>
@@ -191,19 +189,7 @@ export default {
   width: 30px;
   float: left;
 }
-.myChanMenuImgAreaRight{
-  width: 30px;
-  float: right;
-}
-.editMychanRow{
-  position:relative; height: 80%;
-}
-.chanImg{
-  height: auto; position:absolute; top:50%; transform:translateY(-50%);
-}
-.chanBackImg{
-  position:absolute; top:40%;
-}
+
 .editMyChanMenuWrap .btnStyle{ transform: rotate(180deg); width:10px;}
 
 </style>

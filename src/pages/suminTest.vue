@@ -49,7 +49,7 @@ export default {
       param.trId = '1663545628988'
       param.recvListStr = '01084860734'
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.sendSms',
+        url: 'service//tp.sendSms',
         param: param
       })
       console.log(result)
@@ -64,7 +64,7 @@ export default {
       param.title = 'testtest'
       param.message = '1111testtest'
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com/service/tp.sendMail',
+        url: 'service//tp.sendMail',
         param: param
       })
       console.log(result)
