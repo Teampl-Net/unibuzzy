@@ -120,12 +120,24 @@ export default {
         console.log(this.parentSelectList)
         // console.log(this.parentSelectList)
         this.selectedMemberList = []
-        this.selectedMemberList = this.parentSelectList.memberList
+        this.selectedMemberList = JSON.parse(JSON.stringify(this.parentSelectList))
         this.setParentSelectList()
       }
     })
   },
   methods: {
+    // deleteSelectedMember (type, key) {
+    //   var findIdx = this.selectedMemberList.findIndex(item => item.accessKey === key)
+    //   if (findIdx !== -1) {
+    //     this.selectedMemberList.splice(findIdx, 1)
+    //   }
+    //   console.log('delSelectedList')
+    //   console.log(this.selectedMemberList)
+    // },
+    // selectedListLOG () {
+    //   console.log('selectedListLOG selectedMemberList selectedListLOG')
+    //   console.log(this.selectedMemberList)
+    // },
     receiveCardEmit (param) {
       console.log(param)
       var type = param.targetType
@@ -160,6 +172,12 @@ export default {
     async refresh () {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
     },
+    // resetSelectList () {
+    //   console.log('pppppppppppppppppppppppppppppppppp')
+    //   console.log(list)
+    //   this.selectedBookList = list
+    //   this.settingCheck()
+    // },
     setParentSelectList () {
       // eslint-disable-next-line no-debugger
       debugger

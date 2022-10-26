@@ -81,6 +81,7 @@ export default {
   watch: {
     listData () {
       console.log(this.listData)
+      this.upDatePage(this.listData)
     }
   },
   components: {

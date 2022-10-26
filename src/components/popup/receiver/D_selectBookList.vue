@@ -173,13 +173,29 @@ export default {
     },
     // 유민참고
     changeSelectMemberList (data) {
+      console.log(data)
+      // this.selectedList.memberList = []
+      // if (this.selectedList.memberList.length > 0) {
+      //   var templist = this.selectedList.memberList
+      //   this.selectedList.memberList = []
+      //   for (let i = 0; i < templist.length; i++) {
+      //     this.selectedList.memberList.push(templist[i])
+      //   }
+      // } else {
+      //   this.selectedList.memberList = []
+      // }
       this.selectedList.memberList = []
+      // alert(typeof this.selectedList.memberList)
+      // if () = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.memberList.push(data[i])
+        // this.pSelectedMemberList.push(data[i])
       }
       // this.selectedList.memberList = data
       // console.log(this.selectedList)
+      this.pSelectedMemberList = this.selectedList.memberList
       this.$refs.selectedListCompo.upDatePage()
+      // this.$refs.memberListRef.selectedListLOG()
     },
     addMe (data) {
       if (this.selectedList.memberList) {
@@ -198,17 +214,33 @@ export default {
       this.selectedList.bookList = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.bookList.push(data[i])
-        this.pSelectedBookList.push(data[i])
+        // this.pSelectedBookList.push(data[i])
       }
+      this.pSelectedBookList = []
+      this.pSelectedBookList = this.selectedList.bookList
       // eslint-disable-next-line no-debugger
       debugger
       // this.selectedList.bookList = data
       this.$refs.selectedListCompo.upDatePage()
     },
     changeSelectedList (selectedListData) {
+      console.log('#############')
+      console.log(selectedListData)
+      this.pSelectedBookList = selectedListData.bookList
+      this.pSelectedMemberList = selectedListData.memberList
+      // this.selectedList.bookList = selectedListData.bookList
+      this.selectedList.memberList = selectedListData.memberList
+      // this.$refs.memberListRef.resetSelectList(this.pSelectedMemberList)
+
       this.selectedList = selectedListData
       this.editMemberSelectedList()
       this.editBookSelectedList()
+      if (selectedListData.type === 'C') {
+        this.$refs.teamListRef.selectedListLOG()
+        this.$refs.teamListRef.deleteSelectedBook(selectedListData.type, selectedListData.delKey)
+      // } else {
+      }
+
       // #wowns
       // this.$refs.selectedListCompo.upDatePage()
     },

@@ -83,18 +83,19 @@ export default {
       console.log('this.parentSelectList')
       console.log(this.parentSelectList)
       if (this.parentSelectList && this.parentSelectList) {
-        this.selectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
-        console.log('this.selectedBookList')
-        console.log(this.selectedBookList)
+        var this_ = this
+        this.$nextTick(() => {
+          this_.selectedBookList = []
+          this_.selectedBookList = JSON.parse(JSON.stringify(this_.parentSelectList))
+          console.log('this.selectedBookList')
+          console.log(this_.selectedBookList)
+          this_.changeSelectedList()
+          this_.settingCheck()
+        })
       }
     }
     await this.getTeamCabList()
-    this.changeSelectedList()
-    var this_ = this
-    this.$nextTick(() => {
-      this_.settingCheck()
-      this_.changeSelectedList()
-    })
+
     console.log('===== Created CommmonBookList ====')
     console.log(this.addressBookList)
   },
@@ -117,7 +118,11 @@ export default {
     //     deep: true
     // },
     parentSelectList () {
+      console.log('!!! reset !!!')
+      this.selectedBookList = []
       this.selectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
+      console.log('!!! end !!!')
+      console.log(this.selectedBookList)
       this.settingCheck()
     },
     listData () {
@@ -251,13 +256,17 @@ export default {
         // this.$refs["commonBookInput" + index].focus()
       }
     },
+    selectedListLOG () {
+      console.log('selectedListLOG  selectedListLOG')
+      console.log(this.selectedBookList)
+    },
     changeSelectedList () {
-      if (this.parentSelectList) {
-        if (this.parentSelectList.bookList) {
+      if (this.selectedBookList) {
+        if (this.selectedBookList) {
           for (var i = 0; i < this.cabinetList.length; i++) {
             this.cabinetList[i].selectedYn = false
-            for (var s = 0; s < this.parentSelectList.bookList.length; s++) {
-              if (this.cabinetList[i].cabinetKey === this.parentSelectList.bookList[s].cabinetKey) {
+            for (var s = 0; s < this.selectedBookList.length; s++) {
+              if (this.cabinetList[i].cabinetKey === this.selectedBookList[s].cabinetKey) {
                 this.cabinetList[i].selectedYn = true
                 break
               }
@@ -313,6 +322,20 @@ export default {
       }
       // eslint-disable-next-line no-debugger
       debugger
+    },
+    resetSelectList (list) {
+      // console.log('pppppppppppppppppppppppppppppppppp')
+      // console.log(list)
+      // this.selectedBookList = list
+      // this.settingCheck()
+    },
+    deleteSelectedBook (type, key) {
+      var findIdx = this.selectedBookList.findIndex(item => item.accessKey === key)
+      if (findIdx !== -1) {
+        this.selectedBookList.splice(findIdx, 1)
+      }
+      console.log('delSelectedList')
+      console.log(this.selectedBookList)
     },
     editAddressBook (data) {
       var param = {}
