@@ -66,6 +66,7 @@ export default {
 
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('showProfileYn', true)
+      paramMap.set('pageSize', 100)
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
