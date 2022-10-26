@@ -70,6 +70,8 @@ import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
 import imageCompression from 'browser-image-compression'
+
+import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
 // import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
@@ -121,6 +123,8 @@ app.component('imgLongClickPop', imgLongClickPop)
 app.component(VueCropper)
 app.component('gSelectBoardPop', gSelectBoardPop)
 app.component('gAxiosLoading', gAxiosLoading)
+app.component('gListEmpty', gListEmpty)
+
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(uploadFile)

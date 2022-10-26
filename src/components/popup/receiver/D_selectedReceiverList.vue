@@ -34,7 +34,7 @@
           <div v-else style="background-image: url('../../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? '나' : this.$changeText(member.userDispMtext)}}</p>
-        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.userKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px;">x</span>
+        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px;">x</span>
       </div>
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
         <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -80,8 +80,9 @@ export default {
   },
   watch: {
     listData () {
+      console.log('===== watch prop List =====')
       console.log(this.listData)
-      this.upDatePage(this.listData)
+      // this.upDatePage(this.listData)
     }
   },
   components: {
@@ -119,10 +120,19 @@ export default {
     addNewMember () {
       this.$emit('openAddPop')
     },
+    newUpdateMember (data) {
+      this.teamList.memberList = data
+    },
+    newUpdateBook (data) {
+      this.teamList.bookList = data
+    },
     // 유민참고
     upDatePage (data) {
       // var temp
       // this.setReceiverData()
+      // console.log(data)
+      // console.log(data)
+
       if (data) {
         if (data.bookList !== undefined && data.bookList !== null) {
           this.teamList.bookList = data.bookList
@@ -138,7 +148,7 @@ export default {
             //   temp = this.listData.bookList[i]
             //   this.teamList.bookList.push(temp)
             // }
-            this.teamList.bookList = this.listData.bookList
+            this.teamList.bookList = JSON.parse(JSON.stringify(this.listData.bookList))
           }
           if (this.listData.memberList !== undefined && this.listData.memberList !== null && this.listData.memberList.length > 0) {
             this.teamList.memberList = []
@@ -147,16 +157,20 @@ export default {
             //   temp = this.listData.memberList[i]
             //   this.teamList.memberList.push(temp)
             // }
-            this.teamList.memberList = this.listData.memberList
+            this.teamList.memberList = JSON.parse(JSON.stringify(this.listData.memberList))
           }
         }
       }
+      console.log('--------0---------')
+      console.log(this.teamList)
     },
     sendReceivers () {
       // this.teamList.itemType = this.itemType
       this.$emit('btnClick', this.teamList)
     },
     removeSelectedYn (type, index, key) {
+      console.log(' ((((((((((((((())))))))))))))) ')
+      console.log(this.teamList)
       if (type === 'book') {
         this.teamList.bookList.splice(index, 1)
         this.teamList.type = 'C'
@@ -167,6 +181,8 @@ export default {
       if (key !== undefined && key !== null && key !== '') {
         this.teamList.delKey = key
       }
+      console.log(this.teamList)
+      console.log(key)
 
       this.teamList.index = index
       this.$emit('changeSelectedList', this.teamList)

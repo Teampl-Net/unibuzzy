@@ -171,9 +171,37 @@ export default {
       console.log(data)
       this.$emit('sendReceivers', data)
     },
+    addMe (data) {
+      if (this.selectedList.memberList) {
+        this.selectedList.memberList.unshift(data)
+      } else {
+        this.selectedList.memberList = []
+        this.selectedList.memberList.unshift(data)
+      }
+      this.changeSelectMemberList(this.selectedList.memberList)
+    },
     // 유민참고
     changeSelectMemberList (data) {
       console.log(data)
+      // eslint-disable-next-line no-debugger
+      debugger
+
+      this.selectedList.memberList = []
+      for (let i = 0; i < data.length; i++) {
+        // if (data.shareSeq === null) continue
+        this.selectedList.memberList.push(data[i])
+        // this.pSelectedBookList.push(data[i])
+      }
+      this.pSelectedMemberList = []
+      this.pSelectedMemberList = this.selectedList.memberList
+      // eslint-disable-next-line no-debugger
+      debugger
+      // this.selectedList.bookList = data
+      // this.$refs.selectedListCompo.upDatePage()
+
+      this.$refs.selectedListCompo.newUpdateMember(this.selectedList.memberList)
+
+      // console.log(data)
       // this.selectedList.memberList = []
       // if (this.selectedList.memberList.length > 0) {
       //   var templist = this.selectedList.memberList
@@ -184,29 +212,17 @@ export default {
       // } else {
       //   this.selectedList.memberList = []
       // }
-      this.selectedList.memberList = []
-      // alert(typeof this.selectedList.memberList)
-      // if () = []
-      for (let i = 0; i < data.length; i++) {
-        this.selectedList.memberList.push(data[i])
-        // this.pSelectedMemberList.push(data[i])
-      }
-      // this.selectedList.memberList = data
-      // console.log(this.selectedList)
-      this.pSelectedMemberList = this.selectedList.memberList
-      this.$refs.selectedListCompo.upDatePage()
+
+      // this.selectedList.memberList = []
+
+      // for (let i = 0; i < data.length; i++) {
+      //   this.selectedList.memberList.push(data[i])
+      // }
+
+      // this.pSelectedMemberList = this.selectedList.memberList
+      // this.$refs.selectedListCompo.upDatePage()
       // this.$refs.memberListRef.selectedListLOG()
     },
-    addMe (data) {
-      if (this.selectedList.memberList) {
-        this.selectedList.memberList.unshift(data)
-      } else {
-        this.selectedList.memberList = []
-        this.selectedList.memberList.unshift(data)
-      }
-      this.changeSelectMemberList(this.selectedList.memberList)
-    },
-
     changeSelectBookList (data) {
       console.log(data)
       // eslint-disable-next-line no-debugger
@@ -221,26 +237,29 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       // this.selectedList.bookList = data
-      this.$refs.selectedListCompo.upDatePage()
+      this.$refs.selectedListCompo.newUpdateBook(this.selectedList.bookList)
     },
     changeSelectedList (selectedListData) {
       console.log('#############')
       console.log(selectedListData)
-      this.pSelectedBookList = selectedListData.bookList
-      this.pSelectedMemberList = selectedListData.memberList
-      // this.selectedList.bookList = selectedListData.bookList
-      this.selectedList.memberList = selectedListData.memberList
-      // this.$refs.memberListRef.resetSelectList(this.pSelectedMemberList)
-
-      this.selectedList = selectedListData
-      this.editMemberSelectedList()
-      this.editBookSelectedList()
       if (selectedListData.type === 'C') {
-        this.$refs.teamListRef.selectedListLOG()
         this.$refs.teamListRef.deleteSelectedBook(selectedListData.type, selectedListData.delKey)
-      // } else {
+        delete selectedListData.type
+        delete selectedListData.delKey
+      } else {
+        if (this.$refs.memberListRef) {
+          this.$refs.memberListRef.deleteSelectedMember(selectedListData.type, selectedListData.delKey)
+        }
+        delete selectedListData.type
+        delete selectedListData.delKey
       }
 
+      this.pSelectedBookList = selectedListData.bookList
+      this.pSelectedMemberList = selectedListData.memberList
+      this.selectedList = selectedListData
+
+      this.editMemberSelectedList()
+      this.editBookSelectedList()
       // #wowns
       // this.$refs.selectedListCompo.upDatePage()
     },

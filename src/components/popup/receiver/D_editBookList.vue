@@ -35,7 +35,7 @@
       <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
-          <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' @delAddress="delAddress" />
+          <memberList :pSearchFilterList="this.searchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100%);background-color:#fff; " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' @delAddress="delAddress" />
           <!-- <memberList @refreshList="this.getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="propData.value.value" :listData="memberList" :propData="selectBookDetail" style="position: absolute; top: 0; left:0.5rem; width:calc(100% - 1rem); overFlow: hidden scroll; height: calc(100%);background-color:#fff;  " transition="showGroup" @openAddPop="openAddPop" ref="memberListRef" v-if="detailOpenYn" @editYn='editYnCheck' /> -->
         </transition>
         <!-- <div v-if="plusMenuShowYn"  @click="plusMenuShowYn = !plusMenuShowYn" style="background: #00000026; height: 100%; width: 100%; position: fixed; left: 0; z-index: 999; top: 0;"></div> -->
@@ -143,8 +143,11 @@ export default {
         confirmOk () {
             if (this.currentConfirmType === 'cabinet') {
                 this.$refs.bookListCompoRef.deleteCabinet(this.tempData.data, this.tempData.index)
+
             } else if (this.currentConfirmType === 'member') {
                 this.$refs.memberListRef.deleteMember(this.tempData.data, this.tempData.index)
+                // this.getBookList()
+
             }
             this.confirmPopShowYn = false
         },
@@ -176,7 +179,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('searchKeyStr', 'sSub' + (index + 1))
             var result = await this.$commonAxiosFunction({
-            url: 'service/tp.getMCabUserGroupList',
+            url: 'https://mo.d-alim.com/service/tp.getMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
         if (result.data.length > 0) {
@@ -202,12 +205,11 @@ export default {
             this.$showAxiosLoading(true)
             var paramMap = new Map()
             paramMap.set('cabinetNameMtext', this.searchKeyword)
-
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getTeamMenuList',
+                url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.$showAxiosLoading(false)
@@ -291,7 +293,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getMCabContentsList',
+                url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.$showAxiosLoading(false)
@@ -344,6 +346,7 @@ export default {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
                     this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.getBookList()
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.$emit('closeXPop')
@@ -354,6 +357,7 @@ export default {
                     hStack = hStack.filter((element, index) => index < hStack.length - 1)
                     this.$store.commit('D_HISTORY/setRemovePage', removePage)
                     this.$store.commit('D_HISTORY/updateStack', hStack)
+                    this.getBookList()
                     this.detailOpenYn = false
                     this.cabinetName = ''
                     this.receiverTitle = '주소록 관리'
@@ -438,7 +442,7 @@ export default {
             params.teamKey = this.CHANNEL_DETAIL.teamKey
             params.showProfileYn = true
             var result = await this.$commonAxiosFunction({
-                url: 'service/tp.getFollowerList',
+                url: 'https://mo.d-alim.com/service/tp.getFollowerList',
                 param: params
             })
 

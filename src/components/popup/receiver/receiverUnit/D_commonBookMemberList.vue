@@ -1,12 +1,11 @@
 <template>
 <div class="receiverTeamMemberArea" >
     <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
-      <div v-if="memberList.length === 0">
-        <p>등록된 유저가 없습니다.</p>
-      </div>
-      <template v-for="(data, index) in memberList" :key='data'>
-        <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
-      </template>
+      <!-- <div v-if="addressBookList.length > 0" class="fl w-100P" style=" height: calc(100% - 60px); overflow: hidden scroll;"> -->
+      <!-- <div v-if="memberList.legth > 0" class="fl w-100P"> -->
+        <template v-for="(data, index) in memberList" :key='data'>
+          <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+        </template>
         <!-- <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
             <transition-group>
                 <template v-for="(data, index) in memberList" :key='data'>
@@ -45,6 +44,8 @@
             </transition-group>
         </draggable> -->
     <!-- </div> -->
+    <!-- </div> -->
+    <gListEmpty v-if="memberList.length === 0" title="멤버가 없어요." subTitle="버튼을 눌러 멤버를 추가해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
 </div>
 
 </template>
@@ -62,6 +63,12 @@ export default {
     parentSelectList: {},
     bookType: {},
     pSearchFilterList: {}
+  },
+  watch: {
+    listData () {
+      console.log(this.listData)
+      this.setMemberList()
+    }
   },
   computed: {
     GE_USER () {
@@ -121,19 +128,20 @@ export default {
         // console.log(this.parentSelectList)
         this.selectedMemberList = []
         this.selectedMemberList = JSON.parse(JSON.stringify(this.parentSelectList))
+        console.log(this.selectedMemberList)
         this.setParentSelectList()
       }
     })
   },
   methods: {
-    // deleteSelectedMember (type, key) {
-    //   var findIdx = this.selectedMemberList.findIndex(item => item.accessKey === key)
-    //   if (findIdx !== -1) {
-    //     this.selectedMemberList.splice(findIdx, 1)
-    //   }
-    //   console.log('delSelectedList')
-    //   console.log(this.selectedMemberList)
-    // },
+    deleteSelectedMember (type, key) {
+      var findIdx = this.selectedMemberList.findIndex(item => item.accessKey === key)
+      if (findIdx !== -1) {
+        this.selectedMemberList.splice(findIdx, 1)
+      }
+      console.log('delSelectedList')
+      console.log(this.selectedMemberList)
+    },
     // selectedListLOG () {
     //   console.log('selectedListLOG selectedMemberList selectedListLOG')
     //   console.log(this.selectedMemberList)
@@ -156,6 +164,7 @@ export default {
       for (let i = 0; i < this.memberList.length; i++) {
         this.memberList[i].jobKindId = 'USER'
       }
+      console.log(this.memberList)
     },
     setPhone (num) {
       if (num !== undefined && num !== null && num !== '') {
@@ -179,10 +188,6 @@ export default {
     //   this.settingCheck()
     // },
     setParentSelectList () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      console.log(this.selectedMemberList)
-      console.log(this.memberList)
       if (this.selectedMemberList) {
         for (var i = 0; i < this.memberList.length; i++) {
           this.memberList[i].selectedYn = false
@@ -271,7 +276,7 @@ export default {
       console.log('add after' + data.accessKey)
 
       data.shareSeq = data.userKey
-      var findIdx = this.selectedMemberList.findIndex(item => item.userKey === data.userKey)
+      var findIdx = this.selectedMemberList.findIndex(item => item.accessKey === data.accessKey)
       if (findIdx === -1) {
         this.selectedMemberList.push(data)
         console.log('===========================')

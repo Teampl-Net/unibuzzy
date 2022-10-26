@@ -36,9 +36,10 @@
       </transition-group>
     </draggable>
   </div>
-  <div v-else>
-      <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없어요.'}}</p>
-  </div>
+
+  <gListEmpty v-else title="주소록이 없어요." subTitle="버튼을 눌러 주소록을 생성해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
+      <!-- <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없어요.'}}</p> -->
+
   <!-- <creAddressPop v-if="creAddressPopYn" @closePop="creAddressPopYn = false" /> -->
 </template>
 
@@ -256,10 +257,10 @@ export default {
         // this.$refs["commonBookInput" + index].focus()
       }
     },
-    selectedListLOG () {
-      console.log('selectedListLOG  selectedListLOG')
-      console.log(this.selectedBookList)
-    },
+    // selectedListLOG () {
+    //   console.log('selectedListLOG  selectedListLOG')
+    //   console.log(this.selectedBookList)
+    // },
     changeSelectedList () {
       if (this.selectedBookList) {
         if (this.selectedBookList) {
