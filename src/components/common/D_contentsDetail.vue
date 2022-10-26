@@ -1138,13 +1138,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-<<<<<<< .mine
         url: 'service/tp.getUserDoListPage',
-||||||| .r1195
-        url: 'https://mo.d-alim.com/service/tp.getUserDoListPage',
-=======
-        url: 'service//tp.getUserDoListPage',
->>>>>>> .r1197
         param: param
       })
     }, */

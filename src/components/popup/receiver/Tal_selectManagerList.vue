@@ -11,7 +11,7 @@
 
 <script>
 /* eslint-disable */
-import managerList from './Tal_commonBookMemberList.vue'
+import managerList from './receiverUnit/D_commonBookMemberList.vue'
 // import selectedListCompo from './Tal_selectedReceiverList.vue'end
 
 export default {

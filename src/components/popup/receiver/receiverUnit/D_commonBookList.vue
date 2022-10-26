@@ -1,15 +1,15 @@
 <template>
   <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-  <div v-if="addressBookList.length > 0" style=" height: calc(100% - 60px); overflow: hidden scroll;">
+  <div v-if="addressBookList.length > 0" class="fl w-100P" style=" height: calc(100% - 60px); overflow: hidden scroll;">
     <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
           <!-- <gReceiveCard :propData="data" option="EDIT" :selectedYn="editIndex === index" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/> -->
 
           <!-- <gReceiveCard :propData="data" option="EDIT" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/> -->
-          <gReceiveCard v-if="false" :propData="data" option="SELE" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+          <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
 
-          <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
+          <!-- <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
             <div v-show="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
               <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
                 <img src="../../../../assets/images/channel/channer_addressBook.svg" class="img-w23" alt="">
@@ -30,7 +30,7 @@
               <img class="img-w30" src="../../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
               <img class="img-w30" src="../../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
             </div>
-          </div>
+          </div> -->
 
         </template>
       </transition-group>
@@ -82,15 +82,19 @@ export default {
       this.enabled = true
       console.log('this.parentSelectList')
       console.log(this.parentSelectList)
-      if (this.parentSelectList && this.parentSelectList.bookList) {
-        this.selectedBookList = this.parentSelectList.bookList
+      if (this.parentSelectList && this.parentSelectList) {
+        this.selectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
         console.log('this.selectedBookList')
         console.log(this.selectedBookList)
       }
     }
     await this.getTeamCabList()
     this.changeSelectedList()
-    this.settingCheck()
+    var this_ = this
+    this.$nextTick(() => {
+      this_.settingCheck()
+      this_.changeSelectedList()
+    })
     console.log('===== Created CommmonBookList ====')
     console.log(this.addressBookList)
   },
@@ -112,8 +116,15 @@ export default {
     //     },
     //     deep: true
     // },
+    parentSelectList () {
+      this.selectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
+      this.settingCheck()
+    },
     listData () {
       this.setAddressList()
+      this.settingCheck()
+    },
+    addressBookList () {
       this.settingCheck()
     }
     // addressBookList: {
@@ -158,6 +169,8 @@ export default {
         this.editAddressBook(data)
       } else if (type === 'delete') {
         this.deleteCabinetClick(data, idx)
+      } else if (type === 'add') {
+        this.addSelectedList(data, idx)
       }
     },
     clickList (data, index) {
@@ -244,7 +257,7 @@ export default {
           for (var i = 0; i < this.cabinetList.length; i++) {
             this.cabinetList[i].selectedYn = false
             for (var s = 0; s < this.parentSelectList.bookList.length; s++) {
-              if (this.parentSelectList.bookList[s].cabinetKey === this.cabinetList[i].cabinetKey) {
+              if (this.cabinetList[i].cabinetKey === this.parentSelectList.bookList[s].cabinetKey) {
                 this.cabinetList[i].selectedYn = true
                 break
               }
@@ -284,16 +297,22 @@ export default {
       if (!this.selectedBookList) {
         this.selectedBookList = []
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       data.shareSeq = data.cabinetKey
       if (!data.accessKey) data.accessKey = data.cabinetKey
       var indexOf = this.selectedBookList.findIndex(i => i.accessKey === data.cabinetKey)
       if (indexOf === -1) {
         this.selectedBookList.push(data)
+        // eslint-disable-next-line no-debugger
+        debugger
         this.addressBookList[index].selectedYn = true
         this.$emit('changeSelectBookList', this.selectedBookList)
       } else {
         this.$showToastPop('중복 선택입니다.')
       }
+      // eslint-disable-next-line no-debugger
+      debugger
     },
     editAddressBook (data) {
       var param = {}
@@ -426,6 +445,7 @@ export default {
         var temp = {}
         temp = this.addressBookList[index]
         temp.menuType = 'G'
+        delete temp.mUserList
         tempList.push(temp)
       }
       console.log(' ----- teamMenuList -----')

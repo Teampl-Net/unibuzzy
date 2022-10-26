@@ -5,70 +5,55 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w-100P" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
+    <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
         <div v-if="userProfileImg" :style="'background-image: url(' + this.domainPath + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
            <!--  <img :src="this.domainPath + userProfileImg" /> -->
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
         <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
     </div>
-    <div class="addMemberTextArea">
-        <div style="width:100%; height: 30px;" class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB detailLabelText" >이름</p>
-            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-            <input v-if="!readOnlyYn && !selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
-            <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
-            <div v-show="changeYn" class="fl creChanInput" style="">
-                <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
-                <div class="fl" style="width: 100px">
-                    <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
-                    <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
-               </div>
-            </div>
-        </div>
-        <div style="width:100%; height: 30px; position: relative;" class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB detailLabelText" >이메일</p>
+    <div class="addMemberTextArea fl">
 
-            <p class="fl font16 commonBlack creChanInput" style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail}}</p>
-            <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
-            <!-- <img src="../../../assets/images/common/sendMailIcon.svg" @click="sendMail(memEmail)" style="width: 30px; position: absolute; right: 0; " alt=""> -->
+      <div class="fl w-100P" style='display: contents;'>
+        <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
+        <input v-if="!readOnlyYn && !selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+        <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+        <div v-show="changeYn" class="fl creChanInput" style="">
+            <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
+            <div class="fl" style="width: 100px">
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+            </div>
+        </div>
+        <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
+      </div>
 
-        </div>
+      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; ">
+        <img src="../../../assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
+        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
+        <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+      </div>
+      <div class="mtop-1 fl w-100P"  style="display: flex; padding-left:15%;">
+        <img src="../../../assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
+        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
+        <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
+      </div>
 
-        <div style="width:100%; height: 30px; position: relative; " class="mtop-2 fl memberItemRow">
-            <p class="textLeft font16 fl cBlack tB detailLabelText" >전화번호</p>
-            <p class="fl font16 commonBlack creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone}}</p>
-            <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
-            <!-- <img src="../../../assets/images/common/sendSmsIcon.svg" @click="sendSms(memPhone)" style="width: 30px; position: absolute; right: 0; " alt="">
-            <img src="../../../assets/images/common/callPhoneIcon.svg" @click="callPhone(memPhone)" style="width: 30px; position: absolute; right: 40px; " alt=""> -->
+      <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
+      <div v-if="readOnlyYn && mobileYn" class="fl w-100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
+        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="nativeServiceBtnWrap">
+              <img v-if="value.type === 'ALIM'" src="../../../assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'MAIL'" src="../../../assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'PHON'" src="../../../assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'TEXT'" src="../../../assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
+            </div>
+            <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
+          </div>
+          <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div>
         </div>
-        <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-        <div v-if="readOnlyYn && mobileYn" style="width: 100%; background: #A9AACD50; margin-top: 30px; border-radius: 10px; min-height: 70px;">
-            <div class="nativeServiceBtn" style=""  @click="sendPushAlim()">
-                <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/icon_message_solid.svg" style="width: 75%; margin-top: 5px; " alt="">
-                </div>
-                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">알림작성</p>
-            </div>
-            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;" @click="sendMail(memEmail)">
-                <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/sendMailIcon.svg"  style="width: 100%; " alt="">
-                </div>
-                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">메일쓰기</p>
-            </div>
-            <div class="nativeServiceBtn" style="border-left: 1px solid  #ccc;"  @click="callPhone(memPhone)">
-                <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/callPhoneIcon.svg" style="width: 100%; " alt="">
-                </div>
-                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">전화걸기</p>
-            </div>
-            <div class="nativeServiceBtn"  style="border-left: 1px solid  #ccc;" @click="sendSms(memPhone)">
-                <div class="nativeServiceBtnWrap">
-                    <img src="../../../assets/images/common/sendSmsIcon.svg"  style="width: 100%; " alt="">
-                </div>
-                <p class="font15 fl textLeft commonBlack" style="line-height: 30px;">문자쓰기</p>
-            </div>
-        </div>
+      </div>
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
@@ -110,6 +95,33 @@ import popUp from '../confirmPop/Tal_commonConfirmPop.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import userImgSelectCompo from '../../../components/pageComponents/myPage/Tal_changeUserIcon.vue'
 export default {
+    data () {
+        return {
+            memName: '',
+            memEmail: '',
+            memPhone: '',
+            memberList:[],
+            addMemYn: false,
+            confirmPopShowYn: false,
+            tempIndex: null,
+            confirmText: '',
+            readOnlyYn:false,
+            userProfileImg : undefined,
+            domainPath : '',
+            systemName: 'iOS',
+            mobileYn: this.$getMobileYn(),
+            popSize: 0,
+            changeUserIconShowYn: false,
+            changeUserIconPop: null,
+            picMfilekey: null,
+            selfYn: false,
+            changeYn: false,
+            tempUserDispName: '',
+            thisUserKey: null,
+            profileFunc: [{ funcTitle: '알림작성', type: 'ALIM' }, { funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
+            userGrade: ''
+        }
+    },
     components: {
         popUp,
         userImgSelectCompo
@@ -165,7 +177,10 @@ export default {
                     else{ this.memPhone= '등록된 번호가 없습니다.' }
                 } else if (this.propData.userKey) {
                     var userKey = this.propData.userKey
-                    await this.getMemberListGetUserInfo()
+                    await this.getMemberListGetUserInfo().then(() => {
+                      this.setUserGrade()
+                    })
+
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
@@ -181,35 +196,21 @@ export default {
         }
         if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
         // this.readOnlyYn = false
+        this.setUserGrade()
         this.$emit('closeLoading')
     },
-    data () {
-        return {
-            memName: '',
-            memEmail: '',
-            memPhone: '',
-            memberList:[],
-            addMemYn: false,
-            confirmPopShowYn: false,
-            tempIndex: null,
-            confirmText: '',
-            readOnlyYn:false,
-            userProfileImg : undefined,
-            domainPath : '',
-            systemName: 'iOS',
-            mobileYn: this.$getMobileYn(),
-            popSize: 0,
-            changeUserIconShowYn: false,
-            changeUserIconPop: null,
-            picMfilekey: null,
-            selfYn: false,
-            changeYn: false,
-            tempUserDispName: '',
-            thisUserKey: null
-
-        }
-    },
     methods:{
+        profileFuncEvent (type) {
+            if (type === 'ALIM') {
+                this.sendPushAlim()
+            } else if (type === 'MAIL') {
+                this.sendMail(this.memEmail)
+            } else if (type === 'PHON') {
+                this.callPhone(this.memPhone)
+            } else if (type === 'TEXT') {
+                this.sendSms(this.memPhone)
+            }
+        },
         async getMemberListGetUserInfo () {
             var paramMap = new Map()
             paramMap.set('showProfileYn', true)
@@ -241,6 +242,21 @@ export default {
                 this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
                 this.closeXPop()
             }
+        },
+        async setUserGrade () {
+          console.log(this.propData)
+          console.log(this.propData.teamKey)
+          if (this.propData && this.propData.teamKey) {
+            var detail = await this.$getDetail('TEAM', this.propData.teamKey)[0]
+            console.log(detail)
+            if (detail && detail.D_CHAN_AUTH) {
+              console.log(detail)
+              var grade = detail.D_CHAN_AUTH.userGrade
+              grade = grade.replaceAll('(', '')
+              grade = grade.replaceAll(')', '')
+              this.userGrade = grade
+            }
+          }
         },
         sendPushAlim () {
             var param = {}
@@ -446,7 +462,7 @@ table {
 .addMemberTextArea{
     /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
 
-    font-size:14px; width: 100%; height: 35%; background: #FFF; padding: 0 10%;
+    font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -472,7 +488,7 @@ margin-bottom: 2rem;
 }
 
 .creChanInput{
-    width:calc(100% - 130px);
+    /* width:calc(100% - 130px); */
     min-width: 140px;
     border : none;
     /* border-bottom: 1px solid #ccc; */

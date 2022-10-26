@@ -15,7 +15,7 @@
 <script>
 /* eslint-disable */
 import selectBookNMemberList from './Tal_selectBookAndMemberList.vue'
-import selectedListCompo from './Tal_selectedReceiverList.vue'
+import selectedListCompo from './D_selectedReceiverList.vue'
 export default {
   props: {
     selectPopYn: {},

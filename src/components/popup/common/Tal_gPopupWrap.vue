@@ -32,7 +32,7 @@
 
       <!-- <boardWrite :pPopId="popId" @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 
-      <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="params.pSelectedList" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
+      <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
       <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
@@ -43,7 +43,7 @@
 
       <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <selectMemberPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
+      <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
       <!-- <followerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'followerManagement'" @openPop='openPop'/> -->
       <!-- <managerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'managerManagement'" @openPop='openPop'/> -->
       <memberManagement :pPopId="popId" :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'memberManagement'" @openPop='openPop'/>
@@ -95,9 +95,9 @@ import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
 // import editManagerList from '../member/D_manageFollowerList.vue'
 // import boardWrite from '@/components/board/Tal_boardWrite.vue'
-import selectMemberPop from '../receiver/Tal_selectMemberPop.vue'
+import onlyMemberSelectPop from '../receiver/D_onlyMemberSelectPop.vue'
 
-import selectBookList from '../receiver/Tal_selectBookList.vue'
+import selectBookList from '../receiver/D_selectBookList.vue'
 
 import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
 // import followerManagement from '../member/D_manageFollowerList.vue'
@@ -176,7 +176,8 @@ export default {
       axiosQueue: [],
       notiScrollTarget: null,
       errorText: '',
-      failPopYn: false
+      failPopYn: false,
+      selectPlist: []
     }
   },
   props: {
@@ -206,7 +207,7 @@ export default {
     // boardWrite,
     pushPop,
     editManagerList,
-    selectMemberPop,
+    onlyMemberSelectPop,
     // followerManagement,
     // managerManagement,
     memberManagement,
@@ -339,9 +340,9 @@ export default {
         this.closeXPop()
       } else {
         if (this.targetType === 'chanDetail') {
-          this.$refs.gPopChanAlimList.setSelectedList(param.data)
+          this.$refs.gPopChanAlimList.setSelectedList(param)
         } else {
-          this.$refs.writeContentsCompo.setSelectedList(param.data)
+          this.$refs.writeContentsCompo.setSelectedList(param)
         }
       }
     },
@@ -516,7 +517,7 @@ export default {
       } else if (this.targetType === 'bookMemberDetail') {
         if (target.currentCabinetKey) {
           // if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
-          if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '상세' } // this.$changeText(this.params.value.userDispMtext)
+          if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '프로필' } // this.$changeText(this.params.value.userDispMtext)
         } else {
           if (target.selfYn === true) {
             this.headerTitle = '내 정보'
@@ -583,6 +584,12 @@ export default {
         } else {
           this.headerTitle = '주소록 수정'
         }
+      } else if (this.targetType === 'selectBookList') {
+        console.log('!!!!!!!!!!!!!!!')
+        console.log(this.selectPlist)
+        this.selectPlist = this.params.pSelectedList
+        console.log(this.selectPlist)
+        console.log('!!!!!!!!!!!!!!!')
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -813,8 +820,7 @@ export default {
         console.log(value)
         if (indexOf !== -1) {
         //  if (this.params.targetKey === value.contentsKey) {
-          if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' ||
-         value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
+          if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' || value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
             return
           }
           console.log(this.params.contentsKey + '**' + value.contentsKey)

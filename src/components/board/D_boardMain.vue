@@ -605,7 +605,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'service///tp.deleteMemo',
+        url: 'service//tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')

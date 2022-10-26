@@ -147,6 +147,12 @@ export default {
     params: {},
     contentType: { type: String, default: 'ALIM' }
   },
+  watch: {
+    receiverList () {
+      console.log(' ^^^^^################## ')
+      console.log(this.receiverList)
+    }
+  },
   created () {
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
@@ -171,7 +177,7 @@ export default {
           this.bodyString = this.propData.bodyFullStr
           this.selectBoardYn = true
         } else {
-          this.bodyString = this.decodeContents(this.propData.bodyFullStr)
+          this.bodyString = this.propData.bodyFullStr
           // console.log('WOW!!!!' + this.decodeContents(this.bodyString))
           this.modiYn = true
         }
@@ -374,6 +380,7 @@ export default {
       })
       // console.log(result)
     },
+    // gPopWrap에서 선택한 리스트가 넘겨주고 있음
     setSelectedList (obj) {
       // var mList = []
       // var bList = []
@@ -386,6 +393,10 @@ export default {
       // }
       // if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
       //   myBList = this.receiverList.bookList
+      // }
+      this.receiverList = obj
+      // if (obj.bookList && obj.bookList.length > 0) {
+      //   this.receiverList.bookList = obh
       // }
       console.log('-----------------------------------')
       console.log(this.receiverList)
@@ -864,6 +875,7 @@ export default {
         this.closeXPop(true)
       }
     },
+    // 선택한 수신리스트를 서비스에 보내 전 데이터 전처리
     settingRecvList () {
       var shareItemBookObject = {}
       if (this.receiverList.bookList) {
@@ -926,15 +938,6 @@ export default {
 
       this.$emit('openPop', param)
       // this.receiverPopYn = true
-    },
-    delRecvList (type, index) {
-      if (type === 'm') {
-        this.receiverList.memberList.splice(index, 1)
-      } else if (type === 'b') {
-        this.receiverList.bookList.splice(index, 1)
-      }
-      this.setRecvText()
-      // this.receiverTotalNum -= 1
     },
     async handleImageUpload (file) {
       this.selectFile = null

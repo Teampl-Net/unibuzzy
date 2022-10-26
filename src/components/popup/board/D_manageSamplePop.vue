@@ -162,7 +162,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'GUIDE_'
-      // para'service//'followerType', 'M')
+      // para'service/'followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getSampleList',

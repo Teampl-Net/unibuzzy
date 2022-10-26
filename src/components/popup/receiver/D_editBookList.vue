@@ -3,16 +3,7 @@
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType" v-if="confirmPopShowYn" @no='confirmPopShowYn=false' @ok='confirmOk' />
     <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
-      <!-- <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
-        <!-- <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span> -->
-        <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
-        <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
-      <!-- </div> -->
       <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="cabinetName !== ''" >
-        <!-- <span @click="goCabinetList" style="width: calc(100%); max-width: calc(100% - 350px);" class="fl mright-05 font18 h-100P colorBlack">
-          <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
-          <p class="fl mleft-05 font18 textLeft colorBlack" style="width: calc(100% - 50px)" >{{this.cabinetName}}</p>
-        </span> -->
         <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.searchFilterList.length > 0">
           <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">세부필터</p>
           <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
@@ -25,24 +16,19 @@
             </div>
           </div>
         </div>
-        <div style="width: calc(100%); min-width: 120px; float: right;">
-          <div style=" margin-left: 5px; float: right; max-width: 200px; min-height: 30px; position: relative; width: 100%;">
-            <img @click="cabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; right: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-            <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% ); margin-right: 5px; min-height: 30px; min-width: calc(100% );padding-right:40px!important; "  @keyup.enter="cabinetName !== ''? getBookMemberList():getBookList()" :placeholder="cabinetName !== ''? '이름을 입력해주세요' : '주소록명을 입력해주세요'">
-            <!-- <div @click="orderByPopShowYn = !orderByPopShowYn"  class="commonSelectBox font14 cursorP" style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;">{{orderByText === 'creDate' ? '등록순': '이름순'}}</div>
-            <div v-show="orderByPopShowYn" style="position: absolute; width: 100px; min-height: 50px; background: #fff; border-radius: 5px; right: 200px; border: 1px solid #ccc;  top: 142px; z-index: 9999999;">
-              <div @click="changeOrderBy('creDate')" class="font14" style="cursor: pointer; width: 100%; border-bottom: 1px solid #ccc;  min-height: 30px; padding: 5px; float: left;">
-                등록순
-              </div>
-              <div @click="changeOrderBy('userDispMtext')" class="font14" style="cursor: pointer; width: 100%;  min-height: 30px; padding: 5px; float: left;">
-                이름순
-              </div>
-            </div> -->
+        <div class="w-100P fl" style="min-width: 120px;">
+          <div class="fl" style="position: relative; width: calc(100% - 120px)">
+            <img @click="cabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="cabinetName !== ''? getBookMemberList():getBookList()" :placeholder="cabinetName !== ''? '이름을 입력해주세요' : '주소록명을 입력해주세요'">
           </div>
-            <select v-model="orderByText" @change="changeOrderBy" class="commonSelectBox font14 cursorP"  style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;" name="" id="">
-              <option value="creDate">등록순</option>
-              <option value="userDispMtext">이름순</option>
-            </select>
+          <!-- <select v-model="orderByText" @change="changeOrderBy" class="commonSelectBox font14 cursorP"  style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;" name="" id="">
+            <option value="creDate">등록순</option>
+            <option value="userDispMtext">이름순</option>
+          </select> -->
+          <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
+            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="orderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':orderByText === 'creDate'}">등록순</p>
+            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="orderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':orderByText === 'userDispMtext'}">이름순</p>
+          </div>
         </div> <!-- display: flex; justify-content: space-around; align-items: center; -->
         <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
       </div>
@@ -80,7 +66,7 @@
 import gConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../common/D_findContentsList.vue'
 import bookListCompo from './receiverUnit/D_commonBookList.vue'
-import memberList from './Tal_commonBookMemberList.vue'
+import memberList from './receiverUnit/D_commonBookMemberList.vue'
 import excelUploadPop from './Tal_excelUpload.vue'
 export default {
     props: {

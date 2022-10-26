@@ -241,6 +241,18 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .img-w11{width: 11px}
 .img-w10{width: 10px}
 
+.imgCircle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ECEDF5;
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .CDeepColor{ color: #5F61BD !important; }
 .CDeepBgColor{ background-color: #5F61BD !important;}
 .CDeepBorderColor{ border: 1px solid #5F61BD !important;}
