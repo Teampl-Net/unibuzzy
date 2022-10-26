@@ -43,6 +43,7 @@
         <p class="fl font14 cursorP commonColor fontBold mtop-07 w-100P textLeft"><img class="fl cursorP img-w20 mright-05" src="../../../assets/images/channel/icon_heart.svg" alt="편리기능 아이콘"> 편리기능 </p>
         <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class="fl mleft-05 mtop-1" style="" >
           <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" />
+          <!-- <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" /> -->
         </div>
       </div>
     </div>
@@ -263,7 +264,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
         param: params
-      })
+      }, true)
       // console.log(result.data.content[0])
       if (result.data) {
         if(result.data.content.length > 0){
@@ -357,7 +358,7 @@ export default {
       var result = await this.$commonAxiosFunction({
           url: 'service/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
-      })
+      }, true)
       var tempList = []
       tempList = result.data
       // this.cabinetList = result.data
@@ -378,7 +379,7 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
 
-      var result = await this.$getTeamMenuList(paramMap)
+      var result = await this.$getTeamMenuList(paramMap, true)
       this.boardContentList = result
       console.log('##########  GET BOARD CONTENT LIST  ##########')
       console.log(this.boardContentList)

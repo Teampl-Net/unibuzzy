@@ -123,7 +123,7 @@ export default {
       param.offsetInt = 0
       param.pageSize = 1
       var totalElements
-      await this.$getContentsList(param).then(resulte => {
+      await this.$getContentsList(param, true).then(resulte => {
         // console.log(resulte)
         totalElements = resulte.totalElements
         // console.log(totalElements)
@@ -156,13 +156,11 @@ export default {
     },
     async getTeamMenuList () {
       var paramMap = new Map()
-      this.$showAxiosLoading(true)
       paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('adminYn', true)
-      var result = await this.$getTeamMenuList(paramMap)
-      this.$showAxiosLoading(false)
+      var result = await this.$getTeamMenuList(paramMap, true)
       // var uniqueArr = []
       // if (result && result.length > 0) {
       //   var newArr = []

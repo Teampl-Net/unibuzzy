@@ -115,7 +115,6 @@ export default {
     async getMainBoard () {
       if (this.axiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.axiosQueue.push('getMainBoard')
-      this.$showAxiosLoading(true)
       var paramMap = new Map()
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
@@ -124,7 +123,6 @@ export default {
       }
       var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
-      this.$showAxiosLoading(false)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {

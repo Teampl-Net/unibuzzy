@@ -1,0 +1,228 @@
+<template>
+    <div style="float: left">
+        <div style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 9999999;"></div>
+        <transition name="showUp">
+            <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem 0.8rem 0 0; height: 80%; position: fixed; background: #FFF; z-index: 99999999; bottom: 0; left: 10%;">
+                <div style="width: 100%; padding: 12px 20px; height: 50px; float: left; position: relative;" class="headerShadow">
+                    <p class="font18 fontBold textLeft">샘플 {{makeType === 'modi'? '수정' : '추가'}}</p>
+                    <img @click="closeXPop" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 12px; width: 25px;" alt="">
+                </div>
+                <div style="width: 100%; padding: 10px 20px; height: calc(100% - 120px); float: left">
+                    <!-- <div style="width: 100%; height: 35px; float: left; position: relative;">
+                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">{{propsInnerHtml? '수정' : '작성'}}하기</p>
+                        <gBtnSmall @click="addSample" btnTitle="저장" style="position: absolute; right: 5px; top: 0px; "/>
+                    </div> -->
+                    <div style="float: left; width: 100%; height: calc(100%); display: flex; flex-direction: column; align-items: center;">
+                        <div style="width: 100%; float: left; ">
+                            <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl" style="width: 70px; line-height: 30px;">샘플명</label>
+                        <input id="sampleTitleMtext" type="text" class="font15 textLeft" style="width: calc(100%);  margin-bottom: 1rem;height: 30px;" placeholder="샘플명을 입력하세요" name="" v-model="sampleTitleMtext" >
+                        </div>
+                        <p class="font15 fontBold grayBlack w-100P mbottom-05 textLeft fl">
+                            아이콘
+                        </p>
+                        <div style="height: 70px; width: 100%; overflow: scroll hidden;">
+                            <div :style="'width: +' + (60 * smapleIconList.length) + 'px;'" style="height: 100%; float: left;">
+                                <div @click="this.makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in smapleIconList" :style="this.makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index" style="padding: 5px; border-radius: 8px; margin-right: 5px; border: 1px solid #ccc; float: left; width: 50px; height: 50px; ">
+                                    <img :src="value.domainPath + value.pathMtext" style="width: 100%; float: left;" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div style="width: 80px; height: 80px; border-radius: 8px; border: 1px solid #ccc;">
+                            아이콘을 선택하세요!
+                        </div> -->
+                        <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >샘플내용</p>
+                        <div style="width: 100%; height: calc(100% - 170px); padding: 5px 10px; border-radius: 8px; float: left; border: 1px solid #ccc;">
+                            <pre id="sampleInputArea" ref="sampleInputArea" class="fl editableContent" style="width: 100%; overflow: hidden scroll; height: 100%; text-align:left; float: left; resize: none;"  contenteditable=true ></pre>
+                            <!-- <div ref="sampleInputArea" id="sampleInputArea" class="font15" style="width: 100%; overflow: hidden scroll; height: 100%; text-align: left;" :contenteditable="true"></div> -->
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 100%; height: 40px; float: left; padding: 0 20px;">
+                    <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light"/>
+                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? '수정' : '추가'" class="mright-05"/>
+                </div>
+                <!-- <div v-if="titleMtextShowYn" style="height: 100%; width: 100%; background: #00000026; position: fixed;left: 0%; top: 0%;z-index: 999999;">
+                </div>
+                <div v-if="titleMtextShowYn" style="height: 300px; width: 80%; background: #FFF; box-shadow: 0 0 4px 4px #00000026; border-radius: 0.8rem; position: fixed; padding: 10px 0; left: 10%; top: 30%;z-index: 9999999;">
+                    <div class="headerShadow" style="width: 100%; height: 30px; float: left; padding: 0 20px;">
+                        <p class="font16 fontBold textLeft commonColor mbottom-05">샘플 {{propsInnerHtml? '수정' : '작성'}}</p>
+                    </div>
+                </div> -->
+            </div>
+        </transition>
+    </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      samplePopShowYn: false,
+      popId: null,
+      sampleTitleMtext: '',
+      addSampleMtextPopId: null,
+      smapleIconList: [],
+      makeSampleIconFilekey: null
+    }
+  },
+  props: {
+    cabinetDetail: {},
+    propsInnerHtml: {},
+    makeType: {},
+    selectedSample: {}
+  },
+  components: {
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.closeXPop()
+    },
+    historyStack (value, old) {
+    }
+  },
+  mounted () {
+    if (this.makeType === 'modi' && this.propsInnerHtml) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.$refs.sampleInputArea.innerHTML = this.propsInnerHtml
+      if (this.selectedSample) {
+        this.sampleTitleMtext = this.$changeText(this.selectedSample.titleMtext)
+        if (this.selectedSample.imageFilekey) {
+          this.makeSampleIconFilekey = this.selectedSample.imageFilekey
+        }
+      }
+    }
+  },
+  created () {
+    this.getCodeList()
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'writeSamplePop' + this.cabinetDetail.cabinetKey
+    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
+    // this.getGuidList()
+  },
+  methods: {
+    async getCodeList () {
+      var resultList = null
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.groupCode = 'S_ICON'
+      resultList = await this.$getCodeList(param)
+      this.smapleIconList = resultList
+      // eslint-disable-next-line no-debugger
+      debugger
+      // this.contentsHeight = document.getElementById('chanIconBox').scrollHeight
+      // var a = this.teamImgList
+    },
+    addSample () {
+      /* var bodyStr = document.getElementById('sampleInputArea').innerHTML
+      bodyStr = bodyStr.trim()
+      if (!bodyStr || bodyStr === '') {
+        alert('내용을 추가해주세요')
+        return
+      }
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.addSampleMtextPopId = 'addSampleMtextPop' + this.cabinetDetail.cabinetKey
+      // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
+      history.push(this.addSampleMtextPopId)
+      this.$store.commit('D_HISTORY/updateStack', history) */
+      this.getCodeList()
+      /* this.titleMtextShowYn = true */
+    },
+    okSelectSample (selectedObj) {
+      /* var guideInput = this.$refs.sampleInputArea
+      guideInput.innerHTML = selectedObj.bodyFullStr */
+      // this.closeSamplePop()
+    },
+    async makeSample () {
+      /* this.$showAxiosLoading(true)
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      hStack = hStack.filter((element, index) => index < hStack.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', hStack)
+      this.titleMtextShowYn = false
+      await this.createSample() */
+    },
+    closeXPop (reloadYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('closeXPop', reloadYn)
+      }
+    },
+    async saveGuide () {
+      var bodyStr = document.getElementById('sampleInputArea').innerHTML
+      // bodyStr = bodyStr.trim()
+      this.$emit('setSampleGuide', bodyStr)
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.closeXPop()
+    },
+    async createSample () {
+      // console.log(this.permissionWGroup.selectedList)
+      // console.log(this.permissionVGroup.selectedList)
+      // console.log(this.permissionRGroup.selectedList)
+
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // eslint-disable-next-line no-new-object
+      var sample = new Object()
+      sample.titleMtext = this.cabinetDetail.teamMenuKey
+      sample.targetType = 'GUIDE_'
+      var bodyStr = document.getElementById('sampleInputArea').innerHTML
+      bodyStr = bodyStr.trim()
+      sample.bodyMinStr = bodyStr
+      sample.bodyFullStr = bodyStr
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (this.makeType === 'modi') {
+        sample.sampleKey = this.selectedSample.sampleKey
+      }
+      sample.creTeamKey = this.cabinetDetail.creTeamKey
+      if (this.sampleTitleMtext.trim() === '') {
+        alert('샘플명을 입력해주세요')
+        return
+      }
+      if (!this.makeSampleIconFilekey) {
+        alert('샘플 아이콘을 선택해주세요')
+        return
+      }
+      sample.imageFilekey = this.makeSampleIconFilekey
+      sample.titleMtext = 'KO$^$' + this.sampleTitleMtext
+      sample.creUserKey = this.$store.getters['D_USER/GE_USER'].userKey
+      param.sample = sample
+      // eslint-disable-next-line no-unused-vars
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSample',
+        param: param
+      })
+      this.sampleTitleMtext = ''
+      this.makeSampleIconFilekey = null
+      if (this.makeType === 'modi') {
+        this.$showToastPop('샘플이  수정되었습니다.')
+      } else {
+        this.$showToastPop('샘플이 추가되었습니다.')
+      }
+      this.closeXPop(true)
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -44,7 +44,7 @@ export const functions = {
     var result = await this.$commonAxiosFunction({
       url: 'service/tp.getMemoList',
       param: memo
-    })
+    }, true)
     var memos = result.data.memoList[0]
     return memos
   },
@@ -182,7 +182,7 @@ export const functions = {
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     console.log('############# addChanList ############')
     console.log(paramMap)
-    var resultList = await methods.getTeamList(paramMap)
+    var resultList = await methods.getTeamList(paramMap, true)
 
     console.log(resultList)
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
@@ -265,7 +265,7 @@ export const functions = {
     var param = new Object()
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
-    var resultList = await methods.getContentsList(param)
+    var resultList = await methods.getContentsList(param, true)
     if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]
     debugger
@@ -317,7 +317,7 @@ export const functions = {
     var result = await commonAxiosFunction({
       url: 'service/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
-    })
+    }, true)
     var user = result.data.content
     return user
   },

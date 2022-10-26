@@ -935,7 +935,6 @@ export default {
         param.creTeamKey = this.chanDetailKey
       } */
       this.$emit('closeLoading')
-      this.$showAxiosLoading(true)
       param.cabinetKey = this.propData.targetKey
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
@@ -985,7 +984,6 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
-      this.$showAxiosLoading(false)
       console.log('****************************')
       console.log(resultList)
       if (this.viewTab === 'N') {

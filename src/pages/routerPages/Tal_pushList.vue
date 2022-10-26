@@ -640,7 +640,7 @@ export default {
       }
       var this_ = this
       this.loadMoreDESCYn = false
-      await this_.getPushContentsList(null, null, true).then(response => {
+      await this_.getPushContentsList(null, null, false).then(response => {
         console.log('getContents-------------------------------------------------------')
         if (!response || !response.content) return
         console.log(response.content)
@@ -1056,9 +1056,6 @@ export default {
       if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
         this.axiosQueue.push('getPushContentsList')
         this.$emit('closeLoading')
-        if (loadingYn) {
-          this.$showAxiosLoading(true)
-        }
         // @point
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -1119,11 +1116,15 @@ export default {
             param.ownUserKey = this.GE_USER.userKey
           }
         }
-        var result = await this.$getContentsList(param)
-        this.$showAxiosLoading(false)
+        var nonLoading = true
+        if (loadingYn) {
+          nonLoading = false
+        }
+        var result = await this.$getContentsList(param, nonLoading)
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.axiosQueue.splice(queueIndex, 1)
         var resultList = result
+        this.$emit('closeLoading')
         return resultList
       }
     },
@@ -1235,6 +1236,7 @@ export default {
     },
     changeMainTab (tab) {
       this.paddingTop = 75
+      // this.$showAxiosLoading(true)
       // this.targetCKey = null
       this.$emit('changeMainTab', tab)
       this.canLoadYn = true
@@ -1404,7 +1406,7 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         try {
-          var resultList = await this.getPushContentsList()
+          var resultList = await this.getPushContentsList(null, null, false)
           console.log(resultList)
           if (resultList === undefined || resultList === '') {
             this.$refs.pushListChangeTabLoadingComp.loadingRefHide()

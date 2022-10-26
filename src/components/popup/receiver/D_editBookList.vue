@@ -202,7 +202,6 @@ export default {
         }, */
         async getBookList () {
             this.bookList = []
-            this.$showAxiosLoading(true)
             var paramMap = new Map()
             paramMap.set('cabinetNameMtext', this.searchKeyword)
             paramMap.set('teamKey', this.propData.teamKey)
@@ -212,7 +211,6 @@ export default {
                 url: 'https://mo.d-alim.com/service/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
-            this.$showAxiosLoading(false)
             this.bookList = result.data
             for(var i = 0; i < this.bookList.length; i ++) {
                 var changeT = this.bookList[i].cabinetNameMtext
@@ -274,7 +272,6 @@ export default {
             this.imInYn = false
             this.detailOpenYn = false
             var paramMap = new Map()
-            this.$showAxiosLoading(true)
             var orderText = 'mcc.creDate DESC'
             if (this.orderByText === 'userDispMtext') {
                 orderText = 'u.userDispMtext'
@@ -296,7 +293,6 @@ export default {
                 url: 'https://mo.d-alim.com/service/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
-            this.$showAxiosLoading(false)
             this.memberList = result.data
             if (this.memberList) { // dispName이 없을시 userName으로 대체
                 for (var i =0; i < this.memberList.length; i ++) {

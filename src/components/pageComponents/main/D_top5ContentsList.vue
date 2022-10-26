@@ -154,7 +154,7 @@ export default {
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
-    async getContentsList () {
+    async getContentsList (loadingYn) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var resultData = null
@@ -169,7 +169,11 @@ export default {
       } else if (this.viewTab === 'A') {
         param.allYn = true
       }
-      resultData = await this.$getContentsList(param)
+      var noneLoading = true
+      if (loadingYn) {
+        noneLoading = false
+      }
+      resultData = await this.$getContentsList(param, noneLoading)
       console.log('%%%%%%%%%%%%')
       console.log(resultData)
 
@@ -243,10 +247,8 @@ export default {
     async changeTab (tabName) {
       // alert(tabName)
       // this.pushList = [] ///######
-      this.$showAxiosLoading(true)
       this.viewTab = tabName
-      await this.getContentsList()
-      this.$showAxiosLoading(false)
+      await this.getContentsList(true)
     },
     async reLoad () {
       this.changeTab('A')

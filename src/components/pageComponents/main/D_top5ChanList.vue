@@ -112,7 +112,7 @@ export default {
       handler (value, old) {
         var idx = this.mainChanList.findIndex((item) => item.teamKey === this.GE_RECENT_CHANGE_TEAM)
         if (idx !== -1) {
-          this.getContentsList()
+          this.getContentsList(false)
         }
       },
       deep: true
@@ -139,7 +139,7 @@ export default {
       // }
       return text
     },
-    async getContentsList () {
+    async getContentsList (loadingYn) {
       var idx = this.axiosQueueList.findIndex((item) => item === 'getContentsList')
       if (idx !== -1) return
       this.axiosQueueList.push('getContentsList')
@@ -152,7 +152,12 @@ export default {
       }
       paramMap.set('pageSize', 5)
       paramMap.set('offsetInt', 0)
-      var resultList = await this.$getTeamList(paramMap)
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+
+      var resultList = await this.$getTeamList(paramMap, nonLoading)
       idx = this.axiosQueueList.findIndex((item) => item === 'getContentsList')
       this.axiosQueueList.splice(idx, 1)
       this.mainChanList = resultList.data.content
@@ -214,9 +219,7 @@ export default {
     async changeTab (data) {
       // this.chanList = [] ///######
       this.viewTab = data
-      this.$showAxiosLoading(true)
-      await this.getContentsList()
-      this.$showAxiosLoading(false)
+      await this.getContentsList(true)
       // if (this.chanList.length === 0) this.emptyYn = true
     }
   }

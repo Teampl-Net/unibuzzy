@@ -382,9 +382,6 @@ export default {
       if (this.axiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
 	  this.axiosQueue.push('getChannelList')
       var paramMap = new Map()
-      if (loadingYn) {
-        this.$showAxiosLoading(true)
-      }
       var userKey = this.GE_USER.userKey
       if (this.viewTab === 'user') {
         paramMap.set('userKey', userKey)
@@ -407,8 +404,11 @@ export default {
       } else {
         paramMap.set('pageSize', 10)
       }
-      var result = await this.$getTeamList(paramMap)
-      this.$showAxiosLoading(false)
+      var noneLoadingYn = true
+      if (loadingYn) {
+        noneLoadingYn = false
+      }
+      var result = await this.$getTeamList(paramMap, noneLoadingYn)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getChannelList')
       this.axiosQueue.splice(queueIndex, 1)
       // var pageable = resultList.pageable

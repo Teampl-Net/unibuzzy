@@ -320,7 +320,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
-      })
+      }, true)
       // console.log(result)
       if (result.data.content.length > 0) {
         return true
@@ -460,7 +460,13 @@ export default {
         if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
           this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey
         } else if (this.targetType === 'chanDetail') {
-          this.popId = this.targetType + this.detailVal.teamKey || this.detailVal.targetKey
+          if (this.detailVal.targetKey) {
+            this.popId = this.targetType + this.detailVal.targetKey
+          } else if (this.detailVal.teamKey) {
+            this.popId = this.targetType + this.detailVal.teamKey
+          } else {
+            this.popId = this.targetType
+          }
         }
 
         if (this.targetType === 'chanDetail') {
@@ -882,7 +888,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
-      })
+      }, true)
       var memos = result.data.memoList[0]
       return memos
     },
@@ -914,7 +920,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
-      })
+      }, true)
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')
       this.axiosQueue = this.axiosQueue.splice(index, 1)
       var user = result.data.content

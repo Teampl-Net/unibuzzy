@@ -186,10 +186,10 @@
       </div> -->
     </div>
     <div class="itemWrite" style="border: none; border-top: 1px solid #ccc; margin-top: 10px;">
-      <p class="fontBold textLeft font16 fl " style="width: 100px; ">제시글</p>
+      <p class="fontBold textLeft font16 fl " style="width: 100px; ">예시글</p>
       <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
       <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div style="text-align: left; overflow: scroll; max-height: 100px;" v-html="this.guideSampleInnerHtml? '제시글 있음': '제시글 없음'" @click="this.samplePopShowYn = true" class="fl textOverdot inputBoxThema font16 lightGray d" ></div>
+      <div style="text-align: left; overflow: scroll; max-height: 100px;" v-html="this.guideSampleInnerHtml? '예시글 있음': '예시글 없음'" @click="this.samplePopShowYn = true" class="fl textOverdot inputBoxThema font16 lightGray d" ></div>
     </div>
   <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
     <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
@@ -728,6 +728,8 @@ export default {
       cabinet.workStatYn = this.workStatYn
       if (this.guideSampleInnerHtml) {
         cabinet.guideFullStr = this.guideSampleInnerHtml
+      } else {
+        cabinet.guideFullStr = ''
       }
       var shareList = []
       var itemList = []

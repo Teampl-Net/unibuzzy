@@ -1,5 +1,5 @@
 <template>
-    <div v-if="shows" class="loadingWrap">
+    <div v-if="shows" class="gLoadingPop loadingWrap">
         <div class="loadingcontainer">
             <img class="boombox" src="../../assets/images/common/message_logo.png" alt="">
             <div class="shadow"></div>

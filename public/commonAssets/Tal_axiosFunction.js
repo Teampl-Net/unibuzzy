@@ -3,6 +3,7 @@
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
+import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
@@ -24,13 +25,19 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem) {
+export async function commonAxiosFunction (setItem, nonLoadingYn) {
+  console.log('----------------------comeAxios-----------------------------------')
+  console.log('----------------------' + nonLoadingYn + '-----------------------------------')
   if (setItem.firstYn) {
     ;
   } else {
     await methods.userLoginCheck()
   }
   var result = false
+  if (nonLoadingYn === true) {
+  } else {
+    commonMethods.showAxiosLoading(true)
+  }
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
     result = response
@@ -40,6 +47,7 @@ export async function commonAxiosFunction (setItem) {
     result = error
     console.log(error)
   })
+  commonMethods.showAxiosLoading(false)
   return result
 }
 
@@ -213,14 +221,14 @@ export const methods = {
       localStorage.setItem('loginYn', false)
     }
   },
-  async getTeamList (paramMap) {
+  async getTeamList (paramMap, noneLoadingYn) {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
 
     var result = await commonAxiosFunction({
       url: 'service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
-    })
+    }, noneLoadingYn)
     resultList = result
     return resultList
   },
@@ -243,7 +251,10 @@ export const methods = {
   //   resultList = response.data
   //   return resultList
   // },
-  async getContentsList (inputParam) {
+  async getContentsList (inputParam, nonLoadingYn) {
+    console.log('----------------------------getContentsList--------------------------------')
+    console.log('----------------------------' + nonLoadingYn + '--------------------------------')
+    // alert(nonLoadinYn)
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -255,7 +266,7 @@ export const methods = {
     var result = await commonAxiosFunction({
       url: 'service/tp.getContentsList',
       param: paramSet
-    })
+    }, nonLoadingYn)
     resultList = result.data
     return resultList
   },
@@ -473,7 +484,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async getTeamMenuList (inputParamMap) {
+  async getTeamMenuList (inputParamMap, noneLoadingYn) {
     // eslint-disable-next-line no-new-object
     var paramMap = new Map()
     if (inputParamMap) {
@@ -483,7 +494,7 @@ export const methods = {
     var response = await commonAxiosFunction({
       url: 'service/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
-    })
+    }, noneLoadingYn)
     result = response.data
     return result
   },

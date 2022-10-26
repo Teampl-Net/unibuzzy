@@ -286,6 +286,42 @@ export const commonMethods = {
     // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
     // if (changeTxt !== undefined) { return changeTxt }
   },
+  changeFollowerInfo (type, data) {
+    if (!data) {
+      return '정보가 없음'
+    }
+    if (type === 'email') {
+      var emailList = data.split('@')
+      var returnData = emailList[0]
+      var forLength = returnData.length
+      var test = returnData.substring(0, 4)
+      /* for (var i = 0; i < forLength; i++) {
+        var idx = returnData.length - 1
+        returnData[idx] = '*'
+        // returnData = returnData.replaceAt(-1, '*')
+        idx = idx - 1
+      } */
+      for (var i = 0; i < forLength - 4; i++) {
+        test += '*'
+      }
+      return test + '@' + emailList[1]
+    } else if (type === 'phone') {
+      var returnData1 = data
+      var test1 = ''
+      var forLength1 = returnData1.length
+      /* for (var i = 0; i < forLength; i++) {
+        var idx = returnData.length - 1
+        returnData[idx] = '*'
+        // returnData = returnData.replaceAt(-1, '*')
+        idx = idx - 1
+      } */
+      for (var p = 0; p < forLength1 - 4; p++) {
+        test1 += '*'
+      }
+      test1 += returnData1.substring(forLength1 - 4)
+      return test1
+    }
+  },
 
   diffInt (a, b) {
     return Math.abs(a - b)
@@ -325,6 +361,32 @@ export const commonMethods = {
     } catch (e) {
       return false
     }
+  },
+  getFollowerType (data) {
+    var followerText = ''
+    if (data.followYn) {
+      followerText = '구독자'
+      if (data.adminYn) {
+        if (data.memberYn) {
+          if (data.ownerYn) {
+            followerText = '소유자'
+          } else {
+            followerText = '관리자'
+            if (data.mngTeamYn === true || data.mngTeamYn === 1) {
+              followerText = '채널' + followerText
+            } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
+              followerText = '멤버' + followerText
+            } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
+              followerText = '알림' + followerText
+            }
+          }
+        } else {
+        }
+      }
+    }
+    // eslint-disable-next-line no-debugger
+    debugger
+    return followerText
   },
   sortListForupdDate (list) {
     var resultlist = list.sort(function (a, b) { // num으로 오름차순 정렬
@@ -396,6 +458,28 @@ export const commonMethods = {
   },
   findATagDelete (html) {
     return html.replace(/<(\/a|a)([^>]*)>/gi, '')
+  },
+  checkEmptyInnerHtml (inHtml) {
+    // // eslint-disable-next-line no-debugger
+    // debugger
+    var titleText = ''
+    var childNodes = inHtml.childNodes
+    var valueTextIdx = 0
+    for (var i = 0; i < childNodes.length; i++) {
+      titleText += childNodes[i].textContent + ' '
+      titleText = titleText.trimLeft()
+      if (titleText === '') valueTextIdx += 1
+      if (titleText.length >= 6 && i === valueTextIdx) {
+        titleText = titleText.length > 10 ? titleText.substring(0, 10) + '..' : titleText.substring(0, 10)
+        break
+      }
+    }
+    var resultText = titleText.trim()
+    if (resultText === '') {
+      return false
+    } else {
+      return true
+    }
   },
   titleToBody (inHtml) {
     // // eslint-disable-next-line no-debugger
@@ -807,8 +891,14 @@ export const commonMethods = {
   },
   showAxiosLoading (showYn) {
     var loadingCompo = document.getElementById('axiosShadow')
+    var gLoadingPop = document.querySelectorAll('.gLoadingPop')
+    if (gLoadingPop.length > 0) {
+      // loadingCompo.style.display = 'none'
+      return
+    }
     if (!loadingCompo || loadingCompo.length === 0) return
     if (showYn) {
+      /*  if (loadingCompo.style.display === 'flex') */
       loadingCompo.style.display = 'flex'
       setTimeout(() => {
         loadingCompo.style.display = 'none'
@@ -863,5 +953,8 @@ export default {
     Vue.config.globalProperties.$addConsole = commonMethods.addConsole
     Vue.config.globalProperties.$setParentsId = commonMethods.setParentsId
     Vue.config.globalProperties.$showAxiosLoading = commonMethods.showAxiosLoading
+    Vue.config.globalProperties.$getFollowerType = commonMethods.getFollowerType
+    Vue.config.globalProperties.$changeFollowerInfo = commonMethods.changeFollowerInfo
+    Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml
   }
 }

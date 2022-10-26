@@ -121,7 +121,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       try {
-        this.$showAxiosLoading(true)
         if (this.currentCodeKey === this.selectedCodeObj.codeKey) {
         } else {
           param.workStatCodeKey = this.selectedCodeObj.codeKey
@@ -152,7 +151,6 @@ export default {
             })
             this.$showToastPop('업무 상태가 변경되었습니다.')
 
-            this.$showAxiosLoading(false)
             this.closeSelectPop()
 
             // eslint-disable-next-line no-new-object
