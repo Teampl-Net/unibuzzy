@@ -174,16 +174,17 @@ export default {
       } else if (this.contentType === 'BOAR') {
         this.titleShowYn = true
         if (this.propData.UseAnOtherYn) {
-          this.bodyString = this.propData.bodyFullStr
+          this.bodyString = this.decodeContents(this.propData.bodyFullStr)
           this.selectBoardYn = true
         } else {
-          this.bodyString = this.propData.bodyFullStr
+          this.bodyString = this.decodeContents(this.propData.bodyFullStr)
           // console.log('WOW!!!!' + this.decodeContents(this.bodyString))
           this.modiYn = true
         }
         if (this.propData.guideFullStr) {
           // eslint-disable-next-line no-debugger
           debugger
+          this.modiYn = false
           this.bodyString = this.decodeContents(this.propData.guideFullStr)
         }
         console.log(this.bodyString)
