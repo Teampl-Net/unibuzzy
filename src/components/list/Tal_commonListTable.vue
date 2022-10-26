@@ -29,8 +29,9 @@
                     <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{'알림'}}</div>
                     <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</div>
                     <!-- <img v-if="(value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== sessionUserKey)" style="width: 20px; float: right;" src="../../assets/images/board/securityDoc.svg" alt=""> -->
-                    <!-- {{this.$checkUserAuth(value.shareItem)}} -->
-                    <p v-if="value.jobkindId === 'BOAR' && (this.$checkUserAuth(value.shareItem).V === false && value.titleBlindYn) && value.creUserKey !== this.GE_USER.userKey" v-html="'열람권한이 없는 컨텐츠 입니다.'" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+                    <!-- {{(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey !== this.GE_USER.userKey) && (value.titleBlindYn === true || value.titleBlindYn === 1)}}
+                    {{value.titleBlindYn}} -->
+                    <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" v-html="'열람권한이 없는 컨텐츠 입니다.'" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                     <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                     <!-- <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" /> -->
                 </div>
