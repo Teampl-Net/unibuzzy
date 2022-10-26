@@ -1,13 +1,15 @@
 <template>
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
-    <div class="selectBookListContents">
-      <bookList class="bookListStyle" :listData="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
-      <transition name="showGroup">
-          <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
-      </transition>
+    <div class="pagePaddingWrap selectBookListContents">
+      <div class="bookListStyle">
+        <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <transition name="showGroup">
+            <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+        </transition>
+      </div>
+      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
     </div>
-    <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
 </div>
 
 </template>
@@ -400,11 +402,12 @@ export default {
 </script>
 
 <style >
-.selectBookListWrap{height: 100%; background-color:white; width:100%; z-index:999; position:absolute; top:0; left:0}
-.bookListStyle{position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; width: calc(100% - 3rem) !important; background: #fff;}
-.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); width: calc(100% - 3rem); background: #fff;}
+.selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0}
+.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 95px) ; overflow: auto;}
+.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; background: #fff;}
 
-.selectBookListContents{width: 100%; height: calc(80% - 50px); position: relative; padding: 0 1rem; float: left; margin-top:50px;}
+.selectBookListContents{position:absolute; overflow: auto; padding-top:50px;}
+
 .selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
 min-height: 150px;
 }

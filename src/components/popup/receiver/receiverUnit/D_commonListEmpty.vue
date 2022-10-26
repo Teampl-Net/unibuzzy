@@ -5,7 +5,7 @@
       <img src="../../../../assets/images/editChan/icon_emptyBox.svg" alt="">
     </div>
     <p class="w-100P fl CDeepColor font22 fontBold mtop-05">{{title}}</p>
-    <p class="w-100P fl commonDarkGray font14">{{subTitle}}</p>
+    <p v-if="option === 'EDIT'" class="w-100P fl commonDarkGray font14">{{subTitle}}</p>
     <div class="w-100P fl" v-if="option === 'EDIT'">
       <img class="mtop-1" style="transform: translateX(10%)" src="../../../../assets/images/editChan/icon_arrowTurnBottom.svg" alt="">
     </div>

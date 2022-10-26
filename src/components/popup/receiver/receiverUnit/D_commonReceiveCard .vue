@@ -78,7 +78,7 @@ export default {
       this.$emit('receiveCardEmit', param)
     },
     setCabinetNames () {
-      if (this.propData.mUserList.length > 0) {
+      if (this.propData.mUserList && this.propData.mUserList.length > 0) {
         var list = this.propData.mUserList
         var name = ''
         for (let i = 0; i < list.length; i++) {

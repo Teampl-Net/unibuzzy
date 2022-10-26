@@ -225,6 +225,7 @@ export default {
     overflow: auto;
     white-space: nowrap;
     flex-direction: row;
+    background: #fff;
 }
 /* .movePointerArea{
     transform: scaleY(1.7);

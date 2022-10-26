@@ -10,42 +10,62 @@
       <div v-else />
     </div>
     <div v-if="true" class="fl w-100P" style="overflow: hidden scroll;">
-      <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P" style="margin-top:50px;" >
-        <p class="fl cursorP font14 commonColor fontBold mtop-13" style="white-space: nowrap;"  @click="bookDropDown">
-          <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">
-          주소록
-          ({{this.CABINET_LIST.length}})
-        </p>
-        <!-- <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" > -->
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
-          <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
-        </div>
-      </div>
 
-      <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
-
-      <!-- <div class="fl w-100P mtop-2" :style="!CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn ? 'margin-top: 1rem !important;' : 'margin-top:1rem;'" > -->
-      <div class="fl w-100P mtop-2" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn) ? 'margin-top: 1rem !important;' : 'margin-top:calc(50px + 1rem);'" >
-        <p class="fl font14 cursorP commonColor fontBold mtop-07" style="white-space: nowrap;" @click="boardDropDown">
-          <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png">
-          게시판
+      <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
+        <p class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
+          <!-- <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png"> -->
+          <pp class="mleft-1">게시판</pp>
           ({{this.BOARD_CONTENT_LIST.length}})
+          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && boardDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
+          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && boardDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
         </p>
 
-        <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); " ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
+        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left;" ref="boardRef" :class="{boardBoxUp : boardDropDownYn === false, boardBoxDown:boardDropDownYn === true}" >
           <menuBoardList ref="menuBoardListRef" :noIcon="true" :listData="this.BOARD_CONTENT_LIST" @chanMenuClick="chanMenuClick" />
         </div>
       </div>
 
-      <div class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div>
+      <!-- <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div> -->
 
-      <div class="w-100P fl mtop-1" style="margin-bottom:3rem">
-        <p class="fl font14 cursorP commonColor fontBold mtop-07 w-100P textLeft"><img class="fl cursorP img-w20 mright-05" src="../../../assets/images/channel/icon_heart.svg" alt="편리기능 아이콘"> 편리기능 </p>
-        <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class="fl mleft-05 mtop-1" style="" >
-          <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" />
-          <!-- <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" /> -->
+      <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P" style="border-bottom: 2px solid #6768a730" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn) ? '' : ''"  >
+        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
+          <!-- <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">  -->
+          <pp class="mleft-1">주소록</pp>
+          ({{this.CABINET_LIST.length}})
+          <img v-show="this.CABINET_LIST.length !== 0 && bookDropDownYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
+          <img v-show="this.CABINET_LIST.length !== 0 && bookDropDownYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+        </p>
+        <!-- <div class="boardBox fr boardBoxDown" style="overflow: hidden scroll; width: calc(100% - 100px); max-height:300px; " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" > -->
+        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left " ref="addressBookGroupRef" :class="{boardBoxUp: bookDropDownYn === false, boardBoxDown: bookDropDownYn === true}" >
+          <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
         </div>
       </div>
+
+      <!-- <div class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div> -->
+
+      <div class="fl w-100P" style="">
+        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
+          <!-- <img class="fl cursorP img-w18 mright-05 " alt="이미지"  src="../../../assets/images/channel/channer_board_color.png"> -->
+          <pp class="mleft-1">편리기능</pp>
+          <img v-show="convenienceFuncYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
+          <img v-show="convenienceFuncYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+          <!-- ({{this.convenienceFuncList.length}}) -->
+        </p>
+
+        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: calc(100% - 100px); clear:left " ref="convenienceFunction" :class="{boardBoxUp : convenienceFuncYn === false, boardBoxDown:convenienceFuncYn === true}" >
+
+          <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05" style="width:100%; padding: 10px 0;">
+            <!-- <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" /> -->
+            <div class="fl mleft-05 textLeft font16 textOverdot" style="width: calc(100% - 30px - 3rem); margin: 0 0 0 0; width:100% !important;" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " >
+              <span class="grayBlack fontBold mleft-05 w-100P textOverdot textLeft fl" >
+                <img class="fl cursorP img-w18 mright-05" alt="작성 아이콘"  src="../../../assets/images/editChan/icon_write.svg">
+                {{data.title}}
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- <div v-else>
@@ -94,6 +114,7 @@ import editChanMenu from '../D_editBoardList.vue'
 import addressBookList from '../chanMenu/Tal_menuBookList.vue'
 import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
 import selectManagerList from '../receiver/Tal_selectManagerList.vue'
+import testList from '../chanMenu/testList.vue'
 
 export default {
   props:{
@@ -144,7 +165,8 @@ export default {
     }
   },
   created() {
-    this.$showAxiosLoading(true)
+    console.log(this.pPopId)
+    debugger
     // console.log('CHANNEL_DETAIL')
     // console.log(this.CHANNEL_DETAIL)
     var history = this.$store.getters['D_HISTORY/hStack']
@@ -152,22 +174,18 @@ export default {
     history.push(this.$setParentsId(this.pPopId, 'chanMenu' + this.chanAlimListTeamKey))
     this.$store.commit('D_HISTORY/updateStack', history)
     this.screenHeight = window.innerHeight
-    var this_ = this
-    this.getFollowerList().then(response => {
-    })
-    this_.getTeamCabList().then(temp => {
-      this_.getTeamMenuList().then(teemp => {
-        this_.boardListLength()
-        this_.bookListLength()
-        this_.loadYn = true
-        this_.$showAxiosLoading(false)
-
-      })
-    })
     // this. myBoardList =
   },
   mounted () {
-
+    this.getFollowerList().then(response => {
+    })
+    this.getTeamCabList().then(temp => {
+      this.getTeamMenuList().then(teemp => {
+        this.boardListLength()
+        this.bookListLength()
+        this.loadYn = true
+      })
+    })
 
     // this.cabinetList = this.$groupDummyList()
     // if (this.CHANNEL_DETAIL.ELEMENTS.cabinetList.length === 0) {
@@ -200,17 +218,19 @@ export default {
       menuHeight: 0,
       boardDropDownYn:true,
       bookDropDownYn:true,
+      convenienceFuncYn:true,
+      etcDrowdownYn:true,
       selectManagerListYn:false,
       selectedList : [],
       selectAdminList : [],
       teamNameText:'',
       closeYn:false,
       // convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
-      convenienceFuncList: [{ title: '알림작성', targetType: 'writeContents' }, { title: '게시글작성', targetType: 'writeBoard' }],
+      convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }],
       loadYn: false
     }
   },
-  components: {editChanMenu,addressBookList,menuBoardList,selectManagerList
+  components: {editChanMenu,addressBookList,menuBoardList,selectManagerList,testList
   },
   emits: ['openPop', 'goPage'],
   methods: {
@@ -220,13 +240,10 @@ export default {
       param.targetType = targetType
       // 알림신청의 경우 신청 사유를 작성 해야하기에 Yn을 추가하였습니다.
       if (targetType === 'requestPush'){
-        param.targetType = 'writeContents'
-        param.contentsJobkindId = 'ALIM'
+        param.targetType = 'writePush'
         param.requestPushYn = true
       // 게시글 작성의 경우 작성하는 게시판을 지정해야하기에 Yn을 추가하였습니다.
       } else if (targetType === 'writeBoard') {
-        param.targetType = 'writeContents'
-        param.contentsJobkindId = 'BOAR'
         param.selectBoardYn = true
       }
       param.teamKey = this.propData.teamKey || this.propData.targetKey
@@ -422,10 +439,32 @@ export default {
         })
       }
     },
+    convenienceFuncListLength() {
+      if (this.convenienceFuncList) {
+        var convenienceFuncListLength = this.convenienceFuncList.length === 0 ? 1 : this.convenienceFuncList.length * 45 + 10
+        this.$nextTick(() => {
+            if (this.$refs.convenienceFunction) {
+            this.$refs.convenienceFunction.style.setProperty('--menuHeight', (convenienceFuncListLength + 'px'))
+            }
+        })
+      } else {
+        this.$nextTick(() => {
+            if (this.$refs.convenienceFunction) {
+            this.$refs.convenienceFunction.style.setProperty('--menuHeight', ('30px'))
+            }
+        })
+      }
+    },
     boardDropDown () {
       if (this.BOARD_CONTENT_LIST.length !== 0) {
         this.boardListLength()
         if (this.boardDropDownYn) { this.boardDropDownYn = false } else { this.boardDropDownYn = true }
+      }
+    },
+    convenienceFuncDropdown () {
+      if (this.convenienceFuncList.length !== 0) {
+        this.convenienceFuncListLength()
+        if (this.convenienceFuncYn) { this.convenienceFuncYn = false } else { this.convenienceFuncYn = true }
       }
     },
     /** 화면상 주소록의 높이를 cabinetList.length를 통해 구해주는 함수 */
@@ -528,6 +567,14 @@ export default {
         return this.$changeText(teamName)
       }
 
+    },
+    etcDrowdown (){
+        let click = document.getElementById('etc-drop')
+        if(click.style.display === 'none'){
+          click.style.display = 'block'
+        } else{
+          click.style.display = 'none'
+        }
     }
   }
 }
@@ -579,7 +626,7 @@ export default {
   box-shadow: 0 0 9px 2px #b8b8b8;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  padding: 0 1rem;
+  /* padding: 0 1rem; */
   }
 
 .btnBig{
@@ -612,6 +659,7 @@ export default {
   display: block;
   position: relative;
 }
+
 .boardBoxDown{
   animation: dropdown 300ms ease ;
   animation-fill-mode: both;
@@ -621,13 +669,15 @@ export default {
   animation: dropup 300ms ease;
   animation-fill-mode: both;
 }
+
+
 @keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
 @keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }
 .dropdownBtn{
-  width:16px;
+  width:13px;
   /* transform: rotate( 270deg ); */
   margin:0 auto;
-  margin-right:10px;
+  margin-right:15px;
   /* transition : .3s */
 }
 

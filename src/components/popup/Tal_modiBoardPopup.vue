@@ -210,7 +210,7 @@ import selectType from './Tal_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
 import selectBookList from './receiver/D_selectBookList.vue'
 // import selectBookList from './receiver/Tal_selectBookList.vue'
-import receiverAccessList from './receiver/Tal_selectReceiverAccessList.vue'
+import receiverAccessList from './receiver/D_selectReceiverAccessList.vue'
 import selectSampleListPop from './board/D_manageSamplePop.vue'
 export default {
   props: {
