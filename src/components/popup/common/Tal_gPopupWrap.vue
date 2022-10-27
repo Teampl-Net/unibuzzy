@@ -803,14 +803,18 @@ export default {
       }
     },
     async goDetail (value) {
-      if (value.targetType === 'chanDetail') {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      var indexOf = null
+
+      if (value.chanYn) {
+        if (currentPage === this.popId) {
+          return
+        }
         this.goChanDetail(value)
       } else {
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
-        // var history = this.$store.getters['D_HISTORY/hStack']
-        var currentPage = this.$store.getters['D_HISTORY/hCPage']
-        var indexOf = null
         if (currentPage === this.popId) {
 
         }
@@ -1000,11 +1004,11 @@ export default {
                 return
               } */
           if (notiDetail.actType === 'FL' || notiDetail.actType === 'RQ' || notiDetail.actType === 'AP') {
-            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
           } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
-            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
           } else if (notiDetail.actType === 'MA') {
-            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
+            this.goDetail({ targetKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
           }
         }
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {

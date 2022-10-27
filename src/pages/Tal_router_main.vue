@@ -306,7 +306,7 @@ export default {
       }
     },
     async goDetail (value) {
-      if (value.targetType === 'chanDetail') {
+      if (value.chanYn) {
         this.goChanDetail(value)
       } else {
         // eslint-disable-next-line no-new-object
@@ -475,11 +475,11 @@ export default {
               } else {
                 this.$router.replace({ path: '/' })
                 if (this.notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP') {
-                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
                 } else if (this.notiDetail.actType === 'ME' || this.notiDetail.actType === 'FM') {
-                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
                 } else if (this.notiDetail.actType === 'MA') {
-                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail' })
+                  this.goDetail({ targetKey: Number(JSON.parse(this.notiDetail.userDo).targetKey), creTeamKey: Number(this.notiDetail.creTeamKey), targetType: 'chanDetail', chanYn: true })
                 }
               }
             } else if (JSON.parse(this.notiDetail.userDo).targetKind === 'MEMO') {

@@ -143,11 +143,21 @@ export default {
               cont.D_MEMO_LIST = cont.memoList
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
-            // eslint-disable-next-line no-redeclare
+              // eslint-disable-next-line no-redeclare
+              var test = contentDetail?.D_MEMO_LIST
+              if (!test) {
+                if (!contentDetail) {
+                  test = []
+                } else {
+                  test = contentDetail.memoList
+                }
+              }
+              // eslint-disable-next-line no-redeclare
               var newArr = [
-                ...contentDetail.D_MEMO_LIST,
+                ...test,
                 ...cont.memoList
               ]
+              // eslint-disable-next-line no-redeclare
               var newList = this.replaceMemoArr(newArr)
               cont.D_MEMO_LIST = newList
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
@@ -173,9 +183,18 @@ export default {
               cont.D_MEMO_LIST = cont.memoList
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
             } else {
-            // eslint-disable-next-line no-redeclare
+              // eslint-disable-next-line no-redeclare
+              var test = contentDetail?.D_MEMO_LIST
+              if (!test) {
+                if (!contentDetail) {
+                  test = []
+                } else {
+                  test = contentDetail.memoList
+                }
+              }
+              // eslint-disable-next-line no-redeclare
               var newArr = [
-                ...contentDetail.D_MEMO_LIST,
+                ...test,
                 ...cont.memoList
               ]
               // eslint-disable-next-line no-redeclare
@@ -1124,6 +1143,7 @@ export default {
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.axiosQueue.splice(queueIndex, 1)
         var resultList = result
+        this.loadingYn = false
         this.$emit('closeLoading')
         return resultList
       }

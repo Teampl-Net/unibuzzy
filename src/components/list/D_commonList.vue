@@ -886,7 +886,7 @@ export default {
       var key = param.key
       var teamKey = param.teamKey
       if (this.findMemoOpend(key) !== -1) {
-        this.openMemoList.splice(this.findMemoOpend(key), 1)
+        // this.openMemoList.splice(this.findMemoOpend(key), 1)
       } else {
         this.openMemoList.push(key)
       }

@@ -242,7 +242,7 @@ export default {
       this.$refs.selectedListCompo.newUpdateBook(this.selectedList.bookList)
     },
     changeSelectedList (selectedListData) {
-      console.log('#############')
+      console.log('###### changeSelectedList #######')
       console.log(selectedListData)
       if (selectedListData.type === 'C') {
         this.$refs.teamListRef.deleteSelectedBook(selectedListData.type, selectedListData.delKey)
@@ -403,12 +403,14 @@ export default {
 
 <style >
 .selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0}
-.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 95px) ; overflow: auto;}
+.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto;}
 .memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; background: #fff;}
 
-.selectBookListContents{position:absolute; overflow: auto; padding-top:50px;}
+.selectBookListContents{position:absolute; overflow: auto; }
 
 .selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
 min-height: 150px;
+height: 150px;
+max-height: 150px;
 }
 </style>

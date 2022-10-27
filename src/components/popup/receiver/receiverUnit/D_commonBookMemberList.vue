@@ -135,10 +135,20 @@ export default {
   },
   methods: {
     deleteSelectedMember (type, key) {
+      // 실제 선택한 데이터 중 멤버를 삭제하는 작업
       var findIdx = this.selectedMemberList.findIndex(item => item.accessKey === key)
       if (findIdx !== -1) {
         this.selectedMemberList.splice(findIdx, 1)
       }
+      console.log(this.memberList)
+
+      // 화면에 보이는 SELECT한 효과를 없애기 위해 처리하는 작업
+      this.setParentSelectList()
+      // var tempIdx = this.memberList.findIndex(item => item.accessKey === key)
+
+      // if (tempIdx !== -1) {
+      //   this.memberList[tempIdx].selectedYn = false
+      // }
       console.log('delSelectedList')
       console.log(this.selectedMemberList)
     },
@@ -188,18 +198,28 @@ export default {
     //   this.settingCheck()
     // },
     setParentSelectList () {
+      console.log('###########')
+      console.log(this.selectedMemberList)
+      console.log(this.memberList)
+      var tempList = this.memberList
+      this.memberList = []
       if (this.selectedMemberList) {
-        for (var i = 0; i < this.memberList.length; i++) {
-          this.memberList[i].selectedYn = false
+        for (var i = 0; i < tempList.length; i++) {
+          tempList[i].selectedYn = false
           for (var s = 0; s < this.selectedMemberList.length; s++) {
-            if (this.selectedMemberList[s].userKey === this.memberList[i].userKey || this.selectedMemberList[s].accessKey === this.memberList[i].userKey) {
-              this.memberList[i].selectedYn = true
+            if (this.selectedMemberList[s].accessKey === tempList[i].userKey) {
+              tempList[i].selectedYn = true
               // this.selectedList.push(this.memberList[i])
               break
             }
           }
         }
       }
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.memberList = tempList
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(this.memberList)
     },
     dispNameChangeUserName () {
       if (this.memberList) { // dispName이 없을시 userName으로 대체

@@ -6,7 +6,7 @@
     <div class="menuHeader" :class="{editmenuHeader: editYn === true}">
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold font20 fl" style="white-space: nowrap;" >{{menuHeaderTitle}}</p>
-      <img v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fr cursorP" style="width:30px; margin-right:10px;" src="../../../assets/images/common/icon_setting.png" @click="myChanEdit"  />
+      <img v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fr cursorP img-w23" style="margin-right:10px;" src="../../../assets/images/editChan/icon_setting.svg" @click="myChanEdit"  />
       <div v-else />
     </div>
     <div v-if="true" class="fl w-100P" style="overflow: hidden scroll;">
@@ -240,10 +240,13 @@ export default {
       param.targetType = targetType
       // 알림신청의 경우 신청 사유를 작성 해야하기에 Yn을 추가하였습니다.
       if (targetType === 'requestPush'){
-        param.targetType = 'writePush'
+        param.targetType = 'writeContents'
+        param.contentsJobkindId = 'ALIM'
         param.requestPushYn = true
       // 게시글 작성의 경우 작성하는 게시판을 지정해야하기에 Yn을 추가하였습니다.
       } else if (targetType === 'writeBoard') {
+        param.targetType = 'writeContents'
+        param.contentsJobkindId = 'BOAR'
         param.selectBoardYn = true
       }
       param.teamKey = this.propData.teamKey || this.propData.targetKey
