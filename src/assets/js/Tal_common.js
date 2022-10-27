@@ -665,18 +665,33 @@ export const commonMethods = {
     return { path: result.path, file: result.file }
   },
   downloadFile (fileKey, path) {
-    var iframe
+    /* var iframe
     iframe = document.getElementById('hiddenDownloader')
     if (iframe == null) {
       iframe = document.createElement('iframe')
       iframe.id = 'hiddenDownloader'
       iframe.style.display = 'none'
       document.body.appendChild(iframe)
-    }
-
+    } */
     var api = path.split('/image')[0]
+    var aTag
+    aTag = document.getElementById('updateAppPage')
+    if (aTag == null) {
+      aTag = document.createElement('a')
+      aTag.id = 'hiddenDownloaderForAndroid'
+      aTag.style.display = 'none'
+      document.body.appendChild(aTag)
+    }
+    aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
+    aTag.click()
+    document.body.removeChild(aTag)
+    // aTag.target = '_blank'
+
+    /* aTag.click()
+    document.body.removeChild(aTag)
+
     iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
-    console.log(iframe.src)
+    console.log(iframe.src) */
     // // eslint-disable-next-line no-debugger
     // debugger
     /* try {

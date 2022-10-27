@@ -1105,9 +1105,11 @@ export default {
       return true
     },
     delAttachFile (dFile) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
-          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile[0].attachKey) {
+          if (this.uploadFileList[d][0].attachYn === true && this.uploadFileList[d][0].attachKey === dFile.attachKey) {
             this.uploadFileList.splice(d, 1)
           }
         }

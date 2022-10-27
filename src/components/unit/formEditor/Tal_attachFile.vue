@@ -231,6 +231,7 @@ export default {
     },
     deleteFileList (value, index) {
       this.sFileList.splice(index, 1)
+      console.log(this.sFileList)
       this.$emit('delAttachFile', value)
     }
   }

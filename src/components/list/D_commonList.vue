@@ -38,12 +38,12 @@
                   <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                   </div>
-                  <div @click="clickCard(alim)"  style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <div @click="clickCard(alim)" v-if="alim.jobkindId === 'ALIM'" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
                     <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
                   <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
                     <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
                   </div>
-                  <div @click="clickCard(alim)"  class="fr" style="padding: 0 5px;">
+                  <div @click="clickCard(alim)" v-if="alim.jobkindId === 'ALIM'" class="fr" style="padding: 0 5px;">
                     <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
                     <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
                   </div>

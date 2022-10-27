@@ -6,7 +6,6 @@
 <script>
 export default {
   created () {
-    console.log('start')
     var this_ = this
     setTimeout(() => {
       this_.showYn = false

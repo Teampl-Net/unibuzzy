@@ -280,8 +280,6 @@ export default {
     async loadMore (pageSize) {
       if (this.endListYn === false ) {
         var resultList = await this.getChannelList()
-
-        console.log(resultList)
         if (resultList === undefined) return
         var addList = []
         for (var i = 0; i < resultList.content.length; i++) {
@@ -419,8 +417,6 @@ export default {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
       var resultList = result.data
-      // console.log('#######################')
-      // console.log(resultList)
       this.endListSetFunc(resultList)
       return resultList
     },

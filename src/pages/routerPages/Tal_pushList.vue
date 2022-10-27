@@ -1046,7 +1046,6 @@ export default {
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
       this.axiosQueue.splice(queueIndex, 1)
-
       return result.data.memoList
     },
     updateStoreData (uniqueArr) {
@@ -1145,6 +1144,7 @@ export default {
         var resultList = result
         this.loadingYn = false
         this.$emit('closeLoading')
+        this.loadingYn = false
         return resultList
       }
     },
