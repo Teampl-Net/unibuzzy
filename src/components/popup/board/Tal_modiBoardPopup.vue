@@ -92,7 +92,7 @@
       </div>
     </div>
   </div>
-  <gBtnSmall btnTitle="수정하기" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
+  <gBtnSmall @click="updateCabinet" btnTitle="수정하기" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
 </div>
 <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
 <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
@@ -505,6 +505,10 @@ export default {
           mShareItemList[i].userKey = cabShareList[cIndex].accessKey
           mShareItemList[i].userDispMtext = this.$changeText(cabShareList[cIndex].userDispMtext)
           mShareItemList[i].userNameMtext = this.$changeText(cabShareList[cIndex].userNameMtext)
+          mShareItemList[i].domainPath = cabShareList[cIndex].domainPath
+          mShareItemList[i].pathMtext = cabShareList[cIndex].pathMtext
+          mShareItemList[i].phoneEnc = cabShareList[cIndex].phoneEnc
+          mShareItemList[i].userEmail = cabShareList[cIndex].userEmail
         }
         // // eslint-disable-next-line no-debugger
         // debugger
@@ -1094,6 +1098,7 @@ export default {
           tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
           tempList.accessKey = books[i].accessKey
           tempList.accessKind = 'C'
+          tempList.mUserList = books[i].mUserList
           // tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.cabinetKey = books[i].accessKey
           // mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
@@ -1106,6 +1111,9 @@ export default {
             this.shareGroup.selectedList.bookList = []
           }
           this.shareGroup.selectedList.bookList = settingBookList
+          this.permissionWGroup.selectedList.bookList = settingBookList
+          this.permissionVGroup.selectedList.bookList = settingBookList
+          this.permissionRGroup.selectedList.bookList = settingBookList
         } else {
           if (this.currentSelectBookType === 'W') {
             if (!this.permissionWGroup.selectedList.bookList) {
@@ -1134,6 +1142,13 @@ export default {
           tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
           tempList.accessKey = data.memberList[i].userKey
           tempList.accessKind = 'U'
+
+          tempList.domainPath = data.memberList[i].domainPath
+          tempList.pathMtext = data.memberList[i].pathMtext
+          tempList.userProfileImg = data.memberList[i].userProfileImg
+          tempList.phoneEnc = data.memberList[i].phoneEnc
+          tempList.userEmail = data.memberList[i].userEmail
+
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.shareSeq = data.memberList[i].shareSeq
           settingMemList.push(tempList)
@@ -1143,6 +1158,9 @@ export default {
             this.shareGroup.selectedList.memberList = []
           }
           this.shareGroup.selectedList.memberList = settingMemList
+          this.permissionWGroup.selectedList.memberList = settingMemList
+          this.permissionVGroup.selectedList.memberList = settingMemList
+          this.permissionRGroup.selectedList.memberList = settingMemList
         } else {
           if (this.currentSelectBookType === 'W') {
             if (!this.permissionWGroup.selectedList.memberList) {
@@ -1154,6 +1172,9 @@ export default {
               this.permissionVGroup.selectedList.memberList = []
             }
             this.permissionVGroup.selectedList.memberList = settingMemList
+
+            // 열람 시
+            this.permissionRGroup.selectedList.memberList = settingMemList
           } else if (this.currentSelectBookType === 'R') {
             if (!this.permissionRGroup.selectedList.memberList) {
               this.permissionRGroup.selectedList.memberList = []

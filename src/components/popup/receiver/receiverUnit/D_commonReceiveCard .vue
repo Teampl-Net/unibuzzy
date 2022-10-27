@@ -24,13 +24,13 @@
       <!-- 유저 영역 -->
       <template v-else-if="propData.jobKindId === 'USER'">
         <div class="imgCircle middleBgColor fl" >
-          <div v-if="propData.userProfileImg" :style="'background-image: url(' + (propData.domainPath? propData.domainPath + propData.userProfileImg : propData.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+          <div v-if="propData.domainPath || propData.userProfileImg" :style="'background-image: url(' + (propData.domainPath? propData.domainPath + (propData.userProfileImg ? propData.userProfileImg : propData.pathMtext ) : propData.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
           </div>
-          <div v-else style="background-image: url('../../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+          <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
           </div>
         </div>
         <div class="fl w-100P" style="display: flex; align-items: center; " @click="emit('open')">
-          <div class="textLeft fl w-100P " style="">
+          <div class="textLeft fl w-100P " style="" >
             <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
             <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? propData.userEmail : '등록된 이메일이 없습니다.'}}</p>
             <pp class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</pp>
@@ -67,7 +67,8 @@ export default {
     propData: {},
     option: { type: String, default: 'EDIT' },
     selectedYn: { type: Boolean, default: false },
-    compoIdx: {}
+    compoIdx: {},
+    subTitleHidden: { type: Boolean, default: false }
   },
   methods: {
     emit (type) {

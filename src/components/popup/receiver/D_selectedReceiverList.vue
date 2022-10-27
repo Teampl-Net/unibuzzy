@@ -30,8 +30,8 @@
 
       <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
         <div class="middleBgColor fl" >
-          <div v-if="member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
-          <div v-else style="background-image: url('../../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
+          <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
+          <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg'');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? '나' : this.$changeText(member.userDispMtext)}}</p>
         <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px;">x</span>
