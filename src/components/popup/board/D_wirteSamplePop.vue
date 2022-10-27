@@ -1,6 +1,6 @@
 <template>
     <div style="float: left">
-        <div style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 9999999;"></div>
+        <div  @click="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 9999999;"></div>
         <transition name="showUp">
             <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem 0.8rem 0 0; height: 80%; position: fixed; background: #FFF; z-index: 99999999; bottom: 0; left: 10%;">
                 <div style="width: 100%; padding: 12px 20px; height: 50px; float: left; position: relative;" class="headerShadow">

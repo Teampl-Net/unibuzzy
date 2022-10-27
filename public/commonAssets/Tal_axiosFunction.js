@@ -27,7 +27,7 @@ var g_axiosQueue = []
 
 export async function commonAxiosFunction (setItem, nonLoadingYn) {
   console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
-  console.log('parameter is: ')
+  console.log('####parameter is: ')
   console.log(setItem.param)
   if (setItem.firstYn) {
     ;
@@ -42,13 +42,13 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
     result = response
-    console.log('resultData is: ')
+    console.log('####resultData is: ')
     console.log(result)
   }).catch((error) => {
     // alert('세션이 만료되어 메인 페이지로 이동합니다.')
     this.$router.replace('/')
     result = error
-    console.log('error is: ')
+    console.log('####error is: ')
     console.log(error)
   })
   commonMethods.showAxiosLoading(false)

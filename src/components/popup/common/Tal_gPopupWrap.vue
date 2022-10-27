@@ -455,8 +455,6 @@ export default {
             }
           }
         }
-        console.log('popId만듦-----------------------------------------------------------------')
-        console.log(this.detailVal)
         if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
           this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey
         } else if (this.targetType === 'chanDetail') {
@@ -609,8 +607,6 @@ export default {
       console.log('----------팝업 추가-----------')
       console.log(this.popId)
       var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
-      gPopHistory.push(this.popId)
-      console.log('----------현재팝업은-----------')
       console.log(gPopHistory)
       this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
       var history = this.$store.getters['D_HISTORY/hStack']
