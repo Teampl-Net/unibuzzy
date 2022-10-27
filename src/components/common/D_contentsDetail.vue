@@ -192,10 +192,6 @@ export default {
     statCodeComponent
   },
   created () {
-    // // console.log('this.detailVal')
-    // // console.log(this.detailVal)
-    console.log('this.CAB_DETAIL')
-    console.log(this.CAB_DETAIL)
     this.readyFunction()
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
@@ -225,8 +221,6 @@ export default {
     CHANNEL_DETAIL () {
       // console.log(this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
-      console.log('!!! CHANNEL_DETAIL !!!')
-      console.log(chan)
       if (chan) {
         if (this.detailVal.jobkindId === 'BOAR') {
           this.getCabinetDetail(chan[0].teamKey)
@@ -237,14 +231,8 @@ export default {
       }
     },
     CAB_DETAIL () {
-      console.log(this.detailVal)
       if (this.detailVal.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
-
-        // eslint-disable-next-line no-debugger
-        debugger
-        console.log(this.cabinetDetail.mCabinet)
-        console.log('this.cabinetDetail.mCabinet')
         // this.cabinetDetail.mCabinet.shareAuth = this.$checkUserAuth(this.cabinetDetail.mCabinet.mShareItemList)
         return this.cabinetDetail.mCabinet
       } else {
@@ -254,14 +242,11 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
       if (!this.cDetail) return
-      console.log(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
       var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
       if (!cont) {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
       }
       if (cont) {
-        console.log('SSSSSSSSSSSSSSSSSSSSSSSSSS')
-        console.log(cont)
         return cont[0]
       } else {
         console.log(cont)
@@ -291,17 +276,11 @@ export default {
     },
     CAB_DETAIL: {
       handler (value, old) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        console.log(this.CONT_DETAIL)
       },
       deep: false
     },
     CONT_DETAIL: {
       handler (value, old) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        console.log(value)
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!1this.CONT_DETAIL')
-        console.log(old)
         if (value) {
           this.onLoadFunction()
         }
@@ -405,8 +384,6 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail (teamKey) {
-      console.log('############# getCabinetDetail ##############')
-      console.log(this.detailVal)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData
@@ -424,14 +401,8 @@ export default {
       var param = new Object()
       param.contentsKey = this.detailVal.contentsKey
       param.jobkindId = this.detailVal.jobkindId
-      console.log('getContentsDetail - param')
-      console.log(param)
-      console.log('getContentsDetail - this.detailVal')
-      console.log(this.detailVal)
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
-      console.log('getContentsDetail - detailData')
-      console.log(detailData)
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
       if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
@@ -474,7 +445,6 @@ export default {
       this.userNameClick(params.userKey, this.CONT_DETAIL.creTeamKey, false)
     },
     userNameClick (userKey, teamKey, blindYn) {
-      console.log('zzz : ' + userKey + 'teamKey : ' + teamKey)
       if (blindYn === false) {
         var param = {}
         param.targetType = 'bookMemberDetail'
@@ -486,7 +456,6 @@ export default {
         } else {
           param.contentOpenYn = true
         }
-        // // console.log(param)
         this.$emit('openPop', param)
       } else {
         this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
@@ -517,8 +486,8 @@ export default {
         if (this.mobileYn) {
           onMessage('REQ', 'saveCameraRoll', this.selectImgObject.path)
         } else {
+          // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
-          console.log(result)
         }
         this.confirmText = '저장되었습니다!'
         this.confirmType = false
@@ -737,13 +706,11 @@ export default {
         // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
-      console.log('%%%%%%%%%%%%%%%%%%%%%')
-      console.log(params)
       this.reportYn = true
     },
     async download1 (fileKey, path) {
+      // eslint-disable-next-line no-unused-vars
       var result = await this.$downloadFile(fileKey, path)
-      console.log(result)
     },
     openSelectSharePop () {
       if (navigator.share) {
@@ -985,6 +952,7 @@ export default {
       }
     },
     async subScribeContents (act) {
+      // eslint-disable-next-line no-unused-vars
       var result = null
       var subsYn = this.CONT_DETAIL.subsYn
       // eslint-disable-next-line no-new-object
@@ -1010,7 +978,6 @@ export default {
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
-      console.log(result)
       this.cDetail.subsYn = param.subsYn
       /* if (result === true) {
         await this.$emit('refresh')
@@ -1118,10 +1085,7 @@ export default {
           }
         }
         var cont = this.CONT_DETAIL
-        console.log(tempMemo)
         cont.D_MEMO_LIST = [...tempMemo]
-        console.log(cont)
-        console.log(cont.D_MEMO_LIST)
         // var totalMemoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
         this.offsetInt = result.data.totalElements
@@ -1181,8 +1145,8 @@ export default {
       }
     },
     async settingFileList () {
+      // eslint-disable-next-line no-unused-vars
       var test = this.CONT_DETAIL
-      console.log(test)
       // eslint-disable-next-line no-debugger
       debugger
       if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
@@ -1291,8 +1255,6 @@ export default {
         param.targetKind = 'C'
         var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
-          console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-          console.log(result)
           // eslint-disable-next-line no-debugger
           debugger
           for (var d = temp.length - 1; d >= 0; d--) {
@@ -1303,8 +1265,6 @@ export default {
           // temp.push({ doType: act.doType, doKey: result.doKey })
           tempDetail.D_CONT_USER_DO = temp
           tempDetail.likeCount = result.doCount
-          console.log(('두번째 saveUserdo'))
-          console.log(tempDetail)
           this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         })
         for (var d = temp.length - 1; d >= 0; d--) {
@@ -1315,8 +1275,6 @@ export default {
         if (act.doType === 'LI') {
           tempDetail.likeCount += 1
         }
-        console.log(('첫번째 saveUserdo'))
-        console.log(tempDetail)
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         // }
       }

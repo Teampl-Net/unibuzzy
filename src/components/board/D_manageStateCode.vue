@@ -66,10 +66,6 @@ export default {
     } */
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
-    console.log(this.codeList)
-    console.log(this.currentCodeKey)
   },
   props: {
     codeList: {},

@@ -26,8 +26,9 @@ axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
 export async function commonAxiosFunction (setItem, nonLoadingYn) {
-  console.log('----------------------comeAxios-----------------------------------')
-  console.log('----------------------' + nonLoadingYn + '-----------------------------------')
+  console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
+  console.log('parameter is: ')
+  console.log(setItem.param)
   if (setItem.firstYn) {
     ;
   } else {
@@ -41,13 +42,17 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
     result = response
+    console.log('resultData is: ')
+    console.log(result)
   }).catch((error) => {
     // alert('세션이 만료되어 메인 페이지로 이동합니다.')
     this.$router.replace('/')
     result = error
+    console.log('error is: ')
     console.log(error)
   })
   commonMethods.showAxiosLoading(false)
+  console.log('####-----------------------------------------------------------END----------------------------------------------------------------####')
   return result
 }
 
@@ -188,8 +193,6 @@ export const methods = {
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
-    console.log('^&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&^')
-    console.log(result.data)
     if (result.data.resultCode === 'OK') {
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')
@@ -252,8 +255,6 @@ export const methods = {
   //   return resultList
   // },
   async getContentsList (inputParam, nonLoadingYn) {
-    console.log('----------------------------getContentsList--------------------------------')
-    console.log('----------------------------' + nonLoadingYn + '--------------------------------')
     // alert(nonLoadinYn)
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
@@ -543,15 +544,12 @@ export const methods = {
     if (inputParam) {
       param = inputParam
     }
-    console.log(param)
     var result = null
     var response = await commonAxiosFunction({
       url: 'service/tp.saveUser',
       param: param
     })
-    console.log(response)
     result = response
-    console.log(result)
     return result
   }
 }

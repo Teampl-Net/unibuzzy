@@ -175,8 +175,6 @@ export default {
     statCodeComponent
   },
   created () {
-    console.log('this.emptyYn')
-    console.log(this.emptyYn)
     if (!this.emptyYn) {
       this.loadingRefShow()
     }
@@ -193,8 +191,6 @@ export default {
     },
   },
   updated() {
-    console.log('this.emptyYn')
-    console.log(this.emptyYn)
     if (this.emptyYn) {
       this.loadingRefHide()
     }
@@ -263,7 +259,6 @@ export default {
       return result
     },
     clickCard (alim) {
-      console.log(alim)
         if (alim.jobkindId === 'ALIM') {
             this.goDetail(alim)
             /* if (alim.bigYn) {
@@ -276,18 +271,13 @@ export default {
         }
     },
     clickInfo (data) {
-      console.log(data)
     },
     // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (param) {
-      console.log('#param')
-      console.log(param)
       var userKey = param.userKey
       var currentContentsKey = param.contentsKey
       var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
       if (indexOf !== -1) {
-        // console.log('해당 컨텐츠는 ' + indexOf + '번째 인덱스에 위치해 있습니다.')
-        // console.log(this.commonListData[indexOf])
         this.userNameClick(true, userKey, this.commonListData[indexOf].creTeamKey, false)
       }
     },
@@ -459,7 +449,6 @@ export default {
       if (this.tempData.subsKey) {
         param.subsKey = this.tempData.subsKey
       }
-      console.log(this.tempData)
       debugger
       param.userKey = this.GE_USER.userKey
       var req = 'save'
@@ -474,7 +463,6 @@ export default {
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
-      console.log(result)
       var index = this.commonListData.findIndex((item) => item.contentsKey === param.targetKey)
       if (index !== -1) {
         this.commonListData[index].subsYn = param.subsYn
@@ -687,7 +675,6 @@ export default {
     //   }
     // },
     deleteMemo (param) {
-      console.log('********* deleteMemo **********')
       if (param.memoKey) this.tempData = param
       this.$emit('deleteMemo', this.tempData)
     },
@@ -1059,8 +1046,6 @@ export default {
     async loadMoreMemo () {
         this.showMoreMemoTextYn = true
         // alert(true)
-        console.log('#########################')
-        console.log('offsetInt', this.offsetInt)
         // // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
           this.showMoreMemoTextYn = false
@@ -1151,7 +1136,6 @@ export default {
 
     },
     loadingRefShow(){
-      console.log(this.emptyYn)
       if (!this.$refs.sLoadingPush) return
       if (this.emptyYn) return
       if (this.$refs.sLoadingPush)
