@@ -1,8 +1,8 @@
 <template>
-    <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999; position: fixed; left: 20px; bottom: 0%; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
+    <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
             <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업신청</p>
-            <img class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="successSendForm" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
             <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">신청내용</p>
@@ -23,13 +23,19 @@ export default {
   data () {
     return {
       receptPopShowYn: false,
-      okPopShowYn: false
+      okPopShowYn: false,
+      reqMemPopId: null
     }
   },
   props: {
     chanDetail: {}
   },
   created () {
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.reqMemPopId = 'reqMemPop' + this.chanDetail.teamKey
+    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
+    history.push(this.reqMemPopId)
+    this.$store.commit('D_HISTORY/updateStack', history)
     console.log(this.chanDetail)
   },
   computed: {
@@ -46,12 +52,24 @@ export default {
       this.updateFollower()
     },
     successSendForm () {
-      this.$emit('closeXPop')
+      this.closeXPop()
+    },
+    closeXPop () {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      if (this.reqMemPopId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('closeXPop')
+      }
     },
     async updateFollower () {
       var param = {}
       var params = {}
-      param.followerKey = this.chanDetail.userTeamInfo.followerKey
+      if (this.chanDetail.userTeamInfo && this.chanDetail.userTeamInfo.followerKey) {
+        param.followerKey = this.chanDetail.userTeamInfo.followerKey
+      }
       param.teamKey = this.chanDetail.teamKey
       param.userName = this.$changeText(this.GE_USER.userDispMtext)
       param.userKey = this.GE_USER.userKey
@@ -65,13 +83,8 @@ export default {
         param: params
       })
       if (result.data.result === true) {
-        var tempChan = this.chanDetail
-        tempChan.userTeamInfo.reqMemberStatus = param.reqMemberStatus
-        tempChan.userTeamInfo.reqMemberStr = param.reqMemberStr
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.okPopShowYn = true
+        // await this.$addChanList(this.chanDetail.targetKey)
+        this.successSendForm()
       }
     }
   }

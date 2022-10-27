@@ -83,7 +83,7 @@
 
     </div>
     <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
-    <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" />
+    <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
 </div>
 <popUp v-if="confirmPopShowYn" @no='confirmPopShowYn = false' :confirmText='confirmText' confirmType='timeout' />
 </template>
@@ -213,7 +213,7 @@ export default {
         },
         async getMemberListGetUserInfo () {
             var paramMap = new Map()
-            paramMap.set('showProfileYn', true)
+            // paramMap.set('showProfileYn', true)
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
@@ -239,8 +239,8 @@ export default {
                 this.memPhone = data.phoneEnc
                 this.thisUserKey = data.userKey
             } else {
-                this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
-                this.closeXPop()
+                /* this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
+                this.closeXPop() */
             }
         },
         async setUserGrade () {

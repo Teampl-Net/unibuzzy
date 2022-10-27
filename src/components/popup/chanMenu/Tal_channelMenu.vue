@@ -56,7 +56,7 @@
 
           <div v-for="(data, index) in convenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05" style="width:100%; padding: 10px 0;">
             <!-- <gBtnSmall v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " :btnTitle="data.title" style="padding: 0 15px;" /> -->
-            <div class="fl mleft-05 textLeft font16 textOverdot" style="width: calc(100% - 30px - 3rem); margin: 0 0 0 0; width:100% !important;" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.adminYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn === true)) " >
+            <div class="fl mleft-05 textLeft font16 textOverdot" style="width: calc(100% - 30px - 3rem); margin: 0 0 0 0; width:100% !important;" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)) " >
               <span class="grayBlack fontBold mleft-05 w-100P textOverdot textLeft fl" >
                 <img class="fl cursorP img-w18 mright-05" alt="작성 아이콘"  src="../../../assets/images/editChan/icon_write.svg">
                 {{data.title}}

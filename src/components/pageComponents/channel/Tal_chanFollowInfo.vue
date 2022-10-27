@@ -16,15 +16,23 @@
       <p class="commonBlack fontBold font16 textLeft">- 채널의 공지사항을 손쉽게 확인해요!<br>- 채널의 다른 구성원들과 다양한 주제를 편하게 소통해보세요!</p>
       <p class="commonBlack fontBold font16 textLeft"><br>*Tip<br>멤버를 신청하여 채널의 구성원이 되어보고, 친구에게 채널을 공유하여 함께 즐겨보세요!</p> -->
       <p class="commonBlack fontBold font22 textLeft">환영합니다!<br><br></p>
-      <p class="commonBlack font16 textLeft"><b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널을 구독하였습니다.<br><br></p>
-      <p class="commonBlack font16 fontBold textLeft fl mbottom-1" data-clipboard-action="copy" id="copyTextBody" style="height: 30px; border-bottom: 1px solid black; line-height: 30px;" @click="copyText" :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
-        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'">채널 링크를 공유</p>
-      <p class="commonBlack font16 textLeft fl mbottom-1" style="height: 30px; line-height: 30px;">해 친구들을 초대하세요!</p>
-      <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
-        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="내정보 공개하기" />
-        <gBtnSmall @click="closePop" class="greetingApplyMemberBtn" btnTitle="구독하기" />
+      <p class="commonBlack font16 textLeft"><b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널의 구독자가 되었습니다!<br>
+        더 많은 활동을 위해 멤버 신청을 해주세요!
+      <br>
+      <br>
+      <!-- <b>Q.당신은 어떤 멤버인가요?</b>
+      <br> -->
+      </p>
+      <!-- <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
+        <gBtnSmall @click="applyMember" btnThema="light" style="border:1px solid #ccc;" class="greetingApplyMemberBtn" btnTitle="일반멤버" />
+      </div> -->
+      <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; margin-top: 20px;display: flex;justify-content: space-evenly;">
+        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="신청하기" />
         <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
         + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" btnTitle="채널링크 복사하기" /> -->
+      </div>
+      <div style="width: 100%; min-height: 50px; margin-top: 0px; float: left; display: flex;justify-content: space-evenly;">
+        <gBtnSmall @click="closePop" btnThema="light" style="border:1px solid #ccc;" class="greetingApplyMemberBtn" btnTitle="나중에 하기" />
       </div>
     </div>
     <img class="" style="width: 150px; margin-left: 18%;" src="../../../assets/images/common/winkAlimLogo.png" alt="">

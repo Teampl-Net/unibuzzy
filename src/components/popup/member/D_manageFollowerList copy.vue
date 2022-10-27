@@ -1,38 +1,34 @@
 <template>
 <div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
-    <!-- <div style="width: 100%; float: left; height: 40px;">
-        <p class="font16 fontBold fl mright-05 grayBlack">필터: </p>
-        <div class="font16 filterBlock" style="">관리자<img class="cursorP" style="" src="../../../assets/images/common/searchXIcon.svg" alt=""></div>
-    </div> -->
-    <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
-    <div class="pageTopAreaStyle">
-        <div class="tableTopArea">
-            <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
-            <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
-            <p class="font14  fontBold fl" style="width: 125px;">권한</p>
-        </div>
-        <!-- <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/> -->
-        <!-- <img style="width: 20px; float:right;" src="../../../assets/images/common/common_filter.svg" alt=""> -->
-        <gBtnSmall @click="openReceptListPop" btnTitle="등업신청목록" style="z-index: 9999;" class="receptListBtnStyle cursorP"/>
+    <div style="width: 100%; float: left; position: relative;">
+        <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
+        <gBtnSmall @click="openReceptListPop" btnTitle="등업신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
-      <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
+      <!-- <div v-if="tab === 'Show'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
+      멤버 신청서 만들기
+      </div> -->
+      <!-- <gBtnSmall v-if="tab === 'Show'" :btnThema="'light'" @click="memberFormClick" btnTitle="멤버 신청서 만들기" style="position: absolute; right: 1rem; top:1rem" /> -->
+      <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
+      <!-- <div v-if="GE_USER_LIST.length === 0 && ownerYn && tab === 'Show'" class="mtop-1" style=""> -->
+        <!-- <p class="font16 " style="">정보를 공개한 대상이 없습니다. <br> 채널을 조금 더 홍보해보세요! </p> -->
+      <!-- </div> -->
     </div>
+
+    <!-- <div class="btnPlus" v-show="propData.ownerYn && tab ==='Admin'" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div> -->
 
     <gConfirmPop v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false" style="z-index:9999999" />
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-    <div v-if="receptListPopShowYn" class="modalBackStyle" > </div>
-    <transition name="showUp">
-        <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
-            <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업관리</p>
-                <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
-            </div>
-            <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
-                <receptMemberList @okMember="okMember" :managingList='this.reqMemList' @openPop='openPop'  @match='matchInfo' @memberInfo='memberInfo'/>
-            </div>
+    <div v-if="receptListPopShowYn" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;" > </div>
+    <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
+        <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
+            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업관리</p>
+            <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-    </transition>
+        <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
+            <receptMemberList @okMember="okMember" :managingList='this.reqMemList' @setManager='setManager' @openPop='openPop'  @match='matchInfo' @memberInfo='memberInfo'/>
+        </div>
+    </div>
     <gConfirmPop @no="timerPopShowYn = false" confirmText='승인되었습니다!' confirmType='timeout' v-if="timerPopShowYn" />
 </div>
 
@@ -49,10 +45,10 @@ export default {
     return {
       errorPopYn : false,
       errorText: '',
-      activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
+      activeTabList: [{ display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
 
-      tab: 'F',
+      tab: 'M',
       managerList: [],
       showUserList: [],
       smallPopYn:false,
@@ -63,15 +59,7 @@ export default {
       currentTeamKey: null,
       receptListPopShowYn: false,
       reqMemList: [],
-      timerPopShowYn: false,
-      searchFilterObj: {
-        memberYn: null,
-        managerYn: null,
-        managerType: null,
-        userDispMtext: '',
-        phoneEnc: '',
-        userEmail: ''
-      }
+      timerPopShowYn: false
     }
   },
   created () {
@@ -81,13 +69,24 @@ export default {
   },
   mounted () {
     this.ownerYn = true
+    // if (this.propData.ownerYn) {
+    //   this.ownerYn = true
+    //   this.activeTabList = [{ display: '공개', name: 'Show' }, { display: '매니저', name: 'Admin' }]
+    //   // this.activeTabList = [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }]
+    // } else {
+    //   this.activeTabList = [{ display: '공개', name: 'Show' }]
+    // }
+    /* this.currentTeamKey = this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM'] */
+    // if (!this.GE_USER_LIST) {
+    /* this.getFollowerList(this.tab) */
+    // }
   },
   methods: {
     async openReceptListPop () {
         await this.getReqMemList()
         this.receptListPopShowYn = true
     },
-
+    
     closeRecMemberPop () {
         this.receptListPopShowYn = false
     },
@@ -136,8 +135,7 @@ export default {
         }
         debugger
         await this.updateFollower(fKeyList)
-        this.$addChanList(this.propData.teamKey)
-        /* this.timerPopShowYn = true */
+        this.timerPopShowYn = true
         // 리스트로 등업신청 해줘야함
     },
     async updateFollower (fKeyList) {
@@ -157,9 +155,8 @@ export default {
       if (result.data.result === true) {
         // eslint-disable-next-line no-debugger
         debugger
-        /* this.okPopShowYn = true */
-        this.$showToastPop('승인되었습니다!')
-        this.getFollowerList()
+        this.okPopShowYn = true
+        this.successSendForm()
       }
     },
     async getFollowerList () {
@@ -167,30 +164,13 @@ export default {
       var paramMap = new Map()
        // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.propData.teamKey)
-      paramMap.set('adminYn', true)
-      paramMap.set('pageSize', 1000)
-
-      if (this.searchFilterObj.memberYn != null) {
-        paramMap.set('memberYn', this.searchFilterObj.memberYn)
-      }
-      if (this.searchFilterObj.managerType != null) {
-        paramMap.set('managerType', this.searchFilterObj.managerType)
-      }
-      if (this.searchFilterObj.userDispMtext != null && this.searchFilterObj.userDispMtext !== '') {
-        paramMap.set('userDispMtext', this.searchFilterObj.userDispMtext)
-      }
-      if (this.searchFilterObj.phoneEnc != null && this.searchFilterObj.phoneEnc !== '') {
-        paramMap.set('phoneEnc', this.searchFilterObj.phoneEnc)
-      }
-      if (this.searchFilterObj.userEmail != null && this.searchFilterObj.userEmail !== '') {
-        paramMap.set('userEmail', this.searchFilterObj.userEmail)
-      }
+      paramMap.set('pageSize', 100)
       // #재준씨 봐주세요!!!!!!
-      /* if (this.tab === 'M') {
+      if (this.tab === 'M') {
         paramMap.set('memberYn', true)
       } else {
 
-      } */
+      }
 
       result = await this.$commonAxiosFunction({
           url: 'service/tp.getFollowerList',
@@ -242,16 +222,46 @@ export default {
     },
     async saveManager (follower) {
       var param = {}
-      debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveManager',
         param: param
       })
-      console.log(result)
-      debugger
     },
+    async addDirectly(params){
 
+      var follower = new Object()
+      follower = params
+      var param = new Object()
+
+      follower.teamKey = this.propData.currentTeamKey
+
+
+      follower.inEmail = params.userEmail
+      follower.inPhone = params.userPhone
+      follower.inUserName = this.$changeTex(params.userDispMtext || params.userNameMtext)
+      // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
+      param.follower = follower
+
+
+      var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveManager',
+          param: param
+      })
+
+      if(result.data.result === true){
+        if(result.data.message === '중복된 유저입니다.'){
+          this.errorPopYn = true
+          this.errorText = result.data.message
+        }else{
+          this.getFollowerList(this.tab)
+        }
+      }
+
+      this.changeTab('Admin')
+
+
+    },
     async openAddManagerPop () {
       // eslint-disable-next-line no-new-object
 
@@ -274,12 +284,12 @@ export default {
   },
   components: { commonMemberList, receptMemberList },
   computed: {
-    /* GE_NEW_MAN_LIST () {
+    GE_NEW_MAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
     },
     GE_NEW_SHOW_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_SHOW_LIST']
-    }, */
+    },
     CHANNEL_DETAIL () {
       var detailList = this.$getDetail('TEAM', this.propData.teamKey)
       if (detailList) {
@@ -353,12 +363,6 @@ export default {
 }
 </script>
 <style>
-.filterBlock {float: left; margin-right: 10px; min-height: 25px; position: relative; border-radius: 10px; padding: 0 8px; padding-right: 20px; border: 1px solid #ccc; background: rgb(245, 245, 249);}
-.filterBlock img {position: absolute; right: 5px; top: 6.5px; width: 10px;}
 
-.tableTopArea{width: calc(100% - 30px); min-height: 30px; display: flex; justify-content: center; align-items: center;}
 
-.modalBackStyle{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;}
-.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #ccc;}
-.receptListBtnStyle {position: fixed; right: 20px; top: 10px; height: 25px; z-index: 999999; line-height: 25px;}
 </style>

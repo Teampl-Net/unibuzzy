@@ -2,9 +2,9 @@
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
-        <div style="width: 100%; min-height: 40px; height: 100%; float: left;">
-            <div class="fl mleft-01 w-100P" style="position: relative; display: flex;min-height: 40px; height: 100%; width: calc(100% - 125px)"  @click="goMemberInfo(member)">
-                <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; justify-content: center; align-items: center;">
+        <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex;     align-items: center;">
+            <div class="fl mleft-01 w-100P" style="position: relative; display: flex;min-height: 40px; height: 100%; width: calc(100% - 130px)"  @click="goMemberInfo(member)">
+                <div style="float: left; display: flex; flex-direction: column; width: 35px; margin-right: 15px; justify-content: center; align-items: center;">
                     <div v-if="member.userProfileImg"  class="managerPicImgWrap">
                         <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
                     </div>
@@ -24,15 +24,17 @@
                     </div>
                 </div>
                 <div style="width: 100%; min-height: 20px; float: left; display: flex; flex-direction: column;">
-                    <p class="fl font16 commonBlack" style="text-align:left; padding-left:5px; width:calc(100% - 100px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberYn || member.memberYn === 1)" class="commonBlack font14 textLeft">{{member.userEmail}}</p>
-                    <p v-if="(member.memberYn || member.memberYn === 1)" class="commonBlack font14 textLeft">{{member.phoneEnc}}</p>
+                    <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold  textLeft">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
+                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold textLeft">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                 </div>
             </div>
             <div class="fr  memberItemBox" >
-                <div @click="clickManagerBox('ALIM', member, index, member.manAlimYn)" :class="{activeMAlim: member.manAlimYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px; border: 1px solid #ccc;">알림</div>
-                <div @click="clickManagerBox('MEMBER', member, index, member.manMemberYn)" :class="{activeMMember: member.manMemberYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center;  width: 35px; height: 35px; border-radius: 5px; border: 1px solid #ccc;">멤버</div>
-                <div @click="clickManagerBox('CHAN', member, index, member.manChanYn)" :class="{activeMChan: member.manChanYn === 1}" class="font14 cursorP" style=" display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px; border: 1px solid #ccc;">채널</div>
+                <div @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px;     box-shadow: inset 0 0 4px 1px #00000010;">알림</div>
+                <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center;  width: 35px; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010;">멤버</div>
+                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font14 cursorP" style=" display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px; ;    box-shadow: inset 0 0 4px 1px #00000010;">채널</div>
 
                 <!-- <div v-if="member.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                     <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
@@ -111,63 +113,65 @@ export default {
       param.teamKey = member.teamKey
       param.followerKey = member.followerKey
       var localStatusObj = {}
-      if (member.manAlimYn === 1) {
+      if (member.mngAlimYn === 1) {
         if (manType === 'ALIM') {
-          param.manAlimYn = false
-          this.managingList[index].manAlimYn = 0
+          param.mngAlimYn = false
+          this.managingList[index].mngAlimYn = 0
           param.manDelYn = true
-          localStatusObj.manAlimYn = false
+          localStatusObj.mngAlimYn = false
         } else {
-          localStatusObj.manAlimYn = true
+          localStatusObj.mngAlimYn = true
         }
       } else {
         if (manType === 'ALIM') {
-          param.manAlimYn = true
-          this.managingList[index].manAlimYn = 1
-          localStatusObj.manAlimYn = true
+          param.mngAlimYn = true
+          this.managingList[index].mngAlimYn = 1
+          localStatusObj.mngAlimYn = true
         } else {
-          localStatusObj.manAlimYn = false
+          localStatusObj.mngAlimYn = false
         }
       }
-      if (member.manMemberYn === 1) {
+      if (member.mngMemberYn === 1) {
         if (manType === 'MEMBER') {
-          param.manMemberYn = false
-          this.managingList[index].manMemberYn = 0
+          param.mngMemberYn = false
+          this.managingList[index].mngMemberYn = 0
           param.manDelYn = true
-          localStatusObj.manMemberYn = false
+          localStatusObj.mngMemberYn = false
         } else {
-          localStatusObj.manMemberYn = true
+          localStatusObj.mngMemberYn = true
         }
       } else {
         if (manType === 'MEMBER') {
-          param.manMemberYn = true
-          this.managingList[index].manMemberYn = 1
-          localStatusObj.manMemberYn = true
+          param.mngMemberYn = true
+          this.managingList[index].mngMemberYn = 1
+          localStatusObj.mngMemberYn = true
         } else {
-          localStatusObj.manMemberYn = false
+          localStatusObj.mngMemberYn = false
         }
       }
-      if (member.manChanYn === 1) {
+      if (member.mngTeamYn === 1) {
         if (manType === 'CHAN') {
-          param.manChanYn = false
-          this.managingList[index].manChanYn = 0
+          param.mngTeamYn = false
+          this.managingList[index].mngTeamYn = 0
           param.manDelYn = true
-          localStatusObj.manMemberYn = false
+          localStatusObj.mngTeamYn = false
         } else {
-          localStatusObj.manMemberYn = true
+          localStatusObj.mngTeamYn = true
         }
       } else {
         if (manType === 'CHAN') {
-          param.manChanYn = true
-          this.managingList[index].manChanYn = 1
-          localStatusObj.manMemberYn = true
+          param.mngTeamYn = true
+          this.managingList[index].mngTeamYn = 1
+          localStatusObj.mngTeamYn = true
         } else {
-          localStatusObj.manMemberYn = false
+          localStatusObj.mngTeamYn = false
         }
       }
       console.log('param')
-      console.log(param)
-      if (!localStatusObj.manAlimYn && !localStatusObj.manMemberYn && !localStatusObj.manChanYn) {
+      console.log(localStatusObj)
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (localStatusObj.mngAlimYn === false && localStatusObj.mngMemberYn === false && localStatusObj.mngTeamYn === false) {
         await this.deleteManager(param)
       } else {
         this.$emit('saveManager', param)
@@ -270,15 +274,21 @@ export default {
 .managerPicImgWrap img {width: 100%;}
 
 .activeMAlim {
-    background: rgb(204 223 239)!important;
-    color: #303030
+    background: #DFF7FF!important;
+    color: #2D75B7;
+    font-weight: bold;
+    box-shadow: 0 0 4px 1px #00000025!important;
 }
 .activeMMember{
-    background: rgb(212 232 209)!important;
-    color: #303030
+    background: #D0FBE8!important;
+    color: #2DB77D;
+    font-weight: bold;
+    box-shadow: 0 0 4px 1px #00000025!important;
 }
 .activeMChan {
-    background: rgb(252 245 181)!important;
-    color: #303030
+    background: #FBF6D0!important;
+    color: #B7902D;
+    font-weight: bold;
+    box-shadow: 0 0 4px 1px #00000025!important;
 }
 </style>

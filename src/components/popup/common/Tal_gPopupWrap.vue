@@ -102,8 +102,8 @@ import selectBookList from '../receiver/D_selectBookList.vue'
 import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
 // import followerManagement from '../member/D_manageFollowerList.vue'
 // import managerManagement from '../member/D_manageManagerList.vue'
-// import memberManagement from '../member/D_manageFollowerList.vue'
-import memberManagement from '../member/Tal_memberManagement.vue'
+import memberManagement from '../member/D_manageFollowerList.vue'
+// import memberManagement from '../member/Tal_memberManagement.vue'
 
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
@@ -561,8 +561,8 @@ export default {
         this.helpYn = true
       // } else if (this.targetType === 'managerManagement') {
       } else if (this.targetType === 'memberManagement') {
-        /* this.headerTitle = '구독자 관리' */
-        this.headerTitle = '매니저 관리'
+        this.headerTitle = '구독자 관리'
+        /* this.headerTitle = '매니저 관리' */
         this.helpYn = true
       } else if (this.targetType === 'editBoard') {
         this.headerTitle = '게시판 관리'
@@ -804,16 +804,15 @@ export default {
       // var history = this.$store.getters['D_HISTORY/hStack']
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       var indexOf = null
-
       if (value.chanYn) {
-        if (currentPage === this.popId) {
-          return
+        indexOf = currentPage.indexOf('chanDetail')
+        if (indexOf !== -1) {
+          if (this.params.targetKey === value.targetKey) {
+            return
+          }
         }
         this.goChanDetail(value)
       } else {
-        if (currentPage === this.popId) {
-
-        }
         console.log(this.popId)
         if (value.jobkindId === 'ALIM') {
           param.targetType = 'pushDetail'
@@ -933,7 +932,7 @@ export default {
       var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
       var currentPop = popHistory[popHistory.length - 1]
       console.log(this.popId, '***', currentPop)
-      if (currentPop !== this.popId) {
+      if (currentPop && currentPop !== this.popId) {
         if (this.$refs.commonGPopWrap.recvNotiFromMain) {
           this.$refs.commonGPopWrap.recvNotiFromMain(notiDetail, arrivedYn)
         }

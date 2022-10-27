@@ -371,14 +371,21 @@ export const commonMethods = {
           if (data.ownerYn) {
             followerText = '소유자'
           } else {
-            followerText = '관리자'
+            followerText = '관리자('
             if (data.mngTeamYn === true || data.mngTeamYn === 1) {
-              followerText = '채널' + followerText
+              followerText = followerText + '채널'
+              if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
+                followerText += '/'
+              }
             } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
-              followerText = '멤버' + followerText
+              followerText = followerText + '멤버'
+              if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
+                followerText += '/'
+              }
             } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
-              followerText = '알림' + followerText
+              followerText = followerText + '알림'
             }
+            followerText += ')'
           }
         } else {
         }

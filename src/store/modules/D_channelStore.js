@@ -164,22 +164,28 @@ const D_CHANNEL = {
           if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
             D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
           }
-          if (team.userTeamInfo.showProfileYn === 1) {
+          if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
+            D_CHAN_AUTH.memberYn = true
+          }
+          /* if (team.userTeamInfo.showProfileYn === 1) {
             D_CHAN_AUTH.showProfileYn = true
             D_CHAN_AUTH.userGrade = '(공개)'
-          }
+          } */
           D_CHAN_AUTH.followYn = true
           team.detailShowYn = false
           D_CHAN_AUTH.followTypeText = '구독자'
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
+            D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
+            D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
+            D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
             if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
               D_CHAN_AUTH.followTypeText = '소유자'
-              D_CHAN_AUTH.userGrade = '(관리자)'
+              // D_CHAN_AUTH.userGrade = '(관리자)'
               D_CHAN_AUTH.ownerYn = true
               D_CHAN_AUTH.admYn = true
             } else {
               D_CHAN_AUTH.followTypeText = '관리자'
-              D_CHAN_AUTH.userGrade = '(매니저)'
+              // D_CHAN_AUTH.userGrade = '(매니저)'
             }
             D_CHAN_AUTH.adminYn = true
           }
@@ -218,22 +224,28 @@ const D_CHANNEL = {
             if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
               D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
             }
-            if (team.userTeamInfo.showProfileYn === 1) {
-              D_CHAN_AUTH.showProfileYn = true
-              D_CHAN_AUTH.userGrade = '(공개)'
+            if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
+              D_CHAN_AUTH.memberYn = true
             }
+            // if (team.userTeamInfo.showProfileYn === 1) {
+            // D_CHAN_AUTH.showProfileYn = true
+            // D_CHAN_AUTH.userGrade = '(공개)'
+            // }
             D_CHAN_AUTH.followYn = true
             team.detailShowYn = false
             D_CHAN_AUTH.followTypeText = '구독자'
             if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
+              D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
+              D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
+              D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
               if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
                 D_CHAN_AUTH.followTypeText = '소유자'
-                D_CHAN_AUTH.userGrade = '(관리자)'
+                // D_CHAN_AUTH.userGrade = '(관리자)'
                 D_CHAN_AUTH.ownerYn = true
                 D_CHAN_AUTH.admYn = true
               } else {
                 D_CHAN_AUTH.followTypeText = '관리자'
-                D_CHAN_AUTH.userGrade = '(매니저)'
+                // D_CHAN_AUTH.userGrade = '(매니저)'
               }
               D_CHAN_AUTH.adminYn = true
             }
@@ -716,22 +728,28 @@ const D_CHANNEL = {
         if (payload.userTeamInfo.notiYn === false || Number(payload.userTeamInfo.notiYn) === 0) {
           D_CHAN_AUTH.recvAlimYn = payload.userTeamInfo.notiYn
         }
-        if (payload.userTeamInfo.showProfileYn === 1) {
+        if (payload.userTeamInfo.memberYn === true || payload.userTeamInfo.memberYn === 1) {
+          D_CHAN_AUTH.memberYn = true
+        }
+        /* if (payload.userTeamInfo.showProfileYn === 1) {
           D_CHAN_AUTH.showProfileYn = true
           D_CHAN_AUTH.userGrade = '(공개)'
-        }
+        } */
         D_CHAN_AUTH.followYn = true
         payload.detailShowYn = false
         D_CHAN_AUTH.followTypeText = '구독자'
         if (payload.userTeamInfo.managerKey !== undefined && payload.userTeamInfo.managerKey !== null && payload.userTeamInfo.managerKey !== '') {
+          D_CHAN_AUTH.mngAlimYn = payload.userTeamInfo.mngAlimYn
+          D_CHAN_AUTH.mngTeamYn = payload.userTeamInfo.mngTeamYn
+          D_CHAN_AUTH.mngMemberYn = payload.userTeamInfo.mngMemberYn
           if (payload.userTeamInfo.ownerYn === true || payload.userTeamInfo.ownerYn === 1) {
             D_CHAN_AUTH.followTypeText = '소유자'
-            D_CHAN_AUTH.userGrade = '(관리자)'
+            // D_CHAN_AUTH.userGrade = '(관리자)'
             D_CHAN_AUTH.ownerYn = true
             D_CHAN_AUTH.admYn = true
           } else {
             D_CHAN_AUTH.followTypeText = '관리자'
-            D_CHAN_AUTH.userGrade = '(매니저)'
+            // D_CHAN_AUTH.userGrade = '(매니저)'
           }
           D_CHAN_AUTH.adminYn = true
         }

@@ -6,7 +6,7 @@
   <div class="editMyChanMenuWrap">
     <table class="myChanMenuTable w-100P fl" >
 
-      <tr @click="editChanDetaillClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="editChanDetaillClick">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
@@ -22,15 +22,15 @@
         </th>
       </tr>
 
-      <tr @click="managerEditClick('manager')">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="managerEditClick('manager')">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
             <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">공개/매니저 관리</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);"> 멤버 관리, 매니저 임명을 할 수 있어요.</p>
+            <p class="font16 commonDarkGray fontBold">구독자 관리</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);"> 구독자에게 권한을 부여할 수 있어요</p>
             <!-- <p class="font16 fl mleft-05">공개{{managerYn ? '/매니저' : ''}}</p> -->
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
@@ -40,7 +40,7 @@
         </th>
       </tr>
 
-      <tr @click="addressEditClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="addressEditClick">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
@@ -56,7 +56,7 @@
         </th>
       </tr>
 
-      <tr @click="boardEditClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="boardEditClick">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">

@@ -5,7 +5,11 @@
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-  <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="okMember" />
+  <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
+  <div v-if="receptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
+    <transition name="showUp">
+        <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="receptMemPopShowYn" @closeXPop="this.closeReqMemPop()" />
+    </transition>
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
@@ -46,10 +50,10 @@
         <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; align-items: center;">
           <div @click="goProfile" :style="'background-image: url(' + (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.GE_USER.userProfileImg : this.GE_USER.userProfileImg) + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;"></div>
           <div class="mleft-05" style="display:flex; flex-direction: column;">
-            <p @click="goProfile" class="font16">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+            <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
             <div>
-              <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
-              <p class="fl commonBlack font14 cursorP" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(공개)</p>
+              <p class="fl font14 textLeft commonBlack">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</p>
+              <!-- <p class="fl commonBlack font14 cursorP" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(공개)</p> -->
             </div>
           </div>
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
@@ -59,10 +63,17 @@
           <match :color="'#6768a7'"/>
         </div>
         <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-          <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
-            <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'color:white' : '' " >공개</p>
+          <!-- <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc; background-color:#eee" > -->
+            <!-- <p class="fl font14 cursorP fontBold"  @click="saveMemberButton" :style="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn ? 'color:white' : '' " >공개</p> -->
+
+            <!-- {{{{this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr}}}} -->
+            <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
+                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업신청</p>
+                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업대기중</p>
+                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p>
+            </div>
             <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >내정보공개</p> -->
-          </div>
+          <!-- </div> -->
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
 
@@ -98,7 +109,8 @@
   </div>
 
   <!-- <div class="btnPlus" v-show="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
-  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <!-- <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78"> -->
+  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
   <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
 
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
@@ -119,7 +131,7 @@
   <!-- <writePush ref="writePushCompo" v-if="this.targetType === 'writePush'" :params="this.params" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' /> -->
   <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
-
+<gConfirmPop @no="qConfirmPopShowYn = false" :confirmText='qConfirmText' confirmType='two' @ok="okSaveMember" v-if="qConfirmPopShowYn" />
 </div>
 </template>
 
@@ -131,6 +143,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from './Tal_chanFollowInfo.vue'
 import writeContents from '../../popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import recMemberPop from '../../popup/member/D_recMemberPop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 export default {
   data () {
@@ -167,10 +180,15 @@ export default {
       writeBoardYn: false,
       writeBoardData: {},
       writeBoardPopId: '',
+      receptMemPopShowYn: false,
+      notiQueueList: [],
+      qConfirmPopShowYn: false,
+      qConfirmText: '',
       readyFinYn: false,
       gMemoEditYn: false,
       focusEle: '',
-      bigBtnShowYn: true
+      bigBtnShowYn: true,
+      reqMemPopId: null
       // errorPopYn: false
     }
   },
@@ -184,6 +202,7 @@ export default {
     chanDetailComp,
     welcomePopUp,
     writeContents,
+    recMemberPop,
     // boardWrite,
     match
   },
@@ -214,6 +233,17 @@ export default {
     }
   },
   methods: {
+    openReqMemPop () {
+      /* if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
+        this.okMember()
+      } */
+      this.receptMemPopShowYn = true
+    },
+    closeReqMemPop () {
+      this.readyFunction()
+      this.openWelcomePopYn = false
+      this.receptMemPopShowYn = false
+    },
     memoEdit (editYn) {
       var btn = document.getElementById('writeBtn')
       if (editYn === true) {
@@ -299,6 +329,46 @@ export default {
 
       // pushlist에서 close해주는 중
       this.$emit('closeLoading')
+      // this.checkNotiQueue()
+    },
+    async okSaveMember () {
+      var param = {}
+      param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
+      param.teamKey = this.CHANNEL_DETAIL.teamKey
+      param.userName = this.$changeText(this.GE_USER.userDispMtext) || this.$changeText(this.GE_USER.userNameMtext)
+      param.userKey = this.GE_USER.userKey
+      param.memberYn = true
+      var params = { follower: param, doType: 'AP' }
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveFollower',
+        param: params
+      })
+      if (result.data.result === true) {
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) {
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn = false
+        } else {
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn = true
+        }
+      }
+      await this.$addChanList(this.chanDetail.targetKey)
+      this.qConfirmPopShowYn = false
+      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
+    },
+    checkNotiQueue () {
+      var queue = this.GE_CHANNEL_NOTI_QUEUE
+      if (!queue || queue.length === 0) return
+      var index = queue.findIndex((item) => Number(item.creTeamKey) === this.CHANNEL_DETAIL.teamKey)
+      if (index !== 1) {
+        if (this.CHANNEL_DETAIL.userTeamInfo.memberYn === true || this.CHANNEL_DETAIL.userTeamInfo.memberYn === 1) {
+
+        } else {
+          this.qConfirmText = '채널의 관리자로 지정되었습니다.<br>확인을 누르면 멤버로 자동 등업되며<br> 관리자의 권한을 가지게 됩니다.'
+          this.qConfirmPopShowYn = true
+        }
+        queue.splice(index, 1)
+        // alert(JSON.stringify(queue))
+        this.$store.commit('D_CHANNEL/MU_CHANNEL_NOTI_QUEUE_REPLACE', queue)
+      }
     },
     targetContentScrollMove (wich, jobkindId) {
       if (wich && jobkindId) {
@@ -338,15 +408,13 @@ export default {
       param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.$emit('openPop', param)
     },
-    async okMember (inshowProfileYn) {
+    reloadPage () {
+      this.readyFunction()
+    },
+    async okMember () {
       var result = null
       this.$emit('openLoading')
-      if (inshowProfileYn) {
-        this.followParam.showProfileYn = inshowProfileYn
-        result = await this.$changeFollower({ follower: this.followParam, doType: 'FM' }, 'save')
-      } else {
-        result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
-      }
+      result = await this.$changeFollower({ follower: this.followParam, doType: 'FL' }, 'save')
       if (result.result || result) {
         this.sendLoadingYn = false
         if (result.message === 'OK') {
@@ -749,6 +817,16 @@ export default {
         '--height': 300 - this.scrollPosition + 'px'
       }
     },
+    REQ_MEM_OBJ () {
+      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus) {
+        return { reqMemberStatus: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus, reqMemberStr: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr }
+      } else {
+        return { reqMemberStatus: '00', reqMemberStr: null }
+      }
+    },
+    GE_CHANNEL_NOTI_QUEUE () {
+      return this.$store.getters['D_CHANNEL/GE_CHANNEL_NOTI_QUEUE']
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -760,6 +838,24 @@ export default {
     }
   },
   watch: {
+    GE_CHANNEL_NOTI_QUEUE: {
+      handler () {
+        // this.checkNotiQueue()
+      }
+      /* immediate: true,
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        var newList = value
+        var index = newList.findIndex((item) => Number(item.creTeamKey) === this.CHANNEL_DETAIL.teamKey)
+        if (index !== 1) {
+          this.qConfirmText = newList[index].message
+          // this.qConfirmPopShowYn = true
+          newList = newList.splice(index, 1)
+          this.$store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', newList)
+        }
+      },
+      deep: true */
+    },
     CHANNEL_DETAIL: {
       handler (value, old) {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {

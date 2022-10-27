@@ -66,7 +66,7 @@ export default {
 }
 </script>
 <style scoped>
-.confirmPopWrap{width: 80%; left: 10%; position: fixed; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;}
+.confirmPopWrap{width: 80%; left: 10%; position: fixed; z-index: 99999999999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;}
 
 /* .confirmPopWrap{width: 90%; max-width: 400px; position: absolute; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;} */
 .confirmPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.8rem 0.5rem;}
