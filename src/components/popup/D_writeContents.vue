@@ -727,6 +727,8 @@ export default {
 
         if (this.modiYn) {
           param.contentsKey = this.propData.modiContentsKey
+        } else {
+          param.workStatCodeKey = 40
         }
         var result = await this.$saveContents(param)
         if (result.result === true) {
