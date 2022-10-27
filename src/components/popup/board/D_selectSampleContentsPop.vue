@@ -18,14 +18,14 @@
                         <p class="font16 fontBold commonColor textLeft " style="margin-top: 3px;">[{{this.$changeText(this.cabinetDetail.teamNameMtext)}}] 샘플 목록</p>
                         <gBtnSmall @click="openMakeSamplePop('new')" btnTitle="추가" style="position: absolute; right: 5px; top: 0px; "/>
                     </div>
-                    <!-- <div @click="goScroll('back')" style="float: left; width: 15px; height: 100px; display: flex; align-items: center;">
+                    <div @click="goScroll('back')" style="float: left; margin-right: 5px;cursor: pointer ; width: 15px; height: 100px; display: flex; align-items: center;">
                         <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
-                    </div> -->
-                    <div ref="sampleScrollWrap" style="width: calc(100%); overflow: scroll hidden; height: 100px; float: left;">
+                    </div><!-- okScrollBar -->
+                    <div ref="sampleScrollWrap" class=" sampleScrollWrap" style="width: calc(100% - 40px); box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset; border-radius: 10px; padding: 5px;overflow: scroll hidden; height: 100px; float: left;">
                     <!-- <div ref="sampleScrollWrap" style="width: calc(100% - 40px); overflow: scroll hidden; height: 100px; float: left;"> -->
                         <div style="min-width: 100%; height: 100%; padding: 5px 0; float: left;" :style="'width: ' + this.sampleList.length * 100 + 'px;'">
-                            <p class="font16 grayBlack textLeft" v-if="sampleList.length === 0">샘플이 없습니다. 샘플을 추가해보세요!</p>
-                            <div v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index" style="float: left; width: 90px; height: 100px; display: flex; flex-direction: column; align-items: center;" >
+                            <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">선택가능한 샘플이 없습니다.</p>
+                            <div v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index" style="float: left; width: 90px; height: 100px; cursor: pointer; display: flex; flex-direction: column; align-items: center;" >
                                 <div :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'selectedSample': ''" style="width: 80px; padding: 10px;height: 80px; box-shadow: rgb(140 140 140 / 26%) 0px 0px 3px 1px; float: left; border-radius: 5px;">
                                     <img src="../../../assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" style="width: 35px;" alt="">
                                     <img src="../../../assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" style="width: 35px;" alt="">
@@ -36,11 +36,11 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div @click="goScroll('next')" style="float: left; width: 15px; height: 100px; display: flex; align-items: center;">
+                    <div @click="goScroll('next')" style="float: left; margin-left: 5px;cursor: pointer ; width: 15px; height: 100px; display: flex; align-items: center;">
                         <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
-                    </div> -->
-                    <div style="width: 100%; height: calc(100% - 170px); float: left ">
-                        <!-- <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">미리보기</p> -->
+                    </div>
+                    <div style="width: 100%; height: calc(100% - 200px); margin-top:10px; float: left ">
+                        <p class="font16 fontBold commonColor mbottom-05 textLeft" style="margin-top: 7px;">미리보기</p>
                         <div class="font14" v-html="this.selectedSampleObj.bodyFullStr" style="width: 100%; overflow: hidden scroll; text-align: left; height: 100%; float: left; border-radius: 0.8rem; box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset; padding: 10px 20px; ">
                         </div>
                         <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05" @click="askDelSample" style=" cursor: pointer; background: #D9D9D9; color: #FFF; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;">
@@ -108,6 +108,20 @@ export default {
     }
   },
   methods: {
+    goScroll (to) {
+      var scrollTarget = this.$refs.sampleScrollWrap
+      var scrollW = scrollTarget.scrollLeft
+      if (to === 'back') {
+        var toLeft = scrollW - 160
+        if (toLeft < 0) {
+          toLeft = 0
+        }
+        scrollTarget.scrollTo({ left: toLeft, behavior: 'smooth' })
+      } else {
+        // alert(scrollW)
+        scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
+      }
+    },
     openMakeSamplePop (type) {
       this.makeSamplePopShowYn = true
       this.makeSampleType = type

@@ -20,11 +20,19 @@
                         <p class="font15 fontBold grayBlack w-100P mbottom-05 textLeft fl">
                             아이콘
                         </p>
-                        <div style="height: 70px; width: 100%; overflow: scroll hidden;">
-                            <div :style="'width: +' + (60 * smapleIconList.length) + 'px;'" style="height: 100%; float: left;">
-                                <div @click="this.makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in smapleIconList" :style="this.makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index" style="padding: 5px; border-radius: 8px; margin-right: 5px; border: 1px solid #ccc; float: left; width: 50px; height: 50px; ">
-                                    <img :src="value.domainPath + value.pathMtext" style="width: 100%; float: left;" alt="">
+                        <div style="width: 100%; float: left; display: flex; align-items: center;">
+                            <div @click="goScroll('back')" style="float: left; margin-right: 5px; cursor: pointer ;width: 15px; height: 70px; display: flex; align-items: center;">
+                                <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
+                            </div>
+                            <div ref="scrollIconWrap" style="height: 70px; width: calc(100% - 40px); float: left; padding: 10px 0; overflow: scroll hidden;">
+                                <div :style="'width: +' + (60 * smapleIconList.length) + 'px;'" style="height: 100%; float: left;">
+                                    <div @click="this.makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in smapleIconList" :style="this.makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index" style="padding: 5px; border-radius: 8px; margin-right: 5px; border: 1px solid #ccc; cursor: pointer; float: left; width: 50px; height: 50px; ">
+                                        <img :src="value.domainPath + value.pathMtext" style="width: 100%; float: left;" alt="">
+                                    </div>
                                 </div>
+                            </div>
+                            <div @click="goScroll('next')" style="float: left; margin-left: 5px; width: 15px; cursor: pointer ; height: 100px; display: flex; align-items: center;">
+                                <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
                             </div>
                         </div>
                         <!-- <div style="width: 80px; height: 80px; border-radius: 8px; border: 1px solid #ccc;">
@@ -110,6 +118,20 @@ export default {
     // this.getGuidList()
   },
   methods: {
+    goScroll (to) {
+      var scrollTarget = this.$refs.scrollIconWrap
+      var scrollW = scrollTarget.scrollLeft
+      if (to === 'back') {
+        var toLeft = scrollW - 160
+        if (toLeft < 0) {
+          toLeft = 0
+        }
+        scrollTarget.scrollTo({ left: toLeft, behavior: 'smooth' })
+      } else {
+        // alert(scrollW)
+        scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
+      }
+    },
     async getCodeList () {
       var resultList = null
       // eslint-disable-next-line no-new-object
