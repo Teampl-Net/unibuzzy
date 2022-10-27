@@ -1,46 +1,15 @@
 <template>
-  <!-- <pageTopCompo :btnTitle="pageTopBtnTitle" :titleText="propObject.teamNameMtext || propObject.nameMtext" @btnClick="editClick" :selectPopYn="selectPopYn" /> -->
-  <div v-if="addressBookList.length > 0" class="fl w-100P" style=" height: calc(100% - 60px); overflow: hidden scroll;">
+  <div v-if="addressBookList.length > 0" class="fl w-100P" style="overflow: hidden scroll;">
     <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in addressBookList" :key='index'>
-          <!-- <gReceiveCard :propData="data" option="EDIT" :selectedYn="editIndex === index" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/> -->
-
-          <!-- <gReceiveCard :propData="data" option="EDIT" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/> -->
           <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
-
-          <!-- <div :class="{foo:index === 0}" :id="'book'+ index" class="commonBookCard fl" :index="index" :style="selectPopYn === true ? 'width:100%;':'' " >
-            <div v-show="editIndex === index" class="fl" style="width: calc(100% - 100px); height: 100%;">
-              <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                <img src="../../../../assets/images/channel/channer_addressBook.svg" class="img-w23" alt="">
-              </div>
-              <input :ref="'commonBookInput'+index" @blur="inputFocusOut(data, null)" :id="'commonBookInput'+index" v-model="cabinetInputText" style="border:none; width:calc(100% - 150px); min-width:70px; float: left; height: 100%; border-bottom: 0.5px solid #ccc; position: relative;"/>
-              <div class="fl" style="height: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;" v-if="editIndex === index" >
-              </div>
-            </div>
-            <div v-show="editIndex !== index" @click="data.selectedYn !== true ? clickList(data,index) : ''" style="height: 100%;" :style="!selectPopYn ? 'width: calc(100% - 100px);' : 'width: calc(100% - 50px);' " class="fl" >
-              <img src="../../../../assets/images/channel/channer_addressBook.svg"  class="fl img-w23" style="margin-left: 10px; margin-top: 10px;" >
-              <p v-if="editIndex !== index" class="fl font16 commonBlack textOverdot receiverTeamText textLeft mleft-1" style="width: calc(100% - 33px - 1rem);" >{{this.$changeText(data.cabinetNameMtext)}}</p>
-            </div>
-            <div v-if="!selectPopYn" class="fl cursorP" style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-              <img v-if="editIndex !== index" src="../../../../assets/images/push/noticebox_edit.png" class="img-w20 fr" style="margin: 0 10px;" @click="editAddressBook(data)" >
-              <img src="../../../../assets/images/formEditor/trashIcon_gray.svg" class="img-w20 fr" style="width: 20px; margin: 0 10px;" @click="deleteCabinetClick(data,index)" >
-            </div>
-            <div @click="addSelectedList(data, index)" v-if="selectPopYn" class="fr mright-1 cursorP" style="position: relative; height: 100%;">
-              <img class="img-w30" src="../../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
-              <img class="img-w30" src="../../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
-            </div>
-          </div> -->
-
         </template>
       </transition-group>
     </draggable>
   </div>
 
   <gListEmpty v-else title="주소록이 없어요." subTitle="버튼을 눌러 주소록을 생성해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
-      <!-- <p class="textLeft font15 textCenter mtop-1">{{'주소록이 없어요.'}}</p> -->
-
-  <!-- <creAddressPop v-if="creAddressPopYn" @closePop="creAddressPopYn = false" /> -->
 </template>
 
 <script>

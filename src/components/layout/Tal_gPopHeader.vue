@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap headerShadow" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
+  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel', 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
@@ -100,6 +100,10 @@ export default {
     helpButtonPop
   },
   created () {
+    console.log('===================')
+    console.log(this.targetType)
+    console.log(this.bgblack)
+    console.log(this.chanAlimListTeamKey)
     // // console.log(this.chanName)
     // // console.log(this.chanAlimListTeamKey)
   },
@@ -113,7 +117,10 @@ export default {
 
 <style>
 .commonPopHeaderWrapImg {position: absolute; left: 1rem;}
-.commonPopHeaderWrap{ position: absolute; justify-content: center; align-items: center; top: 0; left: 0; box-sizing: border-box; display: flex; padding: 0.7rem 0.5rem; width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; }
+.commonPopHeaderWrap{ position: absolute; justify-content: center; align-items: center; top: 0; left: 0;
+  box-sizing: border-box; display: flex;
+  padding: 0.7rem 0.5rem;
+  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; }
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .commonPopBackBtn{width: 0.8rem;}

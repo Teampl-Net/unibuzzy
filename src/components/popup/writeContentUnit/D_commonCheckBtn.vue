@@ -1,5 +1,5 @@
 <template>
-<div class="fl btnBaseCss font14" :class="selectedYn === true ? 'CDeepColor CWhiteBgColor selectPadding' : 'commonGray commonGrayBorderColor commonGrayBG noneSelectPadding' ">
+<div class="fl btnBaseCss font14" :class="selectedYn === true ? 'CDeepColor CWhiteBgColor selectPadding selectBorder' : 'commonGray commonGrayBorderColor commonGrayBG noneSelectPadding' ">
   <!-- <div class="fl img-w15"> -->
   <img class="img-w15" v-if="selectedYn === true" src="../../../assets/images/common/icon_check_commonColor.svg" />
   <!-- </div> -->
@@ -27,6 +27,9 @@ export default {
 .noneSelectPadding {
   padding: 0 14.5px !important;
 } */
+  .selectBorder {
+    border-width: 2px !important;
+  }
   .btnBaseCss{
     align-items: center;
     border: 1px solid #ccc;

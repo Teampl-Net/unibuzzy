@@ -3,7 +3,7 @@
 <div v-if="loadYn">
   <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" style="overflow: hidden scroll;">
-    <div class="menuHeader" :class="{editmenuHeader: editYn === true}">
+    <div class="menuHeader newHeaderLine">
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
       <p :class="{editColor: editYn === true }" class="fontBold font20 fl" style="white-space: nowrap;" >{{menuHeaderTitle}}</p>
       <img v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fr cursorP img-w23" style="margin-right:10px;" src="../../../assets/images/editChan/icon_setting.svg" @click="myChanEdit"  />
@@ -110,7 +110,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 // eslint-disable-next-line no-new-object
-import editChanMenu from '../D_editBoardList.vue'
+import editChanMenu from '../board/D_editBoardList.vue'
 import addressBookList from '../chanMenu/Tal_menuBookList.vue'
 import menuBoardList from '../chanMenu/Tal_menuBoardList.vue'
 import selectManagerList from '../receiver/Tal_selectManagerList.vue'
@@ -587,10 +587,7 @@ export default {
 .calcMarginLeft { margin-left: 2rem !important; }
 .menuHeader {
   padding: 0.5rem 0;
-  /* position: absolute; */
-  /* top: 0rem; */
-  /* left: 0; */
-  width: 80%;
+  width: 100%;
   height: 50px;
   border-bottom: 1px solid #fff;
   /* width: 80%; */
@@ -609,7 +606,7 @@ export default {
   right: 0;
   width: 80%; */
   max-width:500px;
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
 }
@@ -626,7 +623,7 @@ export default {
   height: 100vh;
   top: 0;
   right: 0;
-  box-shadow: 0 0 9px 2px #b8b8b8;
+  /* box-shadow: 0 0 9px 2px #b8b8b8; */
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   /* padding: 0 1rem; */
@@ -640,10 +637,6 @@ export default {
 .editWrap{
   background-color: #F9F9F9 !important;
 
-}
-.editmenuHeader{
-  /* border-bottom: 1.5px solid #aaa; */
-  box-shadow: 0px 7px 9px -9px #00000036
 }
 .editColor{
   color: #6768a7 !important;

@@ -107,7 +107,7 @@ import memberManagement from '../member/Tal_memberManagement.vue'
 
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
-import editBoardPop from '../D_editBoardList.vue'
+import editBoardPop from '../board/D_editBoardList.vue'
 import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
 import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'

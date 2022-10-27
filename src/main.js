@@ -72,6 +72,7 @@ import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardList
 import imageCompression from 'browser-image-compression'
 
 import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
+import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
 // import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
@@ -124,6 +125,7 @@ app.component(VueCropper)
 app.component('gSelectBoardPop', gSelectBoardPop)
 app.component('gAxiosLoading', gAxiosLoading)
 app.component('gListEmpty', gListEmpty)
+app.component('gCheckBtn', gCheckBtn)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

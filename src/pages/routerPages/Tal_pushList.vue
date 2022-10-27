@@ -1080,9 +1080,9 @@ export default {
         if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
           param.creTeamKey = this.chanDetailKey
         }
-        if (offsetInput !== undefined) { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
+        if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
 
-        if (pageSize !== undefined) { param.pageSize = pageSize } else { param.pageSize = 10 }
+        if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 10 }
 
         if (this.findKeyList) {
           if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
@@ -1426,13 +1426,14 @@ export default {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
         try {
+          console.log(1)
           var resultList = await this.getPushContentsList(null, null, false)
           console.log(resultList)
           if (resultList === undefined || resultList === '') {
             this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
             return
           }
-
+          console.log(2)
           // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
           if (resultList.content) {
             if (resultList.content.length > 0) {
@@ -1443,7 +1444,7 @@ export default {
               }
             }
           }
-
+          console.log(3)
           var newArr = []
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
           if (descYn) {
@@ -1461,6 +1462,7 @@ export default {
               this.boardContentsList = this.replaceArr(newArr)
             }
             await this.endListSetFunc(resultList)
+            console.log(4)
           } else {
             if (resultList.content.length < 0) {
               this.canUpLoadYn = false
@@ -1490,8 +1492,11 @@ export default {
             // eslint-disable-next-line no-debugger
             debugger
             console.log(newArr[0])
+            console.log(5)
           }
           this.contentsList = this.replaceArr(newArr)
+          console.log(66666666666666)
+          console.log(this.contentsList)
 
           this.$emit('numberOfElements', resultList.totalElements)
         } catch (e) {
