@@ -41,22 +41,6 @@
       <triangleTag :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)' " style="position: absolute; top: -22px; border-right: 22px solid transparent; border-bottom: 23px solid #ffffff; border-left: 22px solid transparent; filter: drop-shadow(0px -10px 16px #ccc); z-index: 1;"/>
       <div class="fl w-100P" style="box-shadow: 0px -7px 16px 0px #eee; position: absolute; width:100vw; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1.5rem; height: calc(100% - 300px); background:#ffffff">
 
-        <!-- 게시글 작성 권한 -->
-        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
-          <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
-            <div class="fl" style="width: calc(100% - 100px);" v-if="this.shareGroup.type === 'A'">
-              <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
-            </div>
-          </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요" >{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
-            <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p>
-          </div>
-        </div>
-
         <!-- 열람 권한 -->
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
@@ -70,6 +54,22 @@
           <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
             <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
             <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p>
+          </div>
+        </div>
+
+        <!-- 게시글 작성 권한 -->
+        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
+          <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
+            <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
+            <div class="fl" style="width: calc(100% - 100px);" v-if="this.shareGroup.type === 'A'">
+              <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
+            </div>
+          </div>
+          <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요" >{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
+            <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p>
           </div>
         </div>
 
@@ -929,6 +929,7 @@ export default {
     closePop () {
       this.$emit('closePop')
     },
+    // 주소록 전체에서 고르기
     showSelectBookPop (type) {
       console.log(type)
       this.currentSelectBookType = type
@@ -948,6 +949,7 @@ export default {
         console.log(this.selectedList)
         this.selectBookListShowYn = true
       } else {
+        // 선택한 주소에서 고르기
         this.selectShareActorItem(type)
       }
     },
@@ -977,7 +979,7 @@ export default {
       }
     },
     receiverPoolInSetting (datas) {
-      console.log('%%%%%%%%%%%%%%%')
+      console.log(' %%%%%%%%%%%%%%% ')
       console.log(datas)
       // eslint-disable-next-line no-debugger
       debugger
@@ -998,6 +1000,7 @@ export default {
           }
           tempList.accessKey = accKey
           tempList.accessKind = 'C'
+          tempList.mUserList = books[i].mUserList
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.shareSeq = accKey
           settingBookList.push(tempList)
@@ -1036,6 +1039,13 @@ export default {
           } else if (members[i].accessKey) {
             mAccKey = members[i].accessKey
           }
+
+          tempList.domainPath = members[i].domainPath
+          tempList.pathMtext = members[i].pathMtext
+          tempList.userProfileImg = members[i].userProfileImg
+          tempList.phoneEnc = members[i].phoneEnc
+          tempList.userEmail = members[i].userEmail
+
           tempList.accessKey = mAccKey
           tempList.accessKind = 'U'
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
@@ -1346,7 +1356,8 @@ export default {
 }
 @media screen and (max-width:350px){
   .jjjPaddingWrap{
-    padding: 60px 1rem 9px 1rem !important
+    /* padding: 60px 1rem 9px 1rem !important */
+    padding-top: 60px !important ;
   }
 }
 @media screen and (max-width:410px){

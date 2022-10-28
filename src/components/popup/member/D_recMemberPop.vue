@@ -10,7 +10,7 @@
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
             <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" />
-            <gBtnSmall btnThema="light" btnTitle="취소" />
+            <gBtnSmall @click="successSendForm" btnThema="light" btnTitle="취소" />
         </div>
         <gConfirmPop @no="receptPopShowYn = false" :confirmText="'[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>등업신청서를 제출하시겠습니까?'" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
         <gConfirmPop @no="successSendForm" confirmText='신청되었습니다!' confirmType='timeout' v-if="okPopShowYn" />

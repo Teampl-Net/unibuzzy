@@ -65,7 +65,7 @@ export default {
       var paramMap = new Map()
 
       paramMap.set('teamKey', this.propData.currentTeamKey)
-      paramMap.set('showProfileYn', true)
+      // paramMap.set('showProfileYn', true)
       paramMap.set('pageSize', 1000)
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({

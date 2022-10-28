@@ -43,6 +43,7 @@
                   <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
                     <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
                   </div>
+
                   <div @click="clickCard(alim)" v-if="alim.jobkindId === 'ALIM'" class="fr" style="padding: 0 5px;">
                     <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
                     <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
@@ -363,7 +364,7 @@ export default {
         // inParam.deleteYn = true
 
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -376,7 +377,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: 'https://mo.d-alim.com/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -488,7 +489,7 @@ export default {
       }
       var this_ = this
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSubscribe',
+        url: 'https://mo.d-alim.com/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
@@ -590,7 +591,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveActLog',
+        url: 'https://mo.d-alim.com/service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -656,7 +657,6 @@ export default {
 
     async contentsWich (key) {
       // alert(true)
-
       if (!this.targetCKey && key) {this.targetCKey = key}
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
@@ -668,10 +668,9 @@ export default {
         if (document.getElementById('memoCard'+tempKey)) {
           var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
-          this.memoOpenClick({key: this.targetCKey, teamKey: null})
           var idx = this.findContent(tempKey)
-
           if (idx !== -1) {
+            if (this.$checkUserAuth(this.commonListData[idx].shareItem).V === true) this.memoOpenClick({key: this.targetCKey, teamKey: null})
             this.$nextTick(() => {
               this_.alimBigView(this.commonListData[idx])
               // window.document.getElementById('bodyMore'+this.commonListData[idx].contentsKey).innerText = ''
@@ -696,7 +695,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.deleteMemo',
+    //     url: 'https://mo.d-alim.com/service/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -787,7 +786,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'service/tp.deleteContents',
+            url: 'https://mo.d-alim.com/service/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -820,7 +819,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'service/tp.saveMemo',
+    //       url: 'https://mo.d-alim.com/service/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -1024,7 +1023,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.getMemoList',
+    //     url: 'https://mo.d-alim.com/service/tp.getMemoList',
     //     param: memo
     //   })
 
