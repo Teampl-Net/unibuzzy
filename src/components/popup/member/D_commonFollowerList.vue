@@ -1,5 +1,6 @@
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
+    <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
         <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex;     align-items: center;">
@@ -23,9 +24,9 @@
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'구독자'}}</p>
                     </div>
                 </div>
-                <div style="width: 100%; min-height: 20px; float: left; display: flex; flex-direction: column;">
+                <div style="width: calc(100% - 50px); min-height: 20px; float: left; display: flex; flex-direction: column;">
                     <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold  textLeft">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
+                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
                     <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold textLeft">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
@@ -44,8 +45,8 @@
                 </div> -->
             </div>
         </div>
-        <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
     </div>
+
 </template>
 
 <script>

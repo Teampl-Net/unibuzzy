@@ -6,7 +6,7 @@
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
             <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">신청내용</p>
-            <div id="receptStrArea" :contenteditable='true' class="font16" style="width: 100%; min-height: 100px; padding: 10px; text-align: left; height: 80%; border: 1px solid #ccc;"></div>
+            <div id="receptStrArea" :contenteditable='true' class="font16 editableContent" style="width: 100%; min-height: 100px; padding: 10px; text-align: left; height: 80%; border: 1px solid #ccc;"></div>
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
             <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" />
@@ -45,6 +45,11 @@ export default {
   },
   methods: {
     openReceptPop () {
+      var text = document.getElementById('receptStrArea').innerText
+      if (text === '') {
+        this.$showToastPop('신청 내용을 입력해주세요.')
+        return
+      }
       this.receptPopShowYn = true
     },
     sendForm () {
@@ -78,6 +83,7 @@ export default {
       param.reqMemberStr = document.getElementById('receptStrArea').innerHTML
       param.reqMemberStatus = '01'
       params = { follower: param, doType: 'RQ' }
+      console.log(params)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveFollower',
         param: params

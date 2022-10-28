@@ -12,14 +12,14 @@
     <div class="inputWrap ">
         <p class="font18 textLeft fontBold">변경할 {{kindText}} 인증</p>
         <div style="width: 100%; min-height: 30px; position: relative; float:left;">
-            <input v-model="infoValue" type="" ref="valueBox" :placeholder="this.kindText + ' 입력'" name="" id="" >
-            <gBtnSmall @click="sendMsg" :btnTitle="this.sendNumberBtn" class="inputBtn" />
+            <input v-model="infoValue" type="" ref="valueBox" :placeholder="this.kindText + ' 입력'" name="" id=""  :style="sendOk === true ? 'background : #CCCCCC50 !important' : ''">
+            <gBtnSmall @click="sendMsg" :btnTitle="this.sendNumberBtn" class="inputBtn mright-03" />
         </div>
     </div>
     <div class="inputWrap">
         <div style="width: 100%; min-height: 30px; position: relative; float:left;">
-            <input type="" v-model="token" :placeholder="TimerStr" name="" id="" >
-            <gBtnSmall @click="checkValidation" v-if="sendOk" :btnTitle="'인증하기'" class="inputBtn" />
+            <input type="" v-model="token" ref="numberInputCompo" :readonly='true' :placeholder="TimerStr" name="" id="" :style="!sendOk === true ? 'background : #CCCCCC50 !important' : ''">
+            <gBtnSmall @click="checkValidation" v-if="sendOk" :btnTitle="'인증하기'" class="inputBtn"  />
         </div>
     </div>
   </div>
@@ -74,7 +74,9 @@ export default {
       return result
     },
     regEmail (text) {
-      var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+      // var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+      var regemail = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+
       if (regemail.test(text) === true) {
         return true
       } else {
@@ -106,6 +108,7 @@ export default {
       })
       debugger
       if (result.data.result) {
+        this.$showToastPop('인증 번호가 발송되었습니다.')
         // console.log(result.data.result)
         if(this.Timer != null){
             this.timerStop(this.Timer)
@@ -113,7 +116,9 @@ export default {
         }
         this.Timer = this.timerStart()
         this.sendOk = true
+
         this.$refs.valueBox.readOnly = true
+        this.$refs.numberInputCompo.readOnly = false
       } else {
             if (result.data.message && result.data.message != '') {
                 this.errorBoxText = result.data.message

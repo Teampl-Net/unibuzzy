@@ -14,22 +14,48 @@
           <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
           </div>
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonColor cursorDragText" style="word-break: break-word;">
+            <p class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
               <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
-              <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
+              <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
               <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{CONT_DETAIL.title}}
             </p>
-            <!-- <div class="fr" v-if="creUser === alim.creUserKey || (!detailVal.nonMemYn && alim.creUserKey === 0) ">
-              <p class="fl mright-05 font13"  @click="openUpdateContentsPop">수정</p>
-              <p class="fl mright-05 font13"  @click="boardFuncClick('BOAR')">삭제</p>
-            </div> -->
-          <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
-            <p class="font12 fl lightGray"  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</p>
+            <div class="w-100P fl" style=" margin-bottom: 5px;">
+              <p style="width:100%; " class="font14 fl grayBlack">
+                <img src="../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                <pp class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</pp>
+                <pp v-if="CONT_DETAIL.jobkindId === 'BOAR'">/{{this.$changeText(CONT_DETAIL.cabinetNameMtext)}}</pp>
+              </p>
+            </div>
+            <div class="w-100P fl" style="padding: 5px 0; ">
+              <div class="fr" style="display: flex; align-items: center;">
+                <pp class="font14 fl lightGray">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</pp>
+              </div>
+
+              <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+
+              <div div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
+                <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
+              </div>
+              <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="fr" style="padding: 0 5px;">
+                <img v-if="CONT_DETAIL.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
+                <p class="fl font14 lightGray" >{{CONT_DETAIL.rUserCount === -1 ? '전체' : CONT_DETAIL.rUserCount }}</p>
+              </div>
+
+              <div v-if="CONT_DETAIL.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+              <div v-if="CONT_DETAIL.attachMfilekey" class="fr" style="padding: 0 5px;">
+                <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
+                <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
+              </div>
+              <div v-if="CONT_DETAIL.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+              <statCodeComponent class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+
+            </div>
+            <!-- <p class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</p>
             <p v-if="CONT_DETAIL.updDate" class="font12 fr lightGray">{{'(업데이트: ' + this.$changeDateFormat(CONT_DETAIL.updDate, true) + ')'}}</p>
-            <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</p>
+            <p class="font12 fr lightGray mleft-05">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</p> -->
           </div>
-          <statCodeComponent style="float: right; margin-bottom: 7px; margin-top: 3px;" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+
         </div>
         <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
             <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
@@ -319,6 +345,43 @@ export default {
     }
   },
   methods: {
+    setIntervalTimer (date, contentsKey) {
+      var time = this.$cancelTimer(date)
+      // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
+      if (time !== false) {
+        this.$nextTick(() => {
+          // document.getElementById('timerText'+contentsKey).innerHTML = innerHTML
+          setInterval(() => {
+            time = this.$cancelTimer(date)
+            if (time !== false) {
+              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerHTML = time
+            } else {
+              clearInterval()
+              if (document.getElementById('timerBtn' + contentsKey)) document.getElementById('timerBtn' + contentsKey).innerText = ''
+              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerText = ''
+              if (document.getElementById('timerArea' + contentsKey)) document.getElementById('timerArea' + contentsKey).innerText = ''
+            }
+          }, 1000)
+        })
+      }
+    },
+    cancelTimerShowCheck (alim) {
+      var result = false
+      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.GE_USER.userKey) {
+        var time = this.$cancelTimer(alim.creDate)
+        if (time !== false) {
+          result = true
+        }
+      }
+      return result
+    },
+    cancelConfirm (alim) {
+      this.tempData = alim
+      this.confirmText = '알림 발송을 취소 하시겠습니까?'
+      this.currentConfirmType = 'alimCancel'
+      this.confirmType = 'two'
+      this.confirmPopShowYn = true
+    },
     memoPopNo () {
       this.memoShowYn = false
       this.tempMemoData = this.$refs.contentDetailMemoPop.getMemoData()

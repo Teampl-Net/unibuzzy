@@ -170,7 +170,7 @@ export default {
             // window.open(appInfo.playStoreUrl, '_blank')
           }
         }
-        
+
     },
     goPlayStore () {
         if (this.systemName === 'android' || this.systemName === 'Android') {
@@ -190,8 +190,8 @@ export default {
                 aTag.click()
             })
         }
-        
-            
+
+
             // document.body.removeChild(aTag)
     },
     reloadApp () {
@@ -263,9 +263,15 @@ export default {
       if (request !== undefined && request !== null && request !== '') {
         this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         this.$store.commit('D_USER/MU_CLEAN_USER')
-        localStorage.setItem('sessionUser', '')
-        localStorage.setItem('user', '')
-        localStorage.setItem('loginYn', false)
+        // window.localStorage.setItem('sessionUser', '')
+        // window.localStorage.setItem('user', '')
+        // window.localStorage.setItem('loginYn', false)
+        window.localStorage.removeItem('vuex')
+        window.localStorage.removeItem('loginType')
+        window.localStorage.removeItem('sessionUser')
+        window.localStorage.removeItem('user')
+        window.localStorage.removeItem('loginYn')
+        window.localStorage.removeItem('testYn')
         this.$router.replace('/policies')
       }
     },

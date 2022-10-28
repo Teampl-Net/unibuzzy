@@ -86,7 +86,7 @@ export default {
         await this.getReqMemList()
         this.receptListPopShowYn = true
     },
-    
+
     closeRecMemberPop () {
         this.receptListPopShowYn = false
     },

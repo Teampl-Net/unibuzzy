@@ -14,11 +14,13 @@
       <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if=" popId &&  this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
       <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
-      <div class="pagePaddingWrap" style="padding-top: 50px;" v-if=" popId &&  this.targetType === 'pushList'">
-        <pushList :pPopId="popId" :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
+      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
+        <pushList :pPopId="popId" style="" :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
       <pushBox :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'pushBox'" @openPop = "openPop"/>
-      <div class="pagePaddingWrap" style=" position: relative; padding: 48px 0.5rem 0 0.5rem; " v-if=" popId &&  this.targetType === 'chanList'">
+
+      <!-- <div class="pagePaddingWrap" style=" position: relative; padding: 48px 0.5rem 0 0.5rem; " v-if=" popId &&  this.targetType === 'chanList'"> -->
+      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
         <chanList :pPopId="popId" :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="successchangeUserInfo" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />

@@ -388,6 +388,21 @@ export const commonMethods = {
             followerText += ')'
           }
         } else {
+          followerText += '('
+          if (data.mngTeamYn === true || data.mngTeamYn === 1) {
+            followerText = followerText + '채널'
+            if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
+              followerText += '/'
+            }
+          } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
+            followerText = followerText + '멤버'
+            if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
+              followerText += '/'
+            }
+          } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
+            followerText = followerText + '알림'
+          }
+          followerText += ')'
         }
       }
     }

@@ -65,7 +65,7 @@
             </div>
           </template>
 
-          <!-- 공통 영역 -->
+          <!-- 공통 영역 (제목, 파일첨부) -->
           <div v-if="titleShowYn" class="fl w-100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">제목</p>
             <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" v-model="writePushTitle" >
@@ -80,15 +80,11 @@
 
         <!-- 작성 창 영역 -->
         <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
-        <!-- <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" > -->
           <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
           <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
         </div>
-        <!-- <gBtnSmall class="font20 " style="position: absolute; bottom: -8%; left:50%; transform: translateX(-50%); border: 2px solid #FFFFFF; width: 120px; line-height: 35px !important; height: 35px; font-size:16px"  :btnTitle="contentType === 'ALIM' && requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" /> -->
-        <!-- <gBtnSmall class="font20 " style="position: absolute; bottom: -8%; left:50%; transform: translateX(-50%); border: 2px solid #FFFFFF; width: 120px; line-height: 35px !important; height: 35px; font-size:16px"  :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="boardDataCheck()" /> -->
       </div>
   </div>
-  <!-- <gBtnSmall class="font20 " style="position: absolute; bottom:4rem; left:50%; transform: translateX(-50%); border: 2px solid #FFFFFF; width: 120px; line-height: 35px !important; height: 35px; font-size:16px"  :btnTitle="requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()" /> -->
 </div>
   <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
   <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
@@ -685,10 +681,13 @@ export default {
             formList[f].contentEditable = false
             // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
             if (formList[f].id === 'formEditText') {
-              formList[f].classList.remove('formEditorTextPadding')
-              var formTextinnerHtml = formList[f].innerHTML
-              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
-              // formList[f].innerHTML = innerHtml[f].replaceAll('formEditorTextPadding', '')
+              if (formList[f].innerText === '') {
+                formList[f].remove()
+              } else {
+                formList[f].classList.remove('formEditorTextPadding')
+                innerHtml = formList[f].innerHTML
+                formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
+              }
             }
           }
           param.getBodyHtmlYn = true
@@ -803,9 +802,13 @@ export default {
             formList[f].contentEditable = false
             // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
             if (formList[f].id === 'formEditText') {
-              formList[f].classList.remove('formEditorTextPadding')
-              innerHtml = formList[f].innerHTML
-              formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
+              if (formList[f].innerText === '') {
+                formList[f].remove()
+              } else {
+                formList[f].classList.remove('formEditorTextPadding')
+                innerHtml = formList[f].innerHTML
+                formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
+              }
             }
           }
           param.getBodyHtmlYn = true

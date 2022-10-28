@@ -207,9 +207,9 @@ export const methods = {
       // }
       // // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       // localStorage.setItem('loginYn', true)
-      // if (maingoYn) {
-      //   router.replace({ name: 'main', params: { testYn: true } })
-      // }
+      if (maingoYn) {
+        router.replace({ name: 'main', params: { testYn: true } })
+      }
     } else {
       // var user = store.getters['D_USER/GE_USER']
       if (user === undefined || user === null || user === '') {

@@ -47,6 +47,7 @@
                     <img v-if="alim.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
                     <p class="fl font14 lightGray" >{{alim.rUserCount === -1 ? '전체' : alim.rUserCount }}</p>
                   </div>
+
                   <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
                   <div @click="clickCard(alim)"  v-if="alim.attachMfilekey" class="fr" style="padding: 0 5px;">
                       <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
@@ -59,13 +60,18 @@
               <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
               <div v-if="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && !alim.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div>
               <div v-else-if="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn" @cick="zzz" class="" ></div>
-              <!-- <img style="width: 20px; float: left; margin-right: 5px;" src="../../assets/images/board/securityDoc.svg" alt="">  -->
-              <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
-              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p>
+
+              <!-- <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
+              <div v-else class="h-400max overHidden fl w-100P" style="word-break: break-all;" :id="'contentsListBodyArea'+alim.contentsKey">
+                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 cursorDragText h-100P w-100P fl" style="word-break: break-all;" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+              </div>
+              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" class="font16 cursorP textRight mbottom-1 w-100P" style="">{{contentsMoreYn(alim)}}</p>
+              <!-- <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
 
               <div id="alimCheckArea">
                 <div v-show="!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" class="alimCheckContents">
-                  <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
+                <!-- <p @click="goDetail(alim)" v-show="alim.bodyFullStr && alim.bodyFullStr.length > 130" class="font16 cursorP textRight mbottom-05" style="">더보기></p> -->
 
                   <div @click="changeAct(userDo, alim.contentsKey, index0)" :doKey="userDo.doKey" class="fl userDoWrap" v-for="(userDo, index) in alim.D_CONT_USER_DO" :key="index">
                     <template v-if="userDo.doType === 'LI'">
@@ -219,6 +225,29 @@ export default {
     })
   },
   methods: {
+    contentsMoreYn (alim) {
+      var this_ = this
+      var key = alim.contentsKey
+      // this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)"
+      // if ((this.shareAuth && alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)) {
+      if(alim.jobkindId === 'ALIM' || (alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === true)){
+        this.$nextTick(() => {
+          // if (this_.shareAuth && alim.jobkindId === 'BOAR' && this_.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this_.userKey){
+          // var key = alim.contentsKey
+          var h = window.document.getElementById('bodyFullStr' + key).clientHeight
+          console.log(' +++++++++++++++++++++ ++++++++++++++++++++++ ')
+          console.log(h)
+          console.log(h > 400)
+
+          if (h > 400) {
+            window.document.getElementById('bodyMore' + key).innerText = '더보기 >'
+            return '더보기 >'
+          }
+
+          // }
+        })
+      }
+    },
     memoEdit (editYn) {
       this.$emit('memoEdit', editYn)
     },
@@ -624,11 +653,14 @@ export default {
       }
       return -1
     },
+
     async contentsWich (key) {
       // alert(true)
+
       if (!this.targetCKey && key) {this.targetCKey = key}
       await this.$emit('targetContentScrollMove', targetContentWich)
       var channelItemBoxDom = document.getElementById('summaryWrap')
+      var this_ = this
       if(channelItemBoxDom.scrollHeight <= 50) {
         var tempKey
         if (this.targetCKey) tempKey = this.targetCKey
@@ -638,9 +670,11 @@ export default {
           this.$emit('scrollMove', targetContentWich)
           this.memoOpenClick({key: this.targetCKey, teamKey: null})
           var idx = this.findContent(tempKey)
+
           if (idx !== -1) {
             this.$nextTick(() => {
-              this.alimBigView(this.commonListData[idx])
+              this_.alimBigView(this.commonListData[idx])
+              // window.document.getElementById('bodyMore'+this.commonListData[idx].contentsKey).innerText = ''
             })
           }
           this.targetCKey = null
@@ -896,10 +930,16 @@ export default {
       // alert(alim.contentsKey)
         alim.bigYn = true
       // contentsKey, alim.attachMfilekey
-        if (!document.getElementById('bodyFullStr'+alim.contentsKey)) return
-        document.getElementById('bodyFullStr'+alim.contentsKey).style.maxHeight = '100%'
-        document.getElementById('bodyFullStr'+alim.contentsKey).style.marginBottom = '2rem'
-        document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+        if (!document.getElementById('contentsListBodyArea'+alim.contentsKey)) return
+
+        document.getElementById('contentsListBodyArea'+alim.contentsKey).style.maxHeight = '100%'
+        document.getElementById('contentsListBodyArea'+alim.contentsKey).style.marginBottom = '2rem'
+        // document.getElementById('contentsListBodyArea'+alim.contentsKey).style.display
+        window.document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+        // this.$nextTick(() => {
+        //   window.document.getElementById('bodyMore'+alim.contentsKey).innerText = ''
+        // })
+
         var thisthis = this
         var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
         for (let m = 0; m < imgList.length; m++) {
@@ -1311,18 +1351,32 @@ export default {
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
         var temp = document.createElement('div')
+        temp.style.cssText = 'width:100%; height:100%;'
         temp.innerHTML = str
         var cList = temp.childNodes
         var height = 0
         for (var i = 0; i < cList.length; i ++) {
             if (cList[i].childNodes.length > 0) {
                 var imgs = cList[i].querySelector('img')
+                var text = cList[i].querySelector('div')
+                console.log(imgs)
+                console.log(text)
+                console.log(cList[i])
+                console.log('==========================')
                 if (imgs){
+                  console.log(imgs.height)
                     height += imgs.height
                 } else {
                     height += 21
                 }
+                if (text) {
+                  console.log(text.clientHeight)
+                  height += text.height
+                } else {
+                  height += 21
+                }
             }
+            debugger
         }
         if (height > 400) {
             result = true
@@ -1357,10 +1411,9 @@ export default {
 </script>
 <style scoped>
 .bodyFullStr {
-    word-break: break-all;
+  word-break: break-all;
   max-height: 400px;
   overflow: hidden;
-
 }
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
 .listHeader {text-align: center;}
@@ -1415,5 +1468,5 @@ export default {
 
 .alimListMemoBoxBackground{
   width: 100% !important; height: 100% !important; background: #00000036 !important; position: absolute !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
-
+.h-400max{ max-height: 400px;} .overHidden{overflow: hidden;}
 </style>

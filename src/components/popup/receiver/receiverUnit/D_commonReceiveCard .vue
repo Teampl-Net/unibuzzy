@@ -5,7 +5,7 @@
 
       <!-- 주소록 영역 -->
       <template v-if="propData.jobKindId === 'BOOK'">
-        <div class="imgCircle middleBgColor fl" >
+        <div class="imgCircle middleBgColor fl" @click="emit('open')" >
           <img src="../../../../assets/images/board/icon_book.svg" class="content img-w25"/>
         </div>
         <div class="fl w-100P" style="display: flex; align-items: center; " @click="emit('open')">
@@ -23,7 +23,7 @@
 
       <!-- 유저 영역 -->
       <template v-else-if="propData.jobKindId === 'USER'">
-        <div class="imgCircle middleBgColor fl" >
+        <div class="imgCircle middleBgColor fl" @click="emit('open')" >
           <div v-if="propData.domainPath || propData.userProfileImg" :style="'background-image: url(' + (propData.domainPath? propData.domainPath + (propData.userProfileImg ? propData.userProfileImg : propData.pathMtext ) : propData.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
           </div>
           <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
