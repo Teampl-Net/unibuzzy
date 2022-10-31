@@ -39,8 +39,6 @@
         </div>
       </transition-group>
     </draggable>
-  <div style="width:100%; height:50px;" class="fl">
-  </div>
 </template>
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'

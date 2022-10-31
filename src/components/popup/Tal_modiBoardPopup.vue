@@ -1,207 +1,210 @@
 <template>
-  <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
-    <loadingCompo v-if="loadingYn" />
-    <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName' />
-    <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl" style="width: 100px;">게시판명</p>
-      <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
-    </div>
-    <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 100px;">배경지</p>
-      <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
-      <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
-          <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
+<div style="width: 100%; float: left;">
+    <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
+      <loadingCompo v-if="loadingYn" />
+      <popHeader @closeXPop="this.$emit('closePop')" class="headerShadow" headerTitle="게시판 수정" :chanName='chanName' />
+      <div class="itemWrite">
+        <p class="fontBold textLeft font16 fl" style="width: 100px;">게시판명</p>
+        <input v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" class="creChanInput font16 inputBoxThema"  id="channelName" style="">
       </div>
-      <div @click="this.colorPickerShowYn = true" class="inputBoxThema textLeft" style=" border: none;" :style="'background:' + this.selectedColor + ';'" >선택</div>
-    </div>
-    <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 100px;">유형</p>
-      <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div style="border-radius: 0 !important; border: none; padding: 1px;" class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
-    </div>
-    <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
+      <div class="itemWrite">
+        <p class="fontBold textLeft font16 fl " style="width: 100px;">배경지</p>
+        <div v-if="colorPickerShowYn" @click="colorPickerShowYn = false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: rgb(0 0 0 / 25%); z-index: 99;"></div>
+        <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
+            <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />
+        </div>
+        <div @click="this.colorPickerShowYn = true" class="inputBoxThema textLeft" style=" border: none;" :style="'background:' + this.selectedColor + ';'" >선택</div>
+      </div>
+      <div class="itemWrite">
+        <p class="fontBold textLeft font16 fl " style="width: 100px;">유형</p>
+        <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
+        <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
+        <div style="border-radius: 0 !important; border: none; padding: 1px;" class="commonBlack fr font16 inputBoxThema textLeft">자유게시판</div>
+      </div>
+      <!-- <p class="font20" style="margin-top: 60px; margin-bottom: 25px; text-align: left;"> 공유할 사람/그룹을 선택하세요. </p> -->
 
-    <div class="itemWrite">
-      <p class="fontBold textLeft font16 fl " style="width: 100px;">기능 </p>
-      <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <div style="text-align: left; overflow: scroll;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray d" >{{CAB_FUNCTION_TEXT}}</div>
-    </div>
-    <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
-    <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
-    <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
-      <popHeader @closeXPop="closeFuncPop" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
-      <div class="pagePaddingWrap" style="width: 100%;">
-        <!-- <div class="itemWrite" style="width: 100%;">
-          <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
-          <div style="width: calc(100% - 80px);">
-            <input style = "" type="checkbox" id="toggle0" hidden>
-            <label for="toggle0" class="toggleSwitch fr" @click="click">
-              <span class="toggleButton" ></span>
-            </label>
-            <div v-if="statusSelectShowYn" style=" height: 100%; float: right; margin-right: 10px;" class="dropdown" id="statusBox">
-              <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="showSelectStatus">진행 중</button>
-              <div class="dropdown-content" v-if="showSelectStatusShowYn">
-                <div style="line-height: 30px;" v-if="showNewYn">
-                  <input type="text" style="height: 30px; width: 100%; float: left; border: 1px solid #ccc;" v-model="inputvalue"/>
+      <div class="itemWrite">
+        <p class="fontBold textLeft font16 fl " style="width: 100px;">기능 </p>
+        <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
+        <div style="text-align: left; overflow: scroll;" @click="this.functionPopShowYn = true" class="fl inputBoxThema font16 lightGray d" >{{CAB_FUNCTION_TEXT}}</div>
+      </div>
+      <div v-if="showSelectStatusShowYn === true || this.functionPopShowYn === true" style="position:absolute; top:0; left:0; width:100%; height:100vh; z-index:1; background-color:#ccc; opacity:0" @click="hidePop"></div>
+      <div v-if="functionPopShowYn"  style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: #00000030; z-index: 99;" @click="closeFuncPop"></div>
+      <div v-if="functionPopShowYn" class="function" style="width: 80%; position: absolute; z-index: 9999; top: 25%; left: 10%; background: #FFF; min-height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 8px 4px #00000015;">
+        <popHeader @closeXPop="closeFuncPop" headerTitle="게시판 기능 설정" class="headerShadow" style="position: absolute;top: 0; left: 0;" />
+        <div class="pagePaddingWrap" style="width: 100%;">
+          <!-- <div class="itemWrite" style="width: 100%;">
+            <p style = "width: 80px;" class="textLeft font16 fl toggleLine">진행상태</p>
+            <div style="width: calc(100% - 80px);">
+              <input style = "" type="checkbox" id="toggle0" hidden>
+              <label for="toggle0" class="toggleSwitch fr" @click="click">
+                <span class="toggleButton" ></span>
+              </label>
+              <div v-if="statusSelectShowYn" style=" height: 100%; float: right; margin-right: 10px;" class="dropdown" id="statusBox">
+                <button class="dropbtn" style= "float: left; color: black; margin-right: 10px;" @click="showSelectStatus">진행 중</button>
+                <div class="dropdown-content" v-if="showSelectStatusShowYn">
+                  <div style="line-height: 30px;" v-if="showNewYn">
+                    <input type="text" style="height: 30px; width: 100%; float: left; border: 1px solid #ccc;" v-model="inputvalue"/>
+                  </div>
+
+                  <div style="width:100%; margin: 0.5rem 0px;" class="fl" v-for="(status, index) in multiStatus" :key="index" >
+
+                    <div style="" class=" fl">{{status}}</div>
+                    <button @click="statusDeleteYn(index)" style= "border-radius: 100px;border: none; height: 25px; width: 25px; line-height: 25px; background-color: #6768A7; color: white; float: right;">-</button>
+                  </div>
                 </div>
-
-                <div style="width:100%; margin: 0.5rem 0px;" class="fl" v-for="(status, index) in multiStatus" :key="index" >
-
-                  <div style="" class=" fl">{{status}}</div>
-                  <button @click="statusDeleteYn(index)" style= "border-radius: 100px;border: none; height: 25px; width: 25px; line-height: 25px; background-color: #6768A7; color: white; float: right;">-</button>
-                </div>
+                <button @click="showSelectStatus('input')" style= "width: 30px; height: 30px; background-color: #ccc; border: none; float: left;">+</button>
               </div>
-              <button @click="showSelectStatus('input')" style= "width: 30px; height: 30px; background-color: #ccc; border: none; float: left;">+</button>
+            </div>
+          </div> -->
+        <!-- <div class="itemWrite">
+          <p style = "width: 150px;" class="textLeft font16 fl toggleLine">작성자 명</p>
+          <div class="toggleInputWrap">
+            <div style= "width: 100px; height: 30px; border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
+              <div class= "toggleBtn" :class="{selecWriterShow: blindYn === false }" @click="blindYn = false">실명</div>
+              <div class= "toggleBtn" :class="{selecWriterShow: blindYn === true }" @click="blindYn = true">익명</div>
             </div>
           </div>
         </div> -->
-      <!-- <div class="itemWrite">
-        <p style = "width: 150px;" class="textLeft font16 fl toggleLine">작성자 명</p>
-        <div class="toggleInputWrap">
-          <div style= "width: 100px; height: 30px; border: 1px solid #ccc; border-radius: 5px; overflow: hidden;">
-            <div class= "toggleBtn" :class="{selecWriterShow: blindYn === false }" @click="blindYn = false">실명</div>
-            <div class= "toggleBtn" :class="{selecWriterShow: blindYn === true }" @click="blindYn = true">익명</div>
+        <div class="itemWrite">
+          <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">상태설정</p>
+          <div class="toggleInputWrap">
+            <input type="checkbox" v-model="workStatYn" id="toggle0" hidden>
+            <label for="toggle0" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
           </div>
         </div>
-      </div> -->
-      <div class="itemWrite">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">상태설정</p>
-        <div class="toggleInputWrap">
-          <input type="checkbox" v-model="workStatYn" id="toggle0" hidden>
-          <label for="toggle0" class="toggleSwitch">
-            <span class="toggleButton"></span>
-          </label>
+        <div class="itemWrite">
+          <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
+          <div class="toggleInputWrap">
+            <input type="checkbox" v-model="replyYnInput" id="toggle1" hidden>
+            <label for="toggle1" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
+        </div>
+        <div class="itemWrite">
+          <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">파일 업로드</p>
+          <div class="toggleInputWrap">
+            <input type="checkbox" v-model="fileYnInput" id="toggle2" hidden>
+            <label for="toggle2" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
+        </div>
+        <div class="itemWrite">
+          <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">실명/익명</p>
+          <div class="toggleInputWrap">
+            <input type="checkbox" v-model="blindYn" id="toggle3" hidden>
+            <label for="toggle3" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
+        </div>
+        <div class="itemWrite" style="border-bottom: none;">
+          <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">제목 비공개(미권한자)</p>
+          <div class="toggleInputWrap">
+            <input type="checkbox" v-model="titleBlindYn" id="toggle4" hidden>
+            <label for="toggle4" class="toggleSwitch">
+              <span class="toggleButton"></span>
+            </label>
+          </div>
+        </div>
+        </div>
+        <!-- <div style="padding: 0 8px; margin-top: 30px;">
+          <div @click="nextStep" class="creChanBigBtn">다음</div>
+        </div> -->
+      </div>
+      <div class="itemWrite fl" style="border-bottom: none;">
+        <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상
+          <!-- {{1111 + this.shareGroup.type}} -->
+          </p>
+        <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
+          <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl" type="radio" name="shareTypeRadio" value="A" id="shareAll"><label class="fl font14 mleft-05 mtop-02" for="shareAll">전체</label>
+          <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl mleft-1" type="radio"  name="shareTypeRadio" value="S" id="shareSelect"><label class="fl font14 mleft-05 mtop-02" for="shareSelect">선택</label>
         </div>
       </div>
-      <div class="itemWrite">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">댓글 지원</p>
-        <div class="toggleInputWrap">
-          <input type="checkbox" v-model="replyYnInput" id="toggle1" hidden>
-          <label for="toggle1" class="toggleSwitch">
-            <span class="toggleButton"></span>
-          </label>
-        </div>
-      </div>
-      <div class="itemWrite">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">파일 업로드</p>
-        <div class="toggleInputWrap">
-          <input type="checkbox" v-model="fileYnInput" id="toggle2" hidden>
-          <label for="toggle2" class="toggleSwitch">
-            <span class="toggleButton"></span>
-          </label>
-        </div>
-      </div>
-      <div class="itemWrite">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">실명/익명</p>
-        <div class="toggleInputWrap">
-          <input type="checkbox" v-model="blindYn" id="toggle3" hidden>
-          <label for="toggle3" class="toggleSwitch">
-            <span class="toggleButton"></span>
-          </label>
-        </div>
-      </div>
-      <div class="itemWrite" style="border-bottom: none;">
-        <p style = "width: 150px;" class="fontBold textLeft font16 fl toggleLine">제목 비공개(미권한자)</p>
-        <div class="toggleInputWrap">
-          <input type="checkbox" v-model="titleBlindYn" id="toggle4" hidden>
-          <label for="toggle4" class="toggleSwitch">
-            <span class="toggleButton"></span>
-          </label>
-        </div>
-      </div>
-      </div>
-      <!-- <div style="padding: 0 8px; margin-top: 30px;">
-        <div @click="nextStep" class="creChanBigBtn">다음</div>
-      </div> -->
-    </div>
-    <div class="itemWrite fl" style="border-bottom: none;">
-      <p class="fontBold textLeft font16 fl" style="width: 150px;">공유대상
-        <!-- {{1111 + this.shareGroup.type}} -->
-        </p>
-      <div style="width: 100%; height: 40px; text-align: left; padding: 5px 0;">
-        <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl" type="radio" name="shareTypeRadio" value="A" id="shareAll"><label class="fl font14 mleft-05 mtop-02" for="shareAll">전체</label>
-        <input v-model="this.shareGroup.type" @change="changeSelectType" class="h-100P fl mleft-1" type="radio"  name="shareTypeRadio" value="S" id="shareSelect"><label class="fl font14 mleft-05 mtop-02" for="shareSelect">선택</label>
-      </div>
-    </div>
-    <div class="fl" style="width: 100%;">
-      <div v-show="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
-        <p class="font16 commonBlack">{{setSelectText(this.shareGroup.selectedList)}}</p>  <!-- v-if="selectedShareList.length === 0" -->
-        <!-- <template v-if="selectedShareList.length > 0">
-          {{setSelectText(this.selectedShareList)}}
-        </template> -->
-        </div>
-    </div>
-
-    <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
-    <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
-      <div class="subItemWrite" :style="writePermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl" :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">작성</p>
-        <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
-          {{setSelectText(this.permissionWGroup.selectedList)}}
-        </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;" >
-            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
-            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
-            <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
-        </div>
-        <div @click="showSelectBookPop('W')" v-if="this.shareGroup.type == 'A' && this.permissionWGroup.type === 'S'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
-          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionWGroup.selectedList)}}</p>
-          <!-- <template v-if="selectedWriteList.length > 0">
-            {{setSelectText(this.selectedWriteList)}}
+      <div class="fl" style="width: 100%;">
+        <div v-show="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" class="inputBoxThema textLeft fl" style="width: 100%; margin-bottom: 20px; padding:5px;">
+          <p class="font16 commonBlack">{{setSelectText(this.shareGroup.selectedList)}}</p>  <!-- v-if="selectedShareList.length === 0" -->
+          <!-- <template v-if="selectedShareList.length > 0">
+            {{setSelectText(this.selectedShareList)}}
           </template> -->
-        </div>
+          </div>
       </div>
-      <div class="subItemWrite" :style="readPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">열람</p>
-        <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
-          {{setSelectText(this.permissionVGroup.selectedList)}}
+
+      <p class="textRight font12 grayBlack" v-show="selectShareYn" @click="showHidePermission" style="width: 100%;">공유대상 권한설정 ▼</p>
+      <div style="width: 100%; min-height: 100px; white-space: nowrap;" class="fl">
+        <div class="subItemWrite" :style="writePermissionSelectYn === true && this.shareType == 'all' ? 'display: block' : '' ">
+          <p class="textLeft mleft-15 font16 fl" :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">작성</p>
+          <div @click="selectShareActorItem('W')" class="inputBoxThema textLeft " style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
+            {{setSelectText(this.permissionWGroup.selectedList)}}
+          </div>
+          <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;" >
+              <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'A')"  value="A"  id="perWA"><label class="fl font14 mleft-05" for="perWA">전체</label>
+              <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio"  @click="changePermission('W', 'N')"  value="N"  id="perWN"><label class="fl font14 mleft-05" for="perWN">사용안함</label>
+              <input v-model="permissionWGroup.type" class="fl mleft-1" type="radio" name="perWRadio" @click="changePermission('W', 'S')" value="S"  id="perWS"><label class="fl font14 mleft-05" for="perWS">선택지정</label>
+          </div>
+          <div @click="showSelectBookPop('W')" v-if="this.shareGroup.type == 'A' && this.permissionWGroup.type === 'S'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px;">
+            <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionWGroup.selectedList)}}</p>
+            <!-- <template v-if="selectedWriteList.length > 0">
+              {{setSelectText(this.selectedWriteList)}}
+            </template> -->
+          </div>
         </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
-          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
-          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'N')" value="N" id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
-          <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
+        <div class="subItemWrite" :style="readPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
+          <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">열람</p>
+          <div @click="selectShareActorItem('V')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'">
+            {{setSelectText(this.permissionVGroup.selectedList)}}
+          </div>
+          <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
+            <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'A')" value="A" id="perVA"><label class="fl font14 mleft-05" for="perVA">전체</label>
+            <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'N')" value="N" id="perVN"><label class="fl font14 mleft-05" for="perVN">사용안함</label>
+            <input v-model="permissionVGroup.type" class="fl mleft-1" type="radio" name="perVRadio" @click="changePermission('V', 'S')" value="S" id="perVS"><label class="fl font14 mleft-05" for="perVS">선택지정</label>
+          </div>
+          <div @click="showSelectBookPop('V')" v-if=" this.permissionVGroup.type === 'S' && this.shareGroup.type == 'A'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
+            <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionVGroup.selectedList)}}</p>
+          </div>
         </div>
-        <div @click="showSelectBookPop('V')" v-if=" this.permissionVGroup.type === 'S' && this.shareGroup.type == 'A'" style="margin:0.5rem 0; width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block">
-          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionVGroup.selectedList)}}</p>
+        <div class="subItemWrite" :style="commentPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
+          <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">댓글</p>
+          <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
+          <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'" >
+            {{setSelectText(this.permissionRGroup.selectedList)}}
+          </div>
+          <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
+            <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
+            <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
+            <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
+          </div>
+          <div @click="showSelectBookPop('R')" v-if="this.shareGroup.type == 'A'  && this.permissionRGroup.type === 'S'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
+            <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionRGroup.selectedList)}}</p>
+          </div>
         </div>
+        <!-- <div style="float: left; width: 100%; ">
+          <input type="checkbox" v-model="titleBlindYn" class="fl" name="" id="titleBlindYnInput"> <label class="font16 textLeft fl" for="titleBlindYnInput">열람 권한 없을 때: 제목까지 비공개</label>
+        </div> -->
       </div>
-      <div class="subItemWrite" :style="commentPermissionSelectYn === true && this.shareGroup.type == 'A' ? 'display: block' : '' ">
-        <p class="textLeft mleft-15 font16 fl " :style="this.shareGroup.type === 'S' ? 'line-height: 42px;' : ''">댓글</p>
-        <!-- <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" >{{commentPermission}}</div> -->
-        <div @click="selectShareActorItem('R')" class="inputBoxThema textLeft" style="margin-left:0.8rem; padding:5px;" v-if="this.shareGroup.type == 'S'" >
-          {{setSelectText(this.permissionRGroup.selectedList)}}
-        </div>
-        <div v-if="this.shareGroup.type == 'A'" class=" textLeft moidRadioArea" style="display:flex; align-items: center;">
-          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'A')" value="A" id="perRA"><label class="fl font14 mleft-05" for="perRA">전체</label>
-          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'N')" value="N" id="perRN"><label class="fl font14 mleft-05" for="perRN">사용안함</label>
-          <input v-model="permissionRGroup.type" class="fl mleft-1" type="radio" name="perRRadio"  @click="changePermission('R', 'S')" value="S" id="perRS"><label class="fl font14 mleft-05" for="perRS">선택지정</label>
-        </div>
-        <div @click="showSelectBookPop('R')" v-if="this.shareGroup.type == 'A'  && this.permissionRGroup.type === 'S'" style="width:90vw; min-height:30px; float:left; border: 1px solid #ccc; text-align:left; padding-left:10px; padding:5px; display: block !important;">
-          <p class="font16 commonBlack" style="overflow: auto;">{{setSelectText(this.permissionRGroup.selectedList)}}</p>
-        </div>
+      <div class="itemWrite" style="border: none; border-top: 1px solid #ccc; margin-top: 10px;">
+        <p class="fontBold textLeft font16 fl " style="width: 100px; ">예시글</p>
+        <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
+        <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
+        <div style="text-align: left; overflow: scroll; max-height: 100px;" v-html="this.guideSampleInnerHtml? '예시글 있음': '예시글 없음'" @click="this.samplePopShowYn = true" class="fl textOverdot inputBoxThema font16 lightGray d" ></div>
       </div>
-      <!-- <div style="float: left; width: 100%; ">
-        <input type="checkbox" v-model="titleBlindYn" class="fl" name="" id="titleBlindYnInput"> <label class="font16 textLeft fl" for="titleBlindYnInput">열람 권한 없을 때: 제목까지 비공개</label>
-      </div> -->
+    <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
+      <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
+      <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
     </div>
-    <div class="itemWrite" style="border: none; border-top: 1px solid #ccc; margin-top: 10px;">
-      <p class="fontBold textLeft font16 fl " style="width: 100px; ">예시글</p>
-      <!-- <div style="width: 100%; font-size: 14px; border: 1px solid #ccc; text-align: left; padding: 1px 2px;">게시판 유형을 선택해주세요</div> -->
-      <!-- <div class="fr font16 inputBoxThema textLeft grayBlack" :class="{fontBlack : selectId !== ''}"  style="margin-top: 10px;" @click="boardTypeClick">{{boardDetail.menuType}}<p class='fr' style="line-height: 25px;">></p></div> -->
-      <div style="text-align: left; overflow: scroll; max-height: 100px;" v-html="this.guideSampleInnerHtml? '예시글 있음': '예시글 없음'" @click="this.samplePopShowYn = true" class="fl textOverdot inputBoxThema font16 lightGray d" ></div>
     </div>
-  <div style="width: 100%; float: right; bottom:1.5rem; right:2rem; position: absolute;">
-    <gBtnSmall btnThema="light" btnTitle="취소" @click="closePop" />
-    <gBtnSmall @click="updateCabinet" class="mright-05" btnTitle="적용" />
-  </div>
-  </div>
-  <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-  <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
-<!-- @sendReceivers="setOk" -->
-  <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
-  <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
-  <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
+    <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
+    <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
+  <!-- @sendReceivers="setOk" -->
+    <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
+    <gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
+    <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
+
+</div>
 </template>
 
 <script>

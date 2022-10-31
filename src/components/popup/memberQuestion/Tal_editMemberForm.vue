@@ -19,9 +19,8 @@
   <commonQuestionList :list="questionList" @mQCopy="mQcopy" @mQDelete="mQDelete" @addAnswerClick="addAnswerClick" />
   <!-- </div> -->
   <commonMQusetBtns style="width:80%;" @addQuestion="addQuestion" @saveQuestion="saveQuestion" />
-
-</div>
 <mQuestionSucc v-if="mQuestionSuccYn" @closePop="closePop" @editClick="mQuestionSuccYn = false" @preview="preview" />
+</div>
 </template>
 
 <script>

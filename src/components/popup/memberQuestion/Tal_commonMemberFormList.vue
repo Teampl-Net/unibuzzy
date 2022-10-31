@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable-next-line vue/no-multiple-template-root -->
   <div v-for="(data, index) in list" :key="index" class="fl w-100P mtop-05" style="border-bottom:1px solid #ccc;padding-bottom:0.5rem">
     <div class="fl w-100P" style="line-height:20px">
       <img v-if="data.activeYn" src="../../../assets/images/channel/Live_icon.svg" class="fl" style="backgcolor:#ccc" alt="">

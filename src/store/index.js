@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-// 파일 위치: /root/src/store/index.js
+/* eslint-disable */ 
 import { createStore } from 'vuex'
 
 // 작성한 모듈을 가져옵니다.

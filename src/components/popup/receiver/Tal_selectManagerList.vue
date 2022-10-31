@@ -1,11 +1,13 @@
 <template>
     <!-- <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :chanName="this.$changeText(this.propData.teamNameMtext)" /> -->
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
-        <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
-          <managerList @deleteManager="deleteManager" :listData="managerList" ref="managerListCompo" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
-        </div>
+    <div style="width: 100%; float: left;">
+      <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); padding-top: 50px; overflow: auto;" >
+          <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left;">
+            <managerList @deleteManager="deleteManager" :listData="managerList" ref="managerListCompo" :teamInfo="propData" :propData="this.propData" style="position: absolute; top: 0; overFlow: hidden scroll; height: calc(100% - 50px); background: #fff;"/>
+          </div>
+      </div>
+      <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
     </div>
-    <div class="btnPlus" @click="openAddManagerPop" ><p style="font-size: 40px;">+</p></div>
     <!-- <selectBookList :propData="propData" v-if="selectBookListShowYn" @closeXPop='closeSubPop'  @sendReceivers='setSelectedList'/> -->
 </template>
 

@@ -43,6 +43,7 @@ import findContentsList from '../../components/popup/common/D_findContentsList.v
 // import boardList from '../../components/list/del_Tal_commonBoardList.vue'
 import boardList from '@/components/list/D_commonList.vue'
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: '',
   data () {
     return {

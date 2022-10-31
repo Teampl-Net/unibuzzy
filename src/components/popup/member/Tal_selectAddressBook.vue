@@ -1,9 +1,8 @@
 <template>
     <div style="width: 100%; height: calc(100% - 310px); position: relative; float: left; margin-top:50px;">
       <bookList :listData="bookList" :teamInfo="this.propData" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" style="position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;"/>
+      <selectedListCompo :selectShareTargetYn="false" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectAddressListCompo"  :listData='selectedList'  @btnClick='addressPushData' style="float: left; wdith:100%; height:310px; position: absolute; bottom:0px; left:0px" />
     </div>
-    <selectedListCompo :selectShareTargetYn="false" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectAddressListCompo"  :listData='selectedList'  @btnClick='addressPushData' style="float: left; wdith:100%; height:310px; position: absolute; bottom:0px; left:0px" />
-
 </template>
 <script>
 /* eslint-disable */

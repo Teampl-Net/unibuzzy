@@ -53,6 +53,7 @@
           <gMemoPop ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
         </transition>
     </div>
+<!--     eslint-disable-next-line vue/no-multiple-template-root -->
     <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
   <!-- </div> -->
 </div>
@@ -1099,6 +1100,8 @@ export default {
             param.fromCreDateStr = this.findKeyList.fromCreDateStr
           } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
             param.workStatCodeKey = this.findKeyList.workStatCodeKey
+          } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+            param.creUserName = this.findKeyList.creUserName
           }
         }
         param.findLogReadYn = null
@@ -1306,6 +1309,9 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
+      if(this.box.scrollTop < 10) {
+        this.$emit('goScroll')
+      }
       if (element) {
         this.firstContOffsetY = this.getAbsoluteTop(element)
         if (this.firstContOffsetY > 0) {
@@ -1598,7 +1604,11 @@ export default {
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
-        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+        }
+        if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+          this.findKeyList.creUserName = param.creUserName
+        } 
+        if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
           this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
         } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
           this.findKeyList.toCreDateStr = param.toCreDateStr
@@ -1654,6 +1664,13 @@ export default {
         resultArray.push(searchObj)
       }
       searchObj = {}
+      if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+        searchObj.typeName = '작성자'
+        searchObj.type = 'creUserName'
+        searchObj.keyword = param.creUserName
+        resultArray.push(searchObj)
+      }
+      searchObj = {}
       if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
         searchObj.typeName = '보낸'
         searchObj.type = 'creTeamNameMtext'
@@ -1668,6 +1685,7 @@ export default {
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
+      searchObj = {}
       if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
         searchObj.typeName = '필터'
         searchObj.type = 'workStatCodeKey'
@@ -1687,6 +1705,8 @@ export default {
         delete this.findKeyList.fromCreDateStr
       } else if (type === 'workStatCodeKey') {
         delete this.findKeyList.workStatCodeKey
+      } else if (type === 'creUserName') {
+        delete this.findKeyList.creUserName
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)

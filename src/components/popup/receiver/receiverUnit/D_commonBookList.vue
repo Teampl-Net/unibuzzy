@@ -2,6 +2,7 @@
   <div v-if="addressBookList.length > 0" class="fl w-100P" style="overflow: hidden scroll;">
     <draggable  ref="editableArea" class="ghostClass" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
       <transition-group>
+        <!--         eslint-disable-next-line vue/no-v-for-template-key -->
         <template  v-for="(data, index) in addressBookList" :key='index'>
           <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
         </template>

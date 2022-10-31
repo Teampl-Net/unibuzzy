@@ -1,48 +1,50 @@
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="this.$emit('no')"></div>
-  <div class="confirmPopWrap" >
-  <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
-      <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
-          <p class="fontBold font18">{{msgTitle}}</p>
-          <!-- <p style="font-size:14px">채널 종류를 선택해주세요</p> -->
-          <!-- <p>채널 종류를 선택해주시면<br>필요한 서류를 알려드릴게요!</p> -->
-      </div>
-      <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
-      <!-- <div style="width: 100%; height: calc(100% - 350px); margin-top: 20px; float: left;">  /* change Jeong */ -->
-      <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
-          <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
-            <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
-              <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
-              <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
-                <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
-                <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
-                <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
-              </div>
-              <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                  <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
-              </form>
-              <div class="fl textLeft w-100P">
-                <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
-                <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+  <div style="width: 100%; float: left;">
+    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="this.$emit('no')"></div>
+    <div class="confirmPopWrap" >
+    <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
+        <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
+            <p class="fontBold font18">{{msgTitle}}</p>
+            <!-- <p style="font-size:14px">채널 종류를 선택해주세요</p> -->
+            <!-- <p>채널 종류를 선택해주시면<br>필요한 서류를 알려드릴게요!</p> -->
+        </div>
+        <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
+        <!-- <div style="width: 100%; height: calc(100% - 350px); margin-top: 20px; float: left;">  /* change Jeong */ -->
+        <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
+            <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
+              <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
+                <!-- <p class="font15 fontBold fl textLeft" style="line-height: 30px; margin-right: 10px; ">직접 선택</p> -->
+                <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
+                  <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+                  <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="" class="preview w-100P"> -->
+                  <!-- <img id="profileImg" ref="profileImg" :src="previewImgUrl" alt="사진" class="preview"  :style="this.opentype === 'bgPop' ? 'width:100vh' : '' "> -->
+                </div>
+                <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
+                    <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
+                </form>
+                <div class="fl textLeft w-100P">
+                  <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
+                  <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+                </div>
               </div>
             </div>
-          </div>
-          <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
-            <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
-              <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
-              <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
-              <p class="font15"  v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
+            <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
+              <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
+                <!-- <img v-if="opentype =='iconPop'" src='/resource/channeliconbg/CHAR01.png' style="width: calc(var(--chanBoxSize) - 20px)"/> -->
+                <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
+                <p class="font15"  v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
 
-              <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
-              <!-- <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: calc(var(--chanBoxSize) + 10px);" > -->
+                <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
+                <!-- <img v-if="opentype =='bgPop'" :src='value.pathMtext' style="width: calc(var(--chanBoxSize) + 10px);" > -->
 
+              </div>
             </div>
-          </div>
-      </div>
+        </div>
 
-      <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
+        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
 
+    </div>
   </div>
   <!-- <crop v-if="cropYn" @no="cropYn=false" :imgUrl="previewImgUrl" :selectFile="selectFile" :bgYn="opentype === 'bgPop' ? true : false" @cropImage="cropImage" /> -->
 </template>

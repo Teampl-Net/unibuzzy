@@ -8,14 +8,14 @@
         <div class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
             <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
-            <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
-        <!-- <div class="findPopMainSearchArea">
-            <inputclass="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="채널명을 입력해주세요" />
-            <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-        </div> -->
+        <div class="findPopMainSearchArea">
+            <input class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="creUserName" placeholder="작성자명을 입력해주세요" />
+        </div>
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
+        
         <Datepicker
           style="font-size: 14px; float: left;"
           inline
@@ -35,6 +35,10 @@
             <!-- <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" /> -->
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
+        <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
+          <gBtnLarge @click="requestSearchPushList" btnTitle="검색하기" class="w-100P" />
+        </div>
+        
         <!-- <div style="width: 100%; min-height: 200px; float: left;">
             <div style="width: 100%; height: 20px; border-bottom: 1px solid #ccc;" v-for="(value, index) in this.stateCodeList" :key="index">{{this.$changeText(value.codeNameMtext)}}</div>
         </div> -->
@@ -43,23 +47,22 @@
 </template>
 
 <script>
-/* changeDateFormat(value.searchDate, 'list') */
 export default {
   props: {
     contentsListTargetType: {},
     tpGroupCode: {}
   },
-  name: 'test',
   data () {
     return {
       pageHistoryName: '',
-      credate: [],
       searchKey: '',
       creTeam: '',
+      credate: [],
       creDate: '',
       stateValue: { codeKey: null, codeNameMtext: '상태를 선택해주세요' },
       stateCodeList: [],
       stateCode: 0,
+      creUserName: '',
       // searchLogList: [
       //   { searchKeyword: '삼천리', searchDate: '20210821' },
       //   { searchKeyword: '삼천리', searchDate: '20210821' },
@@ -140,6 +143,9 @@ export default {
       }
       if (this.creTeam !== '') {
         param.creTeamNameMtext = this.creTeam
+      }
+      if (this.creUserName !== '') {
+        param.creUserName = this.creUserName
       }
       if (this.creDate !== '') {
         if (this.creDate.length > 1) {

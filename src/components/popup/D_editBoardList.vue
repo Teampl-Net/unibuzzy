@@ -6,6 +6,7 @@
       <div class="" style="overflow: auto; height: 100%; margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
+          <!-- eslint-disable-next-line vue/no-v-for-template-key -->
           <template v-for="(data, index) in cabinetList" :key='index'>
             <div :id="'board' + data.cabinetKey" :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
               <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
@@ -31,9 +32,9 @@
       <!-- <div class="btnPlus" @click="addBoardRow"><p style="font-size:40px;">+</p></div> -->
       <img src="../../assets/images/button/Icon_CreBoardBtn.svg" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
     </div>
+    <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
+    <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
 </div>
-  <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
-  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
 
 </template>
 

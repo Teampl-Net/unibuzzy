@@ -1,17 +1,19 @@
 <template>
-    <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
-    <form  @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden;cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
-        <!-- 파일 선택 -->
-        + 첨부
-        <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
-    </form>
-    <div v-if="this.sFileList.length > 0" class="mtop-05 fl" style="width: 100%; overflow: auto;" >
-        <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative;" v-for="(value, index) in this.sFileList" :key="index">
-              <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
-              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
+    <div style="width: 100%; float: left;">
+      <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
+      <form  @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden;cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
+          <!-- 파일 선택 -->
+          + 첨부
+          <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
+      </form>
+      <div v-if="this.sFileList.length > 0" class="mtop-05 fl" style="width: 100%; overflow: auto;" >
+          <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
+            <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative;" v-for="(value, index) in this.sFileList" :key="index">
+                <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
+                <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
+            </div>
           </div>
-        </div>
+      </div>
     </div>
 </template>
 

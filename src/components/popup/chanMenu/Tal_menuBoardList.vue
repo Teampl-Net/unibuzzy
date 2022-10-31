@@ -1,13 +1,15 @@
 <template>
 
-<div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl cursorP mleft-05"  style="width:100%; " @click="listClick(data)" >
-  <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/editChan/icon_board.svg">
-  <span class="grayBlack fontBold mleft-05 w-100P textOverdot textLeft fl" >
+<div style="width: 100%; float: left;">
+    <div  v-for="(data, index) in listData" :key='index' class="MenuListNew fl cursorP mleft-05"  style="width:100%; " @click="listClick(data)" >
+    <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/editChan/icon_board.svg">
+    <span class="grayBlack fontBold mleft-05 w-100P textOverdot textLeft fl" >
 
-    {{this.$changeText(data.cabinetNameMtext)}}
-  </span>
+        {{this.$changeText(data.cabinetNameMtext)}}
+    </span>
+    </div>
+    <p v-if="listData.length === 0" class="fl w-100P textLeft font14 mtop-07">공유된 게시판이 없습니다.</p>
 </div>
-<p v-if="listData.length === 0" class="fl w-100P textLeft font14 mtop-07">공유된 게시판이 없습니다.</p>
 </template>
 
 <script>

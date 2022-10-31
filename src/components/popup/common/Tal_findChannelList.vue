@@ -32,7 +32,6 @@
 // import searchChannel from '../../components/pageComponents/channel/Tal_searchChan.vue'
 /* changeDateFormat(value.searchDate, 'list') */
 export default {
-  name: 'test',
   data () {
     return {
       newestSearchKeyWordList: {},

@@ -1,9 +1,11 @@
 <template>
-<div v-for="(data, index) in bookList" :key="index">
-<gReceiveCard :propData="data" option="SELE" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
-</div>
-<div v-for="(data, index) in memberList" :key="index">
-<gReceiveCard :propData="data" option="SELE"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+<div style="width: 100%; float: left;">
+    <div v-for="(data, index) in bookList" :key="index">
+        <gReceiveCard :propData="data" option="SELE" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+    </div>
+    <div v-for="(data, index) in memberList" :key="index">
+        <gReceiveCard :propData="data" option="SELE"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+    </div>
 </div>
     <!-- <div v-if="false" style="width: 100%; height: 100%;"  class="">
         <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">

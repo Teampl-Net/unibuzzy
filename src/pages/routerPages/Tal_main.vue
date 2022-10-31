@@ -43,6 +43,7 @@ import loadingCompo from '../../components/layout/Tal_loading.vue'
 // eslint-disable-next-line no-unused-vars
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: '',
   props: {
     testYn: {},

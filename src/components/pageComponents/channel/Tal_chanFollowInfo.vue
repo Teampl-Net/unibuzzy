@@ -47,7 +47,7 @@
     <!-- </div> -->
     <!-- <gBtnSmall v-on:click="sendBtnClick" btnTitle="닫기" style="position: absolute; bottom: 1rem; left:50%;  transform: translateX(-50%); z-index:99"  /> -->
 
-</div>
+  </div>
   <!-- <div class="chanGreetingArea "> -->
     <!-- <div style="width:25px; height:25px; border-radius:50%; position:absolute; right: -1%; top:-2% ">
       <img src="../../../assets/images/common/close_black.svg" style="width:20px;" alt="">

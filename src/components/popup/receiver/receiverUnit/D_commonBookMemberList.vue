@@ -3,7 +3,8 @@
     <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
       <!-- <div v-if="addressBookList.length > 0" class="fl w-100P" style=" height: calc(100% - 60px); overflow: hidden scroll;"> -->
       <!-- <div v-if="memberList.legth > 0" class="fl w-100P"> -->
-        <template v-for="(data, index) in memberList" :key='data'>
+<!--         eslint-disable-next-line vue/no-v-for-template-key -->
+        <template v-for="(data, index) in memberList" :key='index'>
           <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
         </template>
         <!-- <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >

@@ -48,6 +48,7 @@ import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 
 const authService = new AuthService(firebaseApp)
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: '',
   data () {
     return {

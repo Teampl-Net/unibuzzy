@@ -60,7 +60,6 @@ import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 const authService = new AuthService(firebaseApp)
 export default {
-  name: '',
   data () {
     return {
       systemName: 'iOS',

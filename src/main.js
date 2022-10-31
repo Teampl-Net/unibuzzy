@@ -93,6 +93,7 @@ app.use(VueEasyLightbox)
 app.component('gLoadingS', gLoadingS)
 app.component('gAlertPop', gAlertPop)
 // app.component('gSharePop', gSharePop)
+// eslint-disable-next-line vue/multi-word-component-names
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)
 app.component('gSearchBox', gSearchBox)

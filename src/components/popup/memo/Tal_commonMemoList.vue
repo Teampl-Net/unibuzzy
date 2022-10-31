@@ -1,80 +1,82 @@
 <template>
-    <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="'rowMemoCard'+memo.memoKey" :style="index === (memoList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
-      <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" > -->
-      <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
-          <div v-if="memo.pmemoBodyStr" >
-            <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText( memo.pmemoUserNameMtext)}}</p>
-            <div  class="fl commonBlack font12" style="margin: 0.5rem" v-html="memo.pmemoBodyStr"></div>
-          </div>
-          <p class="fl font14 " style="margin: 0.5rem" v-else >삭제된 댓글입니다.</p>
-      </div> -->
-      <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
-        <!-- <div v-if="memo.parentMemoKey" style="width:20px;position: absolute; left: 0; top: 50%; transform: translateY(-50%);" class="fl"> -->
-        <!-- <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
-          <img  src="../../../assets/images/common/icon-turn-right.svg" style="max-width:20px;" class=" " alt="">
-        </div> -->
-        <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" >
-          <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
-          <div @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-if="memo.userProfileImg"  class="memoPicImgWrap">
-            <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
-          </div>
-          <img @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-          <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
-            <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-            <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
-            <ppp @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
-          </p>
-        </div>
-        <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
-        <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
-          <pre ref="editCommentBox"  @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
-          <pre v-else :id="'memoFullStr'+memo.memoKey" style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
-        </div>
-        <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
-          <div v-if="editIndex === index && editCIndex === ''">
-              <div class="memoActionArea borderLeft font13"  @click="editEnd(memo)" >완료</div>
-              <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
-          </div>
-          <div >
-            <div v-if="!nonMemYn && (creUser || (editIndex !== index && memo.creUserKey == this.GE_USER.userKey)) && cMemoEditYn === false" class="memoActionArea borderLeft font13"  @click="memoDeleteClick(memo, index)">삭제</div>
-            <div v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.GE_USER.userKey) && cMemoEditYn === false" class="memoActionArea borderLeft font13" @click="editMemoClick(memo, index)">수정</div>
-          </div>
-          <div  v-if="!nonMemYn &&(editIndex !== index)" class="memoActionArea font13" @click="memoMemoClick(memo)" >댓글</div>
-        </div>
-        <div  style="width: 100%; margin-top: 15px; min-height: 50px; float: left;" v-if="memo.cmemoList.length > 0">
-            <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex" :id="'rowMemoCard'+cMemo.memoKey">
-                <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
-                <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
-                <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
-                    <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
-                    <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-                    <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
-                        <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-                        <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
-                        <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
-                    </div>
-                    <pre id="cMemoEditBoxId" ref="cMemoEditBoxId" class="editableContent cMemoEditBoxClass font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
-                    <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr" :id="'memoFullStr' + cMemo.memoKey" ></pre>
-                    <div v-if="editIndex === index && editCIndex === cIndex">
-                      <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
-                      <div class="memoActionArea font13"  @click="cancelEdit(cMemo, index)" >취소</div>
-                    </div>
-                    <div v-else>
-                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.GE_USER.userKey))" @click="memoDeleteClick(cMemo, index, cIndex)">삭제</div>
-                      <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.GE_USER.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
-                      <div class="memoActionArea font13" v-if="!nonMemYn &&(editIndex !== index)"  @click="meMemoMemoClick(cMemo)" >댓글</div>
-                    </div>
-                    <!-- <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn">댓글</div> -->
-                </div>
+    <div style="width: 100%; float: left;">
+      <div class="memoCard" v-for="(memo, index) in memoList" :key="index" :id="'rowMemoCard'+memo.memoKey" :style="index === (memoList.length - 1) ? 'border-bottom:0;': '' " @click="infoMemo(memo)" >
+        <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 20px); margin-left: 20px; border-radius: 5px; background-color: #eee;" > -->
+        <!-- <div class="fl" v-if="memo.parentMemoKey" @click="scrollMove(memo.parentMemoKey)" style="width:calc(100% - 1rem); border-radius: 5px; background-color: #eee; margin-bottom:0.5rem;" >
+            <div v-if="memo.pmemoBodyStr" >
+              <p class="fl commonBlack mleft-1 mtop-05 font13" >{{this.$changeText( memo.pmemoUserNameMtext)}}</p>
+              <div  class="fl commonBlack font12" style="margin: 0.5rem" v-html="memo.pmemoBodyStr"></div>
             </div>
+            <p class="fl font14 " style="margin: 0.5rem" v-else >삭제된 댓글입니다.</p>
+        </div> -->
+        <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
+          <!-- <div v-if="memo.parentMemoKey" style="width:20px;position: absolute; left: 0; top: 50%; transform: translateY(-50%);" class="fl"> -->
+          <!-- <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
+            <img  src="../../../assets/images/common/icon-turn-right.svg" style="max-width:20px;" class=" " alt="">
+          </div> -->
+          <div class="commentTop" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="min-height: 35px; float: left; width: 100%; margin-bottom: 5px;" >
+            <!-- <img v-if="memo.parentMemoKey" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px" class="fl mtop-05" alt=""> -->
+            <div @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-if="memo.userProfileImg"  class="memoPicImgWrap">
+              <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
+            </div>
+            <img @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+            <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
+              <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+              <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
+              <ppp @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
+            </p>
+          </div>
+          <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
+          <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
+            <pre ref="editCommentBox"  @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
+            <pre v-else :id="'memoFullStr'+memo.memoKey" style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
+          </div>
+          <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
+            <div v-if="editIndex === index && editCIndex === ''">
+                <div class="memoActionArea borderLeft font13"  @click="editEnd(memo)" >완료</div>
+                <div class="memoActionArea font13"  @click="cancelEdit(memo, index)" >취소</div>
+            </div>
+            <div >
+              <div v-if="!nonMemYn && (creUser || (editIndex !== index && memo.creUserKey == this.GE_USER.userKey)) && cMemoEditYn === false" class="memoActionArea borderLeft font13"  @click="memoDeleteClick(memo, index)">삭제</div>
+              <div v-if="!nonMemYn && (editIndex !== index && memo.creUserKey == this.GE_USER.userKey) && cMemoEditYn === false" class="memoActionArea borderLeft font13" @click="editMemoClick(memo, index)">수정</div>
+            </div>
+            <div  v-if="!nonMemYn &&(editIndex !== index)" class="memoActionArea font13" @click="memoMemoClick(memo)" >댓글</div>
+          </div>
+          <div  style="width: 100%; margin-top: 15px; min-height: 50px; float: left;" v-if="memo.cmemoList.length > 0">
+              <div style="width: 100%; min-height: 20px; float: left; margin-top: 5px;" v-for="(cMemo, cIndex) in [...memo.cmemoList].reverse()" :key="cIndex" :id="'rowMemoCard'+cMemo.memoKey">
+                  <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
+                  <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
+                  <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
+                      <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
+                      <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
+                      <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
+                          <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+                          <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
+                          <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
+                      </div>
+                      <pre id="cMemoEditBoxId" ref="cMemoEditBoxId" class="editableContent cMemoEditBoxClass font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
+                      <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr" :id="'memoFullStr' + cMemo.memoKey" ></pre>
+                      <div v-if="editIndex === index && editCIndex === cIndex">
+                        <div class="memoActionArea borderLeft font13"  @click="editEnd(cMemo)" >완료</div>
+                        <div class="memoActionArea font13"  @click="cancelEdit(cMemo, index)" >취소</div>
+                      </div>
+                      <div v-else>
+                        <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (creUser || (cMemo.creUserKey == this.GE_USER.userKey))" @click="memoDeleteClick(cMemo, index, cIndex)">삭제</div>
+                        <div class="memoActionArea borderLeft font13" v-if="!nonMemYn && (cMemo.creUserKey == this.GE_USER.userKey)"  @click="editMemoClick(cMemo, index, cIndex)">수정</div>
+                        <div class="memoActionArea font13" v-if="!nonMemYn &&(editIndex !== index)"  @click="meMemoMemoClick(cMemo)" >댓글</div>
+                      </div>
+                      <!-- <div class="memoActionArea font13" @click="memoMemoClick(memo)" v-if="!nonMemYn">댓글</div> -->
+                  </div>
+              </div>
+          </div>
+          <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
+            <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
+          <!-- </div> -->
         </div>
-        <!-- <div v-if="memo.creUserKey === userKey" class="fr" style="width:20px"> -->
-          <!-- <img src="../../../assets/images/push/noticebox_keep.png" style="width:20px" class="fr" /> -->
-        <!-- </div> -->
+        <div class="MemoBorder" v-if="memoList.length - 1 !== index"></div>
       </div>
-      <div class="MemoBorder" v-if="memoList.length - 1 !== index"></div>
+      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
     </div>
-    <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
     <!-- <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
       <gLoadingS ref="sLoadingMemoList" class="fl"/>
     </div> -->

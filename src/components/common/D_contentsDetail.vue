@@ -23,7 +23,7 @@
             <div class="w-100P fl" style=" margin-bottom: 5px;">
               <p style="width:100%; " class="font14 fl grayBlack">
                 <img src="../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                <pp class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</pp>
+                <pp class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.showCreNameYn === 0)">{{CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '익명'}}</pp>
                 <pp v-if="CONT_DETAIL.jobkindId === 'BOAR'">/{{this.$changeText(CONT_DETAIL.cabinetNameMtext)}}</pp>
               </p>
             </div>
@@ -508,7 +508,7 @@ export default {
       this.userNameClick(params.userKey, this.CONT_DETAIL.creTeamKey, false)
     },
     userNameClick (userKey, teamKey, blindYn) {
-      if (blindYn === false) {
+      if (!blindYn) {
         var param = {}
         param.targetType = 'bookMemberDetail'
         param.readOnlyYn = true

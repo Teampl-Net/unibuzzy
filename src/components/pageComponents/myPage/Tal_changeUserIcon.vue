@@ -1,32 +1,34 @@
 <template>
-    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; z-index: 9999;" @click="this.$emit('no')"></div>
-    <div style="width: calc(100% - 30px);  position: absolute;top: 15%; left: 15px; z-index: 999999; background: #FFF; border-radius: 20px; padding: 10px; border: 0.51px solid #ccc; box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%); height: 430px; float: left;">
-        <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">프로필 이미지 변경</p>
-        <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
-        <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
-          <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
-            <img style="width: 100%;" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  alt="">
+    <div style="width: 100%; float: left;">
+      <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; z-index: 9999;" @click="this.$emit('no')"></div>
+      <div style="width: calc(100% - 30px);  position: absolute;top: 15%; left: 15px; z-index: 999999; background: #FFF; border-radius: 20px; padding: 10px; border: 0.51px solid #ccc; box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%); height: 430px; float: left;">
+          <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">프로필 이미지 변경</p>
+          <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
+          <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
+            <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
+              <img style="width: 100%;" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  alt="">
+            </div>
           </div>
-        </div>
-        <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
-          <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 246px; max-height: 248px; " class="cropperImgArea">
-            <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
-            <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" style="margin: 0 auto;" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
-          </div>
+          <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
+            <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 246px; max-height: 248px; " class="cropperImgArea">
+              <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
+              <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" style="margin: 0 auto;" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+            </div>
 
-          <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
-              <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
-          </form>
-          <div class="fl textLeft w-100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
-            <p class="fl fontBold font14 mtop-05">터치해서 이미지를 변경할 수 있습니다.</p>
-            <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" btnTitle="다시 선택" @click="changeBtnClick"/>
+            <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
+                <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
+            </form>
+            <div class="fl textLeft w-100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
+              <p class="fl fontBold font14 mtop-05">터치해서 이미지를 변경할 수 있습니다.</p>
+              <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" btnTitle="다시 선택" @click="changeBtnClick"/>
+            </div>
+          </div>
+          <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
+            <gBtnSmall @click="this.$emit('no')" btnTitle="닫기" btnThema="light"/>
+            <gBtnSmall @click="updateUserIcon" btnTitle="선택" class="mright-05" />
           </div>
         </div>
-        <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
-          <gBtnSmall @click="this.$emit('no')" btnTitle="닫기" btnThema="light"/>
-          <gBtnSmall @click="updateUserIcon" btnTitle="선택" class="mright-05" />
-        </div>
-      </div>
+    </div>
 </template>
 <script>
 import Cropper from 'cropperjs'

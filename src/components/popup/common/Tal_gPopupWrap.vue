@@ -458,7 +458,7 @@ export default {
           }
         }
         if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
-          this.popId = this.targetType + this.detailVal.contentsKey || this.detailVal.targetKey
+          this.popId = this.targetType + this.detailVal.contentsKey 
         } else if (this.targetType === 'chanDetail') {
           if (this.detailVal.targetKey) {
             this.popId = this.targetType + this.detailVal.targetKey
@@ -609,7 +609,8 @@ export default {
       console.log('----------팝업 추가-----------')
       console.log(this.popId)
       var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
-      console.log(gPopHistory)
+      // history.push(this.popId)
+      gPopHistory.push(this.popId)
       this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
       var history = this.$store.getters['D_HISTORY/hStack']
       history.push(this.popId)
@@ -815,7 +816,6 @@ export default {
         }
         this.goChanDetail(value)
       } else {
-        console.log(this.popId)
         if (value.jobkindId === 'ALIM') {
           param.targetType = 'pushDetail'
           indexOf = currentPage.indexOf('pushDetail')
@@ -830,7 +830,6 @@ export default {
           if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' || value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
             return
           }
-          console.log(this.params.contentsKey + '**' + value.contentsKey)
           if (this.params.contentsKey === value.contentsKey) {
             await this.$addContents(value.contentsKey, value.jobkindId)
             return
@@ -840,7 +839,6 @@ export default {
           }
         }
         var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
-        console.log('과연??있나요?' + targetYn)
         // eslint-disable-next-line no-debugger
         debugger
         if (targetYn !== false && targetYn !== 'false') {

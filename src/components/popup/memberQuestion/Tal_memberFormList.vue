@@ -1,5 +1,7 @@
 <template>
   <div class="pagePaddingWrap memberFormListWrap " >
+    <creFormPop v-if="creFormYn" @closePop="creFormYn = false" :propData="propData" @openPop="openPop" @closeXPop="this.creFormYn= false" />
+    <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='confirmNo'  v-if="errorBoxYn" @ok='confirmOk' />
   <!-- <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" /> -->
     <gSearchBox @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
     <transition name="showModal">
@@ -10,8 +12,6 @@
 
     <div class="btnPlus formBtnWich"  @click="plusBtnClick" ><p style="font-size:40px;">+</p></div>
   </div>
-  <creFormPop v-if="creFormYn" @closePop="creFormYn = false" :propData="propData" @openPop="openPop" @closeXPop="this.creFormYn= false" />
-  <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='confirmNo'  v-if="errorBoxYn" @ok='confirmOk' />
 </template>
 
 <script>

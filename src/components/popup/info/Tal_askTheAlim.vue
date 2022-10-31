@@ -1,5 +1,8 @@
 <template>
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100vh;">
+  <gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
+  <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
+  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
   <div style="width: 100%; height: calc(100% - 4rem); ">
     <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
@@ -23,11 +26,8 @@
     </div> -->
   </div>
   <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
+  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
 </div>
-<div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-<gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
-<gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
-<commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
  <!-- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
   <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
   <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>

@@ -37,6 +37,7 @@
 // import { loginCheck } from '../../assets/js/Tal_common'
 import { onMessage } from '../../assets/js/webviewInterface'
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'policy',
   created () {
     onMessage('REQ', 'CheckUserPermission')

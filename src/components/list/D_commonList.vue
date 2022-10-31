@@ -1,10 +1,9 @@
 <template>
-  <!-- <div id="chanWrap" class="commonListWrap"> -->
-    <!-- <p style="position: absolute;">{{currentScroll}}</p> -->
-    <!-- <div class="commonListContentBox pushMbox" v-for="(alim, index) in this.contentsList" :key="index"> -->
+<div style="width: 100%; flaot: left;">
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
+        <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
         <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
           <div @click="clickInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
@@ -30,7 +29,7 @@
                           <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                           {{this.$changeText(alim.nameMtext)}}
                           <pp v-if="alim.jobkindId === 'BOAR'">/{{this.$changeText(alim.cabinetNameMtext)}}</pp>
-                          <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey, alim.blindYn === 1)">{{alim.blindYn === 1 ? '(익명)' : (alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '')}}</pp>
+                          <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey)">{{(alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '(익명)')}}</pp>
                       </p>
                   </div>
                 </div>
@@ -128,8 +127,10 @@
       <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false, this.reportYn = false'  />
       <gReport v-if="reportYn" @closePop="reportYn = false" :contentsInfo="tempData" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
+</div>
 </template>
 <script>
+// eslint-disable vue/no-useless-template-attributes
 // import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
 import { onMessage } from '../../assets/js/webviewInterface'
@@ -312,7 +313,7 @@ export default {
       }
     },
     userNameClick (userShowYn, userKey, teamKey, blindYn) {
-      if(userShowYn === true && blindYn === false){
+      if(userShowYn === true){
         var param = {}
         param.targetType = 'bookMemberDetail'
         param.readOnlyYn = true

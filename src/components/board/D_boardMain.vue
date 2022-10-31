@@ -1,133 +1,135 @@
 <template>
-<!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
+<div>
+  <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-  <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
-    <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
-    <p class="font20 fontBold" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
-    <div id="summaryHeader" class="summaryHeader">
-      <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
-      <div id="boardInfoSummary" class="mt-header boardWhiteBox">
-        <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
-          <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
-          </div>
-          <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
-            <div class="fl font16  w-100P">
-              <div style="width:50px;" >
-                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
-              </div>
-              <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
+    <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
+      <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
+      <p class="font20 fontBold" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
+      <div id="summaryHeader" class="summaryHeader">
+        <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
+        <div id="boardInfoSummary" class="mt-header boardWhiteBox">
+          <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
+            <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
             </div>
-            <div class="fl font16  w-100P">
-              <div style="width:50px;" >
-                <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
-              </div>
-              <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
-            </div>
-
-            <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
-              <div class="fl font15  w-100P">
-                <div style="width:100%" class="fl" >
-                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
+            <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
+              <div class="fl font16  w-100P">
+                <div style="width:50px;" >
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
                 </div>
-                <p class="mleft-05 fl font12 commonBlack" v-if="CAB_DETAIL.replyYn === 1">댓글</p>
-                <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.fileYn === 1">파일업로드</p>
-                <p class="fl font12 mleft-05 commonBlack" v-if="CAB_DETAIL.blindYn === 1">익명</p>
+                <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
+              </div>
+              <div class="fl font16  w-100P">
+                <div style="width:50px;" >
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
+                </div>
+                <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
+              </div>
+
+              <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
+                <div class="fl font15  w-100P">
+                  <div style="width:100%" class="fl" >
+                    <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
+                  </div>
+                  <p class="mleft-05 fl font12 commonBlack" >{{CAB_DETAIL.replyYn === 1? '댓글O': '댓글X'}}</p>
+                  <p class="fl font12 commonBlack" >/{{CAB_DETAIL.fileYn === 1? '파일업로드O':'파일업로드X'}}</p>
+                  <p class="fl font12 commonBlack" >/{{CAB_DETAIL.blindYn === 1? '익명':'실명'}}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
-          <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
-          <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements}}개</p>
-        </div>
+          <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+            <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
+            <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements}}개</p>
+          </div>
 
-        <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
-          <div style="display:flex; align-items: center;">
-            <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
-             <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
-            </div>
-            <div class="mleft-05" style="display:flex; flex-direction: column;">
-              <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(GE_USER.userDispMtext)}}</p>
-              <div>
-                <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
-                <p class="fl commonBlack font14 " v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(내정보공개)</p>
+          <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="display:flex; align-items: center;">
+              <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
+              </div>
+              <div class="mleft-05" style="display:flex; flex-direction: column;">
+                <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(GE_USER.userDispMtext)}}</p>
+                <div>
+                  <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
+                  <p class="fl commonBlack font14 " v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(내정보공개)</p>
+                </div>
               </div>
             </div>
+            <div style="display:flex; align-items: center; justify-content: space-around; max-width:150px; width:55%;">
+
+              <img v-if="CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true" class="fr img-w20 mleft-05" style="width: 25px; margin-top: 3px;" src="../../assets/images/board/workStatYnIcon.svg" alt="">
+
+              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.W === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen.svg" alt="">
+              <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen_solid.svg" alt="">
+
+              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.V === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes.svg" alt="">
+              <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes_solid.svg" alt="">
+
+              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.R === true" class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment.svg" alt="">
+              <img v-else class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment_solid.svg" alt="">
+              <!-- <img v-else class="fr img-w20" src="../../assets/images/common/icon_comment_solid.svg" alt=""> -->
+            </div>
           </div>
-          <div style="display:flex; align-items: center; justify-content: space-around; max-width:150px; width:55%;">
 
-            <img v-if="CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true" class="fr img-w20 mleft-05" style="width: 25px; margin-top: 3px;" src="../../assets/images/board/workStatYnIcon.svg" alt="">
+        </div>
+        <div id="boardInfoSummary2" class="summaryHeader2">
+          <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
+          <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
+        </div>
+      </div>
 
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.W === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen.svg" alt="">
-            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_square_pen_solid.svg" alt="">
-
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.V === true" class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes.svg" alt="">
-            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/board/icon_eyes_solid.svg" alt="">
-
-            <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.R === true" class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment.svg" alt="">
-            <img v-else class="fr img-w20 mleft-05" src="../../assets/images/common/icon_comment_solid.svg" alt="">
-            <!-- <img v-else class="fr img-w20" src="../../assets/images/common/icon_comment_solid.svg" alt=""> -->
+      <div class="boardItemBox" id="boardItemBox" style="">
+        <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
+          <transition name="showModal">
+            <findContentsList :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+          </transition>
+          <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
+            <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
+          </div>
+          <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); " class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+            <!-- {{CAB_DETAIL.shareAuth}}
+            {{CAB_DETAIL.blindYn}} -->
+            <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
+              @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
+              @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
+              @clearMemo='clearMemo'/>
+            <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
+            <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
+              @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
+              ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
+              :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove"
+              @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' /> -->
           </div>
         </div>
-
       </div>
-      <div id="boardInfoSummary2" class="summaryHeader2">
-        <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
-        <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
+      <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
+      v-on="handleScroll"
+      style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
+      @click="refreshAll" >
+        <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
-    </div>
 
-    <div class="boardItemBox" id="boardItemBox" style="">
-      <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
-        <transition name="showModal">
-          <findContentsList :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
-        </transition>
-        <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
-          <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
-        </div>
-        <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); " class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-          <!-- {{CAB_DETAIL.shareAuth}}
-          {{CAB_DETAIL.blindYn}} -->
-          <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
-            @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
-            @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
-            @clearMemo='clearMemo'/>
-          <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
-          <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
-            @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
-            ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
-            :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove"
-            @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' /> -->
-        </div>
-      </div>
-    </div>
-    <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
-    v-on="handleScroll"
-    style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
-    @click="refreshAll" >
-      <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
-    </div>
+    <img id='writeBtn' src="../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  </div>
+  <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
+  <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
+  <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999">
+    <!-- <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/> -->
+    <writeContents  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
+  </div>
+  <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
+  <transition name="showMemoPop">
+    <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
+  </transition>
 
-  <img id='writeBtn' src="../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
+  <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+
+  <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
+  <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
+  <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
 </div>
-<gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
-<!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
-<div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999">
-  <!-- <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/> -->
-  <writeContents  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
-</div>
-<div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
-<transition name="showMemoPop">
-  <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
-</transition>
-
-<imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
-<imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
-
-<gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
-<smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
-<gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
 </template>
 <script>
 // import findContentsList from '../D_findContentsList.vue'

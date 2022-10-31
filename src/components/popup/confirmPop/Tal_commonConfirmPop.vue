@@ -1,28 +1,30 @@
 <template>
-  <div style="width: 100%; height: 100vh; position: fixed; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
-  <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
-  <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
-    <div class="confirmPopHeader" >
-      <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
-      <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
-      <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
-    </div>
-
-    <div class="confirmPopBody" >
-      <p class="confirmText" v-html="confirmText"></p>
-
-      <div class="confirmBtnArea" v-if="confirmType==='timeout'">
-        <gBtnSmall class="btnBig" v-on:click="goNo" btnTitle="닫기"/>
+  <div style="width: 100%; float: left;">
+    <div style="width: 100%; height: 100vh; position: fixed; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+    <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
+    <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
+      <div class="confirmPopHeader" >
+        <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
+        <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
+        <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
       </div>
 
-      <div class="confirmBtnArea" v-if="confirmType==='one'">
-        <gBtnSmall class=" btnBig" v-on:click="goNo" btnTitle="확인"/>
-      </div>
+      <div class="confirmPopBody" >
+        <p class="confirmText" v-html="confirmText"></p>
 
-      <div class="confirmBtnArea" v-if="confirmType==='two'||confirmType== null">
+        <div class="confirmBtnArea" v-if="confirmType==='timeout'">
+          <gBtnSmall class="btnBig" v-on:click="goNo" btnTitle="닫기"/>
+        </div>
 
-        <gBtnSmall btnThema='deep' class="mright-05 btnBig" v-on:click="goOk" btnTitle="확인"/>
-        <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소" class="mleft-05 btnBig"/>
+        <div class="confirmBtnArea" v-if="confirmType==='one'">
+          <gBtnSmall class=" btnBig" v-on:click="goNo" btnTitle="확인"/>
+        </div>
+
+        <div class="confirmBtnArea" v-if="confirmType==='two'||confirmType== null">
+
+          <gBtnSmall btnThema='deep' class="mright-05 btnBig" v-on:click="goOk" btnTitle="확인"/>
+          <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소" class="mleft-05 btnBig"/>
+        </div>
       </div>
     </div>
   </div>

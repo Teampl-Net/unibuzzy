@@ -102,8 +102,8 @@
       </div>
     </div> -->
   </div>
+  <editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='this.BOARD_CONTENT_LIST' :teamNameText='teamNameText'/>
 </div>
-<editChanMenu :chanInfo="propData" :currentTeamKey="chanAlimListTeamKey" v-if='editPopYn' @closeXPop='closeEditPop' :editList='this.BOARD_CONTENT_LIST' :teamNameText='teamNameText'/>
 <!-- <selectManagerList :propData="propData" v-if="selectManagerListYn" @closeXPop='selectManagerListYn = false'  @sendReceivers='setSelectedList' @openPop='openPopup' /> -->
 </template>
 <script>
