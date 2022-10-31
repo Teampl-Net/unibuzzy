@@ -366,29 +366,11 @@ export const commonMethods = {
     var followerText = ''
     if (data.followYn) {
       followerText = '구독자'
-      if (data.adminYn) {
+      if (data.ownerYn) {
+        followerText = '소유자'
+      } else {
         if (data.memberYn) {
-          if (data.ownerYn) {
-            followerText = '소유자'
-          } else {
-            followerText = '관리자('
-            if (data.mngTeamYn === true || data.mngTeamYn === 1) {
-              followerText = followerText + '채널'
-              if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
-                followerText += '/'
-              }
-            } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
-              followerText = followerText + '멤버'
-              if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
-                followerText += '/'
-              }
-            } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
-              followerText = followerText + '알림'
-            }
-            followerText += ')'
-          }
-        } else {
-          followerText += '('
+          followerText = '관리자('
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
             followerText = followerText + '채널'
             if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
