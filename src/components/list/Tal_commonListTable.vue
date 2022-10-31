@@ -31,8 +31,8 @@
                     <!-- <img v-if="(value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== sessionUserKey)" style="width: 20px; float: right;" src="../../assets/images/board/securityDoc.svg" alt=""> -->
                     <!-- {{(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey !== this.GE_USER.userKey) && (value.titleBlindYn === true || value.titleBlindYn === 1)}}
                     {{value.titleBlindYn}} -->
-                    <!-- {{this.$checkUserAuth(value.shareItem)}} -->
-                    <!-- {{!(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey)}} -->
+                    <!-- {{this.$checkUserAuth(value.shareItem)}}
+                    {{!(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey)}} -->
                     <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" v-html="'열람권한이 없는 컨텐츠 입니다.'" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                     <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                     <!-- <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" /> -->

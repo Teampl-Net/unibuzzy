@@ -13,7 +13,7 @@
         </div>
         <!-- <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/> -->
         <!-- <img style="width: 20px; float:right;" src="../../../assets/images/common/common_filter.svg" alt=""> -->
-        <gBtnSmall @click="openReceptListPop" btnTitle="등업신청목록" style="z-index: 9999;" class="receptListBtnStyle cursorP"/>
+        <gBtnSmall @click="openReceptListPop" btnTitle="멤버신청목록" style="z-index: 9999;" class="receptListBtnStyle cursorP"/>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
@@ -25,7 +25,7 @@
     <transition name="showUp">
         <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
             <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업관리</p>
+                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버관리</p>
                 <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
             </div>
             <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">

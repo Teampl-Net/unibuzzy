@@ -68,8 +68,8 @@
 
             <!-- {{{{this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr}}}} -->
             <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
-                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업신청</p>
-                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >등업대기중</p>
+                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p>
+                <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버대기중</p>
                 <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p>
             </div>
             <!-- <p class="fl font14 fontBold"  @click="saveMemberButton" :style="showProfileYn ? 'color:white' : '' " >내정보공개</p> -->

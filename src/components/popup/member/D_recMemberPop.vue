@@ -1,7 +1,7 @@
 <template>
     <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업신청</p>
+            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버신청</p>
             <img @click="successSendForm" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
@@ -12,7 +12,7 @@
             <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" />
             <gBtnSmall @click="successSendForm" btnThema="light" btnTitle="취소" />
         </div>
-        <gConfirmPop @no="receptPopShowYn = false" :confirmText="'[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>등업신청서를 제출하시겠습니까?'" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
+        <gConfirmPop @no="receptPopShowYn = false" :confirmText="'[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
         <gConfirmPop @no="successSendForm" confirmText='신청되었습니다!' confirmType='timeout' v-if="okPopShowYn" />
     </div>
 </template>

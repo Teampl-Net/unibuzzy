@@ -2,7 +2,7 @@
 <div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
     <div style="width: 100%; float: left; position: relative;">
         <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/>
-        <gBtnSmall @click="openReceptListPop" btnTitle="등업신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/>
+        <gBtnSmall @click="openReceptListPop" btnTitle="멤버신청목록" style="position: absolute; right: 0px; top: 0px; height: 25px; line-height: 25px;"/>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <!-- <div v-if="tab === 'Show'" style="padding:1rem 2rem; border: 1px solid #aaa;" @click="memberFormClick">
@@ -22,7 +22,7 @@
     <div v-if="receptListPopShowYn" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;" > </div>
     <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">등업관리</p>
+            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버관리</p>
             <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">

@@ -1,6 +1,6 @@
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
-    <gConfirmPop @no="okPopShowYn = false" confirmText='등업신청을 승인 하시겠습니까?' confirmType='two' @ok="okMember" v-if="okPopShowYn" />
+    <gConfirmPop @no="okPopShowYn = false" confirmText='멤버신청을 승인 하시겠습니까?' confirmType='two' @ok="okMember" v-if="okPopShowYn" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <p class="textLeft fl font16 fontBold" style="line-height: 30px;">신청목록{{'(' + this.managingList.length + ')'}}</p>
     <gBtnSmall @click="okPopShowYn = true" btnTitle="승인" />

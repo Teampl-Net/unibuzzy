@@ -22,7 +22,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="managerEditClick('manager')">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="managerEditClick('manager')">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
