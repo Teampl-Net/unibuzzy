@@ -760,6 +760,9 @@ export default {
     }
   },
   computed: {
+    UPDATELIST () {
+      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
+    },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail && detail.length > 0) {
@@ -841,6 +844,10 @@ export default {
     }
   },
   watch: {
+    UPDATELIST () {
+      console.log('0000000000000000000000000 this.UPDATELIST 00000000000000000000000000000000')
+      console.log(this.UPDATELIST)
+    },
     GE_CHANNEL_NOTI_QUEUE: {
       handler () {
         // this.checkNotiQueue()
@@ -910,7 +917,6 @@ export default {
   max-height: 1000px; */
   background-repeat: no-repeat;
   background-size: cover;
-  
 }
 .officialTitle{
   padding-right: 30px;
@@ -926,8 +932,6 @@ export default {
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
 .channelItemBox{background-color: #fff; border-radius: 5px; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;
-
-
 }
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}

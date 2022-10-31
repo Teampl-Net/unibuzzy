@@ -1,52 +1,9 @@
 <template>
 <div class="receiverTeamMemberArea" >
-    <!-- <div style="width: 100%; height: calc(100% - 40px); margin-top: 10px; overflow: hidden scroll;"> -->
-      <!-- <div v-if="addressBookList.length > 0" class="fl w-100P" style=" height: calc(100% - 60px); overflow: hidden scroll;"> -->
-      <!-- <div v-if="memberList.legth > 0" class="fl w-100P"> -->
-<!--         eslint-disable-next-line vue/no-v-for-template-key -->
-        <template v-for="(data, index) in memberList" :key='index'>
-          <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
-        </template>
-        <!-- <draggable style="--webkit-tap-highlight-color: rgba(0,0,0,0);" ref="editableArea" class="ghostClass" :v-model="memberList" ghost-class="ghost" :disabled="dragable" delay="200" >
-            <transition-group>
-                <template v-for="(data, index) in memberList" :key='data'>
-                    <div class="receiverTeamMemberCard fl" :class="{foo:index === 0, selectLastMargin:selectPopYn=== true, selectedBox : data.selectedYn}" :style="selectPopYn === true ? 'width:90%;' : ''" style="width:100%; min-height:60px; position: relative;"  >
-                        <div v-if="data.userProfileImg" :style="'background-image: url(' + (data.domainPath? data.domainPath + data.userProfileImg : data.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
-                        </div>
-                        <div v-else style="background-image: url('../../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
-                        </div>
-
-                        <div @click="!selectPopYn ? openModiPop(data, index): ''" class="fl textOverdot mleft-1" style="width: calc(100% - 110px - 1rem); height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center;" >
-                            <p class="fl font16 commonBlack">{{this.$changeText(data.userDispMtext || data.userNameMtext)}}</p>
-                            <p class="fl font12 commonBlack" v-if="data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true)">{{this.setPhone(data.phoneEnc)}}</p>
-                            <p class="fl font11 commonBlack" v-if="!data.phoneEnc && (!propData.selectMemberType === 'manager' || selectPopYn !== true) ">등록된 번호가 없습니다.</p>
-                        </div>
-                        <div v-if=" !propData.selectMemberType === 'manager' || selectPopYn !== true" class="fr" style="width:70px; height: 100%; display:flex; justify-content: space-between;">
-
-                            <img src="../../../../assets/images/common/callPhoneIcon.svg" v-if="mobileYn" @click="callPhone(data.phoneEnc)" style="width: 20px;" class="mright-15" alt="">
-
-                            <img v-if="propData.creUserKey !== data.userKey" src="../../../../assets/images/formEditor/trashIcon_gray.svg" @click="deleteMemberClick(data,index)" style="width: 20px;" alt="">
-                            <img v-else src="../../../../assets/images/channel/ownerChannel_crown.svg" alt="" style="width: 20px;  float: right; margin-right: 18px; margin-top: 20px;" class="fl">
-                        </div>
-                        <div v-if="selectPopYn === true" class="fr" style="height: 100%; width: 30px; display:flex; flex-shrink: 0; flex-grow: 0; ">
-                            <img style="width: 30px; flex-shrink: 0; flex-grow: 0; " src="../../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn" @click="addSelectedList(data,index)" >
-                            <img style="width: 25px; height: 20px; margin-top: 5px; flex-shrink: 0; flex-grow: 0; " src="../../../../assets/images/common/Tal_checkImage.svg" alt="" v-else @click="checkClick(index)">
-                        </div>
-
-                        <div v-if="this.searchFilterList.length > 0" style="width: calc(100% - 30px); margin-bottom: 2px; min-height: 25px; display: flex; margin-top: 5px; justify-content: space-around; align-items: center; float: right;">
-                          <div class="filterWrap font12"><div  class="filterTagBox">{{ data.sSub1?  '#' + data.sSub1 : ''}}</div></div>
-                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
-                          <div class="filterWrap font12"><div  class="filterTagBox" style="  ">{{data.sSub2? '#' + data.sSub2 : ''}} </div></div>
-                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
-                          <div class="filterWrap font12"><div   class="filterTagBox" style="  ">{{data.sSub3? '#' + data.sSub3 : ''}}</div></div>
-                        </div>
-                    </div>
-                </template>
-            </transition-group>
-        </draggable> -->
-    <!-- </div> -->
-    <!-- </div> -->
-    <gListEmpty v-if="memberList.length === 0" title="멤버가 없어요." subTitle="버튼을 눌러 멤버를 추가해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
+  <template v-for="(data, index) in memberList" :key='data'>
+    <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+  </template>
+  <gListEmpty v-if="memberList.length === 0" title="멤버가 없어요." subTitle="버튼을 눌러 멤버를 추가해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
 </div>
 
 </template>

@@ -729,7 +729,6 @@ export default {
 
         param.title = this.writePushTitle
         param.showCreNameYn = true
-        
         if (this.cabBlindYn) {
           param.showCreNameYn = false
         }

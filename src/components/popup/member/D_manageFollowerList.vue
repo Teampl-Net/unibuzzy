@@ -13,7 +13,7 @@
         </div>
         <!-- <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/> -->
         <!-- <img style="width: 20px; float:right;" src="../../../assets/images/common/common_filter.svg" alt=""> -->
-        <gBtnSmall @click="openReceptListPop" btnTitle="멤버신청목록" style="z-index: 9999;" class="receptListBtnStyle cursorP"/>
+        <gBtnSmall @click="openReceptListPop" btnTitle="멤버신청목록" style="z-index: 999;" class="receptListBtnStyle cursorP"/>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
@@ -215,7 +215,7 @@ export default {
     })
         debugger
         this.reqMemList = result.data.content
-      // // console.log(this.managingList)
+      // console.log(this.reqMemList)
       // paramMap.set('followerType', 'M')
     },
 

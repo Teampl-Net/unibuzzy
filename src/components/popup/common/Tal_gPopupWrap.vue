@@ -458,7 +458,7 @@ export default {
           }
         }
         if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
-          this.popId = this.targetType + this.detailVal.contentsKey 
+          this.popId = this.targetType + this.detailVal.contentsKey
         } else if (this.targetType === 'chanDetail') {
           if (this.detailVal.targetKey) {
             this.popId = this.targetType + this.detailVal.targetKey
@@ -807,6 +807,7 @@ export default {
       // var history = this.$store.getters['D_HISTORY/hStack']
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       var indexOf = null
+
       if (value.chanYn) {
         indexOf = currentPage.indexOf('chanDetail')
         if (indexOf !== -1) {
@@ -826,19 +827,41 @@ export default {
         console.log(this.params)
         console.log(value)
         if (indexOf !== -1) {
-        //  if (this.params.targetKey === value.contentsKey) {
-          if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' || value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
-            return
-          }
+          //  if (this.params.targetKey === value.contentsKey) {
+          // if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' || value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
+          //   return
+          // }
           if (this.params.contentsKey === value.contentsKey) {
             await this.$addContents(value.contentsKey, value.jobkindId)
+            // alert('같은 컨텐츠')
             return
-          // alert('같은 컨텐츠')
           } else {
-          // alert('다른 컨텐츠')
+            // alert('다른 컨텐츠')
+            var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
+            if (targetYn !== false && targetYn !== 'false') {
+              param.targetKey = value.contentsKey
+              // param.targetType = value.contentsKey
+              if (value.jobkindId === 'BOAR') {
+                param.cabinetKey = targetYn.cabinetKey
+                param.cabinetNameMtext = targetYn.cabinetNameMtext
+              } else {
+                param.nameMtext = targetYn.nameMtext
+                param.teamName = targetYn.nameMtext
+              }
+              param.contentsKey = value.contentsKey
+              param.jobkindId = value.jobkindId
+              param.teamKey = value.creTeamKey
+              param.value = value
+              param.notiYn = true
+              this.openPop(param)
+              // this.$forceUpdate()
+            } else {
+              this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+              this.failPopYn = true
+            }
           }
         }
-        var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
+        targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
         // eslint-disable-next-line no-debugger
         debugger
         if (targetYn !== false && targetYn !== 'false') {

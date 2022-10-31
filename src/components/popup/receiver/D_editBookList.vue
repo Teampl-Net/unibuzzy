@@ -3,7 +3,9 @@
     <gConfirmPop :confirmText='confirmText' :confirmType="confirmType" v-if="confirmPopShowYn" @no='confirmPopShowYn=false' @ok='confirmOk' />
     <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
     <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
+
       <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="cabinetName !== ''" >
+
         <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.searchFilterList.length > 0">
           <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">세부필터</p>
           <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
@@ -13,25 +15,24 @@
                 <option value="all" @click="changeValue('all')">{{value.text + '전체'}}</option>
                 <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
               </select>
+
             </div>
           </div>
         </div>
+
         <div class="w-100P fl" style="min-width: 120px;">
           <div class="fl" style="position: relative; width: calc(100% - 120px)">
             <img @click="cabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
             <input @click="searchKeyword = ''" v-model="searchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="cabinetName !== ''? getBookMemberList():getBookList()" :placeholder="cabinetName !== ''? '이름을 입력해주세요' : '주소록명을 입력해주세요'">
           </div>
-          <!-- <select v-model="orderByText" @change="changeOrderBy" class="commonSelectBox font14 cursorP"  style="height: 30px; width: 80px; float: right; line-height: 18px; margin-right: 5px;" name="" id="">
-            <option value="creDate">등록순</option>
-            <option value="userDispMtext">이름순</option>
-          </select> -->
           <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
             <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="orderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':orderByText === 'creDate'}">등록순</p>
             <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="orderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':orderByText === 'userDispMtext'}">이름순</p>
           </div>
-        </div> <!-- display: flex; justify-content: space-around; align-items: center; -->
-        <!-- <img style="width: 23px; float: right; margin-top: 3px;" @click="searchBoxShowYn = !searchBoxShowYn" src="../../../assets/images/common/iocn_search.png" alt=""> -->
+        </div>
+
       </div>
+
       <div class="bookAndMemListWrap" :style="detailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <bookListCompo @getTeamCabList="this.getBookList" @refreshList="getBookList" :listData="bookList" :propData="propData" :selectBookDetail="selectBookDetail" style="width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;" ref="bookListCompoRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn" @editYn='editYnCheck' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
@@ -309,6 +310,8 @@ export default {
                 this.cabinetName = this.$changeText(this.selectBookDetail.cabinetNameMtext)
                 this.detailOpenYn = true
             }
+            console.log('#######################')
+            console.log(this.memberList)
         },
         editYnCheck(data) {
             this.editYn = data

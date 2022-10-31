@@ -167,6 +167,7 @@ export default {
         param.boardYn = true
         param.jobkindId = 'BOAR'
       } else if (this.viewTab === 'A') {
+        // param.ownUserKey = this.GE_USER.userKey
         param.allYn = true
       }
       var noneLoading = true

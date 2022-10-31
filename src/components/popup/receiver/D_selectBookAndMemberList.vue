@@ -140,7 +140,9 @@ export default {
 
 				if (type === 'add') {
 					this.addSelectedList(data, idx)
-				}
+				} else if (type === 'open') {
+                    // this.$emit('detail', data)
+                }
     	},
         setParentSelectList () {
             console.log(this.selectedMemberList)
@@ -199,9 +201,9 @@ export default {
             console.log(this.setSelectedList.bookList)
             console.log(data)
             console.log(type)
-						if (type === undefined){
-							type = data.jobKindId === 'BOOK' ? 'C' : 'U'
-						}
+            if (type === undefined){
+                type = data.jobKindId === 'BOOK' ? 'C' : 'U'
+            }
             if (type === 'U') {
                 var indexOf = this.setSelectedList.memberList.findIndex(i => (i.shareSeq === data.shareSeq && i.selectedYn === true))
                 if (indexOf === -1) {

@@ -15,10 +15,14 @@ const D_CHANNEL = {
     addManagerList: [],
     addShowProfileUserList: [],
     delContentsList: [],
-    chanNotiQueue: []
+    chanNotiQueue: [],
+    updateChanList: []
 
   },
   getters: {
+    GE_UPDATE_CHAN_LIST (state) {
+      return state.updateChanList
+    },
     GE_MAIN_CHAN_LIST (state) {
       return state.chanList
     },
@@ -619,10 +623,27 @@ const D_CHANNEL = {
     },
     MU_CHANNEL_NOTI_QUEUE_REPLACE: (state, payload) => {
       state.chanNotiQueue = payload
+    },
+    MU_ADD_UPDATE_CHAN_LIST: (state, payload) => {
+      state.updateChanList.push(payload)
+    },
+    MU_DEL_UPDATE_CHAN_LIST: (state, payload) => {
+      // AC_ADD_UPDATE_CHAN_LIST
+      var idx = state.updateChanList.indexOf(payload)
+      // var idx = state.updateChanList.findIndex(item => item.key === payload.key)
+      if (idx !== -1) {
+        state.updateChanList.splice(idx, 1)
+      }
     }
   },
   // dispatch 를 사용하면 됨
   actions: {
+    AC_ADD_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
+      commit('MU_ADD_UPDATE_CHAN_LIST', payload)
+    },
+    AC_DEL_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 제거
+      commit('MU_DEL_UPDATE_CHAN_LIST', payload)
+    },
     AC_MAIN_CHAN_LIST: ({ commit }, payload) => { // 채널전체 치환
       commit('MU_MAIN_CHAN_LIST', payload)
     },

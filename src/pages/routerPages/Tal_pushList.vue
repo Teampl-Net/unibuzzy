@@ -1309,7 +1309,7 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      if(this.box.scrollTop < 10) {
+      if (this.box.scrollTop < 10) {
         this.$emit('goScroll')
       }
       if (element) {
@@ -1604,11 +1604,9 @@ export default {
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
-        }
-        if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+        } if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
           this.findKeyList.creUserName = param.creUserName
-        } 
-        if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
           this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
         } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
           this.findKeyList.toCreDateStr = param.toCreDateStr

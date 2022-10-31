@@ -60,13 +60,13 @@
         <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
             <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
             <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
-            <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 99999; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
+            <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 1; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
                 <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
                 <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-                <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; height: 30px; float: left;" >
-                    <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p>
+                <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; min-height: 30px; float: left;" >
+                    <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
                     <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
-                    {{value.fileName}}
+                    - {{value.fileName}}
                     </a>
                 </div>
                 </templete>
@@ -224,6 +224,13 @@ export default {
   },
   updated () {
     this.settingAtag()
+    // this.filePopShowYn = false
+  },
+  beforeUnmount () {
+    this.filePopShowYn = false
+  },
+  unmounted () {
+    this.filePopShowYn = false
   },
   mounted () {
     // console.log('########################')
@@ -1191,8 +1198,11 @@ export default {
           url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
-        if (result.data.result === true || result.data.result === 'true') {
-          this.memoShowYn = false
+        console.log('-------------------------console.log(result) ------------------------------')
+        console.log(result)
+        // if (result.data.result === true || result.data.result === 'true') {
+        if (result) {
+          // this.memoShowYn = false
           // if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
           //   await this.getMemoList(true)
           // } else {
@@ -1204,6 +1214,7 @@ export default {
         console.error('D_contentsDetail 오류')
         console.error(e)
       } finally {
+        this.memoShowYn = false
         this.saveMemoLoadingYn = false
       }
     },

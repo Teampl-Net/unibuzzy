@@ -8,15 +8,15 @@
         <div class="imgCircle middleBgColor fl" @click="emit('open')" >
           <img src="../../../../assets/images/board/icon_book.svg" class="content img-w25"/>
         </div>
-        <div class="fl w-100P" style="display: flex; align-items: center; " @click="emit('open')">
-          <div class="textLeft fl w-100P " style="">
-            <p class="fl font16 commonDarkGray fontBold w-100P">{{propData.cabinetNameMtext}}</p>
+        <div class="fl" style="display: flex; align-items: center;" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="emit('open')">
+          <div class="textLeft fl textOverdot w-100P" style="" >
+            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{propData.cabinetNameMtext}}</p>
             <!-- <div class="fl w-100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
               <p class="fl font14 commonDarkGray mleft-05" :class="index === 0 ? 'mleft-0' : '' " v-for="(value, index) in propData.mUserList" :key="index">{{this.$changeText(value.userDispMtext)}}</p>
             </div> -->
             <!-- white-space: nowrap; text-overflow: ellipsis; overflow: hidden; -->
-            <p class="fl font14 commonDarkGray " style="" >{{cabinetNames}}</p>
-            <!-- <p class="fl font14 commonDarkGray mleft-05" >{{this.propData.mUserList.length}}</p> -->
+            <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p>
+            <!-- <p class="fl font14 commonDarkGray mleft-03" style="color:a4a4a4" >{{this.propData.mUserList.length !== 0 ? this.propData.mUserList.length : ''}}</p> -->
           </div>
         </div>
       </template>
@@ -32,9 +32,9 @@
         <div class="fl w-100P" style="display: flex; align-items: center; " @click="emit('open')">
           <div class="textLeft fl w-100P " style="" >
             <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
-            <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? propData.userEmail : '등록된 이메일이 없습니다.'}}</p>
+            <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? changeDot('email', propData.userEmail) : '등록된 이메일이 없습니다.'}}</p>
             <pp class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</pp>
-            <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? propData.phoneEnc : '등록된 번호가 없습니다.'}}</p>
+            <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : '등록된 번호가 없습니다.'}}</p>
           </div>
         </div>
       </template>
@@ -85,15 +85,16 @@ export default {
         for (let i = 0; i < list.length; i++) {
           name += this.$changeText(list[i].userDispMtext) + ','
         }
-        // this.cabinetNames = name.substring(0, name.length - 1)
-        if (name.length > 20) {
-          this.cabinetNames = name.substring(0, 20) + '..'
-        } else {
-          this.cabinetNames = name.substring(0, name.length - 1)
-        }
-        this.cabinetNames += ' ' + this.propData.mUserList.length
+        this.cabinetNames = name.substring(0, name.length - 1)
       } else {
         this.cabinetNames = '비어있는 주소록'
+      }
+    },
+    changeDot (type, data) {
+      if (this.propData.memberYn === 1) {
+        return data
+      } else {
+        return this.$changeFollowerInfo(type, data)
       }
     }
   },
@@ -126,22 +127,17 @@ export default {
   align-items: center;
 } */
 
-.rowBaseCss{
+/* .rowBaseCss{
 display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center;
 padding: 0px;
 gap: 10px;
-
-/* position: absolute; */
 width: 100%;
 min-height: 70px;
 left: 0px;
-/* top: 143px; */
-/* background: #F5F5F9; */
-/* padding: 5%; */
-  }
+} */
 
 .selectedSpan{
 /* position: absolute; */

@@ -4,7 +4,8 @@
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
     <div class="w-100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" >
       <div style="width: 100%; position: relative; float: left; height: calc(100% - 95px); overflow: auto;">
-        <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' />
+        <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' @detail='detailOpen' />
+        <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
       </div>
       <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
     </div>
@@ -55,7 +56,6 @@ export default {
     return {
       selectedYn: false,
       setSelectedList: {},
-      detailOpenYn: false,
 
       titleText: '팀플',
       receiverTitle: '그룹 관리',
@@ -67,10 +67,68 @@ export default {
       selectedMemberList: [],
       selectedList: {},
       selectBookDetail: null,
-      itemList: []
+      itemList: [],
+
+      detailOpenYn: false,
+      memberList: {},
+      pPopId: {},
+      selectPopId: {}
     }
   },
   methods: {
+    async detailOpen (data) {
+      // this.detailOpenYn = true
+
+      // this.searchKeyword = ''
+      // this.receiverTitle = data.cabinetNameMtext /* + ' 멤버 관리' */
+      // this.selectBookDetail = data
+      // this.setBookSearchFilter()
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.selectPopId = 'selectMemeberPopup' + history.length
+      this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
+      history.push(this.selectPopId)
+      this.$store.commit('D_HISTORY/updateStack', history)
+
+      await this.getBookMemberList(data.cabinetKey)
+    },
+    async getBookMemberList (key) {
+      // this.imInYn = false
+      this.detailOpenYn = false
+      var paramMap = new Map()
+      var orderText = 'mcc.creDate DESC'
+      // if (this.orderByText === 'userDispMtext') {
+      //     orderText = 'u.userDispMtext'
+      // }
+      paramMap.set('orderbyStr', orderText)
+      // paramMap.set('userDispMtext', this.searchKeyword)
+      paramMap.set('cabinetKey', key)
+      paramMap.set('jobkindId', 'USER')
+      var result = await this.$commonAxiosFunction({
+          url: 'service/tp.getMCabContentsList',
+          param: Object.fromEntries(paramMap)
+      })
+      this.memberList = {}
+      this.memberList.memberList = result.data
+      if (this.memberList) { // dispName이 없을시 userName으로 대체
+          for (var i =0; i < this.memberList.length; i ++) {
+              // if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
+
+              // } else {
+              //     this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
+              // }
+              this.memberList[i].userDispMtext = this.$changeText(this.memberList[i].userDispMtext)
+              // if (this.memberList[i].userKey === this.GE_USER.userKey) {
+              //     this.imInYn = true
+              // }
+          }
+          // this.cabinetName = this.$changeText(this.selectBookDetail.cabinetNameMtext)
+          // this.$refs.selectedMemberListCompo.reloadMemberList()
+          this.detailOpenYn = true
+      }
+      console.log('#######################')
+      console.log(this.memberList)
+    },
+
     // settingList(){
     // // console.log("######@!@#!@#!@#!@#######")
     // // console.log(this.parentList)

@@ -15,7 +15,6 @@
         </div>
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
-        
         <Datepicker
           style="font-size: 14px; float: left;"
           inline
@@ -38,7 +37,6 @@
         <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
           <gBtnLarge @click="requestSearchPushList" btnTitle="검색하기" class="w-100P" />
         </div>
-        
         <!-- <div style="width: 100%; min-height: 200px; float: left;">
             <div style="width: 100%; height: 20px; border-bottom: 1px solid #ccc;" v-for="(value, index) in this.stateCodeList" :key="index">{{this.$changeText(value.codeNameMtext)}}</div>
         </div> -->

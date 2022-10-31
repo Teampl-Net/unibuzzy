@@ -5,22 +5,36 @@
   <loadingCompo v-if="loadingYn" />
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
-  <div class="w-100P h-100P fl mtop-1" >
+
+  <div class="w-100P h-100P fl ptop-1" style="overflow: auto; height: calc(100% - 70px);" >
     <div class="itemWrite fl ">
       <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시판 이름</p>
       <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" id="channelName">
 
-      <div class="fl mleft-1" @click="this.colorPickerShowYn = true" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
-      <div v-if="colorPickerShowYn" style="overflow: hidden; position: absolute; box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; top: 20%; left: 20%; z-index: 99999; width: 70%; height: 500px; ">
-          <gColorPicker :colorPick="this.selectedColor" @closePop="closeColorPickerPop" />      </div>
+      <div class="fl mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
+    </div>
+
+    <div v-if="colorPickerShowYn" class="fr" style="width: calc(100% - 100px);">
+      <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
+    </div>
+
+    <div class="itemWrite fl">
+      <p class="fontBold textLeft font16 fl mtop-02" style="width: 100px;">게시판 기능</p>
+      <div class="fl" style="width: calc(100% - 100px);">
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  title='댓글' :selectedYn='replyYnInput' @click="replyYnInput = !replyYnInput" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='파일 첨부' :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="blindYn === true ? '익명' : '실명'" :selectedYn='blindYn' @click="blindYn = !blindYn" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  title='상태설정' :selectedYn='workStatYn' @click="workStatYn = !workStatYn" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='제목 비공개(미권한자)' v-show="permissionVGroup.type === 'S'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
+
+      </div>
+
     </div>
 
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시판 기능</p>
-      <div class="fl" style="width: calc(100% - 100px);">
-        <gCheckBtn class="fl gCheck-W"  title='댓글' :selectedYn='replyYnInput' @click="replyYnInput = !replyYnInput" />
-        <gCheckBtn class="fl gCheck-W mleft-05"  title='파일 첨부' :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
-        <gCheckBtn class="fl gCheck-W mleft-05"  :title="blindYn === true ? '익명' : '실명'" :selectedYn='blindYn' @click="blindYn = !blindYn" />
+      <p class="fontBold  textLeft font16 fl" style="width: 100px;">예시글 작성</p>
+      <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" @click="this.samplePopShowYn = true" >
+        <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="예시글을 추가해주세요.">{{this.guideSampleInnerHtml? '예시글 있음': ''}}</p>
       </div>
     </div>
 
@@ -29,7 +43,10 @@
       <div class="fl" style="width: calc(100% - 100px);">
         <gCheckBtn id="all" ref="all" class="fl gCheck-W"  title='전체' :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
         <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  title='선택' :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
-        <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p>
+        <!-- <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p> -->
+        <p class="fr font12 commonDarkGray " style="padding-top:12px" v-if="this.shareGroup.type === 'A'">전체</p>
+        <seletedIconText v-else :propData='setSelectReceiveCount(this.shareGroup.selectedList)' style="padding-top:12px" />
+
       </div>
     </div>
     <div class="fr textLeft receivBox pholder" style="width: calc(100% - 100px); padding:5px;" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" placeholder="게시판을 공유할 대상을 선택해주세요">
@@ -37,23 +54,24 @@
     </div>
 
     <!-- 권한 설정 -->
-    <div class="fl w-100P mtop-1 " style="position: relative; " :class="{'mtop-2' : shareGroup.type === 'S'}">
+    <div class="fl w-100P mtop-1 " style="position: relative; padding: 0 1rem;" :class="{'mtop-2' : shareGroup.type === 'S'}">
       <triangleTag :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)' " style="position: absolute; top: -22px; border-right: 22px solid transparent; border-bottom: 23px solid #ffffff; border-left: 22px solid transparent; filter: drop-shadow(0px -10px 16px #ccc); z-index: 1;"/>
-      <div class="fl w-100P" style="box-shadow: 0px -7px 16px 0px #eee; position: absolute; width:100vw; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1.5rem; height: calc(100% - 300px); background:#ffffff">
+      <div class="fl w-100P" style="box-shadow: 1px 0px 17px 2px #eee; position: absolute; width:98%; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1rem;  background:#ffffff; border-radius: 20px; left: 50%; transform: translateX(-50%);">
 
         <!-- 열람 권한 -->
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 열람</p>
-            <div class="fl" style="width: calc(100% - 100px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
-            <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p>
+          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
+            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p> -->
+            <seletedIconText :propData='setSelectReceiveCount(this.permissionVGroup.selectedList)' />
           </div>
         </div>
 
@@ -61,31 +79,33 @@
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
-            <div class="fl" style="width: calc(100% - 100px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요" >{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
-            <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p>
+          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요" >{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
+            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p> -->
+            <seletedIconText :propData='setSelectReceiveCount(this.permissionWGroup.selectedList)' />
           </div>
         </div>
 
         <!-- 댓글 권한 -->
-        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
+        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">댓글 작성</p>
-            <div class="fl" style="width: calc(100% - 100px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
-            <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionRGroup.selectedList)}}</p>
+          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
+            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionRGroup.selectedList)}}</p> -->
+            <seletedIconText v-if="permissionRGroup.type === 'S'" :propData='setSelectReceiveCount(this.permissionRGroup.selectedList)' />
           </div>
         </div>
 
@@ -108,6 +128,7 @@ import selectBookList from '../receiver/D_selectBookList.vue'
 // import selectBookList from './receiver/Tal_selectBookList.vue'
 import receiverAccessList from '../receiver/D_selectReceiverAccessList.vue'
 import selectSampleListPop from '../board/D_manageSamplePop.vue'
+import seletedIconText from './editBoardUnit/D_selectReceivIconText.vue'
 export default {
   props: {
     modiBoardDetailProps: {},
@@ -281,6 +302,7 @@ export default {
     }
   },
   components: {
+    seletedIconText,
     selectType,
     selectBookList,
     receiverAccessList,
@@ -321,23 +343,32 @@ export default {
       if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
       var bookSize = selectGroup.bookList.length
       var memberSize = selectGroup.memberList.length
-      var text = ''
+
+      // var text = ''
+      var text = {}
+      var list = []
       if (bookSize === 0 && memberSize === 0) {
-        // text = '선택된 대상 없음'
-        // return text
         return ''
       } else {
         if (bookSize && bookSize > 0) {
-          text += '주소록' + bookSize
-          if (memberSize > 0) {
-            text += ', '
-          }
+          // text += '주소록' + bookSize
+          // if (memberSize > 0) {
+          //   text += ', '
+          // }
+          text = {}
+          text.type = 'book'
+          text.count = bookSize
+          list.push(text)
         }
         if (memberSize && memberSize > 0) {
-          text += '유저' + memberSize
+          // text += '유저' + memberSize
+          text = {}
+          text.type = 'user'
+          text.count = memberSize
+          list.push(text)
         }
-
-        return text
+        // return text
+        return list
       }
     },
     setReceiveName (selectGroup) {
@@ -449,7 +480,7 @@ export default {
         // var shareBookCount = 0
         if (cabShareList) {
           for (let i = 0; i < cabShareList.length; i++) {
-            if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
+            if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '' || cabShareList[i].cabinetNameMtext === null) continue
             if (cabShareList[i].accessKind === 'C') {
               /* shareBookCount += 1 */
               cabShareList[i].cabinetKey = cabShareList[i].accessKey
@@ -498,6 +529,7 @@ export default {
           mShareItemList[i].cabinetKey = cabShareList[cIndex].accessKey
           // eslint-disable-next-line no-debugger
           debugger
+          if (cabShareList[cIndex].cabinetNameMtext === null) continue
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         }
         if (mShareItemList[i].accessKind === 'U') {
@@ -645,6 +677,11 @@ export default {
       //     this.receiverAccessListYn = true
       //   }
       // }
+    },
+    choiceColor (color) {
+      this.selectedColor = color
+      this.$refs.colorPicker.setColor(color)
+      // console.log(color)
     },
     async updateCabinet () {
       // console.log(this.permissionWGroup.selectedList)
@@ -925,6 +962,7 @@ export default {
         // // console.log('@@성공@@')
         this.okPopYn = true
       }
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
     },
     closePop () {
       this.$emit('closePop')
@@ -1314,7 +1352,7 @@ export default {
   display: flex;
   /* border-bottom: 1px solid #ccc; */
   padding: 0.8rem 0;
-  align-items: center;
+  align-items: flex-start;
 }
 .itemWrite input {
   background: #fff !important;
@@ -1354,13 +1392,16 @@ export default {
 .shareSelecStyle {
   display: flex; align-items: center; padding: 0.6rem 0;
 }
+.permissionBox {
+  width: calc(100% - 74px);
+}
 @media screen and (max-width:350px){
   .jjjPaddingWrap{
     /* padding: 60px 1rem 9px 1rem !important */
     padding-top: 60px !important ;
   }
 }
-@media screen and (max-width:410px){
+@media screen and (max-width:430px){
   .itemWrite .gCheck-W {
     min-width: 60px;
     min-height: 30px

@@ -8,7 +8,7 @@
         <img v-if="!propData.picBgPath" class="img-w20 mright-05" src="../../../../assets/images/board/icon_lock_gray.svg" alt="">
         <div v-else style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: propData.picBgPath || '#ffffff' }"></div>
       </div>
-      <div class="fl w-100P textOverdot" style="display: flex; align-items: center; " @click="emit('open')">
+      <div class="fl w-100P textOverdot" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="emit('open')">
         <div class="textLeft fl w-100P textOverdot" style="">
           <p class="fl font16 commonDarkGray fontBold w-100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
           <!-- <div class="fl w-100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
@@ -60,9 +60,9 @@ export default {
     },
     setSubTitle () {
       if (this.propData.replyYn === 1) { this.subTitle += '댓글 지원O' } else { this.subTitle += '' }
-      if (this.subTitle !== '') this.subTitle += ', '
+      if (this.propData.replyYn === 1) this.subTitle += ', '
       if (this.propData.fileYn === 1) { this.subTitle += '파일업로드O' } else { this.subTitle += '' }
-      if (this.subTitle !== '') this.subTitle += ', '
+      if (this.propData.fileYn === 1) this.subTitle += ', '
       if (this.propData.blindYn === 1) { this.subTitle += '익명' } else { this.subTitle += '실명' }
     }
   },
@@ -100,14 +100,10 @@ align-items: center;
 padding: 0px;
 gap: 10px;
 
-/* position: absolute; */
 width: 100%;
 min-height: 70px;
 left: 0px;
-/* top: 143px; */
-/* background: #F5F5F9; */
-/* padding: 5%; */
-  }
+}
 
 .selectedSpan{
 /* position: absolute; */
