@@ -787,3 +787,11 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 .vel-img-title, .btn__close {
     display: none!important;
 }
+
+.completeWork{
+  text-decoration: line-through!important;
+  opacity: 1 ;
+}
+.completeWork img {
+  filter: brightness(60%); 
+}

@@ -14,7 +14,7 @@
                 </div>
                 <div class="pushDetailHeaderTextArea ">
 <!-- :class="{commonBlue: alim.readYn === 0}"  -->
-                  <p @click="clickCard(alim)" style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
+                  <p @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
                     <pp v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</pp>
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
@@ -63,8 +63,8 @@
 
               <!-- <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
               <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
-              <div v-else class="h-400max overHidden fl w-100P" style="word-break: break-all;" :id="'contentsListBodyArea'+alim.contentsKey">
-                <pre @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 cursorDragText h-100P w-100P fl" style="word-break: break-all;" v-html="setBodyLength(alim.bodyFullStr)"></pre>
+              <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsListBodyArea'+alim.contentsKey">
+                <pre :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''" @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 cursorDragText h-100P w-100P fl" style="word-break: break-all;" v-html="setBodyLength(alim.bodyFullStr, alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46)"></pre>
               </div>
               <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" class="font16 cursorP textRight mbottom-1 w-100P" style="">{{contentsMoreYn(alim)}}</p>
               <!-- <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
@@ -1339,10 +1339,14 @@ export default {
       }
       return str
     },
-    setBodyLength (str) {
+    setBodyLength (str, completeYn) {
         if (!str) return
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
+        if(completeYn){
+            console.log(str)
+            str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
+        }
         return str
     },
     setCutYn (str) {
@@ -1469,4 +1473,14 @@ export default {
 .alimListMemoBoxBackground{
   width: 100% !important; height: 100% !important; background: #00000036 !important; position: absolute !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
 .h-400max{ max-height: 400px;} .overHidden{overflow: hidden;}
+
+.completeWork, .completeWork div, .completeWork span, .completeWork a, .completeWork pre {
+  text-decoration: line-through;
+}
+.completeWork{
+  text-decoration: line-through!important;
+  color: #303030;
+  text-decoration: overline;
+  text-decoration-color: #303030;
+}
 </style>

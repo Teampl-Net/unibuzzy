@@ -39,7 +39,7 @@
           <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
         </div>
       </div>
-
+      
       <!-- <div class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div> -->
 
       <div class="fl w-100P" style="">

@@ -1,8 +1,7 @@
 <template>
 <div style="width: 100%; float: left;">
-  <div style="position: absolute; top:0; left:0; width: 100vw; height: 100vh; min-height: 100vh;">
-    <div style="position: absolute; top:0; left:0; background:#00000050" class="fl w-100P h-100P"></div>
-
+  <div style="position: absolute; top:0; left:0; background:#00000050" class="fl w-100P h-100P"></div>
+  <div style="position: absolute; top:0; left:0; width: 100vw; height: 100vh; min-height: 100vh; z-index: 999999">
     <div class="whitePaper">
         <!-- 컨텐츠 작성 헤더 영역 -->
         <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
@@ -729,8 +728,9 @@ export default {
 
         param.title = this.writePushTitle
         param.showCreNameYn = true
+
         if (this.cabBlindYn) {
-          param.showCreNameYn = false
+         param.showCreNameYn = false
         }
         if (this.modiYn) {
           param.contentsKey = this.propData.modiContentsKey
