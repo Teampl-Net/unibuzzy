@@ -7,7 +7,7 @@
         <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' @detail='detailOpen' />
         <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
       </div>
-      <selectedListCompo :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
+      <selectedListCompo :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
     </div>
 </div>
 
@@ -24,8 +24,10 @@ export default {
     detailSelectedYn: {},
     propData: {},
     parentList: {},
+    oneMemberCanAddYn: {},
     itemType: {}, // W: 작성/ V: 열람/ R: 댓글
     selectList: {} // 공유대상에서 선택한 북 & 멤버 리스트
+
   },
   created () {
     console.log(this.selectList)

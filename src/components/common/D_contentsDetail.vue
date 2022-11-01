@@ -14,7 +14,7 @@
           <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
           </div>
           <div class="pushDetailHeaderTextArea">
-            <p class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
+            <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
               <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
               <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
               <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
@@ -48,7 +48,7 @@
                 <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
               </div>
               <div v-if="CONT_DETAIL.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-              <statCodeComponent class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+              <statCodeComponent :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
 
             </div>
             <!-- <p class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.blindYn === 1)">{{CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.blindYn === true ? '익명' : (CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '')}}</p>
@@ -60,20 +60,23 @@
         <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
             <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
             <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
-            <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; padding: 10px; border-radius: 10px 0 10px 10px; box-shadow: rgb(0 0 0 / 12%) 2px 3px 10px 1px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 1; overflow: hidden auto; border: 1px solid #ccc; position: absolute">
-                <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p><!--   ({{this.attachTrueFileList.length}})</p> -->
-                <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-                <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all; min-height: 30px; float: left;" >
-                    <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
-                    <a :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" style="word-break: break-all;" :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 commonBlack"  >
-                    - {{value.fileName}}
-                    </a>
+            <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 0px 6px 6px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 1; overflow: hidden auto; position: absolute">
+                <!-- <p class="commonBlack font14 fontBold textLeft mbottom-05 ">파일 다운로드 </p> --><!--   ({{this.attachTrueFileList.length}})</p> -->
+                <div style=" margin: 15px; float: left; width: calc(100% - 30px);">
+                  <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+                  <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
+                      <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
+                      <img :src="settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
+                      <a style="width: calc(100% - 20px);" :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+                      {{value.fileName}}
+                      </a>
+                  </div>
+                  </templete>
                 </div>
-                </templete>
                 <!-- <p class="fr">({{this.$byteConvert(value.fileSizeKb)}})</p> -->
             </div>
         </div>
-        <pre  id="contentsBodyArea"  @click="memoShowYn = false" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr)"></pre>
+        <pre  id="contentsBodyArea"  @click="memoShowYn = false" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr, CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
 
         <div id="alimCheckArea">
           <div class="alimCheckContents">
@@ -352,6 +355,50 @@ export default {
     }
   },
   methods: {
+    settingFileIcon (fileName) {
+      let fileExt = fileName.substring(
+            fileName.lastIndexOf('.') + 1
+          )
+      var fileScr = ''
+          // 소문자로 변환
+          fileExt = fileExt.toLowerCase()
+          if (
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'svg'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_img.svg'
+          } else if (
+            ['mp4', 'avi', 'mov'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_mov.svg'
+          } else if (
+            ['mp3', 'wav'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_music.svg'
+          } else if (
+            ['xls'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_excel.svg'
+          } else if (
+            ['pdf'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_pdf.svg'
+          } else if (
+            ['ppt'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_ppt.svg'
+          } else if (
+            ['doc'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_doc.svg'
+          } else if (
+            ['zip'].includes(fileExt)
+          ) {
+            fileScr = '/resource/fileIcon/fileType_zip.svg'
+          } else {
+            fileScr = '/resource/fileIcon/fileType_common.svg'
+          }
+          return fileScr
+    },
     setIntervalTimer (date, contentsKey) {
       var time = this.$cancelTimer(date)
       // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
@@ -1248,9 +1295,12 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
     },
-    decodeContents (data) {
+    decodeContents (data, completeYn) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
+      if (completeYn) {
+        changeText = changeText.replaceAll('formCard', 'formCard completeWork')
+      }
       return changeText
     },
     async settingUserDo (userDo) {

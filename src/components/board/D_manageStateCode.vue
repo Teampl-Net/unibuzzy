@@ -2,11 +2,26 @@
     <div :ref="'stateCodeFor' + this.contentsKey" v-if="DISP_CODE_VALUE" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
         <div @click="openSelectPop" class="font14">{{this.$changeText(DISP_CODE_VALUE.codeNameMtext)}}</div>
         <div @click="closeSelectPop" v-show="selectPopShowYn" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 999"></div>
-        <div v-if="selectPopShowYn" style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 25%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 9999">
-            <div style="width: 100%; position: relative; float: left; padding: 0 20px; box-shadow: 0 4px 4px -4px #ccc; height: 35px; " class="font18 commonColor fontBold">상태설정
+        <div v-if="selectPopShowYn" style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 15%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 9999">
+            <div style="width: 100%; position: relative; float: left; padding: 0 20px; box-shadow: 0 4px 4px -4px #ccc; height: 35px; " class="font18 commonColor fontBold">업무설정
                 <img @click="closeSelectPop" style="position: absolute; right: 20px; top: 10px;" src="../../assets/images/common/smallPopXIcon.svg" alt="">
             </div>
             <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px;">
+                <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
+                <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
+                <!-- <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
+                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div> -->
+                <!-- <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
+                <Datepicker
+                    style="font-size: 14px; float: left; width: calc(100%);"
+                    inline
+                    :editable="false"
+                    v-model:value="workDate.toDate"
+                    type="date"
+                    :placeholder="dateHolder"
+                    titleFormat="YYYY-MM-DD"
+                ></Datepicker> -->
+                <p class="font15 textLeft fl fontBold w-100P mtop-1">상태설정</p>
                 <div style="width: 100%; float: left;">
                     <div @click="selectCode(value)" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
                         <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
@@ -25,25 +40,40 @@
                     <img v-if="value.codeKey === selectedCodeObj.codeKey" src="../../assets/images/common/Tal_checkImage.svg" style="width: 20px;position: absolute; right: 10px; top: 10px;" alt="">
                 </div> -->
             </div>
+            <!-- <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
+                <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
+            </div> -->
             <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
-                <gBtnSmall @click="currentCodeKey === this.selectedCodeObj.codeKey ? '': changeContentsStat()" :style="currentCodeKey === this.selectedCodeObj.codeKey ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
+                <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey)? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
             </div>
             <!-- <div style="width: 100%; height: 40px; padding: 5px 20px; margin-top: 15px;">
                 <gBtnSmall @click="closeSelectPop" btnThema="light" btnTitle="취소"/>
                 <gBtnSmall @click="changeContentsStat" btnTitle="적용" class="mright-05"/>
             </div> -->
         </div>
+        <div v-if="selectBookListShowYn"  style="width: 100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 9999999;">
+          <receiverAccessList :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
+        </div>
     </div>
 </template>
 <script>
+import receiverAccessList from '../../components/popup/receiver/D_selectReceiverAccessList.vue'
 export default {
+  components: {
+    receiverAccessList
+  },
   data () {
     return {
+      selectedList: {memberList: [], bookList: []},
       selectPopShowYn: false,
       selectPopId: null,
+      workDate: { toDate: '', fromDate: '' },
       nullObj: { codeKey: 0, codeNameMtext: '상태없음' },
       selectedCodeObj: { codeKey: null, codeNameMtext: null },
       defaltMemoYn: true,
+      dateHolder: '선택하세요',
+      parentList:{memberList: [], bookList: []},
+      selectBookListShowYn: false,
       colorList: [
         '#FFCDD2',
         '#F8BBD0',
@@ -71,14 +101,65 @@ export default {
     } */
   },
   created () {
+    console.log(this.alimDetail)
+    if(this.alimDetail) {
+      if (this.alimDetail.workToDate) {
+        this.dateHolder = this.settingDate(this.alimDetail.workToDate)
+      }
+      if (this.alimDetail.shareList) {
+        debugger
+        for (var i = 0; i < this.alimDetail.shareList.length; i++) {
+          var accessKind = this.alimDetail.shareList[i].accessKind
+          if (accessKind === 'U') {
+            this.parentList.memberList.push(this.alimDetail.shareList[i])
+          } else {
+            if (this.alimDetail.shareList[i].shareUserList && this.alimDetail.shareList[i].shareUserList.length > 0) {
+              for (var s = 0; s < this.alimDetail.shareList[i].shareUserList.length; s ++) {
+                var shareUser = this.alimDetail.shareList[i].shareUserList[s]
+                var settingObj = {}
+                settingObj.accessKind = 'U'
+                settingObj.accessKind = shareUser.userKey
+                settingObj.userDispMtext = shareUser.userDispMtext
+                settingObj.shareseq = undefined
+                this.parentList.memberList.push(settingObj)
+              }
+            }
+            // this.parentList.bookList.push(this.alimDetail.shareList[i])
+          }
+        }
+      }
+    }
+    console.log(this.workDate)
   },
   props: {
     codeList: {},
     currentCodeKey: {},
     contentsKey: {},
-    teamKey: {}
+    teamKey: {},
+    alimDetail: {} // 원만해서는 쓰지말기
   },
   methods: {
+    setSelectedList (datas) {
+      // 권한 선택시 실행
+      console.log('-------------------------------------')
+      this.selectedShareList = []
+      var data = datas
+      this.selectBookListShowYn = false
+      if (data.memberList) {
+        var settingMemList = []
+        // memberCount = data.memberList.length
+        for (let i = 0; i < data.memberList.length; i++) {
+          var tempList = {}
+          tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
+          tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
+          tempList.accessKey = data.memberList[i].accessKey
+          tempList.accessKind = 'U'
+          tempList.cabinetKey = this.alimDetail.cabinetKey
+          settingMemList.push(tempList)
+        }
+        this.selectedList.memberList = settingMemList
+      }
+    },
     changeInputText () {
       /* this.$refs.memoBodyStr.addEventListener('change', () => {
         alert(true)
@@ -101,6 +182,7 @@ export default {
     closeSelectPop () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
+      this.workDate = {toDate: '', fromDate: ''}
       if (this.selectPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -122,20 +204,42 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       try {
+        var setOkYn = false
         if (this.currentCodeKey === this.selectedCodeObj.codeKey) {
         } else {
           param.workStatCodeKey = this.selectedCodeObj.codeKey
-          param.contentsKey = this.contentsKey
           param.workStatCreUserKey = this.GE_USER.userKey
           param.workStatCreUserName = this.GE_USER.userDispMtext
+          setOkYn = true
+          param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">'
+          if (param.workStatCodeKey) {
+            param.memoHeaderStr += '[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + ']'
+          } else if (param.workToDate) {
+            param.memoHeaderStr += '[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + ']'
+          }
+        }
+        if (this.workDate.toDate !== '') {
+          var toDate = this.settingDate(this.workDate.toDate)
+          param.workToDateStr = toDate
+          param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
+          // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
+          setOkYn = true
+        }
+        param.memoHeaderStr += ' (으)로 변경<br></p>'
+        /* if (this.workDate.fromDate !== '') {
+          var fromDate = this.settingDate(this.workDate.fromDate)
+          param.workFromDateStr = fromDate
+          setOkYn = true
+        } */
+        debugger
+        if (setOkYn) {
           param.memoBodyStr = this.$refs.memoBodyStr.innerHTML
           if (!param.memoBodyStr || param.memoBodyStr === '') {
             param.nonMemoYn = true
             param.memoBodyStr = ''
-            param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '](으)로 변경<br></p>'
-          } else {
-            param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '](으)로 변경<br></p>'
           }
+          
+          param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
             url: 'service/tp.updateWorkStat',
@@ -153,15 +257,15 @@ export default {
             this.$showToastPop('업무 상태가 변경되었습니다.')
 
             this.closeSelectPop()
+          }
 
-            // eslint-disable-next-line no-new-object
+          // eslint-disable-next-line no-new-object
           /* var params = new Object()
           params.contentsKey = result.contents.contentsKey
           params.jobkindId = result.contents.jobkindId
           var resultList = await this.$getContentsList(param)
           var detailData = resultList.content[0]
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
-          }
         }
       } catch (error) {
         console.error(error)
@@ -170,6 +274,28 @@ export default {
         this.$emit('closeXPop', true)
         this.sendLoadingYn = false
       }
+    },
+    openSelectMemberPop () {
+      this.selectBookListShowYn = true
+    },
+    settingDate (date) {
+      debugger
+      if (date !== '') {
+        return this.$dayjs(date).format('YYYY-MM-DD')
+      }
+    },
+    openPushReceiverSelect () {
+      var param = {}
+      param.targetType = 'selectBookList'
+      param.targetKey = this.params.targetKey
+      param.teamKey = this.params.targetKey
+      param.teamNameMtext = this.params.teamNameMtext
+
+      var selectedList = this.receiverList
+      param.pSelectedList = selectedList
+
+      this.$emit('openPop', param)
+      // this.receiverPopYn = true
     },
     statBackColor (value, boxYn) {
       if (!value) {

@@ -205,7 +205,7 @@ export default {
                 type = data.jobKindId === 'BOOK' ? 'C' : 'U'
             }
             if (type === 'U') {
-                var indexOf = this.setSelectedList.memberList.findIndex(i => (i.shareSeq === data.shareSeq && i.selectedYn === true))
+                var indexOf = this.setSelectedList.memberList.findIndex(i => (i.accessKey === data.accessKey && i.selectedYn === true))
                 if (indexOf === -1) {
                     data.selectedYn = true
                     // data.shareSeq = data.userKey

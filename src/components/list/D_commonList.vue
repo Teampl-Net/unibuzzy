@@ -53,8 +53,10 @@
                       <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
                       <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
                   </div>
-                  <div @click="clickCard(alim)"  v-if="alim.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                  <statCodeComponent :teamKey="alim.creTeamKey" :contentsKey="alim.contentsKey" v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
+                  <div @click="clickCard(alim)"  v-if="(alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)) && alim.workStatCodeKey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <div v-if="(alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workStatCodeKey" class="font14 fr lightGray">목표: {{alim.workToDate? this.$dayjs(alim.workToDate).add(9, 'hour').format('YYYY/MM/DD'): '미정'}}</div>
+                  <div @click="clickCard(alim)"  v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <statCodeComponent :teamKey="alim.creTeamKey" :alimDetail="alim" :contentsKey="alim.contentsKey" v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
                 </div>
               </div>
               <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
