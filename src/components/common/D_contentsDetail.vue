@@ -224,7 +224,6 @@ export default {
   },
   updated () {
     this.settingAtag()
-    // this.filePopShowYn = false
   },
   beforeUnmount () {
     this.filePopShowYn = false
@@ -232,6 +231,7 @@ export default {
   unmounted () {
     this.filePopShowYn = false
   },
+
   mounted () {
     // console.log('########################')
     // console.log(this.detailVal)
