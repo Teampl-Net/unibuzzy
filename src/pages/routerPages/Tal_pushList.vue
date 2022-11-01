@@ -34,7 +34,7 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <commonList @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
           <commonList @cMemoEditYn="cMemoEditYn" @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
           <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
@@ -95,6 +95,7 @@ export default {
     chanAlimYn: {},
     chanDetail: {},
     notiScrollTarget: {}
+    // reloadKey: 0
   },
   created () {
     // this.$refs.gMemoRef.hi()
@@ -280,6 +281,12 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    GE_DISP_ALIM_LIST: {
+      handler (value, old) {
+        console.log('===================== watch ======================')
+        console.log(value)
+      }
+    },
     GE_DEL_CONT_LIST: {
       handler (value, old) {
         if (value) {
@@ -344,9 +351,7 @@ export default {
               ...content.D_MEMO_LIST
             ]
           }
-          // alert(JSON.stringify(this.boardContentsList))
           var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
-          // alert(idx1)
           this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.boardContentsList[idx]])
           // this.yesLoadMore(this.boardContentsList[idx].contentsKey)
@@ -397,7 +402,6 @@ export default {
     /* GE_NEW_NOTI_LIST: {
       handler  (value, old) {
         // console.log('noti도착----------------------------------------------------')
-        alert(JSON.stringify(value[0]))
         var newArr = null
         if (this.chanAlimYn) {
           // eslint-disable-next-line no-debugger
@@ -410,7 +414,6 @@ export default {
             this.alimContentsList = this.replaceArr(newArr)
           }
         } else {
-          alert('왔어요!!!')
           newArr = [
             value[0],
             ...this.alimContentsList
@@ -439,7 +442,6 @@ export default {
     },
     GE_MAIN_CHAN_LIST: {
       handler (value, old) {
-        /* alert(true) */
       },
       deep: true
     }
@@ -470,6 +472,7 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
     GE_DISP_ALIM_LIST () {
+      console.log(this.ALIM_LIST_RELOAD_CONT)
       var idx1, idx2
       var test = []
       var chanDetail = null
@@ -480,14 +483,11 @@ export default {
       this.computedYn = false
       for (i = 0; i < this.alimContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
-        // alert(this.alimContentsList[i].creTeamKey + '**')
         if (idx1 === -1) {
           var this_ = this
           var teamKey = this.alimContentsList[i].creTeamKey
-          // alert(this.alimContentsList[i].creTeamKey)
           // eslint-disable-next-line vue/no-async-in-computed-properties
           this.$addChanList(teamKey).then((res) => {
-            // alert('res' + res)
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             if (idx1 === -1) {
               test.push(this_.alimContentsList[i])
@@ -508,11 +508,12 @@ export default {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
           dataList = chanDetail.ELEMENTS.alimList
           idx2 = dataList.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey)
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
           if (idx2 !== -1) {
+            // alert(1)
+            dataList[idx2] = this.alimContentsList[i]
             test.push(dataList[idx2])
           } else {
+            // alert(2)
             test.push(this.alimContentsList[i])
           }
         }
@@ -616,7 +617,6 @@ export default {
       this.$emit('cMemoEditYn', editYn)
     },
     async setNotiScroll (key, jobkindId) {
-      // alert(key)
       this.targetCKey = key
       // eslint-disable-next-line no-unused-vars
       var targetYn = await this.targetKeyYn(key, jobkindId)
@@ -776,11 +776,16 @@ export default {
         if (idx !== -1) cont = this.boardContentsList[idx]
       }
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
+      console.log(' =================== yesLoadMore   =================== ')
+      console.log(idx)
+      console.log(response)
       var newArr = [
         ...cont.D_MEMO_LIST,
         ...response
       ]
+      console.log(newArr)
       var newList = await this.replaceMemoArr(newArr)
+      console.log(newList)
 
       cont.D_MEMO_LIST = newList
 
@@ -821,49 +826,64 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteMemo',
-        param: memo
-      })
-      var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
-      this.axiosQueue.splice(queueIndex, 1)
-      var index
-      if (result.data.result === true) {
-        // var cont = this.currentMemoObj
-        var idx, cont
-        if (this.viewMainTab === 'P') {
-          idx = this.alimContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
-          if (idx !== -1) cont = this.alimContentsList[idx]
-        } else if (this.viewMainTab === 'B') {
-          idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
-          if (idx !== -1) cont = this.boardContentsList[idx]
-        }
-        index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
-        var cmemoListIdx
-        if (param.parentMemoKey) {
-          for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
-            if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
-              index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
-              if (index !== -1) {
-                cmemoListIdx = i
-                break
+
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.deleteMemo',
+          param: memo
+        })
+        var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
+        this.axiosQueue.splice(queueIndex, 1)
+        var index
+        if (result.data.result === true) {
+          // var cont = this.currentMemoObj
+          var idx, cont
+          if (this.viewMainTab === 'P') {
+            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+            if (idx !== -1) cont = this.alimContentsList[idx]
+          } else if (this.viewMainTab === 'B') {
+            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+            if (idx !== -1) cont = this.boardContentsList[idx]
+          }
+          index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+          var cmemoListIdx
+          if (param.parentMemoKey) {
+            for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
+              if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
+                index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
+                if (index !== -1) {
+                  cmemoListIdx = i
+                  break
+                }
               }
             }
+            // cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+            // if (cmemoListIdx !== -1) cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+            if (this.viewMainTab === 'P') {
+              if (cmemoListIdx !== -1) this.alimContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
+            } else if (this.viewMainTab === 'B') {
+              if (cmemoListIdx !== -1) this.boardContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
+            }
+          } else {
+            // cont.D_MEMO_LIST.splice(index, 1)
+            if (this.viewMainTab === 'P') {
+              this.alimContentsList[idx].D_MEMO_LIST.splice(index, 1)
+              cont.D_MEMO_LIST = this.alimContentsList[idx].D_MEMO_LIST
+            } else if (this.viewMainTab === 'B') {
+              this.boardContentsList[idx].D_MEMO_LIST.splice(index, 1)
+              cont.D_MEMO_LIST = this.boardContentsList[idx].D_MEMO_LIST
+            }
           }
-          cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
-        } else {
-          cont.D_MEMO_LIST.splice(index, 1)
+          cont.memoCount -= 1
+          console.log(cont)
+          this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
+          // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
-        cont.memoCount -= 1
-        // cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-
-        // this.currentMemoList = cont.D_MEMO_LIST
-        // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-        // this.currentMemoObj = cont
-        // this.memoSetCount(response.totalElements)
+        this.$showToastPop('댓글을 삭제하였습니다.')
+      } catch (error) {
+        this.$showToastPop('정상적으로 완료하지 못했습니다.')
+        console.log(error)
       }
-      this.$showToastPop('댓글을 삭제하였습니다.')
     },
     confirmOk () {
       this.confirmType = 'timeout'
@@ -972,48 +992,77 @@ export default {
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
         this.axiosQueue.splice(queueIndex, 1)
+        console.log(' ############################### ')
+        console.log(result)
+
         if (result.data.result === true || result.data.result === 'true') {
-          // alert(true)
-          /* this.confirmText = '댓글 저장 성공'
-          this.confirmPopShowYn = true */
           this.memoShowYn = false
-          // await this.getContentsList()
-          // await this.getBoardMemoList(true)
 
-          // this.currentMemoList = []
-          // var cont = this.currentMemoObj
-          var idx, memoLength, cont
-          console.log('@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@')
-
+          var idx, memoLength
+          // var idx, memoLength, cont
+          console.log(' @#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@ ')
           if (this.viewMainTab === 'P') {
             idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
             if (idx !== -1) {
               memoLength = this.alimContentsList[idx].memoList.length
-              cont = this.alimContentsList[idx]
+              // cont = this.alimContentsList[idx]
+            } else {
+              this.$showToastPop('에러코드 -M/S/P-A-idxErro')
             }
           } else if (this.viewMainTab === 'B') {
             idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
             if (idx !== -1) {
               memoLength = this.boardContentsList[idx].memoList.length
-              cont = this.boardContentsList[idx]
+              // cont = this.boardContentsList[idx]
+            } else {
+              this.$showToastPop('에러코드 -M/S/P-idxErro')
             }
           }
 
           if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
-            var response = await this.getContentsMemoList(this.currentContentsKey, memoLength + 1, 0)
-            if (!cont.D_MEMO_LIST) cont.D_MEMO_LIST = []
-            var newArr = [
-              ...response,
-              ...cont.D_MEMO_LIST
-            ]
-            var newList = this.replaceMemoArr(newArr)
-            console.log('cont : ')
-            console.log(cont)
-            cont.D_MEMO_LIST = newList
-            // cont.memoCount = newList.length
-            cont.memoCount += 1
-            // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-            // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+            // await this.getContentsMemoList(this.currentContentsKey, memoLength - 1, 0).then(response => {
+            await this.getContentsMemoList(this.currentContentsKey, 0, 0).then(response => {
+              console.log('###########################################')
+              console.log(response)
+              var newArr
+              var newList
+              if (this.viewMainTab === 'P') {
+                if (!this.alimContentsList[idx].D_MEMO_LIST) this.alimContentsList[idx].D_MEMO_LIST = []
+                newArr = [
+                  ...response,
+                  ...this.alimContentsList[idx].D_MEMO_LIST
+                ]
+                newList = this.replaceMemoArr(newArr)
+                this.alimContentsList[idx].D_MEMO_LIST = newList
+                this.alimContentsList[idx].memoCount += 1
+                // this.GE_DISP_ALIM_LIST[idx].D_MEMO_LIST = newList
+                // this.GE_DISP_ALIM_LIST[idx].memoCount += 1
+
+                // this.ALIM_LIST_RELOAD_CONT += 1
+                console.log(this.alimContentsList[idx])
+                // eslint-disable-next-line no-debugger
+                debugger
+                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.alimContentsList[idx])
+                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.alimContentsList[idx])
+              } else if (this.viewMainTab === 'B') {
+                if (!this.boardContentsList[idx].D_MEMO_LIST) this.boardContentsList[idx].D_MEMO_LIST = []
+                newArr = [
+                  ...response,
+                  ...this.boardContentsList[idx].D_MEMO_LIST
+                ]
+                newList = this.replaceMemoArr(newArr)
+                this.boardContentsList[idx].D_MEMO_LIST = newList
+                this.boardContentsList[idx].memoCount += 1
+                // this.ALIM_LIST_RELOAD_CONT += 1
+                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
+                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.boardContentsList[idx])
+              }
+              // this.$forceUpdate()
+              // this.$refs.pushListChangeTabLoadingComp.memoReload()
+              console.log('newList : ')
+              console.log(newList)
+              // console.log(cont)
+            })
           }
         }
       } catch (e) {
@@ -1051,6 +1100,9 @@ export default {
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
       this.axiosQueue.splice(queueIndex, 1)
+      console.log('console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)')
+      console.log(result)
+
       return result.data.memoList
     },
     updateStoreData (uniqueArr) {
@@ -1231,7 +1283,6 @@ export default {
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
-        // alert(element.clientHeight)
         this.paddingTop = element.clientHeight + 75
       }
     },
@@ -1558,6 +1609,7 @@ export default {
       this.emptyYn = false
       this.targetCKey = null
       this.offsetInt = 0
+      this.$refs.pushListChangeTabLoadingComp.openMemoListClear()
       /* if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       } */
@@ -1572,18 +1624,88 @@ export default {
       }
       // if (!resultList || resultList === '') return
       var newArr = []
+      var cont
+      var tempContentDetail
+      var contentDetail
+
       if (this.viewMainTab === 'P') {
         newArr = [
           // ...this.alimContentsList,
           ...contentList
         ]
         this.alimContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.alimContentsList.length; i++) {
+          cont = this.alimContentsList[i]
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
       } else {
         newArr = [
           // ...this.boardContentsList,
           ...contentList
         ]
         this.boardContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.boardContentsList.length; i++) {
+          cont = this.boardContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
       }
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
       this.endListSetFunc(resultList)
@@ -1709,7 +1831,6 @@ export default {
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)
       var pageSize = 10
-      // alert(this.resultSearchKeyList.length)
       if (this.resultSearchKeyList.length === 0) {
         this.paddingTop = 75
       }
@@ -1833,7 +1954,8 @@ export default {
       upOffSetInt: 0,
       computedYn: true,
       resetMemoYn: false,
-      tempMemoData: {}
+      tempMemoData: {},
+      ALIM_LIST_RELOAD_CONT: 0
       // scrollIngYn: false
     }
   }

@@ -205,8 +205,8 @@ export default {
     async openPop (params) {
       this.popParams = params
       // alert(JSON.stringify(params))
-        this.popShowYn = true
-        this.showMenuYn = false
+      this.popShowYn = true
+      this.showMenuYn = false
     },
     /* openPushPop (params) {
       this.pushPopParams = params

@@ -730,7 +730,7 @@ export default {
         param.showCreNameYn = true
 
         if (this.cabBlindYn) {
-         param.showCreNameYn = false
+          param.showCreNameYn = false
         }
         if (this.modiYn) {
           param.contentsKey = this.propData.modiContentsKey

@@ -634,6 +634,34 @@ const D_CHANNEL = {
       if (idx !== -1) {
         state.updateChanList.splice(idx, 1)
       }
+    },
+    MU_DEL_MEMO_REPLACE_CONTENT: (state, payload) => {
+      console.log('MU_DEL_MEMO_REPLACE_CONTENT')
+
+      var idx1, idx2
+      var chanList = state.chanList
+      idx1 = chanList.findIndex((item) => item.teamKey === payload[0].creTeamKey)
+      var chanDetail = chanList[idx1]
+      for (var i = 0; i < payload.length; i++) {
+        if (payload[i].jobkindId === 'BOAR') {
+          idx2 = chanDetail.ELEMENTS.boardList.findIndex(item => item.contentsKey === payload[i].contentsKey)
+        } else {
+          idx2 = chanDetail.ELEMENTS.alimList.findIndex(item => item.contentsKey === payload[i].contentsKey)
+        }
+        if (idx2 !== -1) {
+          if (payload[i].jobkindId === 'BOAR') {
+            chanDetail.ELEMENTS.boardList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          } else {
+            chanDetail.ELEMENTS.alimList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          }
+        } else {
+          console.log('이런 경우가 있어요??')
+        }
+      }
+      chanList[idx1] = chanDetail
+      state.chanList = chanList
+      console.log(state.chanList)
+      // if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
     }
   },
   // dispatch 를 사용하면 됨
@@ -649,6 +677,11 @@ const D_CHANNEL = {
     },
     AC_ADD_CHANNEL: ({ commit }, payload) => {
       commit('MU_ADD_CHANNEL', payload)
+    },
+    AC_DEL_MEMO_REPLACE_CONTENT: ({ commit }, payload) => {
+      console.log('AC_DEL_MEMO_REPLACE_CONTENT')
+      console.log(payload)
+      commit('MU_DEL_MEMO_REPLACE_CONTENT', payload)
     },
     AC_REPLACE_CONTENTS: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
       if (payload.length > 0) {

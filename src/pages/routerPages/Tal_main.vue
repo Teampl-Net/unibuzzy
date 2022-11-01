@@ -110,9 +110,9 @@ export default {
     // top5Title
   },
   methods: {
-    test () {
-      alert(true)
-    },
+    // test () {
+    //   alert(true)
+    // },
     async getMainBoard () {
       if (this.axiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.axiosQueue.push('getMainBoard')

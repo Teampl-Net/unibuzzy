@@ -1064,11 +1064,9 @@ export default {
         param: memo
       })
       if (result.data.result === true) {
+        // var cont
         var memos = this.CONT_DETAIL.D_MEMO_LIST
         var index = memos.findIndex((item) => item.memoKey === param.memoKey)
-        // console.log('**')
-        // console.log(this.tempData)
-        // console.log(' index : ' + index)
         if (this.tempData.parentMemoKey) {
           var cmemoListIdx
           for (let i = 0; i < memos.length; i++) {
@@ -1080,15 +1078,13 @@ export default {
               }
             }
           }
-          // console.log('cmemoListIdx : ' + cmemoListIdx)
           if (cmemoListIdx !== -1) memos[cmemoListIdx].cmemoList.splice(index, 1)
         } else {
           memos.splice(index, 1)
         }
-        var cont = this.CONT_DETAIL
-        cont.D_MEMO_LIST = memos
-        cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.CONT_DETAIL.D_MEMO_LIST = memos
+        this.CONT_DETAIL.memoCount = this.$countingTotalMemo(memos)
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.CONT_DETAIL)
       }
     },
     async loadMore () {
@@ -1158,7 +1154,8 @@ export default {
         var cont = this.CONT_DETAIL
         cont.D_MEMO_LIST = [...tempMemo]
         // var totalMemoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-        cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
+        // cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
+        this.CONT_DETAIL.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         this.offsetInt = result.data.totalElements
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }

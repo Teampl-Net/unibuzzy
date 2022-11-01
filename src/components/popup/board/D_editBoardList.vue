@@ -21,7 +21,7 @@
 import boardCard from './editBoardUnit/D_commonBoardCard .vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 // eslint-disable-next-line
-import modiBoardPop from './Tal_modiBoardPopup.vue'
+import modiBoardPop from './D_modiBoardPopup.vue'
 export default {
   props: {
     // editList: {},
