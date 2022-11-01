@@ -471,6 +471,7 @@ export default {
       var param = new Object()
       param.contentsKey = this.detailVal.contentsKey
       param.jobkindId = this.detailVal.jobkindId
+      param.userKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
