@@ -17,7 +17,7 @@
     <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
       <!-- <transition :name="transitionName" > -->
-        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
+        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
       <!-- </transition> -->
       <!-- <router-view v-slot="{ Component, route }">
         <transition
@@ -202,11 +202,11 @@ export default {
     hideMenu () {
       this.showMenuYn = false
     },
-    openPop (params) {
+    async openPop (params) {
       this.popParams = params
       // alert(JSON.stringify(params))
-      this.popShowYn = true
-      this.showMenuYn = false
+        this.popShowYn = true
+        this.showMenuYn = false
     },
     /* openPushPop (params) {
       this.pushPopParams = params

@@ -68,18 +68,17 @@ export default {
       // console.log(data.cabinetNameMtext)
       // eslint-disable-next-line no-new-object
       var params = new Object()
+      params.jobkindId = data.jobkindId
       if (data.jobkindId === 'ALIM') {
-        params.targetType = 'chanDetail'
-        params.teamKey = data.creTeamKey
-        params.targetKey = data.creTeamKey
-        params.nameMtext = data.nameMtext
-        params.chanName = data.nameMtext
-        params.targetContentsKey = data.contentsKey
-      } else {
-        params.targetType = 'boardDetail'
+        params.targetType = 'pushDetail'
+        params.creTeamKey = data.creTeamKey
         params.contentsKey = data.contentsKey
         params.targetKey = data.contentsKey
-        params.cabinetNameMtext = data.cabinetNameMtext
+      } else {
+        params.targetType = 'boardDetail'
+        params.creTeamKey = data.creTeamKey
+        params.contentsKey = data.contentsKey
+        params.targetKey = data.contentsKey
       }
 
       this.$emit('goDetail', params)

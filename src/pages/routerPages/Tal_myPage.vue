@@ -26,7 +26,7 @@
     </div>
     <!-- <div class="font16 profileSetting" @click="goSetMyPage">프로필 설정 ></div> -->
     <div class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
-      <myActList @closeLoading="this.loadingYn = false" ref="commonActList" :viewTab="this.myPageTabType" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
+      <myActList @closeLoading="this.loadingYn = false" ref="commonActList" :viewTab="this.myPageTabType" @goDetail="goDetail" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
       <logList v-if="this.myPageTabType === 'ml'" />
     </div>
     <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
@@ -73,6 +73,9 @@ export default {
       var param = new Object()
       param.targetType = 'setMypage'
       this.$emit('openPop', param)
+    },
+    goDetail (value) {
+      this.$emit('goDetail', value)
     },
     openPop (value) {
       this.$emit('openPop', value)

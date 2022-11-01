@@ -160,7 +160,7 @@ export default {
       }
     },
     myActOpenPop (value) {
-      this.$emit('openPop', value)
+      this.$emit('goDetail', value)
     },
     async getMyActContentsList (pageSize, offsetInput) {
       // eslint-disable-next-line no-new-object
