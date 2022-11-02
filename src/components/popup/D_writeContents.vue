@@ -1,7 +1,6 @@
 <template>
 <div style="width: 100%; float: left;">
-  <div style="position: absolute; top:0; left:0; background:#00000050" class="fl w-100P h-100P"></div>
-  <div style="position: absolute; top:0; left:0; width: 100vw; height: 100vh; min-height: 100vh; z-index: 999999">
+  <div style="position: absolute; top:0; left:0; z-index:10; background:#00000050;" class="fl w-100P h-100P"></div>
     <div class="whitePaper">
         <!-- 컨텐츠 작성 헤더 영역 -->
         <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
@@ -16,7 +15,7 @@
           </div>
           <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
         </div>
-          <div class="fl w-100P h-100P" style="overflow: hidden auto">
+          <div class="fl w-100P h-100P" id="scrollFormArea" style="overflow: hidden auto">
             <!-- 알림 영역 -->
             <template v-if="contentType === 'ALIM'">
               <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
@@ -91,7 +90,6 @@
     <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? '신청되었습니다.' : '저장 되었습니다.' " confirmType='timeout' v-if="okPopYn" />
     <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
     <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-</div>
 </div>
 </template>
 
@@ -1168,6 +1166,7 @@ export default {
       /* left: 5%; */
       /* bottom: 0; */
       top: 5%;
+      z-index: 11;
       left: 5%;
       /* transform: translate(-50%, -50%); */
       width: 90%;
@@ -1192,14 +1191,14 @@ export default {
   }
 
   .whitePaperEffect {
-      content: '';
+    /*   content: '';
       position: absolute;
       display: block;
       width: 50px;
       height: 50px;
       background-color: #e1e1f2;
       bottom: 0;
-      right: 0;
+      right: 0; */
   }
   .titlePlaceholder::placeholder {
     color: #AFAFAF

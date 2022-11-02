@@ -1,5 +1,5 @@
 <template>
-    <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
+    <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
             <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버신청</p>
             <img @click="successSendForm" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">

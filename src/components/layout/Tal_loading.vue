@@ -175,12 +175,12 @@ export default {
   -moz-animation-delay: 2s;
   -webkit-animation-delay: 2s;
   animation-delay: 2s;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 99;
   height: 100%;
-  z-index: 999999999!important;
 }
 
 .loadingcontainer {

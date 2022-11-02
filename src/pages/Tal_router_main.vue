@@ -1,10 +1,13 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
     <gAxiosLoading class="fl"/>
-    <div v-if="shadowScreenShowYn" @click="returnEvent" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999999999999999999999999999;">
+    <div :v-if="testsettse" style="display: none;">
+        <gChannelPop />
     </div>
-    <gConfirmPop :confirmText="netText" confirmType='no' @no='netBoxShowYn = false' v-if="netBoxShowYn" style="z-index: 9999999999999999999999999999999999999999999999;"/>
-    <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='returnPopShowYn = false'  style="z-index: 99999999999999999999999999999999999999999999999;" v-if="returnPopShowYn"/>
+    <div v-if="shadowScreenShowYn" @click="returnEvent" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;">
+    </div>
+    <gConfirmPop :confirmText="netText" confirmType='no' @no='netBoxShowYn = false' v-if="netBoxShowYn" style="z-index: 9999999999999;"/>
+    <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='returnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="returnPopShowYn"/>
     <!-- <loadingCompo v-if="loadingYn" /> -->
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :params="this.popParams" />
@@ -14,7 +17,7 @@
     <transition name="show_view">
       <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="showMenuYn" />
     </transition>
-    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 999"/>
+    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
       <!-- <transition :name="transitionName" > -->
         <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
@@ -28,8 +31,8 @@
         </transition>
       </router-view> -->
     </div>
-    <TalFooter @changePath="changePath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999" />
-    <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 9999999999999999999999999999999999999999999999;"/>
+    <TalFooter @changePath="changePath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 9999999999999999999999;"/>
   </div>
 </template>
 

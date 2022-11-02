@@ -120,7 +120,7 @@ export default {
 .commonPopHeaderWrap{ position: absolute; justify-content: center; align-items: center; top: 0; left: 0;
   box-sizing: border-box; display: flex;
   padding: 0.7rem 0.5rem;
-  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 999; background: #FFF; }
+  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 9; background: #FFF; }
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .commonPopBackBtn{width: 0.8rem;}

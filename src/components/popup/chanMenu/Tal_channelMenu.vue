@@ -1,7 +1,7 @@
 <template>
 <!-- <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
 <div v-if="loadYn">
-  <div style="width: 100%; height: 100vh; position: absolute;z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+  <div style="width: 100%; height: 100vh; position: absolute;z-index:10; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter" :class="{editWrap: editYn === true, 'showModal-leave': closeYn === true  }" >
     <div class="menuHeader newHeaderLine">
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
@@ -597,7 +597,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   /* position: fixed; */
-  z-index: 99;
+  z-index: 10;
   background-color: white;
   /* transform: translateX(25%); */
   /* position: fixed;
@@ -617,7 +617,7 @@ export default {
   /* background-color: white; */
   width:80% ;
   max-width: 500px;
-  position: absolute; z-index: 999;
+  position: absolute; z-index: 10;
   height: 100vh;
   top: 0;
   right: 0;

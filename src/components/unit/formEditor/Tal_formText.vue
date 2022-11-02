@@ -82,6 +82,11 @@ export default {
     test () {
       this.$emit('showToolBox', { tools: this.tools })
       var tt = this.$refs.formTextArea
+      var formArea = document.getElementById('scrollFormArea')
+      if (formArea) {
+        var sTop = formArea.scrollTop
+        formArea.scrollTop({ top: sTop + 5 })
+      }
       // console.log(tt)
       this.$emit('inputScroll', tt.scrollHeight)
     },

@@ -1207,8 +1207,7 @@ export default {
     },
     goChanDetail (data) {
          debugger
-       if (this.shareAuth && this.shareAuth.V === false && data.creUserKey !== this.userKey) return
-       if (!this.shareAuth &&data.jobkindId === 'BOAR' && this.$checkUserAuth(data.shareItem).V === false && data.creUserKey !== this.userKey) return
+       if (!this.shareAuth &&data.jobkindId === 'BOAR' && this.$checkUserAuth(data.shareItem).V === false && data.creUserKey !== this.GE_USER.userKey) return
       // console.log(data)
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -1225,27 +1224,30 @@ export default {
           param.ownerYn = true
         }
       } else {
+        param.contentsKey = data.contentsKey
+        param.jobkindId = data.jobkindId
+        param.teamKey = data.creTeamKey
+        param.value = data
         param.targetType = 'boardDetail'
         debugger
         param.cabinetNameMtext = data.cabinetNameMtext
         param.teamKey = data.creTeamKey
+        param.creTeamKey = data.creTeamKey
         param.targetKey = data.contentsKey
-        param.contentsKey = data.contentsKey
         param.cabinetKey = data.cabinetKey
         param.jobkindId = 'BOAR'
-        param.value = data
       }
       this.$emit('goDetail', param)
     },
     goDetail (value) {
         debugger
-       if (this.shareAuth && this.shareAuth.V === false && value.creUserKey !== userKey) return
        if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== userKey) return
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'pushDetail'
       param.contentsKey = value.contentsKey
       param.teamKey = value.creTeamKey
+      param.creTeamKey = value.creTeamKey
       if (value.officialYn) {
         param.officialYn = value.officialYn
       }

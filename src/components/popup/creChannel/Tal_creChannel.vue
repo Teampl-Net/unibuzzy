@@ -1,7 +1,7 @@
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
 
-<div style="width: 100%; float: left;">
+<div style="width: 100%; height: 100%; float: left;">
   <selecTypePopup  v-if="typePopYn" @no='typePopYn=false' @makeParam='setTypeData' />
   <seleciconBgPopup v-if="iconBgPopupYn=='iconPop' || iconBgPopupYn=='bgPop'" :selectIcon="this.selectIcon" :selectBg="this.selectBg" @no='iconBgPopupYn=false' @makeParam='setIconOrBGData' :opentype="iconBgPopupYn" />
     <div :style="'background: url(' + selectBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >

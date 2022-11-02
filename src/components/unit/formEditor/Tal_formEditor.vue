@@ -4,9 +4,7 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <!-- v-if="toolBoxShowYn" -->
-    <div class="fl" style="width: 100%; float: left; height:100%;">
-      <div style="position: fixed; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;padding: 5px 10px;z-index: 999; background: #FFFFFF;">
+    <div style="position: fixed!important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
           <div class="fl h-100P " style="width: 25%;">
             <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
             <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
@@ -34,6 +32,7 @@
           <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
 
       </div>
+    <!-- v-if="toolBoxShowYn" -->
       <!-- <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
         <div style="width: 100%; height: 100%; box-shadow: 0px 3px 9px 0px #ccc; min-height: 700px; height: 100%; border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; "> -->
       <div ref="eContentsWrap" id="eContentsWrap" class="fl" style="width: 100%; min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; background: #ffffff; position: relative;     margin-bottom: 10rem;">
@@ -81,7 +80,6 @@
           <!-- <div style="width: 50px; height: 100px; background: #FFFFFF; margin-top: 50px; margin-left: 10px; float: left; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
                           </div> -->
       </div>
-    </div>
 
 </template>
 

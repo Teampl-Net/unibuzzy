@@ -1,7 +1,6 @@
 
 <template>
-<div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="scrollBox" style="overflow: scroll;   overscroll-behavior-y: none;
-   -webkit-overflow-scrolling: touch;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
+<div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="scrollBox" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
   <div class="font20 fontBold" :style="titleLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
   <!-- <div>{{pushKey}}</div> -->
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
@@ -97,7 +96,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-    <pushList @goScroll="box.style.overflow = 'auto'" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
+    <pushList @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
     <!-- <div v-else style="">
         notiScrollTarget: {
       handler (value, old) {
@@ -121,9 +120,6 @@
   <!-- <p style="position: fixed; top: 0; left: 50%;" >{{focusEle}}</p> -->
   <gConfirmPop :confirmText='errorBoxText' :confirmType='errorBoxType' @no='errorBoxYn=false' v-if="errorBoxYn" @ok="confirmOk"/>
   <!-- <p style="position: fixed; top: 0; left: 0;">{{this.gMemoEditYn}}</p> -->
-  <div v-if="writeContentsYn" style="min-height: 100vh; position: absolute; width:100%; height:100%; top:0; left:0; z-index:999">
-    <writeContents  ref="chanAlimListWritePushRefs" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="writePushData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="writeBoardData" />
-  </div>
 
   <!-- <div v-if="writeBoardYn && false" style="position: absolute; width:100%; height:100%; top:0; left:0;z-index:999">
     <boardWrite @closeXPop="closeWritePushPop" @successWrite="successWriteBoard" :propData="writeBoardData" @openPop='openItem' />
@@ -133,7 +129,9 @@
   <!-- <gConfirmPop :confirmText='errorMsg' :confirmType='errorBoxType ? "two" : "timeout" ' v-if="errorPopYn" @no='errorPopYn = false'  /> -->
 <!-- <gConfirmPop confirmText='' confirmType='' @no='' /> -->
 <gConfirmPop @no="qConfirmPopShowYn = false" :confirmText='qConfirmText' confirmType='two' @ok="okSaveMember" v-if="qConfirmPopShowYn" />
+
 </div>
+<writeContents  v-if="writeContentsYn"  ref="chanAlimListWritePushRefs" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="writePushData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="writeBoardData" />
 </template>
 
 <script>
@@ -386,7 +384,6 @@ export default {
         unit.scrollTo({ top: 500, behavior: 'smooth' })
         var blockBox = document.getElementById('summaryWrap')
         blockBox.style.height = 50 + 'px'
-        blockBox.style.overflow = 'hidden'
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
 
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== 377) document.getElementById('followerCancelArea').classList.add('displayNIm')
@@ -750,7 +747,7 @@ export default {
 
         document.getElementById('channelCardWrap').classList.remove('displayNIm')
         document.getElementById('userCardWrap').classList.remove('displayNIm')
-        this.box.style.overflow = 'auto'
+
         blockBox.style.height = '350px'
         this.box.style.height = ''
         // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
@@ -760,9 +757,6 @@ export default {
     }
   },
   computed: {
-    UPDATELIST () {
-      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
-    },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail && detail.length > 0) {
@@ -844,10 +838,6 @@ export default {
     }
   },
   watch: {
-    UPDATELIST () {
-      console.log('0000000000000000000000000 this.UPDATELIST 00000000000000000000000000000000')
-      console.log(this.UPDATELIST)
-    },
     GE_CHANNEL_NOTI_QUEUE: {
       handler () {
         // this.checkNotiQueue()
@@ -904,6 +894,7 @@ export default {
 </script>
 
 <style scoped>
+
 .gBtnSmall{
   float: left!important; margin-top: 0.7rem
 }
@@ -931,14 +922,12 @@ export default {
 .chanWhiteBox{ display: flex; flex-direction: row;align-items: flex-start; justify-content: center; position: relative; width: 100%; align-items: center; align-content: center; }
 .channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 /* .channelItemBox{background-color: #fff; min-height: calc(100% - 250px); position: relative; width: 100%;float: left; box-sizing: border-box;} */
-.channelItemBox{background-color: #fff; border-radius: 5px; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;
-}
+.channelItemBox{background-color: #fff; border-radius: 5px; min-height: calc(100% - 50px); position: relative; width: 100%;float: left; box-sizing: border-box;}
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
 
-.summaryWrap{height: 350px; width: 100%; float: left; position: absolute;
-}
+.summaryWrap{height: 350px; width: 100%; float: left; position: absolute;}
 .summaryWrap2 {height: 50px;  width: 100%; float: left;}
 
 .displayNIm{display: none!important;}

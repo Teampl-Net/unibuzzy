@@ -48,7 +48,7 @@ import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 
 import VueEasyLightbox from 'vue-easy-lightbox'
-
+import gChannelPop from './components/popup/common/D_commonChanPop.vue'
 /* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
@@ -127,6 +127,7 @@ app.component('gSelectBoardPop', gSelectBoardPop)
 app.component('gAxiosLoading', gAxiosLoading)
 app.component('gListEmpty', gListEmpty)
 app.component('gCheckBtn', gCheckBtn)
+app.component('gChannelPop', gChannelPop)
 
 app.use(webViewBridge)
 app.use(axiosFunction)
