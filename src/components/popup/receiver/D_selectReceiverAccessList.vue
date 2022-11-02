@@ -5,7 +5,11 @@
     <div class="w-100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" >
       <div style="width: 100%; position: relative; float: left; height: calc(100% - 95px); overflow: auto;">
         <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' @detail='detailOpen' />
-        <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
+        <!-- <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' :memberOnly='true' /> -->
+        <transition name="showGroup">
+            <!-- <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" /> -->
+            <memberList :listData="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+        </transition>
       </div>
       <selectedListCompo :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
     </div>
@@ -16,6 +20,7 @@
 <script>
 /* eslint-disable */
 import selectBookNMemberList from './D_selectBookAndMemberList.vue'
+import memberList from './receiverUnit/D_commonBookMemberList.vue'
 import selectedListCompo from './D_selectedReceiverList.vue'
 export default {
   props: {
@@ -53,7 +58,7 @@ export default {
     //   }
     // }
   },
-  components: { selectedListCompo, selectBookNMemberList },
+  components: { selectedListCompo, selectBookNMemberList, memberList },
   data () {
     return {
       selectedYn: false,
@@ -110,7 +115,7 @@ export default {
           param: Object.fromEntries(paramMap)
       })
       this.memberList = {}
-      this.memberList.memberList = result.data
+      this.memberList = result.data
       if (this.memberList) { // dispName이 없을시 userName으로 대체
           for (var i =0; i < this.memberList.length; i ++) {
               // if(this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {

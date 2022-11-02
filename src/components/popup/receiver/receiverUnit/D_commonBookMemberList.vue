@@ -128,6 +128,7 @@ export default {
       }
     },
     setMemberList () {
+      console.log(this.listData)
       this.memberList = this.listData
       for (let i = 0; i < this.memberList.length; i++) {
         this.memberList[i].jobKindId = 'USER'

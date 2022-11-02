@@ -322,7 +322,6 @@ export const functions = {
     return user
   },
   async settingChanNoti (message) {
-
     if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP' || notiDetail.actType === 'RM' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
       await functions.addChanList(Number(notiDetail.creTeamKey))
     }

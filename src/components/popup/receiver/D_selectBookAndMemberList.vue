@@ -141,7 +141,7 @@ export default {
 				if (type === 'add') {
 					this.addSelectedList(data, idx)
 				} else if (type === 'open') {
-                    // this.$emit('detail', data)
+                    if (data.jobKindId === 'BOOK') this.$emit('detail', data)
                 }
     	},
         setParentSelectList () {

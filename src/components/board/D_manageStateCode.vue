@@ -64,7 +64,7 @@ export default {
   },
   data () {
     return {
-      selectedList: {memberList: [], bookList: []},
+      selectedList: { memberList: [], bookList: [] },
       selectPopShowYn: false,
       selectPopId: null,
       workDate: { toDate: '', fromDate: '' },
@@ -72,7 +72,7 @@ export default {
       selectedCodeObj: { codeKey: null, codeNameMtext: null },
       defaltMemoYn: true,
       dateHolder: '선택하세요',
-      parentList:{memberList: [], bookList: []},
+      parentList: { memberList: [], bookList: [] },
       selectBookListShowYn: false,
       colorList: [
         '#FFCDD2',
@@ -102,19 +102,18 @@ export default {
   },
   created () {
     console.log(this.alimDetail)
-    if(this.alimDetail) {
+    if (this.alimDetail) {
       if (this.alimDetail.workToDate) {
         this.dateHolder = this.settingDate(this.alimDetail.workToDate)
       }
       if (this.alimDetail.shareList) {
-        debugger
         for (var i = 0; i < this.alimDetail.shareList.length; i++) {
           var accessKind = this.alimDetail.shareList[i].accessKind
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
           } else {
             if (this.alimDetail.shareList[i].shareUserList && this.alimDetail.shareList[i].shareUserList.length > 0) {
-              for (var s = 0; s < this.alimDetail.shareList[i].shareUserList.length; s ++) {
+              for (var s = 0; s < this.alimDetail.shareList[i].shareUserList.length; s++) {
                 var shareUser = this.alimDetail.shareList[i].shareUserList[s]
                 var settingObj = {}
                 settingObj.accessKind = 'U'
@@ -182,7 +181,7 @@ export default {
     closeSelectPop () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
-      this.workDate = {toDate: '', fromDate: ''}
+      this.workDate = { toDate: '', fromDate: '' }
       if (this.selectPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -231,14 +230,13 @@ export default {
           param.workFromDateStr = fromDate
           setOkYn = true
         } */
-        debugger
         if (setOkYn) {
           param.memoBodyStr = this.$refs.memoBodyStr.innerHTML
           if (!param.memoBodyStr || param.memoBodyStr === '') {
             param.nonMemoYn = true
             param.memoBodyStr = ''
           }
-          
+
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
@@ -279,7 +277,6 @@ export default {
       this.selectBookListShowYn = true
     },
     settingDate (date) {
-      debugger
       if (date !== '') {
         return this.$dayjs(date).format('YYYY-MM-DD')
       }

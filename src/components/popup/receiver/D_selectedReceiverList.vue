@@ -167,7 +167,7 @@ export default {
     },
     sendReceivers () {
       // this.teamList.itemType = this.itemType
-      if(this.oneMemberCanAddYn) {
+      if (this.oneMemberCanAddYn) {
         if (this.teamList.memberList.length > 1) {
           alert('담당자는 한명만 부여가능합니다!')
           return
