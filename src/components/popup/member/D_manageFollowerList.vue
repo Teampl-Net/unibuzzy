@@ -6,14 +6,16 @@
     </div> -->
     <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
     <div class="pageTopAreaStyle">
-        <div class="tableTopArea">
+        <cMainTab :activeTabList='activeTabList' style="position:absolute; left:0; bottom:-2px;" :activeTab='activeTab' @changeTab='changeTab' />
+        <!-- <div class="tableTopArea">
             <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
             <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
+        </div> -->
+        <div class="receptListBtnStyle fr">
+          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/>
+          <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
-        <!-- <gActiveBar :activetabProp='tab' :tabList="this.activeTabList" class="fl mbottom-1" @changeTab="changeTab"  style=" width:calc(100%);" modeType='basic'/> -->
-        <!-- <img style="width: 20px; float:right;" src="../../../assets/images/common/common_filter.svg" alt=""> -->
-        <gBtnSmall @click="openReceptListPop" btnTitle="멤버신청목록" style="z-index: 999;" class="receptListBtnStyle cursorP"/>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
@@ -39,6 +41,7 @@
 </template>
 <script>
 /* eslint-disable */
+import cMainTab from './memberUnit/D_commonMainTabCompo.vue'
 import commonMemberList from './D_commonFollowerList.vue'
 import receptMemberList from './D_receptMemberList.vue'
 export default {
@@ -49,9 +52,10 @@ export default {
     return {
       errorPopYn : false,
       errorText: '',
-      activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
+      // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
-
+      activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }],
+      activeTab: 'A',
       tab: 'F',
       managerList: [],
       showUserList: [],
@@ -84,10 +88,16 @@ export default {
   },
   methods: {
     async openReceptListPop () {
-        await this.getReqMemList()
-        this.receptListPopShowYn = true
+      await this.getReqMemList()
+      this.receptListPopShowYn = true
     },
-
+    openMemberTypePop () {
+      var param = {}
+      param.targetType = 'editMemberTypePop'
+      param.teamKey = this.propData.teamKey
+      param.teamKey = this.propData.teamKey
+      this.$emit('openPop', param)
+    },
     closeRecMemberPop () {
         this.receptListPopShowYn = false
     },
@@ -122,8 +132,9 @@ export default {
       this.$emit('openPop', param)
     },
     changeTab (typeName) {
-      this.tab = typeName
-      this.getFollowerList()
+      this.activeTab = typeName
+      // this.tab = typeName
+      // this.getFollowerList()
     },
     refresh () {
       this.getFollowerList(this.tab)
@@ -272,7 +283,7 @@ export default {
       return uniqueArr
     }
   },
-  components: { commonMemberList, receptMemberList },
+  components: { commonMemberList, receptMemberList, cMainTab},
   computed: {
     /* GE_NEW_MAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
@@ -359,6 +370,7 @@ export default {
 .tableTopArea{width: calc(100% - 30px); min-height: 30px; display: flex; justify-content: center; align-items: center;}
 
 .modalBackStyle{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;}
-.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #ccc;}
-.receptListBtnStyle {position: fixed; right: 20px; top: 10px; height: 25px; z-index: 999999; line-height: 25px;}
+.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #6768a7;}
+/* .receptListBtnStyle {position: absolute; right: 20px; top: 0px; height: 25px; z-index: 999999; line-height: 25px;} */
+.receptListBtnStyle {position: absolute;  right: 10px; top: -5px; z-index: 9;}
 </style>

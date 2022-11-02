@@ -48,5 +48,6 @@ export default {
     flex: none;
     order: 0;
     flex-grow: 0;
+    min-height: 30px;
   }
 </style>

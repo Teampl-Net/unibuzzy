@@ -69,6 +69,8 @@
 
       <creAddressBook :pPopId="popId" v-if=" popId &&  this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
+      <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
+      <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" @saveMemInfoQuestion='saveMemInfoQuestion' />
     </div>
 </template>
 
@@ -123,6 +125,9 @@ import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
 import errorPage from '../../popup/common/Tal_errorPage.vue'
 
 import creAddressBook from '../receiver/D_creAddressBook.vue'
+
+import editMemberTypePop from '../member/D_editMemberTypePop.vue'
+import memInfoCreEditPop from '../member/D_memInfoCreEditPop.vue'
 
 export default {
   async created () {
@@ -190,6 +195,8 @@ export default {
     parentPopN: {}
   },
   components: {
+    memInfoCreEditPop,
+    editMemberTypePop,
     setMypage,
     /* pushDetail, */
     chanAlimList,
@@ -598,6 +605,14 @@ export default {
         this.selectPlist = this.params.pSelectedList
         console.log(this.selectPlist)
         console.log('!!!!!!!!!!!!!!!')
+      } else if (this.targetType === 'editMemberTypePop') {
+        this.headerTitle = '멤버유형관리'
+      } else if (this.targetType === 'memInfoCreEditPop') {
+        if (target.newYn === true) {
+          this.headerTitle = '멤버정보 추가'
+        } else {
+          this.headerTitle = '멤버정보 수정'
+        }
       }
 
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

@@ -79,7 +79,9 @@ input, select {
   overflow: scroll hidden !important;
   padding: 1px 5px !important;
   color: #303030 !important;
-  background: ghostwhite !important;
+  /* background: ghostwhite !important; */
+  background: white !important;
+  outline: none;
 }
 
 @media screen and (max-width: 300px) {
@@ -165,7 +167,7 @@ input, select {
 .okScrollBar::-webkit-scrollbar-thumb {
     height: 30%; /* 스크롤바의 길이 */
     background: #6768A7; /* 스크롤바의 색상 */
-    
+
     border-radius: 5px;
     background-clip: padding-box;
     border: 2px solid transparent;
@@ -330,6 +332,26 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 /* 불투명 색: #dcddeb */
 
+.pSide-15 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.pSide-1 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.pSide-05 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.ptop-50 {
+  padding-top: 50px;
+}
+.wh-100P {
+  width: 100%;
+  height: 100%;
+}
+
 
 .w-10P{width: 10%;}
 .w-20P{width: 20%;}
@@ -428,6 +450,11 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   left: 50%;
   transform: translateX(-50%);
   border-bottom : 2px solid #6768a7
+}
+.absoluteCenter{
+  position: absolute !important;
+  left:50% !important;
+  transform: translateX(-50%) !important;
 }
 
 .footerShadow{box-shadow: 0px -7px 9px -9px #00000036;}
@@ -547,6 +574,33 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 @keyframes showDropdownAniTo100 {
   0% {transform: translateY(0);}
   100% { transform: translateY(var(--widndowWidth));}
+}
+
+@-webkit-keyframes slide-left-in {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+@keyframes slide-left-in {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+@-webkit-keyframes slide-left-out {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes slide-left-out {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.ani-leftIn {
+  animation: slide-left-in 0.5s forwards;
+  -webkit-animation: slide-left-in 0.5s forwards;
+}
+.ani-leftOut {
+  animation: slide-left-out 0.5s forwards;
+  -webkit-animation: slide-left-out 0.5s forwards;
 }
 
 
@@ -740,6 +794,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 }
 
+
+
 .contentTypeTextArea{
   min-width: 30px; min-height: 20px; border-radius: 10px;margin-top: 0.5px; padding: 0 5px;  margin-right: 5px;
 }
@@ -793,5 +849,5 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   opacity: 1 ;
 }
 .completeWork img {
-  filter: brightness(60%); 
+  filter: brightness(60%);
 }

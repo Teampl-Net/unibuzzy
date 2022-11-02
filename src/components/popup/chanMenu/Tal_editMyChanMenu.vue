@@ -83,7 +83,24 @@
         </td>
       </tr> -->
 
-      <!-- <tr @click="memberFormEditClick">
+      <!-- <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="memberFormEditClick">
+        <th class="font16 w-100P">
+          <div class="myChanMenuImgArea editMychanRow mright-05">
+            <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
+          </div>
+          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
+            <p class="font16 commonDarkGray fontBold">공개신청서 관리</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">게시판을 생성, 수정할 수 있어요.</p>
+          </div>
+          <div class="myChanMenuImgAreaRight editMychanRow">
+            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
+          </div>
+        </th>
+        <td class="">
+        </td>
+      </tr> -->
+<!--
+      <tr @click="memberFormEditClick">
         <th class="font16">공개신청서 관리</th>
         <td class="">
           <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">

@@ -12,11 +12,10 @@
 
     <p @click='goDetail(data)' class="fl lightGray textLeft font16 w-100P textOverdot">{{data.mFormMemo}}</p>
 
-    <div class="cardBottomArea w-100P fl mtop-05" style="height:30px; line-height:30px; ">
+    <div class="cardBottomArea w-100P fl mtop-05" style="height:30px; line-height:30px;">
       <img @click="copyClick(data, index)" src="../../../assets/images/channel/Copy_icon.svg" class="fl" alt="">
       <img @click="deleteClick(data, index)" src="../../../assets/images/channel/Trash_icon.svg" class="fl mleft-2" alt="">
       <p @click='goDetail(data)' style="width:calc(100% - 80px); height:100%;" class="textRight fr commonBlack font14">{{this.$changeDateFormat(data.creDate)}}</p>
-
     </div>
   </div>
 </template>
@@ -52,3 +51,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>

@@ -37,7 +37,8 @@ export default {
       errorBoxText: '',
       errorBoxType: 'two',
       errorBoxYn: false,
-      delIndex: null
+      delIndex: null,
+      resultSearchKeyList: []
     }
   },
   created () {

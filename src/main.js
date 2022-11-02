@@ -73,6 +73,7 @@ import imageCompression from 'browser-image-compression'
 
 import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
 import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
+import gInputSmallPop from './components/popup/member/memberUnit/memTypeUnit/D_commonSmallInput.vue'
 // import gSharePop from './components/popup/Tal_commonSharePop.vue'
 // import { initializeApp } from 'firebase/app'
 
@@ -127,6 +128,7 @@ app.component('gSelectBoardPop', gSelectBoardPop)
 app.component('gAxiosLoading', gAxiosLoading)
 app.component('gListEmpty', gListEmpty)
 app.component('gCheckBtn', gCheckBtn)
+app.component('gInputPop', gInputSmallPop)
 app.component('gChannelPop', gChannelPop)
 
 app.use(webViewBridge)
