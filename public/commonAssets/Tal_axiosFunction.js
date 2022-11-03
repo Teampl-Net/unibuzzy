@@ -194,6 +194,8 @@ export const methods = {
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
     if (result.data.resultCode === 'OK') {
+      console.log(result.data)
+      store.dispatch('D_USER/AC_USER', result.data.userMap)
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')
       /* if (result.data.userTeamList) {

@@ -9,9 +9,9 @@
             <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px;">
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
                 <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
-                <!-- <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
+                <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
                 <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div> -->
-                <!-- <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
+                <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
                 <Datepicker
                     style="font-size: 14px; float: left; width: calc(100%);"
                     inline
@@ -20,7 +20,7 @@
                     type="date"
                     :placeholder="dateHolder"
                     titleFormat="YYYY-MM-DD"
-                ></Datepicker> -->
+                ></Datepicker>
                 <p class="font15 textLeft fl fontBold w-100P mtop-1">상태설정</p>
                 <div style="width: 100%; float: left;">
                     <div @click="selectCode(value)" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
@@ -112,9 +112,9 @@ export default {
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
           } else {
-            if (this.alimDetail.shareList[i].shareUserList && this.alimDetail.shareList[i].shareUserList.length > 0) {
-              for (var s = 0; s < this.alimDetail.shareList[i].shareUserList.length; s++) {
-                var shareUser = this.alimDetail.shareList[i].shareUserList[s]
+            if (this.alimDetail.shareList[i].muserList && this.alimDetail.shareList[i].muserList.length > 0) {
+              for (var s = 0; s < this.alimDetail.shareList[i].muserList.length; s++) {
+                var shareUser = this.alimDetail.shareList[i].muserList[s]
                 var settingObj = {}
                 settingObj.accessKind = 'U'
                 settingObj.accessKind = shareUser.userKey
@@ -128,7 +128,7 @@ export default {
         }
       }
     }
-    console.log(this.workDate)
+    console.log(this.parentList)
   },
   props: {
     codeList: {},
