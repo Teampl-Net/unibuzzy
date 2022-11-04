@@ -944,6 +944,13 @@ export const commonMethods = {
   setParentsId (pId, setId) {
     return pId + '|||' + setId
   },
+  showChanCommonPop (showYn) {
+    var gChanPop = document.getElementById('gChannelPopup')
+    if (showYn) {
+      /*  if (loadingCompo.style.display === 'flex') */
+      gChanPop.style.display = 'block'
+    } else gChanPop.style.display = 'none'
+  },
   showAxiosLoading (showYn) {
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
@@ -1012,5 +1019,6 @@ export default {
     Vue.config.globalProperties.$changeFollowerInfo = commonMethods.changeFollowerInfo
     Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml
     Vue.config.globalProperties.$settingUserAuth = commonMethods.settingUserAuth
+    Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
   }
 }

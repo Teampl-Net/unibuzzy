@@ -1,7 +1,7 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
     <gAxiosLoading class="fl"/>
-    <div :v-if="testsettse" style="display: none;">
+    <div :v-show="testsettse" id="gChannelPopup" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
         <gChannelPop />
     </div>
     <div v-if="shadowScreenShowYn" @click="returnEvent" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;">
@@ -82,6 +82,7 @@ export default {
   beforeUnmount () {
   },
   mounted () {
+    this.$showChanCommonPop(false)
   },
   computed: {
     netState () {

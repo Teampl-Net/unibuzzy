@@ -13,7 +13,7 @@
       <img  src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
       <div>
         <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
-        <span class="profileTitle font14" ref="userEmail" @click="this.$showToastPop('해당 게시물의 알림을 활성화 했습니다.')">이메일</span>
+        <span class="profileTitle font14" ref="userEmail" @click="this.$showChanCommonPop(true)">이메일</span>
         <span class="grayBlack font14" ref="userEmail">{{this.GE_USER.userEmail}}</span>
       </div>
       <div>
