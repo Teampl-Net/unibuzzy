@@ -3,10 +3,17 @@
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
     <div class="pagePaddingWrap selectBookListContents">
       <div class="bookListStyle">
+        <!-- <gMainTab :activeTabList='activeTabList' class="mtop-05" style="" :activeTab='activeTab' @changeTab='changeTab' /> -->
+
+        <!-- <template v-if="activeTab === 'A'"> -->
         <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
             <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
+        <!-- </template>
+        <template v-if="activeTab === 'M'">
+        </template> -->
+
       </div>
       <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
     </div>
@@ -45,7 +52,9 @@ export default {
       selectBookDetail: null,
       oriList: {},
       pSelectedBookList: {},
-      pSelectedMemberList: {}
+      pSelectedMemberList: {},
+      activeTabList: [{ display: '주소록', name: 'A' }, { display: '멤버유형', name: 'M' }],
+      activeTab: 'A'
     }
   },
   created () {
@@ -117,6 +126,23 @@ export default {
   },
   components: { bookList, memberList, selectedListCompo },
   methods: {
+    changeTab (type) {
+      this.activeTab = type
+      this.getMemberTypeList()
+    },
+    async getMemberTypeList () {
+      var param = {}
+      param.teamKey = this.propData.teamKey
+      await this.$commonAxiosFunction({
+        url: 'service/tp.getMemberTypeList',
+        param: param
+      }).then(result => {
+        console.log(result)
+        if (result.result === true || result.result === 'true') {
+          this.bookList = result.data
+        }
+      })
+    },
     async getBookList () {
       // console.log(this.propData)
       var paramMap = new Map()

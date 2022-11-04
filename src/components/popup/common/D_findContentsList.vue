@@ -16,7 +16,8 @@
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
         <Datepicker
-          style="font-size: 14px; float: left;"
+          class="mtop-05"
+          style="font-size: 14px; float: left; border: 1px solid #ccc; border-radius: 5px;"
           inline
           :editable="false"
           v-model:value="creDate"
@@ -34,6 +35,13 @@
             <!-- <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" /> -->
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
+
+        <!-- <div class="findPopMainSearchArea">
+          <div class="searchInput">
+            <p>수신대상 검색</p>
+          </div>
+        </div> -->
+
         <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
           <gBtnLarge @click="requestSearchPushList" btnTitle="검색하기" class="w-100P" />
         </div>
@@ -188,7 +196,14 @@ export default {
 .mx-input-wrapper {width: 100%; height: 40px;}
 .findPopupWrap{position: fixed; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
 .searchIcon{width: 1.5rem; position: absolute; top:0.8rem; right: 8px;}
-.searchInput{border: none !important; margin-bottom: 5px!important; height:40px; background: #e4e4e463; float: left; width: 100%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
+.searchInput{
+  margin-bottom: 5px!important; height:40px; float: left; width: 100%;  padding: 0.4rem; padding-right: 3rem; box-sizing: border-box;
+  /* border: none !important; */
+   /* background: #e4e4e463; */
+   /* border-radius: 12px; */
+   border-radius: 5px;
+  border: 1px solid #ccc;
+}
 .findPopMainSearchArea{position: relative; height: 40px; float: left; width: 100%; margin-bottom: 1rem;}
 .findPopBody{min-height: 3.6rem; padding-top: 0; width: 100%; float: left; margin-bottom: 1rem;}
 .selectInput {color: #6c757d!important; outline: none; cursor: pointer; padding-right: 20px!important; appearance: none;}

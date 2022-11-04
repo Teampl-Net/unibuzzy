@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import queCard from './D_cQueCard.vue'
+import queCard from './cardUnit/D_cQueCard.vue'
 export default {
   components: {
     queCard

@@ -48,8 +48,8 @@
 
         <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
         <!-- <img src="../../../assets/images/button/Icon_AddressBookBtn.svg" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78"> -->
-        <img src="../../../assets/images/button/Icon_AddressBookBtn.svg" @click="this.$refs.bookListCompoRef.creAddressPop()" v-if="!editYn && !plusMenuShowYn && !detailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
-        <img src="../../../assets/images/button/Icon_AddMemberBtn.svg" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn && detailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+        <img src="../../../assets/images/button/Icon_AddressBookBtn.png" @click="this.$refs.bookListCompoRef.creAddressPop()" v-if="!editYn && !plusMenuShowYn && !detailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+        <img src="../../../assets/images/button/Icon_AddMemberBtn.png" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn && detailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
 
         <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn && (CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1)" >
           <img style="width: 20px; margin-bottom: 5px;" src="../../../assets/images/common/popup_close.png" alt="">

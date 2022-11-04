@@ -3,7 +3,7 @@
     <gConfirmPop @no="okPopShowYn = false" confirmText='멤버신청을 승인 하시겠습니까?' confirmType='two' @ok="okMember" v-if="okPopShowYn" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <p class="textLeft fl font16 fontBold" style="line-height: 30px;">신청목록{{'(' + this.managingList.length + ')'}}</p>
-    <gBtnSmall @click="okPopShowYn = true" btnTitle="승인" />
+    <gBtnSmall @click="accessClick" btnTitle="승인" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" />
     <!-- <gBtnSmall @click="okPopShowYn = true" btnTitle="삭제" /> -->
     <div style="float: right; margin-top: 2px;margin-right: 5px; padding: 2px">
         <input v-model="allClickYn" @click="checkBoxValue(true)" type="checkbox" name="" id="allCheck" style="width: 15px; margin: 3px 0px;margin-top: 2px; margin-right: 5px; float: left; height:18px;">
@@ -61,6 +61,15 @@ export default {
     console.log(this.managingList)
   },
   methods: {
+    accessClick () {
+      if (this.managingList.length > 0) {
+        this.okPopShowYn = true
+      } else if (this.managingList.length === 0) {
+        this.$showToastPop('신청 가능한 요청 목록이 없습니다.')
+      } else {
+        this.$showToastPop('선택한 목록이 없습니다.')
+      }
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)

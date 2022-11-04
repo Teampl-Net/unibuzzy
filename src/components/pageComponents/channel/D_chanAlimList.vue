@@ -110,8 +110,8 @@
 
   <!-- <div class="btnPlus" v-show="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <!-- <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78"> -->
-  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.svg" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
-  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && currentPushListMainTab === 'P' && this.bigBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9" class="img-78 img-w66">
+  <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.png" v-if="currentPushListMainTab === 'B' && this.bigBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; " class="img-78 img-w66">
 
   <!-- <div class="btnPlus" v-if="adminYn" @click="openWritePushPop" ><p style="font-size:40px;">+</p></div> -->
   <div v-if="CHANNEL_DETAIL.detailShowYn" >

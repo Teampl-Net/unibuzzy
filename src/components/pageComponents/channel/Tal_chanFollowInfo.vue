@@ -3,7 +3,7 @@
 <div style="width:100%; height:100vh; position:absolute; z-index: 9999; background: rgba(0, 0, 0, 0.5); top:0; left:0; " @click="closePop" ></div>
 <gConfirmPop :confirmText='errorMsg' confirmType='timeout' style="z-index:9999999;" v-if="errorPopYn" @no='errorPopYn = false'  />
 <div class="zoomInOutPop" style="width: 100%; height: 50%; position:absolute; top:25%; left:0;  z-index:99999; display: flex; flex-direction: column; justify-content: center; align-items: center; ">
-    <div v-if="type==='admin'" class="fadein greetingTextArea">
+    <div v-if="type === 'admin'" class="fadein greetingTextArea">
       <p class="commonBlack fontBold font16 textLeft ">[{{this.$changeText(chanInfo.nameMtext)}}] 채널를 만드셨네요! </p>
       <p class="commonBlack fontBold font16 textLeft">관리자가 발송하는 모든 알림은 '최신'탭에 볼 수 있어요!</p>
       <p class="commonBlack fontBold font16 textLeft">채널 정보에서 링크를 복사해 구독자를 늘려보세요!</p>
@@ -11,25 +11,16 @@
       <p class="commonBlack fontBold font16 textLeft">하단 + 버튼을 눌러 최초의 알림을 보내보세요!</p>
     </div>
     <div v-if="type==='follow'" class="fadein w-90P greetingTextArea" >
-      <!-- <p class="commonBlack fontBold font18 textLeft ">환영합니다[{{this.$changeText(chanInfo.nameMtext)}}]채널의 구독자가 되었습니다! <br></p>
-      <p class="commonBlack fontBold font16 textLeft"> <br>* 채널 이용하기<br>- 채널이 발송하는 다양한 알림을 받아볼 수 있어요 <br><span class="commonBlack fontBold font16 textLeft" style="margin-left: 15px;">알림에 하트, 별표를 눌러 관심있는 알림을 저장해보세요!</span></p>
-      <p class="commonBlack fontBold font16 textLeft">- 채널의 공지사항을 손쉽게 확인해요!<br>- 채널의 다른 구성원들과 다양한 주제를 편하게 소통해보세요!</p>
-      <p class="commonBlack fontBold font16 textLeft"><br>*Tip<br>멤버를 신청하여 채널의 구성원이 되어보고, 친구에게 채널을 공유하여 함께 즐겨보세요!</p> -->
-      <p class="commonBlack fontBold font22 textLeft">환영합니다!<br><br></p>
-      <p class="commonBlack font16 textLeft"><b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널의 구독자가 되었습니다!<br>
-        더 많은 활동을 위해 멤버 신청을 해주세요!
-      <br>
-      <br>
-      <!-- <b>Q.당신은 어떤 멤버인가요?</b>
-      <br> -->
-      </p>
-      <!-- <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; display: flex;justify-content: space-evenly;">
-        <gBtnSmall @click="applyMember" btnThema="light" style="border:1px solid #ccc;" class="greetingApplyMemberBtn" btnTitle="일반멤버" />
-      </div> -->
+      <div class="wellcomeHeader fl w-100P" >
+        <logo class="wellcomeChanLogoRound fl" :style="'background-image: url(' + (chanInfo.logoDomainPath ? chanInfo.logoDomainPath + chanInfo.logoPathMtext : chanInfo.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 --></logo>
+        <div class="fl mleft-1" style="width:calc(100% - 100px);"> <!-- 로고 영역 만큼 빼주거나 위에 div에서플렉스먹여야 함 현재는 둘다. -->
+          <p class="commonBlack fontBold font20 textLeft fl w-100P" style="line-height: normal; height:22px">환영합니다!<br><br></p>
+          <p class="commonBlack font14 textLeft fl mtop-05"> <b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널의 구독자가 되었습니다!<br> <!-- 더 많은 활동을 위해 멤버 신청을 해주세요! <br> <br> --> </p>
+        </div>
+      </div>
+
       <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; margin-top: 20px;display: flex;justify-content: space-evenly;">
         <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="신청하기" />
-        <!-- <gBtnSmall data-clipboard-action="copy" id="copyTextBody" @click="copyText" class="greetingCopyLinkBtn" :data-clipboard-text="'https://dalim.page.link/?link=https://mo.d-alim.com?chanDetail=' + this.chanInfo.teamKey
-        + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'" btnTitle="채널링크 복사하기" /> -->
       </div>
       <div style="width: 100%; min-height: 50px; margin-top: 0px; float: left; display: flex;justify-content: space-evenly;">
         <gBtnSmall @click="closePop" btnThema="light" style="border:1px solid #ccc;" class="greetingApplyMemberBtn" btnTitle="나중에 하기" />
@@ -66,16 +57,14 @@ export default {
   },
   data () {
     return {
-      step: 0,
       errorMsg: '',
       errorPopYn: false
     }
   },
   methods: {
     startStep () {
-      setTimeout(() => {
-        this.step += 1
-      }, 2000)
+      console.log(' ###################### ')
+      console.log(this.chanInfo)
     },
     closePop () {
       this.$emit('closePop')
@@ -107,5 +96,18 @@ export default {
 }
 .greetingTextArea{
   max-width:90%; line-height:1.4rem; ;padding: 20px; background-color:#ffffffe7; border-radius:20px; margin-bottom: 30px; float: left;
+}
+.wellcomeChanLogoRound{
+  width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center; position: relative;
+  border-radius: 110px;
+  border-radius: 100%;
+  border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;
+}
+.wellcomeHeader{
+  border-bottom:1px solid #ccc; display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.5rem;
 }
 </style>

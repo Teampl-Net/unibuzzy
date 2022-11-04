@@ -1,4 +1,3 @@
-
 <template>
     <!-- <div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 2;">
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
@@ -37,20 +36,20 @@
         <div style="width: 100%; height: 100%; box-shadow: 0px 3px 9px 0px #ccc; min-height: 700px; height: 100%; border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; "> -->
       <div ref="eContentsWrap" id="eContentsWrap" class="fl" style="width: 100%; min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; background: #ffffff; position: relative;     margin-bottom: 10rem;">
           <div class="fl" style="width: 100%; height: 100%; height: 100%;">
-              <draggable id="dragCompp"  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" :dragging="dragging" @end="changePosTeamMenu" delay="200" handle=".movePoint">
+              <draggable id="dragCompp"  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" :dragging="dragging" @choose='test' @end="changePosTeamMenu" delay="200" handle=".movePoint">
                   <transition-group>
                       <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                       --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
                       <!-- A9AACD -->
                       <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === value.targetKey? 'border: 1px solid #ccc;':''" style="position: relative; " :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv commonFormCard" @click="clickForm(value, value.targetKey)">
-                          <formText id="formEditText" @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
-                          <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable :pasteImgYn='pasteImgYn' @pasteEnd='pasteEnd' />
-                          <formVideo v-else-if="false" />
-                          <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
-                          <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="value.targetKey"/>
-                          <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="value.targetKey"/>
-                          <div @click="moveClick(value, value.type)" class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
-                          <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
+                        <formText id="formEditText" @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
+                        <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable :pasteImgYn='pasteImgYn' @pasteEnd='pasteEnd' />
+                        <formVideo v-else-if="false" />
+                        <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
+                        <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="value.targetKey"/>
+                        <formBlock v-else-if="value.type === 'block'" style="" ref="blockForm" :targetKey="value.targetKey"/>
+                        <div @click="moveClick(value, value.type)" class="movePoint" style="position: absolute; width: 30px; height: 100%; display: flex; right: 0px; top: 0; align-items: center; justify-content: center; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
+                        <!-- <div class="" style="position: absolute; width: 30px; right: 0; top: calc(50% - 18px); "><img src="../../../assets/images/formEditor/scroll.svg" style="width: 30px; " alt=""></div> -->
                       </div>
                       <!-- <formImage v-else-if="value.type === 'image'" @click="selectCard(value.targetKey)" @noneFile="noneFileImage"/>
                       <formLink v-else-if="value.type === 'link'" @click="selectCard(value.targetKey)"/> -->
@@ -156,6 +155,35 @@ export default {
     } */
   },
   methods: {
+    test (event) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      console.log(event)
+      console.log('fffffffff')
+      // const chosen = document.querySelector('.sortable-chosen')
+
+      // console.log(chosen)
+      // window.document.addEventListener('mousemove', (e) => {
+      //   const dragArea = document.querySelector('.sortable-drag')
+      //   const mouseX = e.pageX
+      //   const mouseY = e.pageY
+      //   dragArea.style.left = mouseX + 'px'
+      //   dragArea.style.top = mouseY + 'px'
+
+      //   console.log(mouseX)
+      //   console.log(mouseY)
+      // })
+      // window.document.addEventListener('mousedown', (e) => {
+      // })
+
+      // window.document.addEventListener('mouseup ', (e) => {
+      //   window.document.removeEventListener('mousemove')
+      //   const chosen = document.querySelector('.sortable-chosen')
+      //   chosen.style.left = 'auto'
+      //   chosen.style.top = 'auto'
+      // })
+    },
+
     moveClick (value, type) {
     },
     setFormCard (data) {
@@ -165,6 +193,8 @@ export default {
       this.$emit('inputScroll', param)
     },
     async changePosTeamMenu (event) {
+      // eslint-disable-next-line no-debugger
+      debugger
       // console.log(event)
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex

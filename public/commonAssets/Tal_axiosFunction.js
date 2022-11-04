@@ -155,39 +155,37 @@ export const methods = {
     // if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
     // g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
+    var testYn = localStorage.getItem('testYn')
+    // testYn = false
+    if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+    // 수망고
+    //   paramMap.set('fcmKey', '123456789')
+    //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      // 정재준테스트
 
-    window.localStorage.removeItem('testYn')
-    // var testYn = localStorage.getItem('testYn')
-    // // testYn = false
-    // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-    //   // 수망고
-    // //   paramMap.set('fcmKey', '123456789')
-    // //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-    //   // 정재준테스트
-    //   paramMap.set('fcmKey', '22222222')
-    //   paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
+      paramMap.set('fcmKey', '22222222')
+      paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
 
-    //   // // 최유민테스트
-    //   // paramMap.set('fcmKey', '11111111')
-    //   // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      // // 최유민테스트
+      // paramMap.set('fcmKey', '11111111')
+      // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
 
-    //   // paramMap.set('fcmKey', '33333333')
-    //   // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-    // } else {
-    // localStorage.setItem('testYn', false)
-    var user = store.getters['D_USER/GE_USER']
-    if (user === undefined || user === null || user === '') {
-      localStorage.setItem('sessionUser', '')
-      localStorage.setItem('user', '')
-      router.replace('/policies')
-      return
+      // paramMap.set('fcmKey', '33333333')
+      // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    } else {
+      localStorage.setItem('testYn', false)
+      var user = store.getters['D_USER/GE_USER']
+      if (user === undefined || user === null || user === '') {
+        localStorage.setItem('sessionUser', '')
+        localStorage.setItem('user', '')
+        router.replace('/policies')
+        return
+      }
+      if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
+      if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
+      paramMap.set('userEmail', user.userEmail)
+      paramMap.set('soEmail', user.soEmail)
     }
-
-    if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
-    if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
-    paramMap.set('userEmail', user.userEmail)
-    paramMap.set('soEmail', user.soEmail)
-    // }
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
@@ -223,6 +221,7 @@ export const methods = {
         // return
       }
       // router.replace('/policies')
+      window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
     }
   },

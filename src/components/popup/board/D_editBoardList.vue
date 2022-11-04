@@ -8,7 +8,7 @@
           </template>
         </transition-group>
       </draggable>
-      <img src="../../../assets/images/button/Icon_CreBoardBtn.svg" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+      <img src="../../../assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
       <gListEmpty v-if="cabinetList.length === 0" title='게시판이 없어요' subTitle='버튼을 눌러 게시판을 생성해보세요.' option='EDIT' />
   </div>
   <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>

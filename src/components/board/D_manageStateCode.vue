@@ -8,10 +8,10 @@
             </div>
             <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px;">
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
-                <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
+                <!-- <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
-                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div> -->
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
+                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div>
+                <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p> -->
                 <Datepicker
                     style="font-size: 14px; float: left; width: calc(100%);"
                     inline

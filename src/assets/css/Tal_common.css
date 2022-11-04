@@ -33,11 +33,13 @@ pre {
 
   white-space: pre-wrap; word-break: break-all; overflow: auto;
   font-family: KoPubDotumMedium !important;
+  /* font-family: NotoSans !important; */
   font-size: 14px !important;
 }
 pre span{
   white-space: pre-wrap; word-break: break-all; overflow: auto;
   font-family: KoPubDotumMedium !important;
+  /* font-family: NotoSans !important; */
   font-size: 14px !important;
 }
 
@@ -179,14 +181,55 @@ input, select {
     border-radius: 5px;
     box-shadow: inset 0px 0px 5px rgba((255, 255, 255, 0.719)11, 211, 211);
 }
+
+/* @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); */
+@font-face {font-family: 'NotoSans';font-style: normal;font-weight: bold;
+  src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2)
+  format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff)
+  format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');}
+
+@font-face {
+  font-family: 'NotoSans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),
+  url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),
+  url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans';
+  font-style: normal;
+  font-weight: 300;
+  src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2)
+  format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff)
+  format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');
+}
+@font-face {
+  font-family: 'NotoSans';
+  font-style: normal;
+  font-weight: 100;
+  src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2)
+  format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff)
+  format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');
+}
+@font-face {
+  font-family: 'NotoSans';font-style: normal;
+  font-weight: 100;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2)
+  format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff)
+  format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');
+}
 @font-face {
   font-family: 'KoPubDotumMedium';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
+
 #moTheAlimWrap {
-font-family: KoPubDotumMedium;
+  font-family: KoPubDotumMedium;
+  /* font-family: NotoSans; */
+
 }
 
 .headerBottom {box-shadow: 0px 7px 9px -9px #00000036;}
@@ -241,6 +284,39 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .img-w67{width: 67px !important}
 .img-w66{width: 66px !important}
 
+.img-w60{width: 60px !important}
+.img-w59{width: 59px !important}
+.img-w58{width: 58px !important}
+.img-w57{width: 57px !important}
+.img-w56{width: 56px !important}
+.img-w55{width: 55px !important}
+.img-w54{width: 54px !important}
+.img-w53{width: 53px !important}
+.img-w52{width: 52px !important}
+.img-w51{width: 51px !important}
+
+.img-w50{width: 50px !important}
+.img-w49{width: 49px !important}
+.img-w48{width: 48px !important}
+.img-w47{width: 47px !important}
+.img-w46{width: 46px !important}
+.img-w45{width: 45px !important}
+.img-w44{width: 44px !important}
+.img-w43{width: 43px !important}
+.img-w42{width: 42px !important}
+.img-w41{width: 41px !important}
+
+
+.img-w40{width: 40px !important}
+.img-w39{width: 39px !important}
+.img-w38{width: 38px !important}
+.img-w37{width: 37px !important}
+.img-w36{width: 36px !important}
+.img-w35{width: 35px !important}
+.img-w34{width: 34px !important}
+.img-w33{width: 33px !important}
+.img-w32{width: 32px !important}
+.img-w31{width: 31px !important}
 
 .img-w30{width: 30px}
 .img-w29{width: 29px}
@@ -585,22 +661,22 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   100% { transform: translateX(0); }
 }
 
-@-webkit-keyframes slide-left-out {
+@-webkit-keyframes slideleftout {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
-@keyframes slide-left-out {
+@keyframes slideleftout {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
 
 .ani-leftIn {
-  animation: slide-left-in 0.5s forwards;
-  -webkit-animation: slide-left-in 0.5s forwards;
+  animation: slide-left-in 0.5s forwards !important;
+  -webkit-animation: slide-left-in 0.5s forwards !important;
 }
 .ani-leftOut {
-  animation: slide-left-out 0.5s forwards;
-  -webkit-animation: slide-left-out 0.5s forwards;
+  animation: slideleftout 0.5s forwards !important;
+  -webkit-animation: slideleftout 0.5s forwards !important;
 }
 
 
@@ -721,12 +797,14 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .receiverTeamListCard input{
     width: 130px;
 }
-
+/* .sortable-drag{
+  display: none;
+} */
 /* 게시판 관리 - 유민*/
 .sortable-chosen {
   border: 3px solid #ccc;
   background-color: rgba(186, 187, 215, 0.5);
-  font-weight: bold;
+  /* font-weight: bold; */
   transform: rotate(-2deg);
   -ms-user-select: none;    -moz-user-select: -moz-none;   -khtml-user-select: none;   -webkit-user-select: none;   user-select: none;
 }
@@ -734,12 +812,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 #eContentsWrap .sortable-chosen {
   max-height: 10rem;
   width: auto;
+  overflow: hidden;
 }
 #eContentsWrap .sortable-chosen img{
   max-height: 10rem;
   max-width: 10rem;
   height: auto;
-  display: block;
 }
 
 #loading {

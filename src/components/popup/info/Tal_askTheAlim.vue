@@ -1,20 +1,20 @@
 <template>
-<div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100vh;">
-  <gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
-  <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
-  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+<gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
+<gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
+<commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+<div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100%; position: relative;">
   <div style="width: 100%; height: calc(100% - 4rem); ">
     <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
     </select> -->
-    <input type="text" class="askBoxWrap askCommonFont mtop-1" v-model="askTitle" placeholder="제목"/>
-
-    <gActiveBar :tabList="this.activeTabList" style="" ref="activeBar" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
+    <p class="fontBold commonColor font16 mtop-1 mbottom-05">제목</p>
+    <input type="text" class="askBoxWrap askCommonFont " v-model="askTitle" placeholder="제목"/>
+    <p class="fontBold commonColor font16 mtop-1 mbottom-05">내용</p>
+    <!-- <gActiveBar :tabList="this.activeTabList" style="" ref="activeBar" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" /> -->
     <div id="textMsgAskBox" class="pageMsgArea" style="">
-      <!-- <p class="">내용</p> -->
-      <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre>
+      <!-- <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre> -->
       <!-- <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
-      <formEditor ref="complexEditor" v-show="viewTab === 'complex'" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+      <formEditor ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
       <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
 
     </div>
@@ -25,9 +25,10 @@
       <p style="color: #FFFFFF; font-size: 15px; margin-top: 0.5rem">첨부하기</p>
     </div> -->
   </div>
-  <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:2%; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
-  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
+  <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:50px; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
+
 </div>
+<div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
  <!-- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
   <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
   <formEditor :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
@@ -210,7 +211,7 @@ export default {
       this.selectFileList.splice(idx, 1)
     },
     async clickPageTopBtn () {
-      if (this.viewTab === 'complex' && this.complexOkYn === false) {
+      if (this.complexOkYn === false) {
         this.complexOkYn = true
         this.$refs.complexEditor.setParamInnerHtml()
       } else {
@@ -220,14 +221,11 @@ export default {
         } else {
           this.errorText = '제목을 입력해주세요'
           this.failPopYn = true
+          this.complexOkYn = false
           return
         }
         var msgData = ''
-        if (this.viewTab === 'complex') {
-          msgData = document.getElementById('msgBox').innerText
-        } else if (this.viewTab === 'text') {
-          msgData = document.getElementById('textMsgBox').innerText
-        }
+        msgData = document.getElementById('msgBox').innerText
         msgData = msgData.trim()
         // if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
         if (msgData !== undefined && msgData !== null && msgData !== '') {
@@ -325,46 +323,34 @@ export default {
       return newAttachFileList
     },
     async sendMsg () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
+      var param = {}
+      this.checkPopYn = false
+      this.sendLoadingYn = true
       try {
         if (this.uploadFileList.length > 0) {
-          this.checkPopYn = false
           this.progressShowYn = true
           await this.uploadFile()
           setTimeout(() => {
             this.progressShowYn = false
           }, 2000)
-          this.sendLoadingYn = true
-        } else {
-          this.sendLoadingYn = true
         }
         param.attachFileList = await this.setAttachFileList()
         var innerHtml = ''
-        if (this.viewTab === 'complex') {
-          param.bodyHtmlYn = true
-          var formList = document.querySelectorAll('#msgBox .formCard')
-          if (formList) {
-            for (var f = 0; f < formList.length; f++) {
-              formList[f].contentEditable = false
-              // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-              if (formList[f].id === 'formEditText') {
-                var formTextinnerHtml = formList[f].innerHTML
-                formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
-              }
+        param.bodyHtmlYn = true
+        var formList = document.querySelectorAll('#msgBox .formCard')
+        if (formList) {
+          for (var f = 0; f < formList.length; f++) {
+            formList[f].contentEditable = false
+            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
+            if (formList[f].id === 'formEditText') {
+              var formTextinnerHtml = formList[f].innerHTML
+              formList[f].innerHTML = this.$findUrlChangeAtag(formTextinnerHtml)
             }
-            param.getBodyHtmlYn = true
           }
-          innerHtml = document.getElementById('msgBox').innerHTML
-        } else if (this.viewTab === 'text') {
-          param.bodyHtmlYn = false
-          document.querySelectorAll('#textMsgBox')[0].contentEditable = false
-          innerHtml = document.getElementById('textMsgBox').innerHTML
-          innerHtml = this.$findUrlChangeAtag(innerHtml)
+          param.getBodyHtmlYn = true
         }
+        innerHtml = document.getElementById('msgBox').innerHTML
+
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
         param.jobkindId = 'BOAR'
@@ -477,7 +463,7 @@ export default {
 <style scoped>
 .askCommonFont{color: #303030; font-size: 15px;}
 .askBoxWrap{width: 100%; min-height: 40px; border-radius: 5px; border: 1px solid #CFCFCF; padding: 0 0.7rem}
-.pageMsgArea{ height: 100px; height: calc(100% - 10rem); width: 100%; overflow: hidden auto;
+.pageMsgArea{  width: 100%; overflow: hidden auto;
     float: left;
     overflow: hidden auto;}
 /* .pageMsgArea{ min-height: 500px; height: calc(100% - 10rem);width: 100%; } */

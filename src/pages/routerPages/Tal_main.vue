@@ -77,6 +77,8 @@ export default {
     console.log('userLoginCheck')
     this.$userLoginCheck()
     console.log('userLoginCheck')
+    // console.log(this.GE_USER)
+    // alert(JSON.stringify(this.GE_USER))
   },
   data () {
     return {

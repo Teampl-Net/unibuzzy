@@ -11,12 +11,12 @@
       </div>
       <gBtnSmall :btnTitle="'추가'" @click="addInputPopYn = true" style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);"/>
 
-      <gInputPop v-if="addInputPopYn === true" class="absoluteCenter" style="bottom: -180px;" title='멤버추가' type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
+      <gInputPop v-if="addInputPopYn === true" class="" style="bottom: -180px;" title='멤버추가' type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
     </div>
   </div>
 </template>
 <script>
-import cLeftTab from './D_cTabCard.vue'
+import cLeftTab from './cardUnit/D_cTabCard.vue'
 export default {
   components: {
     cLeftTab
@@ -79,7 +79,7 @@ export default {
   width:70% ;
   max-width: 500px;
   /* position: absolute; z-index: 999; */
-  height: 100vh;
+  height: 100%;
   top: 50px;
   left: 0;
   background:#fff;

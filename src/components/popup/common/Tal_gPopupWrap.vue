@@ -126,8 +126,8 @@ import errorPage from '../../popup/common/Tal_errorPage.vue'
 
 import creAddressBook from '../receiver/D_creAddressBook.vue'
 
-import editMemberTypePop from '../member/D_editMemberTypePop.vue'
-import memInfoCreEditPop from '../member/D_memInfoCreEditPop.vue'
+import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'
+import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
 
 export default {
   async created () {

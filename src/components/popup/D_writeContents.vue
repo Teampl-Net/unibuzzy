@@ -284,7 +284,6 @@ export default {
         this.$refs.complexEditor.setFormCard(this.propFormData)
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerHtml
-        this.viewTab = 'complex'
         this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
         // console.log('this.propData.parentAttachTrueFileList')
         // console.log(this.propData.parentAttachTrueFileList)
@@ -708,7 +707,7 @@ export default {
           param.actorList = this.propData.actorList
         }
         param.onlyManagerYn = false
-        if (param.cabinetKey === 12006 || param.cabinetKey === 11015) {
+        if (param.cabinetKey === 12006 || param.cabinetKey === 11188) {
           param.onlyManagerYn = true
         }
         param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey

@@ -6,7 +6,7 @@
     </div> -->
     <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
     <div class="pageTopAreaStyle">
-        <cMainTab :activeTabList='activeTabList' style="position:absolute; left:0; bottom:-2px;" :activeTab='activeTab' @changeTab='changeTab' />
+        <gMainTab :activeTabList='activeTabList' style="position:absolute; left:0; bottom:-2px;" :activeTab='activeTab' @changeTab='changeTab' />
         <!-- <div class="tableTopArea">
             <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
             <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
@@ -41,7 +41,7 @@
 </template>
 <script>
 /* eslint-disable */
-import cMainTab from './memberUnit/D_commonMainTabCompo.vue'
+// import cMainTab from '../memberInfo/memberUnit/D_commonMainTabCompo.vue'
 import commonMemberList from './D_commonFollowerList.vue'
 import receptMemberList from './D_receptMemberList.vue'
 export default {
@@ -54,7 +54,8 @@ export default {
       errorText: '',
       // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
-      activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }],
+      // activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }],
+      activeTabList: [{ display: '전체', name: 'A' }],
       activeTab: 'A',
       tab: 'F',
       managerList: [],
@@ -283,7 +284,7 @@ export default {
       return uniqueArr
     }
   },
-  components: { commonMemberList, receptMemberList, cMainTab},
+  components: { commonMemberList, receptMemberList},
   computed: {
     /* GE_NEW_MAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']

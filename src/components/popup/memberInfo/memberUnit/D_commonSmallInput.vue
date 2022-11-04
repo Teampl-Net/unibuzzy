@@ -1,9 +1,9 @@
 <template>
 
-<div class="zoomInOutPop smallInput" style="background: #eeeeee30;">
+<div class="zoomInOutPop smallInput" style="background: rgb(250 250 250);">
   <div class="inputPopHeader newHeaderLine w-100P fl" style="min-height:30px;" >
     <p class="font16 fontBold commonColor fl" style="position: absolute; left:50%; transform: translateX(-50%); line-height: 30px;">{{title}}</p>
-    <img style="" @click="closeXPop" class="fr img-w15 mtop-05 mright-05"  src="../../../../../assets/images/common/popup_close.png"/>
+    <img style="" @click="closeXPop" class="fr img-w15 mtop-05 mright-05"  src="../../../../assets/images/common/popup_close.png"/>
   </div>
 
   <div class="fl wh-100P" style="display: flex; flex-direction: column; align-items: center;">

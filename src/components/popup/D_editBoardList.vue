@@ -30,7 +30,7 @@
         </transition-group>
       </draggable>
       <!-- <div class="btnPlus" @click="addBoardRow"><p style="font-size:40px;">+</p></div> -->
-      <img src="../../assets/images/button/Icon_CreBoardBtn.svg" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+      <img src="../../assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
     </div>
     <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
     <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
