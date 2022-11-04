@@ -126,6 +126,8 @@ export async function saveUser (userProfile) {
     param: setParam,
     firstYn: true
   })
+  console.log(' === saveUserLog === ')
+  console.log(result)
   if (result.data) {
     // eslint-disable-next-line no-debugger
     debugger
@@ -138,7 +140,7 @@ export async function saveUser (userProfile) {
     await methods.userLoginCheck(true)
     router.replace({ path: '/' })
   } else {
-    alert('세션이 만료되어 메인으로 이동합니다.')
+    this.$showToastPop('세션이 만료되어 메인으로 이동합니다.')
     router.replace({ path: '/' })
   }
 }

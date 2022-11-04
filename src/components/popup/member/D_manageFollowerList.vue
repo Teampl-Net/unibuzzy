@@ -13,11 +13,11 @@
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
         <div class="receptListBtnStyle fr">
-          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/>
+          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl" v-if="GE_USER.userKey === (255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235)"/>
           <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
     </div>
-    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
+    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 2.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
 
@@ -286,6 +286,9 @@ export default {
   },
   components: { commonMemberList, receptMemberList},
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     /* GE_NEW_MAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
     },
