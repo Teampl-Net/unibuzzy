@@ -10,7 +10,7 @@
 
       <div class="fl mtop-1" :key="reloadKey" style="padding: 0 10px">
         <label class='fl font16 commonColor fontBold' :for="memberTypeList[currentListIDX].mFormKey" >실명인증</label>
-        <gToggle class="fl mleft-1" style="scale: 1.2;" id="rNameAuth" :toggleId='memberTypeList[currentListIDX].mFormKey' @changeToggle='rNameAuthYn = !rNameAuthYn' :isChecked="rNameAuthYn === true" />
+        <gToggle class="fl mleft-1" style="scale: 1.2;" id="rNameAuth" :toggleId='memberTypeList[currentListIDX].mFormKey' @changeToggle='memberTypeList[currentListIDX].rNameAuthYn = !memberTypeList[currentListIDX].rNameAuthYn' :isChecked="memberTypeList[currentListIDX].rNameAuthYn" />
         <p class="fl w-100P font14 commonColor textLeft">(성명, 전화번호)</p>
         <!-- memberTypeList[currentListIDX] -->
         <mTypeQueList :questionList="memberTypeList[currentListIDX].InfoQueList" @addQuestion="addQuestion" @editQue="editQue" class="mtop-1" />
@@ -43,9 +43,9 @@ export default {
     return {
       tempLeftImg: '>>',
       leftShowYn: false,
-      dummyData: [{ mFormKey: 1, mFormTitle: '더알림 멤버신청', rNameAuthYn: true, creDate: '2022-08-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '동', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '호수', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 2, InfoQueTitle: '거주유형', essentialYn: true, InfoQueType: 'si', answerList: [{ answerName: '임차인' }, { answerName: '임대인' }] }] },
-        { mFormKey: 2, mFormTitle: '더알림 멤버신청(임시)', rNameAuthYn: false, creDate: '2022-05-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '질문제목', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '질문제목', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '답안' }] }, { InfoQueKey: 2, InfoQueTitle: '질문제목', essentialYn: true, InfoQueType: 'mu', answerList: [{ answerName: '답안' }] }, { InfoQueKey: 3, InfoQueTitle: '질문제목', essentialYn: true, InfoQueType: 'at' }] },
-        { mFormKey: 3, mFormTitle: '멤버신청(임시)', rNameAuthYn: false, creDate: '2021-12-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '질문제목', essentialYn: true, InfoQueType: 'su' }, { InfoQueKey: 1, InfoQueTitle: '질문제목', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '답안' }] }, { InfoQueKey: 2, InfoQueTitle: '질문제목', InfoQueType: 'mu', essentialYn: true, answerList: [{ answerName: '답안' }] }, { InfoQueKey: 3, InfoQueTitle: '질문제목', essentialYn: true, InfoQueType: 'at' }] }],
+      dummyData: [{ mFormKey: 1, mFormTitle: '더알림 아파트 멤버', rNameAuthYn: true, creDate: '2022-08-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '동', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '호수', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 2, InfoQueTitle: '거주유형', essentialYn: true, InfoQueType: 'si', answerList: [{ answerName: '임차인' }, { answerName: '임대인' }] }, { InfoQueKey: 3, InfoQueTitle: '거주유형', essentialYn: true, InfoQueType: 'siList', answerList: [{ answerName: '임차인' }, { answerName: '임대인' }] }] },
+        { mFormKey: 2, mFormTitle: '더알림 임직원', rNameAuthYn: false, creDate: '2022-05-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '직급', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }, { InfoQueKey: 2, InfoQueTitle: '근무 층', essentialYn: true, InfoQueType: 'siList', answerList: [{ answerName: '1층' }, { answerName: '2층' }, { answerName: '3층' }] }, { InfoQueKey: 3, InfoQueTitle: '확인코드', essentialYn: true, InfoQueType: 'su' }] },
+        { mFormKey: 3, mFormTitle: '멤버', rNameAuthYn: false, creDate: '2021-12-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '이름', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }] }],
       memberTypeList: [],
       currentListIDX: 0,
       reloadKey: 0,

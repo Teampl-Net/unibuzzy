@@ -1,7 +1,7 @@
 <template>
   <!-- <div style="width:100vw; height:100vh; position: fixed; top:0; left:0; background:#00000050; z-index: 9999;" @click="this.$emit('closePop')"></div> -->
   <!-- <div style="width: 50%; min-width: 300px; min-height:200px; background:#ffffff; position: absolute; top:50%; left:50%; z-index: 9999;transform: translate(-50%, -50%);padding: 0.5rem 1rem"> -->
-  <div style="width:100%; height:100%; margin-top:50px; padding: 1rem 1rem 0rem 1rem; ">
+  <div id='dlTskdy' style="width:100%; height:100%; margin-top:50px; padding: 1rem 1rem 0rem 1rem; ">
     <div class="addressItemWrite">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">주소록 이름</p>
       <input v-model="inputAddressBookName" type="text" placeholder="주소록 이름을 정해주세요." class="addressBookInputType"  id="addressBookName" style="">
@@ -18,7 +18,7 @@ export default {
     propData: {}
   },
   mounted () {
-    // console.log(this.propData)
+    console.log(this.propData)
     this.setting()
   },
   data () {

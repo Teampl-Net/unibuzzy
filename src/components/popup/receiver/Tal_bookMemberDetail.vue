@@ -6,8 +6,9 @@
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
     <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
-        <div v-if="userProfileImg" :style="'background-image: url(' + this.domainPath + userProfileImg + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="managerPicImgWrap">
-           <!--  <img :src="this.domainPath + userProfileImg" /> -->
+
+        <div :style="'background-image: url(' + (this.domainPath ? this.domainPath + userProfileImg : '/resource/userCommonIcon/userImg01.svg') + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
+            <!--  <img :src="this.domainPath + userProfileImg" /> -->
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
         <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
@@ -16,8 +17,8 @@
 
       <div class="fl w-100P" style='display: contents;'>
         <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-        <input v-if="!readOnlyYn && !selfYn" type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
         <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
@@ -26,6 +27,11 @@
             </div>
         </div>
         <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
+      </div>
+      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
+        <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
+
+        <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
       </div>
 
       <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; ">
@@ -176,9 +182,7 @@ export default {
                     else{ this.memPhone= '등록된 번호가 없습니다.' }
                 } else if (this.propData.userKey) {
                     var userKey = this.propData.userKey
-                    await this.getMemberListGetUserInfo().then(() => {
-                      this.setUserGrade()
-                    })
+                    await this.getMemberListGetUserInfo()
 
                     // var param = {}
                     // param.userKey
@@ -195,7 +199,7 @@ export default {
         }
         if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
         // this.readOnlyYn = false
-        this.setUserGrade()
+        // this.getAnotherUserTeamInfo()
         this.$emit('closeLoading')
     },
     methods:{
@@ -214,6 +218,7 @@ export default {
             var paramMap = new Map()
             // paramMap.set('showProfileYn', true)
             paramMap.set('teamKey', this.propData.teamKey)
+            paramMap.set('adminYn', true)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
                 url: 'service/tp.getFollowerList',
@@ -231,31 +236,42 @@ export default {
                 if (data.domainPath) {
                     this.domainPath = data.domainPath
                 } else {
-                    this.domain
+                    // this.domain
                 }
                 this.memName = this.$changeText(data.userDispMtext)
                 this.memEmail = data.userEmail
                 this.memPhone = data.phoneEnc
                 this.thisUserKey = data.userKey
+                data.followYn = true
+                this.setUserGrade(data)
             } else {
                 /* this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
                 this.closeXPop() */
             }
         },
-        async setUserGrade () {
-          console.log(this.propData)
-          console.log(this.propData.teamKey)
-          if (this.propData && this.propData.teamKey) {
-            var detail = await this.$getDetail('TEAM', this.propData.teamKey)[0]
-            console.log(detail)
-            if (detail && detail.D_CHAN_AUTH) {
-              console.log(detail)
-              var grade = detail.D_CHAN_AUTH.userGrade
-              grade = grade.replaceAll('(', '')
-              grade = grade.replaceAll(')', '')
-              this.userGrade = grade
-            }
+        async setUserGrade (anotherAuth) {
+          if (anotherAuth) {
+            console.log(anotherAuth)
+            var grade = this.$getFollowerType(anotherAuth)
+            console.log('##########################################')
+            console.log(grade)
+            this.userGrade = grade
           }
+          // console.log(this.propData)
+          // console.log(this.propData.teamKey)
+          // if (this.propData && this.propData.teamKey) {
+          //   var detail = await this.$getDetail('TEAM', this.propData.teamKey)[0]
+          //   console.log(detail)
+          //   if (detail && detail.D_CHAN_AUTH) {
+          //     console.log(detail)
+          //     // var grade = detail.D_CHAN_AUTH.userGrade
+          //     console.log(detail.D_CHAN_AUTH)
+          //     var grade = this.$getFollowerType(detail.D_CHAN_AUTH)
+          //     // grade = grade.replaceAll('(', '')
+          //     // grade = grade.replaceAll(')', '')
+          //     this.userGrade = grade
+          //   }
+          // }
         },
         sendPushAlim () {
             var param = {}
@@ -496,13 +512,12 @@ margin-bottom: 2rem;
 }
 
 .addTeamMemberArea{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 50px);
-    background-color: white;
-
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: white;
 }
 
 
@@ -521,8 +536,13 @@ margin-bottom: 2rem;
     left: 5%;
 }
 
-.managerPicImgWrap { width:50%; border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden; }
-.managerPicImgWrap img {width: 100%;}
+.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 125px;
+    min-height: 125px;
+    }
+.userProfileImgWrap img {width: 100%;}
 .nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
 
 .detailLabelText {width:10%; min-width: 130px; line-height: 30px;}

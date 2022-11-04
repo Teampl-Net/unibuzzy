@@ -224,7 +224,7 @@ export default {
       teamNameText:'',
       closeYn:false,
       // convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }, { title: '알림신청', targetType: 'requestPush' }]
-      convenienceFuncList: [{ title: '알림작성', targetType: 'writePush' }, { title: '게시글작성', targetType: 'writeBoard' }],
+      convenienceFuncList: [{ title: '알림작성', targetType: 'writeContents' }, { title: '게시글작성', targetType: 'writeBoard' }],
       loadYn: false
     }
   },

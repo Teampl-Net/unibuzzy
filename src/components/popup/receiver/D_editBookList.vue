@@ -48,7 +48,7 @@
 
         <!-- <div class="btnPlus" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" ><p style="font-size:40px;">+</p></div> -->
         <!-- <img src="../../../assets/images/button/Icon_AddressBookBtn.svg" @click="!detailOpenYn? this.$refs.bookListCompoRef.creAddressPop() : plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78"> -->
-        <img src="../../../assets/images/button/Icon_AddressBookBtn.png" @click="this.$refs.bookListCompoRef.creAddressPop()" v-if="!editYn && !plusMenuShowYn && !detailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+        <img src="../../../assets/images/button/Icon_AddressBookBtn.png" @click="creAddressPop()" v-if="!editYn && !plusMenuShowYn && !detailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
         <img src="../../../assets/images/button/Icon_AddMemberBtn.png" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && !plusMenuShowYn && detailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
 
         <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="plusMenuShowYn = !plusMenuShowYn" v-if="!editYn && plusMenuShowYn && (CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1)" >
@@ -141,6 +141,21 @@ export default {
         }
     },
     methods: {
+        async creAddressPop () {
+            var cabinet = {}
+            var param = {}
+            param.targetType = 'creAddressBook'
+            param.newAddressYn = true
+            cabinet.cabinetNameMtext = await this.$checkSameName(this.bookList, '주소록')
+            cabinet.currentTeamKey = this.propData.teamKey
+            cabinet.sysCabinetCode = 'USER'
+            cabinet.creTeamKey = this.propData.teamKey
+            cabinet.menuType = 'G'
+            param.cabinet = cabinet
+            console.log(param)
+            this.$emit('openPop', param)
+            // this.creAddressPopYn = tru
+        },
         confirmOk () {
             if (this.currentConfirmType === 'cabinet') {
                 this.$refs.bookListCompoRef.deleteCabinet(this.tempData.data, this.tempData.index)
@@ -502,7 +517,7 @@ export default {
 <style >
 /* btnPlus common.css로 옮김 */
 .bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: hidden auto;}
-.editBookListWrap {height: 100vh; background-color:white; width:100%; z-index:999; position:absolute; top:0; left:0}
+.editBookListWrap {height: 100vh; background-color:white; width:100%; z-index:9; position:absolute; top:0; left:0}
 
 .longHeight{
 height:100% !important;

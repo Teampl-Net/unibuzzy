@@ -59,14 +59,18 @@
           <p class="fl font16 commonColr textLeft fontBold mbottom-05  h-100P" style="flex:2">선택항</p>
 
           <div class="fl h-100P" style="flex:4">
-            <div class="fr mbottom-05" v-for="(list, index) in answerList" :key='index' >
-              <input class="fl" type="text" style="min-height:30px; width: calc(100% - 60px); max-width:300px; " v-model="list.answerName">
+            <draggable class="ghostClass" :v-model="answerList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".movePoint">
+              <transition-group>
+                <div class="fr mbottom-05" v-for="(list, index) in answerList" :key='index' >
+                  <input class="fl" type="text" style="min-height:30px; width: calc(100% - 60px); max-width:300px; " v-model="list.answerName">
 
-              <div class="fl mleft-05" style="width:50px; display:flex; gap:10px ">
-                <img class="fl img-w20" src="../../../assets/images/board/icon_trash.svg" @click="deleteInfoQue(index)" alt="">
-                <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
-              </div>
-            </div>
+                  <div class="fl mleft-05" style="width:50px; display:flex; gap:10px ">
+                    <img class="fl img-w20" src="../../../assets/images/board/icon_trash.svg" @click="deleteInfoQue(index)" alt="">
+                    <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
+                  </div>
+                </div>
+              </transition-group>
+            </draggable>
             <div class="fl w-100P mtop-1">
               <gBtnSmall :btnTitle="'추가'" @click="addInfo" class="mright-05" style="float:right !important;"/>
             </div>
@@ -83,7 +87,11 @@
 </template>
 
 <script>
+import { VueDraggableNext } from 'vue-draggable-next'
 export default {
+  components: {
+    draggable: VueDraggableNext
+  },
   props: {
     propData: {}
   },

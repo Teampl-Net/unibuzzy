@@ -15,12 +15,12 @@
         <logo class="wellcomeChanLogoRound fl" :style="'background-image: url(' + (chanInfo.logoDomainPath ? chanInfo.logoDomainPath + chanInfo.logoPathMtext : chanInfo.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 --></logo>
         <div class="fl mleft-1" style="width:calc(100% - 100px);"> <!-- 로고 영역 만큼 빼주거나 위에 div에서플렉스먹여야 함 현재는 둘다. -->
           <p class="commonBlack fontBold font20 textLeft fl w-100P" style="line-height: normal; height:22px">환영합니다!<br><br></p>
-          <p class="commonBlack font14 textLeft fl mtop-05"> <b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널의 구독자가 되었습니다!<br> <!-- 더 많은 활동을 위해 멤버 신청을 해주세요! <br> <br> --> </p>
+          <p class="commonBlack font14 textLeft fl mtop-05"> <b>'{{this.$changeText(chanInfo.nameMtext)}}'</b> 채널의 구독자가 되었습니다!<br> 더 많은 활동을 위해 멤버 신청을 해주세요!</p>
         </div>
       </div>
 
       <div style="width: 100%; min-height: 50px; margin-top: 10px; float: left; margin-top: 20px;display: flex;justify-content: space-evenly;">
-        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="신청하기" />
+        <gBtnSmall @click="applyMember" class="greetingApplyMemberBtn" btnTitle="멤버 신청하기" />
       </div>
       <div style="width: 100%; min-height: 50px; margin-top: 0px; float: left; display: flex;justify-content: space-evenly;">
         <gBtnSmall @click="closePop" btnThema="light" style="border:1px solid #ccc;" class="greetingApplyMemberBtn" btnTitle="나중에 하기" />

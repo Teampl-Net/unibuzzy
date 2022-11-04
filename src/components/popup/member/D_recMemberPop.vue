@@ -2,15 +2,15 @@
     <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
             <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버신청</p>
-            <img @click="successSendForm" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="successSendForm(false)" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
             <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">신청내용</p>
             <div id="receptStrArea" :contenteditable='true' class="font16 editableContent" style="width: 100%; min-height: 100px; padding: 10px; text-align: left; height: 80%; border: 1px solid #ccc;"></div>
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
-            <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" />
-            <gBtnSmall @click="successSendForm" btnThema="light" btnTitle="취소" />
+            <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" :class="{'CWDeepGrayBgColor' : sendOkYn === false}" />
+            <gBtnSmall @click="successSendForm(false)" btnThema="light" btnTitle="취소" />
         </div>
         <gConfirmPop @no="receptPopShowYn = false" :confirmText="'[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
         <gConfirmPop @no="successSendForm" confirmText='신청되었습니다!' confirmType='timeout' v-if="okPopShowYn" />
@@ -24,7 +24,9 @@ export default {
     return {
       receptPopShowYn: false,
       okPopShowYn: false,
-      reqMemPopId: null
+      reqMemPopId: null,
+      inputArea: {},
+      sendOkYn: false
     }
   },
   props: {
@@ -38,6 +40,16 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
     console.log(this.chanDetail)
   },
+  mounted () {
+    this.inputArea = document.getElementById('receptStrArea')
+    this.inputArea.addEventListener('keyup', (event) => {
+      if (this.inputArea.innerText.trim() === '') {
+        this.sendOkYn = false
+      } else {
+        this.sendOkYn = true
+      }
+    })
+  },
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -45,8 +57,7 @@ export default {
   },
   methods: {
     openReceptPop () {
-      var text = document.getElementById('receptStrArea').innerText
-      if (text === '') {
+      if (this.sendOkYn === false) {
         this.$showToastPop('신청 내용을 입력해주세요.')
         return
       }
@@ -56,17 +67,17 @@ export default {
       this.receptPopShowYn = false
       this.updateFollower()
     },
-    successSendForm () {
-      this.closeXPop()
+    successSendForm (yn) {
+      this.closeXPop(yn)
     },
-    closeXPop () {
+    closeXPop (yn) {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.reqMemPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
-        this.$emit('closeXPop')
+        this.$emit('closeXPop', yn)
       }
     },
     async updateFollower () {

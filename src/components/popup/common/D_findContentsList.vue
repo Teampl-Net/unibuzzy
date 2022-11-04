@@ -26,7 +26,7 @@
           placeholder="날짜를 선택해주세요"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea">
+        <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">
             <select v-model="stateCode" class="searchInput selectInput font14 mtop-05" name="" id="statCodeKeyInput">
                 <option hidden value="0">업무 상태를 선택해주세요</option>
                 <option v-for="(value, index) in this.stateCodeList" :key="index" :value="value.codeKey">{{this.$changeText(value.codeNameMtext)}}</option>
@@ -36,11 +36,49 @@
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
 
-        <!-- <div class="findPopMainSearchArea">
-          <div class="searchInput">
-            <p>수신대상 검색</p>
+        <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && false">
+          <div class="fl w-100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
+            <p class="fl font16 fontBold textLeft " style="line-height:30px;" @click="receiveSearchClick">수신대상 검색 <pp class="font14">▼</pp></p>
+            <select class="fr commonDarkGray mleft-1" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" style="border: 1px solid #ccc; min-height:30px; width:calc(100% - 130px); min-width:50px; max-width:200px" >
+              <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+                {{ value.mFormTitle }}
+              </option>
+            </select>
           </div>
-        </div> -->
+          <gLoadingS ref="searchLoading" class="fl height" style=""/>
+
+          <div class="fl w-100P pSide-15" v-if="receivSearchYn" :key="receiveListReloadKey" >
+            <div class="fl mtop-05 w-100P" style="display: flex; align-items: center;" v-for="(value, qIndex) in receivList[this.selectOption].InfoQueList" :key="qIndex" :style="value.InfoQueType === 'siList' ? 'align-items: flex-start' : ''">
+              <p class="fl font14 commonDarkGray fontBold textLeft" style="flex:2">{{value.InfoQueTitle}}</p>
+
+              <template v-if="value.InfoQueType === 'su'">
+                <div class="fl h-100P" style="flex:3">
+                  <input class="fr" style="min-height:30px;  width:100%; max-width:300px; " type="text" :placeholder="value.InfoQueTitle">
+                </div>
+              </template>
+
+              <template v-if="value.InfoQueType === 'si'">
+                <div class="fr textLeft w-100P" style="flex:3">
+                  <select class="fr commonDarkGray" v-model="selectAnswer" style="border: 1px solid #ccc; width:100%; min-height:30px" >
+                    <option v-for="(answer, aIndex) in value.answerList" :value="answer.answerName" :key="aIndex" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+                      {{ answer.answerName }}
+                    </option>
+                  </select>
+                </div>
+              </template>
+
+              <template v-if="value.InfoQueType === 'siList'" >
+                <div class="fl textLeft w-100P" style="flex:3">
+                  <div class="fl w-100P mbottom-05" v-for="(value, aIndex) in value.answerList" :key="aIndex">
+                    <gCheckBtn class="fr" :title="value.answerName" :selectedYn="siListSelect === value.answerName" @click="siListSelect = value.answerName"/>
+                  </div>
+                  <!-- <gCheckBtn class="fl" v-for="(value, index) in answerList" :key="index" :title="value.answerName" :selectedYn="siListSelect === value.answerName" @click="siListSelect = value.answerName"/> -->
+                </div>
+              </template>
+            </div>
+          </div>
+
+        </div>
 
         <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
           <gBtnLarge @click="requestSearchPushList" btnTitle="검색하기" class="w-100P" />
@@ -56,7 +94,8 @@
 export default {
   props: {
     contentsListTargetType: {},
-    tpGroupCode: {}
+    tpGroupCode: {},
+    teamKey: {}
   },
   data () {
     return {
@@ -75,7 +114,19 @@ export default {
       //   { searchKeyword: '삼천리', searchDate: '20210821' }
       // ],
       // autoSaveLog: '끄기',
-      popId: null
+      popId: null,
+      dummyData: [{ mFormKey: 1, mFormTitle: '더알림 아파트 멤버', rNameAuthYn: true, creDate: '2022-08-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '동', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '호수', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 2, InfoQueTitle: '거주유형', essentialYn: true, InfoQueType: 'si', answerList: [{ answerName: '임차인' }, { answerName: '임대인' }] }, { InfoQueKey: 3, InfoQueTitle: '거주유형', essentialYn: true, InfoQueType: 'siList', answerList: [{ answerName: '임차인' }, { answerName: '임대인' }] }] },
+        { mFormKey: 2, mFormTitle: '더알림 임직원', rNameAuthYn: false, creDate: '2022-05-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '직급', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }, { InfoQueKey: 2, InfoQueTitle: '근무 층', essentialYn: true, InfoQueType: 'siList', answerList: [{ answerName: '1층' }, { answerName: '2층' }, { answerName: '3층' }] }, { InfoQueKey: 3, InfoQueTitle: '확인코드', essentialYn: true, InfoQueType: 'su' }] },
+        { mFormKey: 3, mFormTitle: '멤버', rNameAuthYn: false, creDate: '2021-12-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '이름', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }] }],
+      receivList: [],
+      receivSearchYn: false,
+      loadingYn: false,
+      selectOption: 0,
+      receiveListReloadKey: 0,
+      infoMemList: [],
+      answerList: [],
+      selectAnswer: '',
+      siListSelect: ''
     }
   },
   created () {
@@ -107,6 +158,46 @@ export default {
     }
   },
   methods: {
+    // settingAnswerList () {
+    //   var qList = this.receivList[this.selectOption].InfoQueList[].answerList
+    //   for (let i = 0; i < qList.length; i++) {
+    //     if (qList[i].InfoQueType === 'si' || qList[i].InfoQueType === 'siList') {
+    //       this.answerList = qList[i].answerList
+    //     }
+    //   }
+    // },
+    changeReceiveSearch () {
+      // this.settingAnswerList()
+      this.receiveListReloadKey += 1
+    },
+    async receiveSearchClick () {
+      if (this.receivSearchYn === true) {
+        this.receivSearchYn = false
+      } else {
+        this.loadingYn = true
+        this.$refs.searchLoading.show()
+        await this.getMemberInfo()
+        // this.settingAnswerList()
+        this.loadingYn = false
+        this.$refs.searchLoading.hide()
+        this.receivSearchYn = true
+        console.log(this.receivList)
+      }
+    },
+    getMemberInfo () {
+      if (!this.teamKey) return
+      // var param = {}
+      // param.teamKey = this.teamKey
+      // await this.$commonAxiosFunction({
+      //   url: 'service/tp.getMemberInfo',
+      //   param: param
+      // }).then((result)=>{
+      //   console.log(result)
+      // this.memberTypeList = result
+      // })
+
+      this.receivList = this.dummyData
+    },
     async getCodeList () {
       var resultList = null
       // eslint-disable-next-line no-new-object
@@ -204,7 +295,7 @@ export default {
    border-radius: 5px;
   border: 1px solid #ccc;
 }
-.findPopMainSearchArea{position: relative; height: 40px; float: left; width: 100%; margin-bottom: 1rem;}
+.findPopMainSearchArea{position: relative; min-height: 40px; float: left; width: 100%; }
 .findPopBody{min-height: 3.6rem; padding-top: 0; width: 100%; float: left; margin-bottom: 1rem;}
 .selectInput {color: #6c757d!important; outline: none; cursor: pointer; padding-right: 20px!important; appearance: none;}
 .selectInput option{color: #303030; font-size: 16px; min-height: 20px;}

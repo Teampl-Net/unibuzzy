@@ -7,9 +7,9 @@
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
   <welcomePopUp type="follow" v-if="openWelcomePopYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="openWelcomePopYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
   <div v-if="receptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
-    <transition name="showUp">
-        <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="receptMemPopShowYn" @closeXPop="this.closeReqMemPop()" />
-    </transition>
+    <!-- <transition name="showUp"> -->
+    <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="receptMemPopShowYn" @closeXPop="closeReqMemPop" />
+    <!-- </transition> -->
   <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
   <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
@@ -239,9 +239,13 @@ export default {
       } */
       this.receptMemPopShowYn = true
     },
-    closeReqMemPop () {
-      this.readyFunction()
-      this.openWelcomePopYn = false
+    closeReqMemPop (yn) {
+      // 그냥 닫기 눌렀을 때 환영합니다. 팝업이 등장하기 위해 그냥 닫으면 false가 오고 신청을 누르면 아무것도 안오기에 undefind가 뜰 것 입니다.
+      if (yn === false) {
+      } else {
+        this.readyFunction()
+        this.openWelcomePopYn = false
+      }
       this.receptMemPopShowYn = false
     },
     memoEdit (editYn) {

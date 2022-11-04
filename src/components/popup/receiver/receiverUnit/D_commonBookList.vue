@@ -15,7 +15,6 @@
 
 <script>
 import gReceiveCard from './D_commonReceiveCard .vue'
-// import creAddressPop from './Tal_creAddressBook.vue'
 // import loadingCompo from '../../../components/Tal_loading.vue'
 // import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
@@ -314,20 +313,6 @@ export default {
       param.newAddressYn = false
       param.cabinet = data
       this.$emit('openPop', param)
-    },
-    async creAddressPop () {
-      var cabinet = {}
-      var param = {}
-      param.targetType = 'creAddressBook'
-      param.newAddressYn = true
-      cabinet.cabinetNameMtext = await this.$checkSameName(this.addressBookList, '주소록')
-      cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
-      cabinet.sysCabinetCode = 'USER'
-      cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
-      cabinet.menuType = 'G'
-      param.cabinet = cabinet
-      this.$emit('openPop', param)
-      // this.creAddressPopYn = tru
     },
     async addNewBook () {
       var param = {}

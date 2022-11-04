@@ -258,9 +258,9 @@ export default {
       // console.log(this.detailVal.teamKey)
       var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
       if (chan) {
-        if (this.detailVal.jobkindId === 'BOAR') {
-          this.getCabinetDetail(chan[0].teamKey)
-        }
+        // if (this.detailVal.jobkindId === 'BOAR') {
+        //   this.getCabinetDetail(chan[0].teamKey)
+        // }
         return chan[0]
       } else {
         return null
@@ -460,6 +460,9 @@ export default {
         }
         // console.log('this.CHANNEL_DETAIL')
         // console.log(this.CHANNEL_DETAIL)
+        if (this.detailVal.jobkindId === 'BOAR') {
+          this.getCabinetDetail(this.detailVal.creTeamKey)
+        }
         if (!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST)) {
           await this.getContentsDetail()
         // this.getContentsList()

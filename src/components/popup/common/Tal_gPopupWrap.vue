@@ -1,5 +1,5 @@
 <template>
-    <div id="gPopup" v-if="reloadYn===false" :style="this.targetType === 'writeContents'? 'background: transparent' : ''" class="commonPopWrap">
+    <div id="gPopup" v-if="reloadYn === false" :style="this.targetType === 'writeContents'? 'background: transparent' : ''" class="commonPopWrap">
       <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
@@ -67,7 +67,7 @@
       <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
       <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
 
-      <creAddressBook :pPopId="popId" v-if=" popId &&  this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
+      <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
       <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" @saveMemInfoQuestion='saveMemInfoQuestion' />
@@ -637,7 +637,7 @@ export default {
 
     openPop (params) {
       // console.log('hahahaha')
-      // console.log(params)
+      console.log(params)
       this.popParams = params
       this.popShowYn = true
     },

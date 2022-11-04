@@ -2,7 +2,7 @@
      <div class="toggle-switch">
         <input type="checkbox" :id="toggleId" v-model="toggle" @click="test1" />
         <label :for="toggleId" @click="toggleOnOff" >
-        <span class="toggle-track"></span>
+        <span class="toggle-track" :style="toggle === false ? 'background-color: #cccccc !important; ' : ''"></span>
         </label>
     </div>
 </template>
@@ -51,10 +51,10 @@ export default ({
 .toggle-track{
   display: inline-block;
   position: relative;
-  min-width: 30px;
-  min-height: 15px;
+  min-width: 33px;
+  min-height: 18px;
   border-radius: 30px;
-  background: #d9d9d9;
+  background-color: #6768a7;
   line-height: 27px;
   text-align: center;
 }
@@ -64,9 +64,13 @@ export default ({
   position: absolute;
   /* top: 0px; */
   /* left: -15px; */
-  top: -6px;
-  min-width: 15px;
-  min-height: 15px;
+  top: -7px;
+  /* min-width: 15px;
+  min-height: 15px; */
+  min-width: 20px;
+  min-height: 20px;
+  /* border: 1px solid #6768a7; */
+  border: 1px solid #cccccc ;
   margin: 6px;
   border-radius:100%;
   transition:left 0.3s;
@@ -74,8 +78,8 @@ export default ({
   /* font-weight: bold; */
 
   /* content: "Off"; */
-  left: -6px;
-  background-color: #aaa;
+  left: -8px;
+  background-color: white;
   color: white;
 
 
@@ -84,14 +88,15 @@ export default ({
   display: inline-block;
   position: absolute;
   right: 8px;
+  background-color: #cccccc !important;
   color: #fff;
 }
 
 .toggle-switch input[type=checkbox]:checked + label .toggle-track:before{
   /* content:'On'; */
   left: 10px;
-
-  background: #6768A7;
+  border: 1px solid #6768a7;
+  background: white ;
 
 }
 </style>
