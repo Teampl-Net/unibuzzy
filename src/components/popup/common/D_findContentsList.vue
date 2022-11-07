@@ -36,7 +36,7 @@
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
 
-        <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && GE_USER.userKey === (255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235)">
+        <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && GE_USER.userKey === 255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235">
           <div class="fl w-100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
             <p class="fl font16 fontBold textLeft " style="line-height:30px;" @click="receiveSearchClick">수신대상 검색 <pp class="font14">▼</pp></p>
             <select class="fr commonDarkGray mleft-1" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" style="border: 1px solid #ccc; min-height:30px; width:calc(100% - 130px); min-width:50px; max-width:200px" >

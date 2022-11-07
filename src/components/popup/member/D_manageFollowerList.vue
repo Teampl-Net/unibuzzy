@@ -13,7 +13,7 @@
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
         <div class="receptListBtnStyle fr">
-          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl" v-if="GE_USER.userKey === (255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235)"/>
+          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl" v-if="GE_USER.userKey === 255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235"/>
           <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
     </div>
