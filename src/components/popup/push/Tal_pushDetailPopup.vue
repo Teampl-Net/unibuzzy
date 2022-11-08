@@ -67,7 +67,7 @@ export default {
     }, */
     goOk () {
       var param = { contentsKey: Number(JSON.parse(this.detailVal.userDo).targetKey), jobkindId: this.detailVal.jobkindId, creTeamKey: Number(this.detailVal.creTeamKey), targetType: 'chanDetail' }
-      param.targetContentsKey = JSON.parse(this.detailVal.userDo).targetKey
+      param.clickContentsKey = JSON.parse(this.detailVal.userDo).targetKey
       // param.popCloseYn = true
       this.goNo()
       this.$emit('goChanDetail', param)

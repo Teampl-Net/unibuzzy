@@ -213,9 +213,7 @@ export const methods = {
         router.replace({ name: 'main', params: { testYn: true } })
       }
     } else {
-      // var user = store.getters['D_USER/GE_USER']
       if (user === undefined || user === null || user === '') {
-        // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace('/policies')
@@ -287,6 +285,9 @@ export const methods = {
       param: paramSet
     })
     resultList = result.data
+    var detailData = resultList.content[0]
+    // debugger
+    store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return resultList
   },
   async saveUserDo (inputParam, type) {

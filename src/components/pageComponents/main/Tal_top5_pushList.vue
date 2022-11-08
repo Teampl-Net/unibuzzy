@@ -125,7 +125,7 @@ export default {
           // params.targetKey = value.targetKey
           // params.page = value.page
           // params.cIdx = value.index
-          // params.targetContentsKey = value.contentsKey
+          // params.clickContentsKey = value.contentsKey
           params.chanName = value.nameMtext
         } else if (value.targetType === 'boardDetail') {
           params = value

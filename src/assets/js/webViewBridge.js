@@ -2,6 +2,7 @@
 import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
+import { functions } from '../js/D_vuexFunction'
 import { onMessage } from '../../assets/js/webviewInterface'
 const isJsonString = (str) => {
   try {
@@ -65,21 +66,21 @@ const isJsonString = (str) => {
          * react native에서 화면에 결과를 넘겨준다.
          */
 
-    document.addEventListener('message', e => listener(e))
-    window.addEventListener('message', e => listener(e))
+    document.addEventListener('message', e => listenerFromNative(e))
+    window.addEventListener('message', e => listenerFromNative(e))
 
-    async function listener (e) {
-      var message
+    async function listenerFromNative (e) {
+      var recvMsg
 
       try {
         if (isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
+          recvMsg = JSON.parse(e.data)
         } else {
-          message = e.data
+          recvMsg = e.data
         }
-        if (message.type === 'userInfo' || message.type === 'successLogin') {
-          if (message.loginYn === true) {
-            var userProfile = JSON.parse(message.userInfo)
+        if (recvMsg.type === 'userInfo' || recvMsg.type === 'successLogin') {
+          if (recvMsg.loginYn === true) {
+            var userProfile = JSON.parse(recvMsg.userInfo)
             localStorage.setItem('loginYn', true)
             /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
@@ -92,21 +93,36 @@ const isJsonString = (str) => {
               await saveUser(userProfile) // 서버에 save요청
               router.replace({ path: '/' })
             } */
+            var user = {}
+            user.soAccessToken = userProfile.aToken
+            var deviceInfo = userProfile.deviceInfo
+            if (deviceInfo) {
+              user.fcmKey = deviceInfo.fcmKey
+              user.osName = deviceInfo.systemName
+              user.osVersion = deviceInfo.systemVersion
+              user.deviceId = deviceInfo.uniqueId
+              user.deviceModel = deviceInfo.model
+              user.deviceBrand = deviceInfo.brand
+              user.isTablet = deviceInfo.isTablet
+              user.countryCode = deviceInfo.contry
+              user.areaName = deviceInfo.timeZome
+            }
+            store.dispatch('D_USER/AC_USER', user)
             await saveUser(userProfile) // 서버에 save요청
             router.replace({ path: '/' })
           } else {
             router.replace({ path: 'policies' })
           }
-        } else if (message.type === 'CheckUserPermission') {
+        } else if (recvMsg.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
-        } else if (message.type === 'requestUserPermission') {
+        } else if (recvMsg.type === 'requestUserPermission') {
           router.replace({ path: '/' })
-        } else if (message.type === 'deviceSystemName') {
-          localStorage.setItem('systemName', message.systemNameData)
-        } else if (message.type === 'deepLinkUrl') {
-          // alert(message.url)
-          store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
-          var urlString = message.url.toString()
+        } else if (recvMsg.type === 'deviceSystemName') {
+          localStorage.setItem('systemName', recvMsg.systemNameData)
+        } else if (recvMsg.type === 'deepLinkUrl') {
+          // alert(recvMsg.url)
+          store.commit('D_HISTORY/changeDeepLinkQueue', recvMsg.url)
+          var urlString = recvMsg.url.toString()
           // alert(urlString)
           const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com', ''))
           var queList = []
@@ -117,19 +133,30 @@ const isJsonString = (str) => {
           }
 
           store.commit('D_HISTORY/changeDeepLinkQueue', queList)
-        } else if (message.type === 'goback') {
+        } else if (recvMsg.type === 'goback') {
           if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
           var history = store.getters['D_HISTORY/hStack']
-          var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           }
-          var current = store.getters['D_HISTORY/hUpdate']
-          store.commit('D_HISTORY/updatePage', current + 1)
-        } else if (message.type === 'pushmsg') {
-        } else if (message.type === 'appInfo') {
-          var appInfo = JSON.parse(message.appInfo)
-          localStorage.setItem('appInfo', message.appInfo)
+          var updatePage = store.getters['D_HISTORY/hUpdate']
+          store.commit('D_HISTORY/updatePage', updatePage + 1)
+        } else if (recvMsg.type === 'pushmsg') {
+          // 20221107수정필요
+
+          // 1. update notiData to vuex
+          var setOk = await functions.saveVuexRecvMsg(recvMsg)
+          if (!setOk) return false
+          // 2. noti -> add vuex -> views
+          // 클릭이벤트로 실행된 함수일 때만
+          if (JSON.parse(recvMsg.pushMessage).arrivedYn === true || JSON.parse(recvMsg.pushMessage).arrivedYn === 'true' ||
+                JSON.parse(recvMsg.pushMessage).appActiveYn === true || JSON.parse(recvMsg.pushMessage).appActiveYn === 'true') {
+          } else {
+            store.dispatch('D_NOTI/AC_NEW_NOTI', recvMsg)
+          }
+        } else if (recvMsg.type === 'appInfo') {
+          var appInfo = JSON.parse(recvMsg.appInfo)
+          localStorage.setItem('appInfo', recvMsg.appInfo)
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
             var systemName = localStorage.getItem('systemName')
           }
@@ -175,12 +202,12 @@ const isJsonString = (str) => {
             document.body.removeChild(aTag)
             // window.open(appInfo.playStoreUrl, '_blank')
           } */
-        } else if (message.type === 'netStateYn') {
-          store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
-          // localStorage.setItem('netStateYn', message.netStateYn)
-          // var appInfo = JSON.parse(message.appInfo)
+        } else if (recvMsg.type === 'netStateYn') {
+          store.dispatch('D_USER/AC_NET_STATE', recvMsg.netStateYn)
+          // localStorage.setItem('netStateYn', recvMsg.netStateYn)
+          // var appInfo = JSON.parse(recvMsg.appInfo)
           // alert(localStorage.getItem('netStateYn') + '!!!!')
-          // localStorage.setItem('appInfo', message.appInfo)
+          // localStorage.setItem('appInfo', recvMsg.appInfo)
           /* if (appInfo.current !== appInfo.last) {
               // alert('최신버전으로 업데이트 해주세요')
               var aTag
@@ -197,29 +224,28 @@ const isJsonString = (str) => {
               document.body.removeChild(aTag)
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
-        } else if (message.type === 'activeApp') {
-          // alert(message.activeYn)
-          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
-        } else if (message.type === 'addConsole') {
-          // alert(JSON.stringify(message.log))
-          // this.$addConsole(message.log)
-          // alert(message.activeYn)
-          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
+        } else if (recvMsg.type === 'activeApp') {
+          // alert(recvMsg.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', recvMsg.activeYn)
+        } else if (recvMsg.type === 'addConsole') {
+          // alert(JSON.stringify(recvMsg.log))
+          // this.$addConsole(recvMsg.log)
+          // alert(recvMsg.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', recvMsg.activeYn)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
-        return
       }
 
       // callback을 트리거한다.
-      if (callbacks[message.msgId]) {
-        if (message.isSuccessfull) {
-          callbacks[message.msgId].onsuccess.call(null, message)
+      /* if (callbacks[recvMsg.msgId]) {
+        if (recvMsg.isSuccessfull) {
+          callbacks[recvMsg.msgId].onsuccess.call(null, recvMsg)
         } else {
-          callbacks[message.msgId].onerror.call(null, message)
+          callbacks[recvMsg.msgId].onerror.call(null, recvMsg)
         }
-        delete callbacks[message.msgId]
-      }
+        delete callbacks[recvMsg.msgId]
+      } */
     }
   }
   init()

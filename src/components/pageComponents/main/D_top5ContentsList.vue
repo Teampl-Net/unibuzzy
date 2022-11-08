@@ -9,7 +9,7 @@
             </div>
             <div id="top5ListWrap" class="pushListWrap fl">
             <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.contentsList && this.contentsList.length === 0" style="margin-top:50px;" /> -->
-            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goDetail="openPop" />
+            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goChanDetail="openPop" />
             </div>
         </div>
 
@@ -207,6 +207,7 @@ export default {
       } */
     },
     openPop (value) {
+      // alert(true)
       // eslint-disable-next-line no-new-object
       var params = new Object()
       if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
@@ -218,13 +219,13 @@ export default {
           // params.targetKey = value.targetKey
           // params.page = value.page
           // params.cIdx = value.index
-          // params.targetContentsKey = value.contentsKey
+          // params.clickContentsKey = value.contentsKey
           params.chanName = value.nameMtext
         } else if (value.targetType === 'boardDetail') {
           params = value
         } else {
           params.targetType = value.targetType
-          params.alimTabType = this.viewTab
+          params.contentsMainTab = this.viewTab
         }
       } else {
         params.targetType = 'pushDetail'

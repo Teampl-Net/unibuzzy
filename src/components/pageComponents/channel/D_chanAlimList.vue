@@ -10,8 +10,8 @@
     <!-- <transition name="showUp"> -->
     <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="receptMemPopShowYn" @closeXPop="closeReqMemPop" />
     <!-- </transition> -->
-  <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
-  <div id="summaryWrap" v-if="this.detailShowYn === false" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
+  <!-- <div id="summaryWrap" v-if="this.detailShowYn === false" class="channelCardWrap mtop-05" style="padding: 0 1rem;" :style="followYn === false ? 'top: 50%; transform: translateY(-60%);' : '' " > -->
+  <div id="channelCardWrap" v-if="this.detailShowYn === false" class="channelCardWrap mtop-05" style="padding: 0 1rem;" >
     <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
       <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (this.CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" > <!-- 채널 로고 부분 -->
         <!-- <img id="chanImg" :style="setProfileSize" :src="CHANNEL_DETAIL.logoPathMtext" style="width: 90%" alt="채널사진" /> -->
@@ -59,7 +59,7 @@
           <!-- <p class="fl commonBlack font16">{{userGrade}}</p> -->
         </div>
         <!--  -->
-        <div v-if="readyFinYn === false && (!CHANNEL_DETAIL.D_CHAN_AUTH === true || CHANNEL_DETAIL.D_CHAN_AUTH.followYn === undefined)" class="fl w-100P">
+        <div v-if="(!CHANNEL_DETAIL.D_CHAN_AUTH === true || CHANNEL_DETAIL.D_CHAN_AUTH.followYn === undefined)" class="fl w-100P">
           <match :color="'#6768a7'"/>
         </div>
         <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
@@ -76,13 +76,12 @@
           <!-- </div> -->
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.recvAlimYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
           <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
-
           <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
               :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
             <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
           </div>
         </div>
-        <div v-else-if="readyFinYn || CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
           <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
           <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
         </div>
@@ -96,7 +95,7 @@
   </div>
   <!-- <div v-if="this.detailShowYn === false " class="channelItemBox " id="channelItemBox"  style="padding: 1.5rem 1.5rem 0 1rem; margin-top: 350px; overflow: hidden;"> -->
   <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-    <pushList @goScroll="this.box.style.overflow = 'scroll'" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" :reloadShowYn="this.reloadShowYn" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
+    <pushList @goScroll="this.mAlimScrollBox.style.overflow = 'scroll'" @cMemoEditYn="changeMemoEditYn" :targetContents="{clickContentsKey : pPropData.clickContentsKey, jobkindId : pPropData.jobkindId }" :chanAlimYn="true" :chanDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.pPropData.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @scrollMoveToParents='scrollMoveToPage' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @showToastPop="this.$emit('showToastPop')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
     <!-- <div v-else style="">
         notiScrollTarget: {
       handler (value, old) {
@@ -149,9 +148,8 @@ export default {
     return {
       smallPopYn: false,
       greetingInfoYn: false,
-      reloadShowYn: false,
       alimListToDetail: false,
-      box: null,
+      mAlimScrollBox: null,
       scrollDirection: null,
       scrollPosition: null,
       wrapKey: 0,
@@ -183,16 +181,16 @@ export default {
       notiQueueList: [],
       qConfirmPopShowYn: false,
       qConfirmText: '',
-      readyFinYn: false,
       gMemoEditYn: false,
-      focusEle: '',
+      // focusEle: '',
       bigBtnShowYn: true,
-      reqMemPopId: null
+      reqMemPopId: null,
+      makingUrlYn: false
       // errorPopYn: false
     }
   },
   props: {
-    chanDetail: {},
+    pPropData: {},
     notiScrollTarget: {},
     pPopId: {},
     popYn: { type: Boolean, default: false }
@@ -207,27 +205,27 @@ export default {
     match
   },
   created () {
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-    console.log(this.pPopId)
     this.$emit('openLoading')
+    console.log('this.pPropData------------------------------------------------------------------------')
+    console.log(this.pPropData)
     this.readyFunction()
-    this.focusEle = document.activeElement.classList
+    // this.focusEle = document.activeElement.classList
   },
   updated () {
-    this.focusEle = document.activeElement.classList
-    this.box = this.$refs.scrollBox
-    if (this.box) {
-      this.box.addEventListener('scroll', this.updateScroll)
-      this.box.addEventListener('mousewheel', e => {
+    // this.focusEle = document.activeElement.classList
+    this.mAlimScrollBox = this.$refs.scrollBox
+    if (this.mAlimScrollBox) {
+      this.mAlimScrollBox.addEventListener('scroll', this.updateScroll)
+      this.mAlimScrollBox.addEventListener('mousewheel', e => {
         this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
       })
     }
   },
   mounted () {
-    this.box = this.$refs.scrollBox
-    if (this.box) {
-      this.box.addEventListener('scroll', this.updateScroll)
-      this.box.addEventListener('mousewheel', e => {
+    this.mAlimScrollBox = this.$refs.scrollBox
+    if (this.mAlimScrollBox) {
+      this.mAlimScrollBox.addEventListener('scroll', this.updateScroll)
+      this.mAlimScrollBox.addEventListener('mousewheel', e => {
         this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
       })
     }
@@ -295,10 +293,6 @@ export default {
         * LightVibrant #f3ccb4
       */
     },
-    setNotiScroll (key, jobkindId) {
-      // alert(jobkindId)
-      this.$refs.ChanAlimListPushListCompo.setNotiScroll(key, jobkindId)
-    },
     toAlimFromBoard (tab) {
       this.$refs.ChanAlimListPushListCompo.changeMainTab(tab)
     },
@@ -318,22 +312,11 @@ export default {
       // debugger
       if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList')
-      await this.$addChanList(this.chanDetail.targetKey).then(() => {
-        this.readyFinYn = true
-      })
+      await this.$addChanList(this.pPropData.targetKey)
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
       this.axiosQueue.splice(queueIndex, 1)
 
-      /* // this.$addChanList(this.chanDetail.targetKey)
-      if (!this.CHANNEL_DETAIL || this.CHANNEL_DETAIL.changedYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH || (this.CHANNEL_DETAIL.D_CHAN_AUTH && !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
-        // eslint-disable-next-line no-debugger
-        debugger
-        await this.$addChanList(this.chanDetail.targetKey)
-      } */
-
-      // pushlist에서 close해주는 중
       this.$emit('closeLoading')
-      // this.checkNotiQueue()
     },
     async okSaveMember () {
       var param = {}
@@ -354,7 +337,7 @@ export default {
           this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn = true
         }
       }
-      await this.$addChanList(this.chanDetail.targetKey)
+      await this.$addChanList(this.pPropData.targetKey)
       this.qConfirmPopShowYn = false
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
@@ -374,29 +357,22 @@ export default {
         this.$store.commit('D_CHANNEL/MU_CHANNEL_NOTI_QUEUE_REPLACE', queue)
       }
     },
-    targetContentScrollMove (wich, jobkindId) {
-      if (wich && jobkindId) {
-        var tabName = 'P'
-        if (jobkindId === 'BOAR') {
-          tabName = 'B'
-        }
-        this.changeMainTab(tabName)
-        this.$refs.ChanAlimListPushListCompo.changeMainTab(tabName)
-      }
-      if (wich || this.chanDetail.targetContentsKey) {
-        const unit = this.$refs.scrollBox
-        unit.scrollTo({ top: 500, behavior: 'smooth' })
-        var blockBox = document.getElementById('summaryWrap')
-        blockBox.style.height = 50 + 'px'
-        document.getElementById('chanInfoSummary').classList.add('displayNIm')
+    scrollMoveToPage () {
+      this.$refs.scrollBox.scrollTo({ top: 500, behavior: 'smooth' })
 
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== 377) document.getElementById('followerCancelArea').classList.add('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
-        document.getElementById('channelCardWrap').classList.add('displayNIm')
-        document.getElementById('userCardWrap').classList.add('displayNIm')
-        document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
-        this.reloadShowYn = false
+      var blockBox = document.getElementById('channelCardWrap')
+      blockBox.style.height = 50 + 'px'
+      document.getElementById('chanInfoSummary').classList.add('displayNIm')
+
+      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== 377) {
+        document.getElementById('followerCancelArea').classList.add('displayNIm')
       }
+      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) {
+        document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+      }
+      blockBox.classList.add('displayNIm')
+      document.getElementById('userCardWrap').classList.add('displayNIm')
+      document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
     },
     setSelectedList (data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
@@ -427,13 +403,13 @@ export default {
           // param.targetType = 'createChannel'
           // param.targetKey = this.CHANNEL_DETAIL.teamKey
           var paramMap = new Map()
-          paramMap.set('teamKey', this.chanDetail.targetKey)
+          paramMap.set('teamKey', this.pPropData.targetKey)
           paramMap.set('fUserKey', this.GE_USER)
           var resultList = await this.$getTeamList(paramMap)
           var response = resultList.data.content[0]
           response.detailPageYn = true
           var team = null
-          var teamList = this.$getDetail('TEAM', this.chanDetail.targetKey)
+          var teamList = this.$getDetail('TEAM', this.pPropData.targetKey)
           team = teamList[0]
           response.ELEMENTS = team.ELEMENTS
           await this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
@@ -605,7 +581,7 @@ export default {
       this.openWelcomePopYn = false
       if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList')
-      await this.$addChanList(this.chanDetail.targetKey)
+      await this.$addChanList(this.pPropData.targetKey)
       queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
       // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       this.axiosQueue.splice(queueIndex, 1)
@@ -717,17 +693,17 @@ export default {
       this.detailHeaderShowYn = true
     },
     updateScroll () {
-      var blockBox = document.getElementById('summaryWrap')
-      if (this.box.scrollTop > this.scrollPosition) {
+      var blockBox = document.getElementById('channelCardWrap')
+      if (this.mAlimScrollBox.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
-      } else if (this.box.scrollTop < this.scrollPosition) {
+      } else if (this.mAlimScrollBox.scrollTop < this.scrollPosition) {
         this.scrollDirection = 'up'
       }
 
-      this.scrollPosition = this.box.scrollTop
+      this.scrollPosition = this.mAlimScrollBox.scrollTop
       if (this.scrollDirection === 'down' && this.scrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
-        this.box.style.overflow = 'hidden'
+        this.mAlimScrollBox.style.overflow = 'hidden'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
@@ -741,7 +717,6 @@ export default {
         document.getElementById('userCardWrap').classList.add('displayNIm')
 
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
-        this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
         // document.getElementById('chanInfoArea').classList.remove('displayNIm')
@@ -754,29 +729,34 @@ export default {
         document.getElementById('userCardWrap').classList.remove('displayNIm')
 
         blockBox.style.height = '350px'
-        this.box.style.height = ''
+        this.mAlimScrollBox.style.height = ''
         // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
-        this.reloadShowYn = false
       }
     }
   },
   computed: {
     CHANNEL_DETAIL () {
-      var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
+      var detail = this.$getDetail('TEAM', this.pPropData.targetKey)
       if (detail && detail.length > 0) {
-        console.log(detail)
-        if (!detail[0].copyTextStr) {
+        console.log(detail[0].copyTextStr)
+        console.log(detail[0].copyTextStr === undefined || detail[0].copyTextStr === null || detail[0].copyTextStr === '')
+        if (detail[0].copyTextStr === undefined || detail[0].copyTextStr === null || detail[0].copyTextStr === '') {
           var title = '[더알림]' + this.$changeText(detail[0].nameMtext)
           var message = this.$changeText(detail[0].memoMtext)
           var this_ = this
-          this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {
-            console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
-            console.log(res)
-            detail[0].copyTextStr = res
-            console.log(detail[0].copyTextStr)
-            this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
-          })
+          if (!this.makingUrlYn) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.makingUrlYn = true
+            this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {
+              console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
+              console.log(res)
+              detail[0].copyTextStr = res
+              console.log(detail[0].copyTextStr)
+              this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', detail[0])
+              this_.makingUrlYn = false
+            })
+          }
         }
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 
@@ -932,8 +912,8 @@ export default {
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
 
-.summaryWrap{height: 350px; width: 100%; float: left; position: absolute;}
-.summaryWrap2 {height: 50px;  width: 100%; float: left;}
+.channelCardWrap{height: 350px; width: 100%; float: left; position: absolute;}
+.channelCardWrap2 {height: 50px;  width: 100%; float: left;}
 
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}

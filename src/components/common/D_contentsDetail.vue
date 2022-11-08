@@ -17,7 +17,7 @@
             <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
               <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
               <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!detailVal.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
+              <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!pParam.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
               {{CONT_DETAIL.title}}
             </p>
             <div class="w-100P fl" style=" margin-bottom: 5px;">
@@ -86,7 +86,7 @@
                 <img :src="value.picPath" alt="">
               </div>
             </div> -->
-            <div v-if="!detailVal.nonMemYn" class="w-100P fr mbottom-05" >
+            <div v-if="!pParam.nonMemYn" class="w-100P fr mbottom-05" >
                 <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
                 <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
             </div>
@@ -94,7 +94,7 @@
               <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{CONT_DETAIL.memoCount > 0? '답변완료' : '답변대기'}}</div>
             </div>
             <div class="fl" style="display:flex;">
-              <template v-if="!detailVal.nonMemYn">
+              <template v-if="!pParam.nonMemYn">
                 <div @click="changeAct(userDo, CONT_DETAIL.contentsKey)"  class="fl" v-for="(userDo, index) in this.CONT_DETAIL.D_CONT_USER_DO" :key="index">
                   <template v-if="userDo.doType === 'ST'">
                     <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
@@ -110,10 +110,10 @@
               data-clipboard-action="copy" id="boardDetailCopyBody" @click="openSelectSharePop"
                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
             </div>
-            <gBtnSmall v-if="!detailVal.nonMemYn && (CONT_DETAIL.jobkindId === 'ALIM' || this.CAB_DETAIL.replyYn)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
-            <!-- <gBtnSmall v-if="!detailVal.nonMemYn && (this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/> -->
+            <gBtnSmall v-if="!pParam.nonMemYn && (CONT_DETAIL.jobkindId === 'ALIM' || this.CAB_DETAIL.replyYn)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+            <!-- <gBtnSmall v-if="!pParam.nonMemYn && (this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/> -->
 
-            <!-- <div v-if="detailVal.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
+            <!-- <div v-if="pParam.replyYn" class="commentBtn fr" @click="writeMemo">댓글 쓰기</div> -->
             <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
             <!-- <div style="width: 28px;height: 28px; margin-top: 1px;" data-clipboard-action="copy" id="boardDetailCopyBody" @click="copyText" -->
             <!-- <div class="copyTextWrap"> -->
@@ -124,12 +124,12 @@
                   + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
             <!-- </div> -->
           </div>
-          <div v-if="!detailVal.nonMemYn && CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL.replyYn" class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
+          <div v-if="!pParam.nonMemYn && CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL.replyYn" class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
             <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
           </div>
           <div class="boardBorder"></div>
           <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-            <gMemoList :nonMemYn="detailVal.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="CONT_DETAIL.D_MEMO_LIST" @deleteMemo='deleteConfirm' @editTrue='editMemo' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @clearMemo='clearMemo' />
+            <gMemoList :nonMemYn="pParam.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="GE_MEMO_LIST" @deleteMemo='deleteConfirm' @editTrue='editMemo' @mememo='writeMememo' @scrollMove='scrollMove' :replyYn='replyYn' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @clearMemo='clearMemo' />
           </div>
         </div>
         <!-- <div  class="font15"> {{this.alimDetail.creDate}}</div> -->
@@ -180,11 +180,11 @@ export default {
       boardFuncType: '',
       /* ownerYn: false, */
       offsetInt: 0,
-      pagesize: 10,
+      pagesize: 5,
       endListYn: false,
       axiosYn: false,
       deleteYn: false, // 나중에 삭제된 게시글을 공유하게 된다면
-      t: [],
+      mMemoList: [],
       reportYn: false,
       contentType: '',
       contentOwner: false,
@@ -204,14 +204,13 @@ export default {
       saveMemoLoadingYn: false,
       cabinetDetail: null,
       resetMemoYn: false,
-      detailComputedStartYn: false,
       cDetail: null,
       currentMemoKey: 0,
       tempMemoData: {}
     }
   },
   props: {
-    detailVal: {},
+    pParam: {},
     pPopId: {}
   },
   components: {
@@ -237,7 +236,7 @@ export default {
 
   mounted () {
     // console.log('########################')
-    // console.log(this.detailVal)
+    // console.log(this.pParam)
     // console.log('########################')
     var this_ = this
     this.$nextTick(() => {
@@ -254,11 +253,28 @@ export default {
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
+    GE_MEMO_LIST () {
+      var vuexMemoList = this.$getVuexMemo(this.pParam.contentsKey)
+      if (vuexMemoList && vuexMemoList.length > 0) {
+        console.log(this.mMemoList)
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        if (this.mMemoList.length === 0) this.mMemoList = vuexMemoList
+        console.log(this.mMemoList)
+        for (var i = 0; i < vuexMemoList.length; i++) {
+          var findMemoIndex = this.mMemoList.findIndex((item) => Number(item.memoKey) === Number(vuexMemoList[i].memoKey))
+          if (findMemoIndex !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mMemoList[findMemoIndex] = vuexMemoList[i]
+          }
+        }
+      }
+      return this.mMemoList
+    },
     CHANNEL_DETAIL () {
-      // console.log(this.detailVal.teamKey)
-      var chan = this.$getDetail('TEAM', this.detailVal.teamKey)
+      console.log(this.pParam)
+      var chan = this.$getDetail('TEAM', this.pParam.creTeamKey)
       if (chan) {
-        // if (this.detailVal.jobkindId === 'BOAR') {
+        // if (this.pParam.jobkindId === 'BOAR') {
         //   this.getCabinetDetail(chan[0].teamKey)
         // }
         return chan[0]
@@ -267,7 +283,7 @@ export default {
       }
     },
     CAB_DETAIL () {
-      if (this.detailVal.jobkindId === 'BOAR') {
+      if (this.pParam.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
         // this.cabinetDetail.mCabinet.shareAuth = this.$checkUserAuth(this.cabinetDetail.mCabinet.mShareItemList)
         return this.cabinetDetail.mCabinet
@@ -278,14 +294,14 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
       if (!this.cDetail) return
-      var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
+      /* var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
       if (!cont) {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
-      }
-      if (cont) {
-        return cont[0]
+      } */
+      if (this.cDetail) {
+        return this.cDetail
       } else {
-        console.log(cont)
+        console.log(this.cDetail)
         return null
       }
     },
@@ -333,23 +349,26 @@ export default {
       async handler (value, old) {
         var newArr = []
         if (!value || value.length === 0) return
-        var content = null
+        /* var content = null
         content = this.CONT_DETAIL
         var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-        this.CONT_DETAIL.memoCount = count
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
-        var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
-        if (memoAleadyIdx !== -1) {
-          content.D_MEMO_LIST[memoAleadyIdx].D_MEMO_LIST = value[0]
-          newArr = content.D_MEMO_LIST
-        } else {
-          newArr = [
-            value[0],
-            ...content.D_MEMO_LIST
-          ]
+        this.CONT_DETAIL.memoCount = count */
+        /*  this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL]) */
+        if (Number(value[0].targetKey) === this.CONT_DETAIL.contentsKey) {
+          var memoAleadyIdx = this.GE_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+          if (memoAleadyIdx !== -1) {
+            this.GE_MEMO_LIST[memoAleadyIdx] = value[0]
+            newArr = this.GE_MEMO_LIST
+          } else {
+            newArr = [
+              value[0],
+              ...this.GE_MEMO_LIST
+            ]
+          }
         }
-        this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        this.mMemoList = this.replaceArr(newArr)
+        // newArr
+        /* this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL]) */
       },
       deep: true
     }
@@ -445,8 +464,8 @@ export default {
       this.tempMemoData = undefined
     },
     memoCountCheck () {
-      if (this.CONT_DETAIL.D_MEMO_LIST.length > 0) {
-        var memoTotalCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
+      if (this.GE_MEMO_LIST.length > 0) {
+        var memoTotalCount = this.$countingTotalMemo(this.GE_MEMO_LIST)
         if (this.CONT_DETAIL.memoCount !== memoTotalCount) {
           this.getMemoList(true)
         }
@@ -456,32 +475,22 @@ export default {
       try {
         this.loadingYn = true
         if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
-          await this.$addChanList(this.detailVal.teamKey)
+          await this.$addChanList(this.pParam.teamKey)
         }
         // console.log('this.CHANNEL_DETAIL')
         // console.log(this.CHANNEL_DETAIL)
-        if (this.detailVal.jobkindId === 'BOAR') {
-          this.getCabinetDetail(this.detailVal.creTeamKey)
+        if (this.pParam.jobkindId === 'BOAR') {
+          this.getCabinetDetail(this.pParam.creTeamKey)
         }
         if (!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST)) {
           await this.getContentsDetail()
-        // this.getContentsList()
-        } else {
-          if (!this.CONT_DETAIL.D_CONT_USER_DO) {
-          }
         }
-        // console.log('this.CONT_DETAIL')
-        // console.log(this.CONT_DETAIL)
-        if (!this.CONT_DETAIL.D_MEMO_LIST) {
-          this.CONT_DETAIL.D_MEMO_LIST = []
-          await this.getMemoList()
-        }
-        // eslint-disable-next-line no-debugger
-        debugger
         if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
           this.settingFileList()
         }
-        if (this.CONT_DETAIL.D_MEMO_LIST) {
+
+        this.offsetInt = this.GE_MEMO_LIST.length
+        if (this.GE_MEMO_LIST) {
           this.memoCountCheck()
         }
         // console.log('###############################!!!!##############################')
@@ -490,50 +499,46 @@ export default {
       }
       this.loadingYn = false
     },
-    updateStoreData (Detail) {
-      var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.ELEMENTS.cabinetList
-      var index = cabinetList.findIndex((item) => item.cabinetKey === this.detailVal.cabinetKey)
-      if (index >= 0) {
-        cabinetList[index] = Detail
-      } else {
-        cabinetList.push(Detail)
-      }
-      tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
-      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
-    },
     async getCabinetDetail (teamKey) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData
       param.currentTeamKey = teamKey
-      param.cabinetKey = this.detailVal.cabinetKey
+      param.cabinetKey = this.pParam.cabinetKey
       var resultList = await this.$getCabinetDetail(param)
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
       // eslint-disable-next-line no-debugger
       debugger
       this.cabinetDetail = resultList
-      // this.updateStoreData(resultList.mCabinet)
     },
     async getContentsDetail () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.contentsKey = this.detailVal.contentsKey
-      param.jobkindId = this.detailVal.jobkindId
-      param.userKey = this.GE_USER.userKey
-      var resultList = await this.$getContentsList(param)
-      var detailData = resultList.content[0]
-      // eslint-disable-next-line no-debugger
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
-      if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
-      // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
-      // console.log(detailData)
+      var teamDetail = this.CHANNEL_DETAIL
+      var vuexContentsDetail = this.$getContentsDetail(teamDetail, this.pParam.contentsKey, this.pParam.creTeamKey)
+      console.log(this.cDetail)
       // eslint-disable-next-line no-debugger
       debugger
-      this.cDetail = detailData
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-      this.detailComputedStartYn = !this.detailComputedStartYn
+      if (!vuexContentsDetail || vuexContentsDetail.length === 0) {
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        param.contentsKey = this.pParam.contentsKey
+        param.jobkindId = this.pParam.jobkindId
+        param.userKey = this.GE_USER.userKey
+        var resultList = await this.$getContentsList(param)
+        var detailData = resultList.content[0]
+        // eslint-disable-next-line no-debugger
+        detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+        if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
+        // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
+        // console.log(detailData)
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.cDetail = detailData
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      } else {
+        this.cDetail = vuexContentsDetail[0]
+      }
+
+      // eslint-disable-next-line no-new-object
     },
     onLoadFunction () {
       var thisthis = this
@@ -1016,8 +1021,8 @@ export default {
       var middle = (document.innerHeight || window.innerHeight) / 2 - 100
       var memoArea = this.$refs.memoarea
       if (wich === -1) {
-        wich = document.getElementById(this.CONT_DETAIL.D_MEMO_LIST[this.CONT_DETAIL.D_MEMO_LIST.length - 1].memoKey).offsetTop
-        this.$refs.boardMemoListCompo[0].anima(this.CONT_DETAIL.D_MEMO_LIST[this.CONT_DETAIL.D_MEMO_LIST.length - 1].memoKey)
+        wich = document.getElementById(this.GE_MEMO_LIST[this.GE_MEMO_LIST.length - 1].memoKey).offsetTop
+        this.$refs.boardMemoListCompo[0].anima(this.GE_MEMO_LIST[this.GE_MEMO_LIST.length - 1].memoKey)
       }
       memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
@@ -1115,7 +1120,7 @@ export default {
       })
       if (result.data.result === true) {
         // var cont
-        var memos = this.CONT_DETAIL.D_MEMO_LIST
+        var memos = this.GE_MEMO_LIST
         var index = memos.findIndex((item) => item.memoKey === param.memoKey)
         if (this.tempData.parentMemoKey) {
           var cmemoListIdx
@@ -1132,19 +1137,45 @@ export default {
         } else {
           memos.splice(index, 1)
         }
-        this.CONT_DETAIL.D_MEMO_LIST = memos
+        this.GE_MEMO_LIST = memos
         this.CONT_DETAIL.memoCount = this.$countingTotalMemo(memos)
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.CONT_DETAIL)
       }
     },
     async loadMore () {
-      if (!this.CONT_DETAIL.D_MEMO_LIST || this.CONT_DETAIL.totalMemoCount > (this.CONT_DETAIL.D_MEMO_LIST.length)) {
+    //   if (!this.GE_MEMO_LIST || this.CONT_DETAIL.totalMemoCount > (this.GE_MEMO_LIST.length)) {
+    //     this.offsetInt = this.GE_MEMO_LIST.length
+    //     console.log(this.GE_MEMO_LIST)
+    //     var moreMemoList = await this.getMemoList()
+    //     var newArr = [
+    //       ...this.GE_MEMO_LIST,
+    //       ...moreMemoList
+    //     ]
+    //     this.mMemoList = this.replaceArr(newArr)
+    //     console.log(this.GE_MEMO_LIST)
+    //     this.$store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { contentsKey: this.pParam.contentsKey, memo: this.mMemoList })
+    //   }
+      if (!this.GE_MEMO_LIST || this.CONT_DETAIL.totalMemoCount > (this.GE_MEMO_LIST.length)) {
+        // var vuexMemoList = this.$getVuexMemo(this.CONT_DETAIL.contentsKey)
+        // var response = await this.getMemoList()
+        // var newArr = [
+        //   ...vuexMemoList,
+        //   ...response
+        // ]
+        // var newList = await this.replaceArr(newArr)
+        // console.log(newList)
+        // this.mMemoList = newList
+        // this.$store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { memo: this.mMemoList, contentsKey: this.CONT_DETAIL.contentsKey })
+        // console.log('========= offsetInt, pageSize ============')
+        // console.log(this.offsetInt)
+        // console.log(this.pagesize)
         await this.getMemoList()
+        this.loadMoreCheckFunc()
       }
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+        if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
@@ -1161,53 +1192,56 @@ export default {
       cont.D_MEMO_LIST[index].bodyFullStr = memo.bodyFullStr
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
     },
-    async getMemoList (refreshYn) {
+    loadMoreCheckFunc () {
+      console.log(this.$countingTotalMemo(this.mMemoList))
+      if (this.CONT_DETAIL.totalMemoCount > this.$countingTotalMemo(this.mMemoList)) {
+        this.offsetInt += 5
+      }
+    },
+    async getMemoList () {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.targetKind = 'C'
       memo.targetKey = this.CONT_DETAIL.contentsKey
       memo.pageSize = this.pagesize
       memo.offsetInt = this.offsetInt
-      memo.pageSize = this.CONT_DETAIL.totalMemoCount + 1
-      memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
       })
 
-      if (result.data.memoList) {
-        this.CONT_DETAIL.totalMemoCount = result.data.totalElements
-        var tempList = []
-        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
-        if (this.CONT_DETAIL.D_MEMO_LIST && !refreshYn) {
-          tempList = this.CONT_DETAIL.D_MEMO_LIST
-        }
-        const newArr = [
-          ...tempList,
-          ...result.data.memoList
-        ]
-        var tempMemo = this.replaceArr(newArr)
+      console.log(result)
 
-        if (tempMemo && tempMemo.length > 0) {
-          for (let i = 0; i < tempMemo.length; i++) {
-            if (tempMemo.parentMemoKey) {
-              for (let j = 0; j < tempMemo.length; j++) {
-                if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
-                  tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
-                  tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
-                }
-              }
-            }
-          }
-        }
-        var cont = this.CONT_DETAIL
-        cont.D_MEMO_LIST = [...tempMemo]
+      if (result) {
+        this.CONT_DETAIL.totalMemoCount = result.data.totalElements
+        var vuexMemoList = this.$getVuexMemo(this.CONT_DETAIL.contentsKey)
+        var response = result.data.memoList
+        var newArr = [
+          ...vuexMemoList,
+          ...response
+        ]
+        var newList = await this.replaceArr(newArr)
+        console.log(newList)
+        this.mMemoList = newList
+        this.$store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { memo: this.mMemoList, contentsKey: this.CONT_DETAIL.contentsKey })
+        console.log('========= offsetInt, pageSize ============')
+        console.log(this.offsetInt)
+        console.log(this.pagesize)
+      }
+
+      if (result.data.memoList) {
+        // this.CONT_DETAIL.totalMemoCount = result.data.totalElements
+        // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
+
+        // this.mMemoList = this.replaceArr(result.data.memoList)
+        // var cont = this.CONT_DETAIL
+        //  cont.D_MEMO_LIST = [...tempMemo]
         // var totalMemoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         // cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
-        this.CONT_DETAIL.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-        this.offsetInt = result.data.totalElements
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        // this.CONT_DETAIL.memoCount = this.$countingTotalMemo(this.mMemoList)
+        // this.offsetInt = result.data.totalElements
+        // return result.data.memoList
       }
       // this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
@@ -1353,7 +1387,7 @@ export default {
           if (temp[i].doKey === 1) return
         }
       }
-      // this.pushDetail = JSON.parse(this.detailVal).data
+      // this.pushDetail = JSON.parse(this.pParam).data
       if (Number(act.doKey) > 0) {
         saveYn = false
       }

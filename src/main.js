@@ -223,7 +223,7 @@ app.config.globalProperties.$store = store
 
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
-localStorage.setItem('setItem', '')
+// localStorage.setItem('setItem', '')
 
 app.mount('#app')
 // console.log(document.getElementById('testConsole'))

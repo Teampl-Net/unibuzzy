@@ -329,6 +329,9 @@ export const commonMethods = {
   async makeShareLink (key, type, message, title) {
     // eslint-disable-next-line no-debugger
     debugger
+    var makingYn = false
+    if (makingYn) return
+    makingYn = true
     var paramMap = new Map()
     paramMap.set('pageType', type)
     paramMap.set('targetKey', key)
@@ -349,6 +352,7 @@ export const commonMethods = {
     })
     console.log(JSON.parse(result.data.shortLink))
     var response = JSON.parse(result.data.shortLink).shortLink
+
     // alert(response)
     return response
   },

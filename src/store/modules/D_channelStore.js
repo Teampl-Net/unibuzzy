@@ -16,7 +16,8 @@ const D_CHANNEL = {
     addShowProfileUserList: [],
     delContentsList: [],
     chanNotiQueue: [],
-    updateChanList: []
+    updateChanList: [],
+    memoList: new Map()
 
   },
   getters: {
@@ -49,6 +50,9 @@ const D_CHANNEL = {
     },
     GE_CHANNEL_NOTI_QUEUE (state) {
       return state.chanNotiQueue
+    },
+    GE_ALL_MEMO_LIST (state) {
+      return state.memoList
     }
   },
   mutations: {
@@ -61,6 +65,7 @@ const D_CHANNEL = {
       state.addManagerList = []
       state.addShowProfileUserList = []
       state.chanNotiQueue = []
+      state.memoList = new Map()
       return true
     },
     MU_REPLACE_NEW_MEMO: (state, payload) => {
@@ -260,6 +265,9 @@ const D_CHANNEL = {
           state.recentChangeTeamKey = payload.payload
         } else {
           var chan = state.chanList[index]
+          if (chan.copyTextStr) {
+            payload[i] = chan.copyTextStr
+          }
           var tempEle = chan.ELEMENTS
           state.chanList[index] = payload[i]
           state.chanList[index].ELEMENTS = tempEle
@@ -271,6 +279,9 @@ const D_CHANNEL = {
       var idx1
       var chanList = state.chanList
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
+      if (chanList[idx1].copyTextStr) {
+        payload.copyTextStr = chanList[idx1].copyTextStr
+      }
       chanList[idx1] = payload
       if (!chanList[idx1].changedYn) chanList[idx1].changedYn = true
       else {
@@ -624,11 +635,11 @@ const D_CHANNEL = {
     MU_CHANNEL_NOTI_QUEUE_REPLACE: (state, payload) => {
       state.chanNotiQueue = payload
     },
-    MU_ADD_UPDATE_CHAN_LIST: (state, payload) => {
+    MU_ADD_NOTI_CHAN_LIST: (state, payload) => {
       state.updateChanList.push(payload)
     },
     MU_DEL_UPDATE_CHAN_LIST: (state, payload) => {
-      // AC_ADD_UPDATE_CHAN_LIST
+      // AC_ADD_NOTI_CHAN_LIST
       var idx = state.updateChanList.indexOf(payload)
       // var idx = state.updateChanList.findIndex(item => item.key === payload.key)
       if (idx !== -1) {
@@ -662,12 +673,25 @@ const D_CHANNEL = {
       state.chanList = chanList
       console.log(state.chanList)
       // if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
+    },
+    MU_ALL_MEMO_LIST: (state, payload) => {
+      var memos = state.memoList
+      console.log(memos)
+      var memo = []
+      if (payload.memo.length > 0) {
+        memo = payload.memo
+      }
+      console.log(payload.contentsKey)
+      console.log(payload)
+      memos.set(payload.contentsKey, memo)
+      console.log(memos)
+      state.memoList = memos
     }
   },
   // dispatch 를 사용하면 됨
   actions: {
-    AC_ADD_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
-      commit('MU_ADD_UPDATE_CHAN_LIST', payload)
+    AC_ADD_NOTI_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
+      commit('MU_ADD_NOTI_CHAN_LIST', payload)
     },
     AC_DEL_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 제거
       commit('MU_DEL_UPDATE_CHAN_LIST', payload)
@@ -742,6 +766,7 @@ const D_CHANNEL = {
           }
         }
         payload[i].D_CONT_USER_DO = userDoList
+        commit('MU_ALL_MEMO_LIST', { contentsKey: payload[i].contentsKey, memo: payload[i].memoList })
       }
       commit('MU_ADD_CONTENTS', payload)
     },
@@ -842,6 +867,9 @@ const D_CHANNEL = {
       index = channelList.findIndex((item) => item.teamKey === payload.teamKey)
       channelList[index] = payload
       commit('MU_MAIN_CHAN_LIST', channelList)
+    },
+    AC_ALL_MEMO_LIST: ({ commit }, payload) => {
+      commit('MU_ALL_MEMO_LIST', payload)
     }
   }
 }

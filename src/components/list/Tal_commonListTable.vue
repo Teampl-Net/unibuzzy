@@ -75,21 +75,18 @@ export default {
       param.targetKey = data.creTeamKey
       param.nameMtext = data.nameMtext
       param.chanName = data.nameMtext
-      param.targetContentsKey = data.contentsKey
-      // param.targetContentsKey = data.mccKey
+      param.clickContentsKey = data.contentsKey
+      // param.clickContentsKey = data.mccKey
       // if (data.jobkindId === 'BOAR') {}
       param.jobkindId = data.jobkindId
       // 세션에서 유저키 받아오기
-      if (data.creUserKey === this.creUserKey) {
-        param.ownerYn = true
-      }
       // } else {
       //   param.targetType = 'boardDetail'
       //   param.cabinetNameMtext = data.cabinetNameMtext
       //   param.targetKey = data.contentsKey
       //   param.value = data
       // }
-      this.$emit('goDetail', param)
+      this.$emit('goChanDetail', param)
     },
     resizeText (text, name) {
       if (text) {

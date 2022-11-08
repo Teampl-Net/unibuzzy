@@ -3,74 +3,83 @@
       <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
-        <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" :headerTitle="this.newHeaderT" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :params="this.popParams" :propData="this.params" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
+        <fullModal @goScrollTarget="goScrollTarget"
+                    @successWrite="successWriteBoard"
+                    @parentClose="parentClose"
+                    @addDirectAddMemList="addDirectAddMemList"
+                    @reloadPop="reloadPop"
+                     @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+                     @closePop="closePop"
+                      @toAlimFromBoard='toAlimThisPageClose'
+                      @saveCabinet='refreshCabinet'
+                       @channelMenuReload='channelMenuReload'
+                    :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" :headerTitle="newHeaderT"
+                    v-if="popShowYn" :parentPopN="thisPopN" :pParam="mNewPopParam" :propData="mNewPopParam"
                                         />
       </transition>
-      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="detailVal !== {} && (targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
+      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain' || targetType === 'boardDetail')? 'chanDetailPopHeader': ''" :chanName="this.pParam.nameMtext" :headerTitle="this.headerTitle" :chanAlimListTeamKey="chanAlimListTeamKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
       v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <!-- <managerPopHeader ref="gPopupHeader" :class="{'chanDetailPopHeader': detailVal.length > 0}" :headerTitle="this.headerTitle" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"/> -->
       <!-- <pushDetail @reloadParent="reloadParent" @closeLoading="this.loadingYn = false"  @openLoading="this.loadingYn = true"  :detailVal="this.detailVal" v-if=" popId &&  this.targetType === 'pushDetail'" class="commonPopPushDetail" @openPop = "openPop" /> -->
       <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
-          <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
+          <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :pPropData="this.pParam" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
       </div>
       <!-- <chanAlimList ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.$emit('openLoading')"  @closeLoading="this.$emit('closeLoading')" :chanDetail="this.detailVal" v-if=" popId &&  this.targetType === 'chanDetail' " @openPop="openPop" @bgcolor='bgcolor' :refreshToken='refreshToken' /> -->
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
-        <pushList :pPopId="popId" style="" :propData="this.params" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
+        <pushList :pPopId="popId" style="" :propData="this.pParam" :ref="'gPopPush'" :pushListAndDetailYn="pushListAndDetailYn" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
-      <pushBox :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'pushBox'" @openPop = "openPop"/>
 
       <!-- <div class="pagePaddingWrap" style=" position: relative; padding: 48px 0.5rem 0 0.5rem; " v-if=" popId &&  this.targetType === 'chanList'"> -->
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
-        <chanList :pPopId="popId" :propData="this.params" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
+        <chanList :pPopId="popId" :propData="this.pParam" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
-      <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="successchangeUserInfo" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
-      <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.params' />
+      <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="this.closeXPop(true)" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
+      <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.pParam' />
       <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
       <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
-      <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.params"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
+      <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.pParam"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
 
-      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.params.contentsJobkindId" :params="this.params" :propData="this.params" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.pParam.contentsJobkindId" :params="this.pParam" :propData="this.pParam" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
 
-      <!-- <boardWrite :pPopId="popId" @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
+      <!-- <boardWrite :pPopId="popId" @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.pParam" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
 
-      <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.params' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
+      <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.pParam' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
 
-      <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
+      <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="pParam" @openPop="openPop" :chanAlimListTeamKey="chanAlimListTeamKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false'  @openAddChanMenu='openAddChanMenuYn=true' :addChanList='addChanMenuList' @openItem='openChannelItem' @openBookDetail='openBookItem'/>
 
-      <boardMain :pPopId="popId" ref="boardMainPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
+      <boardMain :pPopId="popId" ref="boardMainPop" :propData="this.pParam" :chanAlimListTeamKey="chanAlimListTeamKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
 
-      <boardDetail :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.params" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'boardDetail' || this.targetType === 'pushDetail'" @openPop="openPop" :detailVal='this.params' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.params" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
+      <boardDetail :pPopId="popId" @closeAndNewPop="closeAndNewPop" :pParam="this.pParam" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'boardDetail' || this.targetType === 'pushDetail'" @openPop="openPop" :detailVal='this.pParam' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.pParam" :chanAlimListTeamKey="chanAlimListTeamKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @openDetailYn='openDetailYn' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
 
-      <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.params" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
-      <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="params.pSelectedList" :propData="this.params" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
-      <!-- <followerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'followerManagement'" @openPop='openPop'/> -->
-      <!-- <managerManagement :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'managerManagement'" @openPop='openPop'/> -->
-      <memberManagement :pPopId="popId" :propData="this.params" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'memberManagement'" @openPop='openPop'/>
+      <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.pParam" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
+      <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.pParam" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="pParam.pSelectedList" :propData="this.pParam" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
+      <!-- <followerManagement :propData="this.pParam" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'followerManagement'" @openPop='openPop'/> -->
+      <!-- <managerManagement :propData="this.pParam" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'managerManagement'" @openPop='openPop'/> -->
+      <memberManagement :pPopId="popId" :propData="this.pParam" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'memberManagement'" @openPop='openPop'/>
 
-      <selectAddressBookList :pPopId="popId" :propData="this.params" v-if=" popId &&  this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
+      <selectAddressBookList :pPopId="popId" :propData="this.pParam" v-if=" popId &&  this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  this.targetType === 'setMypage'">
         <setMypage :pPopId="popId" v-if=" popId &&  this.targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
       </div>
-      <editMyChanMenu :pPopId="popId" v-if=" popId &&  this.targetType === 'myChanMenuEdit'" :propData="this.params" @openPop="openPop"  />
-      <editBoardPop :pPopId="popId" v-if=" popId &&  this.targetType === 'editBoard'" :propData="this.params" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <editMyChanMenu :pPopId="popId" v-if=" popId &&  this.targetType === 'myChanMenuEdit'" :propData="this.pParam" @openPop="openPop"  />
+      <editBoardPop :pPopId="popId" v-if=" popId &&  this.targetType === 'editBoard'" :propData="this.pParam" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
 
-      <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  this.targetType === 'chanInfo'" :propData="this.params" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeshowProfileYn='changeshowProfileYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentshowProfileYn="showProfileYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.params.value" style="background-color: #fff;"></chanInfoComp>
-      <autoAnswerList :pPopId="popId" v-if=" popId &&  this.targetType === 'autoAnswer'" :propData="this.params" @openPop="openPop"  />
-      <memberForm :pPopId="popId" v-if=" popId &&  this.targetType === 'memberForm'" :propData="this.params" @closeXPop="closeXPop" @openPop="openPop" />
-      <memberFormList :pPopId="popId" v-if=" popId &&  this.targetType === 'memberFormList'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
+      <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  this.targetType === 'chanInfo'" :propData="this.pParam" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @changeshowProfileYn='changeshowProfileYn' @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :parentshowProfileYn="showProfileYn" :adminYn="adminYn" :alimSubPopYn="alimListToDetail" :chanDetail="this.pParam.value" style="background-color: #fff;"></chanInfoComp>
+      <autoAnswerList :pPopId="popId" v-if=" popId &&  this.targetType === 'autoAnswer'" :propData="this.pParam" @openPop="openPop"  />
+      <memberForm :pPopId="popId" v-if=" popId &&  this.targetType === 'memberForm'" :propData="this.pParam" @closeXPop="closeXPop" @openPop="openPop" />
+      <memberFormList :pPopId="popId" v-if=" popId &&  this.targetType === 'memberFormList'" :propData="this.pParam" @openPop="openPop" @closeXPop="closeXPop" />
 
-      <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.params" @openPop="openPop" />
-      <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.params" @openPop="openPop" />
+      <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.pParam" @openPop="openPop" />
+      <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.pParam" @openPop="openPop" />
 
-      <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.params" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
+      <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.pParam" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
-      <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" />
-      <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.params" @openPop="openPop" @closeXPop="closeXPop" @saveMemInfoQuestion='saveMemInfoQuestion' />
+      <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.pParam" @openPop="openPop" @closeXPop="closeXPop" />
+      <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.pParam" @openPop="openPop" @closeXPop="closeXPop" @saveMemInfoQuestion='saveMemInfoQuestion' />
     </div>
 </template>
 
@@ -79,7 +88,6 @@ import pushPop from '../push/Tal_pushDetailPopup.vue'
 // eslint-disable-next-line
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
-import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
 import chanList from '../../../pages/routerPages/D_chanList.vue'
 import chanAlimList from '../../pageComponents/channel/D_chanAlimList.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
@@ -131,6 +139,7 @@ import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
 
 export default {
   async created () {
+    console.log(this.pParam)
     await this.settingPop()
     // document.addEventListener('message', e => this.recvNoti(e))
     // window.addEventListener('message', e => this.recvNoti(e))
@@ -161,10 +170,10 @@ export default {
       newHeaderT: '',
       headerTitle: '',
       pushListAndDetailYn: false,
-      popParams: '',
+      mNewPopParam: '',
       changInfoType: '',
 
-      detailVal: {},
+      mPopupDetailValue: {},
 
       chanFollowYn: false,
       readySearchList: {}, // chanDetail -> pushList 열때 필요
@@ -175,7 +184,6 @@ export default {
       receiverList: {},
       bgblackYn: false,
       propParams: {},
-      chanName: '',
       memberDetailOpen: false,
       refreshToken: 0,
       delyn: false,
@@ -190,7 +198,7 @@ export default {
     }
   },
   props: {
-    params: {},
+    pParam: {},
     // headerTitle: {},
     parentPopN: {}
   },
@@ -203,7 +211,6 @@ export default {
     pushList,
     chanList,
     changeInfo,
-    pushBox,
     askTal,
     talInfo,
     question,
@@ -254,9 +261,22 @@ export default {
       return {
         '--widndowWidth': window.innerWidth + 'px'
       }
+    },
+    GE_NEW_NOTI_OBJECT () {
+      return this.$store.getters['D_NOTI/GE_NEW_NOTI_OBJECT']
     }
   },
   watch: {
+    GE_NEW_NOTI_OBJECT: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        var notiOpenTargetPage = value.notiOpenTargetPage
+        if (notiOpenTargetPage === this.popId) {
+          this.openPop(value)
+        }
+      },
+      deep: true
+    },
     pageUpdate (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
@@ -307,10 +327,10 @@ export default {
     emitFunc (emitName, param) {
       this.$emit(emitName, param)
     },
-    refreshCabinet (param) {
-      if (param.cabinetType === 'address') {
+    refreshCabinet (refreshParam) {
+      if (refreshParam.cabinetType === 'address') {
         this.$refs.editBookListComp.getBookList()
-      } else if (param.cabinetType === 'member') {
+      } else if (refreshParam.cabinetType === 'member') {
         this.$refs.editBookListComp.getBookMemberList()
       }
     },
@@ -324,7 +344,7 @@ export default {
       }
     },
     // 헤더에게 현재 chanAlimList에 화면이 구독중인지 확인하기 위해 사용
-    async getFollowerYn (teamKey) {
+    /* async getFollowerYn (teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
@@ -338,7 +358,7 @@ export default {
       } else {
         return false
       }
-    },
+    }, */
     selectedReceiverBookNMemberList (param) {
       // console.log('selectedReceiverBookNMemberList')
       // console.log(this.targetType)
@@ -372,8 +392,8 @@ export default {
         this.closePop()
       }
     },
-    openDetailYn (bool) {
-      this.memberDetailOpen = bool
+    openDetailYn (detailParam) {
+      this.memberDetailOpen = detailParam
     },
     openChannelItem (data) {
       /* if (data.targetType === 'boardMain') {
@@ -394,7 +414,7 @@ export default {
       this.openPop(data)
     },
     async reloadParent () {
-      if (this.params.openActivity === 'chanAlimList') {
+      if (this.pParam.openActivity === 'chanAlimList') {
       } else {
         this.$emit('reloadPop')
       }
@@ -426,66 +446,40 @@ export default {
     BackPopClose (e) {
       this.closeXPop()
     },
-    successchangeUserInfo () {
-      this.closeXPop(true)
-    },
     async settingPop (successChanYn) {
+      if ((this.pParam.targetType === 'chanDetail' || this.pParam.targetType === 'boardDetail' || this.pParam.targetType === 'boardMain' || this.pParam.targetType === 'pushDetail') && (!this.pParam.targetType || !this.pParam.targetKey)) {
+        console.log(this.pParam.targetType + this.pParam.targetKey)
+        console.log('정보부족')
+        alert('정보부족')
+        return
+      }
       this.chanFollowYn = false
-      var target = this.params
+      var target = this.pParam
       if (successChanYn === true) {
         target = this.successChanParam
       }
-      this.propParams = target
+      // this.propParams = target
       this.targetType = target.targetType
       // eslint-disable-next-line no-unused-vars
-      // var tt = this.params
+      // var tt = this.pParam
       if (this.targetType === 'pushDetail' || this.targetType === 'chanDetail' || this.targetType === 'boardDetail') {
-        this.detailVal = target
+        this.mPopupDetailValue = target
         this.headerTitle = '상세'
-        // var chan = this.$getDetail('TEAM', target.targetKey)
-        // eslint-disable-next-line no-debugger
-        debugger
-        console.log()
-        if (this.detailVal.notiYn) {
-          if (this.detailVal.jobkindId === 'BOAR') {
-            if (this.detailVal.cabinetNameMtext) {
-              this.headerTitle = this.changeText(this.detailVal.cabinetNameMtext)
-            }
-          } else if (this.detailVal.jobkindId === 'ALIM') {
-            if (this.detailVal.nameMtext) {
-              this.headerTitle = this.changeText(this.detailVal.nameMtext)
-            }
+        if (target.jobkindId === 'BOAR') {
+          if (target.cabinetNameMtext) {
+            this.headerTitle = this.changeText(target.cabinetNameMtext)
           }
-        } else {
-          if (this.detailVal.value) {
-            if (this.detailVal.value.nameMtext !== undefined && this.detailVal.value.nameMtext !== 'undefined' && this.detailVal.value.nameMtext !== null && this.detailVal.nameMtext !== '') {
-              this.headerTitle = this.changeText(this.detailVal.value.nameMtext)
-            }
-            if (this.detailVal.jobkindId && this.detailVal.jobkindId === 'BOAR' && this.detailVal.value.cabinetNameMtext) {
-              this.headerTitle = this.changeText(this.detailVal.value.cabinetNameMtext)
-            }
+        } else if (target.jobkindId === 'ALIM') {
+          if (target.nameMtext) {
+            this.headerTitle = this.changeText(target.nameMtext)
           }
         }
-        if (this.targetType === 'pushDetail' || this.targetType === 'boardDetail') {
-          this.popId = this.targetType + this.detailVal.contentsKey
-        } else if (this.targetType === 'chanDetail') {
-          if (this.detailVal.targetKey) {
-            this.popId = this.targetType + this.detailVal.targetKey
-          } else if (this.detailVal.teamKey) {
-            this.popId = this.targetType + this.detailVal.teamKey
-          } else {
-            this.popId = this.targetType
-          }
-        }
+        this.popId = this.targetType + target.targetKey
 
         if (this.targetType === 'chanDetail') {
           this.headerTitle = ''
           this.chanAlimListTeamKey = target.targetKey || target.teamKey
         }
-      } else if (this.targetType === 'pushListAndDetail') {
-        this.pushListAndDetailYn = true
-        this.targetType = 'pushList'
-        this.headerTitle = '알림'
       } else if (this.targetType === 'pushList') {
         this.headerTitle = '알림'
         if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {
@@ -493,8 +487,6 @@ export default {
         }
       } else if (this.targetType === 'chanList') {
         this.headerTitle = '채널'
-      } else if (this.targetType === 'pushBox') {
-        this.headerTitle = '알림함'
       } else if (this.targetType === 'leaveTheAlim') {
         this.headerTitle = '탈퇴'
       } else if (this.targetType === 'question') {
@@ -524,15 +516,14 @@ export default {
         // this.headerTitle = '게시글 작성'
         // this.headerTitle = '알림 작성'
       } else if (this.targetType === 'boardMain') {
-        // this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext)
+        // this.headerTitle = this.$changeText(this.pParam.value.cabinetNameMtext)
       } else if (this.targetType === 'editBookList') {
         this.headerTitle = '주소록 관리'
-        this.chanName = this.propParams.teamNameMtext
         this.helpYn = true
       } else if (this.targetType === 'bookMemberDetail') {
         if (target.currentCabinetKey) {
-          // if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.params.value.userDispMtext)
-          if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '프로필' } // this.$changeText(this.params.value.userDispMtext)
+          // if (target.newMemYn) { this.headerTitle = '구성원 등록' } else { this.headerTitle = '구성원 상세' } // this.$changeText(this.pParam.value.userDispMtext)
+          if (target.newMemYn) { this.headerTitle = '등록' } else { this.headerTitle = '프로필' } // this.$changeText(this.pParam.value.userDispMtext)
         } else {
           if (target.selfYn === true) {
             this.headerTitle = '내 정보'
@@ -541,7 +532,7 @@ export default {
               this.headerTitle = '매니저 정보'
             } else {
               if (!target.managerKey) {
-                this.headerTitle = '매니저 등록' // this.$changeText(this.params.value.userDispMtext)
+                this.headerTitle = '매니저 등록' // this.$changeText(this.pParam.value.userDispMtext)
               } else {
                 this.headerTitle = '매니저 수정'
               }
@@ -551,15 +542,13 @@ export default {
       // } else if (this.targetType === 'writeBoard') {
       //   this.headerTitle = '게시글 작성'
       } else if (this.targetType === 'boardDetail') {
-        if (this.params.value) {
-          this.headerTitle = this.$changeText(this.params.value.cabinetNameMtext) || this.$changeText(this.params.cabinetNameMtext)
+        if (this.pParam.value) {
+          this.headerTitle = this.$changeText(this.pParam.value.cabinetNameMtext) || this.$changeText(this.pParam.cabinetNameMtext)
         } else {
-          this.headerTitle = this.$changeText(this.params.cabinetNameMtext)
+          this.headerTitle = this.$changeText(this.pParam.cabinetNameMtext)
         }
       } else if (this.targetType === 'editManagerList') {
         this.headerTitle = '매니저 관리'
-        this.chanName = this.propParams.teamNameMtext
-        // this.chanName = this.$changeText(this.propParams.teamNameMtext)
       } else if (this.targetType === 'selectMemberPop') {
         // eslint-disable-next-line no-unused-vars
         if (target.cabinetNameMtext) {
@@ -600,11 +589,7 @@ export default {
           this.headerTitle = '주소록 수정'
         }
       } else if (this.targetType === 'selectBookList') {
-        console.log('!!!!!!!!!!!!!!!')
-        console.log(this.selectPlist)
-        this.selectPlist = this.params.pSelectedList
-        console.log(this.selectPlist)
-        console.log('!!!!!!!!!!!!!!!')
+        this.selectPlist = this.pParam.pSelectedList
       } else if (this.targetType === 'editMemberTypePop') {
         this.headerTitle = '멤버유형관리'
       } else if (this.targetType === 'memInfoCreEditPop') {
@@ -623,22 +608,20 @@ export default {
       if (!this.popId) {
         this.popId = 'gPopup' + this.thisPopN
       }
-      console.log('----------팝업 추가-----------')
-      console.log(this.popId)
-      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
-      // history.push(this.popId)
-      gPopHistory.push(this.popId)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
-      var history = this.$store.getters['D_HISTORY/hStack']
-      history.push(this.popId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      // g팝업 히스토리에 쌓기
+      var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      popHistory.push(this.popId)
+      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', popHistory)
+      // 팝업 히스토리에 쌓기
+      var allHistory = this.$store.getters['D_HISTORY/hStack']
+      allHistory.push(this.popId)
+      this.$store.commit('D_HISTORY/updateStack', allHistory)
+
       this.newHeaderT = '새로운 타이틀' + this.thisPopN
     },
 
-    openPop (params) {
-      // console.log('hahahaha')
-      console.log(params)
-      this.popParams = params
+    openPop (mNewPopParam) {
+      this.mNewPopParam = mNewPopParam
       this.popShowYn = true
     },
     async parentClose (delyn) {
@@ -686,7 +669,7 @@ export default {
         } else if (this.targetType === 'setMypage') {
           this.closeXPop()
         } else if (this.targetType === 'editManagerList') {
-          /* if (this.params.selectMemberType = 'manager')
+          /* if (this.pParam.selectMemberType = 'manager')
             await this.$refs.selectManagerCompo.refresh()
           else */
           await this.$refs.editManagerListComp.refresh()
@@ -713,18 +696,16 @@ export default {
         this.$showToastPop(msg)
       }, 500)
     },
-    successCreChan (params) {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-      console.log(params)
+    successCreChan (creChanResult) {
       // eslint-disable-next-line no-debugger
       debugger
-      if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
+      if (creChanResult.deleteYn !== undefined && creChanResult.deleteYn !== null && creChanResult.deleteYn === true) {
         this.$emit('parentClose', true)
         setTimeout(() => {
           this.$showToastPop('채널이 삭제되었습니다.')
         }, 500)
         // this.closeXPop()
-      } else if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
+      } else if (creChanResult.modiYn !== undefined && creChanResult.modiYn !== null && creChanResult.modiYn === true) {
         // this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop()
         setTimeout(() => {
@@ -735,7 +716,7 @@ export default {
           this.$showToastPop('채널이 생성되었습니다.')
         }, 500)
         this.$emit('reloadPop')
-        this.successChanParam = params
+        this.successChanParam = creChanResult
         this.settingPop(true)
       }
     },
@@ -743,7 +724,7 @@ export default {
       // eslint-disable-next-line no-new-object
       /* var param = new Object()
       param.targetType = 'boardMain'
-      param.tagetKey = params.cabinetKey
+      param.tagetKey = pParam.cabinetKey
       this.successChanParam = param
       this.settingPop(true) */
       this.closeXPop(true)
@@ -755,10 +736,6 @@ export default {
       if (this.targetType === 'myChanMenuEdit') {
         this.$emit('channelMenuReload')
       }
-      // if (this.targetType === 'pushDetail') {
-      // //   this.pushListAndDetailYn = false
-      //   reloadYn = true
-      // }
       this.$emit('closePop', reloadYn)
     },
     // sucssesCreChan(){
@@ -789,25 +766,24 @@ export default {
     closePushPop () {
       this.notiDetailShowYn = false
     },
-    goChanDetail (data) {
+    goChanDetail (goChanParam) {
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      if (data.targetType === 'chanDetail') {
-        param.targetType = 'chanDetail'
-        param.teamKey = data.creTeamKey
-        param.targetKey = data.creTeamKey
-        param.nameMtext = data.nameMtext
-        param.chanName = data.nameMtext
-        if (data.contentsKey) {
-          param.jobkindId = data.jobkindId
-          param.targetContentsKey = data.contentsKey
+      var mNewPopParam = new Object()
+      if (goChanParam.targetType === 'chanDetail') {
+        mNewPopParam.targetType = 'chanDetail'
+        mNewPopParam.teamKey = goChanParam.creTeamKey
+        mNewPopParam.targetKey = goChanParam.creTeamKey
+        mNewPopParam.nameMtext = goChanParam.nameMtext
+        if (goChanParam.clickContentsKey) {
+          mNewPopParam.jobkindId = goChanParam.jobkindId
+          mNewPopParam.clickContentsKey = goChanParam.clickContentsKey
         }
         // 세션에서 유저키 받아오기
-        if (data.creUserKey === this.GE_USER.userKey) {
-          param.ownerYn = true
+        if (goChanParam.creUserKey === this.GE_USER.userKey) {
+          mNewPopParam.ownerYn = true
         }
       }
-      this.openPop(param)
+      this.openPop(mNewPopParam)
     },
     async targetKeyYn (targetKey, jobkindId) {
       // var result = null
@@ -820,57 +796,48 @@ export default {
     },
     async goDetail (value) {
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // var history = this.$store.getters['D_HISTORY/hStack']
+      var openDetailParam = new Object()
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       var indexOf = null
-
       if (value.chanYn) {
         indexOf = currentPage.indexOf('chanDetail')
         if (indexOf !== -1) {
-          if (this.params.targetKey === value.targetKey) {
+          if (this.pParam.targetKey === value.targetKey) {
             return
           }
         }
         this.goChanDetail(value)
       } else {
         if (value.jobkindId === 'ALIM') {
-          param.targetType = 'pushDetail'
+          openDetailParam.targetType = 'pushDetail'
           indexOf = currentPage.indexOf('pushDetail')
         } else {
-          param.targetType = 'boardDetail'
+          openDetailParam.targetType = 'boardDetail'
           indexOf = currentPage.indexOf('boardDetail')
         }
-        console.log(this.params)
-        console.log(value)
         if (indexOf !== -1) {
-          //  if (this.params.targetKey === value.contentsKey) {
-          // if (this.params.contentsKey === undefined || this.params.contentsKey === null || this.params.contentsKey === '' || value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
-          //   return
-          // }
-          if (this.params.contentsKey === value.contentsKey) {
+          // 같은 컨텐츠를 보고있는가?
+          if (this.pParam.contentsKey === value.contentsKey) {
             await this.$addContents(value.contentsKey, value.jobkindId)
-            // alert('같은 컨텐츠')
             return
           } else {
-            // alert('다른 컨텐츠')
             var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
             if (targetYn !== false && targetYn !== 'false') {
-              param.targetKey = value.contentsKey
+              openDetailParam.targetKey = value.contentsKey
               // param.targetType = value.contentsKey
               if (value.jobkindId === 'BOAR') {
-                param.cabinetKey = targetYn.cabinetKey
-                param.cabinetNameMtext = targetYn.cabinetNameMtext
+                openDetailParam.cabinetKey = targetYn.cabinetKey
+                openDetailParam.cabinetNameMtext = targetYn.cabinetNameMtext
               } else {
-                param.nameMtext = targetYn.nameMtext
-                param.teamName = targetYn.nameMtext
+                openDetailParam.nameMtext = targetYn.nameMtext
+                openDetailParam.teamName = targetYn.nameMtext
               }
-              param.contentsKey = value.contentsKey
-              param.jobkindId = value.jobkindId
-              param.teamKey = value.creTeamKey
-              param.value = value
-              param.notiYn = true
-              this.openPop(param)
+              openDetailParam.contentsKey = value.contentsKey
+              openDetailParam.jobkindId = value.jobkindId
+              openDetailParam.teamKey = value.creTeamKey
+              openDetailParam.value = value
+              openDetailParam.notiYn = true
+              this.openPop(openDetailParam)
               // this.$forceUpdate()
             } else {
               this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
@@ -878,11 +845,8 @@ export default {
             }
           }
         }
-        targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
-        // eslint-disable-next-line no-debugger
-        debugger
         if (targetYn !== false && targetYn !== 'false') {
-          param.targetKey = value.contentsKey
+          /* param.targetKey = value.contentsKey
           // param.targetType = value.contentsKey
           if (value.jobkindId === 'BOAR') {
             param.cabinetKey = targetYn.cabinetKey
@@ -896,10 +860,10 @@ export default {
           param.teamKey = value.creTeamKey
           param.value = value
           param.notiYn = true
-          this.openPop(param)
+          this.openPop(param) */
         } else {
-          this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
-          this.failPopYn = true
+          /* this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+          this.failPopYn = true */
         }
       }
     },
@@ -931,7 +895,7 @@ export default {
       var memos = result.data.memoList[0]
       return memos
     },
-    async getContentsDetail (contentsKey, jobkindId) {
+    /* async getContentsDetail (contentsKey, jobkindId) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.contentsKey = contentsKey
@@ -941,8 +905,8 @@ export default {
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
 
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-    },
-    async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
+    }, */
+    /* async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
       var paramMap = new Map()
       if (this.axiosQueue.findIndex((item) => item === 'getFollowerList') !== -1) return
       this.axiosQueue.push('getFollowerList')
@@ -964,7 +928,7 @@ export default {
       this.axiosQueue = this.axiosQueue.splice(index, 1)
       var user = result.data.content
       return user
-    },
+    }, */
     goScrollTarget (targetKey) {
       this.notiScrollTarget = targetKey
     },
@@ -984,29 +948,7 @@ export default {
         }
         if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
           if (arrivedYn === true || arrivedYn === 'true') {
-            /* var memo = await this.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
-            memo.jobkindId = notiDetail.jobkindId
-            memo.creTeamKey = Number(notiDetail.creTeamKey)
-            await this.$store.commit('D_CHANNEL/MU_REPLACE_NEW_MEMO', memo) */
           } else {
-            /* if (this.chanAlimListTeamKey === Number(notiDetail.creTeamKey)) {
-                  console.log(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-                  await this.$refs.gPopChanAlimList.targetContentScrollMove(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-                  await this.$refs.gPopChanAlimList.setNotiScroll(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-                  // param.targetContentsKey
-                } else {
-                  if (currentPage !== this.popId) return
-                  if (notiDetail.jobkindId === 'ALIM') {
-                    this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
-                  } else if (notiDetail.jobkindId === 'BOAR') {
-                    this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), creTeamKey: Number(notiDetail.creTeamKey), jobkindId: notiDetail.jobkindId, targetType: 'chanDetail' })
-                    // this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), cabinetNameMtext: JSON.parse(notiDetail.userDo).targetName, jobkindId: notiDetail.jobkindId, targetType: 'boardDetail' })
-                  }
-                } */
-            /* if (currentPage !== this.popId) {
-                    if (currentPage.findIndex((item) => item === 'write') === -1) return
-                    return
-                } */
             if (notiDetail.jobkindId === 'ALIM') {
               this.goDetail({ contentsKey: Number(JSON.parse(notiDetail.userDo).targetKey), jobkindId: notiDetail.jobkindId, creTeamKey: Number(notiDetail.creTeamKey), targetType: 'chanDetail' })
             } else if (notiDetail.jobkindId === 'BOAR') {
@@ -1062,14 +1004,6 @@ export default {
             }
           }
         }
-      }
-    },
-    async recvNoti (e) {
-      // var message
-      if (this.$isJsonString(e.data) === true) {
-        // message = JSON.parse(e.data)
-      } else {
-        // message = e.data
       }
     }
   }
