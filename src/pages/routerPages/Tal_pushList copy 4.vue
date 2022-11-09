@@ -576,7 +576,7 @@ export default {
       var response = await this.getContentsMemoList(contentsKey, vuexMemoList.length + 5, 0)
       var newArr = [
         ...vuexMemoList,
-        ...response.memoList
+        ...response
       ]
       console.log(newArr)
       var newList = await this.replaceMemoArr(newArr)
@@ -629,48 +629,49 @@ export default {
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
         this.axiosQueue.splice(queueIndex, 1)
-
+        var index
         if (result.data.result === true) {
-          var vuexMemoList = this.$getVuexMemo(this.tempData.targetKey)
-          if (!param.parentMemoKey) {
-            var findDelIndex = vuexMemoList.findIndex(item => item.memoKey === this.tempData.targetKey)
-            vuexMemoList.splice(findDelIndex, 1)
-          } else {
-            // var findcMemoIdx
-            // vuexMemoList.findIndex(item => item.memoKey === this.tempData.parentMemoKey)
-
-            // for (let i = 0; i < vuexMemoList.length; i++) {
-            //   // 대댓글의 부보 댓글을 찾음
-            //   if (vuexMemoList[i].memoKey === this.param.parentMemoKey) {
-            //     findcMemoIdx = vuexMemoList[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
-            //     if (findcMemoIdx !== -1) {
-            //       vuexMemoList[i].cmemoList.splice(findcMemoIdx, 1)
-            //       break
-            //     }
-            //   }
-            // }
+          // var cont = this.currentMemoObj
+          var idx, cont
+          if (this.viewMainTab === 'P') {
+            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+            if (idx !== -1) cont = this.alimContentsList[idx]
+          } else if (this.viewMainTab === 'B') {
+            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+            if (idx !== -1) cont = this.boardContentsList[idx]
           }
-
-          var idx
-          var this_ = this
-          this.getContentsMemoList(this.tempData.targetKey, vuexMemoList.length + 1, 0).then(response => {
-            if (this_.viewMainTab === 'P') {
-              idx = this_.alimContentsList.findIndex(i => i.contentsKey === this_.tempData.targetKey)
-              this_.alimContentsList[idx].memoCount = response.totalElements
-            } else if (this_.viewMainTab === 'B') {
-              idx = this_.boardContentsList.findIndex(i => i.contentsKey === this_.tempData.targetKey)
-              this_.boardContentsList[idx].memoCount = response.totalElements
+          index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
+          var cmemoListIdx
+          if (param.parentMemoKey) {
+            for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
+              if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
+                index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === param.memoKey)
+                if (index !== -1) {
+                  cmemoListIdx = i
+                  break
+                }
+              }
             }
-
-            console.log(response)
-            var newArr = [
-              ...vuexMemoList,
-              ...response.memoList
-            ]
-            var newList = this_.replaceMemoArr(newArr)
-            console.log(newList)
-            this_.$store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { memo: newList, contentsKey: this_.tempData.targetKey })
-          })
+            // cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+            // if (cmemoListIdx !== -1) cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
+            if (this.viewMainTab === 'P') {
+              if (cmemoListIdx !== -1) this.alimContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
+            } else if (this.viewMainTab === 'B') {
+              if (cmemoListIdx !== -1) this.boardContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
+            }
+          } else {
+            // cont.D_MEMO_LIST.splice(index, 1)
+            if (this.viewMainTab === 'P') {
+              this.alimContentsList[idx].D_MEMO_LIST.splice(index, 1)
+              cont.D_MEMO_LIST = this.alimContentsList[idx].D_MEMO_LIST
+            } else if (this.viewMainTab === 'B') {
+              this.boardContentsList[idx].D_MEMO_LIST.splice(index, 1)
+              cont.D_MEMO_LIST = this.boardContentsList[idx].D_MEMO_LIST
+            }
+          }
+          cont.memoCount -= 1
+          console.log(cont)
+          this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
           // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
         this.$showToastPop('댓글을 삭제하였습니다.')
@@ -789,27 +790,63 @@ export default {
 
         if (result.data.result === true || result.data.result === 'true') {
           this.memoShowYn = false
-          var vuexMemoList = this.$getVuexMemo(this.currentContentsKey)
-          var this_ = this
-          this.getContentsMemoList(this.currentContentsKey, vuexMemoList.length + 1, 0).then(response => {
-            console.log(response)
-            var newArr = [
-              ...vuexMemoList,
-              ...response.memoList
-            ]
-            var newList = this_.replaceMemoArr(newArr)
-            console.log(newList)
-            this_.$store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { memo: newList, contentsKey: this_.currentContentsKey })
 
-            var idx
-            if (this_.viewMainTab === 'P') {
-              idx = this_.alimContentsList.findIndex(i => i.contentsKey === this_.currentContentsKey)
-              this_.alimContentsList[idx].memoCount = response.totalElements
-            } else if (this_.viewMainTab === 'B') {
-              idx = this_.boardContentsList.findIndex(i => i.contentsKey === this_.currentContentsKey)
-              this_.boardContentsList[idx].memoCount = response.totalElements
+          var idx, memoLength
+          if (this.viewMainTab === 'P') {
+            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+            if (idx !== -1) {
+              memoLength = this.alimContentsList[idx].memoList.length
             }
-          })
+          } else if (this.viewMainTab === 'B') {
+            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+            if (idx !== -1) {
+              memoLength = this.boardContentsList[idx].memoList.length
+            }
+          }
+
+          if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
+            // await this.getContentsMemoList(this.currentContentsKey, memoLength - 1, 0).then(response => {
+            await this.getContentsMemoList(this.currentContentsKey, 0, 0).then(response => {
+              console.log('###########################################')
+              console.log(response)
+              var newArr
+              var newList
+              if (this.viewMainTab === 'P') {
+                if (!this.alimContentsList[idx].D_MEMO_LIST) this.alimContentsList[idx].D_MEMO_LIST = []
+                newArr = [
+                  ...response,
+                  ...this.alimContentsList[idx].D_MEMO_LIST
+                ]
+                newList = this.replaceMemoArr(newArr)
+                this.alimContentsList[idx].D_MEMO_LIST = newList
+                this.alimContentsList[idx].memoCount += 1
+                // this.GE_DISP_ALIM_LIST[idx].D_MEMO_LIST = newList
+                // this.GE_DISP_ALIM_LIST[idx].memoCount += 1
+
+                // this.ALIM_LIST_RELOAD_CONT += 1
+                console.log(this.alimContentsList[idx])
+                // eslint-disable-next-line no-debugger
+                debugger
+                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.alimContentsList[idx])
+                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.alimContentsList[idx])
+              } else if (this.viewMainTab === 'B') {
+                if (!this.boardContentsList[idx].D_MEMO_LIST) this.boardContentsList[idx].D_MEMO_LIST = []
+                newArr = [
+                  ...response,
+                  ...this.boardContentsList[idx].D_MEMO_LIST
+                ]
+                newList = this.replaceMemoArr(newArr)
+                this.boardContentsList[idx].D_MEMO_LIST = newList
+                this.boardContentsList[idx].memoCount += 1
+                // this.ALIM_LIST_RELOAD_CONT += 1
+                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
+                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.boardContentsList[idx])
+              }
+              // this.$forceUpdate()
+              // this.$refs.cListCompo.memoReload()
+              // console.log(cont)
+            })
+          }
         }
       } catch (e) {
         console.error('Tal_pushList 오류')
@@ -849,7 +886,7 @@ export default {
       console.log('console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)')
       console.log(result)
 
-      return result.data
+      return result.data.memoList
     },
     updateStoreData (uniqueArr) {
       var this_ = this

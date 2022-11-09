@@ -20,7 +20,7 @@
     <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
       <!-- <transition :name="transitionName" > -->
-        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goChanDetail="goChanDetail" @openUserProfile="openPop" />
+        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goChanDetail="goChanDetail" @openUserProfile="openPop" @goDetail="goDetail" />
       <!-- </transition> -->
       <!-- <router-view v-slot="{ Component, route }">
         <transition
@@ -108,12 +108,16 @@ export default {
   watch: {
     GE_NEW_NOTI_OBJECT: {
       handler (value, old) {
-        this.$dAlertLog(' STEP - 2  -- watch 감지 ')
+        var userKey = this.GE_USER.userKey
+        if (userKey === '123' || userKey === '255' || userKey === '104') { alert(' STEP - 2  -- watch 감지 ') }
         if (!value || value.length === 0) return
+        if (userKey === '123' || userKey === '255' || userKey === '104') { alert(' STEP - 3  -- value empty 통과 ') }
         var notiOpenTargetPage = value.notiOpenTargetPage
         if (notiOpenTargetPage === 0 || notiOpenTargetPage === undefined) {
-          this.$dAlertLog(' STEP - 3  -- goDetail 실행 통과 ')
+          if (userKey === '123' || userKey === '255' || userKey === '104') { alert(' STEP - 4  -- goDetail 실행 통과 ') }
+
           this.openPop(value)
+          // this.goDetail(value)
         }
       },
       deep: true
@@ -284,7 +288,7 @@ export default {
         // indexOf = currentPage.indexOf('boardDetail')
         } else {
           // 20221107수정필요
-          alert('컨텐츠 이동불가')
+          this.$showToastPop('컨텐츠 이동불가')
           return
           // param.targetType = 'boardDetail' // 수정필요
         }
@@ -318,6 +322,15 @@ export default {
           this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
           this.failPopYn = true
         }
+      }
+    },
+    async targetKeyYn (targetKey, jobkindId) {
+      // var result = null
+      var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
+      if (detail.contentsList.length === 0) {
+        return false
+      } else {
+        return detail.contentsList[0]
       }
     },
     goChanDetail (data) {

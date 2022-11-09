@@ -50,13 +50,15 @@ export default {
     routerReloadKey: {}
   },
   created () {
+    this.$dAlertLog('Tal_main.vue - STEP 1 - CREATED')
     // onMessage('REQ', 'removeAllNoti')
     // this.$emit('openLoading')
-    this.$addConsole('tal_main.vue created')
+    // if (this.GE_USER === '' || this.GE_USER === {}) {
     if (!this.GE_USER) {
       this.$router.push('/policies')
       return
     }
+
     this.getMainBoard().then(res => {
       this.loadingYn = false
     })
@@ -70,12 +72,15 @@ export default {
     this.$emit('changePageHeader', '더알림')
     /* this.$store.commit('setRemovePage', 0)
     this.$store.commit('D_HISTORY/updateStack', [0]) */
+    this.$dAlertLog('Tal_main.vue - STEP 2 - CREATED END')
   },
   mounted () {
-    this.$addConsole('tal_main.vue mounted')
     this.loadingYn = false
     console.log('userLoginCheck')
+    this.$dAlertLog('Tal_main.vue - STEP 3 - userLoginCheck')
     this.$userLoginCheck()
+    this.$dAlertLog('Tal_main.vue - STEP 4 - userLoginCheck END')
+
     console.log('userLoginCheck')
     // console.log(this.GE_USER)
     // alert(JSON.stringify(this.GE_USER))
@@ -124,11 +129,12 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-      )
+      this.$dAlertLog('Tal_main.vue - getMainBoard')
+      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap))
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
+        this.$dAlertLog('Tal_main.vue - getMainBoard 값 도착')
         this.mainChanList = response.data.teamList
         console.log('^^^^^^^^^^^^^^^^^^')
         console.log(response)

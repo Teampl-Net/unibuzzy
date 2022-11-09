@@ -128,20 +128,36 @@ export async function saveUser (userProfile) {
   })
   console.log(' === saveUserLog === ')
   console.log(result)
-  if (result.data) {
-    // eslint-disable-next-line no-debugger
-    debugger
+  if (result.data.message === 'OK' || result.data.message !== 'NG') {
+    // // eslint-disable-next-line no-debugger
+    // debugger
+    // localStorage.setItem('user', JSON.stringify(result.data))
+    // // eslint-disable-next-line no-debugger
+    // debugger
+    // store.dispatch('D_USER/AC_USER', result.data)
+    // localStorage.setItem('sessionUser', JSON.stringify(result.data))
+    // // localStorage.setItem('testYn', false)
+    // await methods.userLoginCheck(true)
+    // router.replace({ path: '/' })
     localStorage.setItem('user', JSON.stringify(result.data))
-    // eslint-disable-next-line no-debugger
-    debugger
     store.dispatch('D_USER/AC_USER', result.data)
     localStorage.setItem('sessionUser', JSON.stringify(result.data))
-    // localStorage.setItem('testYn', false)
+    localStorage.setItem('testYn', false)
+    localStorage.setItem('loginYn', true)
     await methods.userLoginCheck(true)
     router.replace({ path: '/' })
-  } else {
-    this.$showToastPop('세션이 만료되어 메인으로 이동합니다.')
-    router.replace({ path: '/' })
+  } else if (result.data.message === 'NG') {
+    store.commit('D_USER/MU_CLEAN_USER')
+    localStorage.setItem('user', '')
+    localStorage.removeItem('loginData')
+    localStorage.removeItem('policiesOk')
+    localStorage.removeItem('loginType')
+    localStorage.removeItem('com.naver.nid.oauth.state_token')
+    localStorage.removeItem('vuex')
+    localStorage.removeItem('testYn')
+    localStorage.removeItem('sessionUser')
+    localStorage.removeItem('loginYn')
+    router.replace({ path: '/policies' })
   }
 }
 export const methods = {
@@ -158,11 +174,13 @@ export const methods = {
     // g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
+    // commonMethods.dAlertLog('userCheck - 1')
     // testYn = false
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-    // 수망고
-    //   paramMap.set('fcmKey', '123456789')
-    //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      // commonMethods.dAlertLog('userCheck - 2-1')
+      // 수망고
+      //   paramMap.set('fcmKey', '123456789')
+      //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       // 정재준테스트
 
       paramMap.set('fcmKey', '22222222')
@@ -175,8 +193,10 @@ export const methods = {
       // paramMap.set('fcmKey', '33333333')
       // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
+      // commonMethods.dAlertLog('userCheck - 2-2')
       localStorage.setItem('testYn', false)
       var user = store.getters['D_USER/GE_USER']
+      // commonMethods.dAlertLog(JSON.stringify(user))
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
@@ -194,11 +214,18 @@ export const methods = {
     // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
     // g_axiosQueue.splice(queueIndex, 1)
     if (result.data.resultCode === 'OK') {
-      console.log(result.data)
-      store.dispatch('D_USER/AC_USER', result.data.userMap)
+      // console.log(result.data)
+      // var data = {}
+      // data.userInfo = result.data.userMap
+      commonMethods.dAlertLog('userCheck - userInfo data check')
+      // if (result.data.userMap === undefined) return
+      // store.dispatch('D_USER/AC_USER', result.data.userMap)
+      commonMethods.dAlertLog(JSON.stringify(result.data.userMap))
+      commonMethods.dAlertLog('userCheck - userInfo')
       // console.log(result.data.userMap)
       console.log('!!! USER LOGIN CHECK !!!')
       /* if (result.data.userTeamList) {
+      commonMethods.dAlertLog('userCheck - empty user data check')
         await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [result.data.userTeamList])
       } */
       // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -213,6 +240,8 @@ export const methods = {
         router.replace({ name: 'main', params: { testYn: true } })
       }
     } else {
+      commonMethods.dAlertLog('userCheck - empty user data check')
+      commonMethods.dAlertLog(JSON.stringify(user))
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')

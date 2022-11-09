@@ -271,7 +271,6 @@ export default {
       return this.mMemoList
     },
     CHANNEL_DETAIL () {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       console.log(this.pParam)
       var chan = this.$getDetail('TEAM', this.pParam.creTeamKey)
       if (chan) {

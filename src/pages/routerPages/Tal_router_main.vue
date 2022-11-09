@@ -108,11 +108,9 @@ export default {
   watch: {
     GE_NEW_NOTI_OBJECT: {
       handler (value, old) {
-        this.$dAlertLog(' STEP - 2  -- watch 감지 ')
         if (!value || value.length === 0) return
         var notiOpenTargetPage = value.notiOpenTargetPage
         if (notiOpenTargetPage === 0 || notiOpenTargetPage === undefined) {
-          this.$dAlertLog(' STEP - 3  -- goDetail 실행 통과 ')
           this.openPop(value)
         }
       },

@@ -1,6 +1,7 @@
 import axiosCommonFunction from 'axios'
 
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
+import store from '../../store/index'
 // eslint-disable-next-line no-unused-vars
 import router from '../../router'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
@@ -970,6 +971,12 @@ export const commonMethods = {
         loadingCompo.style.display = 'none'
       }, 3000)
     } else loadingCompo.style.display = 'none'
+  },
+  dAlertLog (String) {
+    var userKey = store.getters['D_USER/GE_USER'].userKey
+    if (userKey === 123 || userKey === 255 || userKey === 104) {
+      alert(String)
+    }
   }
 }
 
@@ -1024,5 +1031,6 @@ export default {
     Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml
     Vue.config.globalProperties.$settingUserAuth = commonMethods.settingUserAuth
     Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
+    Vue.config.globalProperties.$dAlertLog = commonMethods.dAlertLog
   }
 }

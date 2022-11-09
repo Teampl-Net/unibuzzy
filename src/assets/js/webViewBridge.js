@@ -142,6 +142,8 @@ const isJsonString = (str) => {
           var updatePage = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', updatePage + 1)
         } else if (recvMsg.type === 'pushmsg') {
+          var userKey = store.getters['D_USER/GE_USER'].userKey
+          if (userKey === 123 || userKey === 255 || userKey === 104) { alert(' STEP - 0  + push msg Noti를 수신') }
           // 20221107수정필요
 
           // 1. update notiData to vuex
@@ -152,6 +154,7 @@ const isJsonString = (str) => {
           if (JSON.parse(recvMsg.pushMessage).arrivedYn === true || JSON.parse(recvMsg.pushMessage).arrivedYn === 'true' ||
                 JSON.parse(recvMsg.pushMessage).appActiveYn === true || JSON.parse(recvMsg.pushMessage).appActiveYn === 'true') {
           } else {
+            if (userKey === 123 || userKey === 255 || userKey === 104) { alert(' STEP - 0  + 수신 후 AC_NEW_NOTI 실행 !! ') }
             store.dispatch('D_NOTI/AC_NEW_NOTI', recvMsg)
           }
         } else if (recvMsg.type === 'appInfo') {

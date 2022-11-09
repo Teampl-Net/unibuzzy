@@ -21,6 +21,15 @@ export default {
     }
   },
   mounted () {
+    var loginData = localStorage.getItem('loginData')
+    if (loginData === undefined || loginData === null || loginData === '') {
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.$showToastPop('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
+      this.$router.push('/policies')
+      // this.$router.replace({ path: '/policies' })
+      return
+    }
     // eslint-disable-next-line new-cap
     this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com/#/naverCallback')
     this.initF()
