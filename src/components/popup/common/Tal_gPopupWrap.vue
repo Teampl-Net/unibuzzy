@@ -11,12 +11,12 @@
       v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
       <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
-          <chanAlimList :pPopId="popId" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="this.loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="this.propParams" v-if=" popId &&  this.targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="this.headerFollowYn = true" @showToastPop="showToastPop" />
+        <chanAlimList :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
       </div>
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
         <pushList :pPopId="popId" style="" :propParams="this.propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
-      <pushBox :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'pushBox'" @openPop = "openPop"/>
+
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
         <chanList :pPopId="popId" :propData="this.propParams" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
@@ -35,8 +35,6 @@
       <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.propParams" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.propParams" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="this.propParams.pSelectedList" :propData="this.propParams" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
-      <!-- <followerManagement :propData="this.propParams" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'followerManagement'" @openPop='openPop'/> -->
-      <!-- <managerManagement :propData="this.propParams" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'managerManagement'" @openPop='openPop'/> -->
       <memberManagement :pPopId="popId" :propData="this.propParams" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'memberManagement'" @openPop='openPop'/>
       <selectAddressBookList :pPopId="popId" :propData="this.propParams" v-if=" popId &&  this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  this.targetType === 'setMypage'">
@@ -61,7 +59,6 @@
 import pushPop from '../push/Tal_pushDetailPopup.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
-import pushBox from '../../pageComponents/push/Tal_pushBox.vue'
 import chanList from '../../../pages/routerPages/D_chanList.vue'
 import chanAlimList from '../../pageComponents/channel/D_chanAlimList.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
@@ -78,7 +75,7 @@ import bookMemberDetail from '../receiver/Tal_bookMemberDetail.vue'
 import editManagerList from '../receiver/Tal_selectManagerList.vue'
 import onlyMemberSelectPop from '../receiver/D_onlyMemberSelectPop.vue'
 import selectBookList from '../receiver/D_selectBookList.vue'
-import setMypage from '../../../pages/routerPages/Tal_setMypage.vue'
+import setMypage from '../../../pages/routerPages/D_setMypage.vue'
 // import followerManagement from '../member/D_manageFollowerList.vue'
 // import managerManagement from '../member/D_manageManagerList.vue'
 import memberManagement from '../member/D_manageFollowerList.vue'
@@ -143,7 +140,6 @@ export default {
     pushList,
     chanList,
     changeInfo,
-    pushBox,
     askTal,
     talInfo,
     question,

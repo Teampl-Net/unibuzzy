@@ -34,7 +34,7 @@
 </template>
 <script>
 import loadingCompo from '../../components/layout/Tal_loading.vue'
-import myActList from '../../components/pageComponents/myPage/Tal_myActList.vue'
+import myActList from '../../components/pageComponents/myPage/D_myActList.vue'
 import logList from '../../pages/routerPages/Tal_logList.vue'
 // import userItem from '../../components/unit/Tal_userItem.vue'
 export default {

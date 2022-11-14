@@ -184,7 +184,8 @@ export const functions = {
     console.log(resultList)
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
     var response = resultList.data.content[0]
-
+    // eslint-disable-next-line no-debugger
+    debugger
     var team = null
     if (!response) return
     response.detailPageYn = true

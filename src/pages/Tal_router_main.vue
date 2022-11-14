@@ -181,8 +181,7 @@ export default {
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
-        // eslint-disable-next-line no-new-object
-        var detailParam = new Object()
+        var detailParam = {}
         detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.contentsKey
         // param.targetType = value.contentsKey
@@ -204,8 +203,7 @@ export default {
       }
     },
     goChanDetail (detailValue) {
-      // eslint-disable-next-line no-new-object
-      var goChanDetailParam = new Object()
+      var goChanDetailParam = {}
       goChanDetailParam.targetType = 'chanDetail'
       console.log(detailValue)
       goChanDetailParam.teamKey = detailValue.creTeamKey

@@ -17,9 +17,8 @@
         </div>
             <div style=" margin-left: 10px; width: calc(100% - 36px); display:flex;flex-direction: column;">
             <div class=" text-start mr-04 w-100P" style="height: 25px;" >
-                <!-- <p class="font15 fl fontBold mNone commonBlack" style="width: calc(100% - 2rem - 30px); white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p> -->
                 <img src="../../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style="height:20px; padding: 3px;" class='fl' />
-                <p class="font15 fl fontBold mNone textOverdot commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="resizeText(this.$makeMtextMap(value.nameMtext, 'KO'))"></p>
+                <p class="font15 fl fontBold mNone textOverdot commonBlack" style=" white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" v-html="this.$makeMtextMap(value.nameMtext, 'KO')"></p>
 
                 <div style="line-height: 0.05rem; float: right; margin-top: 5px; margin-left: 5px;">
                     <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../../assets/images/main/main_subscriber.png"/>
@@ -57,7 +56,6 @@ export default {
       mainChanList: [],
       ownerYn: false,
       moreLink: 'subs',
-      // activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }],
       activeTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
       viewTab: 'user',
       currentTabName: '구독중',
@@ -67,10 +65,6 @@ export default {
   },
   components: {
     listTitle
-  },
-  mounted () {
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // window.addEventListener('message', e => this.recvNoti(e))
   },
   computed: {
     GE_USER () {
@@ -90,7 +84,6 @@ export default {
           } else {
             chanList.push(this.mainChanList[i])
           }
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
         }
         return chanList
       } else {
@@ -117,10 +110,6 @@ export default {
       deep: true
     }
   },
-  unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
-  },
   methods: {
     introTop5ChanPageTab () {
       if (this.viewTab === 'user') {
@@ -130,13 +119,6 @@ export default {
         this.currentTabName = '내 채널'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
-    },
-    resizeText (text) {
-      // if (text.length > 15) {
-      //   text = text.substr(0, 15)
-      //   text += '...'
-      // }
-      return text
     },
     async getContentsList (loadingYn) {
       var idx = this.axiosQueueList.findIndex((item) => item === 'getContentsList')
@@ -170,40 +152,15 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
       }
     },
-    async recvNoti (e) {
-      /* var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-          var currentPage = this.$store.getters['D_HISTORY/hCPage']
-          if ((currentPage === 0 || currentPage === undefined)) {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'TEAM') {
-              this.getContentsList()
-            }
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      } */
-    },
     openPop (value) {
       var params = value
       console.log(value)
       // eslint-disable-next-line no-debugger
       debugger
       params.targetType = value.targetType
+      params.targetKey = value.teamKey
       if (value.teamKey) {
         params.targetType = 'chanDetail'
-        params.targetKey = value.teamKey
         params.nameMtext = value.nameMtext
         /* params.popHeaderText = value.nameMtext */
         params.chanName = value.nameMtext
@@ -237,5 +194,4 @@ export default {
 .top5ChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}
 .top5ChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .chanMsgWrap{line-height: 0.9rem; text-align: left; opacity: 1; box-sizing: border-box}
-/* .chanMsgWrap{line-height: 0.9rem; padding: 0.5rem; text-align: left; background-color: #6768A71A; border-radius: 6px; opacity: 1; min-height: 39px; box-sizing: border-box} */
 </style>
