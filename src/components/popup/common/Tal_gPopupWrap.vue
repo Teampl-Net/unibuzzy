@@ -327,10 +327,13 @@ export default {
     },
     async settingPop (successChanYn) {
       var target = this.propParams
+      console.log(' setting POP ')
+      console.log(target)
       if (successChanYn === true) {
         target = this.successChanParam
       }
-      this.headerTitle = target.popHeaderText
+      this.headerTitle = this.$changeText(target.popHeaderText)
+
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
         this.popId = this.targetType + target.targetKey
@@ -526,11 +529,9 @@ export default {
             await this.$addContents(detailValue.contentsKey, detailValue.jobkindId)
           }
         }
-        // eslint-disable-next-line no-new-object
-        var detailParam = new Object()
+        var detailParam = {}
         detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.contentsKey
-        // param.targetType = value.contentsKey
         if (detailValue.jobkindId === 'BOAR') {
           detailParam.cabinetKey = detailValue.cabinetKey
           detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
@@ -608,8 +609,7 @@ export default {
         return
       }
       var notiUserDo = JSON.parse(notiDetail.userDo)
-      // eslint-disable-next-line no-new-object
-      var goDetailParam = new Object()
+      var goDetailParam = {}
       goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
       if (notiUserDo.targetKind === 'CONT') {
         goDetailParam.contentsKey = notiUserDo.targetKey

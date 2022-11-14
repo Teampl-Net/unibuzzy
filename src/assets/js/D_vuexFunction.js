@@ -266,7 +266,7 @@ export const functions = {
     var param = new Object()
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
-    param.userKey = store.getters['D_USER/GE_USER']
+    param.userKey = store.getters['D_USER/GE_USER'].userKey
     var resultList = await methods.getContentsList(param, true)
     if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]

@@ -1,60 +1,85 @@
 <template>
-    <div style="width: 100%; float: left; margin-top: 10px;">
-        <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style=" float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop="openPop"/>
-        <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
-        <div style=" float: left; width: 100%; ">
-            <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
-                <gActiveBar ref="activeBarPushListTop5" :tabList="this.activeTabList" @changeTab= "changeTab" />
-                <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
-            </div>
-            <div id="top5ListWrap" class="pushListWrap fl">
-            <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.contentsList && this.contentsList.length === 0" style="margin-top:50px;" /> -->
-            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goDetail="openPop" />
-            </div>
-        </div>
-
+  <div style="width: 100%; float: left; margin-top: 10px;">
+    <listTitle :propViewTab="mViewTab" :propMoreLink="mMoreLink" propListTitle="알림" :activeTabList="mActiveTabList" style=" float: left;" class="w-100P" @openPop="openPop"/>
+    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
+    <div style=" float: left; width: 100%; ">
+      <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
+        <gActiveBar ref="activeBarPushListTop5" :tabList="this.mActiveTabList" @changeTab="changeTab" />
+        <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
+      </div>
+      <div class="pushListWrap fl">
+      <contentsList :propContentsList="GE_DISP_CONT_LIST" @goChanDetail="openPop" />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 import listTitle from '../../unit/Tal_main_title.vue'
-import commonListTable from '../../list/Tal_commonListTable.vue'
-// import router from '../../../router'
+import contentsList from '../../list/D_commonListTable.vue'
 export default {
   name: 'top5PushList',
-  created () {
-    // this.contentsList = this.alimList
-  },
   data () {
     return {
-      mainYn: true,
-      moreLink: 'push',
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '읽지 않은', name: 'R' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }],
-      activeTabList: [{ display: '전체', name: 'A' }, { display: '알림', name: 'P' }, { display: '게시글', name: 'B' }],
-      viewTab: 'A',
-      listShowYn: true,
-      currentTabName: '알림',
-      emptyYn: true,
-      notiDetail: null,
-      pushList: [],
-      systemName: localStorage.getItem('systemName'),
-      contentsList: []
+      mMoreLink: 'push',
+      mActiveTabList: [{ display: '전체', name: 'A' }, { display: '알림', name: 'P' }, { display: '게시글', name: 'B' }],
+      mViewTab: 'A',
+      mCurrentTabName: '알림',
+      mContentsList: []
     }
   },
   props: {
-    alimList: {}
+    propAlimList: {}
   },
-  mounted () {
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // window.addEventListener('message', e => this.recvNoti(e))
-    this.settingAtag()
+  components: {
+    listTitle,
+    contentsList
   },
-  unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
-  },
-  updated () {
-    // this.settingAtag()
+  methods: {
+    replaceArr (arr) {
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => item.contentsKey === current.contentsKey) === -1) {
+          data.push(current)
+        }
+        return data
+      }, [])
+      return uniqueArr
+    },
+    async getContentsList (loadingYn) {
+      var param = {}
+      var resultData = null
+      param.offsetInt = 0
+      param.pageSize = 5
+      if (this.mViewTab === 'P') {
+        param.jobkindId = 'ALIM'
+        param.ownUserKey = this.GE_USER.userKey
+      } else if (this.mViewTab === 'B') {
+        param.boardYn = true
+        param.ownUserKey = this.GE_USER.userKey
+        param.jobkindId = 'BOAR'
+      } else if (this.mViewTab === 'A') {
+        param.allYn = true
+      }
+      var noneLoading = true
+      if (loadingYn) {
+        noneLoading = false
+      }
+      resultData = await this.$getContentsList(param, noneLoading)
+
+      this.mContentsList = resultData.content
+      return resultData
+    },
+    openPop (value) {
+      console.log(' top5CotentList openPop Param ')
+
+      value.alimTabType = this.mViewTab
+      console.log(value)
+      this.$emit('openPop', value)
+    },
+    async changeTab (tabName) {
+      this.mViewTab = tabName
+      await this.getContentsList(true)
+    }
   },
   computed: {
     GE_USER () {
@@ -65,7 +90,7 @@ export default {
     },
     GE_DISP_CONT_LIST () {
       var idx1, idx2
-      var contList = this.contentsList
+      var contList = this.mContentsList
       var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
@@ -84,10 +109,7 @@ export default {
             }
           }
         }
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
       }
-      console.log('#####################')
-      console.log(contList)
       return contList
     },
     GE_NEW_CONT_LIST () {
@@ -95,9 +117,9 @@ export default {
     }
   },
   watch: {
-    alimList: {
+    propAlimList: {
       handler (value, old) {
-        this.contentsList = value
+        this.mContentsList = value
       },
       deep: true
     },
@@ -105,138 +127,15 @@ export default {
       handler (value, old) {
         var newArr = []
         if (!value || value.length === 0) return
-        if ((this.viewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewTab === 'B' && value[0].jobkindId === 'ALIM')) return
-        if (this.$dateCalc(this.contentsList[0].creDate, value[0].creDate) === true) return
-        console.log(value)
+        if ((this.mViewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.mViewTab === 'B' && value[0].jobkindId === 'ALIM')) return
+        if (this.$dateCalc(this.mContentsList[0].creDate, value[0].creDate) === true) return
         newArr = [
           value[0],
-          ...this.contentsList
+          ...this.mContentsList
         ]
-        this.contentsList = this.replaceArr(newArr)
+        this.mContentsList = this.replaceArr(newArr)
       },
       deep: true
-    }
-  },
-  components: {
-    listTitle,
-    commonListTable
-  },
-  methods: {
-    replaceArr (arr) {
-      var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => item.contentsKey === current.contentsKey) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      return uniqueArr
-    },
-    settingAtag () {
-      if (this.systemName !== 'Android' && this.systemName !== 'android') {
-        return
-      }
-      var contentsATagList = document.querySelectorAll('#top5ListWrap a')
-      if (contentsATagList && contentsATagList.length > 0) {
-        for (var i = 0; i < contentsATagList.length; i++) {
-          contentsATagList[i].target = '_blank'
-        }
-      }
-    },
-    introTop5PushPageTab () {
-      if (this.viewTab === 'A') {
-        this.currentTabName = '전체'
-        this.imgUrl = '/resource/common/placeholder_white.png'
-      } else if (this.viewTab === 'P') {
-        this.currentTabName = '알림'
-        this.imgUrl = '/resource/common/placeholder_white.png'
-      } else if (this.viewTab === 'B') {
-        this.currentTabName = '게시글'
-        this.imgUrl = '/resource/common/placeholder_white.png'
-      }
-    },
-    async getContentsList (loadingYn) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      var resultData = null
-      param.offsetInt = 0
-      param.pageSize = 5
-      if (this.viewTab === 'P') {
-        param.jobkindId = 'ALIM'
-        param.ownUserKey = this.GE_USER.userKey
-      } else if (this.viewTab === 'B') {
-        param.boardYn = true
-        param.ownUserKey = this.GE_USER.userKey
-        param.jobkindId = 'BOAR'
-      } else if (this.viewTab === 'A') {
-        // param.ownUserKey = this.GE_USER.userKey
-        param.allYn = true
-      }
-      var noneLoading = true
-      if (loadingYn) {
-        noneLoading = false
-      }
-      resultData = await this.$getContentsList(param, noneLoading)
-      console.log('%%%%%%%%%%%%')
-      console.log(resultData)
-
-      this.contentsList = resultData.content
-      return resultData
-    },
-    async recvNoti (e) {
-      /* var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-          var currentPage = this.$store.getters['D_HISTORY/hCPage']
-          if ((currentPage === 0 || currentPage === undefined)) {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-              this.getContentsList()
-            }
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      } */
-    },
-    openPop (value) {
-      var param = value
-      param.alimTabType = this.viewTab
-      console.log(param)
-      this.$emit('openPop', param)
-    },
-    /* async refreshList () {
-      this.listShowYn = false
-      this.emptyYn = false
-      var resultList = await this.getContentsList()
-      this.pushList = resultList.content
-      if (this.pushList.length === 0) {
-        this.emptyYn = true
-      }
-      this.listShowYn = true
-    }, */
-    async changeTab (tabName) {
-      // this.pushList = [] ///######
-      this.viewTab = tabName
-      await this.getContentsList(true)
-    },
-    async reLoad () {
-      this.changeTab('A')
-      await this.$refs.activeBarPushListTop5.switchtab(0)
-      // await this.$refs.activeBarPushListTop5.selectTab('N')
-      // var resultList = await this.getContentsList()
-      // this.listShowYn = false
-      // this.pushList = resultList.content
-      // this.listShowYn = true
-      // // console.log(this.pushList)
     }
   }
 }

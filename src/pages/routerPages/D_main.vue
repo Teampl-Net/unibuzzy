@@ -21,8 +21,8 @@
         </div>
       </div>
     </div>
-    <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :alimList="this.mMainAlimList"  @openPop="openPop" ref="topAlim" />
-    <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="this.mMainChanList" @openPop="openPop" ref="topChan" />
+    <top5Alim    class="mainContentsBoxArea" :propAlimList="this.mMainAlimList" @openPop="openPop" ref="topAlim" />
+    <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" />
   </div>
 </template>
 <script>
@@ -190,6 +190,12 @@ export default {
 .picImgWrap {width: 80px; height: 80px; position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
 }
 .picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;}
+
+.mainContentsBoxArea {
+  background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px; box-shadow: 0 0 7px 3px #b7b4b440;
+
+}
+
 @media screen and (max-width: 300px) {
   .picImgWrap{
     width: 60px!important;
@@ -199,5 +205,4 @@ export default {
   .mainIcon {width: 0.7rem!important;}
   .mainRefreshBtn {width: 20px!important}
 }
-
 </style>

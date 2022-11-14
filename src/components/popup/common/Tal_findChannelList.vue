@@ -4,33 +4,14 @@
     <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
-          <img @click="findChannel" class="searchIcon cursorP" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-          <input class="searchInput font14" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
+        <img @click="findChannel" class="searchIcon cursorP" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <input class="searchInput font14" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
       </div>
-
-      <!-- change By Jeong -->
-      <!-- <div class="newestSearchWrap">
-        <div lass="w-100P" style="height: 2rem">
-            <span class="font18 fontBold commonColor fl">최근 검색</span>
-            <span class="font15 commonColor fr">| 자동저장 켜기</span>
-            <span class="font15 commonColor fr" style="color: #6768A782">전체삭제</span>
-        </div>
-        <div  class="w-100P">
-            <div v-if="newestSearchYn">
-            </div>
-            <div v-else class="font15 commonColor ">
-                최근 검색 저장 기능이 꺼져 있습니다.
-            </div>
-        </div>
-      </div> -->
-
     </div>
   </div>
 </template>
 
 <script>
-// import searchChannel from '../../components/pageComponents/channel/Tal_searchChan.vue'
-/* changeDateFormat(value.searchDate, 'list') */
 export default {
   data () {
     return {

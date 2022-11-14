@@ -1,19 +1,19 @@
 <template>
-<div class="" style="width: 100%; height: 100%; position: relative; padding: 0 1rem; padding-top: 10px; overflow: hidden; float: left;">
-  <loadingCompo v-if="mLoadingYn === true"/>
-  <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
-    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :mResultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
-  </div>
+  <div class="" style="width: 100%; height: 100%; position: relative; padding: 0 1rem; padding-top: 10px; overflow: hidden; float: left;">
+    <loadingCompo v-if="mLoadingYn === true"/>
+    <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
+      <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
+    </div>
     <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
-  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
-    <gEmty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-    <gChannelList v-show="mListShowYn" ref="gChannelListCompo" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
+    <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+      <gEmty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+      <gChannelList v-show="mListShowYn" ref="gChannelListCompo" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goChannelMain" id='chanlist' @scrollMove="scrollMove"/>
+    </div>
+    <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+    <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
+      <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
+    </div>
   </div>
-  <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-  <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
-    <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
-  </div>
-</div>
 </template>
 
 <script>
@@ -65,14 +65,16 @@ export default {
   async mounted () {
     await this.readyFunction()
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-    this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-    if (this.mViewTab === 'user') {
-      this.$refs.activeBar.switchtab(0)
-    } else if (this.mViewTab === 'all') {
-      this.$refs.activeBar.switchtab(1)
-    } else if (this.mViewTab === 'mychannel') {
-      this.$refs.activeBar.switchtab(2)
-    }
+    this.$nextTick(() => {
+      this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
+      if (this.mViewTab === 'user') {
+        this.$refs.activeBar.switchtab(0)
+      } else if (this.mViewTab === 'all') {
+        this.$refs.activeBar.switchtab(1)
+      } else if (this.mViewTab === 'mychannel') {
+        this.$refs.activeBar.switchtab(2)
+      }
+    })
     this.$emit('closeLoading')
   },
   methods: {
@@ -202,7 +204,7 @@ export default {
       }
       this.mChannelList = resultList.content
     },
-    endListSetFunc (resultList) {
+    checkEndListFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.mEndListYn = true
@@ -288,9 +290,8 @@ export default {
       this.scrollMove()
       this.introChanPageTab()
     },
-    goDetail (value) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+    goChannelMain (value) {
+      var params = {}
       params.targetType = 'chanDetail'
       params.targetKey = value.teamKey
       params.chanName = value.teamNameMtext
@@ -320,9 +321,9 @@ export default {
         paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
       }
       if (offsetInput !== undefined) {
-        paramMap.set('mOffsetInt', offsetInput)
+        paramMap.set('offsetInt', offsetInput)
       } else {
-        paramMap.set('mOffsetInt', this.mOffsetInt)
+        paramMap.set('offsetInt', this.mOffsetInt)
       }
       if (pageSize) {
         paramMap.set('pageSize', pageSize)
@@ -340,7 +341,7 @@ export default {
         this.$refs.gChannelListCompo.loadingRefHide()
       }
       var resultList = result.data
-      this.endListSetFunc(resultList)
+      this.checkEndListFunc(resultList)
       return resultList
     },
     async requestSearchList (paramMap) {
