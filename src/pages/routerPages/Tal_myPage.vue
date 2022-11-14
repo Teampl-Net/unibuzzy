@@ -35,6 +35,7 @@
 <script>
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 import myActList from '../../components/pageComponents/myPage/D_myActList.vue'
+// import myActList from '../../components/pageComponents/myPage/Tal_myActList.vue'
 import logList from '../../pages/routerPages/Tal_logList.vue'
 // import userItem from '../../components/unit/Tal_userItem.vue'
 export default {
@@ -45,7 +46,6 @@ export default {
     }
   },
   components: {
-    // userItem,
     myActList,
     logList,
     loadingCompo
@@ -53,7 +53,6 @@ export default {
   async created () {
     this.loadingYn = true
     this.$emit('changePageHeader', '마이페이지')
-    // await this.getUserInform()
   },
   computed: {
     GE_USER () {
@@ -62,16 +61,14 @@ export default {
   },
   methods: {
     goMyChanList () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'chanList'
       param.popHeaderText = '채널'
       param.channelTabType = 'mychannel'
       this.$emit('openPop', param)
     },
     goSetMyPage () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'setMypage'
       param.popHeaderText = '프로필 설정'
       this.$emit('openPop', param)
@@ -82,21 +79,6 @@ export default {
     openPop (value) {
       this.$emit('openPop', value)
     }
-    /* async getUserInform () {
-      if (this.userInfo !== undefined && this.userInfo !== null) {
-        if (this.userInfo.userEmail); else this.userInfo.userEmail = '등록된 이메일이 없습니다.'
-        if (this.userInfo.phoneLast) {
-          this.userInfo.phoneLast = '010-****-' + this.userInfo.phoneLast
-        } else {
-          this.userInfo.phoneLast = '등록된 번호 없음'
-        }
-        if (this.userInfo.userDispMtext); else {
-          if (this.userInfo.userNameMtext) { this.userInfo.userDispMtext = this.userInfo.userNameMtext } else { this.userInfo.userDispMtext = '등록된 이름이 없습니다.' }
-        }
-      }
-      this.$emit('closeLoading')
-      return this.userInfo
-    } */
   }
 }
 </script>

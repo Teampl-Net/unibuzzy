@@ -13,9 +13,9 @@
       </div>
       <div class="fl myActContentsWrap" id="myActContentsWrap" ref="myActContentsWrap" style="overflow: hidden scroll; height: calc(100% - 5px); padding-top: 0;">
         <!-- <div v-if="mListShowYn" style="width: 100%; height: 30px; line-height: 30px; margin-top: 10px;" class="fl fontBold font18 commonColor textLeft">{{mMyActTitle}}</div> -->
-        <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.mFindPopShowYn = true " :mResultSearchKeyList="this.mResultSearchKeyList" />
+        <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.mFindPopShowYn = true " :resultSearchKeyList="this.mResultSearchKeyList" />
         <findContentsList contentsListTargetType="myActList" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false"/>
-        <myActContentList v-if="mListShowYn" :mEndListYn="this.mEndListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :mMyActTabType="this.mMyActTabType" :mMyActContentsList="this.mMyActContentsList" />
+        <myActContentList v-if="mListShowYn" :mEndListYn="this.mEndListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :myActTabType="this.mMyActTabType" :myActContentsList="this.mMyActContentsList" />
       </div>
     </div>
   </div>

@@ -64,19 +64,18 @@ export default {
       } */
     },
     myActBoardContentDetail (data) {
-      // console.log('게시글')
-      // console.log(data.cabinetNameMtext)
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+      console.log('# myActBoardContentDetail')
+      console.log(data)
+      var params = {}
       params.jobkindId = data.jobkindId
       params.targetType = 'contentsDetail'
       params.creTeamKey = data.creTeamKey
       params.contentsKey = data.contentsKey
       params.targetKey = data.contentsKey
       if (data.jobkindId === 'ALIM') {
-        params.popHeaderText = data.nameMtext
+        params.popHeaderText = this.$changeText(data.nameMtext)
       } else {
-        params.popHeaderText = data.cabinetNameMtext
+        params.popHeaderText = this.$changeText(data.cabinetNameMtext)
       }
 
       this.$emit('goDetail', params)

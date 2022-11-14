@@ -22,6 +22,36 @@ import loadingCompo from '../../components/layout/Tal_loading.vue'
 
 export default {
   name: 'user',
+  data () {
+    return {
+      mChannelList: [],
+      mPaddingTop: 20,
+      mChanListScrollBox: null,
+      mScrollPosition: 0,
+      mScrollDirection: null,
+      mFirstContOffsetY: null,
+      mScrolledYn: false,
+      mHeaderTop: 0,
+      mOffsetInt: 0,
+      mEndListYn: false,
+      mViewTab: 'user',
+      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
+      mChanFindPopShowYn: false,
+      mResultSearchKeyList: '',
+      myChanListPopYn: false,
+      mScrollCheckSec: 0,
+      mListShowYn: true,
+      mCurrentTabName: '구독중',
+      mEmptyYn: true,
+      mLoadingYn: false,
+      mAxiosQueue: []
+    }
+  },
+  props: {
+    params: {},
+    popYn: Boolean,
+    propData: {}
+  },
   components: {
     findChannelList,
     loadingCompo
@@ -32,39 +62,8 @@ export default {
       this.findPaddingTopChan()
     }
   },
-  computed: {
-    calcPaddingTop () {
-      return {
-        '--paddingTopLength': this.mPaddingTop + 'px'
-      }
-    },
-    GE_NEW_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
-    },
-    GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
-    },
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
-    },
-    GE_DISP_TEAM_LIST () {
-      var index = null
-      var teamList = this.GE_MAIN_CHAN_LIST()
-      for (var i = 0; i < this.mChannelList.length; i++) {
-        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        if (index !== -1) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.mChannelList[i] = teamList[index]
-        }
-      }
-      var returnData = this.mChannelList
-      return returnData
-    },
-    historyStack () {
-      return this.$store.state.historyStack
-    }
-  },
-  mounted () {
+  async mounted () {
+    await this.readyFunction()
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     if (this.mViewTab === 'user') {
@@ -76,42 +75,41 @@ export default {
     }
     this.$emit('closeLoading')
   },
-  async created () {
-    this.$emit('changePageHeader', '채널')
-    this.mLoadingYn = true
-    if (this.propData) {
-      if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
-        this.mViewTab = this.propData.channelTabType
-      }
-    }
-    if (this.popYn === false) {
-      localStorage.setItem('notiReloadPage', 'none')
-    }
-    if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
-      var resultList = await this.getChannelList(null, null, false)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
+  methods: {
+    async readyFunction () {
+      this.$emit('changePageHeader', '채널')
+      this.mLoadingYn = true
+      if (this.propData) {
+        if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
+          this.mViewTab = this.propData.channelTabType
         }
       }
-      if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+      if (this.popYn === false) {
+        localStorage.setItem('notiReloadPage', 'none')
       }
-      this.mChannelList = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
+      if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
+        var resultList = await this.getChannelList(null, null, false)
+        var newArr = []
+        for (var i = 0; i < resultList.content.length; i++) {
+          if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            newArr.push(resultList.content[i])
+          }
+        }
+        if (newArr.length > 0) {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        }
+        this.mChannelList = resultList.content
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.mEndListYn = true
+        } else {
+          this.mEndListYn = false
+        }
       }
-    }
-
-    this.introChanPageTab()
-    this.mScrolledYn = false
-    this.findPaddingTopChan()
-    this.mLoadingYn = false
-  },
-  methods: {
+      this.introChanPageTab()
+      this.mScrolledYn = false
+      this.findPaddingTopChan()
+      this.mLoadingYn = false
+    },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex(({ teamKey }) => teamKey === current.teamKey) === -1) {
@@ -245,7 +243,7 @@ export default {
     openManagerChanDetail (openParam) {
       this.$emit('openPop', openParam)
     },
-    allChannelInfo () {
+    allChannelListInfo () {
       for (var i = 0; i < this.GE_DISP_TEAM_LIST.length; i++) {
         if (this.GE_DISP_TEAM_LIST[i].userTeamInfo) {
           this.GE_DISP_TEAM_LIST[i].ownerYn = this.GE_DISP_TEAM_LIST[i].userTeamInfo.ownerYn
@@ -280,7 +278,7 @@ export default {
         this.mEndListYn = false
       }
       if (this.mViewTab === 'all') {
-        this.allChannelInfo()
+        this.allChannelListInfo()
       }
       if (this.mViewTab === 'mychannel') {
         this.myChanListPopYn = true
@@ -403,35 +401,37 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      mChannelList: [],
-      mPaddingTop: 20,
-      mChanListScrollBox: null,
-      mScrollPosition: 0,
-      mScrollDirection: null,
-      mFirstContOffsetY: null,
-      mScrolledYn: false,
-      mHeaderTop: 0,
-      mOffsetInt: 0,
-      mEndListYn: false,
-      mViewTab: 'user',
-      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
-      mChanFindPopShowYn: false,
-      mResultSearchKeyList: '',
-      myChanListPopYn: false,
-      mScrollCheckSec: 0,
-      mListShowYn: true,
-      mCurrentTabName: '구독중',
-      mEmptyYn: true,
-      mLoadingYn: false,
-      mAxiosQueue: []
+  computed: {
+    calcPaddingTop () {
+      return {
+        '--paddingTopLength': this.mPaddingTop + 'px'
+      }
+    },
+    GE_NEW_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_DISP_TEAM_LIST () {
+      var index = null
+      var teamList = this.GE_MAIN_CHAN_LIST
+      for (var i = 0; i < this.mChannelList.length; i++) {
+        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
+        if (index !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.mChannelList[i] = teamList[index]
+        }
+      }
+      var returnData = this.mChannelList
+      return returnData
+    },
+    historyStack () {
+      return this.$store.state.historyStack
     }
-  },
-  props: {
-    params: {},
-    popYn: Boolean,
-    propData: {}
   }
 }
 </script>
