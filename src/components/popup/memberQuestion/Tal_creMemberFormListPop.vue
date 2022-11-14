@@ -29,12 +29,14 @@ export default {
         case 'getTemplate':
           param.templateYn = true
           param.targetType = 'templateList'
+          param.popHeaderText = '공개신청서 템플릿 목록'
           this.openPop(param)
           this.closePop()
           break
         case 'newForm':
           param.newFormYn = true
           param.targetType = 'memberForm'
+          param.popHeaderText = '공개신청서 만들기'
           this.openPop(param)
           this.closePop()
           break

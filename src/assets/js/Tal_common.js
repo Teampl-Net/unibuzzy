@@ -1,7 +1,6 @@
 import axiosCommonFunction from 'axios'
-
+import routerMain from '../../pages/Tal_router_main.vue'
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
-import store from '../../store/index'
 // eslint-disable-next-line no-unused-vars
 import router from '../../router'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
@@ -330,9 +329,6 @@ export const commonMethods = {
   async makeShareLink (key, type, message, title) {
     // eslint-disable-next-line no-debugger
     debugger
-    var makingYn = false
-    if (makingYn) return
-    makingYn = true
     var paramMap = new Map()
     paramMap.set('pageType', type)
     paramMap.set('targetKey', key)
@@ -353,7 +349,6 @@ export const commonMethods = {
     })
     console.log(JSON.parse(result.data.shortLink))
     var response = JSON.parse(result.data.shortLink).shortLink
-
     // alert(response)
     return response
   },
@@ -405,12 +400,18 @@ export const commonMethods = {
   },
   getFollowerType (data) {
     var followerText = ''
+    if (data.followerKey) {
+      data.followYn = true
+    }
     if (data.followYn) {
       followerText = '구독자'
+      if (data.memberYn) {
+        followerText = '멤버'
+      }
       if (data.ownerYn) {
         followerText = '소유자'
       } else {
-        if (data.memberYn) {
+        if (data.memberYn && data.managerKey && data.managerKey > 0) {
           followerText = '관리자('
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
             followerText = followerText + '채널'
@@ -590,7 +591,6 @@ export const commonMethods = {
     // }
     // var toastDiv = document.createElement('div')
     // console.log(html)
-    // alert(JSON.stringify(html))
     // var innerHTML = ''
     // innerHTML += '<p style="font-size:16px; text-align: left;">'
     // innerHTML += html
@@ -901,7 +901,6 @@ export const commonMethods = {
     // var varUA = navigator.userAgent.toLowerCase()
     var varUA = localStorage.getItem('systemName')
     console.log(varUA)
-    // alert(JSON.stringify(varUA))
     if (varUA !== undefined || varUA !== null || varUA !== '') {
       if (varUA === 'ios' || varUA === '"ios"') {
         return 'IOS'
@@ -972,11 +971,8 @@ export const commonMethods = {
       }, 3000)
     } else loadingCompo.style.display = 'none'
   },
-  dAlertLog (String) {
-    var userKey = store.getters['D_USER/GE_USER'].userKey
-    if (userKey === 123 || userKey === 255 || userKey === 104) {
-      alert(String)
-    }
+  openRouterModalPop (param) {
+    routerMain.methods.openPop(param)
   }
 }
 
@@ -994,7 +990,7 @@ export default {
     Vue.config.globalProperties.$removeHistoryStackForPage = commonMethods.removeHistoryStackForPage
     Vue.config.globalProperties.$isJsonString = commonMethods.isJsonString
 
-    // Vue.config.globalProperties.$fullToInit = commonMethods.PullToRefreshInit
+    Vue.config.globalProperties.$openRouterModalPop = commonMethods.openRouterModalPop
     // Vue.config.globalProperties.$fullToDestory = commonMethods.PullToRefreshDestroy
     Vue.config.globalProperties.$checkUserAuth = commonMethods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = commonMethods.checkSameName
@@ -1031,6 +1027,5 @@ export default {
     Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml
     Vue.config.globalProperties.$settingUserAuth = commonMethods.settingUserAuth
     Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
-    Vue.config.globalProperties.$dAlertLog = commonMethods.dAlertLog
   }
 }

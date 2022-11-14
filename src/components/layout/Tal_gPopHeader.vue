@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'pushDetail' && targetType !== 'boardMain' && targetType !== 'boardDetail', 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
+  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
@@ -9,8 +9,8 @@
       <img :src="value.icon" />
     </div>
 
-    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'boardDetail'}" :style="bgblack === true ? 'color:white;':'' ">
-      {{headerTitle}}
+    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' ">
+      {{this.$changeText(headerTitle)}}
     </span>
     <!-- 멤버 도우미 버튼 -->
     <!-- helpYn으로 변경해야 함 -->
@@ -24,7 +24,7 @@
 
     <!-- <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" /> -->
     <!-- <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" /> -->
-    <div v-if="(chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '') && followYn === true" class="chanMenubar cursorP" @click="openMenu">
+    <div v-if="targetType === 'chanDetail' && (chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '') && followYn === true" class="chanMenubar cursorP" @click="openMenu">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
       <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
@@ -73,16 +73,7 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
-      // alert('me')
-      /* alert(this.memberDetailOpen)
-      if (this.memberDetailOpen === true && this.headerTitle === '주소록 관리') {
-        this.$emit('memberDetailClose')
-      // } else if (this.targetType === 'pushDetail') {
-        // this.$emit('reloadParent')
-        // this.$emit('closeXPop')
-      } else { */
       this.$emit('closeXPop')
-      /* } */
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {
@@ -120,7 +111,7 @@ export default {
 .commonPopHeaderWrap{ position: absolute; justify-content: center; align-items: center; top: 0; left: 0;
   box-sizing: border-box; display: flex;
   padding: 0.7rem 0.5rem;
-  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 9; background: #FFF; }
+  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 10; background: #FFF; }
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .commonPopBackBtn{width: 0.8rem;}

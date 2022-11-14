@@ -13,7 +13,7 @@
             <!-- <div @click="goProfile" v-if="GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div> -->
             <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
             <!-- <div v-else class="roundDiv"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div> -->
-            <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
+            <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
             <!-- <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; position: absolute; bottom: 10px; right: -5px; z-index: 999;" class="fr" @click="changeUserImg()" > -->
           </div>
           <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
@@ -32,8 +32,8 @@
           </div>
         </div>
         <div class="" style="text-align: left; ">
-          <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail')" />
-          <userItem class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
+          <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', '이메일 변경')" />
+          <userItem @click="goDevMode" class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
         </div>
         <div class="grayLine"></div>
       </div>
@@ -64,12 +64,13 @@
         <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
           더알림 로그아웃
         </div>
-        <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim')">여기</span>를 눌러주세요.</p>
+        <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
       </div>
 
       <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
       <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
       <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+      <DevNotiSettingPop :id="devPopId" v-show="devModePopShowYn" @closeXPop="backClick" />
     </div>
 </template>
 
@@ -82,6 +83,7 @@ import settingAlim from '../../components/pageComponents/myPage/Tal_SettingAlimD
 import userImgSelectCompo from '../../components/pageComponents/myPage/Tal_changeUserIcon.vue'
 /* import pushPop from '../../components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
+import DevNotiSettingPop from './D_DevNotiSettingPop.vue'
 export default {
   name: 'myPage',
   components: {
@@ -89,7 +91,8 @@ export default {
     logoutPop,
     policyPop,
     settingAlim,
-    userImgSelectCompo
+    userImgSelectCompo,
+    DevNotiSettingPop
   },
   data () {
     return {
@@ -115,7 +118,11 @@ export default {
       lastVersion: 0,
       checkVersionPopShowYn: false,
       checkVersionText: '',
-      systemName: 'iOS'
+      systemName: 'iOS',
+      devModeClickCnt: 0,
+      devModeClickTimer: 0,
+      devModePopShowYn: false,
+      devPopId: null
       // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
@@ -123,7 +130,7 @@ export default {
 
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', '설정')
-    // alert(JSON.stringify(localStorage.getItem('appInfo')))
+    // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
         this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
         console.log(this.appInfo)
@@ -161,6 +168,67 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
+    openDevPop () {
+        var history = this.$store.getters['D_HISTORY/hStack']
+        this.devPopId = 'devModPop' + history.length
+        // console.log(history)
+        history.push(this.devPopId)
+        this.$store.commit('D_HISTORY/updateStack', history)
+        this.devModePopShowYn = true
+    },
+    closeDevPop () {
+        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var removePage = hStack[hStack.length - 1]
+        if (this.popId === hStack[hStack.length - 1]) {
+            hStack = hStack.filter((element, index) => index < hStack.length - 1)
+            this.$store.commit('D_HISTORY/setRemovePage', removePage)
+            this.$store.commit('D_HISTORY/updateStack', hStack)
+            this.$emit('closePop')
+        } else {
+
+        }
+    },
+    goDevMode () {
+        if (this.devModeClickCnt === 0) {
+            this.setTimer(true)
+        }
+        this.devModeClickCnt += 1
+        console.log(this.devModeClickCnt)
+        if (this.devModeClickCnt > 4) {
+            this.openDevPop()
+            this.setTimer(false)
+        }
+        var this_ = this
+      
+    },
+    devSendPush () {
+        // 1. 알림을 수신할래? 클릭할래?
+        // 2. 어떤 컨텐츠를 수신할래? 없으면 가장최신
+        // 3. 몇초뒤에 수신할래?
+
+    },
+    setTimer (startYn) {
+        var intervalId = null
+        if (startYn) {
+            var this_ = this
+            intervalId = setInterval(() => this_.devModeClickTimer += 1, 1000);
+        } else {
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
+            this.devModeClickTimer = 0
+            this.devModeClickCnt = 0
+            console.log(this.devModeClickCnt)
+        }
+        setTimeout(() => {
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
+            this.devModeClickTimer = 0
+            this.devModeClickCnt = 0
+            console.log(this.devModeClickCnt)
+      }, 2000);
+    },
     checkAppVersion () {
         if (this.systemName === 'android' || this.systemName === 'Android') {
             if (this.appInfo.current !== this.appInfo.last) {
@@ -249,31 +317,38 @@ export default {
       this.changeYn = true
       this.tempUserDispName = this.$changeText(this.GE_USER.userDispMtext)
     },
-    openPop (target) {
+    openPop (target, title) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = target
+      params.popHeaderText = title
       this.$emit('openPop', params)
     },
     openLogoutPop () {
       this.logOutShowYn = true
     },
-    closeLogoutPop (request) {
+    async closeLogoutPop (request) {
       this.logOutShowYn = false
-      if (request !== undefined && request !== null && request !== '') {
-        this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-        this.$store.commit('D_USER/MU_CLEAN_USER')
-        // window.localStorage.setItem('sessionUser', '')
-        // window.localStorage.setItem('user', '')
-        window.localStorage.setItem('loginYn', false)
-        window.localStorage.removeItem('vuex')
-        window.localStorage.removeItem('loginType')
-        // window.localStorage.removeItem('sessionUser')
-        // window.localStorage.removeItem('user')
-        // window.localStorage.removeItem('loginYn')
-        window.localStorage.removeItem('testYn')
-        this.$router.replace('/policies')
+      var result = await this.$commonAxiosFunction({
+       url: 'service/tp.logout' 
+      })
+      if (result) {
+        if (request !== undefined && request !== null && request !== '') {
+            this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+            this.$store.commit('D_USER/MU_CLEAN_USER')
+            // window.localStorage.setItem('sessionUser', '')
+            // window.localStorage.setItem('user', '')
+            window.localStorage.setItem('loginYn', false)
+            window.localStorage.removeItem('vuex')
+            window.localStorage.removeItem('loginType')
+            // window.localStorage.removeItem('sessionUser')
+            // window.localStorage.removeItem('user')
+            // window.localStorage.removeItem('loginYn')
+            window.localStorage.removeItem('testYn')
+            this.$router.replace('/policies')
+        }
       }
+      
     },
     openPolicyPop (type) {
       this.policyType = type
@@ -290,6 +365,11 @@ export default {
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
         this.changeUserIconShowYn = false
+      } else if (this.devPopId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.devModePopShowYn = false
       } else {
 
       }

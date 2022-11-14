@@ -119,44 +119,21 @@ export async function saveUser (userProfile) {
     user.countryCode = deviceInfo.contry
     user.areaName = deviceInfo.timeZome
   }
-  // 9443 화면 10443 서비스 12443 파일
   setParam.user = user
   var result = await commonAxiosFunction({
     url: 'service/tp.saveUser',
     param: setParam,
     firstYn: true
   })
-  console.log(' === saveUserLog === ')
-  console.log(result)
-  if (result.data.message === 'OK' || result.data.message !== 'NG') {
-    // // eslint-disable-next-line no-debugger
-    // debugger
-    // localStorage.setItem('user', JSON.stringify(result.data))
-    // // eslint-disable-next-line no-debugger
-    // debugger
-    // store.dispatch('D_USER/AC_USER', result.data)
-    // localStorage.setItem('sessionUser', JSON.stringify(result.data))
-    // // localStorage.setItem('testYn', false)
-    // await methods.userLoginCheck(true)
-    // router.replace({ path: '/' })
-    localStorage.setItem('user', JSON.stringify(result.data))
-    store.dispatch('D_USER/AC_USER', result.data)
-    localStorage.setItem('sessionUser', JSON.stringify(result.data))
-    localStorage.setItem('testYn', false)
-    localStorage.setItem('loginYn', true)
-    await methods.userLoginCheck(true)
+  if (result.data.message === 'OK') {
+    localStorage.setItem('user', JSON.stringify(result.data.userMap))
+    store.dispatch('D_USER/AC_USER', result.data.userMap)
+    localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     router.replace({ path: '/' })
-  } else if (result.data.message === 'NG') {
-    store.commit('D_USER/MU_CLEAN_USER')
+  } else if (result.message === 'NG') {
+    store.commmit('D_USER/MU_CLEAN_USER')
     localStorage.setItem('user', '')
-    localStorage.removeItem('loginData')
-    localStorage.removeItem('policiesOk')
-    localStorage.removeItem('loginType')
-    localStorage.removeItem('com.naver.nid.oauth.state_token')
-    localStorage.removeItem('vuex')
-    localStorage.removeItem('testYn')
-    localStorage.removeItem('sessionUser')
-    localStorage.removeItem('loginYn')
+    alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
     router.replace({ path: '/policies' })
   }
 }
@@ -170,33 +147,23 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
-    // if (g_axiosQueue.findIndex((item) => item === 'userLoginCheck') !== -1) return
-    // g_axiosQueue.push('userLoginCheck')
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
-    // commonMethods.dAlertLog('userCheck - 1')
-    // testYn = false
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-      // commonMethods.dAlertLog('userCheck - 2-1')
-      // 수망고
-      //   paramMap.set('fcmKey', '123456789')
-      //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    // 수망고
+    //   paramMap.set('fcmKey', '123456789')
+    //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       // 정재준테스트
-
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
-
       // // 최유민테스트
       // paramMap.set('fcmKey', '11111111')
       // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-
       // paramMap.set('fcmKey', '33333333')
       // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
-      // commonMethods.dAlertLog('userCheck - 2-2')
       localStorage.setItem('testYn', false)
       var user = store.getters['D_USER/GE_USER']
-      // commonMethods.dAlertLog(JSON.stringify(user))
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
@@ -211,45 +178,18 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    // var queueIndex = g_axiosQueue.findIndex((item) => item === 'userLoginCheck')
-    // g_axiosQueue.splice(queueIndex, 1)
     if (result.data.resultCode === 'OK') {
-      // console.log(result.data)
-      // var data = {}
-      // data.userInfo = result.data.userMap
-      commonMethods.dAlertLog('userCheck - userInfo data check')
-      // if (result.data.userMap === undefined) return
-      // store.dispatch('D_USER/AC_USER', result.data.userMap)
-      commonMethods.dAlertLog(JSON.stringify(result.data.userMap))
-      commonMethods.dAlertLog('userCheck - userInfo')
-      // console.log(result.data.userMap)
+      console.log(result.data)
       console.log('!!! USER LOGIN CHECK !!!')
-      /* if (result.data.userTeamList) {
-      commonMethods.dAlertLog('userCheck - empty user data check')
-        await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [result.data.userTeamList])
-      } */
-      // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-      //   // store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      //   localStorage.setItem('user', JSON.stringify(result.data.userMap))
-      //   localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-      //   store.dispatch('D_USER/AC_USER', result.data.userMap)
-      // }
-      // // localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-      // localStorage.setItem('loginYn', true)
       if (maingoYn) {
         router.replace({ name: 'main', params: { testYn: true } })
       }
     } else {
-      commonMethods.dAlertLog('userCheck - empty user data check')
-      commonMethods.dAlertLog(JSON.stringify(user))
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace('/policies')
-
-        // return
       }
-      // router.replace('/policies')
       window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
     }
@@ -257,7 +197,6 @@ export const methods = {
   async getTeamList (paramMap, noneLoadingYn) {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
-
     var result = await commonAxiosFunction({
       url: 'service/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
@@ -265,34 +204,13 @@ export const methods = {
     resultList = result
     return resultList
   },
-  // async getContentsList(inputParam) {
-  //   // eslint-disable-next-line no-new-object
-  //   var paramSet = new Object()
-  //   if (inputParam) {
-  //     paramSet = inputParam
-  //   }
-  //   paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-  //   var resultList = null
-  //   let config = {
-  //     onUploadProgress(progressEvent) {
-  //       var percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-  //       // execute the callback
-  //       onProgress(percentCompleted)
-  //       return percentage;
-  //     },
-  //   };
-  //   resultList = response.data
-  //   return resultList
-  // },
   async getContentsList (inputParam, nonLoadingYn) {
-    // alert(nonLoadinYn)
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
       paramSet = inputParam
       paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
-    // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
       url: 'service/tp.getContentsList',
@@ -307,16 +225,12 @@ export const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    // paramSet.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var resultList = null
     var result = await commonAxiosFunction({
       url: 'service/tp.getContents',
       param: paramSet
     })
     resultList = result.data
-    var detailData = resultList.content[0]
-    // debugger
-    store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return resultList
   },
   async saveUserDo (inputParam, type) {
@@ -432,6 +346,7 @@ export const methods = {
     var paramSet = new Object()
     if (inputParam) {
       paramSet = inputParam
+      paramSet.devNotiYn = false
     }
     /*
     var tt = true

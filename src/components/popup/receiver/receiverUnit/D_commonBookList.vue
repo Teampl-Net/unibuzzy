@@ -310,6 +310,7 @@ export default {
     editAddressBook (data) {
       var param = {}
       param.targetType = 'creAddressBook'
+      param.popHeaderText = '주소록 수정'
       param.newAddressYn = false
       param.cabinet = data
       this.$emit('openPop', param)

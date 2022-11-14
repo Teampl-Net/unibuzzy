@@ -1,66 +1,11 @@
 <template>
     <div :ref="'stateCodeFor' + this.contentsKey" v-if="DISP_CODE_VALUE" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
-        <div @click="openSelectPop" class="font14">{{this.$changeText(DISP_CODE_VALUE.codeNameMtext)}}</div>
-        <div @click="closeSelectPop" v-show="selectPopShowYn" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 999"></div>
-        <div v-if="selectPopShowYn" style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 15%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 9999">
-            <div style="width: 100%; position: relative; float: left; padding: 0 20px; box-shadow: 0 4px 4px -4px #ccc; height: 35px; " class="font18 commonColor fontBold">업무설정
-                <img @click="closeSelectPop" style="position: absolute; right: 20px; top: 10px;" src="../../assets/images/common/smallPopXIcon.svg" alt="">
-            </div>
-            <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px;">
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
-                <!-- <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
-                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div>
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p> -->
-                <Datepicker
-                    style="font-size: 14px; float: left; width: calc(100%);"
-                    inline
-                    :editable="false"
-                    v-model:value="workDate.toDate"
-                    type="date"
-                    :placeholder="dateHolder"
-                    titleFormat="YYYY-MM-DD"
-                ></Datepicker>
-                <p class="font15 textLeft fl fontBold w-100P mtop-1">상태설정</p>
-                <div style="width: 100%; float: left;">
-                    <div @click="selectCode(value)" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
-                        <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
-                        <img :src="value.domainPath + value.pathMtext" style="width: 15px;position: absolute; left: 8px; top: 10px;" alt="">
-                    </div>
-                </div>
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">댓글 추가</p>
-                <!-- <p class="font14 commonBlack textLeft">빈칸으로 작성시{{'"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다." 댓글이 추가됩니다.'}}</p> -->
-                <div @click="changeInputText"  ref="memoBodyStr" class="commonBlack font15 textLeft" v-if="selectedCodeObj.codeKey !== 0" style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px;  cursor: text;     border: 1px solid #EEEEEE; float: left; padding: 5px, 10px, 10px, 10px; overflow: hidden scroll; "  :contenteditable="true"></div>
-                <div ref="memoBodyStr" v-else style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px; border: 1px solid #ccc; float: left; padding: 10px 15px; overflow: hidden scroll;" class="commonBlack font15 textLeft activeInput" >
-                    상태값 설정 후 댓글을 작성해주세요
-                </div>
-                <!-- <span class="font15 commonBlack" v-show="selectedCodeObj.codeKey === 0">상태를 선택하고 댓글을 입력해주세요</span> -->
-                <!-- <div @click="selectCode(value)" :style="Number(index) === Number(this.codeList.length - 1)? 'border-bottom: none !important;':'border-bottom: 1px solid #ccc;'" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: 100%; position: relative; border min-height: 30px; padding: 5px 0;">
-                    <p class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
-                    <img v-if="value.codeKey === selectedCodeObj.codeKey" src="../../assets/images/common/Tal_checkImage.svg" style="width: 20px;position: absolute; right: 10px; top: 10px;" alt="">
-                </div> -->
-            </div>
-            <!-- <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
-                <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
-            </div> -->
-            <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
-                <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey)? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
-            </div>
-            <!-- <div style="width: 100%; height: 40px; padding: 5px 20px; margin-top: 15px;">
-                <gBtnSmall @click="closeSelectPop" btnThema="light" btnTitle="취소"/>
-                <gBtnSmall @click="changeContentsStat" btnTitle="적용" class="mright-05"/>
-            </div> -->
-        </div>
-        <div v-if="selectBookListShowYn"  style="width: 100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 9999999;">
-          <receiverAccessList :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
-        </div>
+        <div class="font14">{{this.$changeText(DISP_CODE_VALUE.codeNameMtext)}}</div>
     </div>
 </template>
 <script>
-import receiverAccessList from '../../components/popup/receiver/D_selectReceiverAccessList.vue'
 export default {
   components: {
-    receiverAccessList
   },
   data () {
     return {
@@ -132,6 +77,7 @@ export default {
   },
   props: {
     codeList: {},
+    currentWorker: {},
     currentCodeKey: {},
     contentsKey: {},
     teamKey: {},

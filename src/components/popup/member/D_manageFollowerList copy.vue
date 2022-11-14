@@ -93,6 +93,7 @@ export default {
     memberFormClick(){
       var param = {}
       param.targetType = 'memberForm'
+      param.popHeaderText = '공개신청서 만들기'
       // param.teamKey = this.propData.currentTeamKey
       param.teamKey = this.$store.getters('D_CHANNEL/GE_RECENT_CHANGE_TEAM')
       this.$emit('openPop', param)
@@ -109,6 +110,7 @@ export default {
         // console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
+        param.popHeaderText = '프로필'
         param.userKey = member.userKey
         param.readOnlyYn = true
         this.$emit('openPop',param)
@@ -270,6 +272,7 @@ export default {
       // param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.teamKey
       param.newMemYn = true
+      param.popHeaderText = '유저 추가'
       this.$emit('openPop', param)
     },
     replaceArr (arr) {
@@ -327,24 +330,19 @@ export default {
   watch: {
     GE_NEW_SHOW_LIST: {
         handler (value, old) {
-            // alert(true)
             if (value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
                 return
             }
-            // alert(this.CHANNEL_DETAIL.teamKey)
-            // alert(value[0])
             var newArr = [
                 ...this.showUserList,
                 value[0]
             ]
             this.showUserList = this.replaceArr(newArr)
-            // alert(JSON.stringify(this.showUserList))
         },
         deep: true
     },
     GE_NEW_MAN_LIST: {
         handler (value, old) {
-            // alert(this.CHANNEL_DETAIL.teamKey)
             if (!value || value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
                 return
             }

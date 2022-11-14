@@ -74,6 +74,7 @@ export default {
     goDetail (data) {
       var param = {}
       param.targetType = 'memberForm'
+      param.popHeaderText = '공개신청서 만들기'
       param.targetKey = this.propData.teamKey
       param.formKey = data.mFormKey
       param.formData = data

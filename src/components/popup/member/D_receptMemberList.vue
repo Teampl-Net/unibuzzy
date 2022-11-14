@@ -91,7 +91,6 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (allYn) {
-        // alert(this.allClickYn)
         for (var c = 0; c < checkList.length; c++) {
           checkList[c].checked = !this.allClickYn
         }

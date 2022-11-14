@@ -13,11 +13,11 @@
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
         <div class="receptListBtnStyle fr">
-          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl" v-if="GE_USER.userKey === 255 || 104 || 123 || 1 || 180 || 228 || 100 || 242 || 235"/>
+          <!-- <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/> -->
           <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
     </div>
-    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 2.5rem);">
+    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
 
@@ -95,6 +95,7 @@ export default {
     openMemberTypePop () {
       var param = {}
       param.targetType = 'editMemberTypePop'
+      param.popHeaderText = '멤버유형관리'
       param.teamKey = this.propData.teamKey
       param.teamKey = this.propData.teamKey
       this.$emit('openPop', param)
@@ -105,6 +106,7 @@ export default {
     memberFormClick(){
       var param = {}
       param.targetType = 'memberForm'
+      param.popHeaderText = '공개신청서 만들기'
       // param.teamKey = this.propData.currentTeamKey
       param.teamKey = this.$store.getters('D_CHANNEL/GE_RECENT_CHANGE_TEAM')
       this.$emit('openPop', param)
@@ -121,6 +123,7 @@ export default {
         // console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
+        param.popHeaderText = '프로필'
         param.userKey = member.userKey
         param.readOnlyYn = true
         this.$emit('openPop',param)
@@ -271,6 +274,7 @@ export default {
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.teamKey
+      param.popHeaderText = '유저 추가'
       param.newMemYn = true
       this.$emit('openPop', param)
     },
@@ -286,9 +290,6 @@ export default {
   },
   components: { commonMemberList, receptMemberList},
   computed: {
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
-    },
     /* GE_NEW_MAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
     },
@@ -343,7 +344,6 @@ export default {
                 value[0]
             ]
             this.showUserList = this.replaceArr(newArr)
-            // alert(JSON.stringify(this.showUserList))
         },
         deep: true
     },

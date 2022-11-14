@@ -96,9 +96,9 @@
               @clearMemo='clearMemo'/>
             <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
-              @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :clickContentsKey="targetCKey"
+              @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
               ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
-              :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @scrollMoveToParents="scrollMoveToParents"
+              :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove"
               @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' /> -->
           </div>
         </div>
@@ -510,6 +510,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'bookMemberDetail'
+      param.popHeaderText = '내 정보'
       param.readOnlyYn = true
       param.selfYn = true
       this.$emit('openPop', param)
@@ -678,7 +679,6 @@ export default {
       this.saveActAxiosFunc(param)
     },
     contentMenuClick (params) {
-      // alert(JSON.stringify(params))
       this.contentOwner = params.ownerYn
       this.contentType = params.type
       this.tempData = params.tempData
@@ -690,8 +690,6 @@ export default {
       param.targetType = 'writeContents'
       param.creTeamKey = this.tempData.creTeamKey
       if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
-      // console.log('######################')
-      // console.log(this.tempData.bodyFullStr)
       param.bodyFullStr = this.tempData.bodyFullStr
       param.modiContentsKey = this.tempData.contentsKey
       param.titleStr = this.tempData.title
@@ -700,7 +698,6 @@ export default {
     },
     async recvNoti (e) {
       var message
-      // alert(JSON.stringify(e))
       try {
         if (this.$isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
@@ -1017,18 +1014,7 @@ export default {
       }
     },
     openPop (value) {
-      // eslint-disable-next-line no-new-object
-      // var params = new Object()
-      // if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-      //   params.targetType = value.targetType
-      // } else {
-      //   params.targetType = 'pushDetail'
-      // }
-      // params = value
-      // if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
       this.$emit('openPop', value)
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
     async changeTab (tabName) {
       if (this.viewTab !== tabName) {
@@ -1380,9 +1366,7 @@ export default {
             ...content.D_MEMO_LIST
           ]
         }
-        // alert(JSON.stringify(this.boardContentsList))
         var idx1 = this.mCabContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
-        // alert(idx1)
         this.mCabContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
       },
       deep: true
@@ -1461,7 +1445,7 @@ export default {
 .boardItemBoxHeight{height: calc(100% - 50px)!important;}
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
-.channelCardWrap{height: calc(35vh); width: 100%; float: left; position: absolute;}
+.summaryWrap{height: calc(35vh); width: 100%; float: left; position: absolute;}
 .summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 10px; display: flex; justify-content: space-around;}
 .centerSpace{width: 100%; height: 30%;}
 .summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}

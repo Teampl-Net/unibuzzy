@@ -69,16 +69,14 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.jobkindId = data.jobkindId
+      params.targetType = 'contentsDetail'
+      params.creTeamKey = data.creTeamKey
+      params.contentsKey = data.contentsKey
+      params.targetKey = data.contentsKey
       if (data.jobkindId === 'ALIM') {
-        params.targetType = 'pushDetail'
-        params.creTeamKey = data.creTeamKey
-        params.contentsKey = data.contentsKey
-        params.targetKey = data.contentsKey
+        params.popHeaderText = data.nameMtext
       } else {
-        params.targetType = 'boardDetail'
-        params.creTeamKey = data.creTeamKey
-        params.contentsKey = data.contentsKey
-        params.targetKey = data.contentsKey
+        params.popHeaderText = data.cabinetNameMtext
       }
 
       this.$emit('goDetail', params)

@@ -1,47 +1,35 @@
 <template>
-<div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
-  <loadingCompo style="z-index: 999999999;" v-if="loadingYn === true"/>
-  <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-  <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
-    <!-- <img src="../../../public/resource/userCommonIcon/userImg01.png" style="width: 5em; margin-right: 1rem"/> -->
-    <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" style="background-position: center; background-size: cover; background-repeat: no-repeat;" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + changeImgUrl(userInfo.userProfileImg) : userInfo.userProfileImg) +') !;'"  ></div> -->
-    <div @click="goProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-    <!-- <div @click="goProfile" v-if="userInfo.userProfileImg" class="picImgWrap" style="background-position: center; background-size: cover; background-repeat: no-repeat;" ref="mainImgAreaRef" :style="'background-image: url('+ (userInfo.domainPath ? userInfo.domainPath + userInfo.userProfileImg : userInfo.userProfileImg) +') !;'"  ></div> -->
-    <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
-    <div class="userProfileTextWrap" >
-      <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(this.GE_USER.userDispMtext)}}</p>
-      <img  src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
-      <div>
-        <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
-        <span class="profileTitle font14" ref="userEmail" @click="this.$showChanCommonPop(true)">이메일</span>
-        <span class="grayBlack font14" ref="userEmail">{{this.GE_USER.userEmail}}</span>
-      </div>
-      <div>
-        <!-- <button v-long-click="() => test(true)">+</button> -->
-        <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-        <span @click="test" class="profileTitle font14" ref="userMobile">휴대폰</span>
-        <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
-      </div>
+    <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+        <loadingCompo style="z-index: 999999999;" v-if="loadingYn === true"/>
+        <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+        <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;"  v-if="userInfoChangeYn">
+        <div @click="goProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+        <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+        <div class="userProfileTextWrap" >
+            <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(this.GE_USER.userDispMtext)}}</p>
+            <img  src="../../assets/images/common/ico_refresh.png" @click="reloadPage" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
+            <div>
+                <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
+                <span class="profileTitle font14" ref="userEmail" @click="this.$showChanCommonPop(true)">이메일</span>
+                <span class="grayBlack font14" @click="getNaverProfile" ref="userEmail">{{this.GE_USER.userEmail}}</span>
+            </div>
+            <div>
+                <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
+                <span @click="this.$testClick" class="profileTitle font14" ref="userMobile">휴대폰</span>
+                <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
+            </div>
+        </div>
+        </div>
+        <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :alimList="this.mainAlimList"  @openPop="openPop" ref="topAlim" />
+        <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="this.mainChanList" @openPop="openPop" ref="topChan" />
     </div>
-  </div>
-  <!--<div style="width: 200px; height: 200px; background: #ccc" v-on:click="goPush()">푸쉬 테스트!!!!</div> -->
-  <top5Alim style="background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :alimList="this.mainAlimList"  @openPop="openPop" ref="topAlim" />
-  <top5Channel style="background: #FFF; padding: 10px; border-radius: 0.8rem; margin-top: 15px;  padding-top: 5px;  box-shadow: 0 0 7px 3px #b7b4b440;"  :chanList="this.mainChanList" @openPop="openPop" ref="topChan" />
-
-</div>
-
 </template>
-
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import top5Channel from '../../components/pageComponents/main/D_top5ChanList.vue'
 import top5Alim from '../../components/pageComponents/main/D_top5ContentsList.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
-// import { onMessage } from '../../assets/js/webviewInterface'
-// import initModal from '../../components/popup/Tal_mainInitModal'
-// eslint-disable-next-line no-unused-vars
-import { mapActions, mapGetters } from 'vuex'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: '',
@@ -50,15 +38,11 @@ export default {
     routerReloadKey: {}
   },
   created () {
-    this.$dAlertLog('Tal_main.vue - STEP 1 - CREATED')
-    // onMessage('REQ', 'removeAllNoti')
-    // this.$emit('openLoading')
-    // if (this.GE_USER === '' || this.GE_USER === {}) {
+    this.$addConsole('tal_main.vue created')
     if (!this.GE_USER) {
       this.$router.push('/policies')
       return
     }
-
     this.getMainBoard().then(res => {
       this.loadingYn = false
     })
@@ -66,24 +50,12 @@ export default {
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
     this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', [])
-    // console.log(this.GE_MAIN_CHAN_LIST)
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // // window.addEventListener('message', e => this.recvNoti(e))
     this.$emit('changePageHeader', '더알림')
-    /* this.$store.commit('setRemovePage', 0)
-    this.$store.commit('D_HISTORY/updateStack', [0]) */
-    this.$dAlertLog('Tal_main.vue - STEP 2 - CREATED END')
   },
   mounted () {
+    this.$addConsole('tal_main.vue mounted')
     this.loadingYn = false
-    console.log('userLoginCheck')
-    this.$dAlertLog('Tal_main.vue - STEP 3 - userLoginCheck')
     this.$userLoginCheck()
-    this.$dAlertLog('Tal_main.vue - STEP 4 - userLoginCheck END')
-
-    console.log('userLoginCheck')
-    // console.log(this.GE_USER)
-    // alert(JSON.stringify(this.GE_USER))
   },
   data () {
     return {
@@ -113,13 +85,15 @@ export default {
     top5Channel,
     top5Alim,
     loadingCompo
-    // top5
-    // top5Title
   },
   methods: {
-    // test () {
-    //   alert(true)
-    // },
+    async getNaverProfile () {
+      var result = await this.$commonAxiosFunction({
+        url: 'real/tp.getNaverProfile',
+        param: { aToken: this.GE_USER.soAccessToken }
+      })
+      console.log(result)
+    },
     async getMainBoard () {
       if (this.axiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.axiosQueue.push('getMainBoard')
@@ -129,29 +103,15 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      this.$dAlertLog('Tal_main.vue - getMainBoard')
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap))
+      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      )
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMainBoard')
       this.axiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
-        this.$dAlertLog('Tal_main.vue - getMainBoard 값 도착')
         this.mainChanList = response.data.teamList
-        console.log('^^^^^^^^^^^^^^^^^^')
-        console.log(response)
-
-        /* if (this.GE_MAIN_CHAN_LIST.length > 0) {
-          await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList)
-        } else {
-          await this.$store.dispatch('D_CHANNEL/MU_ADD_CHANNEL', response.data.teamList)
-
-        } */
-
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mainChanList)
-        // var test = await this.$actionVuex('TEAM', null, true, false, null)
-        // console.log(this.mainChanList)
         var teamList = this.GE_MAIN_CHAN_LIST
         console.log(this.GE_MAIN_CHAN_LIST)
-
         this.mainAlimList = response.data.alimList
         var index = null
         var poolList = null
@@ -174,18 +134,14 @@ export default {
             }
           }
         }
-        console.log(this.mainAlimList)
-
-        // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', teamList)
-        // this.$store.dispatch('D_CHANNEL/AC_MAIN_CAHN_LIST', teamList)
       }
     },
     goProfile () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       this.loadingYn = true
-      // param.targetType = 'bookMemberDetail'
       param.targetType = 'setMypage'
+      param.popHeaderText = '프로필 설정'
       param.readOnlyYn = true
       param.selfYn = true
       this.$emit('openPop', param)
@@ -197,13 +153,9 @@ export default {
       })
       this.$store.commit('D_HISTORY/setRemovePage', '')
       this.$store.commit('D_HISTORY/updateStack', [])
-      // console.log(this.GE_MAIN_CHAN_LIST)
-      // document.addEventListener('message', e => this.recvNoti(e))
-      // // window.addEventListener('message', e => this.recvNoti(e))
       this.$emit('changePageHeader', '더알림')
     },
     closeApp () {
-      // onMessage('REQ', 'reloadApp')
       onMessage('closeApp', 'requestUserPermission')
       this.appCloseYn = false
     },
@@ -216,9 +168,7 @@ export default {
     goPush () {
       // eslint-disable-next-line no-new-object
       var message = new Object()
-      // eslint-disable-next-line no-new-object
       this.$axios.post('/send', { message }
-      // this.$axios.post('/onapt/onapt/onapt.getBoardInfo', { param: this.param }
       ).then(response => {
         console.warn(response)
       }).catch((ex) => {
@@ -244,24 +194,6 @@ export default {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
-    /* GE_DISP_CHAN_LIST () {
-      var idx1
-      if (this.mainChanList.length > 0) {
-        var test = []
-        for (var i = 0; i < this.mainChanList.length; i++) {
-          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mainChanList[i].creTeamKey)
-          if (idx1 !== -1) {
-            test.push(this.GE_MAIN_CHAN_LIST[idx1])
-          } else {
-            test.push(this.mainChanList[i])
-          }
-        // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-        }
-        return test
-      } else {
-        return null
-      }
-    }, */
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
@@ -271,20 +203,6 @@ export default {
   },
 
   watch: {
-    GE_RECENT_CHANGE_TEAM (value, old) {
-    },
-    GE_USER (value, old) {
-      // // console.log(this.userInfo)
-    },
-    GE_MAIN_CHAN_LIST (value, old) {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
-    },
-    /* GE_MAIN_ALIM_LIST (value, old) {
-      this.setAllContents()
-    },
-    GE_MAIN_BOARD_LIST (value, old) {
-      this.setAllContents()
-    }, */
     pageUpdate (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
@@ -294,10 +212,6 @@ export default {
       }
     }
   }
-  // onMessage (data) {
-  //   window.nsWebViewBridge.emit('onMessage', data)
-  // }
-
 }
 </script>
 

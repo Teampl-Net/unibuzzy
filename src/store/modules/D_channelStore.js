@@ -16,8 +16,7 @@ const D_CHANNEL = {
     addShowProfileUserList: [],
     delContentsList: [],
     chanNotiQueue: [],
-    updateChanList: [],
-    memoList: new Map()
+    updateChanList: []
 
   },
   getters: {
@@ -50,9 +49,6 @@ const D_CHANNEL = {
     },
     GE_CHANNEL_NOTI_QUEUE (state) {
       return state.chanNotiQueue
-    },
-    GE_ALL_MEMO_LIST (state) {
-      return state.memoList
     }
   },
   mutations: {
@@ -65,52 +61,45 @@ const D_CHANNEL = {
       state.addManagerList = []
       state.addShowProfileUserList = []
       state.chanNotiQueue = []
-      state.memoList = new Map()
       return true
     },
-    MU_REPLACE_NEW_MEMO: (state, payload) => {
+    MU_ADD_MEMO: (state, payload) => {
       var index = null
       if (!payload) return
-      // alert(JSON.stringify(payload))
-      var chanIndex = state.chanList.findIndex((item) => item.teamKey === payload.creTeamKey)
+      // 1. 채널을 찾음
+      var chanIndex = state.chanList.findIndex((item) => item.teamKey === Number(payload.creTeamKey))
       if (chanIndex === -1) return
       var chan = state.chanList[chanIndex]
+      // 2-1. 대댓글의 경우, 부모댓글을 찾음
       if (payload.parentMemoKey) {
-        index = state.addMemoList.findIndex((item) => item.memoKey === payload.parentMemoKey)
+        index = state.addMemoList.findIndex((item) => item.memoKey === Number(payload.parentMemoKey))
         if (index !== -1) {
           state.addMemoList.splice(index, 1)
         }
       } else {
-        index = state.addMemoList.findIndex((item) => item.memoKey === payload.memoKey)
+        // 2-2. 대댓글이 아닌경우, 내 댓글을 찾음
+        index = state.addMemoList.findIndex((item) => item.memoKey === Number(payload.memoKey))
         if (index !== -1) {
           state.addMemoList.splice(index, 1)
         }
       }
-      // alert(index)
-      // alert(JSON.stringify(payload))
       /* if (index) { */
       var index3 = null
       var dataList = null
-      // alert(JSON.stringify(payload))
       if (payload.jobkindId === 'ALIM') {
-        // alert(payload.targetKey)
         dataList = chan.ELEMENTS.alimList
-        index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload.targetKey)
+        index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === Number(payload.targetKey))
       } else {
         dataList = chan.ELEMENTS.boardList
-        index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload.targetKey)
+        index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === Number(payload.targetKey))
       }
-      // alert(2)
       if (index3 === -1) return
       if (payload.parentMemoKey) {
-        // alert('JSON.stringify(payload)')
-        // (JSON.stringify(payload))
-        var pMemoIndex = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.parentMemoKey)
+        var pMemoIndex = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === Number(payload.parentMemoKey))
         if (pMemoIndex === -1) return
         var pMemo = dataList[index3].D_MEMO_LIST[pMemoIndex]
         if (!pMemo.cmemoList) pMemo.cmemoList = []
-        var cIndex = pMemo.cmemoList.findIndex((item) => item.memoKey === payload.memoKey)
-        // alert(cIndex)
+        var cIndex = pMemo.cmemoList.findIndex((item) => item.memoKey === Number(payload.memoKey))
         if (cIndex !== -1) {
           pMemo.cmemoList[cIndex] = payload
         } else {
@@ -118,25 +107,24 @@ const D_CHANNEL = {
         }
         payload = pMemo
       }
-      // alert(JSON.stringify(dataList[index3].D_MEMO_LIST))
-      var newIdx = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === payload.memoKey)
+      var memoList = dataList[index3].D_MEMO_LIST
+      if (!memoList) {
+        dataList[index3].D_MEMO_LIST = []
+      }
+      var newIdx = dataList[index3].D_MEMO_LIST.findIndex((item) => item.memoKey === Number(payload.memoKey))
       if (state.addMemoList.length > 30) {
         state.addMemoList.splice(0, 30)
       }
-      // alert(JSON.stringify(dataList[index3]))
       if (dataList[index3].jobkindId === 'ALIM') {
         if (newIdx === -1) {
           state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST.unshift(payload)
           state.addMemoList.unshift(payload)
-          // alert(state.addMemoList)
         } else {
-          // alert('여기')
           state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST[newIdx] = payload
           state.addMemoList.unshift(payload)
         }
       } else {
         if (newIdx === -1) {
-          // alert('BOAR1')
           state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST.unshift(payload)
           state.addMemoList.unshift(payload)
         } else {
@@ -265,9 +253,6 @@ const D_CHANNEL = {
           state.recentChangeTeamKey = payload.payload
         } else {
           var chan = state.chanList[index]
-          if (chan.copyTextStr) {
-            payload[i] = chan.copyTextStr
-          }
           var tempEle = chan.ELEMENTS
           state.chanList[index] = payload[i]
           state.chanList[index].ELEMENTS = tempEle
@@ -279,9 +264,6 @@ const D_CHANNEL = {
       var idx1
       var chanList = state.chanList
       idx1 = chanList.findIndex((item) => item.teamKey === payload.teamKey)
-      if (chanList[idx1].copyTextStr) {
-        payload.copyTextStr = chanList[idx1].copyTextStr
-      }
       chanList[idx1] = payload
       if (!chanList[idx1].changedYn) chanList[idx1].changedYn = true
       else {
@@ -635,11 +617,11 @@ const D_CHANNEL = {
     MU_CHANNEL_NOTI_QUEUE_REPLACE: (state, payload) => {
       state.chanNotiQueue = payload
     },
-    MU_ADD_NOTI_CHAN_LIST: (state, payload) => {
+    MU_ADD_UPDATE_CHAN_LIST: (state, payload) => {
       state.updateChanList.push(payload)
     },
     MU_DEL_UPDATE_CHAN_LIST: (state, payload) => {
-      // AC_ADD_NOTI_CHAN_LIST
+      // AC_ADD_UPDATE_CHAN_LIST
       var idx = state.updateChanList.indexOf(payload)
       // var idx = state.updateChanList.findIndex(item => item.key === payload.key)
       if (idx !== -1) {
@@ -673,25 +655,12 @@ const D_CHANNEL = {
       state.chanList = chanList
       console.log(state.chanList)
       // if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
-    },
-    MU_ALL_MEMO_LIST: (state, payload) => {
-      var memos = state.memoList
-      console.log(memos)
-      var memo = []
-      if (payload.memo.length > 0) {
-        memo = payload.memo
-      }
-      console.log(payload.contentsKey)
-      console.log(payload)
-      memos.set(payload.contentsKey, memo)
-      console.log(memos)
-      state.memoList = memos
     }
   },
   // dispatch 를 사용하면 됨
   actions: {
-    AC_ADD_NOTI_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
-      commit('MU_ADD_NOTI_CHAN_LIST', payload)
+    AC_ADD_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
+      commit('MU_ADD_UPDATE_CHAN_LIST', payload)
     },
     AC_DEL_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 제거
       commit('MU_DEL_UPDATE_CHAN_LIST', payload)
@@ -766,7 +735,6 @@ const D_CHANNEL = {
           }
         }
         payload[i].D_CONT_USER_DO = userDoList
-        commit('MU_ALL_MEMO_LIST', { contentsKey: payload[i].contentsKey, memo: payload[i].memoList })
       }
       commit('MU_ADD_CONTENTS', payload)
     },
@@ -867,9 +835,6 @@ const D_CHANNEL = {
       index = channelList.findIndex((item) => item.teamKey === payload.teamKey)
       channelList[index] = payload
       commit('MU_MAIN_CHAN_LIST', channelList)
-    },
-    AC_ALL_MEMO_LIST: ({ commit }, payload) => {
-      commit('MU_ALL_MEMO_LIST', payload)
     }
   }
 }

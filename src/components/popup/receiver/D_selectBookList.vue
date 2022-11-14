@@ -182,18 +182,6 @@ export default {
       this.editMemberSelectedList()
       //
     },
-    // editPop () {
-    //   // eslint-disable-next-line no-new-object
-    //   var params = new Object()
-    //   params = this.propData
-    //   params.targetType = 'editBookList'
-    //   params.currentTeamKey = this.propData.targetKey
-    //   params.value = ''
-    //   this.$emit('openPop', params)
-    // },
-    /* oepnPop (param) {
-      this.$emit('openPop', param)
-    }, */
     sendReceivers (data) {
       console.log('%%%%%%%%%%%%%%%%%%%%%%')
       console.log(data)

@@ -1,5 +1,5 @@
 <template>
-    <div id="axiosShadow" style="position: fixed; display: none; justify-content: center; align-items: center;top: 0; left: 0; width: 100%; height: 100%; background: #00000026; z-index: 9999999999999999999999999999999999999999999999999">
+    <div id="axiosShadow" style="position: fixed; display: none; justify-content: center; align-items: center;top: 0; left: 0; width: 100%; height: 100%; background: #00000026; z-index: 9999999999999999999999">
         <div class="lds-default">
             <div></div>
             <div></div>

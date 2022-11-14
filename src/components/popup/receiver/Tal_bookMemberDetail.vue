@@ -1,13 +1,13 @@
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea" style="margin-top:50px">
-<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.domainPath + userProfileImg" :parentSelectedIconFileKey="picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
     <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
 
-        <div :style="'background-image: url(' + (this.domainPath ? this.domainPath + userProfileImg : '/resource/userCommonIcon/userImg01.svg') + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
+        <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
             <!--  <img :src="this.domainPath + userProfileImg" /> -->
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
@@ -124,7 +124,8 @@ export default {
             tempUserDispName: '',
             thisUserKey: null,
             profileFunc: [{ funcTitle: '알림작성', type: 'ALIM' }, { funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
-            userGrade: ''
+            userGrade: '',
+            mUserInfo: {}
         }
     },
     components: {
@@ -148,9 +149,28 @@ export default {
         }
     },
     async created(){
-        // console.log(this.propData)
+        console.log(this.propData)
         this.$emit('openLoading')
+        if(this.propData.readOnlyYn){this.readOnlyYn = true}
+
         if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
+            if (this.propData.selfYn) {
+                this.selfYn = this.propData.selfYn
+                this.mUserInfo = this.GE_USER
+            } else {
+                await this.getMemberListGetUserInfo()
+            }
+            if (this.mUserInfo.userEmail)
+                this.memEmail = this.mUserInfo.userEmail
+            else{ this.memEmail= '등록된 이메일이 없습니다.'}
+            if (this.mUserInfo.userDispMtext)
+                this.memName = this.$changeText(this.mUserInfo.userDispMtext)
+            if (this.mUserInfo.phoneEnc)
+                this.memPhone = this.mUserInfo.phoneEnc
+            else{ this.memPhone= '등록된 번호가 없습니다.' }
+            this.setUserGrade(this.mUserInfo)
+            /* 
+            // debugger
             if(this.propData.userProfileImg){
                 this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
             }
@@ -195,7 +215,7 @@ export default {
                     // var list = await result.data.content
                     // // console.log(list)
                 }
-            }
+            } */
         }
         if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
         // this.readOnlyYn = false
@@ -218,15 +238,16 @@ export default {
             var paramMap = new Map()
             // paramMap.set('showProfileYn', true)
             paramMap.set('teamKey', this.propData.teamKey)
+            paramMap.set('userKey', this.propData.userKey)
             paramMap.set('adminYn', true)
             paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
                 url: 'service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
-            var list = []
-            list = result.data.content
-            console.log(list)
+            // var list = []
+            this.mUserInfo = result.data.content[0]
+            /* console.log(list)
             console.log(this.propData)
             var indexOf = list.findIndex(i => i.userKey === this.propData.userKey);
             console.log(indexOf)
@@ -245,9 +266,9 @@ export default {
                 data.followYn = true
                 this.setUserGrade(data)
             } else {
-                /* this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
-                this.closeXPop() */
-            }
+                this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
+                this.closeXPop()
+            } */
         },
         async setUserGrade (anotherAuth) {
           if (anotherAuth) {

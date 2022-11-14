@@ -72,8 +72,6 @@ export default {
     this.getImgList().then(response => {
       this_.imgList = response
       for (var i = 0; i < this_.imgList.length; i++) {
-        // alert(JSON.stringify(this_.imgList[i]))
-        // console.log(this.imgList[i].pathMtext)
         // this.imgList[i].src = this.imgList[i].pathMtext
         this_.imgList[i].src = this_.imgList[i].domainPath + this_.imgList[i].pathMtext
         this_.imgList[i].title = this_.imgList[i].fileKey

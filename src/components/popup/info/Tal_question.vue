@@ -51,7 +51,6 @@ export default {
       var params = new Object()
       params.targetType = 'chanDetail'
       params.targetKey = 377
-      params.teamKey = 377
       this.$emit('openPop', params)
     }
   }

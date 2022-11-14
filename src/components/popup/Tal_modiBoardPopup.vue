@@ -390,7 +390,6 @@ export default {
     changeSelectType () {
       // debugger
       if (this.shareGroup.type === 'S') {
-        // alert(true)
         this.permissionWGroup.type = 'S'
         this.permissionVGroup.type = 'S'
         this.permissionRGroup.type = 'S'

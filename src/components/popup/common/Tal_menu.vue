@@ -9,7 +9,7 @@
         <div class="menuRow"  v-for="(value, index) in menuList" :key="index">
           <!-- <img class="mr-04" :src="value.iconUrl" alt=""> -->
           <div v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</div>
-          <div v-else v-on:click="openPop(value.link, value.jobKind)">{{value.menuText}}</div>
+          <div v-else v-on:click="openPop(value)">{{value.menuText}}</div>
         </div>
       </div>
   </div>
@@ -42,11 +42,12 @@ export default {
     goPage (link) {
       this.$emit('goPage', link)
     },
-    openPop (link, jobKind) {
+    openPop (menuData) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetType = link
-      params.jobKind = jobKind
+      params.targetType = menuData.link
+      params.popHeaderText = menuData.menuText
+      params.jobKind = menuData.jobKind
       this.$emit('openPop', params)
     }
   }

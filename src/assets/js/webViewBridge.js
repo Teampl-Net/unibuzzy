@@ -2,8 +2,9 @@
 import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
-import { functions } from '../js/D_vuexFunction'
 import { onMessage } from '../../assets/js/webviewInterface'
+import { functions } from '../../assets/js/D_vuexFunction'
+import routerMain from '../../pages/Tal_router_main.vue'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -60,70 +61,36 @@ const isJsonString = (str) => {
         })
       }
     }
-
-    /**
-         * react-native => javascript
-         * react native에서 화면에 결과를 넘겨준다.
-         */
-
     document.addEventListener('message', e => listenerFromNative(e))
     window.addEventListener('message', e => listenerFromNative(e))
 
     async function listenerFromNative (e) {
-      var recvMsg
+      var message
 
       try {
         if (isJsonString(e.data) === true) {
-          recvMsg = JSON.parse(e.data)
+          message = JSON.parse(e.data)
         } else {
-          recvMsg = e.data
+          message = e.data
         }
-        if (recvMsg.type === 'userInfo' || recvMsg.type === 'successLogin') {
-          if (recvMsg.loginYn === true) {
-            var userProfile = JSON.parse(recvMsg.userInfo)
+        if (message.type === 'userInfo' || message.type === 'successLogin') {
+          if (message.loginYn === true) {
+            var userProfile = JSON.parse(message.userInfo)
             localStorage.setItem('loginYn', true)
-            /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
-              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
-            } else */
-            /* if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
-              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.push({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
-            } else {
-              await saveUser(userProfile) // 서버에 save요청
-              router.replace({ path: '/' })
-            } */
-            var user = {}
-            user.soAccessToken = userProfile.aToken
-            var deviceInfo = userProfile.deviceInfo
-            if (deviceInfo) {
-              user.fcmKey = deviceInfo.fcmKey
-              user.osName = deviceInfo.systemName
-              user.osVersion = deviceInfo.systemVersion
-              user.deviceId = deviceInfo.uniqueId
-              user.deviceModel = deviceInfo.model
-              user.deviceBrand = deviceInfo.brand
-              user.isTablet = deviceInfo.isTablet
-              user.countryCode = deviceInfo.contry
-              user.areaName = deviceInfo.timeZome
-            }
-            store.dispatch('D_USER/AC_USER', user)
             await saveUser(userProfile) // 서버에 save요청
             router.replace({ path: '/' })
           } else {
             router.replace({ path: 'policies' })
           }
-        } else if (recvMsg.type === 'CheckUserPermission') {
+        } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
-        } else if (recvMsg.type === 'requestUserPermission') {
+        } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
-        } else if (recvMsg.type === 'deviceSystemName') {
-          localStorage.setItem('systemName', recvMsg.systemNameData)
-        } else if (recvMsg.type === 'deepLinkUrl') {
-          // alert(recvMsg.url)
-          store.commit('D_HISTORY/changeDeepLinkQueue', recvMsg.url)
-          var urlString = recvMsg.url.toString()
-          // alert(urlString)
+        } else if (message.type === 'deviceSystemName') {
+          localStorage.setItem('systemName', message.systemNameData)
+        } else if (message.type === 'deepLinkUrl') {
+          store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
+          var urlString = message.url.toString()
           const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com', ''))
           var queList = []
           for (const param of params) {
@@ -133,40 +100,53 @@ const isJsonString = (str) => {
           }
 
           store.commit('D_HISTORY/changeDeepLinkQueue', queList)
-        } else if (recvMsg.type === 'goback') {
+        } else if (message.type === 'goback') {
           if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
           var history = store.getters['D_HISTORY/hStack']
+          var removePage = history[history.length - 1]
           if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
             router.replace({ path: '/' })
           }
-          var updatePage = store.getters['D_HISTORY/hUpdate']
-          store.commit('D_HISTORY/updatePage', updatePage + 1)
-        } else if (recvMsg.type === 'pushmsg') {
-          var userKey = store.getters['D_USER/GE_USER'].userKey
-          if (userKey === 123 || userKey === 255 || userKey === 104) { alert(' STEP - 0  + push msg Noti를 수신') }
-          // 20221107수정필요
-
-          // 1. update notiData to vuex
-          var setOk = await functions.saveVuexRecvMsg(recvMsg)
-          if (!setOk) return false
-          // 2. noti -> add vuex -> views
-          // 클릭이벤트로 실행된 함수일 때만
-          if (JSON.parse(recvMsg.pushMessage).arrivedYn === true || JSON.parse(recvMsg.pushMessage).arrivedYn === 'true' ||
-                JSON.parse(recvMsg.pushMessage).appActiveYn === true || JSON.parse(recvMsg.pushMessage).appActiveYn === 'true') {
+          var current = store.getters['D_HISTORY/hUpdate']
+          store.commit('D_HISTORY/updatePage', current + 1)
+        } else if (message.type === 'pushmsg') {
+          var notiDetailObj = null
+          var appActiveYn = JSON.parse(message.pushMessage).arrivedYn
+          if (JSON.parse(message.pushMessage).backgroundYn) {
+            notiDetailObj = JSON.parse(message.pushMessage)
           } else {
-            if (userKey === 123 || userKey === 255 || userKey === 104) { alert(' STEP - 0  + 수신 후 AC_NEW_NOTI 실행 !! ') }
-            store.dispatch('D_NOTI/AC_NEW_NOTI', recvMsg)
+            if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+              notiDetailObj = JSON.parse(message.pushMessage).noti.data.item.data
+            } else {
+              notiDetailObj = JSON.parse(message.pushMessage).noti.data
+            }
           }
-        } else if (recvMsg.type === 'appInfo') {
-          var appInfo = JSON.parse(recvMsg.appInfo)
-          localStorage.setItem('appInfo', recvMsg.appInfo)
+          var addVueResult = await functions.recvNotiFromBridge(message)
+          if (appActiveYn !== true && appActiveYn !== 'true') {
+            if (JSON.parse(notiDetailObj.userDo).userKey === store.getters['D_USER/GE_USER'].userKey) {
+              return
+            }
+            if (addVueResult === false) {
+              alert('해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요')
+              return
+            }
+            var popHistory = store.getters['D_HISTORY/GE_GPOP_STACK']
+            var currentPage = 0
+            if (popHistory && popHistory.length > 0) {
+              currentPage = popHistory[popHistory.length - 1]
+            }
+            store.dispatch('D_NOTI/AC_ADD_NEW_NOTI', { notiDetailObj: notiDetailObj, currentPage: currentPage, addVueResult: addVueResult })
+            /* routerMain.methods.recvNotiFormBridge(notiDetailObj, currentPage, addVueResult) */
+          }
+        } else if (message.type === 'appInfo') {
+          var appInfo = JSON.parse(message.appInfo)
+          localStorage.setItem('appInfo', message.appInfo)
           if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
             var systemName = localStorage.getItem('systemName')
           }
 
           if (systemName === 'android' || systemName === 'Android') {
             if (appInfo.current !== appInfo.last) {
-              // alert('최신버전으로 업데이트 해주세요')
               /* alert('앱을 최신 버전으로 업데이트 해주세요.')
               // this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
               // this.checkVersionPopShowYn = true
@@ -205,12 +185,12 @@ const isJsonString = (str) => {
             document.body.removeChild(aTag)
             // window.open(appInfo.playStoreUrl, '_blank')
           } */
-        } else if (recvMsg.type === 'netStateYn') {
-          store.dispatch('D_USER/AC_NET_STATE', recvMsg.netStateYn)
-          // localStorage.setItem('netStateYn', recvMsg.netStateYn)
-          // var appInfo = JSON.parse(recvMsg.appInfo)
+        } else if (message.type === 'netStateYn') {
+          store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
+          // localStorage.setItem('netStateYn', message.netStateYn)
+          // var appInfo = JSON.parse(message.appInfo)
           // alert(localStorage.getItem('netStateYn') + '!!!!')
-          // localStorage.setItem('appInfo', recvMsg.appInfo)
+          // localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
               // alert('최신버전으로 업데이트 해주세요')
               var aTag
@@ -227,28 +207,26 @@ const isJsonString = (str) => {
               document.body.removeChild(aTag)
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
-        } else if (recvMsg.type === 'activeApp') {
-          // alert(recvMsg.activeYn)
-          // store.dispatch('D_USER/AC_NET_STATE', recvMsg.activeYn)
-        } else if (recvMsg.type === 'addConsole') {
-          // alert(JSON.stringify(recvMsg.log))
-          // this.$addConsole(recvMsg.log)
-          // alert(recvMsg.activeYn)
-          // store.dispatch('D_USER/AC_NET_STATE', recvMsg.activeYn)
+        } else if (message.type === 'activeApp') {
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
+        } else if (message.type === 'addConsole') {
+          // this.$addConsole(message.log)
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
+        return
       }
 
       // callback을 트리거한다.
-      /* if (callbacks[recvMsg.msgId]) {
-        if (recvMsg.isSuccessfull) {
-          callbacks[recvMsg.msgId].onsuccess.call(null, recvMsg)
+      if (callbacks[message.msgId]) {
+        if (message.isSuccessfull) {
+          callbacks[message.msgId].onsuccess.call(null, message)
         } else {
-          callbacks[recvMsg.msgId].onerror.call(null, recvMsg)
+          callbacks[message.msgId].onerror.call(null, message)
         }
-        delete callbacks[recvMsg.msgId]
-      } */
+        delete callbacks[message.msgId]
+      }
     }
   }
   init()

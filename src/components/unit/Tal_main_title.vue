@@ -30,11 +30,12 @@ export default {
       var params = new Object()
       if (moreLink === 'push') {
         params.targetType = 'pushList'
+        params.popHeaderText = '알림'
       } else if (moreLink === 'subs') {
         params.targetType = 'chanList'
+        params.popHeaderText = '채널'
       }
       this.$emit('openPop', params)
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     }
   }
 }

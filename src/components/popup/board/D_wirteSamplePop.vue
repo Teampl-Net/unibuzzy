@@ -2,7 +2,7 @@
     <div style="float: left">
         <div  @click="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 9999999;"></div>
         <transition name="showUp">
-            <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem 0.8rem 0 0; height: 80%; position: fixed; background: #FFF; z-index: 99999999; bottom: 0; left: 10%;">
+            <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; height: 80%; position: fixed; background: #FFF; z-index: 99999999; top: 10%; left: 10%;">
                 <div style="width: 100%; padding: 12px 20px; height: 50px; float: left; position: relative;" class="headerShadow">
                     <p class="font18 fontBold textLeft">샘플 {{makeType === 'modi'? '수정' : '추가'}}</p>
                     <img @click="closeXPop" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 12px; width: 25px;" alt="">
@@ -128,7 +128,6 @@ export default {
         }
         scrollTarget.scrollTo({ left: toLeft, behavior: 'smooth' })
       } else {
-        // alert(scrollW)
         scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
       }
     },

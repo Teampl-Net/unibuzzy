@@ -125,21 +125,20 @@ export default {
           // params.targetKey = value.targetKey
           // params.page = value.page
           // params.cIdx = value.index
-          // params.clickContentsKey = value.contentsKey
+          // params.targetContentsKey = value.contentsKey
           params.chanName = value.nameMtext
-        } else if (value.targetType === 'boardDetail') {
+        } /* else if (value.targetType === 'contentsDetail') {
           params = value
         } else {
           params.targetType = value.targetType
           params.alimTabType = this.viewTab
-        }
+        } */
       } else {
-        params.targetType = 'pushDetail'
-        params.value = value
+        /* params.targetType = 'contentsDetail'
+        params.value = value */
       }
       if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
       if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.nameMtext }
-      // alert(JSON.stringify(params))
       this.$emit('openPop', params)
     },
     async refreshList () {
@@ -169,7 +168,6 @@ export default {
     },
     async reLoad () {
       // this.$refs.activeBarPushListTop5.switchtab(0)
-      // alert(true)
       this.changeTab('A')
       await this.$refs.activeBarPushListTop5.switchtab(0)
       // await this.$refs.activeBarPushListTop5.selectTab('N')

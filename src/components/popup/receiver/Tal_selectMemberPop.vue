@@ -105,6 +105,7 @@ export default {
       param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.currentTeamKey
       param.newMemYn = true
+      param.popHeaderText = '유저 추가'
       this.$emit('openPop', param)
     },
     changeSelectMemberList (data) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createRouter, createWebHashHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 
@@ -207,13 +208,13 @@ const routes = [
     name: 'saveName',
     props: true,
     component: saveName
-  },
+  }/* ,
   {
     path: '/test',
     name: 'test',
     props: true,
     component: suminTest
-  },
+  }, */
   // {
   //   path: '/myChanList',
   //   name: 'myChanList',
@@ -221,11 +222,11 @@ const routes = [
   //   component: myChanList
   // },
 
-  {
+  /* {
     path: '/writePushTest',
     name: 'admWritePush',
     component: admWritePush
-  },
+  }, */
   // {
   //  path: '/about',
   // name: 'About',
@@ -238,7 +239,7 @@ const routes = [
   //   path: '/howToUse',
   //   component: howToUse
   // },
-  {
+  /* {
     path: '/helpMemberPop',
     component: helpMemberPop
   },
@@ -257,7 +258,7 @@ const routes = [
   {
     path: '/myActList',
     component: myActList
-  }
+  } */
 ]
 
 const router = createRouter({

@@ -139,6 +139,7 @@ export default {
       // this.selectBookListShowYn = true
       var param = new Object()
       param.targetType = 'selectMemberPop'
+      param.popHeaderText = '대상 선택'
       param.pSelectedList = managerofferList
       param.managerOpenYn = true
       param.selectMemberType = 'manager'

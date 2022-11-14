@@ -1,7 +1,7 @@
 <template>
     <div style="float: left">
         <div @click="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000040; z-index: 9999999;"></div>
-        <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem; height: 40%; position: fixed; background: #FFF; z-index: 99999999; top: 25%; left: 10%;">
+        <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem; height: 40%; position: fixed; background: #FFF; z-index: 99999999; top: 20%; left: 10%;">
             <div style="width: 100%; padding: 8px 20px; height: 40px; float: left;" class="headerShadow">
                 <p class="font18 fontBold textLeft">샘플 선택</p>
             </div>
@@ -118,7 +118,6 @@ export default {
         }
         scrollTarget.scrollTo({ left: toLeft, behavior: 'smooth' })
       } else {
-        // alert(scrollW)
         scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
       }
     },

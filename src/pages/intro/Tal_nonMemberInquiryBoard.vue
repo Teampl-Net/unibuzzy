@@ -294,7 +294,8 @@ export default {
       params.cabinetKey = 11188
       params.targetKey = 11188
       value.value = params
-      value.targetType = 'boardDetail'
+      value.targetType = 'contentsDetail'
+      value.popHeaderText = '비회원 문의게시판'
       this.$emit('openPop', value)
     }
   },

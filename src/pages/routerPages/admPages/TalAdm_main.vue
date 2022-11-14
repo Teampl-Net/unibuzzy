@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     openPushDetailPop (param) {
-      param.targetType = 'pushDetail'
+      param.targetType = 'contentsDetail'
       this.$emit('openPop', param)
     },
     closeXPop () {

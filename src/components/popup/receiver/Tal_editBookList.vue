@@ -238,6 +238,7 @@ export default {
             // this.newYn = false
             var data = new Object()
             data.targetType = 'bookMemberDetail'
+            param.popHeaderText = '유저 추가'
             data.currentCabinetKey = this.selectBookDetail.cabinetKey
             data.currentTeamKey = this.CHANNEL_DETAIL.teamKey
             this.$emit('openPop',data)
@@ -459,6 +460,7 @@ export default {
             var param = new Object()
             param.targetType = 'selectMemberPop'
             param.cabinetNameMtext = this.selectBookDetail.cabinetNameMtext
+            param.popHeaderText = this.selectBookDetail.cabinetNameMtext + '에 추가할 유저'
             param.pSelectedList = this.memberList
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'

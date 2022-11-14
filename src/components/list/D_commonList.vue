@@ -1,11 +1,11 @@
 <template>
 <div style="width: 100%; flaot: left;">
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-      <myObserver v-if="clickContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
+      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
-        <template v-for="(alim, index0) in this.commonListData" :change="changeData" :key="index0" >
-          <div @click="clickInfo(alim)" :id="'contentsCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+        <template v-for="(alim, index0) in this.commonListData" :key="index0" >
+          <div @click="clickInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea" :style="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn? 'border-bottom: none; margin-bottom: 0;' : ''">
                 <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -54,9 +54,11 @@
                       <!-- <p class="fl font14 lightGray" >{{alim.attachFileList.length}}</p> -->
                   </div>
                   <div @click="clickCard(alim)"  v-if="(alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)) && alim.workStatCodeKey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                  <div v-if="(alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workStatCodeKey" class="font14 fr lightGray">목표: {{alim.workToDate? this.$dayjs(alim.workToDate).add(9, 'hour').format('YYYY/MM/DD'): '미정'}}</div>
-                  <div @click="clickCard(alim)"  v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                  <statCodeComponent :teamKey="alim.creTeamKey" :alimDetail="alim" :contentsKey="alim.contentsKey" v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
+                  <div v-if="(!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workToDate" class="font14 fr lightGray">목표: {{alim.workToDate? this.$dayjs(alim.workToDate).add(9, 'hour').format('YYYY/MM/DD'): '미정'}}</div>
+                  <div @click="clickCard(alim)"  v-if="(!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workToDate" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <div v-if="(!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workUserKey" class="font14 fr lightGray">담당자: {{alim.workUserKey? alim.workUserKey + this.$changeText(alim.workUserName): '미정'}}</div>
+                  <div @click="clickCard(alim)"  v-if="(!(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey))&& alim.workUserKey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
+                  <statCodeComponent @click="this.$emit('openWorkStatePop', alim)" :currentWorker="{workUserKey: alim.workUserKey, workUserName: alim.workUserName}" :teamKey="alim.creTeamKey" :alimDetail="alim" :contentsKey="alim.contentsKey" v-if="alim.workStatYn && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)" :codeList="alim.workStatCodeList" :currentCodeKey="alim.workStatCodeKey" class="fr "></statCodeComponent>
                 </div>
               </div>
               <!-- <div v-if="(this.shareAuth && this.shareAuth.V === false && alim.creUserKey !== this.GE_USER.userKey)" @click="zzz" class="font14 cursorP mbottom-05 bodyFullStr" v-html="notPerText()"></div> -->
@@ -101,10 +103,10 @@
 
                 </div>
               </div>
-              <div class="alimListMemoBorder" v-show="this.$getVuexMemo(alim.contentsKey).length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
-              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="this.$getVuexMemo(alim.contentsKey).length > 0 && findMemoOpend(alim.contentsKey) !== -1">
-                  <gMemoList @cMemoEditYn="cMemoEditYn" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="this.$getVuexMemo(alim.contentsKey)" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick" @memoEdit='memoEdit' :key="reloadKey" />
-                <div v-if="this.$countingTotalMemo(this.$getVuexMemo(alim.contentsKey)) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>
+              <div class="alimListMemoBorder" v-show="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
+              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1">
+                  <gMemoList @cMemoEditYn="cMemoEditYn" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick" @memoEdit='memoEdit' />
+                <div v-if="this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>
               </div>
             <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
             </div>
@@ -133,9 +135,6 @@ import statCodeComponent from '../board/D_manageStateCode.vue'
 export default {
     data: function () {
     return { // 데이터 정의
-      mainYn: false,
-      chanWrap: null,
-      currentScroll: 0,
       alimBigViewYn: false,
       confirmText: '',
       confirmPopShowYn: false,
@@ -147,8 +146,7 @@ export default {
       currentMemoList: [],
       mememoValue: undefined,
       currentContentsKey: null,
-      clickContentsKey: null,
-      changeData: 1,
+      targetCKey: null,
       reportYn: false,
       contentType: '',
       contentOwner: false,
@@ -171,8 +169,7 @@ export default {
       saveMemoLoadingYn: false,
       currentMemoTotal:0,
       currentMemoKey: 0,
-      tempMemoData: {},
-      reloadKey: 0
+      tempMemoData: {}
     }
   },
   components: {
@@ -184,10 +181,26 @@ export default {
     }
   },
   watch: {
+    notiScrollTarget: {
+      handler (value, old) {
+        if (value) {
+           this.contentsWich(value)
+        }
+      },
+      deep: true
+    },
   },
   updated() {
     if (this.emptyYn) {
       this.loadingRefHide()
+    }
+    if (this.commonListData) {
+
+      if (this.commonListData.length) {
+        if (this.targetCKey) {
+          this.contentsWich()
+        }
+      }
     }
     this.settingAtag()
   },
@@ -199,6 +212,11 @@ export default {
         })
     }
     this.settingAtag()
+    this.$nextTick(() => {
+      if (this.targetContentsKey) {
+        this.targetCKey = this.targetContentsKey
+      }
+    })
   },
   methods: {
     contentsMoreYn (alim) {
@@ -224,7 +242,6 @@ export default {
       this.$emit('memoEdit', editYn)
     },
     cMemoEditYn (editYn) {
-      // alert(editYn)
       this.$emit('cMemoEditYn', editYn)
     },
     notPerText(){
@@ -232,23 +249,6 @@ export default {
       html += '열람 권한이 없습니다.'
       html += '</div>'
       return html
-    },
-    async makeShareLink (key) {
-      var result = null
-      var thisthis = this
-      var params = {
-        dynamicLinkInfo: {
-          dynamicLinkDomain: 'dalim.page.link',
-          link: 'https://mo.d-alim.com?pushDetail=' + key +
-                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
-        },
-        suffix: { option: 'SHORT' }
-      }
-      await this.$axios.post('firebase/v1/shortLinks?key=AIzaSyCW-L18zOf2g5yR-iAey1U9AAE0uxxcQaE', params, { withCredentials: true })
-        .then(function (response) {
-          result = response.data.shortLink
-        })
-      return result
     },
     clickCard (alim) {
         if (alim.jobkindId === 'ALIM') {
@@ -277,11 +277,13 @@ export default {
       if(userShowYn === true){
         var param = {}
         param.targetType = 'bookMemberDetail'
+        param.popHeaderText = '프로필'
         param.readOnlyYn = true
         param.userKey = userKey
         param.teamKey = teamKey
         if (userKey === this.GE_USER.userKey) {
           param.selfYn = true
+          param.popHeaderText = '내 정보'
         } else {
           param.contentOpenYn = true
         }
@@ -322,9 +324,6 @@ export default {
         var inParam = {}
         inParam.mccKey = this.tempData.mccKey
         inParam.jobkindId = 'ALIM'
-        // inParam.teamKey = this.tempData.creTeamKey
-        // inParam.deleteYn = true
-
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.deleteMCabContents',
           param: inParam
@@ -346,10 +345,10 @@ export default {
       this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
       // this.$emit('delContents', inParam)
     },
-    async deleteAlimAll () {
+    /* async deleteAlimAll () {
         var contents
         // this.tempData.contentsKey
-    },
+    }, */
     openPop(value){
       this.$emit('openPop', value)
     },
@@ -388,7 +387,7 @@ export default {
             //
           } else if (type === 'delete') {
             if (allYn) {
-                this.deleteAlimAll()
+                /* this.deleteAlimAll() */
             } else {
               if (this.tempData.jobkindId === 'ALIM') {
                 this.deleteConfirm('alim')
@@ -398,7 +397,6 @@ export default {
 
             }
           } else if (type === 'alimBloc'){
-            // alert('ss')
           } else if (type === 'move' || type === 'copy') {
             this.moveOrCopyContent(type)
           } else if (type === 'writeBoard') {
@@ -617,44 +615,34 @@ export default {
       return -1
     },
 
-    async scrollCList (contentsKey) {
-      this.clickContentsKey = contentsKey
-      // alert(this.clickContentsKey)
-      if (!this.clickContentsKey) return
-      await this.$emit('scrollMoveToParents', targetContentWich)
-
-      var channelItemBoxDom = document.getElementById('channelCardWrap')
+    async contentsWich (key) {
+      if (!this.targetCKey && key) {this.targetCKey = key}
+      await this.$emit('targetContentScrollMove', targetContentWich)
+      var channelItemBoxDom = document.getElementById('summaryWrap')
       var this_ = this
       if(channelItemBoxDom.scrollHeight <= 50) {
-        var targetContentsCard = document.getElementById('contentsCard'+this.clickContentsKey)
-        if (targetContentsCard) {
-          var targetContentWich = targetContentsCard.offsetTop
+        var tempKey
+        if (this.targetCKey) tempKey = this.targetCKey
+        if (key !== undefined && key !== null && key !== '') { tempKey = key }
+        if (document.getElementById('memoCard'+tempKey)) {
+          var targetContentWich = document.getElementById('memoCard'+tempKey).offsetTop
           this.$emit('scrollMove', targetContentWich)
-          var idx = this.findContent(this.clickContentsKey)
+          var idx = this.findContent(tempKey)
           if (idx !== -1) {
-            if (this.commonListData[idx].jobkindId === 'BOAR' && ((this.$checkUserAuth(this.commonListData[idx].shareItem).V !== true) && this.commonListData[idx].creUserKey !== this.GE_USER.userKey)) return
-            else this.memoOpenClick({key: this.clickContentsKey, teamKey: null})
-
-            // if (this.commonListData[idx].jobkindId === 'BOAR' && (this.$checkUserAuth(this.commonListData[idx].shareItem).V !== true || this.commonListData[idx].creUserKey !== this.GE_USER.userKey)) {
-            //   return false
-            // } else {
-            //   this.memoOpenClick({key: this.targetCKey, teamKey: null})
-            // }
+            if ((!(this.$checkUserAuth(this.commonListData[idx].shareItem).V === true || this.commonListData[idx].creUserKey === this.GE_USER.userKey) && this.commonListData[idx].jobkindId === 'BOAR')) return 
+            else this.memoOpenClick({key: this.targetCKey, teamKey: null})
             this.$nextTick(() => {
-              this_.alimBigView(this_.commonListData[idx])
+              this_.alimBigView(this.commonListData[idx])
               // window.document.getElementById('bodyMore'+this.commonListData[idx].contentsKey).innerText = ''
             })
           }
-          this.clickContentsKey = null
-        } else {
-            this.clickContentsKey = null
-            return null
+          this.targetCKey = null
         }
       }
     },
     async scrollMove (wich) {
       await this.$nextTick(() => {
-        var a = document.getElementById('contentsCard'+this.currentContentsKey).offsetTop
+        var a = document.getElementById('memoCard'+this.currentContentsKey).offsetTop
         if (wich === -1){
           wich = document.getElementById(this.currentMemoList[this.currentMemoList.length - 1].memoKey).offsetTop
         }
@@ -726,8 +714,7 @@ export default {
     //   }
     // },
     pointAni (memoKey) {
-      // alert(memoKey)
-      var firstMemoCard = document.querySelectorAll('#contentsCard' + this.currentContentsKey + ' #' + memoKey)[0]
+      var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' #' + memoKey)[0]
       if (firstMemoCard) {
         // setTimeout(() => {
             firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
@@ -853,10 +840,6 @@ export default {
     findMemoOpend (key) {
       return this.openMemoList.indexOf(key)
     },
-    setMemoList(el){
-      // console.log('// console.log(el)')
-      // console.log(el)
-    },
     writeMememo (memo) {
       if (this.currentMemoKey !== memo.memoKey) {
         // this.tempMemoData = ''
@@ -876,9 +859,6 @@ export default {
     },
     openMemoListClear () {
       this.openMemoList = []
-    },
-    memoReload () {
-      this.reloadKey += 1
     },
     async memoOpenClick (param) {
       var key = param.key
@@ -905,7 +885,6 @@ export default {
       // this.$emit('memoOpenClick', param)
     },
     alimBigView (alim) {
-      // alert(alim.contentsKey)
         alim.bigYn = true
       // contentsKey, alim.attachMfilekey
         if (!document.getElementById('contentsListBodyArea'+alim.contentsKey)) return
@@ -914,11 +893,10 @@ export default {
         document.getElementById('contentsListBodyArea'+alim.contentsKey).style.marginBottom = '2rem'
         // document.getElementById('contentsListBodyArea'+alim.contentsKey).style.display
         window.document.getElementById('bodyMore'+alim.contentsKey).style.display = 'none'
+        // this.$nextTick(() => {
+        //   window.document.getElementById('bodyMore'+alim.contentsKey).innerText = ''
+        // })
 
-        this.setImgEvent(alim)
-
-    },
-    setImgEvent (alim) {
         var thisthis = this
         var imgList = document.querySelectorAll('#bodyFullStr'+alim.contentsKey + ' img')
         for (let m = 0; m < imgList.length; m++) {
@@ -976,6 +954,7 @@ export default {
                 imgList[m].style.opacity = 1
             })
         }
+
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -1063,7 +1042,6 @@ export default {
     // },
     async loadMoreMemo () {
         this.showMoreMemoTextYn = true
-        // alert(true)
         // // console.log('this.currentMemoObj', this.currentMemoObj)
         if (this.currentMemoObj.totalElements <= this.offsetInt ){
           this.showMoreMemoTextYn = false
@@ -1085,26 +1063,6 @@ export default {
         // }else {
         // }
         this.showMoreMemoTextYn = true
-    },
-    /** 그냥 length로 하면 cmemo인 대댓글의 갯수까지 카운트가 안되서 넣은 함수입니다!  */
-    settingOffsetIntTotalMemoCount (memoList) {
-      // console.log('#################')
-      // console.log(memoList)
-      var totalMemoCount = 0
-      if (memoList) {
-        for (let i = 0; i < memoList.length; i++) {
-            debugger
-            if (memoList[i].cmemoList.length > 0) {
-            for (let cmemoIndex = 0; cmemoIndex < memoList[i].cmemoList.length; cmemoIndex++) {
-                totalMemoCount += 1
-            }
-            }
-        }
-        // console.log('this.offsetInt : ' + this.offsetInt)
-        this.offsetInt = memoList.length + totalMemoCount
-        // console.log('#################')
-      }
-
     },
     async yesLoadMore (contentsKey) {
       // console.log('commonlist contentsKey : ' + contentsKey);
@@ -1128,9 +1086,9 @@ export default {
         var message = titleMsg
         // if (!text) {
             if (jobkindId === 'BOAR') {
-                var link = await this.$makeShareLink(contentsKey, 'boardDetail', message, title)
+                var link = await this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
             } else {
-                var link = await this.$makeShareLink(contentsKey, 'pushDetail', message, title)
+                var link = await this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
             }
             if (link) {
               var shareItem = { title: '더알림 ' + title, text: link, url: link }
@@ -1171,51 +1129,20 @@ export default {
     },
     resizeText (text, name) {
       if (text) {
-        // if (text.length > 15) {
-        //   text = text.substr(0, 15)
-        //   text += '...'
-        // }
       } else {
         text = '[' + this.$changeText(name) + '] 제목없는 알림'
       }
       return text
     },
-    saveScroll () {
-      this.currentScroll = this.chanWrap.scrollTop
-      this.$emit('currentScroll', this.currentScroll)
-    },
     goChanDetail (data) {
          debugger
        if (!this.shareAuth &&data.jobkindId === 'BOAR' && this.$checkUserAuth(data.shareItem).V === false && data.creUserKey !== this.GE_USER.userKey) return
-      // console.log(data)
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.jobkindId = data.jobkindId
-      if (data.jobkindId === 'ALIM') {
+        var param = new Object()
         param.targetType = 'chanDetail'
-        param.teamKey = data.creTeamKey
         param.targetKey = data.creTeamKey
         param.nameMtext = data.nameMtext
         param.chanName = data.nameMtext
-        param.clickContentsKey = data.contentsKey
-        // 세션에서 유저키 받아오기
-        if (data.creUserKey === this.GE_USER.userKey) {
-          param.ownerYn = true
-        }
-      } else {
-        param.contentsKey = data.contentsKey
-        param.jobkindId = data.jobkindId
-        param.teamKey = data.creTeamKey
-        param.value = data
-        param.targetType = 'boardDetail'
-        debugger
-        param.cabinetNameMtext = data.cabinetNameMtext
-        param.teamKey = data.creTeamKey
-        param.creTeamKey = data.creTeamKey
-        param.targetKey = data.contentsKey
-        param.cabinetKey = data.cabinetKey
-        param.jobkindId = 'BOAR'
-      }
       this.$emit('goDetail', param)
     },
     goDetail (value) {
@@ -1223,19 +1150,24 @@ export default {
        if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== userKey) return
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'pushDetail'
-      param.contentsKey = value.contentsKey
-      param.jobkindId = value.jobkindId
+      param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
+      console.log(param)
+      if (value.jobkindId === 'ALIM') {
+         param.popHeaderText = value.nameMtext
+      } else if (value.jobkindId === 'BOAR') {
+         param.popHeaderText = value.cabinetNameMtext
+      }
       param.teamKey = value.creTeamKey
+      param.jobkindId = value.jobkindId
       param.creTeamKey = value.creTeamKey
-      param.nameMtext = value.nameMtext
       if (value.officialYn) {
         param.officialYn = value.officialYn
       }
       param.value = value
       value.readYn = 1
       param.readYn = value.readYn
+      console.log(param)
       this.$emit('goDetail', param)
     },
 
@@ -1282,7 +1214,6 @@ export default {
         temp[indexOf].doKey = 0
 
         this.commonListData[idx].D_CONT_USER_DO = temp
-        this.changeData += 1
       } else {
         param.actYn = true
         param.targetKind = 'C'
@@ -1383,7 +1314,8 @@ export default {
       stickerList: [ ]
     },
     chanAlimYn: Boolean,
-    clickContentsKey: {},
+    targetContentsKey: {},
+    notiScrollTarget: {},
     emptyYn: Boolean,
     scollPosition: {},
     tempWriteMemoData: {}

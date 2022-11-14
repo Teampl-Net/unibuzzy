@@ -197,6 +197,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'createChannel'
+      param.popHeaderText = '채널 수정'
       param.targetKey = this.chanDetail.teamKey
       param.modiYn = true
       param.ownerYn = (JSON.parse(localStorage.getItem('sessionUser')).userKey === this.chanDetail.creUserKey)

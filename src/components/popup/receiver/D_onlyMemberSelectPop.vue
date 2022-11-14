@@ -104,6 +104,7 @@ export default {
       this.newYn = true
       var param = {}
       param.targetType = 'bookMemberDetail'
+      param.popHeaderText = '유저 추가'
       param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.currentTeamKey
       param.newMemYn = true

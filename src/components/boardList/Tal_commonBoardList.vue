@@ -156,9 +156,11 @@ export default {
         param.targetType = 'bookMemberDetail'
         param.readOnlyYn = true
         param.userKey = userKey
+        param.popHeaderText = '프로필'
         param.teamKey = teamKey
         if (userKey === this.creUser) {
           param.selfYn = true
+          param.popHeaderText = '내 정보'
         } else {
           param.contentOpenYn = true
         }
@@ -246,7 +248,8 @@ export default {
     goDetail (value) {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.targetType = 'boardDetail'
+      param.targetType = 'contentsDetail'
+      param.popHeaderText = value.cabinetNameMtext
       param.contentsKey = value.contentsKey
       param.creUserKey = value.creUserKey
       param.targetKey = value.contentsKey

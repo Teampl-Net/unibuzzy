@@ -1,15 +1,17 @@
 <template>
   <div id="moTheAlimWrap" style="height: 100%; width: 100%;">
+    <gAxiosLoading />
     <transition name="showModal">
-      <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :params="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
+      <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
-    <router-view @openPop="openPop" />
+    <router-view ref="routerMainWrap" @openPop="openPop" />
   </div>
 </template>
 <script>
 
 export default {
+  name: 'moTheAlimWrap',
   metaInfo: {
     meta: [
       { charset: 'utf-8' },

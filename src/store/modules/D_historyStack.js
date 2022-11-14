@@ -36,6 +36,7 @@ const D_historyStack = {
     },
     updatePage (state, page) {
       state.pageUpdate = page
+      state.currentPage = page[page.length - 1]
     },
     addPushQueue (state, page) {
       state.recvPushQueue = page

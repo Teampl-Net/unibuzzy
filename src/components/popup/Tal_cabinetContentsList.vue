@@ -130,17 +130,8 @@ export default {
       // eslint-disable-next-line no-new-object
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      // if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-      //   params.targetType = value.targetType
-      // } else {
-      //   params.targetType = 'pushDetail'
-      // }
-
       params = value
-      // if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      // if (value.nameMtext !== undefined && value.teamName !== null && value.teamName !== '') { params.chanName = value.teamName }
       this.$emit('openPop', params)
-      // this.$router.replace({ name: 'pushDetail', params: { pushKey: idx } })
     },
 
     changeTab (tabName) {

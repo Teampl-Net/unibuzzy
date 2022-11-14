@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; float: left;">
-    <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" class="fl w-100P" @openPop= "openPop" />
+    <listTitle :channelTabType="this.viewTab" listTitle= "채널" :moreLink="this.moreLink" class="fl w-100P" @openPop="openPop" />
     <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
     <gActiveBar  ref="activeBarChanListTop5" :tabList="this.activeTabList" class=" fl" @changeTab="changeTab" />
     <div class="chanTop5Wrap fl" >
@@ -104,7 +104,6 @@ export default {
   watch: {
     chanList (value, old) {
       if (value) {
-        // alert(true)
         this.mainChanList = value
       }
     },
@@ -197,20 +196,25 @@ export default {
       } */
     },
     openPop (value) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-        params.targetType = value.targetType
-        params.channelTabType = this.viewTab
-      } else {
+      var params = value
+      console.log(value)
+      // eslint-disable-next-line no-debugger
+      debugger
+      params.targetType = value.targetType
+      if (value.teamKey) {
         params.targetType = 'chanDetail'
-      }
-      if (params.targetType === 'chanDetail' && this.viewTab === 'user') {
-        value.followYn = true
+        params.targetKey = value.teamKey
+        params.nameMtext = value.nameMtext
+        /* params.popHeaderText = value.nameMtext */
+        params.chanName = value.nameMtext
+        if (this.viewTab === 'user') {
+          value.followYn = true
+        }
+      } else if (value.targetType === 'chanList') {
+        params.popHeaderText = '채널'
       }
       params.value = value
-      if (value.teamKey !== undefined && value.teamKey !== null && value.teamKey !== '') { params.targetKey = value.teamKey }
-      if (value.nameMtext !== undefined && value.nameMtext !== null && value.nameMtext !== '') { params.chanName = this.$makeMtextMap(value.nameMtext, 'KO') }
+      params.channelTabType = this.viewTab
       this.$emit('openPop', params)
     },
     settingNumType (num) {

@@ -236,6 +236,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'createChannel'
+      params.popHeaderText = '채널 생성'
       this.$emit('openPop', params)
     },
     openManagerChanDetail (param) {

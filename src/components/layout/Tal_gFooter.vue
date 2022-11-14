@@ -45,10 +45,9 @@ export default {
       if (page === this.$router.currentRoute._rawValue.path) {
         return
       }
-      // alert(page)
       this.activeFooter = page
       // await this.$router.push(page)
-      this.$emit('changePath', page)
+      this.$emit('changeRouterPath', page)
 
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */

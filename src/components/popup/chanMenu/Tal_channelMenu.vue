@@ -264,6 +264,7 @@ export default {
     myChanEdit(){
       var param = {}
       param.targetType = 'myChanMenuEdit'
+      param.popHeaderText = '채널 관리'
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.currentTeamKey = this.chanAlimListTeamKey
       param.teamNameMtext = this.teamName()
@@ -323,6 +324,7 @@ export default {
       var param = new Object()
       param.value = this.propData.value
       param.targetType = 'editManagerList'
+      param.popHeaderText = '매니저 관리'
       var teamName
       if(this.propData) {
         if(this.propData.value) {
@@ -349,6 +351,8 @@ export default {
       // // console.log(data)
       var params = {}
       params.targetType = 'editBookList'
+      params.chanName = this.propData.value.nameMtext || this.propData.value.teamNameMtext
+      params.popHeaderText = '주소록 관리'
       params.currentTeamKey = this.chanAlimListTeamKey
       params.teamKey = this.chanAlimListTeamKey
       // params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
@@ -517,6 +521,7 @@ export default {
     editChanMenu (){
       var param = {}
       param.targetType = 'editBoard'
+      param.popHeaderText = '게시판 관리'
       param.currentTeamKey = this.chanAlimListTeamKey
       param.teamKey = this.chanAlimListTeamKey
 
@@ -544,6 +549,8 @@ export default {
     receiverClick(data){
       var params = new Object()
       params.targetType = 'editBookList'
+      params.chanName = this.propData.value.nameMtext || this.propData.value.teamNameMtext
+      params.popHeaderText = '주소록 관리'
       params.currentTeamKey = this.chanAlimListTeamKey
       // params.teamNameMtext = this.$changeText(this.propData.value.nameMtext)
       this.propData.clickData = '' // 클릭한 데이터 지우기

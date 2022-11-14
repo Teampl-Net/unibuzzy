@@ -7,7 +7,6 @@ const D_CONTENTS = {
     alimList: [],
     boardList: [],
     teamList: [],
-    memoList: Map(),
     changeContentsKey: null
   },
   getters: {
@@ -52,17 +51,11 @@ const D_CONTENTS = {
     GE_MAIN_TEAM_LIST (state) {
       return state.teamList
     },
-    GE_ALL_MEMO_LIST (state) {
-      return state.memoList
-    },
     GE_RECENT_CHANGE_CONTENTS (state) {
       return state.changeContentsKey
     }
   },
   mutations: {
-    /* MU_ALL_MEMO_LIST: (state, payload) => {
-      state.memoList.set(payload.contentsKey, payload.memo)
-    }, */
     MU_MAIN_ALIM_LIST: (state, payload) => {
       state.alimList = payload
     },
@@ -97,9 +90,6 @@ const D_CONTENTS = {
       }
       commit('MU_MAIN_TEAM_LIST', payload)
     }
-    /* AC_ALL_MEMO_LIST: ({ commit }, payload) => {
-      commit('MU_ALL_MEMO_LIST', payload)
-    } */
   }
 }
 

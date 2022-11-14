@@ -65,6 +65,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'chanList'
+      param.popHeaderText = '채널'
       param.channelTabType = 'mychannel'
       this.$emit('openPop', param)
     },
@@ -72,6 +73,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'setMypage'
+      param.popHeaderText = '프로필 설정'
       this.$emit('openPop', param)
     },
     goDetail (value) {

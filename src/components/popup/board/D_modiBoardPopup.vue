@@ -972,7 +972,7 @@ export default {
         // // console.log('@@성공@@')
         this.okPopYn = true
       }
-      // this.$store.dispatch('D_CHANNEL/AC_ADD_NOTI_CHAN_LIST', 'CABINET')
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
     },
     closePop () {
       this.$emit('closePop')

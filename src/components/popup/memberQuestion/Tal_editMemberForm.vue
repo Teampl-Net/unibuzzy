@@ -75,6 +75,7 @@ export default {
     preview () {
       var param = {}
       param.targetType = 'mQPreview'
+      param.popHeaderText = '공개신청서 미리보기'
       param.teamKey = this.propData.targetKey
       param.formKey = this.propData.formKey
       this.$emit('openPop', param)

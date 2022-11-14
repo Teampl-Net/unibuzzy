@@ -8,8 +8,8 @@ import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_a
 import { commonMethods } from './Tal_common'
 var this_ = this
 // var g_user = store.getters['D_USER/GE_USER']
-var gAxiosQueue = []
-var gNotiDetail
+var g_axiosQueue = []
+var notiDetail
 export const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -35,11 +35,10 @@ export const functions = {
   async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
     var memo = {}
     memo.targetKind = 'C'
-    memo.parentMemoKey = parentMemoKey
+    memo.allMemoYn = true
     memo.targetKey = targetKey
     memo.memoKey = memoKey
-
-    var result = await this.$commonAxiosFunction({
+    var result = await commonAxiosFunction({
       url: 'service/tp.getMemoList',
       param: memo
     }, true)
@@ -121,8 +120,8 @@ export const functions = {
     }
   },
   async getBoardCabinetDetail (teamKey, targetKey) {
-    if (gAxiosQueue.findIndex((item) => item === 'getBoardCabinetDetail') !== -1) return
-    gAxiosQueue.push('getBoardCabinetDetail')
+    if (g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail') !== -1) return
+    g_axiosQueue.push('getBoardCabinetDetail')
     // eslint-disable-next-line no-new-object
     var param = new Object()
     var tt = this.propData
@@ -130,8 +129,8 @@ export const functions = {
     param.currentTeamKey = teamKey
     param.cabinetKey = targetKey
     var resultList = await this.$getCabinetDetail(param)
-    var queueIndex = gAxiosQueue.findIndex((item) => item === 'getBoardCabinetDetail')
-    gAxiosQueue.splice(queueIndex, 1)
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail')
+    g_axiosQueue.splice(queueIndex, 1)
     // mShareItemList가 잘 들어오면 save잘 된것
     //     this.commonListData = resultList.content
     if (resultList && resultList.mCabinet) {
@@ -140,23 +139,9 @@ export const functions = {
       return null
     }
   },
-  getVuexMemo (targetKey) {
-    var vuexMemoList = store.getters['D_CHANNEL/GE_ALL_MEMO_LIST']
-    if (vuexMemoList) {
-      var result = vuexMemoList.get(targetKey)
-      // var result = vuexMemoList.filter(data => data.targetKey === targetKey)
-      if (result && result.length > 0) {
-        return result
-      } else {
-        return []
-      }
-    } else {
-      return []
-    }
-  },
   getContentsDetail (teamDetail, targetKey, teamKey) {
-    // if (gAxiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
-    // gAxiosQueue.push('getContentsDetail')
+    // if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
+    // g_axiosQueue.push('getContentsDetail')
     var detailData
     var dataList
     debugger
@@ -179,15 +164,15 @@ export const functions = {
       if (!detailData || detailData.length === 0) {
         detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
       }
-      // var queueIndex = gAxiosQueue.findIndex((item) => item === 'getContentsDetail')
-      // gAxiosQueue.splice(queueIndex, 1)
+      // var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
+      // g_axiosQueue.splice(queueIndex, 1)
       return detailData
     }
   },
   async addChanList (teamKey) {
     var result = null
-    // if (gAxiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
-    // gAxiosQueue.push('addChanList')
+    // if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+    // g_axiosQueue.push('addChanList')
     var paramMap = new Map()
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
@@ -201,63 +186,78 @@ export const functions = {
     var response = resultList.data.content[0]
 
     var team = null
+    if (!response) return
     response.detailPageYn = true
     var teamList = await functions.getDetail('TEAM', teamKey)
     // var queueIndex = null
     if (teamList && teamList.length > 0) {
       console.log('이미있던 채널맞음')
       team = teamList[0]
-      if (team.copyTextStr) {
-        response.copyTextStr = team.copyTextStr
-      }
       response.ELEMENTS = team.ELEMENTS
 
-      // queueIndex = gAxiosQueue.findIndex((item) => item === 'addChanList')
-      // gAxiosQueue.splice(queueIndex, 1)
+      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+      // g_axiosQueue.splice(queueIndex, 1)
       await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
-      result = true
+      result = response
     } else {
       console.log('없던 채널이라 추가했음----------------------------------------------------------')
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
 
-      // queueIndex = gAxiosQueue.findIndex((item) => item === 'addChanList')
-      // gAxiosQueue.splice(queueIndex, 1)
+      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+      // g_axiosQueue.splice(queueIndex, 1)
       result = false
     }
-    // alert('result:' + result)
     return result
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
-  async saveVuexRecvMsg (recvMsg) {
-    // var message
-    var result = false
+  async recvNotiFromBridge (message) {
+    var addVueResult = false
     try {
-      if (JSON.parse(recvMsg.pushMessage).backgroundYn) {
-        gNotiDetail = JSON.parse(recvMsg.pushMessage)
-      } else {
-        if (JSON.parse(recvMsg.pushMessage).noti.data.item !== undefined && JSON.parse(recvMsg.pushMessage).noti.data.item.data !== undefined && JSON.parse(recvMsg.pushMessage).noti.data.item.data !== null && JSON.parse(recvMsg.pushMessage).noti.data.item.data !== '') {
-          gNotiDetail = JSON.parse(recvMsg.pushMessage).noti.data.item.data
+      if (message.type === 'pushmsg') {
+        if (JSON.parse(message.pushMessage).backgroundYn) {
+          notiDetail = JSON.parse(message.pushMessage)
         } else {
-          gNotiDetail = JSON.parse(recvMsg.pushMessage).noti.data
+          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+            notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          } else {
+            notiDetail = JSON.parse(message.pushMessage).noti.data
+          }
         }
-      }
-      //  alert(JSON.stringify(notiDetail))
-      if (JSON.parse(gNotiDetail.userDo).targetKind === 'CONT') {
-        result = await this.addContents(JSON.parse(gNotiDetail.userDo).targetKey, gNotiDetail.jobkindId)
-        // result = await functions.setAlimNoti(recvMsg)
-      } else if (JSON.parse(gNotiDetail.userDo).targetKind === 'CABI') {
-        result = await this.addContents(JSON.parse(gNotiDetail.userDo).ISub, 'BOAR')
-        // result = functions.setCabiNoti(recvMsg)
-      } else if (JSON.parse(gNotiDetail.userDo).targetKind === 'TEAM') {
-        // result = functions.setChanNoti(recvMsg)
-        result = await this.addChanList(Number(gNotiDetail.creTeamKey))
-      } /* else if (JSON.parse(gNotiDetail.userDo).targetKind === 'MEMO') {
-          functions.setMemoNoti(message)
+        if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+          if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
+            var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+            memo.jobkindId = notiDetail.jobkindId
+            memo.creTeamKey = notiDetail.creTeamKey
+            await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
+            addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
+            // alert('addVueResult: ' + addVueResult)
+          } else {
+            addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+          }
+        } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
+          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+        } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
+          // alert(true)
+          addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
+        } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
+          functions.settingMemoNoti(message)
         } */
+      }
     } catch (err) {
       console.error('메세지를 파싱할수 없음 ' + err)
     }
-    return result
+    return addVueResult
+  },
+  async settingCabiNoti (message) {
+    await this.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+      return
+    } */
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        ;
+      }
+    }
   },
   async addContents (targetKey, jobkindId) {
     // eslint-disable-next-line no-new-object
@@ -269,42 +269,104 @@ export const functions = {
     var detailData = resultList.content[0]
     debugger
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-    store.dispatch('D_CHANNEL/AC_ALL_MEMO_LIST', { memo: detailData.memoList, contentsKey: detailData.contentsKey })
     return detailData
   },
-  async setAlimNoti () {
-    var findContentsYn = await this.addContents(JSON.parse(gNotiDetail.userDo).targetKey, gNotiDetail.jobkindId)
-    return findContentsYn
-  },
-  async setCabiNoti (message) {
-    var findContentsYn = await this.addContents(JSON.parse(gNotiDetail.userDo).ISub, 'BOAR')
-    return findContentsYn
-    /* if (Number(JSON.parse(gNotiDetail.userDo).userKey) === Number(g_user.userKey)) {
+  async settingAlimNoti (message) {
+    await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return
     } */
-  },
-  async setChanNoti (message) {
-    /* if (gNotiDetail.actType === 'FM' || gNotiDetail.actType === 'FL' || this.gNotiDetail.actType === 'RQ' || this.gNotiDetail.actType === 'AP' || gNotiDetail.actType === 'RM' || gNotiDetail.actType === 'MA' || gNotiDetail.actType === 'CR') {
-      await functions.addChanList(Number(gNotiDetail.creTeamKey))
-    } */
-  }
-  /*  async setMemoNoti (message) {
-    var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(gNotiDetail.userDo).ISub), Number(JSON.parse(gNotiDetail.userDo).targetKey))
-    memo_.jobkindId = gNotiDetail.jobkindId
-    memo_.creTeamKey = Number(gNotiDetail.creTeamKey)
-    await this.addContents(memo_.targetKey, gNotiDetail.jobkindId)
-    if (gNotiDetail.actYn === true || gNotiDetail.actYn === 'true') {
-      if (JSON.parse(recvMsg.pushMessage).arrivedYn === true || JSON.parse(recvMsg.pushMessage).arrivedYn === 'true') {
-
+    /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
+    store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        ;
       } else {
-        if (gNotiDetail.jobkindId === 'ALIM') {
-          // this.openPop({ targetKey: gNotiDetail.creTeamKey, clickContentsKey: JSON.parse(gNotiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
-        } else if (gNotiDetail.jobkindId === 'BOAR') {
-          // this.openPop({ targetKey: JSON.parse(gNotiDetail.userDo).targetKey, targetType: 'boardDetail', cabinetNameMtext: JSON.parse(gNotiDetail.userDo).targetName, value: notiDetail, pushOpenYn: true })
+      }
+    } else {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+        if (notiDetail.jobkindId !== 'BOAR') {
+          // if (this.$route.path === '/') {
+          //   this.$refs.mainRouterView.getMainBoard()
+          // }
+        }
+      } else {
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo), nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+      }
+    }
+  },
+  async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
+    var paramMap = new Map()
+    paramMap.set('teamKey', teamKey)
+    paramMap.set('userKey', userKey)
+    if (showProfileYn) {
+      paramMap.set('showProfileYn', showProfileYn)
+    } else {
+      if (managerYn) {
+        paramMap.set('managerYn', managerYn)
+      }
+    }
+    // paramMap.set('followerType', 'M')
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getFollowerList',
+      param: Object.fromEntries(paramMap)
+    }, true)
+    var user = result.data.content
+    return user
+  },
+  async settingChanNoti (message) {
+    if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP' || notiDetail.actType === 'RM' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
+      await functions.addChanList(Number(JSON.parse(notiDetail.userDo)))
+    }
+
+    if (((notiDetail.actType === 'ME' || notiDetail.actType === 'FM') || notiDetail.actType === 'RM' || (notiDetail.actType === 'MA'))) {
+      var channelL = functions.getDetail('TEAM', Number(JSON.parse(notiDetail.userDo).targetKey))
+      if (channelL) {
+        var user = null
+        if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
+        } else if (notiDetail.actType === 'MA') {
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          if (Number(JSON.parse(notiDetail.userDo).userKey) === store.getters['D_USER/GE_USER'].userKey) {
+            if (user.memberYn === 1 || user.memberYn === true) {
+            } else {
+              store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
+            }
+          }
+          // channelL[0].ELEMENTS.showProfileUserList.push(user)
+          if (user.length === 1) store.commit('D_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
         }
       }
     }
-  } */
+    if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+    } else {
+      // this.$router.replace({ path: '/' })
+      if (notiDetail.actType === 'FL') {
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      } else if (notiDetail.actType === 'MA') {
+        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+      }
+    }
+  },
+  async settingMemoNoti (message) {
+    var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
+    memo_.jobkindId = notiDetail.jobkindId
+    memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
+    await this.addContents(memo_.targetKey, notiDetail.jobkindId)
+    if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
+      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+
+      } else {
+        if (notiDetail.jobkindId === 'ALIM') {
+          // this.openPop({ targetKey: JSON.parse(notiDetail.userDo), targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+        } else if (notiDetail.jobkindId === 'BOAR') {
+        }
+      }
+    }
+  }
 }
 
 export default {
@@ -317,6 +379,6 @@ export default {
     Vue.config.globalProperties.$addChanList = functions.addChanList
     Vue.config.globalProperties.$addContents = functions.addContents
     Vue.config.globalProperties.$getContentsMemoList = functions.getContentsMemoList
-    Vue.config.globalProperties.$getVuexMemo = functions.getVuexMemo
+    Vue.config.globalProperties.$recvNotiFromBridge = functions.recvNotiFromBridge
   }
 }

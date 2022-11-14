@@ -1,148 +1,114 @@
 <template>
   <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
-    <gAxiosLoading class="fl"/>
-    <div :v-if="testsettse" style="display: none;">
+    <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="mMenuShowYn" @click="hideMenu"/>
+    <transition name="show_view">
+      <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="mMenuShowYn" />
+    </transition>
+    <div :v-show="testsettse" id="gChannelPopup" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
         <gChannelPop />
     </div>
-    <div v-if="shadowScreenShowYn" @click="returnEvent" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;">
-    </div>
-    <gConfirmPop :confirmText="netText" confirmType='no' @no='netBoxShowYn = false' v-if="netBoxShowYn" style="z-index: 9999999999999;"/>
-    <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='returnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="returnPopShowYn"/>
-    <!-- <loadingCompo v-if="loadingYn" /> -->
+    <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
+    <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
+    <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
+    <div v-if="mShadowScreenShowYn" @click="changeNetStatePop" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;"></div>
     <transition name="showModal">
-      <fullModal @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="getWindowSize"  id="gPop0" @closePop="closePop" v-if="this.popShowYn" parentPopN="0" :pParam="this.popParams" />
+      <fullModal @successWrite="successWriteBoard"  ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" />
     </transition>
-    <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="showMenuYn" @click="hideMenu"/>
-    <transition name="show_view">
-      <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="closeMainMenu" class="TalmenuStyle " v-if="showMenuYn" />
-    </transition>
-    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :headerTitle="this.headerTitle" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
-    <div v-if="reloadYn === false" :class="{ myPageBgColor : this.headerTitle === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-      <!-- <transition :name="transitionName" > -->
-        <router-view :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goChanDetail="goChanDetail" @openUserProfile="openPop" />
-      <!-- </transition> -->
-      <!-- <router-view v-slot="{ Component, route }">
-        <transition
-        :enter-active-class="route.meta.enterClass"
-        :leave-active-class="route.meta.leaveClass"
-        >
-          <component :is="Component" :popYn="false" :ref="mainRouterView" :routerReloadKey="this.routerReloadKey" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @openUserProfile="openPop" />
-        </transition>
-      </router-view> -->
+    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
+        <router-view :popYn="false" :ref="mainRouterView" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
-    <TalFooter @changePath="changePath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
-    <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 9999999999999999999999;"/>
+    <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
   </div>
 </template>
 
 <script>
-// import index from '../../router/index'
-// import { onMessage } from '../assets/js/webviewInterface.js'
-// import chanMenu from '../components/popup/chanMenu/Tal_channelMenu.vue'
 import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue'
 import TalMenu from '../components/popup/common/Tal_menu.vue'
-// import loadingCompo from '../components/layout/Tal_loading.vue'
-// import PullToRefresh from 'pulltorefreshjs'
-
 export default {
   data () {
     return {
-      showText: false,
-      popShowYn: false,
-      parentPopN: 0,
-      showMenuYn: false,
-      /* pushPopShowYn: false, */
-      pushPopParams: '',
-      popParams: '',
-      headerTitle: '',
-      loadingYn: true,
-      routerReloadKey: 0,
-      notiDetail: '',
-      notiDetailShowYn: false,
-      reloadYn: false,
-      testData: { contentsKey: 1001172, creUserKey: 1 },
-      systemName: 'iOS',
-      netBoxShowYn: false,
-      netText: '',
-      shadowScreenShowYn: false,
-      returnPopShowYn: false,
-      errorText: '',
-      failPopYn: false
+      mGPopShowYn: false,
+      mMenuShowYn: false,
+      mPopParams: null,
+      mRouterHeaderText: '',
+      mNetPopShowYn: false,
+      mNetPopBodyStr: '',
+      mShadowScreenShowYn: false,
+      mNetReturnPopShowYn: false,
+      mErrorPopBodyStr: '',
+      mErrorPopShowYn: false,
+      checkStep: 0
     }
   },
   props: {},
   name: 'mainRouter',
   components: {
     TalMenu,
-    // loadingCompo,
     pushPop
-    // chanMenu
   },
   beforeUnmount () {
   },
   mounted () {
+    this.$showChanCommonPop(false)
   },
   computed: {
-    GE_NEW_NOTI_OBJECT () {
-      return this.$store.getters['D_NOTI/GE_NEW_NOTI_OBJECT']
-    },
-    netState () {
+    GE_NET_STATE () {
       return this.$store.getters['D_USER/GE_NET_STATE']
     },
-    getWindowSize () {
+    GE_WINDOW_SIZE () {
       return {
         '--widndowWidth': window.innerWidth + 'px'
       }
     },
-    deepLinkQueue () {
+    GE_GPOP_STACK () {
+      return this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+    },
+    GE_DEEP_LINK_QUEUE () {
       return this.$store.getters['D_HISTORY/deepLinkQueue']
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_NEW_NOTI () {
+      return this.$store.getters['D_NOTI/GE_NEW_NOTI']
     }
   },
-  // beforeUpdate () {
-  //   // console.log(true)
-  // },
   watch: {
-    GE_NEW_NOTI_OBJECT: {
+    GE_NEW_NOTI: {
       handler (value, old) {
-        this.$dAlertLog(' STEP - 2  -- watch 감지 ')
-        if (!value || value.length === 0) return
-        var notiOpenTargetPage = value.notiOpenTargetPage
-        if (notiOpenTargetPage === 0 || notiOpenTargetPage === undefined) {
-          this.$dAlertLog(' STEP - 3  -- goDetail 실행 통과 ')
-          this.openPop(value)
+        if (value) {
+          var notiDetailObj = value.notiDetailObj
+          var currentPage = value.currentPage
+          var addVueResult = value.addVueResult
+          this.recvNotiFormBridge(notiDetailObj, currentPage, addVueResult)
         }
       },
       deep: true
     },
-    netState: {
+    GE_NET_STATE: {
       handler (value, old) {
-        // alert(value)
         var this_ = this
         if (old === false && value) {
-          // alert(true)
-          this.netText = '네트워크가 연결되었습니다!<br>'
-          this.shadowScreenShowYn = false
-          this.netBoxShowYn = true
+          this.mNetPopBodyStr = '네트워크가 연결되었습니다!<br>'
+          this.mShadowScreenShowYn = false
+          this.mNetPopShowYn = true
           setTimeout(() => {
-            this_.netBoxShowYn = false
+            this_.mNetPopShowYn = false
           }, 2000)
         } else if (old && value === false) {
-          // salert('연결끝')
-          this.shadowScreenShowYn = true
-          this.netText = '네트워크 연결이 끊어졌습니다.<br> 잠시후 다시시도 해주세요'
-          this.netBoxShowYn = true
+          this.mShadowScreenShowYn = true
+          this.mNetPopBodyStr = '네트워크 연결이 끊어졌습니다.<br> 잠시후 다시시도 해주세요'
+          this.mNetPopShowYn = true
           setTimeout(() => {
-            this_.netBoxShowYn = false
+            this_.mNetPopShowYn = false
           }, 2000)
         }
       },
       deep: true
     },
-    async deepLinkQueue (value, old) {
+    async GE_DEEP_LINK_QUEUE (value, old) {
       var history = this.$store.getters['D_HISTORY/hStack']
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (value.length > 0) {
@@ -150,16 +116,9 @@ export default {
           if (!target) return
           // eslint-disable-next-line no-new-object
           var param = new Object()
-          console.log(target)
-          // alert(JSON.stringify(target))
-          if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'pushDetail' || target.targetKind === 'boardDetail')) return
+          if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'contentsDetail')) return
           param.targetType = target.targetKind
           param.creTeamKey = Number(target.targetKey)
-          // alert(JSON.stringify(param))
-
-          // eslint-disable-next-line no-debugger
-          debugger
-          // 현재 에러남
           if (target.targetKind === 'chanDetail') {
             this.goChanDetail(param)
           } else {
@@ -171,71 +130,37 @@ export default {
     }
   },
   methods: {
-    returnEvent () {
-      if (this.returnPopShowYn === true) return
-      this.returnPopShowYn = true
+    changeNetStatePop () {
+      if (this.mNetReturnPopShowYn === true) return
+      this.mNetReturnPopShowYn = true
       var this_ = this
       setTimeout(() => {
-        this_.returnPopShowYn = false
+        this_.mNetReturnPopShowYn = false
       }, 2000)
     },
-    async changePath (page) {
+    async changeRouterPath (page) {
       await this.$router.replace(page)
     },
-    /* footerAni (transitionName) {
-      this.transitionName = transitionName
-    }, */
-    /* async getFollowerYn (teamKey) {
-      var paramMap = new Map()
-      paramMap.set('teamKey', teamKey)
-      paramMap.set('userKey', this.GE_USER.userKey)
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getFollowerList',
-        param: Object.fromEntries(paramMap)
-      })
-      // console.log(result)
-      if (result.data.content.length > 0) {
-        return true
-      } else {
-        return false
-      }
-    }, */
-    reloadPop () {
-      this.routerReloadKey += 1
-    },
-    // openDetailPop (params) {
-    // this.popParams = params
-    // this.popShowYn = true
-    // this.showMenuYn = false
-    // setTimeout(() => {
-    //   this.notiDetailShowYn = false
-    // }, 200)
-    // },
     closePushPop () {
       this.notiDetailShowYn = false
     },
     showMenu () {
-      this.showMenuYn = true
+      this.mMenuShowYn = true
     },
     hideMenu () {
-      this.showMenuYn = false
+      this.mMenuShowYn = false
     },
-    async openPop (param) {
-      this.popParams = param
-      // alert(JSON.stringify(params))
-      this.popShowYn = true
-      this.showMenuYn = false
+    async openPop (params) {
+      console.log(params)
+      this.mPopParams = params
+      this.mGPopShowYn = true
+      this.hideMenu()
     },
-    /* openPushPop (params) {
-      this.pushPopParams = params
-      this.pushPopShowYn = true
-    }, */
     async successWriteBoard (inParam) {
       this.$router.go(0)
       this.openPop(inParam)
     },
     closePop (reloadYn) {
-      // this.$refs.routerViewRef.reload()
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -244,145 +169,101 @@ export default {
       var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
       gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
       this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
-      // 라우트로 현재 path를 구하고 this.route... 이게 chanList인지를 따지고 refresh
-
-      if (reloadYn) {
-        this.routerReloadKey += 1
-        // console.log(this.$route.path)
-        // if (this.$route.path === '/') {
-        //   this.$refs.mainRouterView.reloadPage()
-        // }
-      }
-      this.popShowYn = false
+      this.mGPopShowYn = false
     },
-    /* closeXPushPop () {
-      this.pushPopShowYn = false
-    }, */
     changePageHeader (title) {
-      this.headerTitle = title
+      this.mRouterHeaderText = title
     },
-    closeMainMenu (page) {
-      this.showMenuYn = false
+    goPage (page) {
+      this.mMenuShowYn = false
       this.$router.replace({ path: '/' + page })
     },
-    async goDetail (value) {
-      if (value.chanYn) {
-        this.goChanDetail(value)
+    async goDetail (detailValue) {
+      if (detailValue.chanYn) {
+        this.goChanDetail(detailValue)
       } else {
         // eslint-disable-next-line no-new-object
-        var param = new Object()
-        // var currentPage = this.$store.getters['D_HISTORY/hCPage']
-        // var indexOf = null
-        // if (currentPage === this.popId) {
-
-        // }
-        if (value.jobkindId === 'ALIM') {
-          param.targetType = 'pushDetail'
-        // indexOf = currentPage.indexOf('pushDetail')
-        } else if (value.jobkindId === 'BOAR') {
-          param.targetType = 'boardDetail'
-        // indexOf = currentPage.indexOf('boardDetail')
+        var detailParam = new Object()
+        detailParam.targetType = 'contentsDetail'
+        detailParam.targetKey = detailValue.contentsKey
+        // param.targetType = value.contentsKey
+        if (detailValue.jobkindId === 'BOAR') {
+          detailParam.cabinetKey = detailValue.cabinetKey
+          detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
+          detailParam.popHeaderText = detailValue.cabinetNameMtext
         } else {
-          // 20221107수정필요
-          alert('컨텐츠 이동불가')
-          return
-          // param.targetType = 'boardDetail' // 수정필요
+          detailParam.nameMtext = detailValue.nameMtext
+          detailParam.teamName = detailValue.nameMtext
+          detailParam.popHeaderText = detailValue.nameMtext
         }
-        // if (indexOf !== -1) {
-        //  if (this.params.targetKey === value.contentsKey) {
-        // if (value.contentsKey === undefined || value.contentsKey === null || value.contentsKey === '') {
-        //   return
-        // }
-        // }
-
-        // 20221107수정필요 : 두번 서비스에 호출함
-        var targetYn = await this.targetKeyYn(value.contentsKey, value.jobkindId)
-        console.log('과연??있나요?' + targetYn)
-        if (targetYn !== false && targetYn !== 'false') {
-          param.targetKey = value.contentsKey
-          // param.targetType = value.contentsKey
-          if (value.jobkindId === 'BOAR') {
-            param.cabinetKey = targetYn.cabinetKey
-            param.cabinetNameMtext = targetYn.cabinetNameMtext
-          } else {
-            param.nameMtext = targetYn.nameMtext
-            param.teamName = targetYn.nameMtext
-          }
-          param.contentsKey = value.contentsKey
-          param.jobkindId = value.jobkindId
-          param.teamKey = value.creTeamKey
-          param.notiYn = true
-          param.value = value
-          this.openPop(param)
-        } else {
-          this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
-          this.failPopYn = true
-        }
+        detailParam.contentsKey = detailValue.contentsKey
+        detailParam.jobkindId = detailValue.jobkindId
+        detailParam.teamKey = detailValue.creTeamKey
+        detailParam.notiYn = true
+        detailParam.value = detailValue
+        this.openPop(detailParam)
       }
     },
-    goChanDetail (data) {
-      // eslint-disable-next-line no-debugger
-      debugger
-      // console.log(data)
-      // if (data.popCloseYn === true) this.closePushPop()
-      console.log(data)
+    goChanDetail (detailValue) {
       // eslint-disable-next-line no-new-object
-      var param = new Object()
-      if (data.targetType === 'chanDetail') {
-        param.targetType = 'chanDetail'
-        console.log(data)
-        param.teamKey = data.creTeamKey
-        param.targetKey = data.creTeamKey
-        param.nameMtext = data.nameMtext
-        param.chanName = data.nameMtext
-        if (data.contentsKey) {
-          param.jobkindId = data.jobkindId
-          param.clickContentsKey = data.contentsKey
-        }
-        // 세션에서 유저키 받아오기
-        if (data.creUserKey === this.GE_USER.userKey) {
-          param.ownerYn = true
-        }
-      } else {
-        param.targetType = 'boardDetail'
-        param.cabinetNameMtext = data.cabinetNameMtext
-        param.teamKey = data.creTeamKey
-        param.targetKey = data.contentsKey
-        param.contentsKey = data.contentsKey
-        param.cabinetKey = data.cabinetKey
-        param.jobkindId = 'BOAR'
-        param.value = data
+      var goChanDetailParam = new Object()
+      goChanDetailParam.targetType = 'chanDetail'
+      console.log(detailValue)
+      goChanDetailParam.teamKey = detailValue.creTeamKey
+      goChanDetailParam.targetKey = detailValue.creTeamKey
+      goChanDetailParam.nameMtext = detailValue.nameMtext
+      goChanDetailParam.chanName = detailValue.nameMtext
+      if (detailValue.contentsKey) {
+        goChanDetailParam.jobkindId = detailValue.jobkindId
+        goChanDetailParam.targetContentsKey = detailValue.contentsKey
       }
-      this.openPop(param)
+      // 세션에서 유저키 받아오기
+      if (detailValue.creUserKey === this.GE_USER.userKey) {
+        goChanDetailParam.ownerYn = true
+      }
+      this.openPop(goChanDetailParam)
     },
-    async recvNoti (e) {
-      var message
+    async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
+        var notiUserDo = JSON.parse(notiDetail.userDo)
+        if ((currentPage === 0 || currentPage === undefined)) {
+          // eslint-disable-next-line no-new-object
+          var goDetailParam = new Object()
+          goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
+          if (notiUserDo.targetKind === 'CONT') {
+            goDetailParam.contentsKey = notiUserDo.targetKey
+            goDetailParam.targetKey = notiUserDo.targetKey
+            goDetailParam.jobkindId = notiDetail.jobkindId
+            if (goDetailParam.jobkindId === 'ALIM') {
+              goDetailParam.chanName = vuexResultData.nameMtext
+              goDetailParam.nameMtext = vuexResultData.nameMtext
+            } else if (goDetailParam.jobkindId === 'BOAR') {
+              goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
+              goDetailParam.cabinetKey = vuexResultData.cabinetKey
+            }
+          } else if (notiUserDo.targetKind === 'CABI') {
+            goDetailParam.contentsKey = notiUserDo.ISub
+            goDetailParam.jobkindId = notiDetail.jobkindId
+            if (goDetailParam.jobkindId === 'ALIM') {
+              goDetailParam.nameMtext = vuexResultData.nameMtext
+            } else if (goDetailParam.jobkindId === 'BOAR') {
+              goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
+              goDetailParam.cabinetKey = vuexResultData.cabinetKey
+            }
+          } else if (notiUserDo.targetKind === 'TEAM') {
+            this.$router.replace({ path: '/' })
+            goDetailParam.chanYn = true
+            goDetailParam.targetKey = notiUserDo.targetKey
+          }
+          goDetailParam.notiYn = true
+          // goDetailParam.value = vuexResultData
+          if (notiUserDo.targetKind === 'TEAM') {
+            this.goChanDetail(goDetailParam)
+          } else if (notiUserDo.targetKind === 'CONT' || notiUserDo.targetKind === 'CABI') {
+            this.goDetail(goDetailParam)
+          }
         } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (this.netState === false || this.netState === 'false') {
-            this.netText = '네트워크 연결이 끊어졌습니다.<br> 잠시후 다시시도 해주세요'
-            /* if (this.netBoxShowYn === true) {
-              this.netBoxShowYn = true
-            } */
-            this.netBoxShowYn = true
-            var this_ = this
-            setTimeout(() => {
-              this_.netBoxShowYn = false
-            }, 2000)
-            return
-          }
-          var currentPage = this.$store.getters['D_HISTORY/hCPage']
-
-          if ((currentPage === 0 || currentPage === undefined)) {
-            // 현재 메인화면인가
-          } else {
-            this.$refs.mainGPopWrap.recvNotiFromMain(this.notiDetail, JSON.parse(message.pushMessage).arrivedYn)
-          }
+          this.$refs.mainGPopWrap.recvNotiFromMain(notiDetail, currentPage, vuexResultData)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)
@@ -392,24 +273,7 @@ export default {
   created () {
     this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
     this.$userLoginCheck(true)
-    /* const searchParams = new URLSearchParams(location.search)
-    // eslint-disable-next-line no-unused-vars
-    for (const param of searchParams) {
-      if (param[0] === 'chanDetail') {
-        this.openPop({ targetType: 'chanDetail', targetKey: param[1], teamKey: param[1] })
-      } else if (param[0] === 'boardDetail') {
-        this.openPop({ targetKey: param[1], targetType: 'boardDetail', contentsKey: param[1], pushOpenYn: true })
-      } else if (param[0] === 'pushDetail') {
-        this.openPop({ targetKey: param[1], targetType: 'pushDetail', contentsKey: param[1], pushOpenYn: true })
-      }
-      // console.log('targetKey: ' + param[1])
-    } */
-    // document.addEventListener('message', e => this.recvNoti(e))
-    // window.addEventListener('message', e => this.recvNoti(e))
   }
-  // onMessage (data) {
-  //   window.nsWebViewBridge.emit('onMessage', data)
-  // }
 }
 </script>
 

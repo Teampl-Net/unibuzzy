@@ -84,6 +84,7 @@ export default {
       }
     },
     closeXPop () {
+      this.$showChanCommonPop(false)
       this.$emit('closeXPop')
     }
   },

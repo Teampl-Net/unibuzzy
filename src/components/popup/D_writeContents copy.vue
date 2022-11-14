@@ -692,7 +692,7 @@ export default {
         } else {
           // console.log(this.param)
           if (this.replyPopYn) {
-            param.parentContentsKey = this.params.clickContentsKey
+            param.parentContentsKey = this.params.targetContentsKey
             param.actorList = [{ accessKind: 'U', accessKey: this.params.creUserKey }]
           } else {
             await this.settingRecvList()

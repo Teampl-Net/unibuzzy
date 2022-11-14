@@ -213,6 +213,7 @@ export default {
         data.currentTeamKey = this.teamInfo.teamKey
         data.teamKey = this.teamInfo.teamKey
         data.readOnlyYn = true
+        data.popHeaderText = '프로필'
         this.$emit('openAddPop', data)
       }
       // data.index = index

@@ -1,7 +1,7 @@
 <template>
     <div class="mainHeaderWrap" >
         <img src="../../assets/images/common/thealim_header_logo.png" class="fl mainHeaderLogo" >
-        <p class="font25 headerFont commonColor fl" v-html="headerTitle"></p>
+        <p class="font25 headerFont commonColor fl" v-html="mRouterHeaderText"></p>
         <div class="menuBtn">
         <img class="mainMenuIcon" v-on:click="showMenu()" src="../../assets/images/common/icon_menu.png"/>
         </div>
@@ -21,7 +21,7 @@ export default {
     }
   },
   props: {
-    headerTitle: {}
+    mRouterHeaderText: {}
   }
 }
 

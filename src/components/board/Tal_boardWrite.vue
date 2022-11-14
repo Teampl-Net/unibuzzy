@@ -529,51 +529,29 @@ export default {
           param.contentsKey = this.propData.modiContentsKey
         }
         var result = await this.$saveContents(param)
-        // eslint-disable-next-line no-debugger
-        debugger
         if (result.result === true) {
+          var newParam = {}
+          newParam.contentsKey = result.contents.contentsKey
+          newParam.jobkindId = 'BOAR'
+          await this.$getContentsList(newParam).then(newReslute => {
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+          })
+          this.progressShowYn = false
           // eslint-disable-next-line no-new-object
           var newP = new Object()
           newP.targetKey = result.contents.contentsKey
           newP.teamKey = result.contents.creTeamKey
           newP.contentsKey = result.contents.contentsKey
-          newP.targetType = 'boardDetail'
+          newP.targetType = 'contentsDetail'
+          newP.popHeaderText = result.contents.cabinetName
           newP.cabinetNameMtext = result.contents.cabinetName
           newP.jobkindId = 'BOAR'
           newP.value = this.propData
           newP.cabinetKey = result.contents.cabinetKey
 
-          var newParam = {}
-          newParam.contentsKey = result.contents.contentsKey
-          newParam.jobkindId = 'BOAR'
-          await this.$getContentsList(newParam).then(newReslute => {
-            // eslint-disable-next-line no-debugger
-            debugger
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
-          })
-          /* if (!this.modiYn) {
-            await this.$getContentsList(newParam).then(newReslute => {
-              // eslint-disable-next-line no-debugger
-              debugger
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [newReslute.content])
-            })
-          } else {
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', result.contents)
-          } */
-          this.progressShowYn = false
           if (!this.modiYn && !this.UseAnOtherYn) {
             this.$emit('successWrite', newP)
-          } /* else if (this.modiYn) {
-            this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [result.contents])
-          } */
-
-          // eslint-disable-next-line no-new-object
-          /* var params = new Object()
-          params.contentsKey = result.contents.contentsKey
-          params.jobkindId = result.contents.jobkindId
-          var resultList = await this.$getContentsList(param)
-          var detailData = resultList.content[0]
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
+          }
         }
       } catch (error) {
         console.error(error)

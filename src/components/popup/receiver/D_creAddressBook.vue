@@ -44,7 +44,9 @@ export default {
       param.creMenuYn = true
       console.log('gggggggggggggggggggg')
       console.log(this.propData)
-      var cabinet = this.propData.cabinet
+      // eslint-disable-next-line no-new-object
+      var cabinet = new Object()
+      cabinet.cabinetKey = this.propData.cabinet.cabinetKey
       // delete cabinet.value
       cabinet.cabinetNameMtext = this.inputAddressBookName
       param.cabinet = cabinet

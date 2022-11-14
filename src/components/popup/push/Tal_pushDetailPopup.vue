@@ -67,7 +67,7 @@ export default {
     }, */
     goOk () {
       var param = { contentsKey: Number(JSON.parse(this.detailVal.userDo).targetKey), jobkindId: this.detailVal.jobkindId, creTeamKey: Number(this.detailVal.creTeamKey), targetType: 'chanDetail' }
-      param.clickContentsKey = JSON.parse(this.detailVal.userDo).targetKey
+      param.targetContentsKey = JSON.parse(this.detailVal.userDo).targetKey
       // param.popCloseYn = true
       this.goNo()
       this.$emit('goChanDetail', param)
@@ -108,7 +108,6 @@ export default {
       var resultList = await this.$getContentsList(param)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       this.pushDetail = resultList.content[0]
-      // alert(JSON.stringify(resultList.content))
       // return resultList
     }
 
@@ -116,7 +115,6 @@ export default {
   created () {
     // this.body = this.detailVal.body
     this.getContentsList()
-    // alert(JSON.stringify(resultList.content[0]))
 
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'pushDetailPop' + history.length

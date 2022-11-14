@@ -145,6 +145,7 @@ export default {
             var cabinet = {}
             var param = {}
             param.targetType = 'creAddressBook'
+            param.popHeaderText ='주소록 생성'
             param.newAddressYn = true
             cabinet.cabinetNameMtext = await this.$checkSameName(this.bookList, '주소록')
             cabinet.currentTeamKey = this.propData.teamKey
@@ -242,6 +243,7 @@ export default {
             // this.newYn = false
             var data = new Object()
             data.targetType = 'bookMemberDetail'
+            data.popHeaderText = '유저 추가'
             data.currentCabinetKey = this.selectBookDetail.cabinetKey
             data.currentTeamKey = this.CHANNEL_DETAIL.teamKey
             this.$emit('openPop',data)
@@ -466,6 +468,7 @@ export default {
             var param = new Object()
             param.targetType = 'selectMemberPop'
             param.cabinetNameMtext = this.selectBookDetail.cabinetNameMtext
+            param.popHeaderText = this.selectBookDetail.cabinetNameMtext + '에 추가할 유저'
             param.pSelectedList = this.memberList
             param.cabinetKey = this.propData.currentCabinetKey
             param.selectMemberType = 'member'

@@ -139,7 +139,6 @@ export default {
     },
     dataSetting () {
       if (this.opentype === 'bgPop') {
-        // alert(JSON.stringify(this.selectBg))
         if (this.selectBg.iconType === 'icon' || this.selectBg.selectedId < 16) {
           this.viewTab = 'icon'
           this.selectedId = this.selectBg.selectedId
@@ -151,7 +150,7 @@ export default {
           this.selectedImgFilekey = this.selectBg.selectedId
         }
       } else if (this.opentype === 'iconPop') {
-        // alert(JSON.stringify(this.selectIcon))
+        // .stringify(this.selectIcon))
         if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
           this.viewTab = 'icon'
           this.selectedId = this.selectIcon.selectedId

@@ -6,7 +6,7 @@
   <div class="editMyChanMenuWrap">
     <table class="myChanMenuTable w-100P fl" >
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="editChanDetaillClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
@@ -22,7 +22,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="managerEditClick('manager')">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="openEditManagerPop('manager')">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
@@ -40,7 +40,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="addressEditClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="openEditCabinetPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
@@ -56,7 +56,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="boardEditClick">
+      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditBoardPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
@@ -71,7 +71,7 @@
           </div>
         </th>
         <td class="">
-          <!-- <gBtnSmall class="fr" @click="boardEditClick" btnTitle="관리" /> -->
+          <!-- <gBtnSmall class="fr" @click="openEditBoardPop" btnTitle="관리" /> -->
           <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt=""> -->
         </td>
       </tr>
@@ -83,7 +83,7 @@
         </td>
       </tr> -->
 
-      <!-- <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="memberFormEditClick">
+      <!-- <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditMemberPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
@@ -100,7 +100,7 @@
         </td>
       </tr> -->
 <!--
-      <tr @click="memberFormEditClick">
+      <tr @click="openEditMemberPop">
         <th class="font16">공개신청서 관리</th>
         <td class="">
           <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -156,34 +156,42 @@ export default {
       // console.log(this.teamInfo)
       // if (this.teamInfo) if (this.teamInfo.userTeamInfo) if (this.teamInfo.userTeamInfo.managerKey) this.managerYn = true
     }, */
-    addressEditClick () {
+    openEditCabinetPop () {
       this.param.targetType = 'editBookList'
+      this.param.chanName = this.propData.teamNameMtext
+      this.param.popHeaderText = '주소록 관리'
       this.openPop()
     },
-    boardEditClick () {
+    openEditBoardPop () {
       this.param.targetType = 'editBoard'
+      this.param.popHeaderText = '게시판 관리'
       this.openPop()
     },
     chanDetailClick () {
       this.param.targetType = 'chanInfo'
+      this.param.popHeaderText = '채널 상세'
       this.openPop()
     },
-    editChanDetaillClick () {
+    openEditChanPop () {
       this.param.targetType = 'createChannel'
       this.param.targetKey = this.propData.teamKey
+      this.param.popHeaderText = '채널 수정'
       this.param.modiYn = true
       this.openPop()
     },
-    managerEditClick () {
+    openEditManagerPop () {
       this.param.targetType = 'memberManagement'
+      this.param.popHeaderText = '구독자 관리'
       this.openPop()
     },
     autoAnswerClick () {
       this.param.targetType = 'autoAnswer'
+      this.param.popHeaderText = '자동 응답'
       this.openPop()
     },
-    memberFormEditClick () {
+    openEditMemberPop () {
       this.param.targetType = 'memberFormList'
+      this.param.popHeaderText = '공개신청서 목록'
       this.openPop()
     },
     openPop () {

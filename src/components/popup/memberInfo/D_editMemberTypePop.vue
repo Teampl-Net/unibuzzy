@@ -84,6 +84,7 @@ export default {
       var param = {}
       param.newYn = true
       param.targetType = 'memInfoCreEditPop'
+      param.popHeaderText = '멤버정보 추가'
       param.teamKey = this.propData.teamKey
       this.$emit('openPop', param)
     },
@@ -92,6 +93,7 @@ export default {
       var param = {}
       param.newYn = false
       param.targetType = 'memInfoCreEditPop'
+      param.popHeaderText = '멤버정보 수정'
       param.teamKey = this.propData.teamKey
       param.data = params.data
       console.log(param)

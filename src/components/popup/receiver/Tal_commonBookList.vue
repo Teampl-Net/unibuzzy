@@ -275,6 +275,7 @@ export default {
     editAddressBook (data) {
       var param = {}
       param.targetType = 'creAddressBook'
+      param.popHeaderText = '주소록 수정'
       param.newAddressYn = false
       param.cabinet = data
       this.$emit('openPop', param)
@@ -283,6 +284,7 @@ export default {
       var cabinet = {}
       var param = {}
       param.targetType = 'creAddressBook'
+      param.popHeaderText = '주소록 생성'
       param.newAddressYn = true
       cabinet.cabinetNameMtext = await this.$checkSameName(this.addressBookList, '주소록')
       cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey

@@ -736,16 +736,6 @@ export default {
         }
         var result = await this.$saveContents(param)
         if (result.result === true) {
-          var newP = {}
-          newP.targetKey = result.contents.contentsKey
-          newP.teamKey = result.contents.creTeamKey
-          newP.contentsKey = result.contents.contentsKey
-          newP.targetType = 'boardDetail'
-          newP.cabinetNameMtext = result.contents.cabinetName
-          newP.jobkindId = 'BOAR'
-          newP.value = this.propData
-          newP.cabinetKey = result.contents.cabinetKey
-
           var newParam = {}
           newParam.contentsKey = result.contents.contentsKey
           newParam.jobkindId = 'BOAR'
@@ -753,6 +743,16 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
           })
 
+          var newP = {}
+          newP.targetKey = result.contents.contentsKey
+          newP.teamKey = result.contents.creTeamKey
+          newP.contentsKey = result.contents.contentsKey
+          newP.targetType = 'contentsDetail'
+          newP.cabinetNameMtext = result.contents.cabinetName
+          newP.popHeaderText = result.contents.cabinetName
+          newP.jobkindId = 'BOAR'
+          newP.value = this.propData
+          newP.cabinetKey = result.contents.cabinetKey
           this.progressShowYn = false
           if (!this.modiYn && !this.UseAnOtherYn) {
             this.$emit('successWrite', newP)
@@ -832,7 +832,7 @@ export default {
         } else {
           // console.log(this.param)
           // if (this.replyPopYn) {
-          //   param.parentContentsKey = this.params.clickContentsKey
+          //   param.parentContentsKey = this.params.targetContentsKey
           //   param.actorList = [{ accessKind: 'U', accessKey: this.params.creUserKey }]
           // } else {
           await this.settingRecvList()

@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; float: left; margin-top: 10px;">
-        <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style=" float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop= "openPop"/>
+        <listTitle :viewTab="this.viewTab" :alimTabType="this.viewTab" style=" float: left;" listTitle= "알림" :activeTabList="this.activeTabList" class="w-100P" :moreLink="this.moreLink" @openPop="openPop"/>
         <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
         <div style=" float: left; width: 100%; ">
             <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
@@ -9,7 +9,7 @@
             </div>
             <div id="top5ListWrap" class="pushListWrap fl">
             <!-- <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.contentsList && this.contentsList.length === 0" style="margin-top:50px;" /> -->
-            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goChanDetail="openPop" />
+            <commonListTable :commonListData="GE_DISP_CONT_LIST" v-if="listShowYn"  @goDetail="openPop" />
             </div>
         </div>
 
@@ -165,6 +165,7 @@ export default {
         param.ownUserKey = this.GE_USER.userKey
       } else if (this.viewTab === 'B') {
         param.boardYn = true
+        param.ownUserKey = this.GE_USER.userKey
         param.jobkindId = 'BOAR'
       } else if (this.viewTab === 'A') {
         // param.ownUserKey = this.GE_USER.userKey
@@ -207,34 +208,10 @@ export default {
       } */
     },
     openPop (value) {
-      // alert(true)
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      if (value.targetType !== undefined && value.targetType !== null && value.targetType !== '') {
-        if (value.targetType === 'chanDetail') {
-          params = value
-          // params.targetType = value.targetType
-          params.teamKey = value.teamKey
-          // params.nameMtext = value.nameMtext
-          // params.targetKey = value.targetKey
-          // params.page = value.page
-          // params.cIdx = value.index
-          // params.clickContentsKey = value.contentsKey
-          params.chanName = value.nameMtext
-        } else if (value.targetType === 'boardDetail') {
-          params = value
-        } else {
-          params.targetType = value.targetType
-          params.contentsMainTab = this.viewTab
-        }
-      } else {
-        params.targetType = 'pushDetail'
-        params.value = value
-      }
-      if (value.contentsKey !== undefined && value.contentsKey !== null && value.contentsKey !== '') { params.targetKey = value.contentsKey }
-      if (value.chanName !== undefined && value.chanName !== null && value.chanName !== '') { params.chanName = value.nameMtext }
-      // alert(JSON.stringify(params))
-      this.$emit('openPop', params)
+      var param = value
+      param.alimTabType = this.viewTab
+      console.log(param)
+      this.$emit('openPop', param)
     },
     /* async refreshList () {
       this.listShowYn = false
@@ -247,7 +224,6 @@ export default {
       this.listShowYn = true
     }, */
     async changeTab (tabName) {
-      // alert(tabName)
       // this.pushList = [] ///######
       this.viewTab = tabName
       await this.getContentsList(true)
