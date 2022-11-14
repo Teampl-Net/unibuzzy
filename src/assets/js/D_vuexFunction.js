@@ -224,6 +224,7 @@ export const functions = {
           }
         }
         if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+          /* if (notiDetail.actType === 'LI') {} */
           if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
             var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
             memo.jobkindId = notiDetail.jobkindId
@@ -264,10 +265,10 @@ export const functions = {
     var param = new Object()
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
+    param.userKey = store.getters['D_USER/GE_USER']
     var resultList = await methods.getContentsList(param, true)
     if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]
-    debugger
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return detailData
   },

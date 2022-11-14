@@ -1188,17 +1188,6 @@ export default {
       /* overflow: hidden; */
       /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
   }
-
-  .whitePaperEffect {
-    /*   content: '';
-      position: absolute;
-      display: block;
-      width: 50px;
-      height: 50px;
-      background-color: #e1e1f2;
-      bottom: 0;
-      right: 0; */
-  }
   .titlePlaceholder::placeholder {
     color: #AFAFAF
   }

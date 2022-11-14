@@ -81,7 +81,6 @@ export default {
   },
   props: {
     chanAlimTargetType: {},
-    reloadShowYn: {},
     popYn: Boolean,
     alimListYn: Boolean,
     routerReloadKey: {},
@@ -280,9 +279,6 @@ export default {
     routerReloadKey () {
       this.refreshList()
     },
-    reloadShowYn () {
-      this.checkShowReload()
-    },
     /* readCheckBoxYn () {
       this.changeTab(this.viewTab)
     }, */
@@ -328,7 +324,7 @@ export default {
     GE_DISP_ALIM_LIST () {
       console.log(this.ALIM_LIST_RELOAD_CONT)
       var idx1, idx2
-      var test = []
+      var returnAlimList = []
       var chanDetail = null
       var dataList = null
       var i = 0
@@ -344,7 +340,7 @@ export default {
           this.$addChanList(teamKey).then((res) => {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             if (idx1 === -1) {
-              test.push(this_.alimContentsList[i])
+              returnAlimList.push(this_.alimContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
               dataList = chanDetail.ELEMENTS.alimList
@@ -352,9 +348,10 @@ export default {
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
               if (idx2 !== -1) {
-                test.push(dataList[idx2])
+                this.alimContentsList[i] = dataList[idx2]
+                returnAlimList.push(dataList[idx2])
               } else {
-                test.push(this_.alimContentsList[i])
+                returnAlimList.push(this_.alimContentsList[i])
               }
             }
           })
@@ -363,22 +360,23 @@ export default {
           dataList = chanDetail.ELEMENTS.alimList
           idx2 = dataList.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey)
           if (idx2 !== -1) {
-            dataList[idx2] = this.alimContentsList[i]
-            test.push(dataList[idx2])
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.alimContentsList[i] = dataList[idx2]
+            returnAlimList.push(dataList[idx2])
           } else {
-            test.push(this.alimContentsList[i])
+            returnAlimList.push(this.alimContentsList[i])
           }
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (test.length === 0) this.emptyYn = true
+      if (returnAlimList.length === 0) this.emptyYn = true
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.computedYn = true
-      return this.replaceArr(test)
+      return this.replaceArr(returnAlimList)
     },
     GE_DISP_BOAR_LIST () {
       var idx1, idx2
-      var test = []
+      var returnBoardList = []
       var chanDetail = null
       var dataList = null
       var i = 0
@@ -391,7 +389,7 @@ export default {
           this.$addChanList(teamKey).then(() => {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             if (idx1 === -1) {
-              test.push(this_.alimContentsList[i])
+              returnBoardList.push(this_.alimContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
               dataList = chanDetail.ELEMENTS.boardList
@@ -399,29 +397,32 @@ export default {
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
               if (idx2 !== -1) {
-                test.push(dataList[idx2])
+                this.boardContentsList[i] = dataList[idx2]
+                returnBoardList.push(dataList[idx2])
               } else {
-                test.push(this_.boardContentsList[i])
+                returnBoardList.push(this_.boardContentsList[i])
               }
             }
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
           dataList = chanDetail.ELEMENTS.boardList
-          idx2 = dataList.findIndex((item) => item.mccKey === this.boardContentsList[i].mccKey)
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.boardContentsList[i].contentsKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
           if (idx2 !== -1) {
-            test.push(dataList[idx2])
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.boardContentsList[i] = dataList[idx2]
+            returnBoardList.push(dataList[idx2])
           } else {
-            test.push(this.boardContentsList[i])
+            returnBoardList.push(this.boardContentsList[i])
           }
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (test.length === 0) this.emptyYn = true
+      if (returnBoardList.length === 0) this.emptyYn = true
 
-      return this.replaceArr(test)
+      return this.replaceArr(returnBoardList)
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -1192,13 +1193,6 @@ export default {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
         this.paddingTop = element.clientHeight + 75
-      }
-    },
-    checkShowReload () {
-      if (this.reloadShowYn !== undefined && this.reloadShowYn !== null && this.reloadShowYn !== '') {
-        this.pushListReloadShowYn = this.reloadShowYn
-      } else {
-        this.pushListReloadShowYn = true
       }
     },
     async refreshAll () {

@@ -126,6 +126,7 @@ const isJsonString = (str) => {
             if (JSON.parse(notiDetailObj.userDo).userKey === store.getters['D_USER/GE_USER'].userKey) {
               return
             }
+            alert(JSON.stringify(notiDetailObj))
             if (addVueResult === false) {
               alert('해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요')
               return
