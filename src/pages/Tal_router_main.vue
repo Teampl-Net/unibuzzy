@@ -38,8 +38,7 @@ export default {
       mShadowScreenShowYn: false,
       mNetReturnPopShowYn: false,
       mErrorPopBodyStr: '',
-      mErrorPopShowYn: false,
-      checkStep: 0
+      mErrorPopShowYn: false
     }
   },
   props: {},

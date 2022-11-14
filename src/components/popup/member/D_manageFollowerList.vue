@@ -333,12 +333,9 @@ export default {
   watch: {
     GE_NEW_SHOW_LIST: {
         handler (value, old) {
-            // alert(true)
             if (value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
                 return
             }
-            // alert(this.CHANNEL_DETAIL.teamKey)
-            // alert(value[0])
             var newArr = [
                 ...this.showUserList,
                 value[0]

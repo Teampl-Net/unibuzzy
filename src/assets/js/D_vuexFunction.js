@@ -286,12 +286,8 @@ export const functions = {
     } else {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
         if (notiDetail.jobkindId !== 'BOAR') {
-          // if (this.$route.path === '/') {
-          //   this.$refs.mainRouterView.getMainBoard()
-          // }
         }
       } else {
-        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo), nameMtext: notiDetail.creTeamName, targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
       }
     }
   },
