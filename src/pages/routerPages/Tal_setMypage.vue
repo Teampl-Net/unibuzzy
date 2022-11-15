@@ -199,7 +199,7 @@ export default {
             this.setTimer(false)
         }
         var this_ = this
-      
+
     },
     devSendPush () {
         // 1. 알림을 수신할래? 클릭할래?
@@ -330,7 +330,7 @@ export default {
     async closeLogoutPop (request) {
       this.logOutShowYn = false
       var result = await this.$commonAxiosFunction({
-       url: 'service/tp.logout' 
+       url: 'service/tp.logout'
       })
       if (result) {
         if (request !== undefined && request !== null && request !== '') {
@@ -348,7 +348,7 @@ export default {
             this.$router.replace('/policies')
         }
       }
-      
+
     },
     openPolicyPop (type) {
       this.policyType = type
