@@ -7,6 +7,8 @@
       <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
       <div v-else class="chanRow w-100P fl channelRow cursorP" style="border: none; border-radius: 8px; background: #FFF; padding: 10px 10px; padding-bottom: 5px;" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
         <div style="width: 100%; display: flex; min-height: 40px; float: left; ">
+<!-- url("fileServer/image/2022/09/15�33-edb1-4f1f-b530-9c5d32b3369a_aaaaaaaaaaaaa.png") -->
+          <!-- <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"> -->
               <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext ? value.logoPathMtext : '/resource/userCommonIcon/userImg.png') + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                 <!-- <img src="../../assets/images/channel/ownerChannel_crown.svg" v-if="value.ownerYn" style="width: 20px; height: 25px; position: absolute; top: -15px;" />
                 <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" /> -->

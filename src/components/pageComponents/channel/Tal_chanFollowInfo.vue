@@ -63,8 +63,6 @@ export default {
   },
   methods: {
     startStep () {
-      console.log(' ###################### ')
-      console.log(this.chanInfo)
     },
     closePop () {
       this.$emit('closePop')

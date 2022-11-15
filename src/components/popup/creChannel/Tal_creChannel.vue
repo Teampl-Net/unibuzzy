@@ -358,7 +358,7 @@ export default {
       debugger
       // console.log(temp)
       // this.$emit('closeLoading')
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', temp)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [temp])
     },
     async newChannelInPool () {
       var paramMap = new Map()

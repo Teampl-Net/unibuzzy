@@ -5,10 +5,10 @@
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
         <template v-for="(alim, index0) in this.commonListData" :key="index0" >
-          <div :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
+          <div @click="clickInfo(alim)" :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea" :style="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn? 'border-bottom: none; margin-bottom: 0;' : ''">
-                <div  @click="goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                <div  @click="alim.jobkindId === 'ALIM' ? goChanDetail(alim):goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
@@ -251,13 +251,20 @@ export default {
       return html
     },
     clickCard (alim) {
-      this.goDetail(alim)
-      // if (alim.jobkindId === 'ALIM') {
-      //   this.goDetail(alim)
-      // } else {
-      //   this.goChanDetail(alim)
-      // }
+        if (alim.jobkindId === 'ALIM') {
+            this.goDetail(alim)
+            /* if (alim.bigYn) {
+                this.goDetail(alim)
+            } */ /* else {
+                this.alimBigView(alim)
+            } */
+        } else {
+            this.goChanDetail(alim)
+        }
     },
+    clickInfo (data) {
+    },
+    // <!-- <bookMemberDetail @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.params" v-if="this.targetType=== 'bookMemberDetail'" /> -->
     memoUserNameClick (param) {
       var userKey = param.userKey
       var currentContentsKey = param.contentsKey
@@ -622,7 +629,7 @@ export default {
           this.$emit('scrollMove', targetContentWich)
           var idx = this.findContent(tempKey)
           if (idx !== -1) {
-            if ((!(this.$checkUserAuth(this.commonListData[idx].shareItem).V === true || this.commonListData[idx].creUserKey === this.GE_USER.userKey) && this.commonListData[idx].jobkindId === 'BOAR')) return
+            if ((!(this.$checkUserAuth(this.commonListData[idx].shareItem).V === true || this.commonListData[idx].creUserKey === this.GE_USER.userKey) && this.commonListData[idx].jobkindId === 'BOAR')) return 
             else this.memoOpenClick({key: this.targetCKey, teamKey: null})
             this.$nextTick(() => {
               this_.alimBigView(this.commonListData[idx])
@@ -1139,17 +1146,17 @@ export default {
       this.$emit('goDetail', param)
     },
     goDetail (value) {
-      debugger
-      if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== userKey) return
+        debugger
+       if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== userKey) return
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
       console.log(param)
       if (value.jobkindId === 'ALIM') {
-        param.popHeaderText = value.nameMtext
+         param.popHeaderText = value.nameMtext
       } else if (value.jobkindId === 'BOAR') {
-        param.popHeaderText = value.cabinetNameMtext
+         param.popHeaderText = value.cabinetNameMtext
       }
       param.teamKey = value.creTeamKey
       param.jobkindId = value.jobkindId

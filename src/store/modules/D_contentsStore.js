@@ -66,7 +66,6 @@ const D_CONTENTS = {
       state.teamList = payload
     },
     MU_RECENT_CHANGE_CONTENTS: (state, payload) => {
-      console.log('UPDATE_CONTENTS_KEY: ' + payload)
       state.changeContentsKey = 0
       state.changeContentsKey = payload
     }

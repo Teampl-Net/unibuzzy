@@ -505,6 +505,7 @@ export default {
         if (this.targetCKey) {
           console.log(this.targetCKey + '/////' + this.targetContents.jobkindId)
           var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
+          console.log(contentsAlreadyYn)
           if (contentsAlreadyYn === false) {
             alert('해당컨텐츠는 삭제되었거나,\n열람 권한이 없습니다\n나중에 다시시도해주세요.')
             return

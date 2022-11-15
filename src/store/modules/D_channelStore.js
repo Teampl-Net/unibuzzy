@@ -140,13 +140,11 @@ const D_CHANNEL = {
         var team = payload[i]
         if (team.ELEMENTS) {
           if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
-          if (!team.ELEMENTS.commonList) { team.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
           if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
           if ((!team.ELEMENTS.cabinetList)) { team.ELEMENTS.cabinetList = [] }
-          if ((!team.ELEMENTS.showProfileUserList)) { team.ELEMENTS.showProfileUserList = [] }
           if ((!team.ELEMENTS.managerList)) { team.ELEMENTS.managerList = [] }
         } else {
-          team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
+          team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], managerList: [] }
         }
         team.teamTypeText = commonMethods.teamTypeString(team.teamType)
         // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
@@ -155,33 +153,30 @@ const D_CHANNEL = {
 
         // eslint-disable-next-line no-new-object
         var D_CHAN_AUTH = {}
-        D_CHAN_AUTH.recvAlimYn = true
-        if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+        D_CHAN_AUTH.notiYn = true
+
+        if (team.userTeamInfo) {
           D_CHAN_AUTH.settingYn = true
           if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
-            D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
+            D_CHAN_AUTH.notiYn = team.userTeamInfo.notiYn
           }
+        }
+
+        if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+          D_CHAN_AUTH.settingYn = true
+          D_CHAN_AUTH.followYn = true
           if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
             D_CHAN_AUTH.memberYn = true
           }
-          /* if (team.userTeamInfo.showProfileYn === 1) {
-            D_CHAN_AUTH.showProfileYn = true
-            D_CHAN_AUTH.userGrade = '(공개)'
-          } */
-          D_CHAN_AUTH.followYn = true
-          team.detailShowYn = false
-          D_CHAN_AUTH.followTypeText = '구독자'
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
             D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
             D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
             D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
             if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
-              D_CHAN_AUTH.followTypeText = '소유자'
               // D_CHAN_AUTH.userGrade = '(관리자)'
               D_CHAN_AUTH.ownerYn = true
               D_CHAN_AUTH.admYn = true
             } else {
-              D_CHAN_AUTH.followTypeText = '관리자'
               // D_CHAN_AUTH.userGrade = '(매니저)'
             }
             D_CHAN_AUTH.adminYn = true
@@ -195,11 +190,27 @@ const D_CHANNEL = {
       return true
     },
     MU_ADD_CHANNEL: (state, payload) => {
+      debugger
       var index
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
+        var D_CHAN_AUTH = {}
+        if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+          D_CHAN_AUTH = team.userTeamInfo
+          D_CHAN_AUTH.settingYn = true
+          D_CHAN_AUTH.followYn = true
+
+          if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
+            D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
+            D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
+            D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
+          }
+        } else {
+          D_CHAN_AUTH.settingYn = true
+          D_CHAN_AUTH.followYn = false
+        }
         if (index === -1) {
           if (team.ELEMENTS) {
             if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
@@ -213,40 +224,6 @@ const D_CHANNEL = {
           }
           team.teamTypeText = commonMethods.teamTypeString(team.teamType)
           // eslint-disable-next-line no-new-object
-          var D_CHAN_AUTH = {}
-          D_CHAN_AUTH.recvAlimYn = true
-          if (team.followerKey) D_CHAN_AUTH = true
-          if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
-            D_CHAN_AUTH.settingYn = true
-            if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
-              D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
-            }
-            if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
-              D_CHAN_AUTH.memberYn = true
-            }
-            // if (team.userTeamInfo.showProfileYn === 1) {
-            // D_CHAN_AUTH.showProfileYn = true
-            // D_CHAN_AUTH.userGrade = '(공개)'
-            // }
-            D_CHAN_AUTH.followYn = true
-            team.detailShowYn = false
-            D_CHAN_AUTH.followTypeText = '구독자'
-            if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
-              D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
-              D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
-              D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
-              if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
-                D_CHAN_AUTH.followTypeText = '소유자'
-                // D_CHAN_AUTH.userGrade = '(관리자)'
-                D_CHAN_AUTH.ownerYn = true
-                D_CHAN_AUTH.admYn = true
-              } else {
-                D_CHAN_AUTH.followTypeText = '관리자'
-                // D_CHAN_AUTH.userGrade = '(매니저)'
-              }
-              D_CHAN_AUTH.adminYn = true
-            }
-          }
 
           team.D_CHAN_AUTH = D_CHAN_AUTH
           state.chanList.push(team)
@@ -256,6 +233,7 @@ const D_CHANNEL = {
           var tempEle = chan.ELEMENTS
           state.chanList[index] = payload[i]
           state.chanList[index].ELEMENTS = tempEle
+          state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
         }
       }
       return true
@@ -549,7 +527,6 @@ const D_CHANNEL = {
       return true
     },
     MU_RECENT_CHANGE_TEAM: (state, payload) => {
-      console.log('UPDATE_CHANGE_TEAM: ' + payload)
       state.recentChangeTeamKey = 0
       state.recentChangeTeamKey = payload
     },
@@ -616,12 +593,10 @@ const D_CHANNEL = {
             chanDetail.ELEMENTS.alimList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
           }
         } else {
-          console.log('이런 경우가 있어요??')
         }
       }
       chanList[idx1] = chanDetail
       state.chanList = chanList
-      console.log(state.chanList)
       // if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
     }
   },
@@ -641,7 +616,6 @@ const D_CHANNEL = {
     },
     AC_DEL_MEMO_REPLACE_CONTENT: ({ commit }, payload) => {
       console.log('AC_DEL_MEMO_REPLACE_CONTENT')
-      console.log(payload)
       commit('MU_DEL_MEMO_REPLACE_CONTENT', payload)
     },
     AC_REPLACE_CONTENTS: ({ commit }, payload) => { // 채널 부분 치환 (ALIM/BOARD)
@@ -673,8 +647,6 @@ const D_CHANNEL = {
       }
     },
     AC_REPLACE_CONTENTS_ONLY_USERDO: ({ commit }, payload) => { // 컨텐츠 부분 치환 (ALIM/BOARD)
-      console.log('act list : ')
-      console.log(payload)
       if (payload.length > 0) {
         commit('MU_REPLACE_CONTENTS_ONLY_USERDO', payload)
       }
@@ -717,61 +689,6 @@ const D_CHANNEL = {
     },
     AC_CHANNEL_NOTI_QUEUE: ({ commit }, payload) => {
       commit('MU_CHANNEL_NOTI_QUEUE', payload)
-    },
-    AC_REPLACE_CHANNEL: ({ commit }, payload) => {
-      if (payload.ELEMENTS) {
-        if (!payload.ELEMENTS.alimList) { payload.ELEMENTS.alimList = [] }
-        if (!payload.ELEMENTS.commonList) { payload.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
-        if ((!payload.ELEMENTS.boardList)) { payload.ELEMENTS.boardList = [] }
-        if ((!payload.ELEMENTS.cabinetList)) { payload.ELEMENTS.cabinetList = [] }
-        if ((!payload.ELEMENTS.showProfileUserList)) { payload.ELEMENTS.showProfileUserList = [] }
-        if ((!payload.ELEMENTS.managerList)) { payload.ELEMENTS.managerList = [] }
-      } else {
-        payload.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
-      }
-      payload.teamTypeText = commonMethods.teamTypeString(payload.teamType)
-      // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
-      // var message = commonMethods.changeText(team.memoMtext)
-      // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
-
-      // eslint-disable-next-line no-new-object
-      var D_CHAN_AUTH = {}
-      D_CHAN_AUTH.recvAlimYn = true
-      if (payload.followerKey) D_CHAN_AUTH.followYn = true
-      if (payload.userTeamInfo !== undefined && payload.userTeamInfo !== null && payload.userTeamInfo !== '') {
-        D_CHAN_AUTH.settingYn = true
-        if (payload.userTeamInfo.notiYn === false || Number(payload.userTeamInfo.notiYn) === 0) {
-          D_CHAN_AUTH.recvAlimYn = payload.userTeamInfo.notiYn
-        }
-        if (payload.userTeamInfo.memberYn === true || payload.userTeamInfo.memberYn === 1) {
-          D_CHAN_AUTH.memberYn = true
-        }
-        /* if (payload.userTeamInfo.showProfileYn === 1) {
-          D_CHAN_AUTH.showProfileYn = true
-          D_CHAN_AUTH.userGrade = '(공개)'
-        } */
-        D_CHAN_AUTH.followYn = true
-        payload.detailShowYn = false
-        D_CHAN_AUTH.followTypeText = '구독자'
-        if (payload.userTeamInfo.managerKey !== undefined && payload.userTeamInfo.managerKey !== null && payload.userTeamInfo.managerKey !== '') {
-          D_CHAN_AUTH.mngAlimYn = payload.userTeamInfo.mngAlimYn
-          D_CHAN_AUTH.mngTeamYn = payload.userTeamInfo.mngTeamYn
-          D_CHAN_AUTH.mngMemberYn = payload.userTeamInfo.mngMemberYn
-          if (payload.userTeamInfo.ownerYn === true || payload.userTeamInfo.ownerYn === 1) {
-            D_CHAN_AUTH.followTypeText = '소유자'
-            // D_CHAN_AUTH.userGrade = '(관리자)'
-            D_CHAN_AUTH.ownerYn = true
-            D_CHAN_AUTH.admYn = true
-          } else {
-            D_CHAN_AUTH.followTypeText = '관리자'
-            // D_CHAN_AUTH.userGrade = '(매니저)'
-          }
-          D_CHAN_AUTH.adminYn = true
-        }
-      }
-
-      payload.D_CHAN_AUTH = D_CHAN_AUTH
-      commit('MU_REPLACE_CHANNEL', payload)
     },
     /* AC_RECENT_CHANGE_TEAM: ({ commit }, payload) => {
       commit('MU_RECENT_CHANGE_TEAM', payload)

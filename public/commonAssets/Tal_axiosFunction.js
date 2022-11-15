@@ -156,7 +156,6 @@ export const methods = {
       // 정재준테스트
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
-      paramMap.set('userKey', 255)
       // // 최유민테스트
       // paramMap.set('fcmKey', '11111111')
       // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
@@ -171,6 +170,7 @@ export const methods = {
         router.replace('/policies')
         return
       }
+      paramMap.set('userKey', user.userKey)
       if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
       if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
       paramMap.set('userEmail', user.userEmail)
@@ -179,17 +179,23 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-
+    console.log(result.data.resultCode)
+    console.log('result~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     if (result.data.resultCode === 'OK') {
       console.log(result.data)
       console.log('!!! USER LOGIN CHECK !!!')
+      if (result.data.userMap) {
+        try {
+          localStorage.setItem('user', JSON.stringify(result.data.userMap))
+          store.dispatch('D_USER/AC_USER', result.data.userMap)
+          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
       if (maingoYn) {
         router.replace({ name: 'main', params: { testYn: true } })
-      }
-      if (result.data.userMap) {
-        localStorage.setItem('user', JSON.stringify(result.data.userMap))
-        store.dispatch('D_USER/AC_USER', result.data.userMap)
-        localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
       }
     } else {
       if (user === undefined || user === null || user === '') {

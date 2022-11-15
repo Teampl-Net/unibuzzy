@@ -365,11 +365,11 @@ export const commonMethods = {
   },
   settingUserAuth (team) {
     var D_CHAN_AUTH = {}
-    D_CHAN_AUTH.recvAlimYn = true
+    D_CHAN_AUTH.notiYn = true
     if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
       D_CHAN_AUTH.settingYn = true
       if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
-        D_CHAN_AUTH.recvAlimYn = team.userTeamInfo.notiYn
+        D_CHAN_AUTH.notiYn = team.userTeamInfo.notiYn
       }
       if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
         D_CHAN_AUTH.memberYn = true
@@ -380,18 +380,15 @@ export const commonMethods = {
       } */
       D_CHAN_AUTH.followYn = true
       team.detailShowYn = false
-      D_CHAN_AUTH.followTypeText = '구독자'
       if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
         D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
         D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
         D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
         if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
-          D_CHAN_AUTH.followTypeText = '소유자'
           // D_CHAN_AUTH.userGrade = '(관리자)'
           D_CHAN_AUTH.ownerYn = true
           D_CHAN_AUTH.admYn = true
         } else {
-          D_CHAN_AUTH.followTypeText = '관리자'
           // D_CHAN_AUTH.userGrade = '(매니저)'
         }
         D_CHAN_AUTH.adminYn = true

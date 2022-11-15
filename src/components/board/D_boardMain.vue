@@ -50,10 +50,10 @@
               </div>
               <div class="mleft-05" style="display:flex; flex-direction: column;">
                 <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(GE_USER.userDispMtext)}}</p>
-                <div>
+                <!-- <div>
                   <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
                   <p class="fl commonBlack font14 " v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(내정보공개)</p>
-                </div>
+                </div> -->
               </div>
             </div>
             <div style="display:flex; align-items: center; justify-content: space-around; max-width:150px; width:55%;">

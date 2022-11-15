@@ -91,10 +91,6 @@ export default {
     helpButtonPop
   },
   created () {
-    console.log('===================')
-    console.log(this.targetType)
-    console.log(this.bgblack)
-    console.log(this.chanAlimListTeamKey)
     // // console.log(this.chanName)
     // // console.log(this.chanAlimListTeamKey)
   },

@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable camelcase */
 
 const D_historyStack = {
@@ -16,6 +17,20 @@ const D_historyStack = {
     contentsAllClose: 0
   },
   mutations: {
+    MU_ADD_ALL_HISTORY_STACK (state, page) {
+      state.historyStack.push(page)
+      state.currentPage = page
+    },
+    MU_REMOVE_ALL_HISTORY_STACK (state, page) {
+      state.historyStack.splice(state.historyStack.length - 1, 1)
+      state.currentPage = state.historyStack[state.historyStack.length - 1]
+    },
+    MU_ADD_POP_HISTORY_STACK (state, page) {
+      state.gPopStack.push(page)
+    },
+    MU_REMOVE_POP_HISTORY_STACK (state, page) {
+      state.gPopStack.splice(state.gPopStack.length - 1, 1)
+    },
     updateServerList (state, server) {
       state.archivingServerList = server // state의 account변수에 넘겨 받은 account값을 입력함
     },
@@ -27,6 +42,9 @@ const D_historyStack = {
     },
     updateGpopStack (state, stack) {
       state.gPopStack = stack // state의 account변수에 넘겨 받은 account값을 입력함
+    },
+    clearGPopStack (state, stack) {
+      state.gPopStack = [] // state의 account변수에 넘겨 받은 account값을 입력함
     },
     setRemovePage (state, page) {
       state.removePage = page
@@ -52,6 +70,20 @@ const D_historyStack = {
     }
   },
   actions: {
+    AC_ADD_ALL_HISTORY_STACK ({ commit, state }, payload) {
+      commit('MU_ADD_ALL_HISTORY_STACK', payload)
+    },
+    AC_REMOVE_ALL_HISTORY_STACK ({ commit, state }, payload) {
+      commit('MU_REMOVE_ALL_HISTORY_STACK', payload)
+    },
+    AC_ADD_POP_HISTORY_STACK ({ commit, state }, payload) {
+      console.log(payload)
+      debugger
+      commit('MU_ADD_POP_HISTORY_STACK', payload)
+    },
+    AC_REMOVE_POP_HISTORY_STACK ({ commit, state }, payload) {
+      commit('MU_REMOVE_POP_HISTORY_STACK', payload)
+    },
     AC_DELETE_AXIOS_QUEUE ({ commit, state }, payload) {
       var idx2 = state.axiosQueue.findIndex((item) => item === payload)
       if (idx2 !== -1) { var queue = state.axiosQueue.splice(idx2, 1) }
@@ -62,6 +94,9 @@ const D_historyStack = {
     },
     AC_UPDATE_GPOP_STACK ({ commit }, payload) {
       commit('updateGpopStack', payload)
+    },
+    AC_CLEAR_GPOP_STACK ({ commit }, payload) {
+      commit('clearGPopStack', payload)
     },
     AC_ADD_AXIOS_QUEUE ({ commit, state }, payload) {
       commit('updateAxiosQueue', payload.push(payload))

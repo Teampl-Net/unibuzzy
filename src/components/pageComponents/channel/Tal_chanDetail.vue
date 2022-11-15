@@ -148,7 +148,7 @@ export default {
         }
       }
       if (this.chanDetail.userTeamInfo.notiYn === false || this.chanDetail.userTeamInfo.notiYn === 0) {
-        this.recvAlimYn = false
+        this.notiYn = false
       }
     }
     this.settingTeamType(this.chanDetail.teamType)
@@ -278,12 +278,12 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.followerKey = this.chanDetail.userTeamInfo.followerKey
-      if (this.recvAlimYn === true) {
+      if (this.notiYn === true) {
         param.notiYn = false
-        this.recvAlimYn = false
+        this.notiYn = false
       } else {
         param.notiYn = true
-        this.recvAlimYn = true
+        this.notiYn = true
       }
       this.$changeRecvAlimYn(param)
     },

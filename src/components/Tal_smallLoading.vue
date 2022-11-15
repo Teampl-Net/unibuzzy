@@ -9,7 +9,6 @@ export default {
     var this_ = this
     setTimeout(() => {
       this_.showYn = false
-      console.log('end')
     }, 3000)
   },
   data () {

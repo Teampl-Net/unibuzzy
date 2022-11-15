@@ -17,8 +17,6 @@ const D_NOTI = {
   },
   mutations: {
     MU_ADD_NEW_NOTI: (state, payload) => {
-      // alert(JSON.stringify(payload))
-      // {notiDetailObj: notiDetailObj, currentPage: currentPage, addVueResult: addVueResult}
       state.newNoti = payload
       state.notiList.unshift(payload)
     }

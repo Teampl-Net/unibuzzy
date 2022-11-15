@@ -183,7 +183,6 @@ export default {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       this.workDate = { toDate: '', fromDate: '' }
-      // alert(this.selectPopId)
       if (this.selectPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -214,7 +213,7 @@ export default {
           param.memoHeaderStr += '[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + ']'
           setOkYn = true
         }
-        if (this.workDate.toDate && this.workDate.toDate !== '') {
+        if (this.workDate.toDate !== '') {
           // eslint-disable-next-line no-debugger
           debugger
           var toDate = this.settingDate(this.workDate.toDate)

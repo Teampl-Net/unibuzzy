@@ -6,7 +6,7 @@
       <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="mMenuShowYn" />
     </transition>
     <div :v-show="testsettse" id="gChannelPopup" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
-        <gChannelPop />
+        <gChannelPop v-if="this.GE_USER" />
     </div>
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
@@ -165,9 +165,7 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
-      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
-      gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
+      this.$store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
       this.mGPopShowYn = false
     },
     changePageHeader (title) {
@@ -178,8 +176,6 @@ export default {
       this.$router.replace({ path: '/' + page })
     },
     async goDetail (detailValue) {
-      console.log(' router main  ')
-
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
@@ -190,18 +186,17 @@ export default {
         if (detailValue.jobkindId === 'BOAR') {
           detailParam.cabinetKey = detailValue.cabinetKey
           detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
+          detailParam.popHeaderText = detailValue.cabinetNameMtext
         } else {
           detailParam.nameMtext = detailValue.nameMtext
           detailParam.teamName = detailValue.nameMtext
+          detailParam.popHeaderText = detailValue.nameMtext
         }
-        detailParam.popHeaderText = detailValue.popHeaderText
         detailParam.contentsKey = detailValue.contentsKey
         detailParam.jobkindId = detailValue.jobkindId
         detailParam.teamKey = detailValue.creTeamKey
         detailParam.notiYn = true
         detailParam.value = detailValue
-        console.log(detailValue)
-        console.log(detailParam)
         this.openPop(detailParam)
       }
     },

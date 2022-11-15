@@ -184,30 +184,7 @@ export const functions = {
     console.log(resultList)
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
     var response = resultList.data.content[0]
-    // eslint-disable-next-line no-debugger
-    debugger
-    var team = null
-    if (!response) return
-    response.detailPageYn = true
-    var teamList = await functions.getDetail('TEAM', teamKey)
-    // var queueIndex = null
-    if (teamList && teamList.length > 0) {
-      console.log('이미있던 채널맞음')
-      team = teamList[0]
-      response.ELEMENTS = team.ELEMENTS
-
-      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
-      // g_axiosQueue.splice(queueIndex, 1)
-      await store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
-      result = response
-    } else {
-      console.log('없던 채널이라 추가했음----------------------------------------------------------')
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
-
-      // queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
-      // g_axiosQueue.splice(queueIndex, 1)
-      result = false
-    }
+    await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
     return result
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },

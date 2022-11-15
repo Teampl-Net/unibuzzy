@@ -396,19 +396,6 @@ export default {
       }
       this.loadingYn = false
     },
-    updateStoreData (Detail) {
-      var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.ELEMENTS.cabinetList
-      var index = cabinetList.findIndex((item) => item.cabinetKey === this.propParams.cabinetKey)
-      if (index >= 0) {
-        cabinetList[index] = Detail
-      } else {
-        cabinetList.push(Detail)
-      }
-      tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
-      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
-    },
     async getCabinetDetail (teamKey) {
       // eslint-disable-next-line no-new-object
       var param = new Object()

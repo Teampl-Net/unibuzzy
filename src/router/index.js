@@ -33,7 +33,7 @@ import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
 import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
 
 import myActList from '../components/pageComponents/myPage/D_myActList.vue'
-import myPage from '../pages/routerPages/D_myPage.vue'
+import myPage from '../pages/routerPages/Tal_myPage.vue'
 // import suminTest from '../components/unit/formEditor/Tal_attachFile.vue'
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'

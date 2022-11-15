@@ -384,7 +384,6 @@ async changeAct (act, contentsKey, idx) {
           temp.push({ doType: act.doType, doKey: result.doKey })
           this.commonBoardListData[idx].userDoList = temp
           this.changeData += 1
-          // console.log(JSON.stringify(act.doType === 'LI'))
           this.commonBoardListData[idx].likeCount += 1
         // }
       }
