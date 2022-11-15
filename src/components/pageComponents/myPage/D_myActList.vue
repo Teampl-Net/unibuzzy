@@ -1,5 +1,4 @@
 <template>
-  <!-- 내가 쓴 / 내가 댓글 단 / 내 like / 내 star -->
   <div class="w-100P h-100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
     <div class="mMyPageTabList">
       <div class="myPageTab font14" :class="{activeMyPageTabList: this.mMyPageTabType === tab.mMyPageTabType}" @click="myPageTabClick(tab, index)" v-for="(tab, index) in mMyPageTabList" :key="index">{{tab.name}}</div>
@@ -12,10 +11,9 @@
         </div>
       </div>
       <div class="fl myActContentsWrap" id="myActContentsWrap" ref="myActContentsWrap" style="overflow: hidden scroll; height: calc(100% - 5px); padding-top: 0;">
-        <!-- <div v-if="mListShowYn" style="width: 100%; height: 30px; line-height: 30px; margin-top: 10px;" class="fl fontBold font18 commonColor textLeft">{{mMyActTitle}}</div> -->
-        <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.mFindPopShowYn = true " :mResultSearchKeyList="this.mResultSearchKeyList" />
+        <gSearchBox style="margin-bottom: 0 !important; cursor: pointer;" :targetType="'myActList'" @changeSearchList="changeSearchList" @openFindPop="this.mFindPopShowYn = true " :resultSearchKeyList="this.mResultSearchKeyList" />
         <findContentsList contentsListTargetType="myActList" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false"/>
-        <myActContentList v-if="mListShowYn" :mEndListYn="this.mEndListYn" ref="myActContentRef" @myActMoreList="loadMore" @goDetail="myActOpenPop" :mMyActTabType="this.mMyActTabType" :mMyActContentsList="this.mMyActContentsList" />
+        <myActContentList v-if="mListShowYn" :mEndListYn="this.mEndListYn" ref="myActContentRef" @myActMoreList="loadMore" @openContentsDetailPop="myActOpenPop" :myActTabType="this.mMyActTabType" :myActContentsList="this.mMyActContentsList" />
       </div>
     </div>
   </div>
@@ -46,11 +44,9 @@ export default {
       mCabContentsList: [],
       mEndListYn: false,
       mMyActTabList: [
-        // { mMyActTabType: 'mi', name: '관심있는' },
         { tabType: 'mwb', name: '작성한' }, { tabType: 'mcb', name: '댓글 단' }, { tabType: 'mlb', name: '좋아한' }, { tabType: 'msb', name: '스크랩한' }],
       mMyPageTabType: 'ALIM',
       mMyPageTabList: [{ mMyPageTabType: 'ALIM', name: '알림' }, { mMyPageTabType: 'BOAR', name: '게시글' }
-        // { mMyPageTabType: 'mi', name: '내 정보' }
       ]
     }
   },
@@ -63,7 +59,6 @@ export default {
   mounted () {
     this.myActScrollBox = document.getElementById('myActContentsWrap')
     this.myActScrollBox.addEventListener('scroll', this.handleScroll)
-    // this.$emit('closeLoading')
   },
   watch: {
     routerReloadKey () {
@@ -77,7 +72,6 @@ export default {
     async myPageTabClick (tab, index) {
       this.mMyPageTabType = tab.mMyPageTabType
       this.refreshList()
-      // await this.getMyActContentsList()
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
@@ -92,7 +86,6 @@ export default {
         this.mScrolledYn = false
       }
       if (time / 500 > 1 && this.$diffInt(this.myActScrollBox.scrollTop, this.mScrollPosition) > 150) {
-        // var test = document.getElementById('myActHeader')
         this.mScrollCheckSec = currentTime
 
         if (this.firstContOffsetY < 0) {
@@ -115,7 +108,7 @@ export default {
       var resultList = await this.getMyActContentsList()
       this.mMyActContentsList = resultList.content
       this.mListShowYn = true
-      this.endListSetFunc(resultList)
+      this.checkEndListFunc(resultList)
       this.mFindPopShowYn = false
     },
     async refreshList () {
@@ -125,9 +118,9 @@ export default {
       }
       var resultList = await this.getMyActContentsList(pageSize, 0)
       this.mMyActContentsList = resultList.content
-      this.endListSetFunc(resultList)
+      this.checkEndListFunc(resultList)
     },
-    async loadMore (pageSize) {
+    async loadMore () {
       if (this.mEndListYn === false) {
         var resultList = await this.getMyActContentsList()
         var axiosResultTempList = resultList.content
@@ -135,7 +128,7 @@ export default {
           ...this.mMyActContentsList,
           ...axiosResultTempList
         ]
-        this.endListSetFunc(resultList)
+        this.checkEndListFunc(resultList)
         this.mMyActContentsList = newArr
       } else {
         if (this.$refs.myActContentRef) {
@@ -143,7 +136,7 @@ export default {
         }
       }
     },
-    endListSetFunc (resultList) {
+    checkEndListFunc (resultList) {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.mEndListYn = true
         if (this.mOffsetInt > 0) this.mOffsetInt -= 1
@@ -153,15 +146,15 @@ export default {
       }
     },
     myActOpenPop (value) {
-      this.$emit('goDetail', value)
+      this.$emit('openContentsDetailPop', value)
     },
     async getMyActContentsList (pageSize, offsetInput) {
       var param = {}
 
       if (offsetInput !== undefined) {
-        param.mOffsetInt = offsetInput
+        param.offsetInt = offsetInput
       } else {
-        param.mOffsetInt = this.mOffsetInt
+        param.offsetInt = this.mOffsetInt
       }
       if (pageSize) {
         param.pageSize = pageSize
@@ -252,7 +245,7 @@ export default {
       this.mOffsetInt = 0
       var resultList = await this.getMyActContentsList(pageSize, this.mOffsetInt)
       this.mMyActContentsList = resultList.content
-      this.endListSetFunc(resultList)
+      this.checkEndListFunc(resultList)
     },
     async requestSearchList (param) {
       if (param) {

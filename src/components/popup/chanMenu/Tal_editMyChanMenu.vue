@@ -83,7 +83,7 @@
         </td>
       </tr> -->
 
-      <!-- <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditMemberPop">
+      <!-- <tr @click="openEditMemberPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
