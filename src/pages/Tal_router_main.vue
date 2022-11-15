@@ -192,6 +192,7 @@ export default {
           detailParam.teamName = detailValue.nameMtext
           detailParam.popHeaderText = detailValue.nameMtext
         }
+        if (detailParam.popHeaderText === undefined) detailParam.popHeaderText = detailValue.popHeaderText
         detailParam.contentsKey = detailValue.contentsKey
         detailParam.jobkindId = detailValue.jobkindId
         detailParam.teamKey = detailValue.creTeamKey

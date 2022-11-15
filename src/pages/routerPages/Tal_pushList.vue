@@ -1263,7 +1263,7 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
       var element = document.getElementsByClassName('commonListContentBox')[0]
-      if (this.box.scrollTop < 10) {
+      if (this.box.scrollTop < 0) {
         this.$emit('goScroll')
       }
       if (element) {

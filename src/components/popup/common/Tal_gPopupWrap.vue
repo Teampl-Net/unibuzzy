@@ -28,7 +28,7 @@
       <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.propParams"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
       <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.propParams.contentsJobkindId" :params="this.propParams" :propData="this.propParams" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
       <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
-      <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :chanAlimListTeamKey="this.propParams.targetKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false' :addChanList='addChanMenuList' @openItem='openPop'/>
+      <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :propChanAlimListTeamKey="this.propParams.targetKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false' @openItem='openPop'/>
       <boardMain :pPopId="popId" ref="boardMainPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
       <contentsDetail :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.propParams" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'contentsDetail'" @openPop="openPop" :propParams='this.propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
@@ -67,7 +67,7 @@ import question from '../info/Tal_question.vue'
 import leaveTal from '../info/Tal_leaveTheAlim.vue'
 import createChannel from '../creChannel/Tal_creChannel.vue'
 import writeContents from '../D_writeContents.vue'
-import chanMenu from '../chanMenu/Tal_channelMenu.vue'
+import chanMenu from '../chanMenu/D_channelMenu.vue'
 import boardMain from '@/components/board/D_boardMain.vue'
 import contentsDetail from '@/components/common/D_contentsDetail.vue'
 import editBookList from '../receiver/D_editBookList.vue'
