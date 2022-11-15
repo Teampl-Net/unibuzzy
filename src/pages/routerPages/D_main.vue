@@ -7,7 +7,7 @@
       <div @click="goUserProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
       <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
       <div class="userProfileTextWrap" >
-        <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{changeText(this.GE_USER.userDispMtext)}}</p>
+        <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{$changeText(this.GE_USER.userDispMtext)}}</p>
         <img  src="../../assets/images/common/ico_refresh.png" @click="refreshBtnClick" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
         <div>
           <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
@@ -140,11 +140,6 @@ export default {
     },
     openPop (openParam) {
       this.$emit('openPop', openParam)
-    },
-    changeText (text) {
-      var changeTxt = ''
-      changeTxt = this.$makeMtextMap(text, 'KO')
-      return changeTxt
     }
   },
   computed: {
@@ -193,7 +188,6 @@ export default {
 
 .mainContentsBoxArea {
   background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px; box-shadow: 0 0 7px 3px #b7b4b440;
-
 }
 
 @media screen and (max-width: 300px) {
