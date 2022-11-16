@@ -57,8 +57,8 @@
 </div>
 </template>
 <script>
-import addressBookList from './Tal_menuBookList.vue'
-import menuBoardList from './Tal_menuBoardList.vue'
+import addressBookList from './D_addressBookList.vue'
+import menuBoardList from './D_boardContentsList.vue'
 
 export default {
   props: {

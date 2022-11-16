@@ -1,17 +1,13 @@
 <template>
-  <!-- <div style="width:100vw; height:100vh; position: fixed; top:0; left:0; background:#00000050; z-index: 9999;" @click="this.$emit('closePop')"></div> -->
-  <!-- <div style="width: 50%; min-width: 300px; min-height:200px; background:#ffffff; position: absolute; top:50%; left:50%; z-index: 9999;transform: translate(-50%, -50%);padding: 0.5rem 1rem"> -->
   <div id='dlTskdy' style="width:100%; height:100%; margin-top:50px; padding: 1rem 1rem 0rem 1rem; ">
     <div class="addressItemWrite">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">주소록 이름</p>
-      <input v-model="inputAddressBookName" type="text" placeholder="주소록 이름을 정해주세요." class="addressBookInputType"  id="addressBookName" style="">
+      <input v-model="inputAddressBookName" mCreAdressOpenType="text" placeholder="주소록 이름을 정해주세요." class="addressBookInputType"  id="addressBookName" style="">
     </div>
-    <gBtnSmall class="font16 " :class="inputAddressBookName.trim() === '' ? 'CWhiteGrayBgColor CWDeepGrayColor' : 'CDeepBgColor' " style="width: 80%; height:50px; line-height:50px; left:10%; position:absolute; bottom:2rem; font-size:16px" :btnTitle='type' @click="saveCabinet" />
-    <!-- <div class="fl" style=" width:100%; position:absolute; bottom:2rem; left:0%">
-      <gBtnSmall class="" style="width: 90%; left:5%;" :btnTitle='type' @click="saveCabinet" />
-    </div> -->
+    <gBtnSmall class="font16 " :class="inputAddressBookName.trim() === '' ? 'CWhiteGrayBgColor CWDeepGrayColor' : 'CDeepBgColor' " style="width: 80%; height:50px; line-height:50px; left:10%; position:absolute; bottom:2rem; font-size:16px" :btnTitle='mCreAdressOpenType' @click="saveCabinet" />
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -23,7 +19,7 @@ export default {
   },
   data () {
     return {
-      type: '',
+      mCreAdressOpenType: '',
       inputAddressBookName: ''
     }
   },
@@ -31,8 +27,9 @@ export default {
     setting () {
       if (this.propData) {
         var cabinet = this.propData.cabinet
-        this.type = this.propData.newAddressYn === true ? '생성하기' : '수정하기'
+        this.mCreAdressOpenType = this.propData.newAddressYn === true ? '생성하기' : '수정하기'
         this.inputAddressBookName = cabinet.cabinetNameMtext
+        // alert(JSON.stringify(this.propData))
       }
     },
     async saveCabinet () {
@@ -44,15 +41,13 @@ export default {
       param.creMenuYn = true
       console.log('gggggggggggggggggggg')
       console.log(this.propData)
-      // eslint-disable-next-line no-new-object
-      var cabinet = new Object()
-      cabinet.cabinetKey = this.propData.cabinet.cabinetKey
-      // delete cabinet.value
-      cabinet.cabinetNameMtext = this.inputAddressBookName
-      param.cabinet = cabinet
+      param.cabinet = this.propData.cabinet
+      param.cabinet.cabinetNameMtext = this.inputAddressBookName
 
       try {
-        await this.$saveCabinet(param)
+        var result
+        result = await this.$saveCabinet(param)
+        console.log(result)
         var thisParam = {}
         thisParam.cabinetType = 'address'
         this.$emit('saveCabinet', thisParam)

@@ -4,12 +4,12 @@
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
         <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :propParams="this.popParams" :propData="this.propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload'
+                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :propParams="this.popParams" :propData="this.propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'
                                         />
       </transition>
-      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="this.propParams.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="this.propParams.targetKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader" @sendOk="sendOkYn++"
+      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="this.propParams.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="this.propParams.targetKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"
       v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
-      @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :memberDetailOpen='memberDetailOpen' @memberDetailClose='memberDetailOpen = false' :targetType='targetType' />
+      @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :propBookDetailPopYn='this.mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
       <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
         <chanAlimList :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
       </div>
@@ -25,13 +25,13 @@
       <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
       <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop = "openPop"/>
       <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
-      <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.propParams"  @closeXPop="closeXPop(true)" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan'/>
-      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.propParams.contentsJobkindId" :params="this.propParams" :propData="this.propParams" @closeXPop="closeXPop" :sendOk='sendOkYn' @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+      <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
+      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.propParams.contentsJobkindId" :params="this.propParams" :propData="this.propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
       <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
       <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :propChanAlimListTeamKey="this.propParams.targetKey" v-if='openChanMenuYn && popId' @closePop='openChanMenuYn = false' @openItem='openPop'/>
       <boardMain :pPopId="popId" ref="boardMainPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
       <contentsDetail :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.propParams" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'contentsDetail'" @openPop="openPop" :propParams='this.propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' :memberDetailOpen='memberDetailOpen' @showToastPop="showToastPop"/>
+      <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @showToastPop="showToastPop" @openBookDetailPop='openBookDetailPop' :propBookDetailPopYn='this.mBookDetailPopYn' />
       <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.propParams" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.propParams" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="this.propParams.pSelectedList" :propData="this.propParams" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
@@ -65,7 +65,7 @@ import askTal from '../info/Tal_askTheAlim.vue'
 import talInfo from '../info/Tal_theAlimInfo.vue'
 import question from '../info/Tal_question.vue'
 import leaveTal from '../info/Tal_leaveTheAlim.vue'
-import createChannel from '../creChannel/Tal_creChannel.vue'
+import createChannel from '../creChannel/D_createChannel.vue'
 import writeContents from '../D_writeContents.vue'
 import chanMenu from '../chanMenu/D_channelMenu.vue'
 import boardMain from '@/components/board/D_boardMain.vue'
@@ -83,9 +83,9 @@ import memberManagement from '../member/D_manageFollowerList.vue'
 import selectAddressBookList from '../member/Tal_selectAddressBook.vue'
 import loadingCompo from '../../layout/Tal_loading.vue'
 import editBoardPop from '../board/D_editBoardList.vue'
-import editMyChanMenu from '../../popup/chanMenu/Tal_editMyChanMenu.vue'
+import editMyChanMenu from '../chanMenu/D_editMyChanMenu.vue'
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
-import autoAnswerList from '../../popup/chanMenu/Tal_autoAnswerList.vue'
+import autoAnswerList from '../chanMenu/D_autoAnswerList.vue'
 import memberForm from '../memberQuestion/Tal_editMemberForm.vue'
 import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
 import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
@@ -116,16 +116,15 @@ export default {
       changInfoType: '',
       readySearchList: {}, // chanDetail -> pushList 열때 필요
       successChanParam: {},
-      sendOkYn: 0,
       bgblackYn: false,
-      memberDetailOpen: false,
       loadingYn: false,
       headerFollowYn: false,
       axiosQueue: [],
       notiScrollTarget: null,
       errorText: '',
       failPopYn: false,
-      selectPlist: []
+      selectPlist: [],
+      mBookDetailPopYn: false
     }
   },
   props: {
@@ -227,6 +226,9 @@ export default {
     }
   },
   methods: {
+    openBookDetailPop () {
+      this.mBookDetailPopYn = true
+    },
     setBgColor (param) {
       var test = false
       if (param === 1 || param === true) { test = true }
@@ -314,9 +316,6 @@ export default {
         this.reloadYn = false
       }, 100)
     },
-    // sendOk(){
-
-    // },
     async successWriteBoard (inParam) {
       if (this.targetType === 'writeContent') {
         this.$emit('successWrite', inParam)
@@ -330,6 +329,7 @@ export default {
       if (successChanYn === true) {
         target = this.successChanParam
       }
+      // alert(JSON.stringify(target))
       this.headerTitle = target.popHeaderText
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
@@ -423,19 +423,15 @@ export default {
         this.$showToastPop(msg)
       }, 500)
     },
-    successCreChan (params) {
+    async successCreChan (params) {
       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       console.log(params)
-      // eslint-disable-next-line no-debugger
-      debugger
       if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
         this.$emit('parentClose', true)
         setTimeout(() => {
           this.$showToastPop('채널이 삭제되었습니다.')
         }, 500)
-        // this.closeXPop()
       } else if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
-        // this.$emit('reloadPop', true) // 부모페이지까지 리로드?
         this.closeXPop()
         setTimeout(() => {
           this.$showToastPop('채널정보가 수정되었습니다.')
@@ -444,18 +440,14 @@ export default {
         setTimeout(() => {
           this.$showToastPop('채널이 생성되었습니다.')
         }, 500)
-        this.$emit('reloadPop')
-        this.successChanParam = params
-        this.settingPop(true)
+        this.$emit('closeNewPop', params)
       }
     },
+    closeNewPop (newOpenParams) {
+      this.$emit('closePop')
+      this.openPop(newOpenParams)
+    },
     closeAndNewPop (params) {
-      // eslint-disable-next-line no-new-object
-      /* var param = new Object()
-      param.targetType = 'boardMain'
-      param.tagetKey = params.cabinetKey
-      this.successChanParam = param
-      this.settingPop(true) */
       this.closeXPop(true)
     },
     async channelMenuReload () {
@@ -467,11 +459,6 @@ export default {
       }
       this.$emit('closePop', reloadYn)
     },
-    // sucssesCreChan(){
-    //   if (localStorage.getItem('curentPage') === 'pop' + this.thisPopN) {
-    //     this.$emit('closePop', reloadYn)
-    //   }
-    // }
     changeText (text) {
       var changeTxt = ''
       // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))

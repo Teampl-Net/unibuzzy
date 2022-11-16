@@ -294,11 +294,11 @@ export default {
       // console.log(param)
 
       var result = await this.$changeDispName(param)
+      console.log(result)
       // console.log(result)
-
       if (result.data) {
         this.changeYn = false
-        this.$store.commit('D_USER/MU_USER', result.data)
+        this.$store.commit('D_USER/MU_USER', result.data.userInfo)
         this.$router.push('/')
         this.$emit('closeXPop')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)

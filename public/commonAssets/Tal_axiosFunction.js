@@ -219,8 +219,7 @@ export const methods = {
     return resultList
   },
   async getContentsList (inputParam, nonLoadingYn) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
       paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
@@ -234,8 +233,7 @@ export const methods = {
     return resultList
   },
   async getContentsOnly (inputParam) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
     }
@@ -248,8 +246,7 @@ export const methods = {
     return resultList
   },
   async saveUserDo (inputParam, type) {
-    // eslint-disable-next-line no-new-object
-    var param = new Object()
+    var param = {}
     if (inputParam) {
       param = inputParam
     }
@@ -508,7 +505,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveUser',
+      url: 'service//tp.saveUser',
       param: param
     })
     result = response

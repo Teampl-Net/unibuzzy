@@ -37,7 +37,6 @@ import helpButtonPop from '../popup/info/Tal_helpButtonPop.vue'
 export default {
   name: 'talHeader',
   props: {
-    checkOfficialChanYn: {},
     chanName: {},
     headerTitle: {},
     chanAlimListTeamKey: {},
@@ -45,15 +44,13 @@ export default {
     thisPopN: {},
     bgblack: { type: Boolean, default: false },
     managerBtn: {},
-    memberDetailOpen: {},
     targetType: {},
     helpYn: {},
-    followYn: {}
+    followYn: {},
+
+    propBookDetailPopYn: {}
   },
   methods: {
-    checkOfficialChan () {
-
-    },
     clickHelp () {
       if (this.headerTitle === '멤버/매니저 관리') {
         this.helpButtonType = 'member'
@@ -73,7 +70,11 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
-      this.$emit('closeXPop')
+      if (this.propBookDetailPopYn === true) {
+        this.$emit('closeBookDetail')
+      } else {
+        this.$emit('closeXPop')
+      }
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {
@@ -89,14 +90,6 @@ export default {
   },
   components: {
     helpButtonPop
-  },
-  created () {
-    // // console.log(this.chanName)
-    // // console.log(this.chanAlimListTeamKey)
-  },
-  watch: {
-    bgblack () {
-    }
   }
 }
 

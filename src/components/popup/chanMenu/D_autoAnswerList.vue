@@ -1,6 +1,6 @@
 <template>
 <div class="w-100P" style="margin-top:50px;">
-
+아직 구현 X
 </div>
 </template>
 

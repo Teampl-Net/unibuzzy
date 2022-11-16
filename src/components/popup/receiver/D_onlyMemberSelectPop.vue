@@ -1,7 +1,7 @@
 <template>
 <div class="fl" style="height: 100%; width:100%; position: relative;">
     <!-- <div style="width:100%; height:calc(100%);" > -->
-    <memberListCompo class="fl" style="margin-top: 50px; padding: 0 1rem; height: calc(80% - 50px); background-color:white; overflow:auto;" :listData="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
+    <memberListCompo class="fl" style="margin-top: 50px; padding: 0 1rem; height: calc(80% - 50px); background-color:white; overflow:auto;" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
     <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
     <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     <!-- </div> this.propData.selectMemberType==='member'? true:false -->

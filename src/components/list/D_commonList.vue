@@ -1139,7 +1139,7 @@ export default {
       this.$emit('goDetail', param)
     },
     goDetail (value) {
-      if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== userKey) return
+      if (!this.shareAuth &&value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== this.GE_USER.userKey) return
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey

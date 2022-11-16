@@ -87,7 +87,7 @@
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="openSelectSharePop"
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
                         </div>
-                        <gBtnSmall v-if="!propParams.nonMemYn && (CONT_DETAIL.jobkindId === 'ALIM' || this.CAB_DETAIL.replyYn)" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
+                        <gBtnSmall v-if="!propParams.nonMemYn && (this.CONT_DETAIL.jobkindId === 'ALIM' || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.replyYn === 1))" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
                     </div>
                     <div v-if="!propParams.nonMemYn && CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL.replyYn" class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
                         <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
@@ -374,6 +374,8 @@ export default {
       this.tempMemoData = undefined
     },
     async readyFunction () {
+      console.log('#!@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!#!#!#@')
+      console.log(this.propParams)
       try {
         this.loadingYn = true
         if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
@@ -393,6 +395,7 @@ export default {
           this.settingFileList()
         }
       } catch (e) {
+        console.log(e)
       }
       this.loadingYn = false
     },
@@ -401,22 +404,28 @@ export default {
       var param = new Object()
       // var tt = this.propData
       param.currentTeamKey = teamKey
-      param.cabinetKey = this.propParams.cabinetKey
+      param.cabinetKey = this.propParams.value.cabinetKey
       var resultList = await this.$getCabinetDetail(param)
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
       // eslint-disable-next-line no-debugger
       debugger
       this.cabinetDetail = resultList
-      // this.updateStoreData(resultList.mCabinet)
+      console.log('')
+      console.log(this.propParams)
+
+      console.log(this.cabinetDetail)
     },
     async getContentsDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.contentsKey = this.propParams.targetKey
+      param.targetKey = this.propParams.targetKey
       param.jobkindId = this.propParams.jobkindId
       param.userKey = this.GE_USER.userKey
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
+      console.log(param)
+      console.log(resultList)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)

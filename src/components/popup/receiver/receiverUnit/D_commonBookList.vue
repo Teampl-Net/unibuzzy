@@ -1,9 +1,8 @@
 <template>
-  <div v-if="addressBookList.length > 0" class="fl w-100P" style="overflow: hidden scroll;">
-    <draggable  ref="editableArea" class="ghostClass fl w-100P" v-model="addressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
+  <div v-if="mAddressBookList.length > 0" class="fl w-100P" style="overflow: hidden scroll;">
+    <draggable  ref="editableArea" class="ghostClass fl w-100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='mDragEnabled' delay="200"    >
       <transition-group>
-        <!--         eslint-disable-next-line vue/no-v-for-template-key -->
-        <template  v-for="(data, index) in addressBookList" :key='index'>
+        <template  v-for="(data, index) in mAddressBookList" :key='index'>
           <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
         </template>
       </transition-group>
@@ -15,12 +14,10 @@
 
 <script>
 import gReceiveCard from './D_commonReceiveCard .vue'
-// import loadingCompo from '../../../components/Tal_loading.vue'
-// import pageTopCompo from './Tal_commonBookTitle.vue'
 import { VueDraggableNext } from 'vue-draggable-next'
 export default {
   props: {
-    listData: {},
+    propBookList: {},
     propData: {},
     chanAlimListTeamKey: {},
     parentSelectList: {},
@@ -28,109 +25,61 @@ export default {
   },
   data () {
     return {
-      addressBookList: [],
-      propObject: {},
-      cabinetList: [],
-      dragging: false,
-      enabled: false,
-      editYn: false,
-      pageTopBtnTitle: '편집',
-      selectedBookList: [],
-      selectedMemberList: [],
-      editIndex: null,
-      cabinetInputText: '',
-      creAddressPopYn: false
+      mAddressBookList: [],
+      mPropData: {},
+      mDragEnabled: false,
+      mSelectedBookList: []
     }
   },
-  async created () {
-    this.addressBookList = this.listData
+  async mounted () {
+    this.mAddressBookList = JSON.parse(JSON.stringify(this.propBookList))
 
-    this.propObject = this.propData
-    // 임시
-    // this.enabled = true
+    this.mPropData = this.propData
     if (this.selectPopYn) {
-      this.enabled = true
+      this.mDragEnabled = true
       console.log('this.parentSelectList')
       console.log(this.parentSelectList)
       if (this.parentSelectList && this.parentSelectList) {
         var this_ = this
         this.$nextTick(() => {
-          this_.selectedBookList = []
-          this_.selectedBookList = JSON.parse(JSON.stringify(this_.parentSelectList))
-          console.log('this.selectedBookList')
-          console.log(this_.selectedBookList)
-          this_.changeSelectedList()
+          this_.mSelectedBookList = []
+          this_.mSelectedBookList = JSON.parse(JSON.stringify(this_.parentSelectList))
+          console.log('this.mSelectedBookList')
+          console.log(this_.mSelectedBookList)
           this_.settingCheck()
         })
       }
     }
-    await this.getTeamCabList()
 
     console.log('===== Created CommmonBookList ====')
-    console.log(this.addressBookList)
-  },
-  updated () {
-    /* this.changeSelectedList()
-        this.addressBookList = this.listData */
+    console.log(this.mAddressBookList)
   },
   watch: {
-    // selectedBookList: {
-    // this.parentSelectList.bookList: {
-
-    //     immediate: true,
-    //     handler (value, old){
-    //         console.log('book : 2')
-    //         // console.log('value: ')
-    //         // console.log(value)
-    //         // console.log('-----')
-    //         this.settingCheck()
-    //     },
-    //     deep: true
-    // },
     parentSelectList () {
       console.log('!!! reset !!!')
-      this.selectedBookList = []
-      this.selectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
+      this.mSelectedBookList = []
+      this.mSelectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
       console.log('!!! end !!!')
-      console.log(this.selectedBookList)
+      console.log(this.mSelectedBookList)
       this.settingCheck()
     },
-    listData () {
+    propBookList () {
       this.setAddressList()
       this.settingCheck()
     },
-    addressBookList () {
+    mAddressBookList () {
       this.settingCheck()
     }
-    // addressBookList: {
-    //     immediate: true,
-    //     handler (value, old){
-    //         console.log('book : 4')
-    //         this.settingCheck()
-    //     },
-    //     deep: true
-    // },
   },
   components: {
-    // loadingCompo,
     gReceiveCard,
     draggable: VueDraggableNext
-    // creAddressPop
-    // pageTopCompo
   },
-  computed: {
-    setTotalHeight () {
-      return {
-        '--scrollHeight': this.cabinetList.length * 70 + 20 + 'px'
-      }
-    }
-  },
-
   methods: {
     setAddressList () {
-      this.addressBookList = this.listData
-      for (let i = 0; i < this.addressBookList.length; i++) {
-        this.addressBookList[i].jobKindId = 'BOOK'
+      this.mAddressBookList = this.propBookList
+      for (let i = 0; i < this.mAddressBookList.length; i++) {
+        this.mAddressBookList[i].jobKindId = 'BOOK'
       }
     },
     receiveCardEmit (param) {
@@ -149,9 +98,7 @@ export default {
       }
     },
     clickList (data, index) {
-      if (this.editIndex !== index) { // if(this.editIndex === null){
-        this.$emit('openMCabUserList', data)
-      }
+      this.$emit('openMCabUserList', data)
     },
     deleteCabinetClick (data, index) {
       var param = {}
@@ -166,17 +113,12 @@ export default {
       param.currentTeamKey = data.teamKey || data.creTeamKey
       param.menuType = data.menuType
       try {
-        // this.cabinetList.splice(index, 1)
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.deleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
           this.$emit('refreshList')
-          // this.addressBookList.splice(index, 1)
-          // if (this.addressBookList.length === 0) {
-          //   this.cabinetList.length = 0
-          // }
           this.$showToastPop('주소록이 삭제되었습니다.')
         }
       } catch (e) {
@@ -184,128 +126,40 @@ export default {
       }
     },
     settingCheck () {
-      if (this.selectedBookList) {
-        for (var i = 0; i < this.addressBookList.length; i++) {
-          this.addressBookList[i].selectedYn = false
-          for (var s = 0; s < this.selectedBookList.length; s++) {
-            if (this.selectedBookList[s].accessKey === this.addressBookList[i].cabinetKey) {
-              this.addressBookList[i].selectedYn = true
-              // if (this.addressBookList[i].accessKey === undefined || this.addressBookList[i].accessKey === null || this.addressBookList[i].accessKey === '') {
-              //     this.addressBookList[i].accessKey = this.selectedBookList[s].accessKey
-              // }
+      if (this.mSelectedBookList) {
+        for (var i = 0; i < this.mAddressBookList.length; i++) {
+          this.mAddressBookList[i].selectedYn = false
+          for (var s = 0; s < this.mSelectedBookList.length; s++) {
+            if (this.mSelectedBookList[s].accessKey === this.mAddressBookList[i].cabinetKey) {
+              this.mAddressBookList[i].selectedYn = true
               break
             }
           }
         }
       }
     },
-
-    inputFocusOut (data, index) {
-      if (data.cabinetNameMtext !== this.cabinetInputText) {
-        this.updateCabinet(data)
-      }
-      // this.changedText(data,index)
-      this.editIndex = null
-    },
-    async changedText (data, index) {
-      // this.editYn = true
-      this.cabinetInputText = await data.cabinetNameMtext
-      this.editIndex = await index
-      // setTimeout(()=>{
-      return new Promise(() => {
-        this.focusInput(index)
-      })
-      // },1000)
-    },
-    focusInput (index) {
-      if (index !== null) {
-        this.$nextTick(() => {
-          this.$refs['commonBookInput' + index][0].focusInput()
-        })
-        // document.getElementById('commonBookInput' + index).focus()
-        // this.$refs["commonBookInput" + index].focus()
-      }
-    },
-    // selectedListLOG () {
-    //   console.log('selectedListLOG  selectedListLOG')
-    //   console.log(this.selectedBookList)
-    // },
-    changeSelectedList () {
-      if (this.selectedBookList) {
-        if (this.selectedBookList) {
-          for (var i = 0; i < this.cabinetList.length; i++) {
-            this.cabinetList[i].selectedYn = false
-            for (var s = 0; s < this.selectedBookList.length; s++) {
-              if (this.cabinetList[i].cabinetKey === this.selectedBookList[s].cabinetKey) {
-                this.cabinetList[i].selectedYn = true
-                break
-              }
-            }
-          }
-        }
-      }
-    },
-    editClick () {
-      if (this.editYn) {
-        this.editYn = false
-        this.pageTopBtnTitle = '편집'
-        this.$emit('editYn', this.editYn)
-      } else {
-        this.editYn = true
-        this.pageTopBtnTitle = '닫기'
-        this.$emit('editYn', this.editYn)
-      }
-    },
-    async getTeamCabList () {
-      var paramMap = new Map()
-      // var te = this.propObject
-      paramMap.set('teamKey', this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.targetKey)
-      paramMap.set('sysCabinetCode', 'USER')
-      paramMap.set('adminYn', true)
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getTeamMenuList',
-        param: Object.fromEntries(paramMap)
-      })
-      this.cabinetList = result.data
-      for (var i = 0; i < this.cabinetList.length; i++) {
-        var changeT = this.cabinetList[i].cabinetNameMtext
-        this.cabinetList[i].cabinetNameMtext = this.$changeText(changeT)
-      }
-    },
     addSelectedList (data, index) {
-      if (!this.selectedBookList) {
-        this.selectedBookList = []
+      if (!this.mSelectedBookList) {
+        this.mSelectedBookList = []
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       data.shareSeq = data.cabinetKey
       if (!data.accessKey) data.accessKey = data.cabinetKey
-      var indexOf = this.selectedBookList.findIndex(i => i.accessKey === data.cabinetKey)
+      var indexOf = this.mSelectedBookList.findIndex(i => i.accessKey === data.cabinetKey)
       if (indexOf === -1) {
-        this.selectedBookList.push(data)
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.addressBookList[index].selectedYn = true
-        this.$emit('changeSelectBookList', this.selectedBookList)
+        this.mSelectedBookList.push(data)
+        this.mAddressBookList[index].selectedYn = true
+        this.$emit('changeSelectBookList', this.mSelectedBookList)
       } else {
         this.$showToastPop('중복 선택입니다.')
       }
-      // eslint-disable-next-line no-debugger
-      debugger
-    },
-    resetSelectList (list) {
-      // console.log('pppppppppppppppppppppppppppppppppp')
-      // console.log(list)
-      // this.selectedBookList = list
-      // this.settingCheck()
     },
     deleteSelectedBook (type, key) {
-      var findIdx = this.selectedBookList.findIndex(item => item.accessKey === key)
+      var findIdx = this.mSelectedBookList.findIndex(item => item.accessKey === key)
       if (findIdx !== -1) {
-        this.selectedBookList.splice(findIdx, 1)
+        this.mSelectedBookList.splice(findIdx, 1)
       }
       console.log('delSelectedList')
-      console.log(this.selectedBookList)
+      console.log(this.mSelectedBookList)
     },
     editAddressBook (data) {
       var param = {}
@@ -315,115 +169,20 @@ export default {
       param.cabinet = data
       this.$emit('openPop', param)
     },
-    async addNewBook () {
-      var param = {}
-      param.creMenuYn = true
-      var cabinet = {}
-      var defaultAddBoardName = await this.$checkSameName(this.addressBookList, '주소록')
-      cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
-      cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
-      cabinet.sysCabinetCode = 'USER'
-      // cabinet.creTeamKey = this.propObject.currentTeamKey
-      cabinet.creTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
-      cabinet.menuType = 'G'
-      param.cabinet = cabinet
-      var result = null
-      result = await this.$saveCabinet(param)
-      if (result != null) {
-        // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-        this.$emit('')
-        // if(this.addressBookList.length > 0){
-        // this.anima()
-        // }
-
-        // await this.getTeamCabList()
-        // if(!document.getElementsByClassName('foo')[0]){
-        //     setTimeout(() => {
-        //         this.anima()
-        //     },200)
-        // }else{
-        //     this.anima()
-        // }
-      }
-      // this.anima()
-    },
     anima () {
       document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-        //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
       }, 800)
     },
-    async updateCabinet (data, index) {
-      var cabinet = {}
-      cabinet.cabinetNameMtext = 'KO$^$' + this.cabinetInputText
-      cabinet.currentTeamKey = data.currentTeamKey
-      cabinet.sysCabinetCode = data.sysCabinetCode
-      cabinet.cabinetKey = data.cabinetKey
-      var paramSet = {}
-      paramSet.creMenuYn = false
-      paramSet.cabinet = cabinet
-
-      var result = null
-      var response = await this.$commonAxiosFunction({
-        url: 'service/tp.saveCabinet',
-        param: paramSet
-      })
-      result = response.data
-      data.cabinetNameMtext = this.cabinetInputText
-      this.editIndex = null
-      console.log('---- upDateCabinet ----')
-      console.log(result)
-    },
     async changePosTeamMenu (event) {
-      // var oldIndex = event.oldIndex
-      // var newIndex = event.newIndex
       console.log('----------')
-      console.log(this.addressBookList)
-
+      console.log(this.mAddressBookList)
       var paramSet = {}
-      // var teamMenuList = new Array()
-      // var menu = new Object()
-      // var cardList = document.getElementsByClassName('commonBookCard')
-      // var index = null
-      // for (var s = cardList.length - 1 ; s >=0; s--) {
-      //     index = Number(cardList[s].getAttribute('index'))
-      //     for (var i = 0; i < this.addressBookList.length; i ++) {
-      //     if(index === i) {
-      //         menu = {}
-      //         var tt = this.addressBookList[i]
-      //         menu.teamKey = this.addressBookList[i].creTeamKey
-      //         if(this.addressBookList[i].menuType) menu.menuType = 'G'
-      //         if(this.addressBookList[i].parentMenuKey) menu.parentMenuKey = this.addressBookList[i].parentMenuKey
-      //         if(this.addressBookList[i].cabinetKey) menu.cabinetKey = this.addressBookList[i].cabinetKey
-      //         if(this.addressBookList[i].cabinetNameMtext) menu.cabinetNameMtext = this.addressBookList[i].cabinetNameMtext
-      //         if(this.addressBookList[i].sysCabinetCode) menu.sysCabinetCode = this.addressBookList[i].sysCabinetCode
-      //         // console.log(menu);
-      //         // console.log(menu)
-      //         teamMenuList.push(menu)
-      //         break
-      //     }
-      //     }
-      // }
-
-      // var tempList = this.addressBookList
-      // if (oldIndex < newIndex) {
-      //     // 선택한 값이 아래로 이동 (인덱스가 큰 쪽으로)
-      //     tempList.splice(newIndex + 1, 0, tempList[oldIndex])
-      //     tempList.splice(oldIndex, 1)
-      // } else if (oldIndex > newIndex) {
-      //     // 선택한 값이 위로 이동 (인덱스가 작은 쪽으로)
-      //     tempList.splice(newIndex, 0, tempList[oldIndex])
-      //     tempList.splice(oldIndex + 1, 1)
-      // }
-      // this.addressBookList = []
-      // this.addressBookList = tempList
-      // console.log(tempList)
-      // paramSet.teamMenuList = tempList
       var tempList = []
-      for (var index = 0; index < this.addressBookList.length; index++) {
+      for (var index = 0; index < this.mAddressBookList.length; index++) {
         var temp = {}
-        temp = this.addressBookList[index]
+        temp = this.mAddressBookList[index]
         temp.menuType = 'G'
         delete temp.mUserList
         tempList.push(temp)
@@ -448,14 +207,12 @@ export default {
 </script>
 
 <style >
-/* .receiverTeamListCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 .receiverTeamText{ height:40px; cursor: pointer;line-height:40px;}
 .receiverTeamSubscImg{width: 12px;}
 .foo {
     transition : background-color 0.5s ease-in;
 }
 .commonBookCard {
-    /* width: 100%; padding: 10px; overflow: hidden; height:60px; position: relative; margin-bottom:10px; */
     width: 100%;
     cursor: pointer;
     height:60px;
@@ -463,7 +220,6 @@ export default {
     position: relative;
 
     overflow: auto;
-    /* transition : background-color 0.5s ease-in !important; */
 }
 
 input {

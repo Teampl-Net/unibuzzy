@@ -13,7 +13,7 @@
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <div v-if="mShadowScreenShowYn" @click="changeNetStatePop" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;"></div>
     <transition name="showModal">
-      <fullModal @successWrite="successWriteBoard"  ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" />
+      <fullModal @successWrite="successWriteBoard"  ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' />
     </transition>
     <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
@@ -129,6 +129,12 @@ export default {
     }
   },
   methods: {
+    closeNewPop (params) {
+      this.closePop()
+      setTimeout(() => {
+        this.openPop(params)
+      }, 200)
+    },
     changeNetStatePop () {
       if (this.mNetReturnPopShowYn === true) return
       this.mNetReturnPopShowYn = true

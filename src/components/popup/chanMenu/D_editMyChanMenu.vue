@@ -1,8 +1,6 @@
 <template>
 <div style="padding: 60px 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%;" >
-<!-- <div v-for="(data, index) in editMenuList" :key="index" class="fl" style="width:100%; height:3rem; padding: 0 2rem; border-bottom:1px solid #ccc; ">
-  <p class="fl commonBlack font16" style="line-height:3rem;">{{data.menuName}}</p>
-</div> -->
+
   <div class="editMyChanMenuWrap">
     <table class="myChanMenuTable w-100P fl" >
 
@@ -26,16 +24,13 @@
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
             <p class="font16 commonDarkGray fontBold">구독자 관리</p>
             <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);"> 구독자에게 권한을 부여할 수 있어요</p>
-            <!-- <p class="font16 fl mleft-05">공개{{managerYn ? '/매니저' : ''}}</p> -->
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
         </th>
       </tr>
@@ -51,7 +46,6 @@
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
         </th>
       </tr>
@@ -67,21 +61,9 @@
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-            <!-- <img class="fl img-w25" src="../../../assets/images/common/icon_user_unlock.svg"> -->
           </div>
         </th>
-        <td class="">
-          <!-- <gBtnSmall class="fr" @click="openEditBoardPop" btnTitle="관리" /> -->
-          <!-- <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt=""> -->
-        </td>
       </tr>
-
-      <!-- <tr @click="autoAnswerClick">
-        <th class="font16">자동 응답</th>
-        <td class="">
-          <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-        </td>
-      </tr> -->
 
       <!-- <tr @click="openEditMemberPop">
         <th class="font16 w-100P">
@@ -96,23 +78,23 @@
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
           </div>
         </th>
-        <td class="">
-        </td>
-      </tr> -->
-<!--
-      <tr @click="openEditMemberPop">
-        <th class="font16">공개신청서 관리</th>
-        <td class="">
-          <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-        </td>
       </tr> -->
 
-      <!-- <tr @click="chanDetailClick">
-        <th class="font16">채널 상세</th>
-        <td class="">
-          <img class="fr btnStyle" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-        </td>
+      <!-- <tr @click="autoAnswerClick">
+        <th class="font16 w-100P">
+          <div class="myChanMenuImgArea editMychanRow mright-05">
+            <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
+          </div>
+          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
+            <p class="font16 commonDarkGray fontBold">자동 응답</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">채널의 자동 응답을 설정할 수 있어요.</p>
+          </div>
+          <div class="myChanMenuImgAreaRight editMychanRow">
+            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
+          </div>
+        </th>
       </tr> -->
+
     </table>
   </div>
 </div>
@@ -125,14 +107,11 @@ export default {
   },
   data () {
     return {
-      editMenuList: [{ menuName: '주소록 관리' }, { menuName: '게시판 관리' }, { menuName: '채널 상세' }, { menuName: '매니저 관리' }, { menuName: '자동 응답' }],
-      param: {},
-      managerYn: false
-
+      mCommonParam: {}
     }
   },
   async created () {
-    this.param = this.CHANNEL_DETAIL
+    this.mCommonParam = this.CHANNEL_DETAIL
   },
   computed: {
     GE_USER () {
@@ -148,55 +127,47 @@ export default {
     }
   },
   methods: {
-    /* async getTeamInfo () {
-      var paramMap = new Map()
-      paramMap.set('teamKey', this.propData.teamKey)
-      var result = await this.$getTeamList(paramMap)
-      this.teamInfo = result.data.content[0]
-      // console.log(this.teamInfo)
-      // if (this.teamInfo) if (this.teamInfo.userTeamInfo) if (this.teamInfo.userTeamInfo.managerKey) this.managerYn = true
-    }, */
     openEditCabinetPop () {
-      this.param.targetType = 'editBookList'
-      this.param.chanName = this.propData.teamNameMtext
-      this.param.popHeaderText = '주소록 관리'
+      this.mCommonParam.targetType = 'editBookList'
+      this.mCommonParam.chanName = this.propData.teamNameMtext
+      this.mCommonParam.popHeaderText = '주소록 관리'
       this.openPop()
     },
     openEditBoardPop () {
-      this.param.targetType = 'editBoard'
-      this.param.popHeaderText = '게시판 관리'
+      this.mCommonParam.targetType = 'editBoard'
+      this.mCommonParam.popHeaderText = '게시판 관리'
       this.openPop()
     },
     chanDetailClick () {
-      this.param.targetType = 'chanInfo'
-      this.param.popHeaderText = '채널 상세'
+      this.mCommonParam.targetType = 'chanInfo'
+      this.mCommonParam.popHeaderText = '채널 상세'
       this.openPop()
     },
     openEditChanPop () {
-      this.param.targetType = 'createChannel'
-      this.param.targetKey = this.propData.teamKey
-      this.param.popHeaderText = '채널 수정'
-      this.param.modiYn = true
+      this.mCommonParam.targetType = 'createChannel'
+      this.mCommonParam.targetKey = this.propData.teamKey
+      this.mCommonParam.popHeaderText = '채널 수정'
+      this.mCommonParam.modiYn = true
       this.openPop()
     },
     openEditManagerPop () {
-      this.param.targetType = 'memberManagement'
-      this.param.popHeaderText = '구독자 관리'
+      this.mCommonParam.targetType = 'memberManagement'
+      this.mCommonParam.popHeaderText = '구독자 관리'
       this.openPop()
     },
     autoAnswerClick () {
-      this.param.targetType = 'autoAnswer'
-      this.param.popHeaderText = '자동 응답'
+      this.mCommonParam.targetType = 'autoAnswer'
+      this.mCommonParam.popHeaderText = '자동 응답'
       this.openPop()
     },
     openEditMemberPop () {
-      this.param.targetType = 'memberFormList'
-      this.param.popHeaderText = '공개신청서 목록'
+      this.mCommonParam.targetType = 'memberFormList'
+      this.mCommonParam.popHeaderText = '공개신청서 목록'
       this.openPop()
     },
     openPop () {
       // this.$emit('openPop', this.CHANNEL_DETAIL)
-      this.$emit('openPop', this.param)
+      this.$emit('openPop', this.mCommonParam)
     }
   }
 

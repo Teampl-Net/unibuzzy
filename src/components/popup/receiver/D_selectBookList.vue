@@ -3,17 +3,10 @@
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
     <div class="pagePaddingWrap selectBookListContents">
       <div class="bookListStyle">
-        <!-- <gMainTab :activeTabList='activeTabList' class="mtop-05" style="" :activeTab='activeTab' @changeTab='changeTab' /> -->
-
-        <!-- <template v-if="activeTab === 'A'"> -->
-        <bookList :listData="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <bookList :propBookList="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
-            <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+            <memberList :propMemberList="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
-        <!-- </template>
-        <template v-if="activeTab === 'M'">
-        </template> -->
-
       </div>
       <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
     </div>
@@ -45,7 +38,6 @@ export default {
       titleText: '팀플',
       receiverTitle: '주소록 선택',
       selectReceivers: [],
-      teamLength: 100,
       selectedTeamList: [],
       selectedMemberList: [],
       selectedList: {},
@@ -60,7 +52,6 @@ export default {
   created () {
     console.log('##################')
     console.log(this.pSelectedList)
-    // this.propData.teamNameMtext = this.$changeText(this.propData.targetNameMtext)
 
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
@@ -99,7 +90,6 @@ export default {
       var this_ = this
       if (this.selectedList.bookList.length > 0 || this.selectedList.memberList.length > 0) {
         this.$nextTick(() => {
-          // this_.$refs.teamListRef.settingCheck()
           this_.$refs.selectedListCompo.upDatePage()
         })
       }
@@ -114,11 +104,6 @@ export default {
     }
   },
   watch: {
-    pageUpdate (value, old) {
-      // this.backClick()
-    },
-    historyStack (value, old) {
-    },
     selectedList () {
       console.log('######!!!!!!!!##########!!!!!!!!!########')
       console.log(this.selectedList)
@@ -144,7 +129,6 @@ export default {
       })
     },
     async getBookList () {
-      // console.log(this.propData)
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
       paramMap.set('sysCabinetCode', 'USER')
@@ -159,7 +143,6 @@ export default {
         this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
       }
       this.editBookSelectedList()
-      //
     },
     async getBookMemberList () {
       var paramMap = new Map()
@@ -180,7 +163,6 @@ export default {
         }
       }
       this.editMemberSelectedList()
-      //
     },
     sendReceivers (data) {
       console.log('%%%%%%%%%%%%%%%%%%%%%%')
@@ -199,60 +181,22 @@ export default {
     // 유민참고
     changeSelectMemberList (data) {
       console.log(data)
-      // eslint-disable-next-line no-debugger
-      debugger
-
       this.selectedList.memberList = []
       for (let i = 0; i < data.length; i++) {
-        // if (data.shareSeq === null) continue
         this.selectedList.memberList.push(data[i])
-        // this.pSelectedBookList.push(data[i])
       }
       this.pSelectedMemberList = []
       this.pSelectedMemberList = this.selectedList.memberList
-      // eslint-disable-next-line no-debugger
-      debugger
-      // this.selectedList.bookList = data
-      // this.$refs.selectedListCompo.upDatePage()
-
       this.$refs.selectedListCompo.newUpdateMember(this.selectedList.memberList)
-
-      // console.log(data)
-      // this.selectedList.memberList = []
-      // if (this.selectedList.memberList.length > 0) {
-      //   var templist = this.selectedList.memberList
-      //   this.selectedList.memberList = []
-      //   for (let i = 0; i < templist.length; i++) {
-      //     this.selectedList.memberList.push(templist[i])
-      //   }
-      // } else {
-      //   this.selectedList.memberList = []
-      // }
-
-      // this.selectedList.memberList = []
-
-      // for (let i = 0; i < data.length; i++) {
-      //   this.selectedList.memberList.push(data[i])
-      // }
-
-      // this.pSelectedMemberList = this.selectedList.memberList
-      // this.$refs.selectedListCompo.upDatePage()
-      // this.$refs.memberListRef.selectedListLOG()
     },
     changeSelectBookList (data) {
       console.log(data)
-      // eslint-disable-next-line no-debugger
-      debugger
       this.selectedList.bookList = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.bookList.push(data[i])
-        // this.pSelectedBookList.push(data[i])
       }
       this.pSelectedBookList = []
       this.pSelectedBookList = this.selectedList.bookList
-      // eslint-disable-next-line no-debugger
-      debugger
-      // this.selectedList.bookList = data
       this.$refs.selectedListCompo.newUpdateBook(this.selectedList.bookList)
     },
     changeSelectedList (selectedListData) {
@@ -276,12 +220,8 @@ export default {
 
       this.editMemberSelectedList()
       this.editBookSelectedList()
-      // #wowns
-      // this.$refs.selectedListCompo.upDatePage()
     },
     editMemberSelectedList () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.selectedList.memberList) {
         var changeList = this.selectedList.memberList
         for (var m = 0; m < this.memberList.length; m++) {
@@ -295,8 +235,6 @@ export default {
       }
     },
     editBookSelectedList () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.selectedList.bookList) {
         var changeList = this.selectedList.bookList
         for (var m = 0; m < this.bookList.length; m++) {
@@ -310,14 +248,11 @@ export default {
       }
     },
     setResult () {
-      // eslint-disable-next-line no-new-object
-      var obj = new Object()
+      var obj = {}
       obj.data = this.selectReceivers
       obj.selectedTeamList = this.selectedTeamList
       obj.selectedMemberList = this.selectedMemberList
-      // this.$emit('selectedReceiver', this.selectReceivers)
       this.$emit('selectedReceiver', obj)
-      // this.$emit('selectedReceiver', this.selectReceivers)
     },
     delectClick (data, index) {
       this.selectReceivers.splice(index, 1)
@@ -330,32 +265,18 @@ export default {
     },
 
     backClick () {
-      // this.selectedList = JSON.parse(localStorage.getItem('ori'))
-
       var hStack = this.$store.getters['D_HISTORY/hStack']
       console.log(' back back back back back back back ')
-      // console.log(hStack)
-      // console.log(this.subPopId)
       if (this.subPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         var removePage = hStack[hStack.length - 1]
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
-        // this.detailOpenYn = false
-        this.teamLength = 100
         this.memberEditYn = false
         this.receiverTitle = '주소록 선택'
         this.detailOpenYn = false
       } else {
-        // hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        // this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
-        // var oriParam = JSON.parse(localStorage.getItem('ori'))
-        // console.log(oriParam)
-        // oriParam.
-        // oriParam.closeYn = true
-        // this.$emit('sendReceivers', oriParam)
       }
     },
     async openMCabUserList (data) {
@@ -375,42 +296,9 @@ export default {
         this.receiverTitle = '구성원 관리'
         if (this.selectPopYn) {
           this.receiverTitle = '대상 선택'
-          // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
         }
-
-        /* if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
-          this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
-        } else {
-          this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
-        } */
-      }
-    },
-    addAllClick () {
-      var i = 0
-      // eslint-disable-next-line no-new-object
-      var obj = new Object()
-      if (this.detailOpenYn) {
-        // 멤버 리스트에서 전체 추가 클릭
-
-        obj.data = this.clickList
-        this.selectReceivers.unshift(obj)
-        //  arr3.findIndex(i => i.name == "강호동");
-        const addAllMemTeamIdx = this.selectBookDetail.findIndex(i => i.reveiverTeamName === this.clickList.reveiverTeamName)
-        this.selectBookDetail.splice(addAllMemTeamIdx, 1) // 전체 리스트에서 해당 인덱스 삭제
-        this.detailOpenYn = false // 삭제 되었으면 디테일 끄기
-        this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
-      } else {
-        // 팀 리스트에서 전체 추가 클릭
-        for (i = 0; i < this.selectBookDetail.length; i++) {
-          // eslint-disable-next-line no-new-object
-          obj = new Object()
-          obj.data = this.selectBookDetail[i]
-          this.selectReceivers.unshift(obj)
-        }
-        this.selectBookDetail.splice(0, this.selectBookDetail.length) // 전체 리스트에서 제거
       }
     }
-
   }
 }
 </script>

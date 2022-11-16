@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import createChan from './Tal_creChannel.vue'
+import createChan from './D_createChannel.vue'
 // import creStep04 from './Tal_creChannelStep04'
 export default {
   data () {

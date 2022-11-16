@@ -11,12 +11,7 @@
         <div class="fl" style="display: flex; align-items: center;" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="emit('open')">
           <div class="textLeft fl textOverdot w-100P" style="" >
             <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{propData.cabinetNameMtext}}</p>
-            <!-- <div class="fl w-100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
-              <p class="fl font14 commonDarkGray mleft-05" :class="index === 0 ? 'mleft-0' : '' " v-for="(value, index) in propData.mUserList" :key="index">{{this.$changeText(value.userDispMtext)}}</p>
-            </div> -->
-            <!-- white-space: nowrap; text-overflow: ellipsis; overflow: hidden; -->
             <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p>
-            <!-- <p class="fl font14 commonDarkGray mleft-03" style="color:a4a4a4" >{{this.propData.mUserList.length !== 0 ? this.propData.mUserList.length : ''}}</p> -->
           </div>
         </div>
       </template>
@@ -114,45 +109,13 @@ export default {
 </script>
 
 <style>
-
-/* .imgCircle{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #ECEDF5;
-  flex-shrink: 0;
-  flex-grow: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
-/* .rowBaseCss{
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 0px;
-gap: 10px;
-width: 100%;
-min-height: 70px;
-left: 0px;
-} */
-
 .selectedSpan{
-/* position: absolute; */
-width: 20px;
-height: 20px;
-left: 330px;
-top: 25px;
-
-/* 더알림1 */
-
-background: #5F61BD;
-/* 더알림1 */
-
-border: 1.5px solid #5F61BD;
-
-border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  left: 330px;
+  top: 25px;
+  background: #5F61BD;
+  border: 1.5px solid #5F61BD;
+  border-radius: 50%;
 }
 </style>
