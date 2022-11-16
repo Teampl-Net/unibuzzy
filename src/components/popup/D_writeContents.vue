@@ -23,7 +23,7 @@
                 <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" >
                   <checkBtnArea class="mleft-05" title='전체' :selectedYn='allRecvYn' @click="allRecvYn = true" />
                   <checkBtnArea class="mleft-05" title='선택' :selectedYn='!allRecvYn' @click="allRecvYn = false" />
-                  <p class="fr commonDarkGray font14" style="line-height: 30px;">{{receiverText}}</p>
+                  <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : '전체' }}</p>
                   <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
                     <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
                       <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
