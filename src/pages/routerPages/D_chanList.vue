@@ -322,9 +322,9 @@ export default {
         paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
       }
       if (offsetInput !== undefined) {
-        paramMap.set('mOffsetInt', offsetInput)
+        paramMap.set('offsetInt', offsetInput)
       } else {
-        paramMap.set('mOffsetInt', this.mOffsetInt)
+        paramMap.set('offsetInt', this.mOffsetInt)
       }
       if (pageSize) {
         paramMap.set('pageSize', pageSize)
