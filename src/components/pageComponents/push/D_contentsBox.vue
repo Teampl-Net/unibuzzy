@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
+        <div @click="goContentsDetail()" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
             <div v-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && !contentsEle.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && contentsEle.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+contentsEle.contentsKey">
