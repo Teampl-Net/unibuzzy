@@ -92,7 +92,7 @@ export default {
           }
         }
       })
-      this.$refs.memoTextTag.focus()
+      // this.$refs.memoTextTag.focus()
     },
     textReSize (text) {
       var returnT = text

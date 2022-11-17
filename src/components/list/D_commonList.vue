@@ -308,7 +308,7 @@ export default {
       this.tempData = params.tempData
       this.reportYn = true
     },
-    async deleteAlim(allYn){
+    async deleteAlim (allYn){
       // console.log(this.tempData)
       if (this.tempData.jobkindId === 'ALIM') {
         if (allYn) {

@@ -1,6 +1,6 @@
 <template>
     <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;">
-        <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" />
+        <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" @makeNewContents='makeNewContents' />
         <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
     </div>
 </template>
@@ -22,6 +22,9 @@ export default {
     propTab: {}
   },
   methods: {
+    makeNewContents (newContentData) {
+      this.$emit('makeNewContents', newContentData)
+    },
     openPop (openPopParam) {
       this.$emit('openPop', openPopParam)
     },

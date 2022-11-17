@@ -62,7 +62,7 @@
                 <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;">
-                <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop'/>
+                <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
             </div>
         </div>
     </div>

@@ -87,9 +87,6 @@ export default {
     }
   },
   methods: {
-    revReport(){
-      this.reportPopStep -= 1
-    },
     sendBtnClick () {
       this.$emit('report', this.reportType)
     },
@@ -106,11 +103,13 @@ export default {
       this.reportType = type
       this.reportPopStep += 1
     },
+    revReport(){
+      this.reportPopStep -= 1
+    },
     reportClick (data) {
       this.reportDetailTitle = data.reportTitle
       this.reportDetailType = data.type
       this.reportPopStep += 1
-
     }
   }
 }

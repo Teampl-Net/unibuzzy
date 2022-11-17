@@ -27,11 +27,11 @@
                 </div>
             </div>
         </div>
-        <div @click="goContentsDetail()" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
+        <div @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
             <div v-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && !contentsEle.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && contentsEle.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+contentsEle.contentsKey">
-              <pre :class="contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46? 'completeWork': ''" @click="goContentsDetail(true)" :id="'bodyFullStr'+contentsEle.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(contentsEle.bodyFullStr, contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46)"></pre>
+              <pre :class="contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+contentsEle.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(contentsEle.bodyFullStr, contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46)"></pre>
             </div>
             <p @click="alimBigView()" :id="'bodyMore'+contentsEle.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
         </div>
@@ -82,6 +82,7 @@
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="contentsEle" :contentType="contentsEle.jobkindId" :contentOwner="this.GE_USER.userKey === contentsEle.creUserKey"/>
 <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
+<gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" v-if="mSelectBoardPopShowYn" :boardDetail="mMoveContentsDetailValue" />
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -103,7 +104,11 @@ export default {
       mCurrentConfirmType: '',
       // mMemoWritePopShowYn: true,
       mMememoValue: {},
-      mContentsSharLink: null
+      mContentsSharLink: null,
+
+      mSelectBoardPopShowYn: false,
+      mMoveContentsDetailValue: {},
+      mSelectBoardType: ''
     }
   },
   mounted () {
@@ -136,25 +141,121 @@ export default {
         } else return false
         param.creUserKey = this.GE_USER.userKey
         toastText = '해당 유저를 차단했습니다.'
+        console.log(param)
+        console.log(toastText)
         this.saveActAxiosFunc(param, toastText)
+
       // } else if (this.currentConfirmType === 'memoDEL') {
       //   this.deleteMemo({ memoKey: this.tempData.memoKey })
       //   this.$emit('showToastPop', '댓글을 삭제하였습니다.')
-      // } else if (this.mCurrentConfirmType === 'alimDEL') {
-      //   this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
-      //   this.deleteAlim()
-      // } else if (this.mCurrentConfirmType === 'boardDEL') {
-      //   this.$emit('showToastPop', '게시글을 삭제하였습니다.')
-      //   this.deleteAlim()
-      // } else if (this.mCurrentConfirmType === 'alimCancel') {
-      //   this.alimCancle()
+      } else if (this.mCurrentConfirmType === 'alimDEL') {
+        this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
+        this.deleteContents()
+      } else if (this.mCurrentConfirmType === 'boardDEL') {
+        this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+        this.deleteContents()
+      } else if (this.mCurrentConfirmType === 'alimCancel') {
+        this.alimCancle()
       }
 
       this.mCurrentConfirmType = ''
       this.mConfirmPopShowYn = false
     },
+    editable (type, allYn) {
+      this.mContMenuShowYn = false
+      console.log(type)
+      if (type === 'edit') {
+        if (this.contentsEle.jobkindId === 'BOAR') {
+          this.editBoard()
+        }
+      } else if (type === 'delete') {
+        if (allYn) {
+        } else {
+          if (this.contentsEle.jobkindId === 'ALIM') {
+            this.deleteConfirm('alim')
+          } else if (this.contentsEle.jobkindId === 'BOAR') {
+            this.deleteConfirm('board')
+          }
+        }
+      } else if (type === 'alimBloc') {
+      } else if (type === 'move' || type === 'copy') {
+        this.moveOrCopyContent(type)
+      } else if (type === 'writeBoard') {
+        this.makeNewContents(type)
+      } else if (type === 'writeAlim') {
+        this.makeNewContents(type)
+      } else if (type === 'subScribe') {
+        this.subScribeContents(type)
+      } else if (type === 'textCopy') {
+        this.textCopy()
+      }
+    },
+    deleteConfirm () {
+      if (this.contentsEle.jobkindId === 'ALIM') {
+        this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.mCurrentConfirmType = 'alimDEL'
+      } else if (this.contentsEle.jobkindId === 'BOAR') {
+        this.mConfirmText = '게시글을 삭제 하시겠습니까?'
+        this.mCurrentConfirmType = 'boardDEL'
+      }
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+    },
+    async deleteContents () {
+      var result
+      var inParam = {}
+      if (this.contentsEle.jobkindId === 'ALIM') {
+        inParam = {}
+        inParam.mccKey = this.contentsEle.mccKey
+        inParam.jobkindId = 'ALIM'
+        result = await this.$commonAxiosFunction({
+          url: 'service/tp.deleteMCabContents',
+          param: inParam
+        })
+      } else if (this.contentsEle.jobkindId === 'BOAR') {
+        inParam = {}
+        inParam.mccKey = this.contentsEle.mccKey
+        inParam.contentsKey = this.contentsEle.contentsKey
+        inParam.jobkindId = 'BOAR'
+        inParam.teamKey = this.contentsEle.creTeamKey
+        inParam.deleteYn = true
+        result = await this.$commonAxiosFunction({
+          url: 'service/tp.deleteContents',
+          param: inParam
+        })
+      }
+      if (result) {
+        console.log(result)
+        this.$showToastPop('삭제하였습니다.')
+      }
+      this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+    },
+    moveOrCopyContent (type) {
+      this.mSelectBoardType = type
+      this.mMoveContentsDetailValue = this.contentsEle
+      this.mSelectBoardPopShowYn = true
+    },
+    closeSelectBoardPop () {
+      this.mSelectBoardPopShowYn = false
+    },
+
+    makeNewContents (type) {
+      var tempData = JSON.parse(JSON.stringify(this.contentsEle))
+      tempData.writeType = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
+      tempData.targetType = 'writeContents'
+
+      tempData.UseAnOtherYn = true
+      tempData.selectBoardYn = true
+
+      // eslint-disable-next-line no-undef
+      tempData.bodyFullStr = Base64.decode(tempData.bodyFullStr)
+
+      tempData.modiContentsKey = tempData.contentsKey
+
+      this.$emit('openPop', tempData)
+    },
     bloc (type) {
-      var typeText = type === 'user' ? '유저를' : '게시글을'
+      var typeText = type === 'USER' ? '유저를' : '게시글을'
       this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
@@ -172,10 +273,10 @@ export default {
         targetKind = 'C'
         targetKey = this.contentsEle.contentsKey
         toastText = '해당 게시글이 신고되었습니다.'
-      } else if (type === 'MEMO') {
-        targetKind = 'C'
-        targetKey = this.contentsEle.memoKey
-        toastText = '해당 댓글이 신고되었습니다.'
+      // } else if (type === 'MEMO') {
+      //   targetKind = 'C'
+      //   targetKey = this.contentsEle.memoKey
+      //   toastText = '해당 댓글이 신고되었습니다.'
       } else if (type === 'CHANNEL') {
         targetKind = 'T'
         targetKey = this.contentsEle.creTeamKey
@@ -199,10 +300,11 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveActLog',
+          url: 'service/tp.saveClaimLog',
           param: param
         })
-        if (result.data.result === true) {
+        console.log(result)
+        if (result) {
           this.$showToastPop(toastText)
         }
       } catch (e) {
@@ -213,6 +315,28 @@ export default {
     },
     contentMenuClick () {
       this.mContMenuShowYn = true
+    },
+    textCopy () {
+      const textarea = document.createElement('textarea')
+      // textarea.style.display = 'none'
+      document.body.appendChild(textarea)
+
+      var contKey, content
+      try {
+        if (this.contentsEle.jobkindId) {
+          contKey = this.contentsEle.contentsKey
+          content = document.getElementById('bodyFullStr' + contKey).innerText
+        }
+
+        textarea.value = content
+        textarea.select()
+        // 복사 후 textarea 지우기
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+        this.$showToastPop('복사되었습니다.')
+      } catch (error) {
+        this.$showToastPop('복사하지 못했습니다.')
+      }
     },
     async saveMemo (saveMemoHTML) {
       this.saveMemoLoadingYn = true
@@ -314,14 +438,16 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     goContentsDetail (moreCheckYn) {
+      // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
+      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       if (moreCheckYn) {
+        // 더보기가 열려있지 않으면 열어주고 상세로 이동하지 못하게 리턴
         var moreTextDisplay = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey).style.display
         if (moreTextDisplay === 'block') {
           this.alimBigView()
           return
         }
       }
-      console.log(this.contentsEle)
       var openPopParam = {}
       openPopParam.targetType = 'contentsDetail'
       openPopParam.targetKey = this.contentsEle.contentsKey
