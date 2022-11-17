@@ -15,9 +15,9 @@
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard"  ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' />
     </transition>
-    <TalHeader @showMenu="showMenu" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <TalHeader @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-        <router-view :popYn="false" :ref="mainRouterView" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
+        <router-view @scrollEvnt="this.scrollEvnt" :popYn="false" :ref="mainRouterView" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div>
@@ -135,6 +135,11 @@ export default {
     }
   },
   methods: {
+    scrollEvnt (top) {
+      if (top > 0) {
+        // .push('footerShadow')
+      }
+    },
     closeNewPop (params) {
       this.closePop()
       setTimeout(() => {

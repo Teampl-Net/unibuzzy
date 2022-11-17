@@ -52,6 +52,7 @@
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
       <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
+      <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
     </div>
 </template>
 
@@ -93,6 +94,7 @@ import errorPage from '../../popup/common/Tal_errorPage.vue'
 import creAddressBook from '../receiver/D_creAddressBook.vue'
 import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'
 import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
+import notiHitstory from '../../pageComponents/main/D_notiHistoryList.vue'
 export default {
   created () {
     console.log(this.propParams)
@@ -165,7 +167,8 @@ export default {
     memberFormList,
     memberFormPreView,
     errorPage,
-    creAddressBook
+    creAddressBook,
+    notiHitstory
   },
   updated () {
   },

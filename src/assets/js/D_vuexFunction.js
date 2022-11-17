@@ -207,6 +207,7 @@ export const functions = {
           }
         }
       }
+      store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
         /* if (notiDetail.actType === 'LI') {} */
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {

@@ -1,120 +1,11 @@
 <template>
-    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" :style="(CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.picBgPath) ? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #6768A7;'">
-        <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-        <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
-        <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.clickImgList" />
-        <div id="boardDetailScrollArea" class="pagePaddingWrap mtop-1 overflowYScroll" ref="memoarea" >
-            <div class="content pushMbox">
-                <div class="pushDetailTopArea">
-                    <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath !== undefind ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
-                    <div class="pushDetailHeaderTextArea">
-                        <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
-                            <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
-                            <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
-                            <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!propParams.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-                            {{CONT_DETAIL.title}}
-                        </p>
-                        <div class="w-100P fl" style=" margin-bottom: 5px;">
-                            <p style="width:100%; " class="font14 fl grayBlack">
-                                <img src="../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                                <pp class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.showCreNameYn === 0)">{{CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '익명'}}</pp>
-                                <pp v-if="CONT_DETAIL.jobkindId === 'BOAR'">/{{this.$changeText(CONT_DETAIL.cabinetNameMtext)}}</pp>
-                            </p>
-                        </div>
-                        <div class="w-100P fl" style="padding: 5px 0; ">
-                            <div class="fr" style="display: flex; align-items: center;">
-                                <pp class="font14 fl lightGray">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</pp>
-                            </div>
-                            <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                            <div div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-                                <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
-                            </div>
-                            <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="fr" style="padding: 0 5px;">
-                                <img v-if="CONT_DETAIL.rUserCount !== -1" src="../../assets/images/main/main_subscriber.png" style="width:13px;margin-right: 2px; margin-top: 2px;" class="fl" alt="">
-                                <p class="fl font14 lightGray" >{{CONT_DETAIL.rUserCount === -1 ? '전체' : CONT_DETAIL.rUserCount }}</p>
-                            </div>
-                            <div v-if="CONT_DETAIL.attachMfilekey" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                            <div v-if="CONT_DETAIL.attachMfilekey" class="fr" style="padding: 0 5px;">
-                                <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width:17px; margin-top: 2px;" class="fl" alt="">
-                            </div>
-                            <div v-if="CONT_DETAIL.workStatYn" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                            <statCodeComponent :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
-                        </div>
-                    </div>
-                </div>
-                <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
-                    <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
-                    <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
-                    <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 0px 6px 6px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 1; overflow: hidden auto; position: absolute">
-                        <div style=" margin: 15px; float: left; width: calc(100% - 30px);">
-                            <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-                                <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-                                    <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
-                                    <img :src="settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-                                    <a style="width: calc(100% - 20px);" :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
-                                    {{value.fileName}}
-                                    </a>
-                                </div>
-                            </templete>
-                        </div>
-                    </div>
-                </div>
-                <pre  id="contentsBodyArea"  @click="memoShowYn = false" class="font15 mbottom-2 cursorDragText" v-html="decodeContents(CONT_DETAIL.bodyFullStr, CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
-
-                <div id="alimCheckArea">
-                    <div class="alimCheckContents">
-                        <div v-if="!propParams.nonMemYn" class="w-100P fr mbottom-05" >
-                            <p class="commonBlack font13" style="float: right;">좋아요 {{CONT_DETAIL.likeCount}}개</p>
-                            <p class="commonBlack font13" style="float: right; margin-right: 10px;'">댓글 {{this.CONT_DETAIL.memoCount}}개</p>
-                        </div>
-                        <div v-else class="mbottom-05 fr" style="min-height: 30px;">
-                            <div class="commonBlack font12" style="float: left; padding: 2px 10px; background: rgb(0 0 0 / 21%); border-radius: 5px;">{{CONT_DETAIL.memoCount > 0? '답변완료' : '답변대기'}}</div>
-                        </div>
-                        <div class="fl" style="display:flex;">
-                            <template v-if="!propParams.nonMemYn">
-                                <div @click="changeAct(userDo, CONT_DETAIL.contentsKey)"  class="fl" v-for="(userDo, index) in this.CONT_DETAIL.D_CONT_USER_DO" :key="index">
-                                    <template v-if="userDo.doType === 'ST'">
-                                        <img class="mright-05 mtop-01 fl" v-if="userDo.doKey > 0" src="../../assets/images/common/colorStarIcon.svg" alt="">
-                                        <img class="mright-05 mtop-01 fl" v-else src="../../assets/images/common/starIcon.svg" alt="">
-                                    </template>
-                                    <template v-else-if="userDo.doType === 'LI'">
-                                        <img class="mright-05 fl" style="margin-top: 4px;" v-if="userDo.doKey > 0" src="../../assets/images/common/likeIcon.svg" alt="">
-                                        <img class="mright-05 fl" style="margin-top: 5px;" v-else src="../../assets/images/common/light_likeIcon.svg" alt="">
-                                    </template>
-                                </div>
-                            </template>
-                            <img src="../../assets/images/common/icon_share_square.svg" class="img-w20 fl" alt="공유 아이콘"
-                            data-clipboard-action="copy" id="boardDetailCopyBody" @click="openSelectSharePop"
-                                :data-clipboard-text="CONT_DETAIL.copyTextStr">
-                        </div>
-                        <gBtnSmall v-if="!propParams.nonMemYn && (this.CONT_DETAIL.jobkindId === 'ALIM' || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.replyYn === 1))" btnTitle="댓글쓰기" class="fr" btnThema="light" @click="writeMemo"/>
-                    </div>
-                    <div v-if="!propParams.nonMemYn && CONT_DETAIL.jobkindId === 'BOAR' && !this.CAB_DETAIL.replyYn" class="fl w-100P mtop-05 mbottom-05" style="background-color:#cccccc50; padding: 0.5rem 0; border-radius: 10px;">
-                        <p class="w-100P commonBlack font13 textCenter" >관리자가 댓글 사용을 중지하였습니다.</p>
-                    </div>
-                    <div class="boardBorder"></div>
-                    <div id="memoWrap" class="w-100P fl" style=" min-height: 100px;" >
-                        <gMemoList :nonMemYn="propParams.nonMemYn" @loadMore='loadMore' ref="boardMemoListCompo" :memoList="CONT_DETAIL.D_MEMO_LIST" @deleteMemo='deleteConfirm' @editTrue='editMemo' @mememo='writeMememo' @scrollMove='scrollMove' @contentMenuClick="contentMenuClick" @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @clearMemo='clearMemo' />
-                    </div>
-                </div>
-            </div>
-            <div class="paperEffect" ><div class="pushDetailPaperEffect"></div></div>
-        </div>
-        <div v-if="memoShowYn" class="memoBoxBackground" @click="memoPopNo()"></div>
-        <gMemoPop transition="showMemoPop" ref="contentDetailMemoPop" :resetMemoYn="resetMemoYn"  :style="getWindowSize"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData' />
-        <gConfirmPop :confirmText='confirmText' :confirmType="confirmType ? 'two' : 'timeout'" v-if="confirmPopShowYn" @no='confirmPopShowYn=false, reportYn = false' @ok='confirmOk' />
-        <gReport :contentsInfo="this.CONT_DETAIL" v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @report="report" @editable="editable" @bloc="bloc" />
-        <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
-        <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
-        <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="CONT_DETAIL.jobkindId === 'BOAR' && selectBoardPopShowYn" :boardDetail="CONT_DETAIL" :boardValue="CAB_DETAIL" />
+    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
+        <gContentsBox :contentsEle="this.CONT_DETAIL" :childShowYn="true"/>
     </div>
 </template>
 <script>
-import loadingCompo from '@/components/layout/Tal_loading.vue'
-import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
-import statCodeComponent from '@/components/board/D_manageStateCode.vue'
-/* import manageStickerPop from '../sticker/Tal_manageStickerPop.vue' */
+
 export default {
   data () {
     return {
@@ -163,10 +54,6 @@ export default {
     pPopId: {}
   },
   components: {
-    /* manageStickerPop, */
-    imgPreviewPop,
-    loadingCompo,
-    statCodeComponent
   },
   created () {
     this.readyFunction()
@@ -1351,7 +1238,7 @@ export default {
     padding-bottom: 50px;
 }
 .boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; z-index: 99999; width: 100%; height: 100%; padding-top: 50px; width: 100%; background: rgb(236, 230, 204); height: calc(100vh);}
+.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh);}
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */

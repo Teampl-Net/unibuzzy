@@ -10,7 +10,7 @@ import D_NOTI from '@/store/modules/D_notiStore.js'
 import createPersistedState from 'vuex-persistedstate'
 
 const storageState = createPersistedState({
-  paths: ['D_USER', 'D_HISTORY', 'D_CHANNEL', 'D_CONTENTS'],
+  paths: ['D_USER', 'D_HISTORY', 'D_CHANNEL', 'D_NOTI'],
   storage: window.localStorage
   /* key: 'vuexStore',
   storage: window.sessionStorage */

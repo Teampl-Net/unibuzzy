@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%; background: #FFF; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <gContentsBox v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" />
     </div>
 </template>

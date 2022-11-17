@@ -1,5 +1,5 @@
 <template>
-    <div v-if="this.contentsEle" style="width: 100%; min-height: 20px; float: left; border-bottom: 4px solid #E1E1E1; padding-bottom: 10px;">
+    <div v-if="this.contentsEle" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px;">
         <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div style="width: 45px; height: 45px; overflow: hidden; float: left; border-radius: 100%; border: 2px solid #5B1CFC; padding: 1.5px; display: flex; justify-content: center; algin-items: center;">
                 <div :style="'background-image: url(' + (contentsEle.domainPath ? contentsEle.domainPath + contentsEle.logoPathMtext : contentsEle.logoPathMtext) + ');'" style="width: 100%; height: 100%; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -26,7 +26,7 @@
                 <pre :class="contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46? 'completeWork': ''" @click="clickCard(alim)" :id="'bodyFullStr'+contentsEle.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all;" v-html="setBodyLength(contentsEle.bodyFullStr, contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46)"></pre>
             </div>
         </div>
-        <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left;  justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
+        <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
             <div style="float: left; width: 50%; height: 100%;">
                 <div style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                     <img v-if="!this.contentsEle.D_CONT_USER_DO[1].doKey || this.contentsEle.D_CONT_USER_DO[1].doKey === 0" src="../../../assets/images/push/likeIcon.png" alt="">
@@ -57,9 +57,10 @@
                 </div>
             </div>
         </div>
+        <div style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
         <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
             <template v-for="(memo, mIndex) in this.contentsEle.D_MEMO_LIST" :key="mIndex">
-                <memoCompo v-if="mIndex < 3" :propMemoEle="memo" />
+                <memoCompo :diplayCount="-1" :childShowYn="true" :propMemoEle="memo" />
             </template>
         </div>
     </div>

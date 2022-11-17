@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
+  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="" ref="mainScrollWrap" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
 
@@ -13,7 +13,7 @@
                         <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                         <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
                     </div>
-                    <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
+                    <p style="font-weight: 600;" @click="openNotiHistoryPop" class="font16 fl commonLightColor">님!</p>
                 </div>
             </div>
             <div style="width: 42px; height: 42px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
@@ -132,8 +132,12 @@ export default {
     /* this.$nextTick(() => {
       this_.mLoadingYn = false
     }) */
+    this.$refs.mainScrollWrap.addEventListener('scroll', this.handleScroll)
   },
   methods: {
+    handleScroll () {
+      this.$emit('scrollEvnt', this.$refs.mainScrollWrap.scrollTop)
+    },
     async getMainBoard () {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
@@ -219,6 +223,13 @@ export default {
     },
     openPop (openParam) {
       this.$emit('openPop', openParam)
+    },
+    openNotiHistoryPop () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'notiHitstory'
+      param.popHeaderText = '알림이력'
+      this.openPop(param)
     }
   },
   computed: {
