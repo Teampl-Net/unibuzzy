@@ -1,7 +1,7 @@
 <template>
     <div>
         <div style="width:100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 100; background: #00000025;"></div>
-    <div style="width: 80%; height: 500px; border-radius: 0.8rem; padding: 10px 20px; box-shadow: 0 0 4px 4px #ccc; z-index: 101; position: absolute; top: 10%; left: 10%; background: #FFF;">
+    <div style="width: 80%; height: 550px; border-radius: 0.8rem; overflow: hidden scroll; padding: 10px 20px; box-shadow: 0 0 4px 4px #ccc; z-index: 101; position: absolute; top: 10%; left: 10%; background: #FFF;">
         <div style="width: 100%; height: 40px; float: left; position: relative;" class="headerShadow">
             <img src="../../assets/images/common/popup_close.png" style="position: absolute; right: 0px; top: 8px; width: 20px;" @click="closeXPop()" alt="">
             <p class="font20 fontBold textLeft">개발자모드</p></div>
@@ -36,7 +36,7 @@
                 <gBtnSmall btnTitle="수신" style="margin-right: 10px;"/>
                 <gBtnSmall btnTitle="클릭"/>
             </div>-->
-            <p class="font18 fontBold textLeft mright-1 mbottom-05">몇초후</p>
+            <p class="font18 fontBold textLeft mright-1 mtop-05 mbottom-05">발생시각</p>
             <div style="display: flex; justify-content: flex-start; min-height: 30px; width: 100%;  align-items: center; margin-bottom: 10px;">
                 <select v-model="mParamObj.time" style="width: 100%; height: 30px;" name="" id="">
                     <option value="0">즉시 실행</option>
@@ -48,9 +48,16 @@
                 </select>
             </div>
             <gBtnLarge style="float: left;" @click="sendDevPush" btnTitle="이벤트 발생"/>
-            <p class="font18 fontBold textLeft mright-1 fl w-100P mbottom-05 mtop-3">webview url 변경</p>
+            <p class="font18 fontBold textLeft mright-1 fl w-100P mbottom-05 mtop-2">webview url 변경</p>
             <input ref="urlInput" v-model="changeUrl" type="text" name="" style="width: 100%; float: left; height: 30px;" id="">
             <gBtnLarge style="float: left; margin-top: 10px;" @click="changeWebviewUrl" btnTitle="url 변경"/>
+            <p class="font18 fontBold textLeft mright-1 fl  mbottom-05 mtop-3">백버튼 활성화</p>
+            <div class="toggleInputWrap fr mbottom-05 mtop-3">
+                <input type="checkbox" v-model="backBtnShowYn" id="backBtnToggle" hidden>
+                <label for="backBtnToggle" @click="changeBackBtnShowYn" class="toggleSwitch">
+                <span class="toggleButton"></span>
+                </label>
+            </div>
         </div>
       </div>
     </div>
@@ -63,6 +70,7 @@ export default {
         clickYn: false,
         notiType: 'ALIM',
         targetObj: 0,
+        backBtnShowYn: JSON.parse(localStorage.getItem('backBtnShowYn')),
         /* activeTabList: [{ display: '전체', name: 'A' }, { display: '알림', name: 'P' }, { display: '게시글', name: 'B' }], */
         time: 0
       },
@@ -72,10 +80,18 @@ export default {
   },
   created () {
     this.getContentsList()
+
+    console.log(localStorage.getItem('backBtnShowYn'))
   },
   methods: {
     closeXPop () {
       this.$emit('closeXPop')
+    },
+    changeBackBtnShowYn () {
+      console.log(this.backBtnShowYn)
+      if (!this.backBtnShowYn) this.backBtnShowYn = false
+      /* this.backBtnShowYn = !this.backBtnShowYn */
+      localStorage.setItem('backBtnShowYn', this.backBtnShowYn + '')
     },
     async getContentsList () {
       // eslint-disable-next-line no-new-object
@@ -150,5 +166,41 @@ export default {
 </script>
 
 <style scoped>
+.toggleSwitch {
+  width: 60px;
+  height: 30px;
+  display: block;
+  float: right;
+  position: relative;
+  border-radius: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 1rem 3px rgba(0 0 0 / 15%);
+  cursor: pointer;
+}
+ /* 토글 버튼 */
+.toggleSwitch .toggleButton {
+  /* 버튼은 토글보다 작아야함  */
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  left: .2rem;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #6768A7;
+}
+#backBtnToggle:checked ~ .toggleSwitch {
+  background: #6768A7;
+}
 
+#backBtnToggle:checked ~ .toggleSwitch .toggleButton {
+  /* 100% -> 끝위치, 2.8rem -> 버튼 크기 */
+  left: calc(100% - 25px);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
+.toggleLine{width: 100%; float: left;}
 </style>

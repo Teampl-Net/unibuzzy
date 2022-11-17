@@ -62,6 +62,8 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js"></script>
     <script>
       document.addEventListener('AppleIDSignInOnSuccess', (data) => {
           //handle successful response
@@ -73,6 +75,15 @@
           //handle error.
           console.log(error)
       });
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if(!isMobile) {
+        if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function (reg) { console.log('서비스워커 등록성공 :', reg) })
+            .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
+        }
+      }
+      
 
     </script>
     <!-- // google -->

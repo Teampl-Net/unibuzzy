@@ -171,8 +171,8 @@ export const functions = {
   },
   async addChanList (teamKey) {
     var result = null
-    // if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
-    // g_axiosQueue.push('addChanList')
+    if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
+    g_axiosQueue.push('addChanList')
     var paramMap = new Map()
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
@@ -185,13 +185,18 @@ export const functions = {
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
     var response = resultList.data.content[0]
     await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
+    var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+    g_axiosQueue.splice(queueIndex, 1)
     return result
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
-  async recvNotiFromBridge (message) {
+  async recvNotiFromBridge (message, mobileYn) {
+    debugger
     var addVueResult = false
     try {
-      if (message.type === 'pushmsg') {
+      if (!mobileYn) {
+        notiDetail = message
+      } else {
         if (JSON.parse(message.pushMessage).backgroundYn) {
           notiDetail = JSON.parse(message.pushMessage)
         } else {
@@ -201,27 +206,27 @@ export const functions = {
             notiDetail = JSON.parse(message.pushMessage).noti.data
           }
         }
-        if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
-          /* if (notiDetail.actType === 'LI') {} */
-          if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
-            var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
-            memo.jobkindId = notiDetail.jobkindId
-            memo.creTeamKey = notiDetail.creTeamKey
-            await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
-            addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-            // alert('addVueResult: ' + addVueResult)
-          } else {
-            addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
-          }
-        } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
-          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
-        } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
-          // alert(true)
-          addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
-        } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
+      }
+      if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+        /* if (notiDetail.actType === 'LI') {} */
+        if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
+          var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+          memo.jobkindId = notiDetail.jobkindId
+          memo.creTeamKey = notiDetail.creTeamKey
+          await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
+          addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
+          // alert('addVueResult: ' + addVueResult)
+        } else {
+          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+        }
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
+        addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
+        // alert(true)
+        addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
+      } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
           functions.settingMemoNoti(message)
         } */
-      }
     } catch (err) {
       console.error('메세지를 파싱할수 없음 ' + err)
     }

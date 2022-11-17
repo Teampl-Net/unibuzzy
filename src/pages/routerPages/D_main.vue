@@ -1,36 +1,84 @@
 <template>
-  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="pagePaddingWrap" style="padding-bottom: 10px; padding-top: 10px;height: 100%; overflow: hidden scroll;">
+  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" :key="componentKey" class="" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
 
-    <div class="userProfileWrap" style="background: #fff; padding: 10px; border-radius: 0.8rem;     box-shadow: 0 0 7px 3px #b7b4b440;" >
-      <div @click="goUserProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-      <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
-      <div class="userProfileTextWrap" >
-        <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{$changeText(this.GE_USER.userDispMtext)}}</p>
-        <img  src="../../assets/images/common/ico_refresh.png" @click="refreshBtnClick" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
-        <div>
-          <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
-          <span class="profileTitle font14" ref="userEmail" @click="this.$showChanCommonPop(true)">이메일</span>
-          <span class="grayBlack font14" @click="getNaverProfile" ref="userEmail">{{this.GE_USER.userEmail}}</span>
+    <div style="width: 100%; float: left;">
+        <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
+            <div style="width: calc(100% - 42px); float: left; height: 100%;">
+                <p class="commonLightColor font16 textLeft " style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <div style="float: left; height: calc(100% - 20px); width: 100%;">
+                    <div style="float: left; height: 100%; position: relative;">
+                        <p class="fl fontBold font18" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                        <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                        <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
+                    </div>
+                    <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
+                </div>
+            </div>
+            <div style="width: 42px; height: 42px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
+                <div @click="goUserProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+            </div>
+            <!-- <div class="userProfileTextWrap" >
+                <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{$changeText(this.GE_USER.userDispMtext)}}</p>
+                <img  src="../../assets/images/common/ico_refresh.png" @click="refreshBtnClick" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
+                <div>
+                <img class="mainIcon" src="../../assets/images/main/main_email.png" style= 'width: 1rem' />
+                <span class="profileTitle font14" ref="userEmail" @click="this.$showChanCommonPop(true)">이메일</span>
+                <span class="grayBlack font14" @click="getNaverProfile" ref="userEmail">{{this.GE_USER.userEmail}}</span>
+                </div>
+                <div>
+                <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
+                <span @click="this.$testClick" class="profileTitle font14" ref="userMobile">휴대폰</span>
+                <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
+                </div>
+            </div> -->
         </div>
-        <div>
-          <img class="mainIcon" src="../../assets/images/main/main_phone.png" style= 'width: 1rem' />
-          <span @click="this.$testClick" class="profileTitle font14" ref="userMobile">휴대폰</span>
-          <span class="grayBlack font14" ref="userMobile">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
+
+        <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 0px 0px 30px; width: 100%; float: left;">
+            <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
+                <img src="../../assets/images/main/main_settingIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
+                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
+            </div>
+            <div v-if="this.mMainMChanList" style="width: 100%; height: 80px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
+                <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainMChanList.length * 100 + 'px;'">
+                    <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index"/>
+                </div>
+            </div>
+            <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
+                <img src="../../assets/images/main/main_followIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
+                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">구독중인 채널</p>
+            </div>
+            <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
+                <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainChanList.length * 100 + 'px;'">
+                    <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index"/>
+                </div>
+            </div>
         </div>
-      </div>
+        <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
+            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
+                <img src="../../assets/images/main/main_contentsBellIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
+                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
+            </div>
+            <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;">
+                <mainContsList :propUserKey="this.GE_USER.userKey"/>
+            </div>
+        </div>
     </div>
-    <top5Alim    class="mainContentsBoxArea" :propAlimList="this.mMainAlimList" @openPop="openPop" ref="topAlim" />
-    <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" />
+    <!-- <div style="width: 100%; box-shadow: rgb(183 180 180 / 25%) 0px 0px 7px 3px; height: calc(100% + 10px); float: left; margin-top: 10px; padding-top: 10px; background: #FFF;">
+        <pushList @openPop="openPop "/>
+    </div> -->
   </div>
 </template>
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import top5Channel from '../../components/pageComponents/main/D_top5ChanList.vue'
-import top5Alim from '../../components/pageComponents/main/D_top5ContentsList.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
+/* import pushList from '../routerPages/Tal_pushList.vue' */
+import chanRoundIcon from '../../components/pageComponents/main/D_chanRoundIcon.vue'
+import chanSquareIcon from '../../components/pageComponents/main/D_chanSquareIcon.vue'
+import mainContsList from '../../components/pageComponents/main/D_mainContList.vue'
 export default {
   data () {
     return {
@@ -38,46 +86,59 @@ export default {
       mLoadingYn: false,
       mMainAlimList: [],
       mMainChanList: [],
+      mMainMChanList: [],
       mAxiosQueue: []
     }
   },
   components: {
     // initModal,
     commonConfirmPop,
-    top5Channel,
-    top5Alim,
-    loadingCompo
+    /* pushList, */
+    loadingCompo,
+    chanRoundIcon,
+    chanSquareIcon,
+    mainContsList
   },
   created () {
+    var urlString = location.search
+    var test = this.getParamMap(urlString)
+    if (test.targetType) {
+      this.goPage(test)
+    }
+    // alert(urlString)
     if (!this.GE_USER) {
       this.$router.push('/policies')
       return
     }
-    this.getMainBoard().then(res => {
+    /* this.getMainBoard().then(res => {
       this.mLoadingYn = false
-    })
+    }) */
     this.mLoadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
-    this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', [])
+    this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
     this.$emit('changePageHeader', '더알림')
   },
   mounted () {
-    this.mLoadingYn = false
+    // this.mLoadingYn = false
     this.$userLoginCheck()
+    var this_ = this
+    setTimeout(() => {
+      this_.mLoadingYn = false
+    }, 3000)
+    if (!this.GE_USER) return
+    this.getMainBoard()
+    // var this_ = this
+    /* this.$nextTick(() => {
+      this_.mLoadingYn = false
+    }) */
   },
   methods: {
-    async getNaverProfile () {
-      var result = await this.$commonAxiosFunction({
-        url: 'real/tp.getNaverProfile',
-        param: { aToken: this.GE_USER.soAccessToken }
-      })
-      console.log(result)
-    },
     async getMainBoard () {
-      if (this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
+      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
+      console.log(this.GE_USER)
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
@@ -85,36 +146,57 @@ export default {
       }
       var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
+      // eslint-disable-next-line no-debugger
+      debugger
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
         this.mMainChanList = response.data.teamList
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mMainChanList)
-        var teamList = this.GE_MAIN_CHAN_LIST
-        console.log(this.GE_MAIN_CHAN_LIST)
-        this.mMainAlimList = response.data.alimList
-        var index = null
-        var poolList = null
-        var index1 = null
-        for (var i = 0; i < this.mMainAlimList.length; i++) {
-          index = teamList.findIndex((item) => item.teamKey === this.mMainAlimList[i].creTeamKey)
-          if (index !== -1) {
-            if (this.mMainAlimList[i].jobkindId === 'BOAR') {
-              poolList = teamList[index].ELEMENTS.boardList
-            } else {
-              poolList = teamList[index].ELEMENTS.alimList
-            }
-            index1 = poolList.findIndex((item) => item.mccKey === this.mMainAlimList[i].mccKey)
-            if (index1 === -1) {
-              if (this.mMainAlimList[i].jobkindId === 'BOAR') {
-                teamList[index].ELEMENTS.boardList.push(this.mMainAlimList[i])
-              } else {
-                teamList[index].ELEMENTS.alimList.push(this.mMainAlimList[i])
-              }
-            }
+        this.mMainMChanList = response.data.mTeamList
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, this.mMainMChanList])
+      }
+      console.log(this.mMainChanList)
+      console.log(this.mMainMChanList)
+    },
+    async goPage (test) {
+      console.log(test)
+      if (test && test.targetType && test.targetKey && test.creTeamKey) {
+        var detailValue = await this.$addContents(Number(test.targetKey), test.jobkindId)
+        if (detailValue !== false) {
+          test.targetKey = Number(test.targetKey)
+          test.creTeamKey = Number(test.creTeamKey)
+          test.teamKey = Number(test.creTeamKey)
+          var detailParam = test
+          detailParam.targetType = test.targetType
+          if (detailValue.jobkindId === 'BOAR') {
+            detailParam.cabinetKey = detailValue.cabinetKey
+            detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
+            detailParam.popHeaderText = detailValue.cabinetNameMtext
+          } else {
+            detailParam.nameMtext = detailValue.nameMtext
+            detailParam.teamName = detailValue.nameMtext
+            detailParam.popHeaderText = detailValue.nameMtext
           }
         }
+        detailParam.value = test
+        detailParam.notiYn = true
+        this.openPop(detailParam)
       }
+    },
+    getParamMap (urlString) {
+      const splited = urlString.replace('?', '').split(/[=?&]/)
+      const param = {}
+      for (let i = 0; i < splited.length; i++) {
+        param[splited[i]] = splited[++i]
+      }
+      return param
+    },
+    async getNaverProfile () {
+      var result = await this.$commonAxiosFunction({
+        url: 'real/tp.getNaverProfile',
+        param: { aToken: this.GE_USER.soAccessToken }
+      })
+      console.log(result)
     },
     goUserProfile () {
       var param = {}
@@ -127,9 +209,6 @@ export default {
     },
     async refreshBtnClick () {
       this.mLoadingYn = true
-      this.getMainBoard().then(res => {
-        this.mLoadingYn = false
-      })
       this.$store.commit('D_HISTORY/setRemovePage', '')
       this.$store.commit('D_HISTORY/updateStack', [])
       this.$emit('changePageHeader', '더알림')
@@ -177,14 +256,13 @@ export default {
 <style scoped>
 
 /* main */
-.userProfileWrap{ display:flex; align-items: flex-start; margin-top: 1rem;}
+.userProfileWrap{ display:flex; align-items: flex-start; margin-top: 0; height: 50px;}
   .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
-  .userProfileTextWrap .profileTitle{font-weight: bold; color: #6768A7; margin-right: 0.4rem;}
-.picImgWrap {width: 80px; height: 80px; position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
+  .userProfileTextWrap .profileTitle{font-weight: bold; color: #5B1CFC; margin-right: 0.4rem;}
+.picImgWrap {width: 100%; height: 100%; position: relative; border-radius: 100%; overflow: hidden; display: flex; background-color: #fff;
 }
-.picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;}
 
 .mainContentsBoxArea {
   background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px; box-shadow: 0 0 7px 3px #b7b4b440;

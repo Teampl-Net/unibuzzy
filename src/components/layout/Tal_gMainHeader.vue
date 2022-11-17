@@ -3,7 +3,7 @@
         <img src="../../assets/images/common/thealim_header_logo.png" class="fl mainHeaderLogo" >
         <p class="font25 headerFont commonColor fl" v-html="mRouterHeaderText"></p>
         <div class="menuBtn">
-        <img class="mainMenuIcon" v-on:click="showMenu()" src="../../assets/images/common/icon_menu.png"/>
+            <img class="mainMenuIcon" v-on:click="showMenu()" src="../../assets/images/common/icon_menu.png"/>
         </div>
         <!-- <div class=" policyHeader fl ms-2 text-start " style="margin-top: 5px; line-height: 20px">
             <p class="font25 headerFont commonColor fl">더알림</p>

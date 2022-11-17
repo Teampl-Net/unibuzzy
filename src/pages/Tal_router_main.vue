@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P listRefresh" style="background: #dcddeb; overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
+  <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden "> <!-- v-if="notiDetailShowYn" -->
     <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="mMenuShowYn" @click="hideMenu"/>
     <transition name="show_view">
@@ -15,11 +15,12 @@
     <transition name="showModal">
       <fullModal @successWrite="successWriteBoard"  ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' />
     </transition>
-    <TalHeader @showMenu="showMenu" class="header_footer headerShadow" :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <TalHeader @showMenu="showMenu" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
         <router-view :popYn="false" :ref="mainRouterView" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div>
   </div>
 </template>
 
@@ -38,7 +39,8 @@ export default {
       mShadowScreenShowYn: false,
       mNetReturnPopShowYn: false,
       mErrorPopBodyStr: '',
-      mErrorPopShowYn: false
+      mErrorPopShowYn: false,
+      mBackBtnShowYn: JSON.parse(localStorage.getItem('backBtnShowYn'))
     }
   },
   props: {},
@@ -53,6 +55,10 @@ export default {
     this.$showChanCommonPop(false)
   },
   computed: {
+    BACK_BTN_SHOWYN () {
+      if (localStorage.getItem('backBtnShowYn') === 'undefined' || localStorage.getItem('backBtnShowYn') === undefined) return false
+      return JSON.parse(localStorage.getItem('backBtnShowYn'))
+    },
     GE_NET_STATE () {
       return this.$store.getters['D_USER/GE_NET_STATE']
     },
@@ -273,6 +279,12 @@ export default {
     }
   },
   created () {
+    if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
+      localStorage.setItem('backBtnShowYn', 'false')
+    }
+    if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
+      this.mBackBtnShowYn = JSON.parse(localStorage.getItem('backBtnShowYn'))
+    }
     this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
     this.$userLoginCheck(true)
   }

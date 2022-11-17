@@ -1,24 +1,24 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap">
-        <div @click="routePage('/')" class="footerRouter col-3">
+        <div @click="routePage('/')" class="footerRouter col-4">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
             <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">홈</p>
           </div>
         </div>
-        <div @click="routePage('/pushList')" class="footerRouter col-3">
+        <!-- <div @click="routePage('/pushList')" class="footerRouter col-3">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/pushList'" :src="footerIcon[1].fullIcon"/> <img v-else :src="footerIcon[1].icon"/>
             <p :class="this.$route.path === '/pushList'? 'activeFooterMenu' : 'font12'">알림</p>
           </div>
-        </div>
-        <div @click="routePage('/chanList')" class="footerRouter col-3">
+        </div> -->
+        <div @click="routePage('/chanList')" class="footerRouter col-4">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon"/> <img v-else :src="footerIcon[2].icon"/>
             <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
           </div>
         </div>
-        <div @click="routePage('/myPage')" class="footerRouter col-3">
+        <div @click="routePage('/myPage')" class="footerRouter col-4">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
             <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">내정보</p>

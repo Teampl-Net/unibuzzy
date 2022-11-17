@@ -234,14 +234,20 @@ input, select {
 
 .headerBottom {box-shadow: 0px 7px 9px -9px #00000036;}
 .headerFont{
-    font-family: 'TmonMonsori';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
-    font-weight: normal;
+    font-family: 'GoyangDeogyang';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangDeogyang.woff') format('woff');
     font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 35px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.04em;
 }
 @font-face {
-    font-family: 'TmonMonsori';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+    font-family: 'GoyangDeogyang';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangDeogyang.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     }
@@ -388,17 +394,21 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .attachFileBg {background-color: #AEB0FB !important;}
 .whiteColor{color: #fff;}
 .deepColor{color: #3E3F6A;}
+.CLDeepGrayColor {color: #636363;}
 .commonBlue{color: #3b3dce!important;}
+.commonLightColor {color: #7678E2;}
 .commonColor{color:#6768A7;}
+.userDoColor {color: #B9B9B9;}
 .commonBlack{color: #303030;}
+.highLightYellow{background: #FFE926; height: 7px;}
 .grayBlack{color: #505050 !important; }
 .lightGray{color: #A1A1A1 !important;}
 .whitePurple{color: #f4f4f9}
 .whitePurpleBG{background-color: #f4f4f9 !important}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
 .commonRed{color:#DC143C}
-
-.commonGray{color: #9C9C9C !important;}
+.mainBackgroundColor {background: #F4F7FF!important;}
+.commonGray{color: #7A7A7A !important;}
 .commonGrayBG {background-color: #F8F8FF !important;}
 .commonPurpleBG{background-color: #F8F8FF;}
 .deepBorderColor{border: #5F61BD;}
@@ -513,7 +523,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .textCenter{text-align: center;}
 .textRight{text-align: right;}
 
-.header_footer{background-color:#ffffff; display:flex; align-items: center; }
+.header_footer{display:flex; align-items: center; }
 .headerShadow{box-shadow: 0px 7px 9px -9px #00000036;}
 /* .headerShadow{border-bottom : 2px solid #6768a7} */
 .newHeaderLine::before {
@@ -929,3 +939,7 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 .completeWork img {
   filter: brightness(60%);
 }
+
+
+.mainConts .formText{ padding: 0 20px; text-align: left;}
+.mainConts img {padding: 0!important}

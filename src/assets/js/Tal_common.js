@@ -957,7 +957,7 @@ export const commonMethods = {
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
     if (gLoadingPop.length > 0) {
-      // loadingCompo.style.display = 'none'
+      loadingCompo.style.display = 'none'
       return
     }
     if (!loadingCompo || loadingCompo.length === 0) return
@@ -977,6 +977,15 @@ export const commonMethods = {
   },
   openRouterModalPop (param) {
     routerMain.methods.openPop(param)
+  },
+  gobackDev () {
+    if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
+    var history = store.getters['D_HISTORY/hStack']
+    if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+      router.replace({ path: '/' })
+    }
+    var current = store.getters['D_HISTORY/hUpdate']
+    store.commit('D_HISTORY/updatePage', current + 1)
   }
 }
 
@@ -1032,5 +1041,6 @@ export default {
     Vue.config.globalProperties.$settingUserAuth = commonMethods.settingUserAuth
     Vue.config.globalProperties.$dAlertLog = commonMethods.dAlertLog
     Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
+    Vue.config.globalProperties.$gobackDev = commonMethods.gobackDev
   }
 }

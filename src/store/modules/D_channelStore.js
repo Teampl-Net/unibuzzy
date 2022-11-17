@@ -138,6 +138,7 @@ const D_CHANNEL = {
     MU_MAIN_CHAN_LIST: (state, payload) => {
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
+        if (!team) return
         if (team.ELEMENTS) {
           if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
           if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
@@ -195,6 +196,7 @@ const D_CHANNEL = {
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
+        if (!team) return
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
         var D_CHAN_AUTH = {}
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {

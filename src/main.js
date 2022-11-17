@@ -58,6 +58,8 @@ import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmp
 import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
 import gInputSmallPop from './components/popup/memberInfo/memberUnit/D_commonSmallInput.vue'
 
+import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
+
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
@@ -67,6 +69,7 @@ app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
 app.component('gLoadingS', gLoadingS)
+app.component('gContentsBox', gContentsBox)
 app.component('gAlertPop', gAlertPop)
 app.component('Datepicker', Datepicker)
 app.component('gColorPicker', gColorPicker)

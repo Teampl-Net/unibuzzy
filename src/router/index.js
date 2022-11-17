@@ -72,15 +72,15 @@ const routes = [
           page: 4
         }
       },
-      {
-        path: '/pushList',
+      /* {
+        path: '/',
         name: 'pushList',
         props: true,
         component: pushList,
         meta: {
           page: 2
         }
-      },
+      }, */
       {
         path: '/chanList',
         name: 'chanList',

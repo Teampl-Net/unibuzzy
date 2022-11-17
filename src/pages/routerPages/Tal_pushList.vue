@@ -7,11 +7,12 @@
 
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true "/> -->
-      <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; z-index: 5!important; position: absolute!important; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/>
+      <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; z-index: 5!important; position: fixed!important; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/> -->
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
         <div style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ;">
+            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
         </div>
@@ -35,7 +36,8 @@
       </div> -->
           <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
           <!-- </div> -->
-          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonAll" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'A'" :commonListData="this.GE_DISP_ALL_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
           <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
           <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
@@ -58,7 +60,7 @@
 </div>
 </template>
 <script>
-import pushLoadingCompo from '../../components/layout/Tal_loading.vue'
+/* import pushLoadingCompo from '../../components/layout/Tal_loading.vue' */
 import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/D_findContentsList.vue'
@@ -72,7 +74,7 @@ export default {
     findContentsList,
     commonConfirmPop,
     imgPreviewPop,
-    pushLoadingCompo,
+    /* pushLoadingCompo, */
     imgLongClickPop,
     statCodeComponent
 
@@ -167,7 +169,15 @@ export default {
             this.GE_DISP_ALIM_LIST[index].memoCount = count
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALIM_LIST[index])
           }
-        } else {
+        } else if (this.viewMainTab === 'B') {
+          index = this.GE_DISP_BOAR_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+          if (index !== -1) {
+            content = this.GE_DISP_BOAR_LIST[index]
+            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+            this.GE_DISP_BOAR_LIST[index].memoCount = count
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_BOAR_LIST[index])
+          }
+        } else if (this.viewMainTab === 'A') {
           index = this.GE_DISP_BOAR_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
           if (index !== -1) {
             content = this.GE_DISP_BOAR_LIST[index]
@@ -221,7 +231,7 @@ export default {
             if (value[0].jobkindId === 'ALIM') {
               newArr = [
                 value[0],
-                ...this.alimContentsList
+                ...this.GE_DISP_ALIM_LIST
               ]
               this.alimContentsList = this.replaceArr(newArr)
             } else {
@@ -229,7 +239,7 @@ export default {
               debugger
               newArr = [
                 value[0],
-                ...this.boardContentsList
+                ...this.GE_DISP_BOAR_LIST
               ]
               this.boardContentsList = this.replaceArr(newArr)
             }
@@ -238,13 +248,13 @@ export default {
           if (value[0].jobkindId === 'ALIM') {
             newArr = [
               value[0],
-              ...this.alimContentsList
+              ...this.GE_DISP_ALIM_LIST
             ]
             this.alimContentsList = this.replaceArr(newArr)
           } else {
             newArr = [
               value[0],
-              ...this.boardContentsList
+              ...this.GE_DISP_BOAR_LIST
             ]
             this.boardContentsList = this.replaceArr(newArr)
           }
@@ -389,7 +399,7 @@ export default {
           this.$addChanList(teamKey).then(() => {
             idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
             if (idx1 === -1) {
-              returnBoardList.push(this_.alimContentsList[i])
+              returnBoardList.push(this_.boardContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
               dataList = chanDetail.ELEMENTS.boardList
@@ -423,6 +433,65 @@ export default {
       if (returnBoardList.length === 0) this.emptyYn = true
 
       return this.replaceArr(returnBoardList)
+    },
+    GE_DISP_ALL_LIST () {
+      var idx1, idx2
+      var returnAllList = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      for (i = 0; i < this.allContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
+        if (idx1 === -1) {
+          var this_ = this
+          var jobkindId = this.allContentsList[i].jobkindId
+          var teamKey = this.allContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then(() => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            if (idx1 === -1) {
+              returnAllList.push(this_.allContentsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              if (jobkindId === 'ALIM') {
+                dataList = chanDetail.ELEMENTS.alimList
+              } else if (jobkindId === 'BOAR') {
+                dataList = chanDetail.ELEMENTS.boardList
+              }
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.allContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                this.allContentsList[i] = dataList[idx2]
+                returnAllList.push(dataList[idx2])
+              } else {
+                returnAllList.push(this_.allContentsList[i])
+              }
+            }
+          })
+        } else {
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          if (this.allContentsList[i].jobkindId === 'ALIM') {
+            dataList = chanDetail.ELEMENTS.alimList
+          } else if (this.allContentsList[i].jobkindId === 'BOAR') {
+            dataList = chanDetail.ELEMENTS.boardList
+          }
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.allContentsList[i].contentsKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.allContentsList[i] = dataList[idx2]
+            returnAllList.push(dataList[idx2])
+          } else {
+            returnAllList.push(this.allContentsList[i])
+          }
+        }
+      }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (returnAllList.length === 0) this.emptyYn = true
+
+      return this.replaceArr(returnAllList)
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -473,12 +542,20 @@ export default {
           ...result.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
-      } else {
+      } else if (this.viewMainTab === 'B') {
         newArr = [
           ...this.boardContentsList,
           ...result.content
         ]
         this.boardContentsList = this.replaceArr(newArr)
+      } else if (this.viewMainTab === 'A') {
+        newArr = [
+          ...this.allContentsList,
+          ...result.content
+        ]
+        // eslint-disable-next-line no-debugger
+        debugger
+        this.allContentsList = this.replaceArr(newArr)
       }
       if (this.targetCKey) {
         this.canLoadYn = true
@@ -495,7 +572,7 @@ export default {
     },
     async readyFunction () {
       this.scrolledYn = false
-      this.$showAxiosLoading(true)
+      // this.$showAxiosLoading(true)
       if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
         if (this.targetContents.jobkindId === 'BOAR') {
           this.viewMainTab = 'B'
@@ -523,6 +600,7 @@ export default {
 
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
       this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+      this.$emit('closeLoading')
     },
     memoPopNo () {
       this.memoShowYn = false
@@ -688,6 +766,9 @@ export default {
       } else if (this.viewMainTab === 'B') {
         idx = this.boardContentsList.findIndex(i => i.contentsKey === contentKey)
         if (idx !== -1) cont = this.boardContentsList[idx]
+      } else if (this.viewMainTab === 'A') {
+        idx = this.allContentsList.findIndex(i => i.contentsKey === contentKey)
+        if (idx !== -1) cont = this.allContentsList[idx]
       }
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
       console.log(' =================== yesLoadMore   =================== ')
@@ -758,6 +839,9 @@ export default {
           } else if (this.viewMainTab === 'B') {
             idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
             if (idx !== -1) cont = this.boardContentsList[idx]
+          } else if (this.viewMainTab === 'A') {
+            idx = this.allContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+            if (idx !== -1) cont = this.allContentsList[idx]
           }
           index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
           var cmemoListIdx
@@ -777,6 +861,8 @@ export default {
               if (cmemoListIdx !== -1) this.alimContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
             } else if (this.viewMainTab === 'B') {
               if (cmemoListIdx !== -1) this.boardContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
+            } else if (this.viewMainTab === 'A') {
+              if (cmemoListIdx !== -1) this.allContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
             }
           } else {
             // cont.D_MEMO_LIST.splice(index, 1)
@@ -786,6 +872,9 @@ export default {
             } else if (this.viewMainTab === 'B') {
               this.boardContentsList[idx].D_MEMO_LIST.splice(index, 1)
               cont.D_MEMO_LIST = this.boardContentsList[idx].D_MEMO_LIST
+            } else if (this.viewMainTab === 'A') {
+              this.allContentsList[idx].D_MEMO_LIST.splice(index, 1)
+              cont.D_MEMO_LIST = this.allContentsList[idx].D_MEMO_LIST
             }
           }
           cont.memoCount -= 1
@@ -868,6 +957,15 @@ export default {
           this.$showToastPop('작성 setting 중 오류')
           return
         }
+      } else if (this.viewMainTab === 'A') {
+        idx = this.allContentsList.findIndex(i => i.contentsKey === param.contentsKey)
+        if (idx !== -1) {
+          this.currentContentsKey = this.allContentsList[idx].contentsKey
+        } else {
+          this.memoShowYn = false
+          this.$showToastPop('작성 setting 중 오류')
+          return
+        }
       }
       // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
       // var testCont = this.alimContentsList[testIdx]
@@ -931,6 +1029,14 @@ export default {
             } else {
               this.$showToastPop('에러코드 -M/S/P-idxErro')
             }
+          } else if (this.viewMainTab === 'A') {
+            idx = this.allContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
+            if (idx !== -1) {
+              memoLength = this.allContentsList[idx].memoList.length
+              // cont = this.boardContentsList[idx]
+            } else {
+              this.$showToastPop('에러코드 -M/S/P-idxErro')
+            }
           }
 
           if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
@@ -970,6 +1076,18 @@ export default {
                 // this.ALIM_LIST_RELOAD_CONT += 1
                 // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
                 this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.boardContentsList[idx])
+              } else if (this.viewMainTab === 'A') {
+                if (!this.allContentsList[idx].D_MEMO_LIST) this.allContentsList[idx].D_MEMO_LIST = []
+                newArr = [
+                  ...response,
+                  ...this.allContentsList[idx].D_MEMO_LIST
+                ]
+                newList = this.replaceMemoArr(newArr)
+                this.allContentsList[idx].D_MEMO_LIST = newList
+                this.allContentsList[idx].memoCount += 1
+                // this.ALIM_LIST_RELOAD_CONT += 1
+                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
+                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.allContentsList[idx])
               }
               // this.$forceUpdate()
               // this.$refs.pushListChangeTabLoadingComp.memoReload()
@@ -1000,8 +1118,11 @@ export default {
         idx = this.alimContentsList.findIndex(i => i.contentsKey === key)
         if (idx !== -1) cont = this.alimContentsList[idx]
       } else if (this.viewMainTab === 'B') {
-        idx = this.boardContentsList.findIndex(i => i.mccKey === key)
+        idx = this.boardContentsList.findIndex(i => i.contentsKey === key)
         if (idx !== -1) cont = this.boardContentsList[idx]
+      } else if (this.viewMainTab === 'A') {
+        idx = this.allContentsList.findIndex(i => i.contentsKey === key)
+        if (idx !== -1) cont = this.allContentsList[idx]
       }
       if (pageSize) memo.pageSize = pageSize
       else memo.pageSize = this.pagesize
@@ -1019,32 +1140,9 @@ export default {
 
       return result.data.memoList
     },
-    updateStoreData (uniqueArr) {
-      var this_ = this
-      if (this.chanAlimYn) {
-        this.CHANNEL_DETAIL.ELEMENTS.commonList.list = uniqueArr
-        if (this.viewMainTab === 'P') {
-          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'ALIM'
-        } else if (this.viewMainTab === 'B') {
-          this.CHANNEL_DETAIL.ELEMENTS.commonList.type = 'BOAR'
-        }
-        this_.$actionVuex('COMMONCONT', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
-      } else {
-        if (uniqueArr.length > 0) {
-          this_.canLoadYn = true
-        }
-        if (this.viewMainTab === 'P') {
-          this_.$actionVuex('ALIM', uniqueArr, null, true, false)
-        } else if (this.viewMainTab === 'B') {
-          this_.$actionVuex('BOAR', uniqueArr, null, true, false)
-        }
-      }
-    },
-
     async getPushContentsList (pageSize, offsetInput, loadingYn) {
       if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
         this.axiosQueue.push('getPushContentsList')
-        this.$emit('closeLoading')
         // @point
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -1102,6 +1200,9 @@ export default {
           } else {
             param.ownUserKey = this.GE_USER.userKey
           }
+        } else if (this.viewMainTab === 'A') {
+          param.allYn = true
+          param.ownUserKey = this.GE_USER.userKey
         }
         var nonLoading = true
         if (loadingYn) {
@@ -1111,8 +1212,6 @@ export default {
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.axiosQueue.splice(queueIndex, 1)
         var resultList = result
-        this.loadingYn = false
-        this.$emit('closeLoading')
         this.loadingYn = false
         return resultList
       }
@@ -1211,13 +1310,10 @@ export default {
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
-      setTimeout(() => {
-        this.$emit('closeLoading')
-      }, 800)
     },
     changeMainTab (tab) {
       this.paddingTop = 75
-      // this.$showAxiosLoading(true)
+      this.$showAxiosLoading(true)
       // this.targetCKey = null
       this.$emit('changeMainTab', tab)
       this.canLoadYn = true
@@ -1334,7 +1430,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
-      } else {
+      } else if (this.viewMainTab === 'B') {
         newArr = [
           // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
           // ...this.alimContentsList,
@@ -1362,6 +1458,37 @@ export default {
             ]
             var newList1 = this.replaceMemoArr(newArr)
             cont.D_MEMO_LIST = newList1
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      } else if (this.viewMainTab === 'A') {
+        newArr = [
+          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
+          // ...this.alimContentsList,
+          ...resultList.content
+        ]
+        this.allContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.allContentsList.length; i++) {
+          cont = this.allContentsList[i]
+
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...contentDetail.D_MEMO_LIST,
+              ...cont.memoList
+            ]
+            var newList2 = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList2
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
@@ -1411,15 +1538,21 @@ export default {
             if (this.viewMainTab === 'P') {
               newArr = [
                 ...resultList.content,
-                ...this.alimContentsList
+                ...this.GE_DISP_ALIM_LIST
               ]
               this.alimContentsList = this.replaceArr(newArr)
-            } else {
+            } else if (this.viewMainTab === 'B') {
               newArr = [
                 ...resultList.content,
-                ...this.boardContentsList
+                ...this.GE_DISP_BOAR_LIST
               ]
               this.boardContentsList = this.replaceArr(newArr)
+            } else if (this.viewMainTab === 'A') {
+              newArr = [
+                ...resultList.content,
+                ...this.GE_DISP_ALL_LIST
+              ]
+              this.allContentsList = this.replaceArr(newArr)
             }
             await this.endListSetFunc(resultList)
           } else {
@@ -1427,15 +1560,21 @@ export default {
             if (this.viewMainTab === 'P') {
               newArr = [
                 ...resultList.content,
-                ...this.alimContentsList
+                ...this.GE_DISP_ALIM_LIST
               ]
               this.alimContentsList = this.replaceArr(newArr)
-            } else {
+            } else if (this.viewMainTab === 'B') {
               newArr = [
                 ...resultList.content,
-                ...this.boardContentsList
+                ...this.GE_DISP_BOAR_LIST
               ]
               this.boardContentsList = this.replaceArr(newArr)
+            } else if (this.viewMainTab === 'A') {
+              newArr = [
+                ...resultList.content,
+                ...this.GE_DISP_ALL_LIST
+              ]
+              this.allContentsList = this.replaceArr(newArr)
             }
           }
           this.contentsList = this.replaceArr(newArr)
@@ -1543,7 +1682,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
-      } else {
+      } else if (this.viewMainTab === 'B') {
         newArr = [
           // ...this.boardContentsList,
           ...contentList
@@ -1551,6 +1690,46 @@ export default {
         this.boardContentsList = this.replaceArr(newArr)
         for (let i = 0; i < this.boardContentsList.length; i++) {
           cont = this.boardContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      } else if (this.viewMainTab === 'A') {
+        newArr = [
+          // ...this.boardContentsList,
+          ...contentList
+        ]
+        this.allContentsList = this.replaceArr(newArr)
+        for (let i = 0; i < this.allContentsList.length; i++) {
+          cont = this.allContentsList[i]
           tempContentDetail = []
           tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
           if (tempContentDetail) {
@@ -1626,8 +1805,10 @@ export default {
       if (resultList === '') {
         if (this.viewMainTab === 'P') {
           this.alimContentsList = []
-        } else {
+        } else if (this.viewMainTab === 'B') {
           this.boardContentsList = []
+        } else if (this.viewMainTab === 'A') {
+          this.allContentsList = []
         }
       } else {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
@@ -1638,12 +1819,18 @@ export default {
             ...resultList.content
           ]
           this.alimContentsList = this.replaceArr(newArr)
-        } else {
+        } else if (this.viewMainTab === 'B') {
           newArr = [
             // ...this.boardContentsList,
             ...resultList.content
           ]
           this.boardContentsList = this.replaceArr(newArr)
+        } else if (this.viewMainTab === 'A') {
+          newArr = [
+            // ...this.boardContentsList,
+            ...resultList.content
+          ]
+          this.allContentsList = this.replaceArr(newArr)
         }
         this.endListSetFunc(resultList)
       }
@@ -1718,8 +1905,10 @@ export default {
         debugger
         if (this.viewMainTab === 'P') {
           this.alimContentsList = []
-        } else {
+        } else if (this.viewMainTab === 'B') {
           this.boardContentsList = []
+        } else if (this.viewMainTab === 'A') {
+          this.allContentsList = []
         }
       } else {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
@@ -1730,12 +1919,18 @@ export default {
             ...resultList.content
           ]
           this.alimContentsList = this.replaceArr(newArr)
-        } else {
+        } else if (this.viewMainTab === 'B') {
           newArr = [
             // ...this.boardContentsList,
             ...resultList.content
           ]
           this.boardContentsList = this.replaceArr(newArr)
+        } else if (this.viewMainTab === 'A') {
+          newArr = [
+            // ...this.boardContentsList,
+            ...resultList.content
+          ]
+          this.allContentsList = this.replaceArr(newArr)
         }
         this.endListSetFunc(resultList)
       }
@@ -1780,6 +1975,7 @@ export default {
   },
   data () {
     return {
+      allContentsList: [],
       alimContentsList: [],
       boardContentsList: [],
       paddingTop: 75,
@@ -1796,7 +1992,7 @@ export default {
       /* stickerList: [], */
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }],
       viewTab: 'N',
-      viewMainTab: 'P',
+      viewMainTab: 'A',
       commonListData: [],
       findKeyList: {},
       resultSearchKeyList: [],

@@ -43,6 +43,7 @@ export default {
         }
         return data
       }, [])
+      uniqueArr.splice(5, 0)
       return uniqueArr
     },
     async getContentsList (loadingYn) {
@@ -110,6 +111,9 @@ export default {
           }
         }
       }
+      if (contList.length > 5) {
+        contList.splice(5, 0)
+      }
       return contList
     },
     GE_NEW_CONT_LIST () {
@@ -119,6 +123,8 @@ export default {
   watch: {
     propAlimList: {
       handler (value, old) {
+        // eslint-disable-next-line no-debugger
+        debugger
         this.mContentsList = value
       },
       deep: true
@@ -131,7 +137,7 @@ export default {
         if (this.$dateCalc(this.mContentsList[0].creDate, value[0].creDate) === true) return
         newArr = [
           value[0],
-          ...this.mContentsList
+          ...this.GE_DISP_CONT_LIST
         ]
         this.mContentsList = this.replaceArr(newArr)
       },

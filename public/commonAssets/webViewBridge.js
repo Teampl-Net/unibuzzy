@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import router from '../../src/router'
-import { saveUser } from './Tal_axiosFunction.js'
-import store from '../../src/store'
-import { onMessage } from '../../src/assets/js/webviewInterface'
-import { functions } from '../../src/assets/js/D_vuexFunction'
+import router from '../../router'
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import store from '../../store'
+import { onMessage } from '../../assets/js/webviewInterface'
+import { functions } from '../../assets/js/D_vuexFunction'
+import routerMain from '../../pages/Tal_router_main.vue'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -60,16 +61,10 @@ const isJsonString = (str) => {
         })
       }
     }
+    document.addEventListener('message', e => listenerFromNative(e))
+    window.addEventListener('message', e => listenerFromNative(e))
 
-    /**
-         * react-native => javascript
-         * react native에서 화면에 결과를 넘겨준다.
-         */
-
-    document.addEventListener('message', e => listener(e))
-    window.addEventListener('message', e => listener(e))
-
-    async function listener (e) {
+    async function listenerFromNative (e) {
       var message
 
       try {
@@ -82,17 +77,6 @@ const isJsonString = (str) => {
           if (message.loginYn === true) {
             var userProfile = JSON.parse(message.userInfo)
             localStorage.setItem('loginYn', true)
-            /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
-              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
-            } else */
-            /* if (userProfile.name === undefined || userProfile.name === null || userProfile.name === '' || userProfile.name === '0' || userProfile.name === 0) {
-              // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-              router.push({ name: 'saveName', params: { user: JSON.stringify(userProfile) } })
-            } else {
-              await saveUser(userProfile) // 서버에 save요청
-              router.replace({ path: '/' })
-            } */
             await saveUser(userProfile) // 서버에 save요청
             router.replace({ path: '/' })
           } else {
@@ -105,10 +89,8 @@ const isJsonString = (str) => {
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'deepLinkUrl') {
-          // alert(message.url)
           store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
-          // alert(urlString)
           const params = new URLSearchParams(urlString.replace('https://mo.d-alim.com', ''))
           var queList = []
           for (const param of params) {
@@ -128,17 +110,34 @@ const isJsonString = (str) => {
           var current = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
-          // alert(true)
-          alert(false)
-          functions.recvNotiFromBridge(message)
-          var vm = window.app.$root
-          console.log(vm)
-          // eslint-disable-next-line no-debugger
-          debugger
-          window.app.$children[0].recvNotiFromBridge(message)
-          /* if (vm._component && vm._component.methods.recvNotiFromBridge) {
-            vm._component.methods.recvNotiFromBridge(message)
-          } */
+          var notiDetailObj = null
+          var appActiveYn = JSON.parse(message.pushMessage).arrivedYn
+          if (JSON.parse(message.pushMessage).backgroundYn) {
+            notiDetailObj = JSON.parse(message.pushMessage)
+          } else {
+            if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
+              notiDetailObj = JSON.parse(message.pushMessage).noti.data.item.data
+            } else {
+              notiDetailObj = JSON.parse(message.pushMessage).noti.data
+            }
+          }
+          var addVueResult = await functions.recvNotiFromBridge(message)
+          if (appActiveYn !== true && appActiveYn !== 'true') {
+            if (JSON.parse(notiDetailObj.userDo).userKey === store.getters['D_USER/GE_USER'].userKey) {
+              return
+            }
+            if (addVueResult === false) {
+              alert('해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요')
+              return
+            }
+            var popHistory = store.getters['D_HISTORY/GE_GPOP_STACK']
+            var currentPage = 0
+            if (popHistory && popHistory.length > 0) {
+              currentPage = popHistory[popHistory.length - 1]
+            }
+            store.dispatch('D_NOTI/AC_ADD_NEW_NOTI', { notiDetailObj: notiDetailObj, currentPage: currentPage, addVueResult: addVueResult })
+            /* routerMain.methods.recvNotiFormBridge(notiDetailObj, currentPage, addVueResult) */
+          }
         } else if (message.type === 'appInfo') {
           var appInfo = JSON.parse(message.appInfo)
           localStorage.setItem('appInfo', message.appInfo)
@@ -148,7 +147,6 @@ const isJsonString = (str) => {
 
           if (systemName === 'android' || systemName === 'Android') {
             if (appInfo.current !== appInfo.last) {
-              // alert('최신버전으로 업데이트 해주세요')
               /* alert('앱을 최신 버전으로 업데이트 해주세요.')
               // this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
               // this.checkVersionPopShowYn = true

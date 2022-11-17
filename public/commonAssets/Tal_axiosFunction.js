@@ -112,12 +112,17 @@ export async function saveUser (userProfile) {
     user.fcmKey = deviceInfo.fcmKey
     user.osName = deviceInfo.systemName
     user.osVersion = deviceInfo.systemVersion
-    user.deviceId = deviceInfo.uniqueId
+    user.deviceId = deviceInfo.uniqueId + ''
     user.deviceModel = deviceInfo.model
     user.deviceBrand = deviceInfo.brand
     user.isTablet = deviceInfo.isTablet
     user.countryCode = deviceInfo.contry
     user.areaName = deviceInfo.timeZome
+  } else {
+    var isMobile = /Mobi/i.test(window.navigator.userAgent)
+    if (!isMobile && localStorage.getItem('fcmKey') != null) {
+      user.fcmKey = localStorage.getItem('fcmKey')
+    }
   }
   setParam.user = user
   var result = await commonAxiosFunction({
@@ -226,7 +231,7 @@ export const methods = {
     }
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'service/tp.getContentsList',
+      url: 'service/tp.getMyContentsList',
       param: paramSet
     }, nonLoadingYn)
     resultList = result.data
@@ -510,6 +515,23 @@ export const methods = {
     })
     result = response
     return result
+  },
+  async saveFcmToken () {
+    // eslint-disable-next-line no-new-object
+    var param = new Object()
+    // eslint-disable-next-line no-new-object
+    var user = new Object()
+    // param.user = this.userInfo
+    user = store.getters['D_USER/GE_USER']
+    param.user = user
+    param.updateYn = true
+    var result = null
+    var response = await commonAxiosFunction({
+      url: 'service/tp.saveUser',
+      param: param
+    })
+    result = response
+    return result
   }
 }
 
@@ -538,5 +560,6 @@ export default {
     Vue.config.globalProperties.$getMobileYn = methods.getMobileYn
     Vue.config.globalProperties.$getContentsOnly = methods.getContentsOnly
     Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
+    Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
   }
 }

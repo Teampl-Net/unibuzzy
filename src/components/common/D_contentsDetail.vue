@@ -1,12 +1,12 @@
 <template>
-    <div v-if="this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" :style="(CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.picBgPath) ? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #6768A7;'">
+    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" :style="(CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.picBgPath) ? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #6768A7;'">
         <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
         <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
         <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.clickImgList" />
         <div id="boardDetailScrollArea" class="pagePaddingWrap mtop-1 overflowYScroll" ref="memoarea" >
             <div class="content pushMbox">
                 <div class="pushDetailTopArea">
-                    <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+                    <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath !== undefind ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
                     <div class="pushDetailHeaderTextArea">
                         <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
                             <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
@@ -199,6 +199,8 @@ export default {
     },
     CHANNEL_DETAIL () {
       var chan = this.$getDetail('TEAM', this.propParams.teamKey)
+      console.log(chan)
+      console.log('CHANNEL_DETAIL')
       if (chan) {
         return chan[0]
       } else {
@@ -215,16 +217,18 @@ export default {
     },
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
-      if (!this.cDetail) return
-      var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.cDetail.creTeamKey)
+      console.log('CONT_DETAIL')
+      console.log(this.cDetail)
+      if (!this.cDetail || !this.CHANNEL_DETAIL) return
+      var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (!cont) {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
       }
+      console.log(cont)
       if (cont) {
         return cont[0]
       } else {
-        console.log(cont)
-        return null
+        return this.cDetail
       }
     },
     GE_USER () {
@@ -384,7 +388,7 @@ export default {
         if (this.propParams.jobkindId === 'BOAR') {
           this.getCabinetDetail(this.propParams.creTeamKey)
         }
-        if (this.CHANNEL_DETAIL && (!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
+        if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
           await this.getContentsDetail()
         }
         if (!this.CONT_DETAIL.D_MEMO_LIST) {
@@ -430,10 +434,6 @@ export default {
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
       if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
-      // console.log('!!!!!!!!!!! tqtqtqtqtqtqtqtqtqtqtq !!!!!!!!!!!!!')
-      // console.log(detailData)
-      // eslint-disable-next-line no-debugger
-      debugger
       this.cDetail = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
