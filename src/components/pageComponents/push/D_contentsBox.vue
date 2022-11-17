@@ -57,11 +57,19 @@
                 </div>
             </div>
         </div>
-        <div class="contentsCardMemoArea" style="width: 100%; float: left; min-height: 20px;"></div>
+        <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
+            <template v-for="(memo, mIndex) in this.contentsEle.D_MEMO_LIST" :key="mIndex">
+                <memoCompo v-if="mIndex < 3" :propMemoEle="memo" />
+            </template>
+        </div>
     </div>
 </template>
 <script>
+import memoCompo from './D_contBoxMemo.vue'
 export default {
+  components: {
+    memoCompo
+  },
   props: {
     contentsEle: {}
   },
