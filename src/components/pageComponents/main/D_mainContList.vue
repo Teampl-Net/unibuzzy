@@ -1,6 +1,7 @@
 <template>
-    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;">
         <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" />
+        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
     </div>
 </template>
 
@@ -11,7 +12,9 @@ export default {
       mOffsetInt: 0,
       mPageSize: 10,
       mAxiosQueue: [],
-      mContsList: []
+      mContsList: [],
+      mCanLoadYn: true,
+      mEndListYn: false
     }
   },
   props: {
@@ -64,6 +67,7 @@ export default {
     async setContsList (resultList) {
       if (!resultList || resultList === '') return
       var newArr = []
+      this.endListSetFunc(resultList)
       /* var cont
       var tempContentDetail
       var contentDetail */
@@ -116,6 +120,31 @@ export default {
         return data
       }, [])
       return uniqueArr
+    },
+    async loadMore (descYn) {
+      console.log('this.mCanLoadYn : ' + this.mCanLoadYn + ' this.mEndListYn : ' + this.mEndListYn)
+      if (this.mCanLoadYn && this.mEndListYn === false) {
+        this.mCanLoadYn = false
+        try {
+          var resultList = await this.getMyContentsList(null, null, false)
+          this.setContsList(resultList)
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.mCanLoadYn = true
+        }
+      } else {
+      }
+    },
+    endListSetFunc (resultList) {
+      if (resultList === undefined || resultList === null || resultList === '') return
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.mEndListYn = true
+        if (this.mOffsetInt > 0) this.mOffsetInt -= 1
+      } else {
+        this.mEndListYn = false
+        this.mOffsetInt += 1
+      }
     }
   },
   created () {

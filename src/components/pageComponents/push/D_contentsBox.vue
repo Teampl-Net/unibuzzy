@@ -9,7 +9,7 @@
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 26px;  position: relative;">
                     <template v-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && contentsEle.titleBlindYn">
                         <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                            열람권한이 없습니다.
+                            열람 권한이 없습니다.
                         </p>
                     </template>
                     <template v-else>
@@ -35,15 +35,15 @@
             </div>
             <p @click="alimBigView()" :id="'bodyMore'+contentsEle.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
         </div>
-        <template v-if="((contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === true) || contentsEle.jobkindId === 'ALIM' || contentsEle.creUserKey !== this.GE_USER.userKey)">
+        <template v-if="((contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === true) || contentsEle.jobkindId === 'ALIM' || contentsEle.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: 50%; height: 100%;">
-                    <div style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div @click="changeAct(this.contentsEle.D_CONT_USER_DO[1], this.contentsEle.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="!this.contentsEle.D_CONT_USER_DO[1].doKey || this.contentsEle.D_CONT_USER_DO[1].doKey === 0" src="../../../assets/images/push/likeIcon.png" alt="">
                         <img v-else src="../../../assets/images/push/likeIcon_color.png" alt="">
                         <p class="font12 fl w-100P userDoColor">{{contentsEle.likeCount}}</p>
                     </div>
-                    <div style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div  @click="changeAct(this.contentsEle.D_CONT_USER_DO[0], this.contentsEle.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="!this.contentsEle.D_CONT_USER_DO[0].doKey || this.contentsEle.D_CONT_USER_DO[0].doKey === 0" src="../../../assets/images/push/starIcon.png" alt="">
                         <img v-else src="../../../assets/images/push/starIcon_color.png" alt="">
                         <p class="font12 fl w-100P userDoColor">{{contentsEle.starCount}}</p>
@@ -63,8 +63,8 @@
                         <img v-if="this.contentsEle.attachMfilekey && this.contentsEle.attachMfilekey > 0" src="../../../assets/images/push/attachFileIcon.png" alt="">
                         <img v-else src="../../../assets/images/push/attachFileIcon.png" alt="">
                     </div>
-                    <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="this.contentsEle.subsYn === 1" src="../../../assets/images/push/noti_on.png" alt="">
+                    <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                        <img v-if="this.contentsEle.subsYn === 1 || this.contentsEle.subsYn === true" src="../../../assets/images/push/noti_on.png" alt="">
                         <img v-else src="../../../assets/images/push/noti_off.png" alt="">
                     </div>
                 </div>
@@ -82,6 +82,7 @@
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
+import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   components: {
     memoCompo
@@ -96,11 +97,17 @@ export default {
       mConfirmText: '',
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
-      mCurrentConfirmType: ''
+      mCurrentConfirmType: '',
+      mContentsSharLink: null
     }
   },
   mounted () {
     this.setContentsMoreText()
+  },
+  created () {
+    if (!this.contentsEle.copyTextStr) {
+      this.copyText()
+    }
   },
   methods: {
     memoEmitFunc (emitData) {
@@ -227,12 +234,18 @@ export default {
       bodyMoreArea.style.display = 'none'
     },
     contentsSharePop () {
+      var shareItem = { title: '더알림', text: this.contentsEle.title, url: this.contentsEle.copyTextStr }
       console.log(this.contentsEle)
-      if (window.navigator.share) {
+      if (navigator.share) {
+        navigator.share(shareItem)
+      } else {
+        onMessage('REQ', 'nativeShare', shareItem)
+      }
+      /*  if (window.navigator.share) {
         window.navigator.share({ title: '더알림', text: this.contentsEle.title, url: this.contentsEle.copyTextStr })
       } else {
         this.$showToastPop('지원하지 않는 브라우저입니다.')
-      }
+      } */
     },
     goChannelMain () {
       console.log(this.contentsEle)
@@ -277,6 +290,135 @@ export default {
       openPopParam.value = this.contentsEle
 
       this.$emit('openPop', openPopParam)
+    },
+    async changeAct (act, key) {
+      // eslint-disable-next-line no-unused-vars
+      var result = null
+      var saveYn = true
+      var changeUserDoList = []
+      var tempDetail = this.contentsEle
+      if (!tempDetail.D_CONT_USER_DO) {
+        tempDetail.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+      }
+      changeUserDoList = tempDetail.D_CONT_USER_DO
+      for (var i = 0; i < changeUserDoList.length; i++) {
+        if (changeUserDoList[i].doType === act.doType) {
+          if (changeUserDoList[i].doKey === 1) return
+        }
+      }
+      // this.pushDetail = JSON.parse(this.propParams).data
+      if (Number(act.doKey) > 0) {
+        saveYn = false
+      }
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = this.contentsEle.contentsKey
+      if (param.targetKey === null) { return }
+      param.doType = act.doType
+      param.userName = this.$changeText(this.GE_USER.userDispMtext)
+      if (saveYn === false) {
+        param.doKey = act.doKey
+        result = await this.$saveUserDo(param, 'delete')
+        if (act.doType === 'LI') {
+          tempDetail.likeCount -= 1
+        }
+        for (i = 0; i < changeUserDoList.length; i++) {
+          if (changeUserDoList[i].doType === act.doType) {
+            changeUserDoList[i].doKey = 0
+          }
+        }
+        tempDetail.D_CONT_USER_DO = changeUserDoList
+      } else {
+        param.actYn = true
+        param.targetKind = 'C'
+        var this_ = this
+        this.$saveUserDo(param, 'save').then(result => {
+          // eslint-disable-next-line no-debugger
+          debugger
+          for (var d = changeUserDoList.length - 1; d >= 0; d--) {
+            if (changeUserDoList[d].doType === act.doType) {
+              changeUserDoList[d].doKey = result.doKey
+            }
+          }
+          // temp.push({ doType: act.doType, doKey: result.doKey })
+          tempDetail.D_CONT_USER_DO = changeUserDoList
+          tempDetail.likeCount = result.likeCount
+          tempDetail.starCount = result.starCount
+          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+        })
+        for (var d = changeUserDoList.length - 1; d >= 0; d--) {
+          if (changeUserDoList[d].doType === act.doType) {
+            changeUserDoList[d].doKey = 1
+          }
+        }
+        if (act.doType === 'LI') {
+          tempDetail.likeCount += 1
+        }
+        if (act.doType === 'ST') {
+          tempDetail.starCount += 1
+        }
+        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+        // }
+      }
+    },
+    copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
+      // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
+      var title = '[' + this.$changeText(teamName) + ']'
+      if (cabName) {
+        title += this.$changeText(cabName)
+      }
+      var message = titleMsg
+      var link = null
+      // if (!text) {
+      if (jobkindId === 'BOAR') {
+        link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
+      } else {
+        link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
+      }
+      var contentsDetail = this.contentsEle
+      contentsDetail.copyTextStr = link
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
+      // this.contentsList[index].copyText = link
+      // }
+      /* setTimeout(() => {
+            var clip = new ClipboardJS('#copyTextBody' + contentsKey)
+            var _this = this
+            clip.on('success', function (e) {
+                _this.confirmText = '알림링크가 복사되었습니다!'
+                _this.confirmPopShowYn = true
+            })
+        }, 300) */
+    },
+    async subScribeContents () {
+      // eslint-disable-next-line no-unused-vars
+      var result = null
+      var subsYn = this.contentsEle.subsYn
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetKey = this.contentsEle.contentsKey
+      param.targetKind = 'C'
+      if (param.targetKey === null) { return }
+      if (subsYn !== null && subsYn !== undefined) {
+        param.subsYn = !subsYn
+      } else {
+        param.subsYn = true
+      }
+      param.userKey = this.GE_USER.userKey
+      // var req = 'save'
+      var reqText = ' 되었습니다.'
+      if (!param.subsYn) {
+        // req = 'delete'
+        reqText = ' 해제되었습니다.'
+      }
+      // eslint-disable-next-line no-redeclare
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSubscribe',
+        param: { subscribe: param }
+      })
+      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      var contentsDetail = this.contentsEle
+      contentsDetail.subsYn = param.subsYn
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     }
   },
   computed: {
