@@ -236,39 +236,14 @@ export default {
         },
         async getMemberListGetUserInfo () {
             var paramMap = new Map()
-            // paramMap.set('showProfileYn', true)
             paramMap.set('teamKey', this.propData.teamKey)
             paramMap.set('userKey', this.propData.userKey)
             paramMap.set('adminYn', true)
-            paramMap.set('pageSize', 100)
             var result = await this.$commonAxiosFunction({
                 url: 'service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
-            // var list = []
             this.mUserInfo = result.data.content[0]
-            /* console.log(list)
-            console.log(this.propData)
-            var indexOf = list.findIndex(i => i.userKey === this.propData.userKey);
-            console.log(indexOf)
-            if (indexOf !== -1) {
-                var data = list[indexOf]
-                this.userProfileImg = data.userProfileImg
-                if (data.domainPath) {
-                    this.domainPath = data.domainPath
-                } else {
-                    // this.domain
-                }
-                this.memName = this.$changeText(data.userDispMtext)
-                this.memEmail = data.userEmail
-                this.memPhone = data.phoneEnc
-                this.thisUserKey = data.userKey
-                data.followYn = true
-                this.setUserGrade(data)
-            } else {
-                this.$showToastPop('정보를 공개하지 않은 사용자입니다.')
-                this.closeXPop()
-            } */
         },
         async setUserGrade (anotherAuth) {
           if (anotherAuth) {
@@ -278,21 +253,6 @@ export default {
             console.log(grade)
             this.userGrade = grade
           }
-          // console.log(this.propData)
-          // console.log(this.propData.teamKey)
-          // if (this.propData && this.propData.teamKey) {
-          //   var detail = await this.$getDetail('TEAM', this.propData.teamKey)[0]
-          //   console.log(detail)
-          //   if (detail && detail.D_CHAN_AUTH) {
-          //     console.log(detail)
-          //     // var grade = detail.D_CHAN_AUTH.userGrade
-          //     console.log(detail.D_CHAN_AUTH)
-          //     var grade = this.$getFollowerType(detail.D_CHAN_AUTH)
-          //     // grade = grade.replaceAll('(', '')
-          //     // grade = grade.replaceAll(')', '')
-          //     this.userGrade = grade
-          //   }
-          // }
         },
         sendPushAlim () {
             var param = {}

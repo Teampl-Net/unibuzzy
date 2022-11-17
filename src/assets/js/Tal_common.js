@@ -986,6 +986,25 @@ export const commonMethods = {
     }
     var current = store.getters['D_HISTORY/hUpdate']
     store.commit('D_HISTORY/updatePage', current + 1)
+  },
+  notPerText () {
+    var html = '<div class="w-100P fl textCenter commonColor font14">'
+    html += '열람 권한이 없습니다.'
+    html += '</div>'
+    return html
+  },
+  setBodyLength (str, completeYn) {
+    if (!str) return
+    // eslint-disable-next-line no-undef
+    str = Base64.decode(str)
+    str.replace('contenteditable= true', '')
+    str = str.replaceAll('<pre', '<div')
+    str = str.replaceAll('</pre', '</div')
+    if (completeYn) {
+      console.log(str)
+      str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
+    }
+    return str
   }
 }
 
@@ -1042,5 +1061,7 @@ export default {
     Vue.config.globalProperties.$dAlertLog = commonMethods.dAlertLog
     Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
     Vue.config.globalProperties.$gobackDev = commonMethods.gobackDev
+    Vue.config.globalProperties.$notPerText = commonMethods.notPerText
+    Vue.config.globalProperties.$setBodyLength = commonMethods.setBodyLength
   }
 }

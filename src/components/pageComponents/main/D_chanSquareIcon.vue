@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 150px; height: 100%; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div style="width: 150px; height: 100%; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;" @click="goChannelMain">
         <div v-if="chanElement" style="position: relative; padding: 5px 8px; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 140px; height: 107px; float: left; border-radius: 10px; background-repeat: no-repeat; background-size: cover; background-position: center;"
             :style="'background-image: url(' + (chanElement.bgDomainPath !== undefind ? chanElement.bgDomainPath + chanElement.bgPathMtext : chanElement.bgPathMtext) + ');'" >
             <div style="width: 32px; height: 32px; float: left; border: 2px solid #FFF; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;" :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');'"></div>
@@ -22,6 +22,15 @@
 export default {
   props: {
     chanElement: {}
+  },
+  methods: {
+    goChannelMain () {
+      console.log(this.chanElement)
+      var openPopParam = {}
+      openPopParam.targetKey = this.chanElement.teamKey
+      openPopParam.targetType = 'chanDetail'
+      this.$emit('openPop', openPopParam)
+    }
   }
 }
 </script>

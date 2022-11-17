@@ -43,7 +43,7 @@
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 80px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainMChanList.length * 100 + 'px;'">
-                    <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index"/>
+                    <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                 </div>
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
@@ -52,7 +52,7 @@
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainChanList.length * 100 + 'px;'">
-                    <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index"/>
+                    <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;">
-                <mainContsList :propUserKey="this.GE_USER.userKey"/>
+                <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop'/>
             </div>
         </div>
     </div>
