@@ -24,17 +24,22 @@
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
         <!-- <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="!popYn ? 'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;' : 'padding-top:' + (this.paddingTop) + 'px;' " style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); "> -->
-        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;'" style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">
-            <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
-            </template>
-            <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
-            </template>
-            <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
-            </template>
-            <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;'" style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); ">
+        <!-- 읽음처리 hold //20220819 수민 -->
+        <!-- <div class="fr pushReadCheckAlimArea" :class="this.scrolledYn? 'pushReadCheckAlimArea--unpinned': 'pushReadCheckAlimArea--pinned'" style="border-radius: 5px; height: 20px; padding: 3px 10px; background: rgb(255 255 255 / 70%); position: sticky; top: 10px; z-index: 1; display: flex; align-items: center;" > <input type="checkbox" v-model="readCheckBoxYn" id="alimReadYn" style="" > <label for="alimReadYn" class="mleft-05 cursorP font15">안읽은 알림 보기</label></div> -->
+        <!-- <div class="stickerWrap">
+        <div :style="setStickerWidth" class="mbottom-05 stickerFrame">
+          <div class="stickerDiv" :style="'border: 1.5px solid' + value.stickerColor" v-for="(value, index) in stickerList " :key="index" style="min-width: 60px; margin-right: 5px;height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
+            <p class="font12">{{value.stickerName}}</p>
+          </div>
+        </div>
+      </div> -->
+          <!-- <div style="width:100%; height:100%; top:0; left: 0;position: absolute; z-index: 99999; opacity: 0.1; background-color:#000"> -->
+          <!-- </div> -->
+          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonAll" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents"  id="commonPush" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'A'" :commonListData="this.GE_DISP_ALL_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <commonList @openWorkStatePop="openWorkStatePop" @cMemoEditYn="cMemoEditYn" @delContents="delContents" id="commonBoard" :chanAlimYn="chanAlimYn" v-if="viewMainTab === 'B'" :commonListData="this.GE_DISP_BOAR_LIST" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey" ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;" :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove" @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' @memoEdit='memoEdit' @clearMemo='clearMemo' />
+          <gEmty :tabName="currentTabName" :contentName="viewMainTab === 'P' ? '알림' : '게시판'" v-if="emptyYn && ((this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0) || this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0) "/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -749,7 +754,7 @@ export default {
 
         var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
         this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
-        /* this_.$refs.pushListChangeTabLoadingComp.contentsWich(targetKey) */
+        this_.$refs.pushListChangeTabLoadingComp.contentsWich(targetKey)
       })
       return true
     },
@@ -1514,6 +1519,7 @@ export default {
         try {
           var resultList = await this.getPushContentsList(null, null, false)
           if (resultList === undefined || resultList === '') {
+            this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
             return
           }
           // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
@@ -1579,6 +1585,7 @@ export default {
           this.canLoadYn = true
         }
       } else {
+        this.$refs.pushListChangeTabLoadingComp.loadingRefHide()
       }
     },
     closeSearchPop () {
@@ -1618,6 +1625,7 @@ export default {
       this.emptyYn = false
       this.targetCKey = null
       this.offsetInt = 0
+      this.$refs.pushListChangeTabLoadingComp.openMemoListClear()
       /* if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       } */

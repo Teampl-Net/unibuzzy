@@ -415,7 +415,7 @@ export default {
       // uniqueArr = this.replaceArr(newArr)
       // // console.log(uniqueArr)
       // this.CHANNEL_DETAIL.ELEMENTS.cabinetList = uniqueArr
-      // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', this.CHANNEL_DETAIL)
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     replaceArr (arr) {

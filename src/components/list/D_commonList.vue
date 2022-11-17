@@ -1214,7 +1214,7 @@ export default {
             temp[indexOf].doKey = result.doKey
             // temp.push({ doType: act.doType, doKey: result.doKey })
             this_.commonListData[idx].D_CONT_USER_DO = temp
-            this.commonListData[idx].likeCount = result.doCount
+            this.commonListData[idx].likeCount = result.likeCount
             this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', this.commonListData)
         })
         temp[indexOf].doKey = 1

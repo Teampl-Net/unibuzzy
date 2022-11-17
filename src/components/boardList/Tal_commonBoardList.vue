@@ -9,6 +9,7 @@
       </transition>
     </div> -->
       <!-- <div style="width: 100%; height: 200px; background: #ccc; position: absolute; bottom: 0;">{{this.firstContOffsetY}}, {{this.scrollDirection}}, {{this.scrollPosition}}</div> -->
+
       <template id="boardRow" v-for="(board, index0) in commonBoardListData" :key="index0">
         <div class="commonBoardListContentBox pushMbox" v-if="board.bodyFullStr" :class="{creatorBoardContentBox: board.creUserKey === this.creUser}">
         <!-- :class="{top5MyChanColor : value.ownerYn} -->

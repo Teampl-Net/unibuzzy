@@ -368,7 +368,7 @@ export default {
       var response = resultList.data.content[0]
       response.detailPageYn = true
       var team = null
-      await this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', response)
+      await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response)
     }
 
   },

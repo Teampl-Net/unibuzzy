@@ -87,13 +87,16 @@
           <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
             <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
           </div>
-          <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); " class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+          <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
             <!-- {{CAB_DETAIL.shareAuth}}
             {{CAB_DETAIL.blindYn}} -->
-            <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
+
+            <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.BOARD_CONT_LIST" :key="index"/>
+            <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+            <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
-              @clearMemo='clearMemo'/>
+              @clearMemo='clearMemo'/> -->
             <gEmty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
               @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
@@ -133,7 +136,7 @@
 </template>
 <script>
 // import findContentsList from '../D_findContentsList.vue'
-import boardList from '@/components/list/D_commonList.vue'
+/* import boardList from '@/components/list/D_commonList.vue' */
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 // import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import writeContents from '../../components/popup/D_writeContents.vue'
@@ -145,7 +148,7 @@ import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   components: {
     findContentsList,
-    boardList,
+    /* boardList, */
     // boardWrite,
     writeContents,
     imgLongClickPop,
@@ -168,7 +171,7 @@ export default {
         if (!response.content) return
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = [
-          ...this_.mCabContentsList,
+          ...this_.BOARD_CONT_LIST,
           ...response.content
         ]
         this_.mCabContentsList = this.replaceArr(newArr)
@@ -830,7 +833,6 @@ export default {
       var resultList = await this.getContentsList(pSize, 0)
       this.mCabContentsList = resultList.content
       this.endList = false
-      this.$refs.boardListCompo.loadingRefHide() */
     },
     updateScroll () {
       var blockBox = document.getElementById('summaryHeader')
@@ -893,7 +895,7 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index] = Detail
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async getCabinetDetail () {
@@ -1037,7 +1039,6 @@ export default {
           this.currentTabName = '내가 쓴'
           break
       }
-      this.$refs.boardListCompo.loadingRefShow()
       this.offsetInt = 0
       // this.mCabContentsList = []
       this.emptyYn = false
@@ -1057,7 +1058,6 @@ export default {
       }
 
       if (this.mCabContentsList.length === 0) this.emptyYn = true
-      // this.$refs.boardListCompo.loadingRefHide()
       this.scrollMove()
     },
     scrollMove () {
@@ -1180,7 +1180,7 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index].boardList = uniqueArr
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CHANNEL', tempChan)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async loadMore (pageSize) {
@@ -1200,18 +1200,8 @@ export default {
         // ]
 
         // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
-        if (resultList.content) {
-          if (resultList.content.length > 0) {
-            for (let i = 0; i < resultList.content.length; i++) {
-              if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
-                resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
-              }
-            }
-          }
-        }
-
         const newArr = [
-          ...this.mCabContentsList,
+          ...this.BOARD_CONT_LIST,
           ...resultList.content
         ]
 
@@ -1222,9 +1212,6 @@ export default {
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.updateStoreData(tempCabData)
         if (!resultList || resultList === '') {
           this.endListYn = false
         } else {
@@ -1236,7 +1223,6 @@ export default {
           }
         }
       } else {
-        this.$refs.boardListCompo.loadingRefHide()
       }
       this.findPopShowYn = false
     },
@@ -1466,8 +1452,6 @@ export default {
 .summaryIconChange{
   background-color: rgba(0, 0, 0, 0.26); color: white;
 }
-
-.boardItemBox {padding: 0 1rem;}
 
 @media screen and (max-width: 300px) {
   .boardItemBox {padding: 0 0.7rem!important;}
