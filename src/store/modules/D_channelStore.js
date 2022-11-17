@@ -65,6 +65,7 @@ const D_CHANNEL = {
     },
     MU_ADD_MEMO: (state, payload) => {
       var index = null
+      debugger
       if (!payload) return
       // 1. 채널을 찾음
       var chanIndex = state.chanList.findIndex((item) => item.teamKey === Number(payload.creTeamKey))

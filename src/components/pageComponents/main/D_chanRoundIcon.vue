@@ -7,7 +7,7 @@
                 <img src="../../../assets/images/common/icon_setting_gear.svg" style="width: 100%; flaot: left;" v-else alt="">
             </div>
         </div>
-        <p class="commonGray font14 w-100P textOverdot"><img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark.svg" alt="">{{this.$changeText(chanElement.nameMtext)}}</p>
+        <p class="commonGray font14 w-100P fontBold textOverdot"><img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark.svg" alt="">{{this.$changeText(chanElement.nameMtext)}}</p>
     </div>
 </template>
 <script>

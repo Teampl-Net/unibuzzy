@@ -157,7 +157,7 @@ export default {
       if (response.status === 200 || response.status === '200') {
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, this.mMainMChanList])
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
       }
       console.log(this.mMainChanList)
       console.log(this.mMainMChanList)
