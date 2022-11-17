@@ -44,9 +44,9 @@
       <editBoardPop :pPopId="popId" v-if=" popId &&  this.targetType === 'editBoard'" :propData="this.propParams" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  this.targetType === 'chanInfo'" :propData="this.propParams" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :alimSubPopYn="alimListToDetail" :chanDetail="this.propParams.value" style="background-color: #fff;"></chanInfoComp>
       <autoAnswerList :pPopId="popId" v-if=" popId &&  this.targetType === 'autoAnswer'" :propData="this.propParams" @openPop="openPop"  />
-      <memberForm :pPopId="popId" v-if=" popId &&  this.targetType === 'memberForm'" :propData="this.propParams" @closeXPop="closeXPop" @openPop="openPop" />
       <memberFormList :pPopId="popId" v-if=" popId &&  this.targetType === 'memberFormList'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.propParams" @openPop="openPop" />
+      <memberForm :pPopId="popId" v-if=" popId &&  this.targetType === 'memberForm'" :propData="this.propParams" @closeXPop="closeXPop" @openPop="openPop" />
+      <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.propParams" @openPop="openPop" />
       <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.propParams" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
@@ -86,9 +86,9 @@ import editBoardPop from '../board/D_editBoardList.vue'
 import editMyChanMenu from '../chanMenu/D_editMyChanMenu.vue'
 import chanInfoComp from '../../pageComponents/channel/Tal_chanDetail.vue'
 import autoAnswerList from '../chanMenu/D_autoAnswerList.vue'
-import memberForm from '../memberQuestion/Tal_editMemberForm.vue'
-import memberFormList from '../memberQuestion/Tal_memberFormList.vue'
-import memberFormPreView from '../memberQuestion/Tal_memberFormPreView.vue'
+import memberForm from '../memberQuestion/D_editMemberForm.vue'
+import memberFormList from '../memberQuestion/D_memberFormList.vue'
+import memberFormPreView from '../memberQuestion/D_memberFormPreView.vue'
 import errorPage from '../../popup/common/Tal_errorPage.vue'
 import creAddressBook from '../receiver/D_creAddressBook.vue'
 import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'

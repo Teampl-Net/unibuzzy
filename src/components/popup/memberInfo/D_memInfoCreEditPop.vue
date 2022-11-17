@@ -18,15 +18,6 @@
     <div class="fl w-100P mtop-1" style="padding:0 1rem !important">
 
       <template v-if="selectOption === 'su'">
-        <!-- <div class="fl w-100P" style="display: flex; justify-content: space-between;">
-          <p class="fl font16 commonColr textLeft fontBold">제시글</p>
-          <input class="fr" style="min-height:30px; background: #CCCCCC50 !important; width: 40%;" type="text" disabled :placeholder="InfoQueTitle">
-        </div>
-        <div class="fr w-100P mtop-05">
-          <gCheckBtn class="mleft-05 fr" title='글자수 최대' :selectedYn='maxLengthYn === true' @click="maxLengthYn = !maxLengthYn" />
-          <input type="number" max="255" class="fr mleft-05" v-show="maxLengthYn === true" style="width:50px; min-height:30px;" v-model="maxLength">
-        </div>
-        <gCheckBtn class="mleft-05 fr mtop-05" title='숫자만 허용' :selectedYn='onlyNumYn === true' @click="onlyNumYn = !onlyNumYn" /> -->
         <div class="fl wh-100P" style="display: flex;">
           <p class="fl font16 commonColr textLeft fontBold h-100P" style="flex:2">제시글</p>
           <div class="fl h-100P" style="flex:3">
@@ -41,20 +32,6 @@
       </template>
 
       <template v-if="selectOption === 'si' || selectOption === 'siList'">
-        <!-- <p class="w-100P fl font16 commonColr textLeft fontBold mbottom-05">선택항</p>
-
-        <div class="fr mbottom-05" v-for="(list, index) in answerList" :key='index' >
-          <input class="fl" type="text" v-model="list.answerName">
-
-          <div class="fl mleft-05" style="width:50px; display:flex; gap:10px ">
-            <img class="fl img-w20" src="../../../assets/images/board/icon_trash.svg" @click="deleteInfoQue(index)" alt="">
-            <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
-          </div>
-        </div>
-        <div class="fl w-100P mtop-1">
-          <gBtnSmall :btnTitle="'추가'" @click="addInfo" class="mright-05" style="float:right !important;"/>
-        </div> -->
-
         <div class="fl wh-100P" style="display: flex;">
           <p class="fl font16 commonColr textLeft fontBold mbottom-05  h-100P" style="flex:2">선택항</p>
 
@@ -75,6 +52,7 @@
               <gBtnSmall :btnTitle="'추가'" @click="addInfo" class="mright-05" style="float:right !important;"/>
             </div>
           </div>
+
         </div>
       </template>
 
