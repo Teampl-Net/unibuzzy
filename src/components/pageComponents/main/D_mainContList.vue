@@ -12,7 +12,6 @@ export default {
       mPageSize: 10,
       mAxiosQueue: [],
       mContsList: []
-
     }
   },
   props: {

@@ -4,22 +4,22 @@
     <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="this.$emit('closePop')"></div>
     <div v-show="reportPopStep === 0" class="reportCompoArea" style="margin: 1rem 0rem;">
       <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-      <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'alim'" >알림으로 공유</p> -->
-        <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'board'" >{{contentText}} 이동</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'board' " >{{contentText}} 복사</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType !== 'alim'" :style="contentType === 'memo' ? 'border-top: none  !important;' : '' ">{{contentText}} 수정</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentOwner && contentType === 'alim' " :style="contentType === 'alim' ? 'border-top:none;' : '' " >{{contentText}}을 게시글로 작성</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('writeAlim')" v-if="contentOwner && contentType === 'board'" >{{contentText}}을 알림으로 작성</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '나에게서만 ': ''}}{{contentText}} 삭제</p>
+      <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
+        <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}} 이동</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{contentText}} 복사</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType !== 'ALIM'" :style="contentType === 'MEMO' ? 'border-top: none  !important;' : '' ">{{contentText}} 수정</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentOwner && contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{contentText}}을 게시글로 작성</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('writeAlim')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}}을 알림으로 작성</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? '나에게서만 ': ''}}{{contentText}} 삭제</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('textCopy')" >내용 클립보드 복사</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('subScribe')" >이 {{contentText}}에 대한 푸쉬알림 {{contentsInfo.subsYn? '끄기' : '켜기'}}</p>
-        <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'alim'" >{{contentText}} 삭제</p> -->
-        <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'alim' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'alim'" >{{contentType === 'alim' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->
-        <p class="fl font16 w-100P menuListBase rowText" :style="contentType === 'alim' ? 'border-top: 1px solid #eee;' : ''" @click="report('content')" v-if="!contentOwner" >해당 {{contentText}} 신고</p>
-        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 신고</p>
-        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('user')" v-if="(this.contentType === 'memo' || this.contentType === 'board') && !contentOwner">유저 신고</p>
-        <!-- <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 차단</p> -->
-        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('user')" v-if="(this.contentType === 'memo' || this.contentType === 'board') && !contentOwner">유저 차단</p>
+        <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'ALIM'" >{{contentText}} 삭제</p> -->
+        <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'ALIM' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->
+        <p class="fl font16 w-100P menuListBase rowText" :style="contentType === 'ALIM' ? 'border-top: 1px solid #eee;' : ''" @click="report(contentType)" v-if="!contentOwner" >해당 {{contentText}} 신고</p>
+        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('CHANNEL')" v-if="this.contentType === 'ALIM' && !contentOwner">채널 신고</p>
+        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="report('USER')" v-if="(this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">유저 신고</p>
+        <!-- <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'ALIM' && !contentOwner">채널 차단</p> -->
+        <p class="fl font16 w-100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('USER')" v-if="(this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">유저 차단</p>
 
       </div>
 
@@ -61,7 +61,7 @@
 /* eslint-disable */
 export default {
   props: {
-    contentType: { type: String, default: 'alim' },
+    contentType: { type: String, default: 'ALIM' },
     contentOwner: { type: Boolean, default: false },
     contentsInfo: {}
   },
@@ -78,11 +78,11 @@ export default {
   },
   mounted () {
     console.log(this.contentsInfo)
-    if (this.contentType === 'alim') {
+    if (this.contentType === 'ALIM') {
       this.contentText = '알림'
-    } else if (this.contentType === 'board') {
+    } else if (this.contentType === 'BOAR') {
       this.contentText = '게시글'
-    } else if (this.contentType === 'memo') {
+    } else if (this.contentType === 'MEMO') {
       this.contentText = '댓글'
     }
   },
@@ -130,5 +130,5 @@ export default {
   min-height:50px; line-height:50px; color:red;
 }
 
-.rowText {min-height:50px; line-height:50px; border-top: 1px solid #eee;}
+.rowText {min-height:50px; line-height:50px; border-bottom: 1px solid #eee;}
 </style>

@@ -11,7 +11,7 @@
                         <img src="../../../assets/images/push/contTitle_alim.svg" style="width: 20px; float: left; margin-right: 5px;" alt="">
                         {{contentsEle.title}}
                     </p>
-                    <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @@click="emit('contentMenuClick', { type: contentsEle.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === contentsEle.creUserKey, tempData: contentsEle })">
+                    <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 40px;">
                     <p @click="goUserProfile()" class="CLDeepGrayColor font14 fl textLeft fontBold">{{this.$changeText(contentsEle.nameMtext)}}<pp style="font-weight: normal;">{{ '|' + this.$changeText(contentsEle.creUserName)}}</pp></p>
@@ -61,12 +61,14 @@
             </div>
         </div>
         <div style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
-        <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
+        <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;" >
             <template v-for="(memo, mIndex) in this.contentsEle.D_MEMO_LIST" :key="mIndex">
-                <memoCompo :diplayCount="-1" :childShowYn="propDetailYn" :propMemoEle="memo" />
+                <memoCompo :diplayCount="-1" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
             </template>
         </div>
     </div>
+<gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="contentsEle" :contentType="contentsEle.jobkindId" :contentOwner="this.GE_USER.userKey === contentsEle.creUserKey"/>
+<gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -80,24 +82,131 @@ export default {
   },
   data () {
     return {
+      mContMenuShowYn: false,
+      mConfirmText: '',
+      mConfirmType: 'one',
+      mConfirmPopShowYn: false,
+      mCurrentConfirmType: ''
     }
   },
   mounted () {
     this.setContentsMoreText()
   },
   methods: {
-    emit (key, value) {
-      this.$emit(key, value)
+    memoEmitFunc (emitData) {
+      var type = emitData.targetType
+      var data = emitData.value
+      if (type === 'goUserProfile') {
+        this.goUserProfile(data.creUserKey)
+      } else if (type === 'goContentsDetail') {
+        this.goContentsDetail()
+      }
+    },
+    confirmOk () {
+      var toastText = ''
+      this.mConfirmType = 'timeout'
+      if (this.mCurrentConfirmType === 'BLOC') {
+        var param = {}
+        param.claimType = 'BLOC'
+        if (this.contentsEle.contentsKey) {
+          param.targetKind = 'C'
+          param.targetKey = this.contentsEle.contentsKey
+        } else return false
+        param.creUserKey = this.GE_USER.userKey
+        toastText = '해당 유저를 차단했습니다.'
+        this.saveActAxiosFunc(param, toastText)
+      // } else if (this.currentConfirmType === 'memoDEL') {
+      //   this.deleteMemo({ memoKey: this.tempData.memoKey })
+      //   this.$emit('showToastPop', '댓글을 삭제하였습니다.')
+      // } else if (this.mCurrentConfirmType === 'alimDEL') {
+      //   this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
+      //   this.deleteAlim()
+      // } else if (this.mCurrentConfirmType === 'boardDEL') {
+      //   this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+      //   this.deleteAlim()
+      // } else if (this.mCurrentConfirmType === 'alimCancel') {
+      //   this.alimCancle()
+      }
+
+      this.mCurrentConfirmType = ''
+      this.mConfirmPopShowYn = false
+    },
+    bloc (type) {
+      var typeText = type === 'user' ? '유저를' : '게시글을'
+      this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+      this.mCurrentConfirmType = 'BLOC'
+    },
+    report (type) {
+      var targetKind
+      var targetKey
+      var toastText
+      if (type === 'ALIM') {
+        targetKind = 'C'
+        targetKey = this.contentsEle.contentsKey
+        toastText = '해당 알림이 신고되었습니다.'
+      } else if (type === 'BOAR') {
+        targetKind = 'C'
+        targetKey = this.contentsEle.contentsKey
+        toastText = '해당 게시글이 신고되었습니다.'
+      } else if (type === 'MEMO') {
+        targetKind = 'C'
+        targetKey = this.contentsEle.memoKey
+        toastText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'CHANNEL') {
+        targetKind = 'T'
+        targetKey = this.contentsEle.creTeamKey
+        toastText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'USER') {
+        targetKind = 'U'
+        targetKey = this.contentsEle.creUserKey
+        toastText = '해당 유저가 신고되었습니다.'
+      }
+      var param = {}
+      param.claimType = 'REPO'
+      param.targetKind = targetKind
+      param.targetKey = parseInt(targetKey)
+      param.creUserKey = this.GE_USER.userKey
+      console.log(type)
+      console.log(param)
+      console.log(toastText)
+      this.saveActAxiosFunc(param, toastText)
+    },
+    /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
+    async saveActAxiosFunc (param, toastText) {
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveActLog',
+          param: param
+        })
+        if (result.data.result === true) {
+          this.$showToastPop(toastText)
+        }
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.mContMenuShowYn = false
+      }
+    },
+    contentMenuClick () {
+      this.mContMenuShowYn = true
     },
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
-    setContentsMoreText () {
-      // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
-      var imgList = document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
-      var contents = window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
-      var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-      console.log(contents)
-      if (contents > 400 || imgList.length > 0) {
-        bodyMoreText.style.display = 'block'
+    async setContentsMoreText () {
+      // 컨텐츠가 게시글이면서 권한이 없으면 리턴
+      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+      try {
+        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
+        if (this.propDetailYn === true) { this.alimBigView(); return }
+        var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
+        var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
+        var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+        if (contents > 400 || imgList.length > 0) {
+          bodyMoreText.style.display = 'block'
+        }
+      } catch (e) {
+        console.log(e)
       }
     },
     alimBigView () {
@@ -123,13 +232,16 @@ export default {
       // openPopParam.targetContentsKey = this.contentsEle.contentsKey
       this.$emit('openPop', openPopParam)
     },
-    goUserProfile () {
+    goUserProfile (memoUserKey) {
       console.log(this.contentsEle)
       var openPopParam = {}
       openPopParam.targetKey = this.contentsEle.creTeamKey
       openPopParam.teamKey = this.contentsEle.creTeamKey
       openPopParam.targetType = 'bookMemberDetail'
       openPopParam.userKey = this.contentsEle.creUserKey
+
+      // 댓글의 유저를 클릭 시 댓글의 유저키를 넣어준다.
+      if (memoUserKey) openPopParam.userKey = memoUserKey
       openPopParam.popHeaderText = '프로필'
       openPopParam.readOnlyYn = true
 
