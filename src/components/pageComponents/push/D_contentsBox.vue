@@ -1,5 +1,5 @@
 <template>
-    <div v-if="this.contentsEle" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px;">
+    <div v-if="this.contentsEle" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;">
         <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div @click="goChannelMain()" :style="this.GE_USER.userKey === contentsEle.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                 <div :style="'background-image: url(' + (contentsEle.domainPath ? contentsEle.domainPath + contentsEle.logoPathMtext : contentsEle.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -31,7 +31,7 @@
             <div v-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && !contentsEle.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey) && contentsEle.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+contentsEle.contentsKey">
-              <pre :class="contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46? 'completeWork': ''" @click="clickCard(alim)" :id="'bodyFullStr'+contentsEle.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(contentsEle.bodyFullStr, contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46)"></pre>
+              <pre :class="contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46? 'completeWork': ''" @click="goContentsDetail(true)" :id="'bodyFullStr'+contentsEle.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(contentsEle.bodyFullStr, contentsEle.jobkindId === 'BOAR' && contentsEle.workStatYn && contentsEle.workStatCodeKey === 46)"></pre>
             </div>
             <p @click="alimBigView()" :id="'bodyMore'+contentsEle.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
         </div>
@@ -75,6 +75,9 @@
                     <memoCompo :diplayCount="-1" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
             </div>
+
+            <!-- 밑에는 댓글 작성 창 -->
+            <gMemoPop v-if="!(contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(contentsEle.shareItem).V === false && contentsEle.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mememoValue'  @saveMemoText="saveMemo"  @mememoCancel='mememoCancel'/>
         </template>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="contentsEle" :contentType="contentsEle.jobkindId" :contentOwner="this.GE_USER.userKey === contentsEle.creUserKey"/>
@@ -98,6 +101,8 @@ export default {
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
       mCurrentConfirmType: '',
+      // mMemoWritePopShowYn: true,
+      mMememoValue: {},
       mContentsSharLink: null
     }
   },
@@ -209,6 +214,43 @@ export default {
     contentMenuClick () {
       this.mContMenuShowYn = true
     },
+    async saveMemo (saveMemoHTML) {
+      this.saveMemoLoadingYn = true
+      var memo = {}
+      memo.parentMemoKey = null
+      if (this.mMememoValue !== undefined && this.mMememoValue !== null && this.mMememoValue !== {}) {
+        memo.parentMemoKey = this.mMememoValue.parentMemoKey
+      }
+
+      memo.bodyFullStr = saveMemoHTML
+      /* memo.bodyFilekey  */
+      memo.targetKind = 'C'
+      memo.targetKey = this.contentsEle.contentsKey
+      // memo.toUserKey = this.CONT_DETAIL.creUserKey 대댓글때 사용하는것임
+      memo.creUserKey = this.GE_USER.userKey
+      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+      memo.userName = this.$changeText(this.GE_USER.userDispMtext)
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        console.log('-------------------------console.log(result) ------------------------------')
+        console.log(result)
+        // if (result.data.result === true || result.data.result === 'true') {
+        if (result) {
+          this.$refs.gMemoRef.clearMemo()
+        //   this.getMemoList(true)
+        }
+      } catch (e) {
+        console.error('D_contentsDetail 오류')
+        console.error(e)
+      } finally {
+        this.memoShowYn = false
+        this.saveMemoLoadingYn = false
+      }
+    },
+
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
     async setContentsMoreText () {
       // 컨텐츠가 게시글이면서 권한이 없으면 리턴
@@ -271,7 +313,14 @@ export default {
 
       this.$emit('openPop', openPopParam)
     },
-    goContentsDetail () {
+    goContentsDetail (moreCheckYn) {
+      if (moreCheckYn) {
+        var moreTextDisplay = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey).style.display
+        if (moreTextDisplay === 'block') {
+          this.alimBigView()
+          return
+        }
+      }
       console.log(this.contentsEle)
       var openPopParam = {}
       openPopParam.targetType = 'contentsDetail'

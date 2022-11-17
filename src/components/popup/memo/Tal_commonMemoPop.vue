@@ -1,12 +1,8 @@
 <template>
-    <div ref='memoPopCompo' style="width: 100%; border-radius: 15px 15px 0 0; left: 0px; min-height: 80px; padding: 15px 10px; box-shadow: 0 0 9px 4px #00000036; position: fixed; z-index: 999; bottom: 0; background: #fff;">
+    <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 1.5rem; box-shadow: 0px -2px 3px 0px #eee;">
       <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
-        <!-- <div class="w-100P fl"> -->
           <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
-          <!-- <p class="fl mleft-05 mright-05" style="text-align: left;" >{{meMemoData.memo.bodyMinStr}}</p> -->
-          <!-- {{meMemoData.memo.bodyFullStr}} -->
           <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
-        <!-- </div> -->
         <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
           <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
         </div>
@@ -14,9 +10,13 @@
       </div>
 
       <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
-      <!-- <textarea id="memoTextTag" class="fl" :class="{width65: meMemoData !== null}" style="width: calc(100% - 45px); height: 100%; float: left; border: 1px solid #ccc; resize: none;" v-model="memoText" name="" cols="30" ></textarea> -->
-      <pre id="memoTextTag" @focus="test" ref="memoTextTag" class="fl editableContent" :class="{width65: meMemoData !== null}" style="width: calc(100% - 45px); min-height:3rem; text-align:left; float: left; border: 1px solid #ccc; resize: none;"  contenteditable=true ></pre>
-      <img @click="saveMemo" src="../../../assets/images/formEditor/addComment.svg" style="width: 40px; float: right; margin-top: 5px;" alt="" class="fl">
+
+      <div class="fl" style="min-height:2.5rem; width: 100%; border-radius: 10px; border: 1px solid #5C5C5C; position: relative;">
+        <pre id="memoTextTag" ref="memoTextTag" class="fl editableContent" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
+        <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
+          <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
+        </div>
+      </div>
     </div>
 </template>
 
@@ -28,13 +28,7 @@ export default {
     resetMemoYn: {},
     writeMemoTempData: {}
   },
-  // watch: {
-  //   writeMemoTempData () {
-  //     if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
-  //       this.setMemoData(this.writeMemoTempData)
-  //     }
-  //   }
-  // },
+
   data () {
     return {
       memoText: '',
@@ -44,17 +38,6 @@ export default {
   },
   updated () {
     this.settingPop()
-    // this.okResetYn = false
-    /* if (this.resetMemoYn && !this.okResetYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
-      document.getElementById('memoTextTag').innerHTML = ''
-      this.okResetYn = false
-      // eslint-disable-next-line vue/no-mutating-props
-      // this.resetMemoYn = false
-    } else {
-      this.okResetYn = true
-    } */
   },
   mounted () {
     this.settingPop()
@@ -125,26 +108,20 @@ export default {
     setMememo () {
       this.meMemoData = this.mememo
       console.log(this.meMemoData)
-      // console.log(this.meMemoData)
       var myCreHtml = null
       myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
-      // myCreHtml += '<p class="font14 fl">'
       myCreHtml += '@' + this.$changeText(this.meMemoData.memo.userDispMtext || this.meMemoData.memo.userNameMtext)
-      // myCreHtml += '</p>'
       myCreHtml += '</span> '
       this.$nextTick(() => {
         try {
           this.$refs.memoTextTag.focus()
           console.log(myCreHtml)
-          // eslint-disable-next-line no-debugger
-          debugger
           var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
           for (var i = 0; i < spanTag.length; i++) {
             spanTag[i].remove()
           }
           this.$pasteHtmlAtCaret(myCreHtml)
         } catch (error) {
-          // console.log(error)
         }
       })
     },
@@ -153,8 +130,8 @@ export default {
       this.$emit('mememoCancel')
     },
     saveMemo () {
-      // document.getElementById('memoTextTag').contentEditable = false
-      var inputMemoArea = document.getElementById('memoTextTag')
+      // var inputMemoArea = document.getElementById('memoTextTag')
+      var inputMemoArea = this.$refs.memoTextTag
       var regText = inputMemoArea.innerText
       if (regText.trim() !== '') {
         var html = inputMemoArea.innerHTML
