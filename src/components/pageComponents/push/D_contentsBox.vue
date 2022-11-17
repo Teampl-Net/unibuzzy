@@ -63,7 +63,7 @@
         <div style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
         <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
             <template v-for="(memo, mIndex) in this.contentsEle.D_MEMO_LIST" :key="mIndex">
-                <memoCompo :diplayCount="-1" :childShowYn="true" :propMemoEle="memo" />
+                <memoCompo :diplayCount="-1" :childShowYn="propDetailYn" :propMemoEle="memo" />
             </template>
         </div>
     </div>
@@ -75,7 +75,8 @@ export default {
     memoCompo
   },
   props: {
-    contentsEle: {}
+    contentsEle: {},
+    propDetailYn: {}
   },
   data () {
     return {

@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox :contentsEle="this.CONT_DETAIL" :childShowYn="true"/>
+        <gContentsBox :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true"/>
     </div>
 </template>
 <script>
