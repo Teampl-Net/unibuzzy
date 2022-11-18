@@ -1,7 +1,7 @@
 <template>
-    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; position: relative;" :key="mReloadKey">
+    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey">
         <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete'  />
-        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="background:#ccc; height:10px; position: absolute; bottom:600px;"></myObserver>
+        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="height:100px; float: left;"></myObserver>
         <div style="width: 40px;height: 40px;border-radius: 100%;position: absolute;bottom: 6rem;right: 50px;">
             <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="" class="img-78 img-w66">
         </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
-                <gBtnLarge  else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" btnTitle="컨텐츠를 작성할 수 있는 채널이 없어요" />
+                <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" btnTitle="컨텐츠를 작성할 수 있는 채널이 없어요" />
             </div>
         </transition>
     </div>
