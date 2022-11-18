@@ -279,7 +279,7 @@ export default {
             var result = await this.$changeDispName(param)
             // console.log(result)
             if (result.data) {
-                this.$store.commit('D_USER/MU_USER', result.data)
+                this.$store.commit('D_USER/MU_USER', result.data.userInfo)
                 localStorage.setItem('sessionUser', JSON.stringify(result.data))
                 this.changeYn = false
                 this.$emit('closeXPop', true)
