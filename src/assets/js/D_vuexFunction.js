@@ -208,6 +208,7 @@ export const functions = {
         }
       }
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
+      // alert(JSON.stringify(notiDetail))
       if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
         /* if (notiDetail.actType === 'LI') {} */
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
@@ -220,6 +221,8 @@ export const functions = {
         } else {
           addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
         }
+        // ('addVueResult: ' + addVueResult)
+        // alert(JSON.stringify(addVueResult))
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
         addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {

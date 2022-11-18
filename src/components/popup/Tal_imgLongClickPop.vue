@@ -5,7 +5,7 @@
     <div class="imgAlertWrap" style="margin: 1rem 0rem;">
       <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="this.$emit('clickBtn', 'download')">다운로드</p>
-        <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="this.$emit('clickBtn', 'share')">공유하기</p>
+        <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="this.$emit('clickBtn', 'share')">공유하기</p> -->
         <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="this.$emit('clickBtn', 'preview')">자세히</p>
         <!-- <p class="fl font16 w-100P imgAlertMenuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'alim' && !contentOwner">채널 차단</p> -->
         <!-- <p class="fl font16 w-100P imgAlertMenuListBase" style="border-top: 1px solid #eee;">유저 차단</p> -->

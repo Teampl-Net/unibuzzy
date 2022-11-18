@@ -2,7 +2,7 @@
 <template>
   <div style="display: flex; align-items: center; color: #FFF; justify-content: center;"  class="">
     <commonConfirmPop v-if="saveOkPopShowYn" @no="this.saveOkPopShowYn=false" confirmType="timeout" :confirmText="popText" />
-    <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: absolute; top: 0; left: 0; z-index: 99999999; background: #00000090; color: #FFF;">
+    <div v-if="infoShown" style="width: 100%; padding: 10px 0; height: 65px; position: fixed; top: 0; left: 0; z-index: 999; background: #00000090; color: #FFF;">
       <p style="color: white;margin-bottom: 5px;" class="font16  fontBold">{{creUserName}}</p>
       <a style="color: #fff; float: left;" href="/resource/stickerIcon/sticker_robot.svg"></a>
       <img @click="backClick" src="../../../assets/images/common/icon_back_white.png" class="" style="position: absolute; left: 20px; top: 20px; width: 15px;" alt="">

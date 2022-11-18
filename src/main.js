@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 import dayjs from 'dayjs'
 // import { onMessage } from './assets/js/webviewInterface'
-import webViewBridge from './assets/js/webViewBridge'
 import gActiveBar from './components/unit/Tal_gActiveBar.vue'
 import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
 import gButtonS from './components/button/Tal_gButtonS.vue'
@@ -61,6 +60,8 @@ import gInputSmallPop from './components/popup/memberInfo/memberUnit/D_commonSma
 import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
 
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
+
+import webViewBridge from './assets/js/webViewBridge'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
 app.use(getjs)
@@ -106,7 +107,6 @@ app.component('gCheckBtn', gCheckBtn)
 app.component('gInputPop', gInputSmallPop)
 app.component('gChannelPop', gChannelPop)
 app.component('gMainTab', gMainTab)
-
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(uploadFile)

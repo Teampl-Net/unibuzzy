@@ -217,41 +217,36 @@ export default {
       },
       deep: true
     },
+
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
         if (!value[0] || !value) return
-        if (this.chanAlimYn) {
-          if (value[0].creTeamKey === this.pChannelDetail.teamKey) {
-            if (value[0].jobkindId === 'ALIM') {
-              newArr = [
-                value[0],
-                ...this.GE_DISP_ALIM_LIST
-              ]
-              this.alimContentsList = this.replaceArr(newArr)
-            } else {
-              // eslint-disable-next-line no-debugger
-              debugger
-              newArr = [
-                value[0],
-                ...this.GE_DISP_BOAR_LIST
-              ]
-              this.boardContentsList = this.replaceArr(newArr)
-            }
-          }
-        } else {
-          if (value[0].jobkindId === 'ALIM') {
+        if (value[0].creTeamKey === this.pChannelDetail.teamKey) {
+          if (this.viewMainTab === 'P') {
+            if (value[0].jobkindId !== 'ALIM') return
             newArr = [
               value[0],
               ...this.GE_DISP_ALIM_LIST
             ]
             this.alimContentsList = this.replaceArr(newArr)
-          } else {
+          } else if (this.viewMainTab === 'B') {
+            if (value[0].jobkindId !== 'BOAR') return
+            // eslint-disable-next-line no-debugger
+            debugger
             newArr = [
               value[0],
               ...this.GE_DISP_BOAR_LIST
             ]
             this.boardContentsList = this.replaceArr(newArr)
+          } else if (this.viewMainTab === 'A') {
+            // eslint-disable-next-line no-debugger
+            debugger
+            newArr = [
+              value[0],
+              ...this.GE_DISP_ALL_LIST
+            ]
+            this.allContentsList = this.replaceArr(newArr)
           }
         }
       },

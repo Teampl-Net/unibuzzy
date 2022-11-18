@@ -85,17 +85,21 @@
 <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
 <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
 <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" v-if="mSelectBoardPopShowYn" :boardDetail="mMoveContentsDetailValue" />
+<imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
+<imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 export default {
   components: {
     memoCompo,
     statCodeComponent,
-    statCodePop
+    statCodePop,
+    imgPreviewPop
   },
   props: {
     contentsEle: {},
@@ -118,10 +122,22 @@ export default {
       mSelectBoardType: '',
       mMemoResetYn: false,
       mWorkStateCodePopShowYn: false,
-      mWorkStateCodePopProps: {}
+      mWorkStateCodePopProps: {},
+      mClickImgList: [],
+      mClickTime: null,
+      mClickEndYn: false,
+      mSelectedImgIndex: 0,
+      mImgDetailAlertShowYn: false,
+      mPreviewPopShowYn: false,
+      mSelectImgObject: {}
     }
   },
   mounted () {
+    // this.addImgEvnt()
+    var this_ = this
+    this.$nextTick(() => {
+      this_.addImgEvnt()
+    })
     this.setContentsMoreText()
   },
   created () {
@@ -477,7 +493,7 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     goContentsDetail (moreCheckYn) {
-      if (this.propDetailYn === true) return
+      if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       if (moreCheckYn) {
@@ -558,6 +574,10 @@ export default {
           // temp.push({ doType: act.doType, doKey: result.doKey })
           tempDetail.D_CONT_USER_DO = changeUserDoList
           tempDetail.likeCount = result.likeCount
+          console.log(result)
+          if (result.result === true && act.doType === 'LI') {
+            tempDetail.subsYn = result.subsYn = 1
+          }
           tempDetail.starCount = result.starCount
           this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         })
@@ -652,6 +672,91 @@ export default {
       this.mWorkStateCodePopProps = data
       console.log(this.mWorkStateCodePopProps)
       this.mWorkStateCodePopShowYn = true
+    },
+    addImgEvnt () {
+      // console.log(this.CONT_DETAIL)
+      var contBody = document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+      if (!contBody) return
+      this.mClickImgList = contBody.querySelectorAll('img')
+      for (let m = 0; m < this.mClickImgList.length; m++) {
+        var thisthis = this
+        thisthis.mClickImgList[m].addEventListener('touchstart', () => {
+          thisthis.mClickTime = Date.now()
+          thisthis.mClickEndYn = false
+          thisthis.mClickImgList[m].style.opacity = 0.8
+          setTimeout(() => {
+            if (thisthis.mClickEndYn === false) {
+              thisthis.memoShowYn = false
+              thisthis.mSelectImgObject.path = thisthis.mClickImgList[m].src
+              thisthis.mSelectImgObject.fileKey = Number(thisthis.mClickImgList[m].attributes.filekey.value)
+              thisthis.mSelectedImgIndex = m
+              thisthis.mClickImgList[m].style.opacity = 1
+              this.openImgDetailAlert(thisthis.mClickImgList[m])
+            }
+          }, 300)
+          // thisthis.mPreviewPopShowYn = true
+        })
+        thisthis.mClickImgList[m].addEventListener('touchend', () => {
+          thisthis.mClickEndYn = true
+          thisthis.mClickImgList[m].style.opacity = 1
+        })
+
+        thisthis.mClickImgList[m].addEventListener('mousedown', () => {
+          thisthis.mClickTime = Date.now()
+          thisthis.mClickEndYn = false
+          thisthis.mClickImgList[m].style.opacity = 0.8
+          setTimeout(() => {
+            if (thisthis.mClickEndYn === false) {
+              thisthis.memoShowYn = false
+              thisthis.mSelectImgObject.path = thisthis.mClickImgList[m].src
+              thisthis.mSelectImgObject.fileKey = Number(thisthis.mClickImgList[m].attributes.filekey.value)
+              this.openImgDetailAlert(thisthis.mClickImgList[m])
+              thisthis.mSelectedImgIndex = m
+              thisthis.mClickImgList[m].style.opacity = 1
+            }
+          }, 1000)
+        })
+        thisthis.mClickImgList[m].addEventListener('mouseup', () => {
+          thisthis.mClickEndYn = true
+          thisthis.mClickImgList[m].style.opacity = 1
+        })
+      }
+    },
+    openImgDetailAlert (img) {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.alertPopId = 'imgDetailAlertPop' + history.length
+      this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
+      history.push(this.alertPopId)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      // console.log(this.$store.getters['D_HISTORY/hStack'])
+      this.mImgDetailAlertShowYn = true
+      this.mClickEndYn = false
+    },
+    longClickAlertClick (btnType) {
+      if (btnType === 'download') this.imgDownload()
+      else if (btnType === 'share');
+      else if (btnType === 'preview') {
+        this.mImgDetailAlertShowYn = false
+        this.mClickEndYn = false
+        this.mPreviewPopShowYn = true
+      }
+    },
+    async imgDownload () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      try {
+        if (this.$getMobileYn()) {
+          onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
+        } else {
+          console.log(this.mSelectImgObject)
+          // eslint-disable-next-line no-unused-vars
+          var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
+        }
+        this.$showToastPop('저장되었습니다.')
+        this.mImgDetailAlertShowYn = false
+      } catch (error) {
+        // // console.log(error)
+      }
     }
   },
   computed: {
@@ -689,6 +794,8 @@ export default {
         if (value[0].targetKey !== content.contentsKey) return
         // var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
         // this.CONT_DETAIL.memoCount = count
+        // eslint-disable-next-line no-debugger
+        debugger
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
         if (memoAleadyIdx !== -1) {
@@ -701,6 +808,8 @@ export default {
           ]
         }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
+        // eslint-disable-next-line vue/no-mutating-props
+        this.contentsEle.D_MEMO_LIST = this.replaceArr(newArr)
         console.log(this.CONT_DETAIL.D_MEMO_LIST)
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },

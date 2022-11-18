@@ -121,7 +121,9 @@ const isJsonString = (str) => {
               notiDetailObj = JSON.parse(message.pushMessage).noti.data
             }
           }
-          var addVueResult = await functions.recvNotiFromBridge(message)
+          var isMobile = /Mobi/i.test(window.navigator.userAgent)
+          var addVueResult = await functions.recvNotiFromBridge(message, isMobile)
+          // alert(JSON.stringify(addVueResult))
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (JSON.parse(notiDetailObj.userDo).userKey === store.getters['D_USER/GE_USER'].userKey) {
               return

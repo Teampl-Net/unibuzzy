@@ -396,7 +396,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .deepColor{color: #3E3F6A;}
 .CLDeepGrayColor {color: #636363;}
 .commonBlue{color: #3b3dce!important;}
-.commonLightColor {color: #7678E2;}
+.commonLightColor {color: #7678E2!important;}
 .commonColor{color:#6768A7;}
 .userDoColor {color: #B9B9B9;}
 .commonBlack{color: #303030;}

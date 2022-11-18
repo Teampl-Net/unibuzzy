@@ -2,37 +2,45 @@
     <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; position: relative;" :key="mReloadKey">
         <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete'  />
         <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="background:#ccc; height:10px; position: absolute; bottom:600px;"></myObserver>
-        <div style="width: 40px;height: 40px;border-radius: 100%;position: absolute;bottom: 10rem;right: 50px;">
+        <div style="width: 40px;height: 40px;border-radius: 100%;position: absolute;bottom: 6rem;right: 50px;">
             <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="" class="img-78 img-w66">
         </div>
         <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
-        <div v-if="mSeleteWriteTypePopShowYn" style="width: 100%; height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
-            <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
-                <p class="font20 fontBold textLeft">어디에 작성하실건가요?</p>
-                <img src="../../../assets/images/common/grayXIcon.svg" @click="mSeleteWriteTypePopShowYn = false" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
-            </div>
-            <div style="width: 100%; min-height: 100px;">
-                <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
-                    <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
-                        <img style="width: 36px;" src="../../../assets/images/main/main_contentsBellIcon.svg" alt="">
-                        <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-                        <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM'}" class="font14 fontBold mtop-05">알림</p>
-                    </div>
-                    <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
-                        <img style="width: 36px;" src="../../../assets/images/main/baordIcon.svg" alt="">
-                        <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-                        <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-05">게시글</p>
+        <transition name="showUp">
+            <div v-if="mSeleteWriteTypePopShowYn" style="width: 100%; min-height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
+                <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
+                    <p class="font20 fontBold textLeft">어디에 작성하실건가요?</p>
+                    <img src="../../../assets/images/common/grayXIcon.svg" @click="mSeleteWriteTypePopShowYn = false" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
+                </div>
+                <div style="width: 100%; min-height: 100px;">
+                    <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
+                        <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
+                            <img style="width: 36px;" src="../../../assets/images/main/main_contentsBellIcon.svg" alt="">
+                            <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+                            <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM'}" class="font14 fontBold mtop-05">알림</p>
+                        </div>
+                        <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
+                            <img style="width: 36px;" src="../../../assets/images/main/baordIcon.svg" alt="">
+                            <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+                            <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-05">게시글</p>
+                        </div>
                     </div>
                 </div>
+                <div style="width: 100%; margin-top: 20px; min-height: 30px;">
+                    <p class="font20 fontBold textLeft">채널을 선택해주세요</p>
+                    <div class="lightGray cursorP font16 fontBold okScrollBar" style="border: 3px solid #F4F4F4!important; width: 100%; height: 160px!important; border-radius: 8px; overflow: hidden scroll; padding :15px 20px;" name="" id="">
+                        <div style="width: 100%; height: 30px; padding: 0 5px; float: left;">
+                            <div v-for="(chan, index) in mSelectChanList" style="position: relative; float: left; width: 100%; min-height: 100%;" :key="index">
+                                <p @click="this.mSelectedChan = chan.teamKey"  class="font16 textLeft h-100P " :class="this.mSelectedChan === chan.teamKey? 'commonLightColor' : 'commonGray'" >{{this.$changeText(chan.nameMtext)}}</p>
+                                <img src="../../../assets/images/common/listSelectCheck.svg" style="position: absolute; right: 10px; top: 5px; " v-if="this.mSelectedChan === chan.teamKey" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
+                <gBtnLarge  else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" btnTitle="컨텐츠를 작성할 수 있는 채널이 없어요" />
             </div>
-            <div style="width: 100%; margin-top: 20px; min-height: 30px;">
-                <select v-model="mSelectedChan" class="lightGray cursorP font16 fontBold" style="border: 3px solid #F4F4F4!important; width: 100%; height: 50px!important;" name="" id="">
-                    <option value="0"  hidden>채널을 선택해주세요</option>
-                    <option class="font16 cursorP" style="height: 30px; padding: 3px 0;" :value="chan.teamKey"  v-for="(chan, index) in mSelectChanList" :key="index">{{this.$changeText(chan.nameMtext)}}</option>
-                </select>
-            </div>
-            <gBtnLarge :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -210,6 +218,7 @@ export default {
 
       var resultList = await this.$getTeamList(paramMap, nonLoading)
       this.mSelectChanList = resultList.data.content
+      this.mSelectedChan = this.mSelectChanList[0].teamKey
       console.log(resultList)
     },
     openWritePushPop () { // eslint-disable-next-line no-new-object
