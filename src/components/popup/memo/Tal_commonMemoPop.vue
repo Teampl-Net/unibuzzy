@@ -11,7 +11,7 @@
 
       <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
 
-      <div class="fl" style="min-height:2.5rem; width: 100%; border-radius: 10px; border: 1px solid #5C5C5C; position: relative;">
+      <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;">
         <pre id="memoTextTag" ref="memoTextTag" class="fl editableContent" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
         <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
           <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
@@ -68,12 +68,12 @@ export default {
         var textData = (e.originalEvent || e).clipboardData.getData('Text')
         document.execCommand('insertHTML', false, textData)
       })
-      // this.$refs.memoTextTag.focus()
-      if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
-        this.setMemoData(this.writeMemoTempData)
-      } else {
-        if (this.mememo) this.setMememo()
-      }
+      // // this.$refs.memoTextTag.focus()
+      // if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
+      //   this.setMemoData(this.writeMemoTempData)
+      // } else {
+      //   if (this.mememo) this.setMememo()
+      // }
       document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
         var keycode = event.keyCode
         if (keycode === 8 || keycode === 46) {
@@ -85,6 +85,8 @@ export default {
               if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
                 event.preventDefault()
                 el.remove()
+                this.cancel()
+                // this.$emit('clearMemoObj')
               }
             }
           } catch (error) {
@@ -105,12 +107,11 @@ export default {
       }
       return returnT
     },
-    setMememo () {
-      this.meMemoData = this.mememo
-      console.log(this.meMemoData)
+    setMememo (mememo) {
+      console.log(mememo)
       var myCreHtml = null
-      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + this.meMemoData.memo.memoKey + ')"  id="parentKey' + this.meMemoData.memo.memoKey + '">'
-      myCreHtml += '@' + this.$changeText(this.meMemoData.memo.userDispMtext || this.meMemoData.memo.userNameMtext)
+      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + mememo.memo.memoKey + ')"  id="parentKey' + mememo.memo.memoKey + '">'
+      myCreHtml += '@' + this.$changeText(mememo.memo.userDispMtext || mememo.memo.userNameMtext)
       myCreHtml += '</span> '
       this.$nextTick(() => {
         try {
@@ -118,6 +119,7 @@ export default {
           console.log(myCreHtml)
           var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
           for (var i = 0; i < spanTag.length; i++) {
+            this.$refs.memoTextTag.innerText.leftTrim()
             spanTag[i].remove()
           }
           this.$pasteHtmlAtCaret(myCreHtml)
@@ -127,7 +129,7 @@ export default {
     },
     cancel () {
       this.meMemoData = null
-      this.$emit('mememoCancel')
+      this.$emit('clearMemoObj')
     },
     saveMemo () {
       // var inputMemoArea = document.getElementById('memoTextTag')

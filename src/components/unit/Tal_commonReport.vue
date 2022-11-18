@@ -7,7 +7,7 @@
       <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
         <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}} 이동</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{contentText}} 복사</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType !== 'ALIM'" :style="contentType === 'MEMO' ? 'border-top: none  !important;' : '' ">{{contentText}} 수정</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{contentText}} 수정</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentOwner && contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{contentText}}을 게시글로 작성</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('writeAlim')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}}을 알림으로 작성</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? '나에게서만 ': ''}}{{contentText}} 삭제</p>

@@ -1,6 +1,6 @@
 <template>
-    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;">
-        <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" @makeNewContents='makeNewContents' />
+    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;" :key="mReloadKey">
+        <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete'  />
         <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
     </div>
 </template>
@@ -14,7 +14,8 @@ export default {
       mAxiosQueue: [],
       mContsList: [],
       mCanLoadYn: true,
-      mEndListYn: false
+      mEndListYn: false,
+      mReloadKey: 0
     }
   },
   props: {
@@ -22,8 +23,13 @@ export default {
     propTab: {}
   },
   methods: {
-    makeNewContents (newContentData) {
-      this.$emit('makeNewContents', newContentData)
+    contDelete (contentIndex) {
+      console.log(contentIndex)
+      console.log(this.GE_DISP_CONTS_LIST[contentIndex])
+      this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
+
+      // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 스크롤 이동하지 않았음
+      this.mReloadKey += 1
     },
     openPop (openPopParam) {
       this.$emit('openPop', openPopParam)

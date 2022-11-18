@@ -9,7 +9,7 @@
     </div>
     <div v-else-if="propMemoEle" style="width: 100%; float: left; height: 100%; margin-bottom: 20px; border-bottom: 1px solid #cccccc50;">
         <div style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px;float: left; position: relative;">
-            <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="">
+            <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
             <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                 <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
             </div>
@@ -18,10 +18,10 @@
                     <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold">{{this.$changeText(propMemoEle.userNameMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateFormat(propMemoEle.creDate)}}</pp></p>
                 </div>
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)"></p>
+                    <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></p>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
-                    <p class="commonGray textLeft font12 fl" @click="writeMememo(propMemoEle)">답글달기</p>
+                    <p class="commonGray textLeft font12 fl" @click="writeMeMemo(propMemoEle)">답글달기</p>
                     <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
                     <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === propMemoEle.creUserKey">수정</p> -->
                 </div>
@@ -29,7 +29,7 @@
         </div>
         <div style="width: 100%; float: left; padding-left: 40px; min-height: 20px;">
             <div v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px;float: left; position: relative;">
-                <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="">
+                <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(cmemo)">
                 <div :style="this.GE_USER.userKey === cmemo.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                     <div :style="'background-image: url(' + cmemo.domainPath + cmemo.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
                 </div>
@@ -38,18 +38,19 @@
                         <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold">{{this.$changeText(cmemo.userNameMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal; line-height: 22px;">{{this.$changeDateFormat(cmemo.creDate)}}</pp></p>
                     </div>
                     <div style="min-height: 20px; width: 100%; min-height: 20px; margin-top: 5px;">
-                        <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)"></p>
+                        <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></p>
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
-                        <p class="commonGray textLeft font12 fl"  @click="writeMememo(cmemo)">답글달기</p>
+                        <p class="commonGray textLeft font12 fl"  @click="writeMeMemo(cmemo)">답글달기</p>
                         <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
                         <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p> -->
                     </div>
                 </div>
             </div>
         </div>
-        <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="deleteMemo" @no='mConfirmPopShowYn=false'/>
+        <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
     </div>
+<gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
 </template>
 
 <script>
@@ -70,14 +71,111 @@ export default {
       mConfirmText: '',
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
+      mCurrentConfirmType: '',
       mTempData: null,
-      mCurrentMemoObj: {}
+      mCurrentMemoObj: {},
+      mContMenuShowYn: false
     }
   },
   created () {
     console.log(this.childShowYn)
   },
   methods: {
+    contMenuClick (memoContents) {
+      this.mTempData = memoContents
+      this.mContMenuShowYn = true
+    },
+    editable (type, allYn) {
+      this.mContMenuShowYn = false
+      // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
+      if (type === 'edit') {
+        // 댓글 수정
+
+        // this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
+      } else if (type === 'delete') {
+        // 댓글 삭제
+        // this.deleteConfirm('memo')
+        this.deleteMemo()
+      } else if (type === 'textCopy') {
+        this.textCopy()
+      }
+    },
+    confirmOk () {
+      var toastText = ''
+      this.mConfirmType = 'timeout'
+      if (this.mCurrentConfirmType === 'BLOC') {
+        var param = {}
+        param.claimType = 'BLOC'
+        param.targetKind = 'U'
+        param.targetKey = this.mTempData.creUserKey
+        // if (this.CONT_DETAIL.contentsKey) {
+        //   param.targetKind = 'C'
+        //   param.targetKey = this.CONT_DETAIL.contentsKey
+        // } else return false
+        param.creUserKey = this.GE_USER.userKey
+        toastText = '해당 유저를 차단했습니다.'
+        console.log(param)
+        console.log(toastText)
+        this.saveActAxiosFunc(param, toastText)
+      } else if (this.mCurrentConfirmType === 'memoDEL') {
+        this.deleteMemo()
+      }
+
+      this.mCurrentConfirmType = ''
+      this.mConfirmPopShowYn = false
+    },
+    bloc (type) {
+      var typeText = type === 'USER' ? '유저를' : '게시글을'
+      this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+      this.mCurrentConfirmType = 'BLOC'
+    },
+    report (type) {
+      var targetKind
+      var targetKey
+      var toastText
+
+      if (type === 'MEMO') {
+        targetKind = 'C'
+        targetKey = this.propMemoEle.memoKey
+        toastText = '해당 댓글이 신고되었습니다.'
+      } else if (type === 'CHANNEL') {
+        targetKind = 'T'
+        targetKey = this.CONT_DETAIL.creTeamKey
+        toastText = '해당 채널이 신고되었습니다.'
+      } else if (type === 'USER') {
+        targetKind = 'U'
+        targetKey = this.propMemoEle.creUserKey
+        toastText = '해당 유저가 신고되었습니다.'
+      }
+      var param = {}
+      param.claimType = 'REPO'
+      param.targetKind = targetKind
+      param.targetKey = parseInt(targetKey)
+      param.creUserKey = this.GE_USER.userKey
+      console.log(type)
+      console.log(param)
+      console.log(toastText)
+      this.saveActAxiosFunc(param, toastText)
+    },
+    /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
+    async saveActAxiosFunc (param, toastText) {
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveClaimLog',
+          param: param
+        })
+        console.log(result)
+        if (result) {
+          this.$showToastPop(toastText)
+        }
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.mContMenuShowYn = false
+      }
+    },
     emit (emitData) {
       this.$emit('memoEmitFunc', emitData)
     },
@@ -88,18 +186,28 @@ export default {
         this.mTempData = data
       }
 
-      if (data === 'memo' || this.mTempData.memoKey) {
+      if (this.mTempData.parentMemoKey) {
+        this.mConfirmText = '대댓글을 삭제하시겠습니까?'
+      } else if (this.mTempData.memoKey) {
         this.mConfirmText = '댓글을 삭제하시겠습니까?'
-        if (this.mTempData.parentMemoKey) {
-          this.mConfirmText = '대댓글을 삭제하시겠습니까?'
-        }
-      } else if (data === 'alim' || this.mTempData.jobkindId === 'ALIM') {
-        this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
-      } else if (data === 'board' || this.mTempData.jobkindId === 'BOAR') {
-        this.mConfirmText = '게시글을 삭제 하시겠습니까?'
       }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
+    },
+    textCopy () {
+      const textarea = document.createElement('textarea')
+      document.body.appendChild(textarea)
+      var content = document.getElementById('memoFullStr' + this.mTempData.memoKey).innerText
+      try {
+        textarea.value = content
+        textarea.select()
+        // 복사 후 textarea 지우기
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+        this.$showToastPop('복사되었습니다.')
+      } catch (error) {
+        this.$showToastPop('복사하지 못했습니다.')
+      }
     },
     async deleteMemo () {
       var memo = {}
@@ -110,25 +218,23 @@ export default {
           url: 'service/tp.deleteMemo',
           param: memo
         })
-        var index
+
         if (result.data.result === true) {
           // var cont = this.currentMemoObj
           var cont = this.propContDetail
-          cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.memoKey)
-          var cmemoListIdx
+          var index, cmemoListIdx
+          console.log(cont)
           if (this.mTempData.parentMemoKey) {
-            for (let i = 0; i < cont.D_MEMO_LIST.length; i++) {
-              if (cont.D_MEMO_LIST[i].cmemoList.length > 0) {
-                index = cont.D_MEMO_LIST[i].cmemoList.findIndex(i => i.memoKey === this.mTempData.memoKey)
-                if (index !== -1) {
-                  cmemoListIdx = i
-                  break
-                }
-              }
-            }
-            if (cmemoListIdx !== -1) cont.D_MEMO_LIST.cmemoList.splice(index, 1)
+            // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
+            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.parentMemoKey)
+
+            // 컨텐츠의 댓글 중 부모키값의 인덱스에 자식 댓글리스트 중 삭제한 대댓글의 키를 찾음
+            cmemoListIdx = cont.D_MEMO_LIST[index].cmemoList.findIndex(i => i.memoKey === this.mTempData.memoKey)
+
+            // 찾은 대댓글의 키를 리스트에서 삭제함
+            cont.D_MEMO_LIST[index].cmemoList.splice(cmemoListIdx, 1)
           } else {
-            // cont.D_MEMO_LIST.splice(index, 1)
+            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.memoKey)
             cont.D_MEMO_LIST.splice(index, 1)
           }
           cont.memoCount -= 1
@@ -144,24 +250,23 @@ export default {
         console.log(error)
       }
     },
-    writeMememo (memo) {
+    writeMeMemo (memo) {
       /* if (this.mCurrentMemoObj.memoKey !== memo.memoKey) {
         // this.$emit('clearMemo')
         this.clearMemo()
       } */
-      this.mCurrentMemoObj = memo
-      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
+      // var memoObj = JSON.parse(JSON.stringify(memo))
+      this.mCurrentMemoObj = JSON.parse(JSON.stringify(memo))
+      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.propContDetail.shareAuth.R === true)) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
         if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {
           data.parentMemoKey = this.mCurrentMemoObj.parentMemoKey
         }
         data.memo = this.mCurrentMemoObj
-        // eslint-disable-next-line no-debugger
-        // debugger
-        this.$emit('resetMemo', this.mCurrentMemoObj)
-        this.$emit('openMemoPop', this.mCurrentMemoObj)
-        // this.memoShowYn = true
+        console.log(data)
+
+        this.emit({ targetType: 'writeMeMemo', value: data })
       } else {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true

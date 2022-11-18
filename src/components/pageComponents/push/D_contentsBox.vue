@@ -14,8 +14,8 @@
                     </template>
                     <template v-else>
                         <p @click="goContentsDetail()" class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                            <img v-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_alim.svg" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
-                            <img v-else-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_board.svg" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
+                            <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
+                            <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
                             {{CONT_DETAIL.title}}
                         </p>
                         <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
@@ -31,7 +31,7 @@
             <div v-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-              <pre :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" @click="goContentsDetail(true)" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+              <pre :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
             <p @click="alimBigView()" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
         </div>
@@ -70,18 +70,18 @@
                 </div>
             </div>
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
-            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
+            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo @resetMemo="resetMemo" @openMemoPop="mContMenuShowYn = false" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
+                    <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
             </div>
 
             <!-- 밑에는 댓글 작성 창 -->
-            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mememoValue'  @saveMemoText="saveMemo"  @mememoCancel='mememoCancel'/>
+            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' />
         </template>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
-<gConfirmPop :mConfirmText='mConfirmText' :mConfirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
+<gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
 
 <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" v-if="mSelectBoardPopShowYn" :boardDetail="mMoveContentsDetailValue" />
 </template>
@@ -94,7 +94,8 @@ export default {
   },
   props: {
     contentsEle: {},
-    propDetailYn: {}
+    propDetailYn: {},
+    propContIndex: {}
   },
   data () {
     return {
@@ -127,19 +128,14 @@ export default {
     }
   },
   methods: {
-    resetMemo (memoObj) {
-      if (!this.mememoValue) {
-        this.mMemoResetYn = true
-      } else {
-        if (this.mememoValue.parentMemoKey !== memoObj.parentMemoKey) {
-          this.mMemoResetYn = true
-        } else {
-          this.mMemoResetYn = false
-        }
-      }
-      // eslint-disable-next-line no-new-object
-      this.mMememoValue = new Object()
+    clearMemoObj () {
+      this.mMememoValue = null
+    },
+    writeMeMemo (memoObj) {
+      this.mMememoValue = {}
       this.mMememoValue = memoObj
+      console.log(this.mMememoValue)
+      this.$refs.gMemoRef.setMememo(memoObj)
     },
     memoEmitFunc (emitData) {
       var type = emitData.targetType
@@ -148,6 +144,8 @@ export default {
         this.goUserProfile(data.creUserKey)
       } else if (type === 'goContentsDetail') {
         this.goContentsDetail()
+      } else if (type === 'writeMeMemo') {
+        this.writeMeMemo(data)
       }
     },
     confirmOk () {
@@ -165,16 +163,10 @@ export default {
         console.log(param)
         console.log(toastText)
         this.saveActAxiosFunc(param, toastText)
-
-      // } else if (this.currentConfirmType === 'memoDEL') {
-      //   this.deleteMemo({ memoKey: this.tempData.memoKey })
-      //   this.$emit('showToastPop', '댓글을 삭제하였습니다.')
       } else if (this.mCurrentConfirmType === 'alimDEL') {
-        this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
-        this.deleteContents()
+        this.deleteContents('알림을 나에게서 삭제하였습니다.')
       } else if (this.mCurrentConfirmType === 'boardDEL') {
-        this.$emit('showToastPop', '게시글을 삭제하였습니다.')
-        this.deleteContents()
+        this.deleteContents('게시글을 삭제하였습니다.')
       } else if (this.mCurrentConfirmType === 'alimCancel') {
         this.alimCancle()
       }
@@ -192,11 +184,7 @@ export default {
       } else if (type === 'delete') {
         if (allYn) {
         } else {
-          if (this.contentsEle.jobkindId === 'ALIM') {
-            this.deleteConfirm('alim')
-          } else if (this.contentsEle.jobkindId === 'BOAR') {
-            this.deleteConfirm('board')
-          }
+          this.deleteConfirm()
         }
       } else if (type === 'alimBloc') {
       } else if (type === 'move' || type === 'copy') {
@@ -222,7 +210,7 @@ export default {
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
     },
-    async deleteContents () {
+    async deleteContents (toastText) {
       var result
       var inParam = {}
       if (this.contentsEle.jobkindId === 'ALIM') {
@@ -247,9 +235,12 @@ export default {
       }
       if (result) {
         console.log(result)
-        this.$showToastPop('삭제하였습니다.')
+        this.$showToastPop(toastText)
       }
-      this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+      // 반복문에 index값을 prop으로 받아 해당 함수가 리스트에 몇번째에서 발생한지 인지하고 그 인덱스를 삭제
+      this.$emit('contDelete', this.propContIndex)
+      // @@@ 추후에 vuex에 컨텐츠 삭제를 해야함 @@@@ @@@@ @@@@ @@@@ @@@@ #추가
+      // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
     },
     moveOrCopyContent (type) {
       this.mSelectBoardType = type
@@ -262,14 +253,15 @@ export default {
 
     makeNewContents (type) {
       var tempData = JSON.parse(JSON.stringify(this.contentsEle))
-      tempData.writeType = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
+      console.log(type)
+      tempData.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
       tempData.targetType = 'writeContents'
 
       tempData.UseAnOtherYn = true
       tempData.selectBoardYn = true
 
-      // eslint-disable-next-line no-undef
-      tempData.bodyFullStr = Base64.decode(tempData.bodyFullStr)
+      // tempData.bodyFullStr = tempData.bodyFullStr
+      tempData.titleStr = tempData.title
 
       tempData.modiContentsKey = tempData.contentsKey
 
@@ -385,6 +377,7 @@ export default {
         // if (result.data.result === true || result.data.result === 'true') {
         if (result.data && result.data.result) {
           this.$refs.gMemoRef.clearMemo()
+          this.mMememoValue = {}
           //   this.getMemoList(true)
           if (result.data.resultList && result.data.resultList.memoList.length > 0) {
             console.log(result.data.resultList.memoList[0])
