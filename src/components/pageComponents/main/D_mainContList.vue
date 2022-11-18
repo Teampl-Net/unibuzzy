@@ -2,6 +2,37 @@
     <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;" :key="mReloadKey">
         <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete'  />
         <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+        <div style="width: 40px;height: 40px;border-radius: 100%;position: absolute;bottom: 10rem;right: 50px;">
+            <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="" class="img-78 img-w66">
+        </div>
+        <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+        <div v-if="mSeleteWriteTypePopShowYn" style="width: 100%; height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
+            <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
+                <p class="font20 fontBold textLeft">어디에 작성하실건가요?</p>
+                <img src="../../../assets/images/common/grayXIcon.svg" @click="mSeleteWriteTypePopShowYn = false" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
+            </div>
+            <div style="width: 100%; min-height: 100px;">
+                <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
+                    <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
+                        <img style="width: 36px;" src="../../../assets/images/main/main_contentsBellIcon.svg" alt="">
+                        <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+                        <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM'}" class="font14 fontBold mtop-05">알림</p>
+                    </div>
+                    <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
+                        <img style="width: 36px;" src="../../../assets/images/main/baordIcon.svg" alt="">
+                        <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+                        <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-05">게시글</p>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 100%; margin-top: 20px; min-height: 30px;">
+                <select v-model="mSelectedChan" class="lightGray cursorP font16 fontBold" style="border: 3px solid #F4F4F4!important; width: 100%; height: 50px!important;" name="" id="">
+                    <option value="0"  hidden>채널을 선택해주세요</option>
+                    <option class="font16 cursorP" style="height: 30px; padding: 3px 0;" :value="chan.teamKey"  v-for="(chan, index) in mSelectChanList" :key="index">{{this.$changeText(chan.nameMtext)}}</option>
+                </select>
+            </div>
+            <gBtnLarge :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
+        </div>
     </div>
 </template>
 
@@ -15,6 +46,10 @@ export default {
       mContsList: [],
       mCanLoadYn: true,
       mEndListYn: false,
+      mSelectedWriteType: 'ALIM',
+      mSelectChanList: [],
+      mSelectedChan: 0,
+      mSeleteWriteTypePopShowYn: false,
       mReloadKey: 0
     }
   },
@@ -82,9 +117,9 @@ export default {
       var contentDetail */
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
-      if (this.GE_DISP_CONTS_LIST.length > 0) {
+      if (this.mContsList.length > 0) {
         newArr = [
-          ...this.GE_DISP_CONTS_LIST,
+          ...this.mContsList,
           ...resultList.content
         ]
       } else {
@@ -154,6 +189,50 @@ export default {
         this.mEndListYn = false
         this.mOffsetInt += 1
       }
+    },
+    selectWriteType (jobkindId) {
+      this.mSelectedWriteType = jobkindId
+      this.mSelectedChan = 0
+      this.mSelectChanList = []
+      this.getTeamList(false)
+    },
+    async getTeamList (loadingYn) {
+      var paramMap = new Map()
+      paramMap.set('userKey', this.GE_USER.userKey)
+      paramMap.set('pageSize', 100)
+      if (this.mSelectedWriteType === 'ALIM') {
+        paramMap.set('canSendAlim', true)
+      }
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+
+      var resultList = await this.$getTeamList(paramMap, nonLoading)
+      this.mSelectChanList = resultList.data.content
+      console.log(resultList)
+    },
+    openWritePushPop () { // eslint-disable-next-line no-new-object
+      var writeParam = new Object()
+      writeParam.contentsJobkindId = this.mSelectedWriteType
+      writeParam.targetKey = this.mSelectedChan
+      writeParam.teamKey = this.mSelectedChan
+      writeParam.currentTeamKey = this.mSelectedChan
+      writeParam.targetType = 'writeContents'
+      if (this.mSelectedWriteType === 'ALIM') {
+        var index = this.mSelectChanList.findIndex((item) => item.teamKey === this.mSelectedChan)
+        if (index !== -1) {
+          writeParam.targetNameMtext = this.mSelectChanList[index].nameMtext
+        }
+      } else if (this.mSelectedWriteType === 'BOAR') {
+        writeParam.selectBoardYn = true
+      }
+      this.openPop(writeParam)
+      this.mSeleteWriteTypePopShowYn = false
+    },
+    openSelectWriteTypePop () {
+      this.getTeamList()
+      this.mSeleteWriteTypePopShowYn = true
     }
   },
   created () {
@@ -163,6 +242,9 @@ export default {
     })
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
@@ -186,38 +268,96 @@ export default {
               returnContsList.push(this_.mContsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              dataList = chanDetail.ELEMENTS.alimList
+              if (this.mContsList[i].jobkindId === 'ALIM') {
+                dataList = chanDetail.ELEMENTS.alimList
+              } else {
+                dataList = chanDetail.ELEMENTS.boardList
+              }
               idx2 = dataList.findIndex((item) => item.contentsKey === this_.mContsList[i].contentsKey)
               // eslint-disable-next-line vue/no-side-effects-in-computed-properties
               // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
               if (idx2 !== -1) {
                 this.mContsList[i] = dataList[idx2]
-                returnContsList.push(dataList[idx2])
-              } else {
-                returnContsList.push(this_.mContsList[i])
               }
             }
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.alimList
+          if (this.mContsList[i].jobkindId === 'ALIM') {
+            dataList = chanDetail.ELEMENTS.alimList
+          } else {
+            dataList = chanDetail.ELEMENTS.boardList
+          }
           idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
           if (idx2 !== -1) {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             this.mContsList[i] = dataList[idx2]
-            returnContsList.push(dataList[idx2])
           } else {
-            returnContsList.push(this.mContsList[i])
           }
         }
       }
-      return this.replaceArr(returnContsList)
+      return this.replaceArr(this.mContsList)
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+    },
+    GE_NEW_CONT_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+    }
+  },
+  watch: {
+    GE_NEW_CONT_LIST: {
+      handler (value, old) {
+        var newArr = []
+        if (!value[0] || !value) return
+        newArr = [
+          value[0],
+          ...this.GE_DISP_CONTS_LIST
+        ]
+        this.mContsList = this.replaceArr(newArr)
+      },
+      deep: true
+    },
+    GE_NEW_MEMO_LIST: {
+      async handler (value, old) {
+        var newArr = []
+        if (!value || value.length === 0) return
+        // var memoContents = value[0]
+        var content = null
+        var index
+        index = this.GE_DISP_CONTS_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+        if (index !== -1) {
+          content = this.GE_DISP_CONTS_LIST[index]
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_CONTS_LIST[index])
+        }
+
+        if (!content) return
+
+        var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        if (memoAleadyIdx !== -1) {
+          content.D_MEMO_LIST[memoAleadyIdx] = value[0]
+          newArr = content.D_MEMO_LIST
+        } else {
+          newArr = [
+            value[0],
+            ...content.D_MEMO_LIST
+          ]
+        }
+        var idx = this.mContsList.findIndex((item) => item.contentsKey === content.contentsKey)
+        this.mContsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mContsList[idx]])
+      },
+      deep: true
     }
   }
-
 }
 </script>
 
 <style scoped>
-
+.writeTypeBtnStyle {
+    float:left; width: calc(50% - 10px); height: 95px; cursor:pointer; border-radius: 6px;position: relative; border: 3px solid #F4F4F4; display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+option {
+    min-height: 25px;
+}
 </style>

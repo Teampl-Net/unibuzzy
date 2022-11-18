@@ -21,9 +21,10 @@
                         <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                     </template>
                 </div>
-                <div style="width: 100%; paosition: relative; height: 50%; min-height: 40px;">
-                    <p @click="goUserProfile()" class="CLDeepGrayColor font14 fl textLeft fontBold">{{this.$changeText(CONT_DETAIL.nameMtext)}}<pp style="font-weight: normal;">{{ '|' + this.$changeText(CONT_DETAIL.creUserName)}}</pp></p>
-                    <p class="fr CLDeepGrayColor font12">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+                <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
+                    <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold">{{this.$changeText(CONT_DETAIL.nameMtext)}}<span style="font-weight: normal;">{{ '|' + this.$changeText(CONT_DETAIL.creUserName)}}</span></p>
+                    <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+                    <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                 </div>
             </div>
         </div>
@@ -82,15 +83,19 @@
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
 <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-
+<statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
 <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" v-if="mSelectBoardPopShowYn" :boardDetail="mMoveContentsDetailValue" />
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import statCodeComponent from '@/components/board/D_manageStateCode.vue'
+import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 export default {
   components: {
-    memoCompo
+    memoCompo,
+    statCodeComponent,
+    statCodePop
   },
   props: {
     contentsEle: {},
@@ -111,7 +116,9 @@ export default {
       mSelectBoardPopShowYn: false,
       mMoveContentsDetailValue: {},
       mSelectBoardType: '',
-      mMemoResetYn: false
+      mMemoResetYn: false,
+      mWorkStateCodePopShowYn: false,
+      mWorkStateCodePopProps: {}
     }
   },
   mounted () {
@@ -628,6 +635,11 @@ export default {
         return data
       }, [])
       return uniqueArr
+    },
+    openWorkStatePop (data) {
+      this.mWorkStateCodePopProps = data
+      console.log(this.mWorkStateCodePopProps)
+      this.mWorkStateCodePopShowYn = true
     }
   },
   computed: {
@@ -640,7 +652,7 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       console.log(cont)
-      if (cont) {
+      if (cont && cont.length > 0) {
         return cont[0]
       } else {
         return this.contentsEle

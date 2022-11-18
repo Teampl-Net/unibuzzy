@@ -1,6 +1,7 @@
 <template>
     <div :ref="'stateCodeFor' + this.contentsKey" v-if="DISP_CODE_VALUE" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
         <div class="font14">{{this.$changeText(DISP_CODE_VALUE.codeNameMtext)}}</div>
+        {{currentWorker}}
     </div>
 </template>
 <script>

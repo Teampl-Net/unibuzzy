@@ -9,7 +9,7 @@
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
                 <div class="commonListContentBox font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">담당자</p>
-                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? selectedList.memberList[0].userDispMtext : '선택된 담당자가 없습니다.'}}</div>
+                <div class="commonListContentBox font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? this.$changeText(selectedList.memberList[0].userDispMtext) : '선택된 담당자가 없습니다.'}}</div>
                 <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
                 <Datepicker
                     style="font-size: 14px; float: left; width: calc(100%);"
@@ -100,6 +100,7 @@ export default {
     } */
   },
   created () {
+    this.openSelectPop()
     console.log(this.alimDetail)
     if (this.alimDetail) {
       if (this.alimDetail.workToDate) {
@@ -109,6 +110,7 @@ export default {
       if (this.alimDetail.shareList) {
         for (var i = 0; i < this.alimDetail.shareList.length; i++) {
           var accessKind = this.alimDetail.shareList[i].accessKind
+          console.log(this.alimDetail.shareList[i])
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
           } else {
@@ -117,7 +119,7 @@ export default {
                 var shareUser = this.alimDetail.shareList[i].muserList[s]
                 var settingObj = {}
                 settingObj.accessKind = 'U'
-                settingObj.accessKind = shareUser.userKey
+                settingObj.accessKey = shareUser.userKey
                 settingObj.userDispMtext = shareUser.userDispMtext
                 settingObj.shareseq = undefined
                 this.parentList.memberList.push(settingObj)
@@ -126,6 +128,10 @@ export default {
             // this.parentList.bookList.push(this.alimDetail.shareList[i])
           }
         }
+      }
+      if (this.alimDetail.workUserKey) {
+        var idx = this.parentList.memberList.findIndex((item) => item.accessKey === this.alimDetail.workUserKey)
+        if (idx !== -1) this.selectedList.memberList.push(this.parentList.memberList[idx])
       }
     }
     console.log(this.parentList)
@@ -142,6 +148,7 @@ export default {
     setSelectedList (datas) {
       // 권한 선택시 실행
       console.log('-------------------------------------')
+      console.log(datas)
       this.selectedShareList = []
       var data = datas
       this.selectBookListShowYn = false
@@ -153,6 +160,8 @@ export default {
           tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
           tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
           tempList.accessKey = data.memberList[i].accessKey
+          // eslint-disable-next-line no-debugger
+          debugger
           tempList.accessKind = 'U'
           tempList.cabinetKey = this.alimDetail.cabinetKey
           settingMemList.push(tempList)
@@ -213,9 +222,10 @@ export default {
           param.memoHeaderStr += '[' + this.$changeText(this.selectedCodeObj.codeNameMtext) + ']'
           setOkYn = true
         }
-        if (this.workDate.toDate !== '') {
+        if (this.workDate.toDate !== undefined && this.workDate.toDate !== null && this.workDate.toDate !== '') {
           // eslint-disable-next-line no-debugger
           debugger
+          console.log(this.workDate.toDate)
           var toDate = this.settingDate(this.workDate.toDate)
           param.workToDateStr = toDate
           param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
@@ -256,6 +266,8 @@ export default {
             newParam.contentsKey = result.data.contents.contentsKey
             newParam.jobkindId = 'BOAR'
             await this.$getContentsList(newParam).then(newReslute => {
+              console.log('newReslute')
+              console.log(newReslute)
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
             })
             this.$showToastPop('업무 상태가 변경되었습니다.')

@@ -54,6 +54,10 @@ export default {
       this.mLoadingYn = false
     })
 
+    this.getMainBoard().then(res => {
+      this.mLoadingYn = false
+    })
+
     this.$emit('changePageHeader', '마이페이지')
   },
   computed: {
