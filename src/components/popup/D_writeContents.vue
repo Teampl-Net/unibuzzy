@@ -297,9 +297,7 @@ export default {
   },
   methods: {
     inputScroll (inputScroll) {
-      window.document.getElementById('scrollFormArea').scrollTo({ top: inputScroll, behavior: 'smooth' })
-
-      // window.document.getElementById('scrollFormArea').scrollTo({ top: inputScroll, behavior: 'smooth' })
+      window.document.getElementById('scrollFormArea').scrollTo()
     },
     decodeContents (data) {
       // eslint-disable-next-line no-undef

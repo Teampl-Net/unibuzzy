@@ -136,6 +136,7 @@ export default {
         newArr = resultList.content
       }
       this.mContsList = this.replaceArr(newArr)
+      this.mReloadKey += 1
       /* for (let i = 0; i < this.mContsList.length; i++) {
         cont = this.mContsList[i]
 

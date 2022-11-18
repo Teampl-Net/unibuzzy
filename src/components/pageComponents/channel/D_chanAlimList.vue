@@ -231,6 +231,7 @@ export default {
     async readyFunction () {
       // eslint-disable-next-line no-debugger
       debugger
+      this.$showAxiosLoading(true)
       /* if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList') */
       await this.$addChanList(this.chanDetail.targetKey)
@@ -253,6 +254,7 @@ export default {
         }
       }
       this.$emit('closeLoading')
+      this.$showAxiosLoading(false)
     },
     setSelectedList (data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)

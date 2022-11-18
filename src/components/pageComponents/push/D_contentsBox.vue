@@ -78,7 +78,7 @@
             </div>
 
             <!-- 밑에는 댓글 작성 창 -->
-            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' />
+            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
         </template>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
@@ -145,6 +145,9 @@ export default {
     this.setContentsMoreText()
   },
   methods: {
+    writeMemoScrollMove () {
+      this.$emit('writeMemoScrollMove')
+    },
     handleScroll () {
       console.log(true)
       this.mClickEndYn = true

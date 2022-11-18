@@ -12,7 +12,7 @@
       <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
 
       <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;">
-        <pre id="memoTextTag" ref="memoTextTag" class="fl editableContent" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
+        <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
         <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
           <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
         </div>
@@ -45,10 +45,11 @@ export default {
   methods: {
     test () {
       if (this.$checkMobile() === 'IOS') {
-        var this_ = this
-        this.$nextTick(() => {
-          this_.$refs.memoPopCompo.style.position = 'absolute'
-        })
+        this.$emit('writeMemoScrollMove')
+        // this.$nextTick(() => {
+        //   this_.$refs.memoPopCompo.style.position = 'fixed'
+        //   this_.$refs.memoPopCompo.style.bottom = 0
+        // })
       }
     },
     getMemoData () {
@@ -132,10 +133,11 @@ export default {
       this.$emit('clearMemoObj')
     },
     saveMemo () {
-      // var inputMemoArea = document.getElementById('memoTextTag')
-      var inputMemoArea = this.$refs.memoTextTag
+      var inputMemoArea = window.document.getElementById('memoTextTag')
+      // var inputMemoArea = this.$refs.memoTextTag
       var regText = inputMemoArea.innerText
       if (regText.trim() !== '') {
+        inputMemoArea.classList.remove('memoTextPadding')
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)
         this.$emit('saveMemoText', html)
@@ -157,4 +159,8 @@ span.label.highlight {
     border: 1px dotted #39739d;
 }
 
+.memoCardTextid:empty:before{
+  content: attr(placeholder);
+  color:#AFAFAF;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
-    </div>
+  <div id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" ref="contentsDetailCompo" >
+    <gContentsBox ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
+  </div>
 </template>
 <script>
 import { onMessage } from '../../assets/js/webviewInterface'
@@ -824,6 +824,9 @@ export default {
     },
     mememoCancel () {
       this.mememoValue = null
+    },
+    writeMemoScrollMove () {
+      this.$refs.contentsDetailCompo.scrollTo()
     },
     scrollMove (wich) {
       var middle = (document.innerHeight || window.innerHeight) / 2 - 100

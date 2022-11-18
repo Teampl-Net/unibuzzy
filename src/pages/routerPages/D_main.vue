@@ -154,8 +154,6 @@ export default {
       }
       var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
       )
-      // eslint-disable-next-line no-debugger
-      debugger
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {

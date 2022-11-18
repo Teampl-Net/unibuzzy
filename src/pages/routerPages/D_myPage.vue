@@ -15,7 +15,7 @@
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
 
-    <top5Alim    class="mainContentsBoxArea" :propAlimList="this.mMainAlimList" @openPop="openPop" ref="topAlim" />
+    <top5Alim    class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
 
     <div v-if="false" class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
@@ -36,7 +36,8 @@ export default {
   data () {
     return {
       mLoadingYn: false,
-      mMainAlimList: [],
+      mContsList: [],
+      mMainMChanList: [],
       mMainChanList: [],
       mAxiosQueue: []
     }
@@ -50,12 +51,12 @@ export default {
   },
   async created () {
     this.mLoadingYn = true
+    var this_ = this
     this.getMainBoard().then(res => {
-      this.mLoadingYn = false
+      this_.mLoadingYn = false
     })
-
-    this.getMainBoard().then(res => {
-      this.mLoadingYn = false
+    this.getMyContentsList().then((result) => {
+      this_.setContsList(result)
     })
 
     this.$emit('changePageHeader', '마이페이지')
@@ -76,9 +77,113 @@ export default {
     },
     GE_RECENT_CHANGE_TEAM () {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+    },
+    GE_DISP_CONTS_LIST () {
+      // console.log(this.ALIM_LIST_RELOAD_CONT)
+      var idx1, idx2
+      var returnContsList = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      if (!this.mContsList.length === 0) return []
+      for (i = 0; i < this.mContsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
+        if (idx1 === -1) {
+          var this_ = this
+          var teamKey = this.mContsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then((res) => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            if (idx1 === -1) {
+              returnContsList.push(this_.mContsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              if (this.mContsList[i].jobkindId === 'ALIM') {
+                dataList = chanDetail.ELEMENTS.alimList
+              } else {
+                dataList = chanDetail.ELEMENTS.boardList
+              }
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mContsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                this.mContsList[i] = dataList[idx2]
+              }
+            }
+          })
+        } else {
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          if (this.mContsList[i].jobkindId === 'ALIM') {
+            dataList = chanDetail.ELEMENTS.alimList
+          } else {
+            dataList = chanDetail.ELEMENTS.boardList
+          }
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
+          if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mContsList[i] = dataList[idx2]
+          } else {
+          }
+        }
+      }
+      return this.replaceArr(this.mContsList)
     }
   },
   methods: {
+    async getMyContentsList (pageSize, offsetInput, loadingYn) {
+      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+      this.mAxiosQueue.push('getPushContentsList')
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.ownUserKey = this.propUserKey
+      param.subsUserKey = this.propUserKey
+      param.allYn = true
+
+      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
+
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+      var result = await this.$getContentsList(param, nonLoading)
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+      this.mAxiosQueue.splice(queueIndex, 1)
+      var resultList = result
+      this.loadingYn = false
+      return resultList
+    },
+    async setContsList (resultList) {
+      if (!resultList || resultList === '') return
+      var newArr = []
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      // this.endListSetFunc(resultList)
+      if (this.mContsList.length > 0) {
+        newArr = [
+          ...this.mContsList,
+          ...resultList.content
+        ]
+      } else {
+        newArr = resultList.content
+      }
+      this.mContsList = this.replaceArr(newArr)
+    },
+    replaceArr (arr) {
+      // var this_ = this
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.contentsKey - a.contentsKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
     goMyChanList () {
       var param = {}
       param.targetType = 'chanList'
@@ -114,32 +219,9 @@ export default {
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
-        this.mMainChanList = response.data.teamList
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.mMainChanList)
-        var teamList = this.GE_MAIN_CHAN_LIST
-        console.log(this.GE_MAIN_CHAN_LIST)
-        this.mMainAlimList = response.data.alimList
-        var index = null
-        var poolList = null
-        var index1 = null
-        for (var i = 0; i < this.mMainAlimList.length; i++) {
-          index = teamList.findIndex((item) => item.teamKey === this.mMainAlimList[i].creTeamKey)
-          if (index !== -1) {
-            if (this.mMainAlimList[i].jobkindId === 'BOAR') {
-              poolList = teamList[index].ELEMENTS.boardList
-            } else {
-              poolList = teamList[index].ELEMENTS.alimList
-            }
-            index1 = poolList.findIndex((item) => item.mccKey === this.mMainAlimList[i].mccKey)
-            if (index1 === -1) {
-              if (this.mMainAlimList[i].jobkindId === 'BOAR') {
-                teamList[index].ELEMENTS.boardList.push(this.mMainAlimList[i])
-              } else {
-                teamList[index].ELEMENTS.alimList.push(this.mMainAlimList[i])
-              }
-            }
-          }
-        }
+        this.mMainChanList = response.data.teamList.splice(0, 5)
+        this.mMainMChanList = response.data.mTeamList
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
       }
     }
   }
