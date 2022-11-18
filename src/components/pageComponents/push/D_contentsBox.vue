@@ -138,9 +138,17 @@ export default {
     this.$nextTick(() => {
       this_.addImgEvnt()
     })
+    var scrollWrap = document.getElementById('mainAllWrap')
+    if (scrollWrap) {
+      scrollWrap.addEventListener('scroll', this.handleScroll)
+    }
     this.setContentsMoreText()
   },
   methods: {
+    handleScroll () {
+      console.log(true)
+      this.mClickEndYn = true
+    },
     clearMemoObj () {
       this.mMememoValue = null
     },

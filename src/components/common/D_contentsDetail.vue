@@ -1,6 +1,6 @@
 <template>
-    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
+    <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
+        <gContentsBox ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
     </div>
 </template>
 <script>
@@ -59,7 +59,16 @@ export default {
     this.readyFunction()
   },
   updated () {
+    var this_ = this
     this.settingAtag()
+    var contsScrollWrap = document.getElementById('contsScrollWrap')
+    if (!contsScrollWrap) {
+      console.log(contsScrollWrap)
+      // eslint-disable-next-line no-debugger
+      debugger
+      return
+    }
+    contsScrollWrap.addEventListener('scroll', this_.handleScroll)
   },
   beforeUnmount () {
     this.filePopShowYn = false
@@ -73,6 +82,14 @@ export default {
     this.$nextTick(() => {
       this_.addImgEvnt()
     })
+    var contsScrollWrap = document.getElementById('contsScrollWrap')
+    if (!contsScrollWrap) {
+      console.log(contsScrollWrap)
+      // eslint-disable-next-line no-debugger
+      debugger
+      return
+    }
+    contsScrollWrap.addEventListener('scroll', this_.handleScroll)
   },
   computed: {
     historyStack () {
@@ -175,6 +192,10 @@ export default {
     }
   },
   methods: {
+    handleScroll () {
+      if (!this.$refs.myContentsBox) return
+      this.$refs.myContentsBox.handleScroll()
+    },
     openPop (openPopParam) {
       this.$emit('openPop', openPopParam)
     },

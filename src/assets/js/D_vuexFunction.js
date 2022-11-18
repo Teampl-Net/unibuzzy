@@ -170,6 +170,7 @@ export const functions = {
     }
   },
   async addChanList (teamKey) {
+    // alert(teamKey)
     var result = null
     if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
     g_axiosQueue.push('addChanList')

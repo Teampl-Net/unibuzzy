@@ -244,7 +244,7 @@ export default {
           var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
           var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
           var this_ = this
-          this.$makeShareLink(this.CHANNEL_DETAILteamKey, 'chanDetail', message, title).then(res => {
+          this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
             console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
             this.CHANNEL_DETAIL.copyTextStr = res
             this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])

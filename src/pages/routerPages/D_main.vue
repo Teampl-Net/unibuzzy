@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" class="" ref="mainScrollWrap" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
+  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
 
