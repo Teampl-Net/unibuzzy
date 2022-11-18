@@ -42,9 +42,9 @@
                 <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 80px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
-                <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainMChanList.length * 100 + 'px;'">
+                <div style="height: 100%; min-width: 100%; " :style="'width: ' + this.mMainMChanList.length * 90 + 'px;'">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
-                    <createChanIcon @openPop="openPop" />
+                    <createChanIcon @openPop="openPop" class=""/>
                 </div>
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
