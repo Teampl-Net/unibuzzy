@@ -59,13 +59,13 @@ self.addEventListener('push', event => {
   console.log(userDo)
   if (userDo.targetKind === 'CONT') {
     targetKey = userDo.targetKey
-    push_url = 'http://localhost:8080?targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+    push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   } else if (userDo.targetKind === 'CABI') {
     targetKey = userDo.targetKey
-    push_url = 'http://localhost:8080?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+    push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   } else if (userDo.targetKind === 'CONT') {
     targetKey = userDo.targetKey
-    push_url = 'http://localhost:8080?targetType=chanDetail&targetKey=' + targetKey
+    push_url = 'https://mo.d-alim.com?targetType=chanDetail&targetKey=' + targetKey
   } else {
     push_url = push_data
   }
