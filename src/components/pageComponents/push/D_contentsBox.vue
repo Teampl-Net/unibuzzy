@@ -72,12 +72,12 @@
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
             <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px; min-height: 20px;">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
+                    <memoCompo @resetMemo="resetMemo" @openMemoPop="mContMenuShowYn = false" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
             </div>
 
             <!-- 밑에는 댓글 작성 창 -->
-            <gMemoPop style="position: fixed; bottom: 0;" v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mememoValue'  @saveMemoText="saveMemo"  @mememoCancel='mememoCancel'/>
+            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mememoValue'  @saveMemoText="saveMemo"  @mememoCancel='mememoCancel'/>
         </template>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
@@ -109,7 +109,8 @@ export default {
 
       mSelectBoardPopShowYn: false,
       mMoveContentsDetailValue: {},
-      mSelectBoardType: ''
+      mSelectBoardType: '',
+      mMemoResetYn: false
     }
   },
   mounted () {
@@ -126,6 +127,20 @@ export default {
     }
   },
   methods: {
+    resetMemo (memoObj) {
+      if (!this.mememoValue) {
+        this.mMemoResetYn = true
+      } else {
+        if (this.mememoValue.parentMemoKey !== memoObj.parentMemoKey) {
+          this.mMemoResetYn = true
+        } else {
+          this.mMemoResetYn = false
+        }
+      }
+      // eslint-disable-next-line no-new-object
+      this.mMememoValue = new Object()
+      this.mMememoValue = memoObj
+    },
     memoEmitFunc (emitData) {
       var type = emitData.targetType
       var data = emitData.value
@@ -652,6 +667,7 @@ export default {
         if (!value || value.length === 0) return
         var content = null
         content = this.CONT_DETAIL
+        if (content === null) content = this.contentsEle
         if (value[0].targetKey !== content.contentsKey) return
         // var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
         // this.CONT_DETAIL.memoCount = count

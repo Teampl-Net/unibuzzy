@@ -21,9 +21,9 @@
                     <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)"></p>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
-                    <p class="commonGray textLeft font12 fl">답글달기</p>
+                    <p class="commonGray textLeft font12 fl" @click="writeMememo(propMemoEle)">답글달기</p>
                     <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
-                    <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === propMemoEle.creUserKey">수정</p>
+                    <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === propMemoEle.creUserKey">수정</p> -->
                 </div>
             </div>
         </div>
@@ -41,9 +41,9 @@
                         <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)"></p>
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
-                        <p class="commonGray textLeft font12 fl">답글달기</p>
+                        <p class="commonGray textLeft font12 fl"  @click="writeMememo(cmemo)">답글달기</p>
                         <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
-                        <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p>
+                        <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p> -->
                     </div>
                 </div>
             </div>
@@ -70,7 +70,8 @@ export default {
       mConfirmText: '',
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
-      mTempData: null
+      mTempData: null,
+      mCurrentMemoObj: {}
     }
   },
   created () {
@@ -141,6 +142,29 @@ export default {
         this.$showToastPop('정상적으로 완료하지 못했습니다.')
         this.mConfirmPopShowYn = false
         console.log(error)
+      }
+    },
+    writeMememo (memo) {
+      /* if (this.mCurrentMemoObj.memoKey !== memo.memoKey) {
+        // this.$emit('clearMemo')
+        this.clearMemo()
+      } */
+      this.mCurrentMemoObj = memo
+      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {
+        var data = {}
+        data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
+        if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {
+          data.parentMemoKey = this.mCurrentMemoObj.parentMemoKey
+        }
+        data.memo = this.mCurrentMemoObj
+        // eslint-disable-next-line no-debugger
+        // debugger
+        this.$emit('resetMemo', this.mCurrentMemoObj)
+        this.$emit('openMemoPop', this.mCurrentMemoObj)
+        // this.memoShowYn = true
+      } else {
+        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmPopShowYn = true
       }
     }
   }
