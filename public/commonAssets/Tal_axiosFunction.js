@@ -205,6 +205,8 @@ export const methods = {
       }
     } else {
       if (result.data.resultCode === 'NG') {
+        commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
+        store.commmit('D_USER/MU_CLEAN_USER')
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace('/policies')
