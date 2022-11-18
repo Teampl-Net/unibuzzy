@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true"/>
+        <gContentsBox :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
     </div>
 </template>
 <script>
@@ -175,6 +175,9 @@ export default {
     }
   },
   methods: {
+    openPop (openPopParam) {
+      this.$emit('openPop', openPopParam)
+    },
     settingFileIcon (fileName) {
       let fileExt = fileName.substring(
         fileName.lastIndexOf('.') + 1

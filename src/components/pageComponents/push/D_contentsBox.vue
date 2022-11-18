@@ -149,6 +149,7 @@ export default {
       var data = emitData.value
       if (type === 'goUserProfile') {
         this.goUserProfile(data.creUserKey)
+        // alert(data.creUserKey)
       } else if (type === 'goContentsDetail') {
         this.goContentsDetail()
       } else if (type === 'writeMeMemo') {
@@ -450,7 +451,7 @@ export default {
       // openPopParam.targetContentsKey = this.CONT_DETAIL.contentsKey
       this.$emit('openPop', openPopParam)
     },
-    goUserProfile (memoUserKey) {
+    goUserProfile (targetUserKey) {
       console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
@@ -459,13 +460,13 @@ export default {
       openPopParam.userKey = this.CONT_DETAIL.creUserKey
 
       // 댓글의 유저를 클릭 시 댓글의 유저키를 넣어준다.
-      if (memoUserKey) openPopParam.userKey = memoUserKey
+      if (targetUserKey) openPopParam.userKey = targetUserKey
       openPopParam.popHeaderText = '프로필'
       openPopParam.readOnlyYn = true
-
       this.$emit('openPop', openPopParam)
     },
     goContentsDetail (moreCheckYn) {
+      if (this.propDetailYn === true) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       if (moreCheckYn) {
