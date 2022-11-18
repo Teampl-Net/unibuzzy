@@ -660,7 +660,8 @@ export default {
         if (!value || value.length === 0) return
         var content = null
         content = this.CONT_DETAIL
-        if (content === null) content = this.contentsEle
+        if (content === undefined || content === null) content = this.contentsEle
+        if (content === undefined || content === null) return
         if (value[0].targetKey !== content.contentsKey) return
         // var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
         // this.CONT_DETAIL.memoCount = count

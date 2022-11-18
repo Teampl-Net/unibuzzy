@@ -191,6 +191,7 @@ export default {
       } else if (this.mTempData.memoKey) {
         this.mConfirmText = '댓글을 삭제하시겠습니까?'
       }
+      this.mCurrentConfirmType = 'memoDEL'
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
     },
