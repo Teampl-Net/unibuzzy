@@ -130,6 +130,7 @@ export async function saveUser (userProfile) {
     param: setParam,
     firstYn: true
   })
+  alert(JSON.stringify(result.data))
   if (result.data.message === 'OK') {
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
     store.dispatch('D_USER/AC_USER', result.data.userMap)
