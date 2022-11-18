@@ -278,8 +278,8 @@ export default {
 
 @media screen and (max-width: 300px) {
   .picImgWrap{
-    width: 60px!important;
-    height: 60px!important;
+    /* width: 60px!important;
+    height: 60px!important; */
   }
   .mainUserName {font-size: 15px!important;}
   .mainIcon {width: 0.7rem!important;}

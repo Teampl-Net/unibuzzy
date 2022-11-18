@@ -140,16 +140,6 @@ export default {
     })
     this.setContentsMoreText()
   },
-  created () {
-    if (this.CONT_DETAIL && !this.CONT_DETAIL.copyTextStr) {
-      // this.copyText()
-    }
-  },
-  updated () {
-    if (this.CONT_DETAIL && !this.CONT_DETAIL.copyTextStr) {
-      // this.copyText()
-    }
-  },
   methods: {
     clearMemoObj () {
       this.mMememoValue = null
@@ -455,9 +445,7 @@ export default {
     },
     async contentsSharePop () {
       var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
-      alert(link)
       var shareItem = { title: '더알림', text: this.CONT_DETAIL.title, url: link }
-      console.log(this.CONT_DETAIL)
       if (navigator.share) {
         navigator.share(shareItem)
       } else {
@@ -596,34 +584,6 @@ export default {
         // }
       }
     },
-    // copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
-    //   // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
-    //   var title = '[' + this.$changeText(teamName) + ']'
-    //   if (cabName) {
-    //     title += this.$changeText(cabName)
-    //   }
-    //   var message = titleMsg
-    //   var link = null
-    //   // if (!text) {
-    //   if (jobkindId === 'BOAR') {
-    //     link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
-    //   } else {
-    //     link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
-    //   }
-    //   var contentsDetail = this.CONT_DETAIL
-    //   contentsDetail.copyTextStr = link
-    //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
-    //   // this.contentsList[index].copyText = link
-    //   // }
-    //   /* setTimeout(() => {
-    //         var clip = new ClipboardJS('#copyTextBody' + contentsKey)
-    //         var _this = this
-    //         clip.on('success', function (e) {
-    //             _this.mConfirmText = '알림링크가 복사되었습니다!'
-    //             _this.confirmPopShowYn = true
-    //         })
-    //     }, 300) */
-    // },
     async subScribeContents () {
       // eslint-disable-next-line no-unused-vars
       var result = null
