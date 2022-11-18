@@ -204,6 +204,11 @@ export const methods = {
         router.replace({ name: 'main', params: { testYn: true } })
       }
     } else {
+      if (result.data.resultCode === 'NG') {
+        localStorage.setItem('sessionUser', '')
+        localStorage.setItem('user', '')
+        router.replace('/policies')
+      }
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
