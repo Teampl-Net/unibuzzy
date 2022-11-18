@@ -60,7 +60,7 @@
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
                     </div>
-                    <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/attachFileIcon.png" alt="">
                         <img v-else src="../../../assets/images/push/attachFileIcon.png" alt="">
                     </div>
