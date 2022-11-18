@@ -223,6 +223,7 @@ export default {
       this.$emit('openPop', openParam)
     },
     openNotiHistoryPop () {
+      if (!(this.GE_USER.userKey === 255 || this.GE_USER.userKey === 123 || this.GE_USER.userKey === 104 || this.GE_USER.userKey === 192 || this.GE_USER.userKey === 228 || this.GE_USER.userKey === 1)) return
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.targetType = 'notiHitstory'

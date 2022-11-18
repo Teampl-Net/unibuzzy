@@ -27,14 +27,14 @@ const D_NOTI = {
     MU_ADD_NOTI_LIST: (state, payload) => {
       if (!payload) return
       state.allNotiList.unshift(payload)
-      /* var notiSetList = state.allNotiList
+      var notiSetList = state.allNotiList
       var uniqueArr = notiSetList.reduce(function (data, current) {
-        if (data.findIndex((item) => (item.collapse_key !== current.collapse_key || (JSON.parse(item.userDo).userKey !== JSON.parse(current.userDo).userKey))) === -1) {
+        if (data.findIndex((item) => (item.tag !== current.tag)) === -1) {
           data.push(current)
         }
         return data
       }, [])
-      state.allNotiList = uniqueArr */
+      state.allNotiList = uniqueArr
     }
   },
   actions: {
