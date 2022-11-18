@@ -3,7 +3,7 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <div style="position: fixed!important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
+    <div ref="toolBoxRef" style="position: fixed!important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
           <div class="fl h-100P " style="width: 25%;">
             <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
             <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
@@ -190,16 +190,16 @@ export default {
       this.formCardList = data
     },
     inputScroll (param) {
+      // if (this.$checkMobile() === 'IOS') {
+      //   this.$refs.toolBoxRef.style.position = 'absolute'
+      // }
       this.$emit('inputScroll', param)
     },
     async changePosTeamMenu (event) {
       // eslint-disable-next-line no-debugger
       debugger
-      // console.log(event)
       var oldIndex = event.oldIndex
       var newIndex = event.newIndex
-      // // console.log(oldIndex)
-      // // console.log(newIndex)
 
       var tempList = this.formCardList
       if (oldIndex < newIndex) {

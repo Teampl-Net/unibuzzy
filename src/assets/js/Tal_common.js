@@ -979,6 +979,7 @@ export const commonMethods = {
     routerMain.methods.openPop(param)
   },
   gobackDev () {
+    // alert(JSON.stringify(this.$route.path))
     if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
     var history = store.getters['D_HISTORY/hStack']
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {

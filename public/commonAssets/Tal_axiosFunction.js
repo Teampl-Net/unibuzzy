@@ -131,11 +131,11 @@ export async function saveUser (userProfile) {
     firstYn: true
   })
   if (result.data.message === 'OK') {
-    localStorage.setItem('user', JSON.stringify(result.userMap))
-    store.dispatch('D_USER/AC_USER', result.userMap)
-    localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
+    localStorage.setItem('user', JSON.stringify(result.data.userMap))
+    store.dispatch('D_USER/AC_USER', result.data.userMap)
+    localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     router.replace({ path: '/' })
-  } else if (result.message === 'NG') {
+  } else if (result.data.message === 'NG') {
     store.commmit('D_USER/MU_CLEAN_USER')
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')

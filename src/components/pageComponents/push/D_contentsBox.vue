@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
-            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px">
+            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :style="this.CONT_DETAIL.D_MEMO_LIST.length === 0 ? 'padding: 0; margin-bottom: 10px; min-height: 0px;' : ''">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
@@ -126,12 +126,12 @@ export default {
   },
   created () {
     if (this.CONT_DETAIL && !this.CONT_DETAIL.copyTextStr) {
-      this.copyText()
+      // this.copyText()
     }
   },
   updated () {
     if (this.CONT_DETAIL && !this.CONT_DETAIL.copyTextStr) {
-      this.copyText()
+      // this.copyText()
     }
   },
   methods: {
@@ -375,6 +375,7 @@ export default {
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
+      memo.allYn = true
       try {
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.saveMemo',
@@ -388,8 +389,16 @@ export default {
           this.mMememoValue = {}
           //   this.getMemoList(true)
           if (result.data.resultList && result.data.resultList.memoList.length > 0) {
-            console.log(result.data.resultList.memoList[0])
-            var saveMemoObj = result.data.resultList.memoList[0]
+            console.log(result.data.resultList)
+            var saveMemoObj = {}
+            var index
+            if (memo.parentMemoKey) {
+              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
+              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
+              saveMemoObj = await result.data.resultList.memoList[index]
+            } else {
+              saveMemoObj = await result.data.resultList.memoList[0]
+            }
             saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
             saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
             await this.$store.commit('D_CHANNEL/MU_ADD_MEMO', saveMemoObj)
@@ -428,8 +437,10 @@ export default {
       contentsBodyBoxArea.style.maxHeight = '100%'
       bodyMoreArea.style.display = 'none'
     },
-    contentsSharePop () {
-      var shareItem = { title: '더알림', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr }
+    async contentsSharePop () {
+      var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
+      alert(link)
+      var shareItem = { title: '더알림', text: this.CONT_DETAIL.title, url: link }
       console.log(this.CONT_DETAIL)
       if (navigator.share) {
         navigator.share(shareItem)
@@ -565,34 +576,34 @@ export default {
         // }
       }
     },
-    copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
-      // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
-      var title = '[' + this.$changeText(teamName) + ']'
-      if (cabName) {
-        title += this.$changeText(cabName)
-      }
-      var message = titleMsg
-      var link = null
-      // if (!text) {
-      if (jobkindId === 'BOAR') {
-        link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
-      } else {
-        link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
-      }
-      var contentsDetail = this.CONT_DETAIL
-      contentsDetail.copyTextStr = link
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
-      // this.contentsList[index].copyText = link
-      // }
-      /* setTimeout(() => {
-            var clip = new ClipboardJS('#copyTextBody' + contentsKey)
-            var _this = this
-            clip.on('success', function (e) {
-                _this.mConfirmText = '알림링크가 복사되었습니다!'
-                _this.confirmPopShowYn = true
-            })
-        }, 300) */
-    },
+    // copyText (contentsKey, jobkindId, index, titleMsg, teamName, cabName) {
+    //   // var text = document.querySelector('#copyTextBody' + contentsKey).dataset.clipboardText
+    //   var title = '[' + this.$changeText(teamName) + ']'
+    //   if (cabName) {
+    //     title += this.$changeText(cabName)
+    //   }
+    //   var message = titleMsg
+    //   var link = null
+    //   // if (!text) {
+    //   if (jobkindId === 'BOAR') {
+    //     link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
+    //   } else {
+    //     link = this.$makeShareLink(contentsKey, 'contentsDetail', message, title)
+    //   }
+    //   var contentsDetail = this.CONT_DETAIL
+    //   contentsDetail.copyTextStr = link
+    //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
+    //   // this.contentsList[index].copyText = link
+    //   // }
+    //   /* setTimeout(() => {
+    //         var clip = new ClipboardJS('#copyTextBody' + contentsKey)
+    //         var _this = this
+    //         clip.on('success', function (e) {
+    //             _this.mConfirmText = '알림링크가 복사되었습니다!'
+    //             _this.confirmPopShowYn = true
+    //         })
+    //     }, 300) */
+    // },
     async subScribeContents () {
       // eslint-disable-next-line no-unused-vars
       var result = null

@@ -79,7 +79,7 @@
 
         <!-- 작성 창 영역 -->
         <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
-          <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+          <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @inputScroll='inputScroll'/>
           <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
         </div>
       </div>
@@ -296,6 +296,11 @@ export default {
     }
   },
   methods: {
+    inputScroll (inputScroll) {
+      window.document.getElementById('scrollFormArea').scrollTo({ top: inputScroll, behavior: 'smooth' })
+
+      // window.document.getElementById('scrollFormArea').scrollTo({ top: inputScroll, behavior: 'smooth' })
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)

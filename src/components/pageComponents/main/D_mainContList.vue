@@ -1,7 +1,7 @@
 <template>
-    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px;" :key="mReloadKey">
+    <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; position: relative;" :key="mReloadKey">
         <gContentsBox :propDetailYn="false" v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete'  />
-        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="background:#ccc; height:10px; position: absolute; bottom:600px;"></myObserver>
         <div style="width: 40px;height: 40px;border-radius: 100%;position: absolute;bottom: 10rem;right: 50px;">
             <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="" class="img-78 img-w66">
         </div>

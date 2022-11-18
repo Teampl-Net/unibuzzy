@@ -219,6 +219,8 @@ export default {
           url: 'service/tp.deleteMemo',
           param: memo
         })
+        console.log('===================')
+        console.log(result)
 
         if (result.data.result === true) {
           // var cont = this.currentMemoObj

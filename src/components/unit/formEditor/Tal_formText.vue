@@ -85,7 +85,7 @@ export default {
       var formArea = document.getElementById('scrollFormArea')
       if (formArea) {
         var sTop = formArea.scrollTop
-        formArea.scrollTo({ top: sTop + 5 })
+        formArea.scrollTo({ top: sTop + 5, behavior: 'smooth' })
       }
       // console.log(tt)
       this.$emit('inputScroll', tt.scrollHeight)

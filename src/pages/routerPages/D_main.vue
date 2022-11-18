@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" class="" ref="mainScrollWrap" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-    <!-- <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" /> -->
+    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
 
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
@@ -44,6 +44,7 @@
             <div v-if="this.mMainMChanList" style="width: 100%; height: 80px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainMChanList.length * 100 + 'px;'">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
+                    <createChanIcon @openPop="openPop" />
                 </div>
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
@@ -79,6 +80,8 @@ import loadingCompo from '../../components/layout/Tal_loading.vue'
 import chanRoundIcon from '../../components/pageComponents/main/D_chanRoundIcon.vue'
 import chanSquareIcon from '../../components/pageComponents/main/D_chanSquareIcon.vue'
 import mainContsList from '../../components/pageComponents/main/D_mainContList.vue'
+
+import createChanIcon from '../../components/pageComponents/main/unit/D_createChanRoundIcon.vue'
 export default {
   data () {
     return {
@@ -94,6 +97,7 @@ export default {
     // initModal,
     /* commonConfirmPop, */
     /* pushList, */
+    createChanIcon,
     loadingCompo,
     chanRoundIcon,
     chanSquareIcon,
@@ -204,18 +208,12 @@ export default {
     },
     goUserProfile () {
       var param = {}
-      this.mLoadingYn = true
+      // this.mLoadingYn = true
       param.targetType = 'setMypage'
       param.popHeaderText = '프로필 설정'
       param.readOnlyYn = true
       param.selfYn = true
       this.$emit('openPop', param)
-    },
-    async refreshBtnClick () {
-      this.mLoadingYn = true
-      this.$store.commit('D_HISTORY/setRemovePage', '')
-      this.$store.commit('D_HISTORY/updateStack', [])
-      this.$emit('changePageHeader', '더알림')
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -252,10 +250,9 @@ export default {
 
   watch: {
     pageUpdate (value, old) {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.historyStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (this.$route.path === '/') {
-          // this.openCloseAppPop()
           this.mAppCloseYn = true
         }
       }
