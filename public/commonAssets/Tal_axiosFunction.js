@@ -504,7 +504,7 @@ export const methods = {
     var response = await commonAxiosFunction({
       url: 'service/tp.getMemoCount',
       param: param
-    })
+    }, true)
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
     g_axiosQueue.splice(queueIndex, 1)
     // result = response
