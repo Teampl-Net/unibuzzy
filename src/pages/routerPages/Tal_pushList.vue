@@ -26,13 +26,13 @@
         <!-- <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="!popYn ? 'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;' : 'padding-top:' + (this.paddingTop) + 'px;' " style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); "> -->
         <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;'" style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">
             <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
+                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
             </template>
             <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
+                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
             </template>
             <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-                <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
+                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
             </template>
             <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
         </div>

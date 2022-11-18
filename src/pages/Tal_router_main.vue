@@ -324,8 +324,8 @@ export default {
   position: absolute;
   padding: 0 1rem;
   box-sizing: border-box;
-  width: 80%;
-  max-width: 500px;
+  width: 65%;
+  max-width: 400px;
   background-color: #6768a7;
   color: #ffffff;
   z-index: 999999;

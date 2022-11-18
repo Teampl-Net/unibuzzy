@@ -104,7 +104,8 @@ export default {
   props: {
     contentsEle: {},
     propDetailYn: {},
-    propContIndex: {}
+    propContIndex: {},
+    imgClickYn: {}
   },
   data () {
     return {
@@ -645,6 +646,8 @@ export default {
       this.mWorkStateCodePopShowYn = true
     },
     addImgEvnt () {
+      console.log(this.imgClickYn)
+      if (!this.imgClickYn) return
       // console.log(this.CONT_DETAIL)
       var contBody = document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
       if (!contBody) return
@@ -694,6 +697,8 @@ export default {
       }
     },
     openImgDetailAlert (img) {
+      console.log(this.imgClickYn)
+      if (this.imgClickYn === false) return
       var history = this.$store.getters['D_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
