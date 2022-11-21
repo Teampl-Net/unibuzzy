@@ -760,29 +760,29 @@ export const commonMethods = {
   },
   teamTypeString (teamType) {
     var text = ''
-    if (teamType === 'C') {
+    if (teamType === '1') {
       text = '기업'
-    } else if (teamType === 'G') {
+    } else if (teamType === '2') {
       text = '정부'
-    } else if (teamType === 'S') {
+    } else if (teamType === '3') {
       text = '학교'
-    } else if (teamType === 'H') {
+    } else if (teamType === '4') {
       text = '종교'
-    } else if (teamType === 'D') {
+    } else if (teamType === '5') {
       text = '동호회'
-    } else if (teamType === 'Q') {
+    } else if (teamType === '6') {
       text = '병원'
-    } else if (teamType === 'V') {
+    } else if (teamType === '7') {
       text = '약국'
-    } else if (teamType === 'F') {
-      text = '가족'
-    } else if (teamType === 'A') {
+    } else if (teamType === '8') {
       text = '매장'
-    } else if (teamType === 'P') {
-      text = '식당'
-    } else if (teamType === 'T') {
+    } else if (teamType === '9') {
+      text = '가족'
+    // } else if (teamType === '10') {
+    //   text = '식당'
+    } else if (teamType === '10') {
       text = '팀'
-    } else if (teamType === 'E') {
+    } else if (teamType === '11') {
       text = '기타'
     }
     return text

@@ -49,30 +49,30 @@
 
           <div style="width:100%; height: 30px" class="mtop-1 fl" >
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">산업군</p>
-            <div class="fl mtop-05" style="width: 100%;">
-              <div :class="{activeTypeBox: mSelectedTeamType ===value.teamType}" @click="selectChanType(value)" v-for="(value,index) in mBusinessTypeList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
-                <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && mSelectedTeamType !== 'C'" src="../../../assets/images/channel/icon_office.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.teamType === 'C' && mSelectedTeamType === 'C'" src="../../../assets/images/channel/icon_office_white.svg" >
-                <img class="img-w18 fl mright-05" v-if="value.teamType === 'G' && mSelectedTeamType !== 'G'" src="../../../assets/images/channel/icon_Government.svg"/>
-                <img class="img-w18 fl mright-05" v-if="value.teamType === 'G' && mSelectedTeamType === 'G'" src="../../../assets/images/channel/icon_Government_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'S' && mSelectedTeamType !== 'S'" src="../../../assets/images/channel/icon_school.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'S' && mSelectedTeamType === 'S'" src="../../../assets/images/channel/icon_school_white.svg"/>
-                <img class="img-w20 fl" v-if="value.teamType === 'H' && mSelectedTeamType !== 'H'" src="../../../assets/images/channel/icon_church.svg"/>
-                <img class="img-w20 fl" v-if="value.teamType === 'H' && mSelectedTeamType === 'H'" src="../../../assets/images/channel/icon_church_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'D' && mSelectedTeamType !== 'D'" src="../../../assets/images/channel/icon_society.jpg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'D' && mSelectedTeamType === 'D'" src="../../../assets/images/channel/icon_society_white.jpg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'Q' && mSelectedTeamType !== 'Q'" src="../../../assets/images/channel/icon_hospital.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'Q' && mSelectedTeamType === 'Q'" src="../../../assets/images/channel/icon_hospital_white.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.teamType === 'V' && mSelectedTeamType !== 'V'" src="../../../assets/images/channel/icon_pharmacy.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.teamType === 'V' && mSelectedTeamType === 'V'" src="../../../assets/images/channel/icon_pharmacy_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'A' && mSelectedTeamType !== 'A'" src="../../../assets/images/channel/icon_store.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'A' && mSelectedTeamType === 'A'" src="../../../assets/images/channel/icon_store_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && mSelectedTeamType !== 'F'" src="../../../assets/images/channel/icon_familly.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'F' && mSelectedTeamType === 'F'" src="../../../assets/images/channel/icon_familly_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'T' && mSelectedTeamType !== 'T'" src="../../../assets/images/channel/icon_team.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.teamType === 'T' && mSelectedTeamType === 'T'" src="../../../assets/images/channel/icon_team_white.svg"/>
+            <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
+              <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in mBusinessItemList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
+                <img class="img-w14 fl mright-05" v-if="value.cateKey === 1 && mSelectedTeamTypeKey !== 1" src="../../../assets/images/channel/icon_office.svg"/>
+                <img class="img-w14 fl mright-05" v-if="value.cateKey === 1 && mSelectedTeamTypeKey === 1" src="../../../assets/images/channel/icon_office_white.svg" >
+                <img class="img-w18 fl mright-05" v-if="value.cateKey === 2 && mSelectedTeamTypeKey !== 2" src="../../../assets/images/channel/icon_Government.svg"/>
+                <img class="img-w18 fl mright-05" v-if="value.cateKey === 2 && mSelectedTeamTypeKey === 2" src="../../../assets/images/channel/icon_Government_white.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 3 && mSelectedTeamTypeKey !== 3" src="../../../assets/images/channel/icon_school.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 3 && mSelectedTeamTypeKey === 3" src="../../../assets/images/channel/icon_school_white.svg"/>
+                <img class="img-w20 fl" v-if="value.cateKey === 4 && mSelectedTeamTypeKey !== 4" src="../../../assets/images/channel/icon_church.svg"/>
+                <img class="img-w20 fl" v-if="value.cateKey === 4 && mSelectedTeamTypeKey === 4" src="../../../assets/images/channel/icon_church_white.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 5 && mSelectedTeamTypeKey !== 5" src="../../../assets/images/channel/icon_society.jpg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 5 && mSelectedTeamTypeKey === 5" src="../../../assets/images/channel/icon_society_white.jpg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 6 && mSelectedTeamTypeKey !== 6" src="../../../assets/images/channel/icon_hospital.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 6 && mSelectedTeamTypeKey === 6" src="../../../assets/images/channel/icon_hospital_white.svg"/>
+                <img class="img-w14 fl mright-05" v-if="value.cateKey === 7 && mSelectedTeamTypeKey !== 7" src="../../../assets/images/channel/icon_pharmacy.svg"/>
+                <img class="img-w14 fl mright-05" v-if="value.cateKey === 7 && mSelectedTeamTypeKey === 7" src="../../../assets/images/channel/icon_pharmacy_white.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 8 && mSelectedTeamTypeKey !== 8" src="../../../assets/images/channel/icon_store.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 8 && mSelectedTeamTypeKey === 8" src="../../../assets/images/channel/icon_store_white.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 9 && mSelectedTeamTypeKey !== 9" src="../../../assets/images/channel/icon_familly.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 9 && mSelectedTeamTypeKey === 9" src="../../../assets/images/channel/icon_familly_white.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 10 && mSelectedTeamTypeKey !==10" src="../../../assets/images/channel/icon_team.svg"/>
+                <img class="img-w20 fl mright-05" v-if="value.cateKey === 10 && mSelectedTeamTypeKey ===10" src="../../../assets/images/channel/icon_team_white.svg"/>
                 <p class="font15 commonBlack fl" style="word-break: keep-all;" >
-                {{value.teamNameMtext}}
+                {{$changeText(value.itemNameMtext)}}
                 </p>
               </div>
             </div>
@@ -143,11 +143,15 @@ export default {
         { teamNameMtext: '가족', teamType: 'F' },
         { teamNameMtext: '팀', teamType: 'T' },
         { teamNameMtext: '기타', teamType: 'E' }],
+
+      mSelectedTeamTypeKey: '',
       mSelectedTeamType: '',
 
       mDeleteYn: false,
       mBtnColor: false,
-      mTopColorPreviewYn: false
+      mTopColorPreviewYn: false,
+      mBusinessItemList: [],
+      mReloadKey: 0
     }
   },
   methods: {
@@ -160,13 +164,14 @@ export default {
         param: param
       })
       console.log(cateItemList)
+      this.mBusinessItemList = cateItemList.data.cateItemList
+      // this.mReloadKey += 1
       // eslint-disable-next-line no-debugger
       debugger
     },
     selectChanType (value) {
-      this.mSelectedTeamType = value.teamType
-      this.mSelectType = value.teamType
-      this.mSelectTypeText = value.teamNameMtext
+      this.mSelectedTeamTypeKey = value.cateKey
+      this.mSelectTypeText = value.itemNameMtext
     },
     chanDelete () {
       this.mDeleteYn = true
@@ -201,9 +206,8 @@ export default {
       }
     },
     setTypeData (param) {
-      this.mSelectType = param.teamType
-      this.mSelectedTeamType = param.teamType
-      this.mSelectTypeText = this.$teamTypeString(param.teamType)
+      this.mSelectedTeamTypeKey = param.cateKey
+      this.mSelectTypeText = this.$teamTypeString(param.cateKey)
       this.mSelectTeamTypePopYn = false
     },
     setIconOrBGData (param) {
@@ -247,6 +251,7 @@ export default {
       var gParam = {}
       if (this.chanDetail !== {}) {
         gParam.teamKey = this.chanDetail.targetKey
+        gParam.targetKey = this.chanDetail.targetKey
         if (this.CHANNEL_DETAIL) {
           gParam.reqKey = this.CHANNEL_DETAIL.reqKey
         }
@@ -254,15 +259,21 @@ export default {
 
       gParam.nameMtext = 'KO$^$' + this.mInputChannelName
       gParam.memoMtext = 'KO$^$' + this.mInputChannelMemo
+      var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
       if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
-        var teamType = this.$teamTypeString(this.mSelectType)
-        gParam.memoMtext = 'KO$^$' + teamType + '의 산업군을 가진 채널입니다.'
+        gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
       }
 
-      gParam.teamType = this.mSelectType
+      gParam.cateKey = this.mSelectedTeamTypeKey
+      console.log(teamType)
+      var idx = this.mBusinessTypeList.findIndex((item) => item.teamNameMtext === teamType)
+      console.log(idx)
+      this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
+      gParam.teamType = this.mSelectedTeamType
+
       gParam.logoFilekey = this.mSelectedIcon.selectedId
       gParam.picMfilekey = this.mSelectedBg.selectedId
-      gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
+      // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
       gParam.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       gParam.blackYn = this.mBtnColor
 
@@ -272,6 +283,8 @@ export default {
         gParam.deleteYn = true || 1
         this.mPageType = '삭제'
       }
+
+      console.log(gParam)
 
       var result = await this.$requestCreChan(gParam)
       console.log(result)
@@ -303,10 +316,6 @@ export default {
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
         console.log(params)
 
-        // if(delYn === true && this.chanDetail.modiYn === true) {
-        //   params.deleteYn = delYn
-        // }
-        // this.$emit('closeXPop', true)
         this.mCreatedSuccessPopYn = false
         this.$emit('successCreChan', params)
       }
@@ -316,6 +325,7 @@ export default {
       temp.nameMtext = data.nameMtext
       temp.memoMtext = data.memoMtext
       temp.teamType = data.teamType
+      temp.teamKey = data.teamType
       temp.logoFilekey = data.logoFilekey
       temp.picMfilekey = data.picMfilekey
       temp.teamKeyWord = data.teamKeyWord

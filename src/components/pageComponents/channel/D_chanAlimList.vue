@@ -16,7 +16,7 @@
                   <div class="fl font16  w-100P">
                       <p class="font15 textLeft fl" >
                           <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
-                          {{this.CHANNEL_DETAIL.teamTypeText}}
+                          {{$changeText(CHANNEL_DETAIL.cateItemMtext)}}
                       </p>
                   </div>
                   <div class="fl font15 w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
@@ -54,7 +54,7 @@
                   <match :color="'#6768a7'"/>
               </div>
               <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext ? 'background-color:#6768a7' : 'background-color:#fffff' " >
+                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext ? 'background: #6768a7' : 'background: white' " >
                     <p class="fl font14 cursorP fontBold commonColor" v-if="this.CHANNEL_DETAIL.userTeamInfo && !CHANNEL_DETAIL.userTeamInfo.memberNameMtext" @click="this.openReqMemPop()" >멤버신청</p>
                     <p class="fl font14 cursorP fontBold " style="color:white" v-else-if="this.CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext">멤버</p>
                       <!-- <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p> -->
