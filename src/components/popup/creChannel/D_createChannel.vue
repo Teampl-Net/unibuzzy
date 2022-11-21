@@ -103,6 +103,7 @@ export default {
         this.getTeamList()
       }
     }
+    this.getCateItemList()
     setTimeout(() => {
       this.$emit('closeLoading')
     }, 500)
@@ -151,6 +152,18 @@ export default {
     }
   },
   methods: {
+    async getCateItemList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.cateGroupKey = 2
+      var cateItemList = await this.$commonAxiosFunction({
+        url: 'service/tp.getCateItemList',
+        param: param
+      })
+      console.log(cateItemList)
+      // eslint-disable-next-line no-debugger
+      debugger
+    },
     selectChanType (value) {
       this.mSelectedTeamType = value.teamType
       this.mSelectType = value.teamType
