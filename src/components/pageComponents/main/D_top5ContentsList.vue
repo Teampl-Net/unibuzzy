@@ -134,6 +134,7 @@ export default {
         var newArr = []
         if (!value || value.length === 0) return
         if ((this.mViewTab === 'P' && value[0].jobkindId === 'BOAR') || (this.mViewTab === 'B' && value[0].jobkindId === 'ALIM')) return
+        if (this.mContentsList.length === 0) return
         if (this.$dateCalc(this.mContentsList[0].creDate, value[0].creDate) === true) return
         newArr = [
           value[0],

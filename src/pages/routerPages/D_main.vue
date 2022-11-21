@@ -42,9 +42,9 @@
                 <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
-                <div style="height: 100%; min-width: 100%; " :style="'width: ' + this.mMainMChanList.length * 90 + 'px;'">
+                <div style="height: 100%; min-width: 100%; display:flex; gap">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
-                    <createChanIcon @openPop="openPop" class=""/>
+                    <createChanIcon @openPop="openPop" style="margin-right:3rem"/>
                 </div>
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
@@ -52,8 +52,9 @@
                 <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">구독중인 채널</p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
-                <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainChanList.length * 100 + 'px;'">
+                <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
+                    <searchChanIcon />
                 </div>
             </div>
         </div>
@@ -82,6 +83,7 @@ import chanSquareIcon from '../../components/pageComponents/main/D_chanSquareIco
 import mainContsList from '../../components/pageComponents/main/D_mainContList.vue'
 
 import createChanIcon from '../../components/pageComponents/main/unit/D_createChanRoundIcon.vue'
+import searchChanIcon from '../../components/pageComponents/main/unit/D_searchChanSquareIcon.vue'
 export default {
   data () {
     return {
@@ -97,6 +99,7 @@ export default {
     // initModal,
     /* commonConfirmPop, */
     /* pushList, */
+    searchChanIcon,
     createChanIcon,
     loadingCompo,
     chanRoundIcon,
