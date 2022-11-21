@@ -1,8 +1,8 @@
 
 <template>
   <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
-      <div id="gChannelPopup" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
-        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" v-if="this.GE_USER" />
+      <div id="gChannelPopup" v-if="mChannelPopYn === true" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
+        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" v-if="mChannelPopYn === true" @closeXPop='closeChannelPop' />
       </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
@@ -12,7 +12,7 @@
       <div id="summaryWrap" v-if="!this.mChanInfoPopShowYn" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
           <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
               <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (this.CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
-              <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
+              <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
                   <div class="fl font16  w-100P">
                       <p class="font15 textLeft fl" >
                           <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
@@ -54,10 +54,12 @@
                   <match :color="'#6768a7'"/>
               </div>
               <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
-                      <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p>
-                      <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버대기중</p>
-                      <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p>
+                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext ? 'background-color:#6768a7' : 'background-color:#fffff' " >
+                    <p class="fl font14 cursorP fontBold commonColor" v-if="this.CHANNEL_DETAIL.userTeamInfo && !CHANNEL_DETAIL.userTeamInfo.memberNameMtext" @click="this.openReqMemPop()" >멤버신청</p>
+                    <p class="fl font14 cursorP fontBold " style="color:white" v-else-if="this.CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext">멤버</p>
+                      <!-- <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p> -->
+                      <!-- <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버대기중</p>
+                      <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p> -->
                   </div>
                   <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
                   <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
@@ -127,7 +129,9 @@ export default {
       mWriteBoardPopId: '',
       mReceptMemPopShowYn: false,
       mWriteBtnShowYn: true,
-      mMakeDeepLinkIng: false
+      mMakeDeepLinkIng: false,
+
+      mChannelPopYn: false
       // errorPopYn: false
     }
   },
@@ -169,6 +173,12 @@ export default {
     }
   },
   methods: {
+    async closeChannelPop (refreshYn) {
+      this.mChannelPopYn = false
+      if (refreshYn === true) {
+        await this.$addChanList(this.chanDetail.targetKey)
+      }
+    },
     targetContentScrollMove (wich, jobkindId) {
       if (wich && jobkindId) {
         var tabName = 'P'
@@ -193,7 +203,9 @@ export default {
       }
     },
     openReqMemPop () {
-      this.mReceptMemPopShowYn = true
+      // 재준
+      this.mChannelPopYn = true
+      // this.mReceptMemPopShowYn = true
     },
     async closeReqMemPop (yn) {
       console.log(yn)
@@ -258,6 +270,9 @@ export default {
       }
       this.$emit('closeLoading')
       this.$showAxiosLoading(false)
+      console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+      console.log(this.CHANNEL_DETAIL)
+      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && (this.CHANNEL_DETAIL.userTeamInfo.memberInfoList.length === 0 || !this.CHANNEL_DETAIL.userTeamInfo.memberInfoList[0].memberTypeKey)) this.mChannelPopYn = true
     },
     setSelectedList (data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)

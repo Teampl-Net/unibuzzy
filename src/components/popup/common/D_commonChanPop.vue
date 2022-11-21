@@ -97,12 +97,12 @@ export default {
     closeReqMemPop (pCloseYn) {
       this.reqPopShowYn = false
       if (pCloseYn) {
-        this.closeXPop()
+        this.closeXPop(true)
       }
     },
-    closeXPop () {
+    closeXPop (refreshYn) {
       this.$showChanCommonPop(false)
-      this.$emit('closeXPop')
+      this.$emit('closeXPop', refreshYn)
     }
   },
   computed: {

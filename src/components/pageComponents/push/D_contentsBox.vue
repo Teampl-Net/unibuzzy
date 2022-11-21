@@ -77,7 +77,7 @@
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
-                <myObserver @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
+                <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
 
             <!-- 밑에는 댓글 작성 창 -->
@@ -743,14 +743,14 @@ export default {
   },
   computed: {
     CONT_DETAIL () {
-      console.log('CONT_DETAIL')
-      console.log(this.contentsEle)
+      // console.log('CONT_DETAIL')
+      // console.log(this.contentsEle)
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
       if (!cont) {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
-      console.log(cont)
+      // console.log(cont)
       if (cont && cont.length > 0) {
         return cont[0]
       } else {

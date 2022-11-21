@@ -97,12 +97,13 @@ export default {
       }
       param.memberInfoList = ansList
       console.log(param.memberInfoList)
-      var memberResult = this.$commonAxiosFunction({
+      var memberResult = await this.$commonAxiosFunction({
         url: 'service/tp.saveFollowerMemberInfo',
         param: param
       })
+      console.log(memberResult)
       if (memberResult.data.result) {
-        this.closeXPop()
+        this.closeXPop(true)
       }
       console.log(memberResult)
       // eslint-disable-next-line no-debugger

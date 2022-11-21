@@ -78,7 +78,7 @@ export default {
     }
   },
   created () {
-    console.log(this.childShowYn)
+    // console.log(this.childShowYn)
   },
   methods: {
     contMenuClick (memoContents) {

@@ -403,7 +403,9 @@ export const commonMethods = {
     }
     if (data.followYn) {
       followerText = '구독자'
-      if (data.memberYn) {
+      if (data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
+        followerText = this.changeText(data.memberNameMtext)
+      } else {
         followerText = '멤버'
       }
       if (data.ownerYn) {
