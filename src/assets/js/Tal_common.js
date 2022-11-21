@@ -405,8 +405,18 @@ export const commonMethods = {
       followerText = '구독자'
       if (data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText = this.changeText(data.memberNameMtext)
+        followerText += '( '
+        for (var i = 0; i < data.memberInfoList.length; i++) {
+          if (i !== 0) {
+            followerText += '/'
+          }
+          // eslint-disable-next-line no-debugger
+          debugger
+          followerText += data.memberInfoList[i].itemVal + data.memberInfoList[i].memberTypeItemNameMtext
+        }
+        followerText += ' )'
       } else {
-        followerText = '멤버'
+        followerText = '구독자'
       }
       if (data.ownerYn) {
         followerText = '소유자'
@@ -760,6 +770,7 @@ export const commonMethods = {
   },
   teamTypeString (teamType) {
     var text = ''
+    teamType = teamType + ''
     if (teamType === '1') {
       text = '기업'
     } else if (teamType === '2') {

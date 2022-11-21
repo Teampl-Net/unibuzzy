@@ -181,15 +181,19 @@ export const functions = {
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     console.log('############# addChanList ############')
     console.log(paramMap)
-    var resultList = await methods.getTeamList(paramMap, true)
+    try {
+      var resultList = await methods.getTeamList(paramMap, true)
+      console.log(resultList)
+      // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
+      var response = resultList.data.content[0]
+      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
+    } catch (error) {
 
-    console.log(resultList)
-    // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
-    var response = resultList.data.content[0]
-    await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
-    var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
-    g_axiosQueue.splice(queueIndex, 1)
-    return result
+    } finally {
+      var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
+      g_axiosQueue.splice(queueIndex, 1)
+    }
+    return response
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
   async recvNotiFromBridge (message, mobileYn) {

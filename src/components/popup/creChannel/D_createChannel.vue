@@ -258,17 +258,20 @@ export default {
       }
 
       gParam.nameMtext = 'KO$^$' + this.mInputChannelName
-      gParam.memoMtext = 'KO$^$' + this.mInputChannelMemo
+      gParam.memoMtext = this.mInputChannelMemo
       var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
       if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
         gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
       }
 
-      gParam.cateKey = this.mSelectedTeamTypeKey
+      gParam.cateItemKey = this.mSelectedTeamTypeKey
       console.log(teamType)
       var idx = this.mBusinessTypeList.findIndex((item) => item.teamNameMtext === teamType)
       console.log(idx)
-      this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
+      // 임시
+      if (this.mBusinessTypeList[idx].teamType) {
+        this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
+      }
       gParam.teamType = this.mSelectedTeamType
 
       gParam.logoFilekey = this.mSelectedIcon.selectedId
