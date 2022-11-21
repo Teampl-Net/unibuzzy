@@ -109,6 +109,7 @@ export default {
     }, 500)
   },
   mounted () {
+    console.log(this.CHANNEL_DETAIL)
   },
   props: {
     chanDetail: {}
@@ -289,6 +290,7 @@ export default {
           this.mPageType = '삭제'
         }
 
+        console.log(' ------ console.log(gParam) ----- ')
         console.log(gParam)
 
         var result = await this.$requestCreChan(gParam)
@@ -328,18 +330,20 @@ export default {
         console.log(error)
       }
     },
-    changeTeamInfo (data) {
-      var temp = this.CHANNEL_DETAIL
-      temp.nameMtext = data.nameMtext
-      temp.memoMtext = data.memoMtext
-      temp.teamType = data.teamType
-      temp.teamKey = data.teamType
-      temp.logoFilekey = data.logoFilekey
-      temp.picMfilekey = data.picMfilekey
-      temp.teamKeyWord = data.teamKeyWord
-      temp.creUserName = data.creUserName
-      temp.deleteYn = data.deleteYn
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [temp])
+    async changeTeamInfo (data) {
+      await this.$addChanList(this.CHANNEL_DETAIL.teamKey)
+      // var temp = this.CHANNEL_DETAIL
+      // temp.nameMtext = data.nameMtext
+      // temp.memoMtext = data.memoMtext
+      // temp.teamType = data.teamType
+      // temp.teamType = data.teamType
+      // temp.teamKey = data.teamType
+      // temp.logoFilekey = data.logoFilekey
+      // temp.picMfilekey = data.picMfilekey
+      // temp.teamKeyWord = data.teamKeyWord
+      // temp.creUserName = data.creUserName
+      // temp.deleteYn = data.deleteYn
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [temp])
     },
     async newChannelInPool (newCreTeamKey) {
       var paramMap = new Map()
