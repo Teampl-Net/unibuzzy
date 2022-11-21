@@ -171,6 +171,11 @@ export const methods = {
     } else {
       localStorage.setItem('testYn', false)
       var user = store.getters['D_USER/GE_USER']
+      if (!user) {
+        if (JSON.parse(localStorage.getItem('vuex'))) {
+          user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
+        }
+      }
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
