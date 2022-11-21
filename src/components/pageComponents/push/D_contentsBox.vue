@@ -22,7 +22,9 @@
                     </template>
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
-                    <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold">{{this.$changeText(CONT_DETAIL.nameMtext)}}<span style="font-weight: normal;">{{ '|' + this.$changeText(CONT_DETAIL.creUserName)}}</span></p>
+                    <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
+                      <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                      {{this.$changeText(CONT_DETAIL.nameMtext)}}<span style="font-weight: normal; mleft-02"><span class="font-weight: normal; mSide-02">{{'|'}}</span>{{this.$changeText(CONT_DETAIL.creUserName)}}</span></p>
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                 </div>
@@ -40,33 +42,33 @@
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: 50%; height: 100%;">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" src="../../../assets/images/push/likeIcon.png" alt="">
-                        <img v-else src="../../../assets/images/push/likeIcon_color.png" alt="">
+                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart.png" alt="">
+                        <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
                         <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
                     </div>
                     <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" src="../../../assets/images/push/starIcon.png" alt="">
-                        <img v-else src="../../../assets/images/push/starIcon_color.png" alt="">
+                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/icon_scrap.png" alt="">
+                        <img v-else src="../../../assets/images/contents/icon_scrap_on.png" alt="" class="img-w17">
                         <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                     </div>
                     <div @click="goContentsDetail()" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img  src="../../../assets/images/push/memoIcon.png" alt="">
+                        <img  src="../../../assets/images/contents/icon_memo.png" class="img-w20" alt="">
                         <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
                     </div>
                 </div>
                 <div style="float: right; width: 50%; height: 100%; float: left;">
                     <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img src="../../../assets/images/push/shareIcon.png" class="img-w20 fl" alt="공유 아이콘"
+                        <img src="../../../assets/images/contents/icon_share.png" class="img-w20 fl" alt="공유 아이콘"
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
                     </div>
                     <div @click="this.$emit('fileDownload')" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/attachFileIcon.png" alt="">
-                        <img v-else src="../../../assets/images/push/attachFileIcon.png" alt="">
+                        <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
+                        <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                     </div>
                     <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/noti_on.png" alt="">
-                        <img v-else src="../../../assets/images/push/noti_off.png" alt="">
+                        <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/contents/icon_bell_on.png" class="img-w20" alt="">
+                        <img v-else src="../../../assets/images/contents/icon_bell.png" class="img-w20" alt="">
                     </div>
                 </div>
             </div>
@@ -75,6 +77,7 @@
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
+                <myObserver @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
 
             <!-- 밑에는 댓글 작성 창 -->
@@ -146,11 +149,14 @@ export default {
     this.setContentsMoreText()
   },
   methods: {
+    memoLoadMore () {
+      console.log('Box call MemoLoadMore')
+      this.$emit('memoLoadMore')
+    },
     writeMemoScrollMove () {
       this.$emit('writeMemoScrollMove')
     },
     handleScroll () {
-      console.log(true)
       this.mClickEndYn = true
     },
     clearMemoObj () {

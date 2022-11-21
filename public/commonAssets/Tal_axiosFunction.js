@@ -518,7 +518,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'service//tp.saveUser',
+      url: 'service/tp.saveUser',
       param: param
     })
     result = response

@@ -418,6 +418,17 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 /* 불투명 색: #dcddeb */
 
+.mSide-01 { margin: 0 0.1rem; }
+.mSide-02 { margin: 0 0.2rem; }
+.mSide-03 { margin: 0 0.3rem; }
+.mSide-04 { margin: 0 0.4rem; }
+.mSide-05 { margin: 0 0.5rem; }
+.mSide-06 { margin: 0 0.6rem; }
+.mSide-07 { margin: 0 0.7rem; }
+.mSide-08 { margin: 0 0.8rem; }
+.mSide-09 { margin: 0 0.9rem; }
+.mSide-1 { margin: 0 1rem; }
+
 .pSide-15 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;

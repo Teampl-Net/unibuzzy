@@ -1,27 +1,26 @@
 <template>
-    <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 1.5rem; box-shadow: 0px -2px 3px 0px #eee;">
-      <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
-          <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
-          <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
-        <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
-          <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
-        </div>
-
+  <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 1.5rem; box-shadow: 0px -2px 3px 0px #eee;">
+    <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
+        <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
+        <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
+      <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
+        <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
       </div>
 
-      <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
+    </div>
 
-      <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;">
-        <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
-        <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
-          <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
-        </div>
+    <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
+
+    <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;">
+      <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
+      <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
+        <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-// eslint-disable-next-line
 export default {
   props: {
     mememo: {},
@@ -134,6 +133,7 @@ export default {
     },
     saveMemo () {
       var inputMemoArea = window.document.getElementById('memoTextTag')
+
       // var inputMemoArea = this.$refs.memoTextTag
       var regText = inputMemoArea.innerText
       if (regText.trim() !== '') {
@@ -141,6 +141,7 @@ export default {
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)
         this.$emit('saveMemoText', html)
+        inputMemoArea.classList.add('memoTextPadding')
       } else {
         this.$showToastPop('댓글의 내용을 입력해주세요.')
       }

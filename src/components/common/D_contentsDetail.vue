@@ -1,6 +1,6 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop"/>
+        <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
         <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
         <div v-if="filePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
             <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
@@ -25,6 +25,9 @@ import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   data () {
     return {
+      mCanLoadYn: true,
+      mCheckMemoEndListYn: false,
+
       selectBoardPopShowYn: false,
       selectBoardType: 'move',
       confirmText: '',
@@ -39,7 +42,7 @@ export default {
       mememoValue: null,
       confirmType: false,
       boardFuncType: '',
-      offsetInt: 0,
+      mOffsetInt: 1,
       pagesize: 10,
       endListYn: false,
       reportYn: false,
@@ -969,9 +972,16 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.CONT_DETAIL)
       }
     },
-    async loadMore () {
-      if (!this.CONT_DETAIL.D_MEMO_LIST || this.CONT_DETAIL.memoCount > (this.CONT_DETAIL.D_MEMO_LIST.length)) {
-        await this.getMemoList()
+    async memoLoadMore () {
+      if (this.mCanLoadYn && this.mCheckMemoEndListYn === false) {
+        this.mCanLoadYn = false
+        try {
+          await this.getMemoList()
+        } catch (error) {
+          console.log(error)
+        } finally {
+          this.mCanLoadYn = true
+        }
       }
     },
     replaceArr (arr) {
@@ -993,23 +1003,35 @@ export default {
       cont.D_MEMO_LIST[index].bodyFullStr = memo.bodyFullStr
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
     },
+    endListCheckFunc (resultList) {
+      if (resultList === undefined || resultList === null || resultList === '') return
+      var dispTotalMemoCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
+      console.log(dispTotalMemoCount)
+      if (resultList.totalElements === dispTotalMemoCount) {
+        this.mCheckMemoEndListYn = true
+        // if (this.mOffsetInt > 0) this.mOffsetInt -= 1
+      } else {
+        this.mCheckMemoEndListYn = false
+        // this.mOffsetInt += 1
+      }
+    },
     async getMemoList (refreshYn) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.targetKind = 'C'
       memo.targetKey = this.CONT_DETAIL.contentsKey
-      memo.pageSize = this.pagesize
-      memo.offsetInt = this.offsetInt
-      memo.pageSize = this.CONT_DETAIL.memoCount + 1
+      // memo.pageSize = this.pagesize
+      // memo.offsetInt = this.mOffsetInt
+      // memo.pagesize = 5
+      memo.pageSize = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST) + 5
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
       })
-
+      console.log(result)
       if (result.data.memoList) {
-        this.CONT_DETAIL.memoCount = result.data.totalElements
         var tempList = []
         // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
         if (this.CONT_DETAIL.D_MEMO_LIST && !refreshYn) {
@@ -1019,26 +1041,16 @@ export default {
           ...tempList,
           ...result.data.memoList
         ]
-        var tempMemo = this.replaceArr(newArr)
+        // var tempMemo =
+        this.endListCheckFunc(result.data)
 
-        if (tempMemo && tempMemo.length > 0) {
-          for (let i = 0; i < tempMemo.length; i++) {
-            if (tempMemo.parentMemoKey) {
-              for (let j = 0; j < tempMemo.length; j++) {
-                if (tempMemo[j].memoKey === tempMemo[i].parentMemoKey) {
-                  tempMemo[i].meMemoUserDispMtext = this.$changeText(tempMemo[j].userDispMtext)
-                  tempMemo[i].meMemoBodyMinStr = tempMemo[j].bodyFullStr
-                }
-              }
-            }
-          }
-        }
         var cont = this.CONT_DETAIL
-        cont.D_MEMO_LIST = [...tempMemo]
+        cont.D_MEMO_LIST = this.replaceArr(newArr)
         // var memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         // cont.memoCount = result.data.totalElements.length === 0 ? 0 : result.data.totalElements
-        this.CONT_DETAIL.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-        this.offsetInt = result.data.totalElements
+        this.CONT_DETAIL.memoCount = result.data.totalElements
+        // this.CONT_DETAIL.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
+        // this.offsetInt = result.data.totalElements
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
       // this.$refs.boardMemoListCompo[0].memoLoadingHide()

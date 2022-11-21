@@ -7,14 +7,14 @@
                 <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; flaot: left;" v-if="chanElement.ownerYn" alt="">
                 <img src="../../../assets/images/common/icon_setting_gear.svg" style="width: 100%; flaot: left;" v-else alt="">
             </div> -->
-            <div style="width: 10px; height: 10px; border-radius: 100%; border: 1px solid #FFFFFF; background: #ED4956; position: absolute; right: 8px; top: 5px;"></div>
-            <div style="width: calc(100%); height: 100%; border-radius: 5px; background: #00000040; padding: 5px; position: absolute; left: 0px; bottom: 0px;">
+            <div style="width: 10px; height: 10px; border-radius: 100%; border: 1px solid #FFFFFF; background: #ED4956; position: absolute; right: 8px; top: 5px; z-index:1"></div>
+            <div style="width: calc(100%); height: 100%; border-radius: 5px; background: #00000040; padding: 5px; position: absolute; left: 0px; bottom: 0px; background: linear-gradient(0deg, #00000099, transparent) !important;">
             <!-- <div :style="chanElement.blackYn === 1? 'background: #00000040;' : 'background: #FFFFFF90;' " style="width: calc(100% - 10px); border-radius: 5px; height: 50px; padding: 5px; position: absolute; left: 5px; bottom: 5px;">
                  -->
             </div>
-            <p class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 10px;">
+            <p class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 2px; line-height: 20px;">
                 <!-- <p :style="chanElement.blackYn === 1? 'color: #fff!important;' : '' " class="commonGray font14 w-100P textOverdot textLeft" style=""> -->
-                <img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark.svg" alt="">{{this.$changeText(chanElement.nameMtext)}}
+                <img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark_white.svg" class="img-w12 mright-01" alt="">{{this.$changeText(chanElement.nameMtext)}}
                 <br><pp class="font12 w-100P textOverdot">{{this.$changeText(chanElement.memoMtext)}}</pp>
             </p>
         </div>

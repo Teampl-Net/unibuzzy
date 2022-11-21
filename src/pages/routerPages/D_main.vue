@@ -16,7 +16,7 @@
                     <p style="font-weight: 600;" @click="openNotiHistoryPop" class="font16 fl commonLightColor">님!</p>
                 </div>
             </div>
-            <div style="width: 42px; height: 42px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
+            <div style="width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
                 <div @click="goUserProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
                 <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
             </div>
@@ -38,18 +38,18 @@
 
         <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 0px 0px 30px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_settingIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
-                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
+                <img src="../../assets/images/main/main_settingIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
             </div>
-            <div v-if="this.mMainMChanList" style="width: 100%; height: 80px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
+            <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; " :style="'width: ' + this.mMainMChanList.length * 90 + 'px;'">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                     <createChanIcon @openPop="openPop" class=""/>
                 </div>
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_followIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
-                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">구독중인 채널</p>
+                <img src="../../assets/images/main/main_followIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">구독중인 채널</p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%;" :style="'width: ' + this.mMainChanList.length * 100 + 'px;'">
@@ -59,10 +59,10 @@
         </div>
         <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
-                <img src="../../assets/images/main/main_contentsBellIcon.svg" style="width: 27px; float: left; margin-right: 8px;" alt="">
-                <p class="font18 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
+                <img src="../../assets/images/main/main_contentsBellIcon.png" style="float: left; margin-right: 8px;" class="img-w22" alt="">
+                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
-            <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;">
+            <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
                 <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
             </div>
         </div>
@@ -137,6 +137,7 @@ export default {
       this_.mLoadingYn = false
     }) */
     this.$refs.mainScrollWrap.addEventListener('scroll', this.handleScroll)
+    this.mLoadingYn = false
   },
   methods: {
     handleScroll () {

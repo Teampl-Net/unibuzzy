@@ -60,6 +60,8 @@ export default {
       mSelectChanList: [],
       mSelectedChan: 0,
       mSeleteWriteTypePopShowYn: false,
+
+      // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 추가
       mReloadKey: 0
     }
   },
@@ -82,8 +84,7 @@ export default {
     async getMyContentsList (pageSize, offsetInput, loadingYn) {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
       this.mAxiosQueue.push('getPushContentsList')
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.ownUserKey = this.propUserKey
       param.subsUserKey = this.propUserKey
       param.allYn = true
@@ -136,7 +137,6 @@ export default {
         newArr = resultList.content
       }
       this.mContsList = this.replaceArr(newArr)
-      this.mReloadKey += 1
       /* for (let i = 0; i < this.mContsList.length; i++) {
         cont = this.mContsList[i]
 
@@ -318,6 +318,10 @@ export default {
     }
   },
   watch: {
+    mContsList () {
+      // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
+      this.mReloadKey += 1
+    },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
