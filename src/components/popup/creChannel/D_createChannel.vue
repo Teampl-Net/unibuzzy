@@ -163,11 +163,9 @@ export default {
         url: 'service/tp.getCateItemList',
         param: param
       })
+      console.log('#################')
       console.log(cateItemList)
       this.mBusinessItemList = cateItemList.data.cateItemList
-      // this.mReloadKey += 1
-      // eslint-disable-next-line no-debugger
-      debugger
     },
     selectChanType (value) {
       this.mSelectedTeamTypeKey = value.cateKey
@@ -249,78 +247,85 @@ export default {
     },
     async setParam () {
       var gParam = {}
-      if (this.chanDetail !== {}) {
-        gParam.teamKey = this.chanDetail.targetKey
-        gParam.targetKey = this.chanDetail.targetKey
-        if (this.CHANNEL_DETAIL) {
-          gParam.reqKey = this.CHANNEL_DETAIL.reqKey
-        }
-      }
-
-      gParam.nameMtext = 'KO$^$' + this.mInputChannelName
-      gParam.memoMtext = this.mInputChannelMemo
-      var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
-      if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
-        gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
-      }
-
-      gParam.cateItemKey = this.mSelectedTeamTypeKey
-      console.log(teamType)
-      var idx = this.mBusinessTypeList.findIndex((item) => item.teamNameMtext === teamType)
-      console.log(idx)
-      // 임시
-      if (this.mBusinessTypeList[idx].teamType) {
-        this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
-      }
-      gParam.teamType = this.mSelectedTeamType
-
-      gParam.logoFilekey = this.mSelectedIcon.selectedId
-      gParam.picMfilekey = this.mSelectedBg.selectedId
-      // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
-      gParam.creUserName = this.$changeText(this.GE_USER.userDispMtext)
-      gParam.blackYn = this.mBtnColor
-
-      var params = {}
-      if (this.mDeleteYn === true) {
-        params.deleteYn = true
-        gParam.deleteYn = true || 1
-        this.mPageType = '삭제'
-      }
-
-      console.log(gParam)
-
-      var result = await this.$requestCreChan(gParam)
-      console.log(result)
-      if (result.result === true || result.result === 'true') {
-        this.mCreCheckPopYn = false
-        this.mCreatedSuccessPopYn = true
-        params.targetType = 'chanDetail'
-        params.popHeaderText = 'KO$^$' + this.mInputChannelName
-        if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
-          this.changeTeamInfo(gParam)
-          params.targetKey = this.chanDetail.targetKey
-          params.modiYn = true
-          params.teamKey = this.chanDetail.targetKey
-        } else {
-          params.targetKey = result.teamKey
-          params.teamKey = result.teamKey
-          params.newChan = true
-          this.newChannelInPool(result.teamKey)
-        }
-        var teamKey = null
-        if (this.chanDetail.targetKey === undefined || this.chanDetail.targetKey === null || this.chanDetail.targetKey === '') {
-          teamKey = result.teamKey
-        } else {
-          teamKey = this.chanDetail.targetKey
+      try {
+        if (this.chanDetail !== {}) {
+          gParam.teamKey = this.chanDetail.targetKey
+          gParam.targetKey = this.chanDetail.targetKey
+          if (this.CHANNEL_DETAIL) {
+            gParam.reqKey = this.CHANNEL_DETAIL.reqKey
+          }
         }
 
-        if (this.mDeleteYn !== true) await this.$addChanList(teamKey)
+        gParam.nameMtext = 'KO$^$' + this.mInputChannelName
+        gParam.memoMtext = this.mInputChannelMemo
+        var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
+        if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
+          gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
+        }
 
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-        console.log(params)
+        gParam.cateItemKey = this.mSelectedTeamTypeKey
+        console.log(teamType)
 
-        this.mCreatedSuccessPopYn = false
-        this.$emit('successCreChan', params)
+        // 임시
+        if (this.mDeleteYn === false) {
+          var idx = this.mBusinessTypeList.findIndex((item) => item.teamNameMtext === teamType)
+          console.log(idx)
+          if (idx !== -1) {
+            this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
+          } else return
+          gParam.teamType = this.mSelectedTeamType
+        }
+
+        gParam.logoFilekey = this.mSelectedIcon.selectedId
+        gParam.picMfilekey = this.mSelectedBg.selectedId
+        // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
+        gParam.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+        gParam.blackYn = this.mBtnColor
+
+        var params = {}
+        if (this.mDeleteYn === true) {
+          params.deleteYn = true
+          gParam.deleteYn = true || 1
+          this.mPageType = '삭제'
+        }
+
+        console.log(gParam)
+
+        var result = await this.$requestCreChan(gParam)
+        console.log(result)
+        if (result.result === true || result.result === 'true') {
+          this.mCreCheckPopYn = false
+          this.mCreatedSuccessPopYn = true
+          params.targetType = 'chanDetail'
+          params.popHeaderText = 'KO$^$' + this.mInputChannelName
+          if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
+            this.changeTeamInfo(gParam)
+            params.targetKey = this.chanDetail.targetKey
+            params.modiYn = true
+            params.teamKey = this.chanDetail.targetKey
+          } else {
+            params.targetKey = result.teamKey
+            params.teamKey = result.teamKey
+            params.newChan = true
+            this.newChannelInPool(result.teamKey)
+          }
+          var teamKey = null
+          if (this.chanDetail.targetKey === undefined || this.chanDetail.targetKey === null || this.chanDetail.targetKey === '') {
+            teamKey = result.teamKey
+          } else {
+            teamKey = this.chanDetail.targetKey
+          }
+
+          if (this.mDeleteYn !== true) await this.$addChanList(teamKey)
+
+          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+          console.log(params)
+
+          this.mCreatedSuccessPopYn = false
+          this.$emit('successCreChan', params)
+        }
+      } catch (error) {
+        console.log(error)
       }
     },
     changeTeamInfo (data) {

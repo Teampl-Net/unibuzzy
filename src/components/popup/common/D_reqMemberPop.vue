@@ -1,5 +1,5 @@
 <template>
-  <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 100; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem;">
+  <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 100; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
     <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;">
         <p class="font20 fontBold textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
     </div>

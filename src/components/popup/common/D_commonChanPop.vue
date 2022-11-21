@@ -2,8 +2,8 @@
     <div @click="closeXPop" style="position: absolute; width: 100%; height: 100%; background: #00000025;"></div>
     <div v-if="reqPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100%; background: #00000040;"></div>
     <repMemberPop v-if="reqPopShowYn" @closeXPop="closeReqMemPop" :propTeamDetail="this.CHANNEL_DETAIL" :propMemberData="selectMemberObj"/>
-    <div v-if="CHANNEL_DETAIL" style="width: 100%; height: 100%; display: flex; justify-content: center; position: absolute; z-index: 99;">
-        <div :style="popupStyle" style="width: 80%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem;">
+    <div v-if="CHANNEL_DETAIL" style="width: 100%; height: 100%; display: flex; justify-content: center; position: absolute; z-index: 99; overflow: auto;">
+        <div :style="popupStyle" style="width: 80%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
             <div style="width: 100%; height: 100px; float: left; display: flex; align-items: center; padding-bottom: 0;" class="commonChanPopPadding" >
                 <!-- box-shadow: 0 4px 10px -4px #ccc -->
                 <div :style="'background-image: url(' + CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext + '); background-position: center;  background-size: cover; background-repeat: no-repeat'" style="width: 60px; height: 60px; display: flex; justify-content: center; border-radius: 100%; border: 2px solid #ccc; center; align-items: center;"></div>
