@@ -1,7 +1,7 @@
 <template>
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; ">
         <div style="width: 90px; margin-right: 10px; height: 100%;" @click="emit({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
-            <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userNameMtext)}}</p>
+            <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
         <div style="width: calc(100% - 100px); min-height: 20px;" @click="emit({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)"></p>
@@ -15,7 +15,7 @@
             </div>
             <div style="width: calc(100% - 40px); min-height: 40px; display: flex; flex-direction: column;">
                 <div style="width: 100%; margin-right: 10px; min-height: 20px; margin-top: 5px;">
-                    <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userNameMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateFormat(propMemoEle.creDate)}}</pp></p>
+                    <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateFormat(propMemoEle.creDate)}}</pp></p>
                 </div>
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
                     <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></p>

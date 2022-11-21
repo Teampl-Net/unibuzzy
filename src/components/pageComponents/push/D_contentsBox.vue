@@ -21,6 +21,9 @@
                         <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                     </template>
                 </div>
+                <!-- <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
+                    <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
+                  </div> -->
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
                     <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
                       <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
@@ -149,6 +152,36 @@ export default {
     this.setContentsMoreText()
   },
   methods: {
+    setIntervalTimer (date, contentsKey) {
+      var time = this.$cancelTimer(date)
+      // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
+      if (time !== false) {
+        this.$nextTick(() => {
+          // document.getElementById('timerText'+contentsKey).innerHTML = innerHTML
+          setInterval(() => {
+            time = this.$cancelTimer(date)
+            if (time !== false) {
+              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerHTML = time
+            } else {
+              clearInterval()
+              if (document.getElementById('timerBtn' + contentsKey)) document.getElementById('timerBtn' + contentsKey).innerText = ''
+              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerText = ''
+              if (document.getElementById('timerArea' + contentsKey)) document.getElementById('timerArea' + contentsKey).innerText = ''
+            }
+          }, 1000)
+        })
+      }
+    },
+    cancelTimerShowCheck (alim) {
+      var result = false
+      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.GE_USER.userKey) {
+        var time = this.$cancelTimer(alim.creDate)
+        if (time !== false) {
+          result = true
+        }
+      }
+      return result
+    },
     memoLoadMore () {
       console.log('Box call MemoLoadMore')
       this.$emit('memoLoadMore')

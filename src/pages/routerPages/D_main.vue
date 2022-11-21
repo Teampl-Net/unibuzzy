@@ -126,9 +126,9 @@ export default {
     this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
     this.$emit('changePageHeader', '더알림')
   },
-  updated () {
+  /* updated () {
     this.getMainBoard()
-  },
+  }, */
   mounted () {
     // this.mLoadingYn = false
     this.$userLoginCheck()
