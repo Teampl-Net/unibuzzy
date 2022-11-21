@@ -926,6 +926,32 @@ export default {
 
       // this.$emit('openPop', params)
     },
+    updateScroll () {
+      var blockBox = document.getElementById('summaryHeader')
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
+
+      this.scrollPosition = this.box.scrollTop
+
+      if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
+        blockBox.style.height = '50px'
+        // blockBox.scrollHeight = 100
+        document.getElementById('boardInfoSummary').classList.add('displayNIm')
+        // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
+        document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
+        this.reloadShowYn = true
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
+        blockBox.style.height = '300px'
+        this.box.style.height = ''
+        document.getElementById('boardInfoSummary').classList.remove('displayNIm')
+        // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
+        document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
+        this.reloadShowYn = false
+      }
+    },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
