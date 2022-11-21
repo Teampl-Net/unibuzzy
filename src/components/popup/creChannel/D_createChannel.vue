@@ -131,7 +131,6 @@ export default {
 
       mErrorPopMsg: '',
       mErrorPopYn: false,
-
       mBusinessTypeList: [
         { teamNameMtext: '기업', teamType: 'C' },
         { teamNameMtext: '정부', teamType: 'G' },

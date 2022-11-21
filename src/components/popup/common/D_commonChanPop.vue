@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div style="width: 100%; height: calc(100% - 160px); float: left;padding-top: 0"  class="commonChanPopPadding" ><!-- box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; -->
-                <div v-html="'\'' + this.$changeText(GE_USER.userDispMtext) + '\' 님 안녕하세요!<br>' + popMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font16 textLeft fontBold commonBlack">
+                <div v-html="'\'' + this.$changeText(GE_USER.userDispMtext) + '\' 님 안녕하세요!<br>' + propPopMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font16 textLeft fontBold commonBlack">
                 </div>
                 <div style="width: 100%; display: flex;     align-items: center; padding-top: 20px;">
                     <div class="font16 fontBold commonColor" style="width: 80px;padding: 0 5px; align-items: center; justify-content: flex-start; display: flex;">
@@ -49,14 +49,14 @@ export default {
     repMemberPop
   },
   props: {
-    propTeamKey: {}
+    propTeamKey: {},
     // popTitle: {}
     // btnList: {}
-    // popMessage: {}
+    propPopMessage: {}
     // popSize: {}
   },
   created () {
-    console.log(this.propTeamKey)
+    console.log(this.propPopMessage)
     if (this.memberPopYn) {
       this.popSize = 'L'
     }
@@ -136,7 +136,7 @@ export default {
       popSize: 'L',
       memberPopYn: true,
       popTitle: '멤버신청 필요',
-      popMessage: '회원님은 현재 멤버신청이 되어있지 않아 구독자로 활동하고있습니다!',
+      // propPopMessage: '회원님은 현재 멤버신청이 되어있지 않아 구독자로 활동하고있습니다!',
       btnList: [{ title: '승인', thema: 'deep', emitText: 'ok' }, { title: '거절', thema: 'light', emitText: 'no' }],
       popupStyle: 'height: 40%; max-height: 300px; margin-top: 50%;',
       selectMemberObj: null,

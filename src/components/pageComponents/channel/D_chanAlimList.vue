@@ -1,8 +1,8 @@
 
 <template>
   <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
-      <div id="gChannelPopup" v-if="mChannelPopYn === true" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
-        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" v-if="mChannelPopYn === true" @closeXPop='closeChannelPop' />
+      <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
+        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
@@ -130,8 +130,8 @@ export default {
       mReceptMemPopShowYn: false,
       mWriteBtnShowYn: true,
       mMakeDeepLinkIng: false,
-
-      mChannelPopYn: false
+      mChanPopMessage: '',
+      commonChanPopShowYn: false
       // errorPopYn: false
     }
   },
@@ -174,7 +174,7 @@ export default {
   },
   methods: {
     async closeChannelPop (refreshYn) {
-      this.mChannelPopYn = false
+      this.commonChanPopShowYn = false
       if (refreshYn === true) {
         await this.$addChanList(this.chanDetail.targetKey)
       }
@@ -204,7 +204,7 @@ export default {
     },
     openReqMemPop () {
       // 재준
-      this.mChannelPopYn = true
+      this.commonChanPopShowYn = true
       // this.mReceptMemPopShowYn = true
     },
     async closeReqMemPop (yn) {
@@ -272,7 +272,7 @@ export default {
       this.$showAxiosLoading(false)
       console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrr')
       console.log(this.CHANNEL_DETAIL)
-      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && (this.CHANNEL_DETAIL.userTeamInfo.memberInfoList.length === 0 || !this.CHANNEL_DETAIL.userTeamInfo.memberInfoList[0].memberTypeKey)) this.mChannelPopYn = true
+      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && (this.CHANNEL_DETAIL.userTeamInfo.memberInfoList.length === 0 || !this.CHANNEL_DETAIL.userTeamInfo.memberInfoList[0].memberTypeKey)) this.commonChanPopShowYn = true
     },
     setSelectedList (data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
@@ -332,7 +332,7 @@ export default {
           this.mSaveFollowerParam.teamKey = this.CHANNEL_DETAIL.teamKey
           this.mSaveFollowerParam.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
           this.mSaveFollowerParam.userKey = this.$store.getters['D_USER/GE_USER'].userKey
-          this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+          this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
           // console.log(this.mSaveFollowerParam)
           var result = false
           if (fStatus) {
@@ -362,7 +362,9 @@ export default {
               this.mErrorPopShowYn = true
             }
           } else {
-            this.mOpenWelcomePopShowYn = true
+            await this.okMember()
+            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>더 많은 활동을 위해 멤버 신청을 해주세요!'
+            this.commonChanPopShowYn = true
           }
         }
       }
