@@ -898,6 +898,34 @@ export default {
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
+    openWriteBoard () {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      params.targetType = 'writeContents'
+      params.actorList = this.actorList
+      params.targetNameMtext = this.propData.nameMtext
+      params.teamKey = this.propData.currentTeamKey
+      params.currentTeamKey = this.propData.currentTeamKey
+      params.bodyFullStr = ''
+      params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
+      params.cabinetKey = this.CAB_DETAIL.cabinetKey
+      params.value = this.CAB_DETAIL
+      params.contentsJobkindId = 'BOAR'
+      if (this.CAB_DETAIL.guideFullStr) {
+        params.guideFullStr = this.CAB_DETAIL.guideFullStr
+      }
+      this.boardWriteData = {}
+      this.boardWriteData = params
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.writePopId = 'writeContents' + history.length
+      this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
+      history.push(this.writePopId)
+      this.$store.commit('D_HISTORY/updateStack', history)
+
+      this.boardWriteYn = true
+
+      // this.$emit('openPop', params)
+    },
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
