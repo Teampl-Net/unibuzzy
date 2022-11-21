@@ -17,7 +17,10 @@
                     <!-- <div v-if="member.ownerYn || member.ownerYn === 1" style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
                     </div> -->
-                    <div v-if="member.memberYn || member.memberYn === 1" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
+                    <div v-if="member.ownerYn" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
+                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
+                    </div>
+                    <div v-else-if="member.memberTypeKey" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'멤버'}}</p>
                     </div>
                     <div v-else style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; height: 23px; background-color:#F5F5F9;"  >
@@ -26,10 +29,15 @@
                 </div>
                 <div style="width: calc(100% - 50px); min-height: 20px; float: left; display: flex; flex-direction: column;">
                     <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
-                    <p v-if="(member.memberYn || member.memberYn === 1)" class="grayBlack font12 fontBold textLeft">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
+                    <div class="w-100P fl">
+                        <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
+                            {{index !== 0 ? ' | ' : ''}}{{'' + info.memberTypeItemNameMtext}}: {{info.itemVal}}
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="fr  memberItemBox" >

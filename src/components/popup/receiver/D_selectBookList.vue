@@ -36,7 +36,7 @@ export default {
       setSelectedList: [],
       detailOpenYn: false,
       titleText: '팀플',
-      receiverTitle: '주소록 선택',
+      receiverTitle: '그룹 선택',
       selectReceivers: [],
       selectedTeamList: [],
       selectedMemberList: [],
